@@ -1,0 +1,31 @@
+# NOTE: this is only used for local development
+services:
+  database:
+    container_name: therapy-postgres
+    image: postgres:17
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pgadmin:
+    container_name: therapy-pgadmin
+    depends_on:
+      - database
+    image: dpage/pgadmin4:latest
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+    driver: local
+  pgadmin:
+    driver: local

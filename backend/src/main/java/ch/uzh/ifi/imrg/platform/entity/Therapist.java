@@ -16,7 +16,7 @@ public class Therapist implements Serializable {
     @Column(unique = true)
     private String id = UUID.randomUUID().toString();
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
