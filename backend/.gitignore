@@ -16,3 +16,5 @@ application.yml
 # Others
 *.class
 .DS_Store
+
+*.lock
