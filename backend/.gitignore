@@ -1,0 +1,20 @@
+# Maven / Gradle
+target/
+build/
+
+# Application configuration
+application.properties
+application.yml
+
+# IDE-specific files
+.idea/
+*.iml
+
+# Log files
+*.log
+
+# Others
+*.class
+.DS_Store
+
+*.lock
