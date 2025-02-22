@@ -2,6 +2,8 @@
 target/
 build/
 
+.gradle/
+
 # Application configuration
 application.properties
 application.yml
@@ -18,3 +20,5 @@ application.yml
 .DS_Store
 
 *.lock
+
+*.env
