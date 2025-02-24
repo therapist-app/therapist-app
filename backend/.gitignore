@@ -4,10 +4,6 @@ build/
 
 .gradle/
 
-# Application configuration
-application.properties
-application.yml
-
 # IDE-specific files
 .idea/
 *.iml
