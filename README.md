@@ -9,7 +9,7 @@
 3. `cd backend`
 4. `docker compose up -d` or (`docker-compose up -d`)
 5. Visit `http://localhost:5050` in your browser to check if the database is running (email: admin@admin.com, password: admin)
-6. On `http://localhost:5050` connect to DB -> right click "Servers" -> "Register Server" -> "name" = `therapy`, "Host name/address" = `therapy-db`, "Port" = `5433`, "Username" = `therapy-user`, "Password" = `therapy-password`, and "Save Password?" = `Yes`
+6. On `http://localhost:5050` connect to DB -> right click "Servers" -> "Register Server" -> "name" = `therapy`, "Host name/address" = `therapy-db`, "Port" = `5432`, "Username" = `therapy-user`, "Password" = `therapy-password`, and "Save Password?" = `Yes`
 7. `./gradlew bootRun`
 8. Visit `http://localhost:8080/therapists` -> you should see a list with three therapists
 
