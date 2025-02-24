@@ -1,14 +1,13 @@
-# NOTE: this is only used for local development
 services:
   database:
     container_name: therapy-postgres
     image: postgres:17
     ports:
-      - ${DB_PORT}:5432
+      - 5433:5432
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: therapy-user
+      POSTGRES_PASSWORD: therapy-password
+      POSTGRES_DB: therapy-db
     volumes:
       - pgdata:/var/lib/postgresql/data
   pgadmin:
