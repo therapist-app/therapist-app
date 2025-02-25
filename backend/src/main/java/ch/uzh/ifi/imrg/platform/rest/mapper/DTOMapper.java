@@ -7,6 +7,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface DTOMapper {
 
@@ -18,6 +20,7 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "email", target = "email")
+    @Mapping(source = "workspaceId", target = "workspaceId")
     TherapistOutputDTO convertEntityToTherapistOutputDTO(Therapist therapist);
 
 }
