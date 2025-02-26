@@ -26,6 +26,9 @@ public class Therapist implements Serializable {
     @OneToMany(mappedBy = "therapist", fetch = FetchType.LAZY)
     private List<Patient> patients = new ArrayList<>();
 
+    @OneToMany(mappedBy = "therapist", fetch = FetchType.LAZY)
+    private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+
     public void setId(String id) {
         this.id = id;
     }
@@ -59,5 +62,13 @@ public class Therapist implements Serializable {
     }
     public void setPatients(List<Patient> patients) {
         this.patients = patients;
+    }
+
+    public List<ChatbotTemplate> getChatbotTemplates() {
+        return chatbotTemplates;
+    }
+
+    public void setChatbotTemplates(List<ChatbotTemplate> chatbotTemplates) {
+        this.chatbotTemplates = chatbotTemplates;
     }
 }

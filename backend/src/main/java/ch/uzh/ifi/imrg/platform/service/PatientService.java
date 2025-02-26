@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.PatientInputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final TherapistRepository therapistRepository;
 
-    public PatientService(PatientRepository patientRepository, TherapistRepository therapistRepository) {
+    public PatientService(@Qualifier("patientRepository") PatientRepository patientRepository, TherapistRepository therapistRepository) {
         this.patientRepository = patientRepository;
         this.therapistRepository = therapistRepository;
     }
