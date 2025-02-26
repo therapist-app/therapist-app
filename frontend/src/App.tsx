@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
 import Header from "./generalComponents/Header";
 import Footer from "./generalComponents/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -23,13 +23,22 @@ const App = () => {
     padding: "20px",
   };
 
+  const RootComponent = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const workspaceId = queryParams.get('workspaceId');
+    return (
+        <Dashboard workspaceId={workspaceId} />
+    );
+  };
+
   return (
     <Router>
       <div style={appContainerStyle}>
         <Header />
         <main style={contentStyle}>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<RootComponent />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/patients" element={<PatientsOverview />} />
@@ -37,7 +46,7 @@ const App = () => {
             <Route path="/patients/:patientId/chatBot/create" element={<PatientChatBotCreate />} />
             <Route path="/patients/:patientId/chatBot/:chatBotId" element={<PatientChatBotEdit />} />
             <Route path="/chatBotTemplate/create" element={<ChatBotTemplateCreate />} />
-            <Route path="/chatBotTemplate/:chatBotTemplateId" element={<ChatBotTemplateEdit />} />
+            <Route path="/?workspace_id=:workspaceId/?chatbot_template_id=:chatbotTemplateId" element={<ChatBotTemplateEdit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
