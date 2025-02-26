@@ -2,14 +2,16 @@ import { useState } from "react";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
 import { TherapistInputDTO } from "../../dto/input/TherapistInputDTO";
 import { createTherapist } from "../../services/therapistService";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<TherapistInputDTO>({
     email: "",
     password: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,7 +20,6 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setSuccess(false);
 
     if (!formData.email || !formData.password) {
       setError("Both fields are required.");
@@ -26,9 +27,12 @@ const Register = () => {
     }
 
     try {
-      await createTherapist(formData);
-      setSuccess(true);
-      setFormData({ email: "", password: "" });
+      const therapistResponse = await createTherapist(formData);
+
+      sessionStorage.setItem("therapistId", therapistResponse.id);
+      sessionStorage.setItem("workspaceId", therapistResponse.workspaceId);
+
+      navigate(`/?workspace_id=${therapistResponse.workspaceId}`);
     } catch (err) {
       setError("Failed to register therapist. Please try again.");
       console.error("Registration error:", err);
@@ -64,7 +68,6 @@ const Register = () => {
           required
         />
         {error && <Typography color="error">{error}</Typography>}
-        {success && <Typography color="primary">Therapist registered successfully!</Typography>}
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           Register
         </Button>
