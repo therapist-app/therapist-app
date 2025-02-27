@@ -64,6 +64,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         throw new Error("No therapistId found in session storage.");
       }
       const response = await getPatientsForTherapist();
+      console.log(response);
       setPatients(response);
     } catch (error: any) {
       const errorMessage = handleError(error);

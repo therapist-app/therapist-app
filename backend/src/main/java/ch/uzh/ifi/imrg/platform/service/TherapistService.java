@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.exceptions.GlobalExceptionAdvice;
 
 import org.springframework.transaction.annotation.Transactional;
 
