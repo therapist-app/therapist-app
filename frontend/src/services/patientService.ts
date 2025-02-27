@@ -1,26 +1,18 @@
-import { AxiosResponse } from "axios";
 import api from "../utils/api";
+import { PatientOutputDTO } from "../dto/output/PatientOutputDTO";
+import { CreatePatientDTO } from "../dto/input/CreatePatientDTO";
 
-interface Patient {
-  id: string;
-  name: string;
-}
-
-interface NewPatientDTO {
-  name: string;
-}
-
-export async function getAllPatients(): Promise<Patient[]> {
+export async function getAllPatients(): Promise<PatientOutputDTO[]> {
   const response = await api.get("/patients");
   return response.data;
 }
 
-export async function getPatientsForTherapist(): Promise<AxiosResponse<any, any>> {
-    const response = await api.get(`/therapists/${sessionStorage.getItem('therapistId')}/patients`);
-    return response;
-  }
+export async function getPatientsForTherapist(): Promise<PatientOutputDTO[]> {
+  const response = await api.get(`/therapists/${sessionStorage.getItem("therapistId")}/patients`);
+  return response.data;
+}
 
-export async function registerPatient(therapistId: string, newPatient: NewPatientDTO): Promise<Patient> {
-    const response = await api.post(`/therapists/${therapistId}/patients`, newPatient);
-    return response.data;
+export async function registerPatient(therapistId: string, newPatient: CreatePatientDTO): Promise<PatientOutputDTO> {
+  const response = await api.post(`/therapists/${therapistId}/patients`, newPatient);
+  return response.data;
 }

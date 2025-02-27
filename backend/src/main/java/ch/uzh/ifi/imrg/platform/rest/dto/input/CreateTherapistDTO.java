@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
-public class TherapistInputDTO {
+public class CreateTherapistDTO {
 
     private String email;
     private String password;

@@ -1,13 +1,13 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
-public class PatientInputDTO {
+public class CreatePatientDTO {
 
     private String name;
 
-    public PatientInputDTO() {
+    public CreatePatientDTO() {
     }
 
-    public PatientInputDTO(String name) {
+    public CreatePatientDTO(String name) {
         this.name = name;
     }
 

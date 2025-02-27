@@ -1,4 +1,4 @@
-export type TherapistInputDTO = {
+export type CreateTherapistDTO = {
   email: string;
   password: string;
 };
