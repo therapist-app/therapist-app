@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatbotTemplateInputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateChatbotTemplateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.DTOMapper;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
@@ -23,8 +23,8 @@ public class ChatbotTemplateController {
     @ResponseStatus(HttpStatus.CREATED)
     public ChatbotTemplateOutputDTO createTemplate(
             @PathVariable String therapistId,
-            @RequestBody ChatbotTemplateInputDTO templateInputDTO) {
-        ChatbotTemplate template = DTOMapper.INSTANCE.convertChatbotTemplateInputDTOtoEntity(templateInputDTO);
+            @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
+        ChatbotTemplate template = DTOMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
         ChatbotTemplate createdTemplate = chatbotTemplateService.createTemplate(therapistId, template);
         return DTOMapper.INSTANCE.convertEntityToChatbotTemplateOutputDTO(createdTemplate);
     }
@@ -43,8 +43,8 @@ public class ChatbotTemplateController {
     public ChatbotTemplateOutputDTO updateTemplate(
             @PathVariable String therapistId,
             @PathVariable String templateId,
-            @RequestBody ChatbotTemplateInputDTO templateInputDTO) {
-        ChatbotTemplate template = DTOMapper.INSTANCE.convertChatbotTemplateInputDTOtoEntity(templateInputDTO);
+            @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
+        ChatbotTemplate template = DTOMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
         ChatbotTemplate updatedTemplate = chatbotTemplateService.updateTemplate(therapistId, templateId, template);
         return DTOMapper.INSTANCE.convertEntityToChatbotTemplateOutputDTO(updatedTemplate);
     }

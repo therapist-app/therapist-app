@@ -1,11 +1,13 @@
 import api from "../utils/api";
 import { TherapistOutputDTO } from "../dto/output/TherapistOutputDTO";
-import { TherapistInputDTO } from "../dto/input/TherapistInputDTO";
+import { CreateTherapistDTO } from "../dto/input/TherapistInputDTO";
 
 export const getAllTherapists = async (): Promise<TherapistOutputDTO[]> => {
-  return api.get("/therapists");
+  const response = await api.get("/therapists");
+  return response.data;
 };
 
-export const createTherapist = async (therapist: TherapistInputDTO): Promise<TherapistOutputDTO> => {
-  return api.post("/therapists", therapist);
+export const createTherapist = async (therapist: CreateTherapistDTO): Promise<TherapistOutputDTO> => {
+  const response = await api.post("/therapists", therapist);
+  return response.data;
 };
