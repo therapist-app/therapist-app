@@ -47,4 +47,4 @@
 
 ## How to update production:
 
-- `git push --force origin main:production`
+`git push --force origin main:production`
