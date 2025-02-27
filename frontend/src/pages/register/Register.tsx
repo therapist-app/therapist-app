@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { TextField, Button, Typography, Container, Box } from "@mui/material";
-import { TherapistInputDTO } from "../../dto/input/TherapistInputDTO";
+import { CreateTherapistDTO } from "../../dto/input/TherapistInputDTO";
 import { createTherapist } from "../../services/therapistService";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<TherapistInputDTO>({
+  const [formData, setFormData] = useState<CreateTherapistDTO>({
     email: "",
     password: "",
   });

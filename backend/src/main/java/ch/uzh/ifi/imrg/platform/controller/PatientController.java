@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.rest.dto.input.PatientInputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.PatientService;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class PatientController {
 
     @PostMapping("/patients")
     @ResponseStatus(HttpStatus.CREATED)
-    public PatientOutputDTO createPatient(@RequestBody PatientInputDTO patientInputDTO) {
+    public PatientOutputDTO createPatient(@RequestBody CreatePatientDTO patientInputDTO) {
         return patientService.createPatient(patientInputDTO);
     }
 
@@ -44,7 +44,7 @@ public class PatientController {
     @PostMapping("/therapists/{therapistId}/patients")
     @ResponseStatus(HttpStatus.CREATED)
     public PatientOutputDTO createPatientForTherapist(@PathVariable String therapistId,
-                                                      @RequestBody PatientInputDTO inputDTO) {
+            @RequestBody CreatePatientDTO inputDTO) {
         return patientService.createPatientForTherapist(therapistId, inputDTO);
     }
 }

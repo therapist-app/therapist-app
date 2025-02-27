@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.uzh.ifi.imrg.platform.rest.dto.input.TherapistInputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.DTOMapper;
 
@@ -34,8 +34,8 @@ public class TherapistController {
 
     @PostMapping("/therapists")
     @ResponseStatus(HttpStatus.CREATED)
-    public TherapistOutputDTO createTherapist(@RequestBody TherapistInputDTO therapistInputDTO) {
-        Therapist therapist = DTOMapper.INSTANCE.convertTherapistInputDTOtoEntity(therapistInputDTO);
+    public TherapistOutputDTO createTherapist(@RequestBody CreateTherapistDTO therapistInputDTO) {
+        Therapist therapist = DTOMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
         Therapist createdTherapist = therapistService.createTherapist(therapist);
         return DTOMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist);
     }
