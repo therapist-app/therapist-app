@@ -46,4 +46,5 @@
 - Now the conflicts should be solved and you can merge your branch into main through Github (with the option "Squash and merge")
 
 ## How to update production:
-`git push --force origin main:production`
+
+- `git push --force origin main:production`
