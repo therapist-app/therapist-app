@@ -16,5 +16,15 @@
   "settings": {
     "title": "Settings",
     "language": "Language"
+  },
+  "footer": {
+    "title": "This is the footer"
+  },
+  "layout": {
+    "dashboard": "Dashboard",
+    "dashboards": "Dashboards",
+    "logout": "Log Out",
+    "overview": "Overview",
+    "account": "Account"
   }
 }

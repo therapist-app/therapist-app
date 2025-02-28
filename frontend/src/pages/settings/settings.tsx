@@ -1,17 +1,17 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {FormControl, InputLabel, MenuItem, Select, Typography} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { FormControl, InputLabel, MenuItem, Select, Typography, SelectChangeEvent } from '@mui/material';
 
 const Settings = () => {
-    const {t, i18n} = useTranslation();
+    const { t, i18n } = useTranslation();
 
-    const changeLanguage = (event: React.ChangeEvent<{ value: string }>) => {
+    const changeLanguage = (event: SelectChangeEvent) => {
         const selectedLanguage = event.target.value;
-        i18n.changeLanguage(selectedLanguage).then(r => {}); // Change the language
+        i18n.changeLanguage(selectedLanguage).then(() => {}); // Change the language
     };
 
     return (
-        <div style={{padding: '20px'}}>
+        <div style={{ padding: '20px' }}>
             <Typography variant="h4" gutterBottom>
                 {t('settings.title')}
             </Typography>

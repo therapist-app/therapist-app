@@ -16,5 +16,14 @@
   "settings": {
     "title": "Налаштування",
     "language": "Мова"
+  },
+  "footer": {
+    "title": "Це підвал"
+  },
+  "layout": {
+    "dashboard": "Панель управління",
+    "logout": "Вийти",
+    "overview": "Огляд",
+    "account": "Обліковий запис"
   }
 }
