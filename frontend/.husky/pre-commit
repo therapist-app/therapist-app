@@ -1,2 +1,6 @@
-cd frontend && npm run fix-all
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+cd frontend && npm run check-all:fix
 cd ../backend && chmod +x ./gradlew && ./gradlew spotlessApply
+
