@@ -1,2 +1,2 @@
-cd frontend && npm run check-all:fix
+cd frontend && npm run fix-all
 cd ../backend && chmod +x ./gradlew && ./gradlew spotlessApply
