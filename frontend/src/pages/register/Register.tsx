@@ -40,7 +40,7 @@ const Register = () => {
   }
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth='xs'>
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant='h4' gutterBottom>
           Register Therapist
