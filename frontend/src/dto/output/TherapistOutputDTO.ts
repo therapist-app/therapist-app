@@ -1,5 +1,9 @@
+
+
+
+
 export type TherapistOutputDTO = {
-  id: string;
+    id: string;
   email: string;
   workspaceId: string;
 };
