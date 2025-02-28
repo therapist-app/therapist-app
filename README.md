@@ -44,7 +44,7 @@
 3. `npm run prepare`
 4. Now whenver you commit code in the frontend the code will be formatted automatically
 
-### Running Code formatting manually (not needed if you have pre-commit setup):
+### Running Code formatting manually (not needed if you have pre-commit hooks setup):
 
 1. `cd frontend`
 2. `npm run fix-all`
