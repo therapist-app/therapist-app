@@ -24,15 +24,28 @@
 5. Visit `http://localhost:5173` in your browser, you should see a list with three therapists
 6. Go to the register page (`http://localhost:5173/register`) and try creating a new therapist
 
-## How to setup pre-commit hooks (so you get automatic code formatting before every commit -> just for conveneince and to keep the codebase clean) not sure if this works on windows, maybe ask ChatGPT
+## Main and Production Environments
 
-### For the frondend:
+- The "main" environment shows the latest changes on the main branch
+- main environment frontend: https://therapist-app-main.jonas-blum.ch/
+- main environment backend: https://backend-therapist-app-main.jonas-blum.ch/
+- The "production" environment shows the latest changes on the production branch
+- production environment frontend: https://therapist-app-production.jonas-blum.ch/
+- production environment backend: https://backend-therapist-app-production.jonas-blum.ch/
+
+## Pre-Commit Hooks
+
+- so you get automatic code formatting before every commit
+- just for convenience and to keep the codebase clean
+- not sure if this works on windows, maybe ask ChatGPT
+
+### For the frondend:
 
 1. `cd frontend`
 2. `npx husky install`
 3. `npx husky add .husky/pre-commit "npm run check-all:fix"`
 
-### For the backend:
+### For the backend:
 
 1. `cd backend`
 2.
@@ -70,6 +83,6 @@ chmod +x .git/hooks/pre-commit
 - Do a force push of your branch `git push -f`
 - Now the conflicts should be solved and you can merge your branch into main through Github (with the option "Squash and merge")
 
-## How to update production:
+## How to update the production branch:
 
 `git push --force origin main:production`
