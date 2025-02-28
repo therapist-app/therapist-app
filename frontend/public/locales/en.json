@@ -64,5 +64,18 @@
     "rename_bot": "Rename Bot",
     "enter_new_name_for_bot": "Enter the new name for your bot.",
     "enter_new_bot_name": "Enter new bot name"
+  },
+  "not_found": {
+    "404": "404 - Page Not Found",
+    "message": "Oops! The page you're looking for doesn't exist."
+  },
+  "patient_detail": {
+    "message": "This is the patient detail page of patient with ID"
+  },
+  "register": {
+    "register_therapist": "Register Therapist",
+    "email": "Email",
+    "password": "Password",
+    "register": "Register"
   }
 }
