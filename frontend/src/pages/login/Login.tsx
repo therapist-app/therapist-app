@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material'
 
 const Login = () => {
   return (
     <div>
-      <Typography variant="h3">This is the login page</Typography>
+      <Typography variant='h3'>This is the login page</Typography>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

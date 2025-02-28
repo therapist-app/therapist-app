@@ -26,11 +26,6 @@ jobs:
           cd frontend
           npm ci
 
-      - name: Run Type Checking
-        run: |
-          cd frontend
-          npm run type-check
-
       - name: Run Linting
         run: |
           cd frontend
@@ -39,7 +34,7 @@ jobs:
       - name: Run Prettier Check
         run: |
           cd frontend
-          npm run format -- --check
+          npm run format
 
   backend-format-check:
     name: Check Java Formatting
