@@ -13,7 +13,7 @@
     "type-check": "tsc --noEmit",
     "check-all": "npm run type-check && npm run lint && npm run format",
     "fix-all": "npm run lint:fix && npm run format",
-    "prepare": "cd .. && husky frontend/.husky"
+    "prepare": "cd .. && husky frontend/.husky  || true"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [

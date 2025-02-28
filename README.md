@@ -36,26 +36,8 @@
 ## Pre-Commit Hooks
 
 - so you get automatic code formatting before every commit
-- just for convenience and to keep the codebase clean
-- not sure if this works on windows, maybe ask ChatGPT
-
-### For the frondend:
-
-1. `cd frontend`
-2. `npx husky install`
-3. `npx husky add .husky/pre-commit "npm run check-all:fix"`
-
-### For the backend:
-
-1. `cd backend`
-2.
-
-```
-echo '#!/bin/sh
-cd backend || exit 1
-./gradlew spotlessApply' > .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
-```
+- for convenience and to keep the codebase clean
+- on Github actions the code formatting is also checked -> so either you need to do it manually or automatically whenever you are committing code
 
 ## Workflow: How to implement an issue
 

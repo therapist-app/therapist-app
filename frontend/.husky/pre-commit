@@ -1,8 +1,11 @@
 #!/bin/sh
+set +e
 
 cd frontend
-npm run fix-all
+npm run fix-all || true
+
 cd ..
 cd backend 
-./gradlew spotlessApply
+./gradlew spotlessApply || true
 
+exit 0
