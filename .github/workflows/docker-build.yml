@@ -7,7 +7,7 @@ on:
       - production
 
 jobs:
-  lint-and-typecheck:
+  frontend-lint-and-typecheck:
     name: Run Type Checking, Linting, and Prettier
     runs-on: ubuntu-latest
     steps:
@@ -30,6 +30,22 @@ jobs:
 
       - name: Run Prettier Check
         run: npm run format -- --check
+
+  backend-format-check:
+    name: Check Java Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Run Formatting Check
+        run: ./gradlew spotlessCheck
 
   build-frontend:
     name: Build Frontend Docker Image

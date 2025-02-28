@@ -16,29 +16,28 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
-	@GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseStatus(HttpStatus.OK)
-	public String helloWorld() {
-		return "The application is running.";
-	}
+  @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public String helloWorld() {
+    return "The application is running.";
+  }
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
-			}
-		};
-	}
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+      }
+    };
+  }
 
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 }
