@@ -44,6 +44,14 @@
 3. `npm run prepare`
 4. Now whenver you commit code in the frontend the code will be formatted automatically
 
+### Running Code formatting manually (not needed if you have pre-commit setup):
+
+1. `cd frontend`
+2. `npm run fix-all`
+3. `cd ..`
+4. `cd backend`
+5. `./gradlew spotlessApply`
+
 ## Workflow: How to implement an issue
 
 1. Look at the issue number and create a new branch (from main) with the name `issueNumber-issue-title` (e.g. `5-create-login-register-endpoint`)
