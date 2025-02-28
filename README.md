@@ -39,6 +39,11 @@
 - for convenience and to keep the codebase clean
 - on Github actions the code formatting is also checked -> so either you need to do it manually or automatically whenever you are committing code
 
+1. `cd frontend`
+2. `npm install`
+3. `npm run prepare`
+4. Now whenver you commit code in the frontend the code will be formatted automatically
+
 ## Workflow: How to implement an issue
 
 1. Look at the issue number and create a new branch (from main) with the name `issueNumber-issue-title` (e.g. `5-create-login-register-endpoint`)
