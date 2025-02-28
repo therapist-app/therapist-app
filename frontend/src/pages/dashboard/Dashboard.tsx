@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Button,
   Box,
@@ -16,370 +16,342 @@ import {
   TextField,
   Snackbar,
   Alert,
-} from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+} from '@mui/material'
+import CardActions from '@mui/material/CardActions'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import AddIcon from '@mui/icons-material/Add'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 
-import { TbMessageChatbot } from "react-icons/tb";
-import { RiRobot2Line } from "react-icons/ri";
-import { IoPersonOutline, IoBulbOutline } from "react-icons/io5";
-import { PiBookOpenTextLight } from "react-icons/pi";
+import { TbMessageChatbot } from 'react-icons/tb'
+import { RiRobot2Line } from 'react-icons/ri'
+import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
+import { PiBookOpenTextLight } from 'react-icons/pi'
 
-import Layout from "../../generalComponents/Layout";
-import {
-  getPatientsForTherapist,
-  registerPatient,
-} from "../../services/patientService";
-import api from "../../utils/api";
-import { handleError } from "../../utils/handleError";
-import { PatientOutputDTO } from "../../dto/output/PatientOutputDTO";
+import Layout from '../../generalComponents/Layout'
+import { getPatientsForTherapist, registerPatient } from '../../services/patientService'
+import api from '../../utils/api'
+import { handleError } from '../../utils/handleError'
+import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import {
   cloneChatbotTemplate,
   createChatbotTemplate,
   getAllChatbotTemplatesForTherapist,
   updateChatbotTemplate,
-} from "../../services/chatbotTemplateService";
-import { ChatbotTemplateOutputDTO } from "../../dto/output/ChatbotTemplateOutputDTO";
-import { CreateChatbotTemplateDTO } from "../../dto/input/CreateChatbotTemplateDTO";
-import { AxiosError } from "axios";
+} from '../../services/chatbotTemplateService'
+import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutputDTO'
+import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
+import { AxiosError } from 'axios'
 
 interface DashboardProps {
-  workspaceId?: string | null;
+  workspaceId?: string | null
 }
 
-const Dashboard: React.FC<DashboardProps> = ({
-  workspaceId: propWorkspaceId,
-}) => {
-  const navigate = useNavigate();
+const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) => {
+  const navigate = useNavigate()
 
-  const [patients, setPatients] = useState<PatientOutputDTO[]>([]);
-  const [openPatientDialog, setOpenPatientDialog] = useState(false);
-  const [newPatientName, setNewPatientName] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [patients, setPatients] = useState<PatientOutputDTO[]>([])
+  const [openPatientDialog, setOpenPatientDialog] = useState(false)
+  const [newPatientName, setNewPatientName] = useState('')
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<
-    "info" | "success" | "error" | "warning"
-  >("info");
-  const [chatbots, setChatbots] = useState<ChatbotTemplateOutputDTO[]>([]);
-  const initialWorkspaceId =
-    propWorkspaceId ?? sessionStorage.getItem("workspaceId") ?? "";
-  const [workspaceId, setWorkspaceId] = useState(initialWorkspaceId);
-  const [openBotDialog, setOpenBotDialog] = useState(false);
-  const [chatbotName, setChatbotName] = useState("");
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [currentChatbot, setCurrentChatbot] =
-    useState<ChatbotTemplateOutputDTO | null>(null);
-  const [openRenameDialog, setOpenRenameDialog] = useState(false);
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
+  const [chatbots, setChatbots] = useState<ChatbotTemplateOutputDTO[]>([])
+  const initialWorkspaceId = propWorkspaceId ?? sessionStorage.getItem('workspaceId') ?? ''
+  const [workspaceId, setWorkspaceId] = useState(initialWorkspaceId)
+  const [openBotDialog, setOpenBotDialog] = useState(false)
+  const [chatbotName, setChatbotName] = useState('')
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
+  const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
   const fetchTherapistPatients = async () => {
     try {
-      const therapistId = sessionStorage.getItem("therapistId");
+      const therapistId = sessionStorage.getItem('therapistId')
       if (!therapistId) {
-        throw new Error("No therapistId found in session storage.");
+        throw new Error('No therapistId found in session storage.')
       }
-      const response = await getPatientsForTherapist();
-      console.log(response);
-      setPatients(response);
+      const response = await getPatientsForTherapist()
+      console.log(response)
+      setPatients(response)
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const handleOpenPatientDialog = () => {
-    setOpenPatientDialog(true);
-  };
+    setOpenPatientDialog(true)
+  }
 
   const handleClosePatientDialog = () => {
-    setOpenPatientDialog(false);
-    setNewPatientName("");
-  };
+    setOpenPatientDialog(false)
+    setNewPatientName('')
+  }
 
   const handleCreatePatient = async () => {
     try {
-      const therapistId = sessionStorage.getItem("therapistId");
+      const therapistId = sessionStorage.getItem('therapistId')
       if (!therapistId) {
-        throw new Error("No therapistId found in session storage.");
+        throw new Error('No therapistId found in session storage.')
       }
-      await registerPatient(therapistId, { name: newPatientName });
-      await fetchTherapistPatients();
-      setSnackbarMessage("Patient registered successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      handleClosePatientDialog();
+      await registerPatient(therapistId, { name: newPatientName })
+      await fetchTherapistPatients()
+      setSnackbarMessage('Patient registered successfully!')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      handleClosePatientDialog()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchTherapistPatients();
-    setWorkspaceId(sessionStorage.getItem("workspaceId") ?? "");
-  }, []);
+    fetchTherapistPatients()
+    setWorkspaceId(sessionStorage.getItem('workspaceId') ?? '')
+  }, [])
 
   useEffect(() => {
     const fetchChatbotTemplates = async () => {
       try {
-        const therapistId = sessionStorage.getItem("therapistId");
-        if (!therapistId) return;
+        const therapistId = sessionStorage.getItem('therapistId')
+        if (!therapistId) return
 
-        const response = await getAllChatbotTemplatesForTherapist(therapistId);
-        setChatbots(response);
+        const response = await getAllChatbotTemplatesForTherapist(therapistId)
+        setChatbots(response)
       } catch (error) {
-        const errorMessage = handleError(error as AxiosError);
-        setSnackbarMessage(errorMessage);
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        const errorMessage = handleError(error as AxiosError)
+        setSnackbarMessage(errorMessage)
+        setSnackbarSeverity('error')
+        setSnackbarOpen(true)
       }
-    };
+    }
 
-    fetchChatbotTemplates();
-  }, []);
+    fetchChatbotTemplates()
+  }, [])
 
-  const handleCloseSnackbar = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => {
-    if (reason === "clickaway") return;
-    setSnackbarOpen(false);
-  };
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') return
+    setSnackbarOpen(false)
+  }
 
   const handlePatientClick = (patientId: string) => {
-    navigate(`/patients/${patientId}`);
-  };
+    navigate(`/patients/${patientId}`)
+  }
 
   const handleOpenBotDialog = () => {
-    setOpenBotDialog(true);
-  };
+    setOpenBotDialog(true)
+  }
 
   const handleCloseBotDialog = () => {
-    setOpenBotDialog(false);
-    setChatbotName("");
-  };
+    setOpenBotDialog(false)
+    setChatbotName('')
+  }
 
   const handleCreateChatbot = async () => {
     try {
-      const therapistId = sessionStorage.getItem("therapistId");
+      const therapistId = sessionStorage.getItem('therapistId')
       if (!therapistId || !workspaceId) {
-        throw new Error("Missing required IDs");
+        throw new Error('Missing required IDs')
       }
 
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
         chatbotName,
-        chatbotModel: "gpt-3.5-turbo",
-        chatbotIcon: "Chatbot",
-        chatbotLanguage: "English",
-        chatbotRole: "Possibility Engine",
-        chatbotTone: "friendly",
-        welcomeMessage: "Hello! How can I assist you today?",
-        description: "",
+        chatbotModel: 'gpt-3.5-turbo',
+        chatbotIcon: 'Chatbot',
+        chatbotLanguage: 'English',
+        chatbotRole: 'Possibility Engine',
+        chatbotTone: 'friendly',
+        welcomeMessage: 'Hello! How can I assist you today?',
+        description: '',
         workspaceId,
-      };
+      }
 
-      const response = await createChatbotTemplate(
-        chatbotConfigurations,
-        therapistId,
-      );
-      const currentChatbots = chatbots;
-      setChatbots([...currentChatbots, response]);
-      setSnackbarMessage("Chatbot created successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      handleCloseBotDialog();
+      const response = await createChatbotTemplate(chatbotConfigurations, therapistId)
+      const currentChatbots = chatbots
+      setChatbots([...currentChatbots, response])
+      setSnackbarMessage('Chatbot created successfully!')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      handleCloseBotDialog()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const handleChatbotClick = async (chatbotId: string) => {
     try {
-      console.log("chatbotId", chatbotId);
-      sessionStorage.setItem("chatbotId", chatbotId);
-      navigate(
-        `/?workspace_id=${workspaceId}/?chatbot_template_id=${chatbotId}`,
-      );
+      console.log('chatbotId', chatbotId)
+      sessionStorage.setItem('chatbotId', chatbotId)
+      navigate(`/?workspace_id=${workspaceId}/?chatbot_template_id=${chatbotId}`)
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
-    chatbot: ChatbotTemplateOutputDTO,
+    chatbot: ChatbotTemplateOutputDTO
   ) => {
-    setAnchorEl(event.currentTarget);
-    setCurrentChatbot(chatbot);
-  };
+    setAnchorEl(event.currentTarget)
+    setCurrentChatbot(chatbot)
+  }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleRename = () => {
     if (currentChatbot) {
-      setChatbotName(currentChatbot.chatbotName);
-      setOpenRenameDialog(true);
+      setChatbotName(currentChatbot.chatbotName)
+      setOpenRenameDialog(true)
     }
-    handleMenuClose();
-  };
+    handleMenuClose()
+  }
 
   const handleRenameChatbot = async () => {
     try {
-      if (!currentChatbot) return;
-      const therapistId = sessionStorage.getItem("therapistId");
-      if (!therapistId) throw new Error("No therapist found");
+      if (!currentChatbot) return
+      const therapistId = sessionStorage.getItem('therapistId')
+      if (!therapistId) throw new Error('No therapist found')
 
-      const response = await updateChatbotTemplate(
-        therapistId,
-        currentChatbot.id,
-        chatbotName,
-      );
+      const response = await updateChatbotTemplate(therapistId, currentChatbot.id, chatbotName)
 
-      const updatedChatbots = chatbots.map((bot) =>
-        bot.id === currentChatbot.id ? response : bot,
-      );
-      setChatbots(updatedChatbots);
+      const updatedChatbots = chatbots.map((bot) => (bot.id === currentChatbot.id ? response : bot))
+      setChatbots(updatedChatbots)
 
-      setSnackbarMessage("Chatbot renamed successfully");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      setOpenRenameDialog(false);
+      setSnackbarMessage('Chatbot renamed successfully')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      setOpenRenameDialog(false)
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const handleClone = async () => {
-    if (!currentChatbot) return;
+    if (!currentChatbot) return
     try {
-      const therapistId = sessionStorage.getItem("therapistId");
-      if (!therapistId) throw new Error("No therapist found");
+      const therapistId = sessionStorage.getItem('therapistId')
+      if (!therapistId) throw new Error('No therapist found')
 
-      const response = await cloneChatbotTemplate(
-        therapistId,
-        currentChatbot.id,
-      );
+      const response = await cloneChatbotTemplate(therapistId, currentChatbot.id)
 
-      setChatbots([...chatbots, response]);
-      setSnackbarMessage("Chatbot cloned successfully");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      handleMenuClose();
+      setChatbots([...chatbots, response])
+      setSnackbarMessage('Chatbot cloned successfully')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const handleDelete = async () => {
     try {
-      if (!currentChatbot) return;
-      const therapistId = sessionStorage.getItem("therapistId");
-      if (!therapistId) throw new Error("No therapist found");
+      if (!currentChatbot) return
+      const therapistId = sessionStorage.getItem('therapistId')
+      if (!therapistId) throw new Error('No therapist found')
 
-      await api.delete(
-        `/api/therapists/${therapistId}/chatbot-templates/${currentChatbot.id}`,
-      );
+      await api.delete(`/api/therapists/${therapistId}/chatbot-templates/${currentChatbot.id}`)
 
-      const updatedChatbots = chatbots.filter(
-        (bot) => bot.id !== currentChatbot.id,
-      );
-      setChatbots(updatedChatbots);
+      const updatedChatbots = chatbots.filter((bot) => bot.id !== currentChatbot.id)
+      setChatbots(updatedChatbots)
 
-      setSnackbarMessage("Chatbot deleted successfully");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      handleMenuClose();
+      setSnackbarMessage('Chatbot deleted successfully')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError);
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   const commonButtonStyles = {
     borderRadius: 20,
-    textTransform: "none",
-    fontSize: "1rem",
-    minWidth: "130px",
-    maxWidth: "130px",
-    padding: "6px 24px",
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
     lineHeight: 1.75,
-    backgroundColor: "#635BFF",
-    backgroundImage: "linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)",
-    boxShadow: "0 3px 5px 2px rgba(99, 91, 255, .3)",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "#7C4DFF",
+    backgroundColor: '#635BFF',
+    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
+    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#7C4DFF',
     },
     margin: 1,
-  };
+  }
 
   const disabledButtonStyles = {
     ...commonButtonStyles,
-    backgroundImage: "lightgrey",
-    "&:hover": {
-      disabled: "true",
+    backgroundImage: 'lightgrey',
+    '&:hover': {
+      disabled: 'true',
     },
-  };
+  }
 
   const cancelButtonStyles = {
     borderRadius: 20,
-    textTransform: "none",
-    fontSize: "1rem",
-    minWidth: "130px",
-    maxWidth: "130px",
-    padding: "6px 24px",
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
     lineHeight: 1.75,
-    backgroundColor: "white",
-    color: "#635BFF",
-    "&:hover": {
-      backgroundColor: "#f0f0f0",
+    backgroundColor: 'white',
+    color: '#635BFF',
+    '&:hover': {
+      backgroundColor: '#f0f0f0',
     },
     margin: 1,
-  };
+  }
 
   const dialogStyle = {
-    width: "500px",
-    height: "300px",
-  };
+    width: '500px',
+    height: '300px',
+  }
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
-      case "Chatbot":
-        return <TbMessageChatbot />;
-      case "Robot":
-        return <RiRobot2Line />;
-      case "Person":
-        return <IoPersonOutline />;
-      case "Bulb":
-        return <IoBulbOutline />;
-      case "Book":
-        return <PiBookOpenTextLight />;
+      case 'Chatbot':
+        return <TbMessageChatbot />
+      case 'Robot':
+        return <RiRobot2Line />
+      case 'Person':
+        return <IoPersonOutline />
+      case 'Bulb':
+        return <IoBulbOutline />
+      case 'Book':
+        return <PiBookOpenTextLight />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   // const templates = [
   //   {
@@ -452,62 +424,60 @@ const Dashboard: React.FC<DashboardProps> = ({
         <Card
           sx={{
             p: 2,
-            boxShadow: "none",
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
+            boxShadow: 'none',
+            border: '1px solid #e0e0e0',
+            borderRadius: '8px',
           }}
         >
-          <Typography variant="h6" gutterBottom>
+          <Typography variant='h6' gutterBottom>
             Register a new patient
           </Typography>
           <Button
-            variant="contained"
+            variant='contained'
             startIcon={<AddIcon />}
             onClick={handleOpenPatientDialog}
             sx={commonButtonStyles}
-            style={{ minWidth: "200px", maxWidth: "200px" }}
+            style={{ minWidth: '200px', maxWidth: '200px' }}
           >
             Add Patient
           </Button>
         </Card>
       </Box>
 
-      <Typography variant="h5" sx={{ marginBottom: 3 }}>
+      <Typography variant='h5' sx={{ marginBottom: 3 }}>
         Patients
       </Typography>
       {patients.length > 0 ? (
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: 2,
-            justifyContent: "flex-start",
+            justifyContent: 'flex-start',
           }}
         >
           {patients.map((patient) => (
             <Card
               key={patient.id}
-              variant="outlined"
+              variant='outlined'
               sx={{
                 mb: 2,
-                maxWidth: "300px",
-                minWidth: "300px",
-                maxHeight: "150px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                position: "relative",
-                boxShadow: "none",
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
+                maxWidth: '300px',
+                minWidth: '300px',
+                maxHeight: '150px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                position: 'relative',
+                boxShadow: 'none',
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
               }}
             >
               <CardActionArea onClick={() => handlePatientClick(patient.id)}>
                 <CardContent>
-                  <Typography variant="h6">
-                    {patient.name ?? "Unnamed Patient"}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant='h6'>{patient.name ?? 'Unnamed Patient'}</Typography>
+                  <Typography variant='body2' color='textSecondary'>
                     Patient ID: {patient.id}
                   </Typography>
                 </CardContent>
@@ -516,7 +486,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           ))}
         </Box>
       ) : (
-        <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+        <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
           No patients found.
         </Typography>
       )}
@@ -533,29 +503,25 @@ const Dashboard: React.FC<DashboardProps> = ({
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            id="patient-name"
-            label="Patient Name"
-            type="text"
+            margin='dense'
+            id='patient-name'
+            label='Patient Name'
+            type='text'
             fullWidth
-            variant="outlined"
+            variant='outlined'
             value={newPatientName}
             onChange={(e) => setNewPatientName(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "right", pr: 2 }}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
             Cancel
           </Button>
           <Button
             onClick={handleCreatePatient}
-            variant="contained"
-            sx={
-              newPatientName.trim() !== ""
-                ? commonButtonStyles
-                : disabledButtonStyles
-            }
-            disabled={newPatientName.trim() === ""}
+            variant='contained'
+            sx={newPatientName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
+            disabled={newPatientName.trim() === ''}
           >
             Register
           </Button>
@@ -566,76 +532,71 @@ const Dashboard: React.FC<DashboardProps> = ({
         <Card
           sx={{
             p: 2,
-            boxShadow: "none",
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
+            boxShadow: 'none',
+            border: '1px solid #e0e0e0',
+            borderRadius: '8px',
           }}
         >
-          <Typography variant="h6" gutterBottom>
+          <Typography variant='h6' gutterBottom>
             Create new chatbot template
           </Typography>
           <Button
-            variant="contained"
+            variant='contained'
             startIcon={<AddIcon />}
             onClick={handleOpenBotDialog}
             sx={commonButtonStyles}
-            style={{ minWidth: "200px", maxWidth: "200px" }}
+            style={{ minWidth: '200px', maxWidth: '200px' }}
           >
             Create bot
           </Button>
         </Card>
       </Box>
 
-      <Typography variant="h5" sx={{ mt: 6, mb: 3 }}>
+      <Typography variant='h5' sx={{ mt: 6, mb: 3 }}>
         Your Chatbot Templates
       </Typography>
       {chatbots.length > 0 ? (
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: 2,
-            justifyContent: "flex-start",
+            justifyContent: 'flex-start',
           }}
         >
           {chatbots.map((bot, index) => (
             <Card
               key={bot.id || index}
-              variant="outlined"
+              variant='outlined'
               sx={{
                 mb: 2,
-                maxWidth: "300px",
-                minWidth: "300px",
-                maxHeight: "250px",
-                minHeight: "250px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                position: "relative",
-                boxShadow: "none",
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
+                maxWidth: '300px',
+                minWidth: '300px',
+                maxHeight: '250px',
+                minHeight: '250px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                position: 'relative',
+                boxShadow: 'none',
+                border: '1px solid #e0e0e0',
+                borderRadius: '8px',
               }}
             >
               <CardActionArea onClick={() => handleChatbotClick(bot.id)}>
                 <CardContent>
-                  <Typography variant="h6">
-                    {bot.chatbotName || "Unnamed Bot"}
+                  <Typography variant='h6'>{bot.chatbotName || 'Unnamed Bot'}</Typography>
+                  <Typography variant='body2' color='textSecondary'>
+                    {bot.welcomeMessage || 'No welcome message set'}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {bot.welcomeMessage || "No welcome message set"}
-                  </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {`Language: ${bot.chatbotLanguage}`}
                   </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {`Role: ${bot.chatbotRole}`}
                   </Typography>
-                  <Typography variant="body1">{`Tone: ${bot.chatbotTone}`}</Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ fontSize: "48px", textAlign: "center" }}
-                  >
+                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+                  <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
                     {getIconComponent(bot.chatbotIcon)}
                   </Typography>
                 </CardContent>
@@ -644,15 +605,15 @@ const Dashboard: React.FC<DashboardProps> = ({
               <CardActions
                 disableSpacing
                 sx={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: 0,
                   right: 0,
                 }}
               >
                 <IconButton
-                  aria-label="more"
-                  aria-controls="chatbot-menu"
-                  aria-haspopup="true"
+                  aria-label='more'
+                  aria-controls='chatbot-menu'
+                  aria-haspopup='true'
                   onClick={(event) => handleMenuClick(event, bot)}
                 >
                   <MoreVertIcon />
@@ -662,13 +623,13 @@ const Dashboard: React.FC<DashboardProps> = ({
           ))}
         </Box>
       ) : (
-        <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+        <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
           No chatbots created yet.
         </Typography>
       )}
 
       <Menu
-        id="chatbot-menu"
+        id='chatbot-menu'
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl && currentChatbot)}
@@ -679,11 +640,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
 
-      <Dialog
-        open={openBotDialog}
-        onClose={handleCloseBotDialog}
-        PaperProps={{ sx: dialogStyle }}
-      >
+      <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
         <DialogTitle>New Bot</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
@@ -691,29 +648,25 @@ const Dashboard: React.FC<DashboardProps> = ({
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            id="bot-name"
-            label="Enter bot name"
-            type="text"
+            margin='dense'
+            id='bot-name'
+            label='Enter bot name'
+            type='text'
             fullWidth
-            variant="outlined"
+            variant='outlined'
             value={chatbotName}
             onChange={(e) => setChatbotName(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "right", pr: 2 }}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleCloseBotDialog} sx={cancelButtonStyles}>
             Cancel
           </Button>
           <Button
             onClick={handleCreateChatbot}
-            variant="contained"
-            sx={
-              chatbotName.trim() !== ""
-                ? commonButtonStyles
-                : disabledButtonStyles
-            }
-            disabled={chatbotName.trim() === ""}
+            variant='contained'
+            sx={chatbotName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
+            disabled={chatbotName.trim() === ''}
           >
             Create Bot
           </Button>
@@ -727,37 +680,28 @@ const Dashboard: React.FC<DashboardProps> = ({
       >
         <DialogTitle>Rename Bot</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
-          <DialogContentText sx={{ mb: 1 }}>
-            Enter the new name for your bot.
-          </DialogContentText>
+          <DialogContentText sx={{ mb: 1 }}>Enter the new name for your bot.</DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            id="rename"
-            label="Enter new bot name"
-            type="text"
+            margin='dense'
+            id='rename'
+            label='Enter new bot name'
+            type='text'
             fullWidth
-            variant="outlined"
+            variant='outlined'
             value={chatbotName}
             onChange={(e) => setChatbotName(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "right", pr: 2 }}>
-          <Button
-            onClick={() => setOpenRenameDialog(false)}
-            sx={cancelButtonStyles}
-          >
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
+          <Button onClick={() => setOpenRenameDialog(false)} sx={cancelButtonStyles}>
             Cancel
           </Button>
           <Button
             onClick={handleRenameChatbot}
-            variant="contained"
-            sx={
-              chatbotName.trim() !== ""
-                ? commonButtonStyles
-                : disabledButtonStyles
-            }
-            disabled={chatbotName.trim() === ""}
+            variant='contained'
+            sx={chatbotName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
+            disabled={chatbotName.trim() === ''}
           >
             Save
           </Button>
@@ -768,18 +712,14 @@ const Dashboard: React.FC<DashboardProps> = ({
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </Layout>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
