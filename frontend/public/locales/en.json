@@ -1,0 +1,15 @@
+{
+  "header": {
+    "title": "This is the header",
+    "subtitle": "These are the current pages:",
+    "dashboard": "Dashboard Page",
+    "register": "Register Page",
+    "login": "Login Page",
+    "patients": "Patient Overview Page",
+    "patient_detail": "Example Patient Detail Page for ID: \"{{id}}\"",
+    "patient_create_bot": "Example Patient Create Bot Page",
+    "bot_edit": "Example Bot Edit Page for Bot ID: \"{{id}}\"",
+    "create_bot_template": "Create ChatBot Template Page",
+    "edit_bot_template": "Edit ChatBot Template for ID: \"{{id}}\""
+  }
+}
