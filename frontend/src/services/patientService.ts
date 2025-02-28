@@ -8,11 +8,19 @@ export async function getAllPatients(): Promise<PatientOutputDTO[]> {
 }
 
 export async function getPatientsForTherapist(): Promise<PatientOutputDTO[]> {
-  const response = await api.get(`/therapists/${sessionStorage.getItem("therapistId")}/patients`);
+  const response = await api.get(
+    `/therapists/${sessionStorage.getItem("therapistId")}/patients`,
+  );
   return response.data;
 }
 
-export async function registerPatient(therapistId: string, newPatient: CreatePatientDTO): Promise<PatientOutputDTO> {
-  const response = await api.post(`/therapists/${therapistId}/patients`, newPatient);
+export async function registerPatient(
+  therapistId: string,
+  newPatient: CreatePatientDTO,
+): Promise<PatientOutputDTO> {
+  const response = await api.post(
+    `/therapists/${therapistId}/patients`,
+    newPatient,
+  );
   return response.data;
 }

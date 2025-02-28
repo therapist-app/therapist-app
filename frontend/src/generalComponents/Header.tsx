@@ -13,8 +13,14 @@ export default function Header() {
     { path: "/register", label: "Register Page" },
     { path: "/login", label: "Login Page" },
     { path: "/patients", label: "Patient Overview Page" },
-    { path: `/patients/${examplePatientId}`, label: `Example Patient Detail Page for ID: "${examplePatientId}"` },
-    { path: `/patients/${examplePatientId}/chatBot/create`, label: "Example Patient Create Bot Page" },
+    {
+      path: `/patients/${examplePatientId}`,
+      label: `Example Patient Detail Page for ID: "${examplePatientId}"`,
+    },
+    {
+      path: `/patients/${examplePatientId}/chatBot/create`,
+      label: "Example Patient Create Bot Page",
+    },
     {
       path: `/patients/${examplePatientId}/chatBot/${exampleBotId}`,
       label: `Example Bot Edit Page for Bot ID: "${exampleBotId}"`,
@@ -40,7 +46,14 @@ export default function Header() {
     >
       <Typography variant="h2">This is the header</Typography>
       <Typography variant="h4">These are the current pages:</Typography>
-      <ul style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "10px" }}>
+      <ul
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          marginTop: "10px",
+        }}
+      >
         {links.map(({ path, label }) => (
           <li key={path}>
             <Link

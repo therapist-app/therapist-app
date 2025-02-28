@@ -5,7 +5,9 @@ const ChatBotTemplateEdit = () => {
   const { chatBotTemplateId } = useParams();
   return (
     <div>
-      <Typography variant="h3">This page is for editing the bot template with ID: "{chatBotTemplateId}"</Typography>
+      <Typography variant="h3">
+        This page is for editing the bot template with ID: "{chatBotTemplateId}"
+      </Typography>
     </div>
   );
 };
