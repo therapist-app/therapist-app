@@ -32,6 +32,10 @@ export default function Header() {
             path: `/chatBotTemplate/${exampleBotTemplateId}`,
             label: t('header.edit_bot_template', { id: exampleBotTemplateId }),
         },
+        {
+            path: '/settings',
+            label: t('header.settings'),
+        },
     ];
 
     return (

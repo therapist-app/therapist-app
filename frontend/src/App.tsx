@@ -11,6 +11,7 @@ import PatientChatBotEdit from './pages/patients/chatBots/PatientChatBotEdit'
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import ChatBotTemplateCreate from './pages/chatBotTemplate/ChatBotTemplateCreate'
 import PatientDetail from './pages/patients/PatientDetail'
+import Settings from "./pages/settings/settings.tsx";
 
 const App = () => {
   const appContainerStyle = {
@@ -51,6 +52,7 @@ const App = () => {
               path='/?workspace_id=:workspaceId/?chatbot_template_id=:chatbotTemplateId'
               element={<ChatBotTemplateEdit />}
             />
+            <Route path="/settings" element={<Settings />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </main>

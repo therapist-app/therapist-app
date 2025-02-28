@@ -8,7 +8,7 @@ i18n
     .use(LanguageDetector) // Detect user language
     .use(initReactI18next) // Bind i18next to react-i18next
     .init({
-        supportedLngs: ["en", "fr"],
+        supportedLngs: ["en", "ua"],
         fallbackLng: "en",
         debug: true, // Set to false in production
         interpolation: {
@@ -21,9 +21,7 @@ i18n
             order: ["localStorage", "cookie", "navigator"], // Detect language from user settings
             caches: ["localStorage", "cookie"],
         },
-    }).then(() => {
-    console.log('i18n initialized');
-}).catch((err) => {
+    }).then(() => {}).catch((err) => {
     console.error('i18n initialization failed', err);
 });
 
