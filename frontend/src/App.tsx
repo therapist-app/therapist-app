@@ -17,11 +17,6 @@ import ChatBotTemplateEdit from "./pages/chatBotTemplate/ChatBotTemplateEdit";
 import ChatBotTemplateCreate from "./pages/chatBotTemplate/ChatBotTemplateCreate";
 import PatientDetail from "./pages/patients/PatientDetail";
 
-
-
-
-
-
 const App = () => {
   const appContainerStyle = {
     display: "grid",
