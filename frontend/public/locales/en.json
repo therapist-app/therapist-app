@@ -13,12 +13,12 @@
     "edit_bot_template": "Edit ChatBot Template for ID: \"{{id}}\"",
     "settings": "Settings Page"
   },
+  "footer": {
+    "title": "This is the footer"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language"
-  },
-  "footer": {
-    "title": "This is the footer"
   },
   "layout": {
     "dashboard": "Dashboard",
@@ -26,5 +26,43 @@
     "logout": "Log Out",
     "overview": "Overview",
     "account": "Account"
+  },
+  "chat_bot_template": {
+
+  },
+  "dashboard":{
+    "patient_register_success": "Patient registered successfully.",
+    "chatbot_created_success": "Chatbot created successfully.",
+    "chatbot_named_success": "Chatbot renamed successfully.",
+    "chatbot_cloned_success": "Chatbot cloned successfully.",
+    "chatbot_deleted_success": "Chatbot deleted successfully.",
+    "register_new_patient": "Register a new patient",
+    "add_patient": "Add Patient",
+    "patients": "Patients",
+    "patient_id": "Patient ID",
+    "no_patients_found": "No patients found.",
+    "new_patient": "New Patient",
+    "enter_information_register_new_patient": "Enter information to register a new patient.",
+    "patient_name": "Patient Name",
+    "cancel": "Cancel",
+    "register": "Register",
+    "create_new_chatbot_template": "Create new chatbot template",
+    "create_bot": "Create Bot",
+    "your_chatbot_templates": "Your Chatbot Templates",
+    "unnamed_bot": "Unnamed Bot",
+    "no_welcome_message_set": "No welcome message set",
+    "language": "Language",
+    "role": "Role",
+    "no_chatbots_created_yet": "No chatbots created yet.",
+    "rename": "Rename",
+    "clone": "Clone",
+    "delete": "Delete",
+    "save": "Save",
+    "new_bot": "New Bot",
+    "what_would_you_like_to_name_your_bot": "What would you like to name your bot?",
+    "enter_bot_name": "Enter bot name",
+    "rename_bot": "Rename Bot",
+    "enter_new_name_for_bot": "Enter the new name for your bot.",
+    "enter_new_bot_name": "Enter new bot name"
   }
 }

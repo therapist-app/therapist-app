@@ -13,17 +13,56 @@
     "edit_bot_template": "Сторінка редагування шаблону чат-бота для ID: \"{{id}}\"",
     "settings": "Сторінка налаштувань"
   },
+  "footer": {
+    "title": "Це підвал"
+  },
   "settings": {
     "title": "Налаштування",
     "language": "Мова"
   },
-  "footer": {
-    "title": "Це підвал"
-  },
   "layout": {
     "dashboard": "Панель управління",
+    "dashboards": "Панелі управління",
     "logout": "Вийти",
     "overview": "Огляд",
     "account": "Обліковий запис"
+  },
+  "chat_bot_template": {
+
+  },
+  "dashboard": {
+    "patient_register_success": "Пацієнта успішно зареєстровано.",
+    "chatbot_created_success": "Чат-бот успішно створений.",
+    "chatbot_named_success": "Чат-бот успішно перейменовано.",
+    "chatbot_cloned_success": "Чат-бот успішно клоновано.",
+    "chatbot_deleted_success": "Чат-бот успішно видалено.",
+    "register_new_patient": "Зареєструвати нового пацієнта",
+    "add_patient": "Додати пацієнта",
+    "patients": "Пацієнти",
+    "patient_id": "ID пацієнта",
+    "no_patients_found": "Пацієнтів не знайдено.",
+    "new_patient": "Новий пацієнт",
+    "enter_information_register_new_patient": "Введіть інформацію для реєстрації нового пацієнта.",
+    "patient_name": "Ім'я пацієнта",
+    "cancel": "Скасувати",
+    "register": "Зареєструвати",
+    "create_new_chatbot_template": "Створити новий шаблон чат-бота",
+    "create_bot": "Створити бота",
+    "your_chatbot_templates": "Ваші шаблони чат-ботів",
+    "unnamed_bot": "Безіменний бот",
+    "no_welcome_message_set": "Привітальне повідомлення не встановлено",
+    "language": "Мова",
+    "role": "Роль",
+    "no_chatbots_created_yet": "Ще не створено жодного чат-бота.",
+    "rename": "Перейменувати",
+    "clone": "Клонувати",
+    "delete": "Видалити",
+    "save": "Зберегти",
+    "new_bot": "Новий бот",
+    "what_would_you_like_to_name_your_bot": "Як би ви хотіли назвати свого бота?",
+    "enter_bot_name": "Введіть ім'я бота",
+    "rename_bot": "Перейменувати бота",
+    "enter_new_name_for_bot": "Введіть нове ім'я для вашого бота.",
+    "enter_new_bot_name": "Введіть нове ім'я бота"
   }
 }
