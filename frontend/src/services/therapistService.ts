@@ -7,7 +7,9 @@ export const getAllTherapists = async (): Promise<TherapistOutputDTO[]> => {
   return response.data;
 };
 
-export const createTherapist = async (therapist: CreateTherapistDTO): Promise<TherapistOutputDTO> => {
+export const createTherapist = async (
+  therapist: CreateTherapistDTO,
+): Promise<TherapistOutputDTO> => {
   const response = await api.post("/therapists", therapist);
   return response.data;
 };

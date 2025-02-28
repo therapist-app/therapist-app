@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Header from "./generalComponents/Header";
 import Footer from "./generalComponents/Footer";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -26,10 +31,8 @@ const App = () => {
   const RootComponent = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const workspaceId = queryParams.get('workspaceId');
-    return (
-        <Dashboard workspaceId={workspaceId} />
-    );
+    const workspaceId = queryParams.get("workspaceId");
+    return <Dashboard workspaceId={workspaceId} />;
   };
 
   return (
@@ -43,10 +46,22 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/patients" element={<PatientsOverview />} />
             <Route path="/patients/:patientId" element={<PatientDetail />} />
-            <Route path="/patients/:patientId/chatBot/create" element={<PatientChatBotCreate />} />
-            <Route path="/patients/:patientId/chatBot/:chatBotId" element={<PatientChatBotEdit />} />
-            <Route path="/chatBotTemplate/create" element={<ChatBotTemplateCreate />} />
-            <Route path="/?workspace_id=:workspaceId/?chatbot_template_id=:chatbotTemplateId" element={<ChatBotTemplateEdit />} />
+            <Route
+              path="/patients/:patientId/chatBot/create"
+              element={<PatientChatBotCreate />}
+            />
+            <Route
+              path="/patients/:patientId/chatBot/:chatBotId"
+              element={<PatientChatBotEdit />}
+            />
+            <Route
+              path="/chatBotTemplate/create"
+              element={<ChatBotTemplateCreate />}
+            />
+            <Route
+              path="/?workspace_id=:workspaceId/?chatbot_template_id=:chatbotTemplateId"
+              element={<ChatBotTemplateEdit />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

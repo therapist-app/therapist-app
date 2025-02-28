@@ -6,7 +6,8 @@ const PatientChatBotEdit = () => {
   return (
     <div>
       <Typography variant="h3">
-        This page is editing bot with ID: "{chatBotId}" for patient with ID: "{patientId}"
+        This page is editing bot with ID: "{chatBotId}" for patient with ID: "
+        {patientId}"
       </Typography>
     </div>
   );

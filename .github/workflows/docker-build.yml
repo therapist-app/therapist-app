@@ -1,4 +1,4 @@
-name: PR Docker Build Check
+name: PR Checks
 
 on:
   pull_request:
@@ -7,9 +7,60 @@ on:
       - production
 
 jobs:
+  frontend-lint-and-typecheck:
+    name: Run Type Checking, Linting, and Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run Type Checking
+        run: |
+          cd frontend
+          npm run type-check
+
+      - name: Run Linting
+        run: |
+          cd frontend
+          npm run lint
+
+      - name: Run Prettier Check
+        run: |
+          cd frontend
+          npm run format -- --check
+
+  backend-format-check:
+    name: Check Java Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Run Formatting Check
+        run: |
+          cd backend
+          ./gradlew spotlessCheck
+
   build-frontend:
     name: Build Frontend Docker Image
     runs-on: ubuntu-latest
+    needs: [frontend-lint-and-typecheck, backend-format-check]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -23,6 +74,7 @@ jobs:
   build-backend:
     name: Build Backend Docker Image
     runs-on: ubuntu-latest
+    needs: [frontend-lint-and-typecheck, backend-format-check]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

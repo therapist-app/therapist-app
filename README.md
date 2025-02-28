@@ -24,6 +24,26 @@
 5. Visit `http://localhost:5173` in your browser, you should see a list with three therapists
 6. Go to the register page (`http://localhost:5173/register`) and try creating a new therapist
 
+## How to setup pre-commit hooks (so you get automatic code formatting before every commit -> just for conveneince and to keep the codebase clean) not sure if this works on windows, maybe ask ChatGPT
+
+### For the frondend:
+
+1. `cd frontend`
+2. `npx husky install`
+3. `npx husky add .husky/pre-commit "npm run check-all:fix"`
+
+### For the backend:
+
+1. `cd backend`
+2.
+
+```
+echo '#!/bin/sh
+cd backend || exit 1
+./gradlew spotlessApply' > .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
 ## Workflow: How to implement an issue
 
 1. Look at the issue number and create a new branch (from main) with the name `issueNumber-issue-title` (e.g. `5-create-login-register-endpoint`)
@@ -33,7 +53,12 @@
 5. Add the issue number to the pull request title (e.g. `5: Create login/register endpoint`)
 6. In the description of the pull request, add `-closes #5` to automatically close the issue when the pull request is merged
 7. Assign the pull request to yourself
-8. When you are done with the implementation take a look at the changes of the pull request in Github under "File changed" to see that everything is correct
+8. When you are done with the implementation do the file formatting for the frontend/backend wherever you worked on (formatting is applied automatically if you have the pre-commit hooks setup -> see other chapter, if not do it manually like so):
+
+- For the frontend (inside the /frontend folder): `npm run fix-all`
+- For the backend (inside the /backend folder): `./gradlew spotlessApply`
+
+8. After applying the file formatting take a look at the changes of the pull request in Github under "File changed" to see that everything is correct
 9. If everything is correct, merge the pull request with the option "Squash and merge" (so we have a nice history with one commit per issue -> otherwise the commit history is bloated with commits)
 10. (Optional) If you cannot merge your branch into main due to a conflict do the following steps:
 
