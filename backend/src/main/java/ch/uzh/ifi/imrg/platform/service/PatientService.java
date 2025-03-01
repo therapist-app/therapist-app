@@ -41,16 +41,18 @@ public class PatientService {
   }
 
   public PatientOutputDTO getPatientById(Long id) {
-    Patient patient = patientRepository
-        .findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+    Patient patient =
+        patientRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
     return mapper.convertEntityToPatientOutputDTO(patient);
   }
 
   public PatientOutputDTO createPatientForTherapist(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -64,9 +66,10 @@ public class PatientService {
 
   @Transactional
   public List<PatientOutputDTO> getPatientsForTherapist(String therapistId) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
     return therapist.getPatients().stream()
         .map(mapper::convertEntityToPatientOutputDTO)
         .collect(Collectors.toList());

@@ -23,7 +23,8 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO createTemplate(
       @PathVariable String therapistId, @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
     ChatbotTemplate createdTemplate = chatbotTemplateService.createTemplate(therapistId, template);
     return ChatbotTemplateMapper.INSTANCE.convertEntityToChatbotTemplateOutputDTO(createdTemplate);
   }
@@ -43,8 +44,10 @@ public class ChatbotTemplateController {
       @PathVariable String therapistId,
       @PathVariable String templateId,
       @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
-    ChatbotTemplate updatedTemplate = chatbotTemplateService.updateTemplate(therapistId, templateId, template);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate updatedTemplate =
+        chatbotTemplateService.updateTemplate(therapistId, templateId, template);
     return ChatbotTemplateMapper.INSTANCE.convertEntityToChatbotTemplateOutputDTO(updatedTemplate);
   }
 

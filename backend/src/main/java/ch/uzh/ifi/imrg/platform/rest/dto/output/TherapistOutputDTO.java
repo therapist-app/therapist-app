@@ -37,7 +37,8 @@ public class TherapistOutputDTO {
     return chatbotTemplatesOutputDTO;
   }
 
-  public void setChatbotTemplatesOutputDTO(List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO) {
+  public void setChatbotTemplatesOutputDTO(
+      List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO) {
     this.chatbotTemplatesOutputDTO = chatbotTemplatesOutputDTO;
   }
 
