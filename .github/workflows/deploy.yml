@@ -33,15 +33,16 @@ jobs:
       - name: Build and Push Frontend Image (Standard Docker)
         run: |
           docker build -t ${{ env.FRONTEND_IMAGE }} frontend/.
-          docker push ${{ env.FRONTEND_IMAGE }}
 
       - name: Build and Push Backend Image (Standard Docker)
         run: |
           docker build -t ${{ env.BACKEND_IMAGE }} backend/.
-          docker push ${{ env.BACKEND_IMAGE }}
 
       - name: Restart Kubernetes Deployments
         run: |
+          docker push ${{ env.FRONTEND_IMAGE }}
+          docker push ${{ env.BACKEND_IMAGE }}
+
           kubectl set image deployment/${{ env.FRONTEND_DEPLOYMENT }} ${{ env.FRONTEND_DEPLOYMENT }}=${{ env.FRONTEND_IMAGE }}
           kubectl set image deployment/${{ env.BACKEND_DEPLOYMENT }} ${{ env.BACKEND_DEPLOYMENT }}=${{ env.BACKEND_IMAGE }}
           kubectl rollout restart deployment/${{ env.FRONTEND_DEPLOYMENT }}
