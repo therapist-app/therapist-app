@@ -1,0 +1,56 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - production
+
+jobs:
+  build-and-restart:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Environment Variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "BRANCH=main" >> $GITHUB_ENV
+            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-main" >> $GITHUB_ENV
+            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-main" >> $GITHUB_ENV
+            echo "FRONTEND_DEPLOYMENT=therapist-fe-m" >> $GITHUB_ENV
+            echo "BACKEND_DEPLOYMENT=therapist-be-m" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
+            echo "BRANCH=production" >> $GITHUB_ENV
+            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-production" >> $GITHUB_ENV
+            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-production" >> $GITHUB_ENV
+            echo "FRONTEND_DEPLOYMENT=therapist-fe-p" >> $GITHUB_ENV
+            echo "BACKEND_DEPLOYMENT=therapist-be-p" >> $GITHUB_ENV
+          fi
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Frontend Image
+        run: |
+          cd frontend
+          docker buildx build --build-arg ENV_NAME=${{ env.BRANCH }} --platform linux/amd64,linux/arm64 \
+            -t ${{ env.FRONTEND_IMAGE }} --push .
+
+      - name: Build and Push Backend Image
+        run: |
+          cd backend
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t ${{ env.BACKEND_IMAGE }} --push .
+
+      - name: Restart Kubernetes Deployments
+        run: |
+          kubectl set image deployment/${{ env.FRONTEND_DEPLOYMENT }} ${{ env.FRONTEND_DEPLOYMENT }}=${{ env.FRONTEND_IMAGE }}
+          kubectl set image deployment/${{ env.BACKEND_DEPLOYMENT }} ${{ env.BACKEND_DEPLOYMENT }}=${{ env.BACKEND_IMAGE }}
+          kubectl rollout restart deployment/${{ env.FRONTEND_DEPLOYMENT }}
+          kubectl rollout restart deployment/${{ env.BACKEND_DEPLOYMENT }}
