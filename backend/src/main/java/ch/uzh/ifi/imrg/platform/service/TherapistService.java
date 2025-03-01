@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class TherapistService {
-  private final Logger log = LoggerFactory.getLogger(TherapistService.class);
 
   private final TherapistRepository therapistRepository;
 
