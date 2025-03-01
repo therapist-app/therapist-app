@@ -30,9 +30,6 @@ jobs:
             echo "BACKEND_DEPLOYMENT=therapist-be-p" >> $GITHUB_ENV
           fi
 
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
