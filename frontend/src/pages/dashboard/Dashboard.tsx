@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Button,
@@ -42,7 +42,7 @@ import {
 import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutputDTO'
 import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
 import { AxiosError } from 'axios'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 interface DashboardProps {
   workspaceId?: string | null
@@ -50,7 +50,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) => {
   const navigate = useNavigate()
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const [patients, setPatients] = useState<PatientOutputDTO[]>([])
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
@@ -587,7 +587,9 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             >
               <CardActionArea onClick={() => handleChatbotClick(bot.id)}>
                 <CardContent>
-                  <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
+                  <Typography variant='h6'>
+                    {bot.chatbotName || t('dashboard.unnamed_bot')}
+                  </Typography>
                   <Typography variant='body2' color='textSecondary'>
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
@@ -682,7 +684,9 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       >
         <DialogTitle>{t('dashboard.rename_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
-          <DialogContentText sx={{ mb: 1 }}>{t('dashboard.enter_new_name_for_bot')}</DialogContentText>
+          <DialogContentText sx={{ mb: 1 }}>
+            {t('dashboard.enter_new_name_for_bot')}
+          </DialogContentText>
           <TextField
             autoFocus
             margin='dense'

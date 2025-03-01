@@ -3,11 +3,11 @@ import { TextField, Button, Typography, Container, Box } from '@mui/material'
 import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
 import { createTherapist } from '../../services/therapistService'
 import { useNavigate } from 'react-router-dom'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 const Register = () => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState<CreateTherapistDTO>({
     email: '',
@@ -60,7 +60,7 @@ const Register = () => {
           required
         />
         <TextField
-            label={t('register.password')}
+          label={t('register.password')}
           name='password'
           type='password'
           value={formData.password}

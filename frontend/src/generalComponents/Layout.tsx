@@ -20,7 +20,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import HomeIcon from '@mui/icons-material/Home'
 
 import logo from '../../public/Therapist-App.png'
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
 interface LayoutProps {
   children: ReactNode
@@ -30,8 +30,8 @@ const drawerWidth = 240
 const selectedColor = '#635BFF'
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -79,7 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             component='div'
             sx={{ flexGrow: 1, color: 'text.primary' }}
           >
-              {t('layout.dashboard')}
+            {t('layout.dashboard')}
           </Typography>
           <IconButton
             edge='end'
@@ -109,7 +109,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Divider />
         <MenuItem onClick={handleLogout}>
           <LogoutIcon fontSize='small' sx={{ marginRight: 2 }} />
-            {t('layout.logout')}
+          {t('layout.logout')}
         </MenuItem>
       </Menu>
 
@@ -159,7 +159,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             marginLeft: 2,
           }}
         >
-            {t('layout.dashboards')}
+          {t('layout.dashboards')}
         </Typography>
 
         <ListItem disablePadding sx={{ marginY: 1 }}>
