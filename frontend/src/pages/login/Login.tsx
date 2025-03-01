@@ -1,16 +1,13 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { TherapistOutputDTO } from '../../dto/output/TherapistOutputDTO'
-import { clearLoggedInTherapist, setLoggedInTherapist } from '../../store/therapistSlice'
+import { useDispatch } from 'react-redux'
 import { t } from 'i18next'
 import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
 import { useState } from 'react'
 import { loginTherapist } from '../../services/therapistService'
+import { setLoggedInTherapist } from '../../store/therapistSlice'
 
 const Login = () => {
   const dispatch = useDispatch()
-  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
     email: '',
@@ -20,8 +17,19 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const loggedInTherapist = await loginTherapist(formData)
-    dispatch(setLoggedInTherapist(loggedInTherapist))
+    setError(null)
+
+    if (!formData.email || !formData.password) {
+      setError('Both fields are required.')
+      return
+    }
+    try {
+      const loggedInTherapist = await loginTherapist(formData)
+      dispatch(setLoggedInTherapist(loggedInTherapist))
+    } catch (e) {
+      setError('Failed to login, please try again')
+      console.error('Failed to login', e)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

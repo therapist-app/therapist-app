@@ -6,7 +6,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.DTOMapper;
+import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ public class PatientService {
 
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;
-  private final DTOMapper mapper = DTOMapper.INSTANCE;
+  private final PatientMapper mapper = PatientMapper.INSTANCE;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -41,18 +41,16 @@ public class PatientService {
   }
 
   public PatientOutputDTO getPatientById(Long id) {
-    Patient patient =
-        patientRepository
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+    Patient patient = patientRepository
+        .findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
     return mapper.convertEntityToPatientOutputDTO(patient);
   }
 
   public PatientOutputDTO createPatientForTherapist(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -66,10 +64,9 @@ public class PatientService {
 
   @Transactional
   public List<PatientOutputDTO> getPatientsForTherapist(String therapistId) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
     return therapist.getPatients().stream()
         .map(mapper::convertEntityToPatientOutputDTO)
         .collect(Collectors.toList());

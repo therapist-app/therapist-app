@@ -23,10 +23,10 @@ public class Therapist implements Serializable {
   @Column(unique = true)
   private String workspaceId = UUID.randomUUID().toString();
 
-  @OneToMany(mappedBy = "therapist", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
   private List<Patient> patients = new ArrayList<>();
 
-  @OneToMany(mappedBy = "therapist", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 
   public void setId(String id) {

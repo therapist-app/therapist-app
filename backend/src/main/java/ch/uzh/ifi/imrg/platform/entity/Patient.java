@@ -12,9 +12,6 @@ public class Patient implements Serializable {
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
 
-  @Column(unique = true)
-  private String patientId = UUID.randomUUID().toString();
-
   @Column(nullable = false)
   private String name;
 
@@ -27,14 +24,6 @@ public class Patient implements Serializable {
 
   public String getId() {
     return id;
-  }
-
-  public String getPatientId() {
-    return patientId;
-  }
-
-  public void setPatientId(String patientId) {
-    this.patientId = patientId;
   }
 
   public String getName() {
