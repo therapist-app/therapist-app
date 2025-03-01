@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -24,6 +26,15 @@ public class TherapistService {
   public TherapistService(
       @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
     this.therapistRepository = therapistRepository;
+  }
+
+  public Therapist getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
+    String email = JwtUtil.validateJWTAndExtractEmail(httpServletRequest);
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail((email));
+    if (foundTherapist != null) {
+      return foundTherapist;
+    }
+    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
   }
 
   public Therapist registerTherapist(Therapist therapist, HttpServletResponse httpServletResponse) {
@@ -53,8 +64,7 @@ public class TherapistService {
 
   public Therapist loginTherapist(
       LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
@@ -70,13 +80,8 @@ public class TherapistService {
     return foundTherapist;
   }
 
-  public Therapist getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
-    String email = JwtUtil.validateJWTAndExtractEmail(httpServletRequest);
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail((email));
-    if (foundTherapist != null) {
-      return foundTherapist;
-    }
-    throw new Error(
-        "Therapist could not be found with email the follwing email: " + email + " from JWT.");
+  public void logoutTherapist(
+      HttpServletResponse httpServletResponse) {
+    JwtUtil.removeJwtCookie(httpServletResponse);
   }
 }

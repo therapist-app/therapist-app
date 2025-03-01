@@ -1,14 +1,15 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
-import { useDispatch } from 'react-redux'
+
 import { t } from 'i18next'
 import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
 import { useState } from 'react'
-import { loginTherapist } from '../../services/therapistService'
-import { setLoggedInTherapist } from '../../store/therapistSlice'
+import { loginTherapist } from '../../store/therapistSlice'
+
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../utils/hooks'
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
@@ -26,8 +27,7 @@ const Login = () => {
       return
     }
     try {
-      const loggedInTherapist = await loginTherapist(formData)
-      dispatch(setLoggedInTherapist(loggedInTherapist))
+      await dispatch(loginTherapist(formData)).unwrap()
       navigate(`/`)
     } catch (e) {
       setError('Failed to login, please try again')

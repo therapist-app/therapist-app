@@ -21,6 +21,8 @@ import HomeIcon from '@mui/icons-material/Home'
 
 import logo from '../../public/Therapist-App.png'
 import { useTranslation } from 'react-i18next'
+import { logoutTherapist } from '../store/therapistSlice'
+import { useAppDispatch } from '../utils/hooks'
 
 interface LayoutProps {
   children: ReactNode
@@ -31,6 +33,7 @@ const selectedColor = '#635BFF'
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -45,14 +48,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleLogout = () => {
     handleMenuClose()
-    sessionStorage.removeItem('therapistId')
-    sessionStorage.removeItem('workspaceId')
+    dispatch(logoutTherapist())
     navigate('/login')
-  }
-
-  const handleDashboard = () => {
-    const workspaceId = sessionStorage.getItem('workspaceId')
-    navigate(`/?workspace_id=${workspaceId || ''}`)
   }
 
   const menuId = 'primary-search-account-menu'
@@ -164,7 +161,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <ListItem disablePadding sx={{ marginY: 1 }}>
           <ListItemButton
-            onClick={handleDashboard}
             sx={{
               borderRadius: 1,
               marginX: 2,

@@ -11,10 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import javax.crypto.SecretKey;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 public class JwtUtil {
 
-  private static final String BASE64_SECRET_KEY =
-      "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
 
   // Decode the BASE64_SECRET_KEY to generate the SecretKey
   private static SecretKey getSecretKey() {
@@ -30,8 +32,7 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt =
-        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
@@ -45,29 +46,45 @@ public class JwtUtil {
     response.addCookie(cookie);
   }
 
+  public static void removeJwtCookie(HttpServletResponse response) {
+    Cookie cookie = new Cookie("auth", null);
+    cookie.setHttpOnly(true);
+    cookie.setMaxAge(0);
+    cookie.setPath("/");
+    cookie.setSecure(false);
+    cookie.setAttribute("SameSite", "Lax");
+    response.addCookie(cookie);
+  }
+
   public static String validateJWTAndExtractEmail(HttpServletRequest request) {
 
     Cookie[] cookies = request.getCookies();
     if (cookies == null) {
-      throw new Error("Cookie could not be found");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cookie could not be found");
     }
 
     for (Cookie cookie : cookies) {
       if ("auth".equals(cookie.getName())) {
-        String jwt = cookie.getValue();
-        SecretKey key = getSecretKey();
+        try {
+          String jwt = cookie.getValue();
+          SecretKey key = getSecretKey();
 
-        Jws<Claims> claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt);
+          Jws<Claims> claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt);
 
-        String jwtEmail = claims.getPayload().getSubject();
+          String jwtEmail = claims.getPayload().getSubject();
 
-        Date expiration = claims.getPayload().getExpiration();
-        if (expiration.before(new Date())) {
-          throw new Error("The JWT has expired");
+          Date expiration = claims.getPayload().getExpiration();
+          if (expiration.before(new Date())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The JWT has expired");
+
+          }
+          return jwtEmail;
+
+        } catch (Exception e) {
+          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "There was a problem with the cookie");
         }
-        return jwtEmail;
       }
     }
-    throw new Error("Cookie 'auth' could not be found");
+    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cookie 'auth' could not be found");
   }
 }

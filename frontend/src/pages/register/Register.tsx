@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import { TextField, Button, Typography, Container, Box } from '@mui/material'
 import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
-import { createTherapist } from '../../services/therapistService'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { setLoggedInTherapist } from '../../store/therapistSlice'
+import { loginTherapist, registerTherapist, setLoggedInTherapist } from '../../store/therapistSlice'
+import { useAppDispatch } from '../../utils/hooks'
 
 const Register = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -32,9 +31,7 @@ const Register = () => {
     }
 
     try {
-      const therapistResponse = await createTherapist(formData)
-      dispatch(setLoggedInTherapist(therapistResponse))
-
+      await dispatch(registerTherapist(formData)).unwrap()
       navigate(`/`)
     } catch (err) {
       setError('Failed to register therapist. Please try again.')
