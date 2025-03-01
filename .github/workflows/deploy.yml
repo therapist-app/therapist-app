@@ -33,17 +33,26 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push Frontend Image
+      - name: Ensure Local Cache Directory Exists
+        run: |
+          mkdir -p /home/jonas/.docker-cache/therapist-app/frontend
+          mkdir -p /home/jonas/.docker-cache/therapist-app/backend
+
+      - name: Build and Push Frontend Image (With Local Cache)
         run: |
           cd frontend
           docker buildx build --build-arg ENV_NAME=${{ env.BRANCH }} --platform linux/amd64,linux/arm64 \
-            -t ${{ env.FRONTEND_IMAGE }} --push .
+            -t ${{ env.FRONTEND_IMAGE }} --push \
+            --cache-from=type=local,src=/home/jonas/.docker-cache/therapist-app/frontend \
+            --cache-to=type=local,dest=/home/jonas/.docker-cache/therapist-app/frontend
 
-      - name: Build and Push Backend Image
+      - name: Build and Push Backend Image (With Local Cache)
         run: |
           cd backend
           docker buildx build --platform linux/amd64,linux/arm64 \
-            -t ${{ env.BACKEND_IMAGE }} --push .
+            -t ${{ env.BACKEND_IMAGE }} --push \
+            --cache-from=type=local,src=/home/jonas/.docker-cache/therapist-app/backend \
+            --cache-to=type=local,dest=/home/jonas/.docker-cache/therapist-app/backend
 
       - name: Restart Kubernetes Deployments
         run: |
