@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -30,7 +29,8 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt =
+        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 

@@ -3,12 +3,9 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +56,10 @@ public class TherapistService {
     return createdTherapist;
   }
 
-  public Therapist loginTherapist(LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+  public Therapist loginTherapist(
+      LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
@@ -79,6 +78,7 @@ public class TherapistService {
     if (foundTherapist != null) {
       return foundTherapist;
     }
-    throw new Error("Therapist could not be found with email the follwing email: " + email + " from JWT.");
+    throw new Error(
+        "Therapist could not be found with email the follwing email: " + email + " from JWT.");
   }
 }
