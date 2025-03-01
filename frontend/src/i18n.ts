@@ -1,28 +1,20 @@
-import i18n from "i18next";
-import {initReactI18next} from "react-i18next";
-import HttpApi from "i18next-http-backend";
-import LanguageDetector from "i18next-browser-languagedetector";
+// src/i18n.ts
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import HttpApi from 'i18next-http-backend';
 
-i18n
+export const defaultNS = 'translation'; // Default namespace
+
+i18next
+    .use(initReactI18next)
     .use(HttpApi)
-    .use(LanguageDetector) // Detect user language
-    .use(initReactI18next) // Bind i18next to react-i18next
     .init({
-        supportedLngs: ["en", "ua"],
-        fallbackLng: "en",
-        debug: true, // Set to false in production
-        interpolation: {
-            escapeValue: false,
-        },
+        debug: true,
+        fallbackLng: 'en',
+        defaultNS,
         backend: {
-            loadPath: "/locales/{{lng}}.json", // Translation files path
+            loadPath: '/locales/{{lng}}.json', // Path to your translation files
         },
-        detection: {
-            order: ["localStorage", "cookie", "navigator"], // Detect language from user settings
-            caches: ["localStorage", "cookie"],
-        },
-    }).then(() => {}).catch((err) => {
-    console.error('i18n initialization failed', err);
-});
+    });
 
-export default i18n;
+export default i18next;
