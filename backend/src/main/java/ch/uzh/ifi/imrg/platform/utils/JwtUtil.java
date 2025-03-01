@@ -10,13 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import javax.crypto.SecretKey;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class JwtUtil {
 
-  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+  private static final String BASE64_SECRET_KEY =
+      "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
 
   // Decode the BASE64_SECRET_KEY to generate the SecretKey
   private static SecretKey getSecretKey() {
@@ -32,7 +32,8 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt =
+        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
@@ -76,12 +77,12 @@ public class JwtUtil {
           Date expiration = claims.getPayload().getExpiration();
           if (expiration.before(new Date())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The JWT has expired");
-
           }
           return jwtEmail;
 
         } catch (Exception e) {
-          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "There was a problem with the cookie");
+          throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "There was a problem with the cookie");
         }
       }
     }

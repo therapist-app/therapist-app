@@ -34,7 +34,8 @@ public class TherapistService {
     if (foundTherapist != null) {
       return foundTherapist;
     }
-    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
+    throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
   }
 
   public Therapist registerTherapist(Therapist therapist, HttpServletResponse httpServletResponse) {
@@ -64,7 +65,8 @@ public class TherapistService {
 
   public Therapist loginTherapist(
       LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
@@ -80,8 +82,7 @@ public class TherapistService {
     return foundTherapist;
   }
 
-  public void logoutTherapist(
-      HttpServletResponse httpServletResponse) {
+  public void logoutTherapist(HttpServletResponse httpServletResponse) {
     JwtUtil.removeJwtCookie(httpServletResponse);
   }
 }

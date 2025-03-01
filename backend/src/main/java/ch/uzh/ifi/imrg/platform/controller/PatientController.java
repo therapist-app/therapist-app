@@ -7,7 +7,6 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.service.PatientService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +25,10 @@ public class PatientController {
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    Therapist updatedTherapist = patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist updatedTherapist =
+        patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
 }
