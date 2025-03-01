@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
+import java.time.LocalDateTime;
+
 public class ChatbotTemplateOutputDTO {
   private String id;
   private String chatbotName;
@@ -11,6 +13,8 @@ public class ChatbotTemplateOutputDTO {
   private String chatbotTone;
   private String welcomeMessage;
   private String workspaceId;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   public String getId() {
     return id;
@@ -90,5 +94,21 @@ public class ChatbotTemplateOutputDTO {
 
   public void setWorkspaceId(String workspaceId) {
     this.workspaceId = workspaceId;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }

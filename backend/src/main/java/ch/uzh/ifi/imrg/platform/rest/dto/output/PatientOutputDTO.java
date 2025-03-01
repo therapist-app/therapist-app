@@ -1,11 +1,16 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
+import java.time.LocalDateTime;
+
 public class PatientOutputDTO {
 
   private String id;
   private String name;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
-  public PatientOutputDTO() {}
+  public PatientOutputDTO() {
+  }
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;
@@ -26,5 +31,21 @@ public class PatientOutputDTO {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }

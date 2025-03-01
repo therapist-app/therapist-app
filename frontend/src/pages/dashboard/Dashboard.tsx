@@ -29,13 +29,11 @@ import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 
 import Layout from '../../generalComponents/Layout'
-import { getPatientsForTherapist, registerPatient } from '../../services/patientService'
+import { registerPatient } from '../../services/patientService'
 import api from '../../utils/api'
 import { handleError } from '../../utils/handleError'
-import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import {
   cloneChatbotTemplate,
-  createChatbotTemplate,
   getAllChatbotTemplatesForTherapist,
   updateChatbotTemplate,
 } from '../../services/chatbotTemplateService'
@@ -43,16 +41,24 @@ import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutput
 import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
 import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import {
+  cloneChatbotTemplateForTherapist,
+  createChatbotTemplateForTherapist,
+  createPatientForTherapist,
+  deleteChatbotTemplateForTherapist,
+  getCurrentlyLoggedInTherapist,
+  updateChatbotTemplateForTherapist,
+} from '../../store/therapistSlice'
+import { useAppDispatch } from '../../utils/hooks'
 
-interface DashboardProps {
-  workspaceId?: string | null
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) => {
+const Dashboard = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
-  const [patients, setPatients] = useState<PatientOutputDTO[]>([])
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -60,31 +66,18 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
   const [snackbarSeverity, setSnackbarSeverity] = useState<
     'info' | 'success' | 'error' | 'warning'
   >('info')
-  const [chatbots, setChatbots] = useState<ChatbotTemplateOutputDTO[]>([])
-  const initialWorkspaceId = propWorkspaceId ?? sessionStorage.getItem('workspaceId') ?? ''
-  const [workspaceId, setWorkspaceId] = useState(initialWorkspaceId)
+
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
-  const fetchTherapistPatients = async () => {
-    try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) {
-        throw new Error('No therapistId found in session storage.')
-      }
-      const response = await getPatientsForTherapist()
-      console.log(response)
-      setPatients(response)
-    } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+  useEffect(() => {
+    if (!loggedInTherapist) {
+      dispatch(getCurrentlyLoggedInTherapist())
     }
-  }
+  }, [])
 
   const handleOpenPatientDialog = () => {
     setOpenPatientDialog(true)
@@ -97,12 +90,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
 
   const handleCreatePatient = async () => {
     try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) {
-        throw new Error('No therapistId found in session storage.')
-      }
-      await registerPatient(therapistId, { name: newPatientName })
-      await fetchTherapistPatients()
+      dispatch(createPatientForTherapist({ name: newPatientName }))
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -114,30 +102,6 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       setSnackbarOpen(true)
     }
   }
-
-  useEffect(() => {
-    fetchTherapistPatients()
-    setWorkspaceId(sessionStorage.getItem('workspaceId') ?? '')
-  }, [])
-
-  useEffect(() => {
-    const fetchChatbotTemplates = async () => {
-      try {
-        const therapistId = sessionStorage.getItem('therapistId')
-        if (!therapistId) return
-
-        const response = await getAllChatbotTemplatesForTherapist(therapistId)
-        setChatbots(response)
-      } catch (error) {
-        const errorMessage = handleError(error as AxiosError)
-        setSnackbarMessage(errorMessage)
-        setSnackbarSeverity('error')
-        setSnackbarOpen(true)
-      }
-    }
-
-    fetchChatbotTemplates()
-  }, [])
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') return
@@ -159,9 +123,8 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
 
   const handleCreateChatbot = async () => {
     try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId || !workspaceId) {
-        throw new Error('Missing required IDs')
+      if (!loggedInTherapist) {
+        return
       }
 
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
@@ -173,12 +136,11 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
         description: '',
-        workspaceId,
+        workspaceId: loggedInTherapist.workspaceId,
       }
 
-      const response = await createChatbotTemplate(chatbotConfigurations, therapistId)
-      const currentChatbots = chatbots
-      setChatbots([...currentChatbots, response])
+      await dispatch(createChatbotTemplateForTherapist(chatbotConfigurations))
+
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -193,9 +155,6 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
 
   const handleChatbotClick = async (chatbotId: string) => {
     try {
-      console.log('chatbotId', chatbotId)
-      sessionStorage.setItem('chatbotId', chatbotId)
-      navigate(`/?workspace_id=${workspaceId}/?chatbot_template_id=${chatbotId}`)
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
@@ -227,13 +186,13 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
   const handleRenameChatbot = async () => {
     try {
       if (!currentChatbot) return
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) throw new Error('No therapist found')
 
-      const response = await updateChatbotTemplate(therapistId, currentChatbot.id, chatbotName)
-
-      const updatedChatbots = chatbots.map((bot) => (bot.id === currentChatbot.id ? response : bot))
-      setChatbots(updatedChatbots)
+      await dispatch(
+        updateChatbotTemplateForTherapist({
+          chatbotTemplateId: currentChatbot.id,
+          updateChatbotTemplateDTO: { chatbotName: chatbotName },
+        })
+      )
 
       setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
@@ -250,12 +209,8 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
   const handleClone = async () => {
     if (!currentChatbot) return
     try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) throw new Error('No therapist found')
+      await dispatch(cloneChatbotTemplateForTherapist(currentChatbot.id))
 
-      const response = await cloneChatbotTemplate(therapistId, currentChatbot.id)
-
-      setChatbots([...chatbots, response])
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -271,13 +226,8 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
   const handleDelete = async () => {
     try {
       if (!currentChatbot) return
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) throw new Error('No therapist found')
 
-      await api.delete(`/api/therapists/${therapistId}/chatbot-templates/${currentChatbot.id}`)
-
-      const updatedChatbots = chatbots.filter((bot) => bot.id !== currentChatbot.id)
-      setChatbots(updatedChatbots)
+      await dispatch(deleteChatbotTemplateForTherapist(currentChatbot.id))
 
       setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')
@@ -355,71 +305,6 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
     }
   }
 
-  // const templates = [
-  //   {
-  //     id: "1",
-  //     chatbotName: "FAQ Bot",
-  //     description: "Answers frequently asked questions about lectures, courses, or projects.",
-  //     chatbotModel: "gpt-3.5-turbo",
-  //     chatbotIcon: "Robot",
-  //     chatbotLanguage: "English",
-  //     chatbotRole: "Possibility Engine",
-  //     chatbotTone: "friendly",
-  //     welcomeMessage: "Hello! How can I assist you today?",
-  //   },
-  //   {
-  //     id: "2",
-  //     chatbotName: "Study Bot",
-  //     description: "Helps groups to research and solve problems together.",
-  //     chatbotModel: "gpt-3.5-turbo",
-  //     chatbotIcon: "Chatbot",
-  //     chatbotLanguage: "English",
-  //     chatbotRole: "Collaboration Coach",
-  //     chatbotTone: "professional",
-  //     welcomeMessage: "Welcome! Let’s solve problems together.",
-  //   },
-  //   {
-  //     id: "3",
-  //     chatbotName: "Storytelling Bot",
-  //     description: "Provides stories that include diverse views, abilities and experiences.",
-  //     chatbotModel: "gpt-3.5-turbo",
-  //     chatbotIcon: "Book",
-  //     chatbotLanguage: "English",
-  //     chatbotRole: "Storyteller",
-  //     chatbotTone: "friendly",
-  //     welcomeMessage: "Hello! Let me tell you a story.",
-  //   },
-  // ];
-
-  // const handleTemplateSelect = async (template: any) => {
-  //   try {
-  //     const therapistId = sessionStorage.getItem("therapistId");
-  //     if (!therapistId || !workspaceId) {
-  //       throw new Error("Missing required IDs");
-  //     }
-
-  //     const { chatbotName, configuration } = template;
-  //     const chatbotConfigurations = {
-  //       chatbotName,
-  //       ...configuration,
-  //       workspaceId,
-  //     };
-
-  //     const response = await api.post(`/api/therapists/${therapistId}/chatbot-templates`, chatbotConfigurations);
-
-  //     setChatbots((prev) => [...prev, response]);
-  //     setSnackbarMessage("Template applied successfully!");
-  //     setSnackbarSeverity("success");
-  //     setSnackbarOpen(true);
-  //     handleCloseBotDialog();
-  //   } catch (error: any) {
-  //     const errorMessage = handleError(error);
-  //     setSnackbarMessage(errorMessage);
-  //     setSnackbarSeverity("error");
-  //     setSnackbarOpen(true);
-  //   }
-  // };
-
   return (
     <Layout>
       <Box sx={{ marginBottom: 4 }}>
@@ -449,7 +334,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       <Typography variant='h5' sx={{ marginBottom: 3 }}>
         {t('dashboard.patients')}
       </Typography>
-      {patients.length > 0 ? (
+      {loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0 ? (
         <Box
           sx={{
             display: 'flex',
@@ -458,7 +343,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             justifyContent: 'flex-start',
           }}
         >
-          {patients.map((patient) => (
+          {loggedInTherapist?.patientsOutputDTO.map((patient) => (
             <Card
               key={patient.id}
               variant='outlined'
@@ -557,7 +442,8 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       <Typography variant='h5' sx={{ mt: 6, mb: 3 }}>
         {t('dashboard.your_chatbot_templates')}
       </Typography>
-      {chatbots.length > 0 ? (
+      {loggedInTherapist?.chatbotTemplatesOutputDTO &&
+      loggedInTherapist.chatbotTemplatesOutputDTO.length > 0 ? (
         <Box
           sx={{
             display: 'flex',
@@ -566,7 +452,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             justifyContent: 'flex-start',
           }}
         >
-          {chatbots.map((bot, index) => (
+          {loggedInTherapist.chatbotTemplatesOutputDTO.map((bot, index) => (
             <Card
               key={bot.id || index}
               variant='outlined'

@@ -5,9 +5,11 @@ import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
 import { useState } from 'react'
 import { loginTherapist } from '../../services/therapistService'
 import { setLoggedInTherapist } from '../../store/therapistSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
     email: '',
@@ -26,6 +28,7 @@ const Login = () => {
     try {
       const loggedInTherapist = await loginTherapist(formData)
       dispatch(setLoggedInTherapist(loggedInTherapist))
+      navigate(`/`)
     } catch (e) {
       setError('Failed to login, please try again')
       console.error('Failed to login', e)

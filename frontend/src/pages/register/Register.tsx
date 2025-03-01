@@ -4,8 +4,11 @@ import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
 import { createTherapist } from '../../services/therapistService'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { setLoggedInTherapist } from '../../store/therapistSlice'
 
 const Register = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
 
@@ -30,11 +33,9 @@ const Register = () => {
 
     try {
       const therapistResponse = await createTherapist(formData)
+      dispatch(setLoggedInTherapist(therapistResponse))
 
-      sessionStorage.setItem('therapistId', therapistResponse.id)
-      sessionStorage.setItem('workspaceId', therapistResponse.workspaceId)
-
-      navigate(`/?workspace_id=${therapistResponse.workspaceId}`)
+      navigate(`/`)
     } catch (err) {
       setError('Failed to register therapist. Please try again.')
       console.error('Registration error:', err)

@@ -2,7 +2,11 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "chatbot_templates")
@@ -11,6 +15,14 @@ public class ChatbotTemplate implements Serializable {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
+
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
   @Column(nullable = false)
   private String chatbotName;
@@ -116,5 +128,13 @@ public class ChatbotTemplate implements Serializable {
 
   public void setTherapist(Therapist therapist) {
     this.therapist = therapist;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 }

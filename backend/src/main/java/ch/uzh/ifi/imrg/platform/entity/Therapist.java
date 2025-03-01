@@ -2,9 +2,13 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "therapists")
@@ -13,6 +17,14 @@ public class Therapist implements Serializable {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
+
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
   @Column(unique = true)
   private String email;
@@ -75,5 +87,13 @@ public class Therapist implements Serializable {
 
   public void setChatbotTemplates(List<ChatbotTemplate> chatbotTemplates) {
     this.chatbotTemplates = chatbotTemplates;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 }

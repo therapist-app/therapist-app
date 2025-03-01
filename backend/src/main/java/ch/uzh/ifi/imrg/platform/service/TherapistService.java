@@ -27,10 +27,6 @@ public class TherapistService {
     this.therapistRepository = therapistRepository;
   }
 
-  public List<Therapist> getAllTherapists() {
-    return this.therapistRepository.findAll();
-  }
-
   public Therapist registerTherapist(Therapist therapist, HttpServletResponse httpServletResponse) {
     if (therapist.getEmail() == null) {
       throw new Error("Creating therapist failed because no email was specified");
@@ -58,8 +54,7 @@ public class TherapistService {
 
   public Therapist loginTherapist(
       LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }

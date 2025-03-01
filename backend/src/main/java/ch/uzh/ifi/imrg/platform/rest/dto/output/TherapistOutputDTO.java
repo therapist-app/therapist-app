@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 public class TherapistOutputDTO {
@@ -8,6 +10,8 @@ public class TherapistOutputDTO {
   private String workspaceId;
   private List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO;
   private List<PatientOutputDTO> patientsOutputDTO;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   public String getId() {
     return id;
@@ -49,4 +53,31 @@ public class TherapistOutputDTO {
   public void setPatientsOutputDTO(List<PatientOutputDTO> patientsOutputDTOs) {
     this.patientsOutputDTO = patientsOutputDTOs;
   }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public TherapistOutputDTO sortDTO() {
+    chatbotTemplatesOutputDTO.sort(Comparator.comparing(
+        ChatbotTemplateOutputDTO::getCreatedAt,
+        Comparator.nullsLast(Comparator.reverseOrder())));
+    patientsOutputDTO.sort(Comparator.comparing(
+        PatientOutputDTO::getCreatedAt,
+        Comparator.nullsLast(Comparator.reverseOrder())));
+    return this;
+  }
+
 }
