@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +37,8 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletResponse httpServletResponseRe) {
     Therapist therapist = DTOMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
-    Therapist createdTherapist = therapistService.registerTherapist(therapist, httpServletResponseRe);
+    Therapist createdTherapist =
+        therapistService.registerTherapist(therapist, httpServletResponseRe);
     return DTOMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist);
   }
 
@@ -46,7 +46,8 @@ public class TherapistController {
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO loginTherapist(
       @RequestBody LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponseRe) {
-    Therapist loggedInTherapist = therapistService.loginTherapist(loginTherapistDTO, httpServletResponseRe);
+    Therapist loggedInTherapist =
+        therapistService.loginTherapist(loginTherapistDTO, httpServletResponseRe);
     return DTOMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist);
   }
 }
