@@ -2,7 +2,10 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "patients")
@@ -12,8 +15,13 @@ public class Patient implements Serializable {
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
 
-  @Column(unique = true)
-  private String patientId = UUID.randomUUID().toString();
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
   @Column(nullable = false)
   private String name;
@@ -27,14 +35,6 @@ public class Patient implements Serializable {
 
   public String getId() {
     return id;
-  }
-
-  public String getPatientId() {
-    return patientId;
-  }
-
-  public void setPatientId(String patientId) {
-    this.patientId = patientId;
   }
 
   public String getName() {
@@ -51,5 +51,13 @@ public class Patient implements Serializable {
 
   public void setTherapist(Therapist therapist) {
     this.therapist = therapist;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
   }
 }

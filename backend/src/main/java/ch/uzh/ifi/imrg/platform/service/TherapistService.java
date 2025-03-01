@@ -2,13 +2,18 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
-import java.util.List;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
+import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -21,10 +26,22 @@ public class TherapistService {
   public TherapistService(
       @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
     this.therapistRepository = therapistRepository;
-    initializeSomeTherapists();
   }
 
-  public Therapist createTherapist(Therapist therapist) {
+  public Therapist getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
+    String email = JwtUtil.validateJWTAndExtractEmail(httpServletRequest);
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail((email));
+    if (foundTherapist != null) {
+      return foundTherapist;
+    }
+    throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
+  }
+
+  public Therapist registerTherapist(
+      Therapist therapist,
+      HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse) {
     if (therapist.getEmail() == null) {
       throw new Error("Creating therapist failed because no email was specified");
     }
@@ -43,39 +60,34 @@ public class TherapistService {
               + therapist.getEmail()
               + "already exists");
     }
-    return this.therapistRepository.save(therapist);
+    Therapist createdTherapist = this.therapistRepository.save(therapist);
+    String jwt = JwtUtil.createJWT(therapist.getEmail());
+    JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
+    return createdTherapist;
   }
 
-  public List<Therapist> getAllTherapists() {
-    return this.therapistRepository.findAll();
+  public Therapist loginTherapist(
+      LoginTherapistDTO loginTherapistDTO,
+      HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse) {
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    if (foundTherapist == null) {
+      throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
+    }
+    log.info(foundTherapist.getEmail());
+    log.info(foundTherapist.getPassword());
+    log.info(loginTherapistDTO.getPassword());
+    if (!foundTherapist.getPassword().equals(loginTherapistDTO.getPassword())) {
+      throw new Error("The password you entered is wrong!");
+    }
+
+    String jwt = JwtUtil.createJWT(loginTherapistDTO.getEmail());
+    JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
+    return foundTherapist;
   }
 
-  private void initializeSomeTherapists() {
-    Therapist therapist1 = new Therapist();
-    therapist1.setId("bf2a19d5-3037-4b65-86dd-cec232ec66b1");
-    therapist1.setEmail("admin@admin.com");
-    therapist1.setPassword("admin");
-
-    Therapist therapist2 = new Therapist();
-    therapist2.setId("6af0e118-c344-4444-8681-2d2e56cf6302");
-    therapist2.setEmail("test@test.com");
-    therapist2.setPassword("test");
-
-    Therapist therapist3 = new Therapist();
-    therapist3.setId("f8fda83a-995f-4bf5-8604-89e10d287738");
-    therapist3.setEmail("therapist@therapist.com");
-    therapist3.setPassword("therapist");
-
-    if (!this.therapistRepository.existsById(therapist1.getId())) {
-      this.therapistRepository.save(therapist1);
-    }
-
-    if (!this.therapistRepository.existsById(therapist2.getId())) {
-      this.therapistRepository.save(therapist2);
-    }
-
-    if (!this.therapistRepository.existsById(therapist3.getId())) {
-      this.therapistRepository.save(therapist3);
-    }
+  public void logoutTherapist(HttpServletResponse httpServletResponse) {
+    JwtUtil.removeJwtCookie(httpServletResponse);
   }
 }

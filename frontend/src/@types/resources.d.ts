@@ -62,6 +62,7 @@ interface Resources {
       rename_bot: 'Rename Bot'
       enter_new_name_for_bot: 'Enter the new name for your bot.'
       enter_new_bot_name: 'Enter new bot name'
+      welcome_message: 'You are logged in as: '
     }
     not_found: {
       '404': '404 - Page Not Found'
@@ -75,6 +76,12 @@ interface Resources {
       email: 'Email'
       password: 'Password'
       register: 'Register'
+    }
+    login: {
+      login_therapist: 'Login Therapist'
+      email: 'Email'
+      password: 'Password'
+      login: 'Login'
     }
   }
   ua: {

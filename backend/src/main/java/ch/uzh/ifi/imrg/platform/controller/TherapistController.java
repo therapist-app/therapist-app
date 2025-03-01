@@ -2,10 +2,12 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapistDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.DTOMapper;
+import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,18 +24,42 @@ public class TherapistController {
     this.therapistService = therapistService;
   }
 
-  @GetMapping("/therapists")
+  @GetMapping("/therapists/me")
   @ResponseStatus(HttpStatus.OK)
-  public List<TherapistOutputDTO> getAllTherapists() {
-    List<Therapist> therapists = therapistService.getAllTherapists();
-    return therapists.stream().map(DTOMapper.INSTANCE::convertEntityToTherapistOutputDTO).toList();
+  public TherapistOutputDTO getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
   }
 
   @PostMapping("/therapists")
   @ResponseStatus(HttpStatus.CREATED)
-  public TherapistOutputDTO createTherapist(@RequestBody CreateTherapistDTO therapistInputDTO) {
-    Therapist therapist = DTOMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
-    Therapist createdTherapist = therapistService.createTherapist(therapist);
-    return DTOMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist);
+  public TherapistOutputDTO createTherapist(
+      @RequestBody CreateTherapistDTO therapistInputDTO,
+      HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse) {
+    Therapist therapist =
+        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist createdTherapist =
+        therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist).sortDTO();
+  }
+
+  @PostMapping("/therapists/login")
+  @ResponseStatus(HttpStatus.OK)
+  public TherapistOutputDTO loginTherapist(
+      @RequestBody LoginTherapistDTO loginTherapistDTO,
+      HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse) {
+    Therapist loggedInTherapist =
+        therapistService.loginTherapist(loginTherapistDTO, httpServletRequest, httpServletResponse);
+    System.out.println(loggedInTherapist.getPatients().size());
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
+  }
+
+  @PostMapping("/therapists/logout")
+  @ResponseStatus(HttpStatus.OK)
+  public void logoutTherapist(HttpServletResponse httpServletResponse) {
+    therapistService.logoutTherapist(httpServletResponse);
   }
 }
