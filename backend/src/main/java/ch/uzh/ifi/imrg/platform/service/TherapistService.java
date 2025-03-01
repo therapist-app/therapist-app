@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
-
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,8 @@ public class TherapistService {
   }
 
   public void loginTherapist(LoginTherapistDTO loginTherapistDTO) {
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
@@ -60,5 +60,4 @@ public class TherapistService {
   public List<Therapist> getAllTherapists() {
     return this.therapistRepository.findAll();
   }
-
 }
