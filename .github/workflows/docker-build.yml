@@ -9,7 +9,7 @@ on:
 jobs:
   frontend-lint-and-typecheck:
     name: Run Type Checking, Linting, and Prettier
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       HUSKY: 0
     steps:
@@ -38,7 +38,7 @@ jobs:
 
   backend-format-check:
     name: Check Java Formatting
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       HUSKY: 0
     steps:
@@ -58,7 +58,7 @@ jobs:
 
   build-frontend:
     name: Build Frontend Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [frontend-lint-and-typecheck, backend-format-check]
     env:
       HUSKY: 0
@@ -66,15 +66,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Frontend Image
+      - name: Build Frontend Image with Cache
         run: docker build -t frontend-test-build ./frontend
 
   build-backend:
     name: Build Backend Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [frontend-lint-and-typecheck, backend-format-check]
     env:
       HUSKY: 0
@@ -82,8 +79,5 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Backend Image
+      - name: Build Backend Image with Cache
         run: docker build -t backend-test-build ./backend
