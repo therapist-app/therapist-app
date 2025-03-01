@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -29,8 +30,7 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt =
-        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
@@ -42,25 +42,34 @@ public class JwtUtil {
     response.addCookie(cookie);
   }
 
-  public static boolean validateJWT(String email, String jwt) {
-    try {
-      SecretKey key = getSecretKey();
+  public static String getJwtFromCookie(HttpServletRequest request) {
 
-      Jws<Claims> claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt);
+    return null;
+  }
 
-      String jwtEmail = claims.getPayload().getSubject();
-      if (!jwtEmail.equals(email)) {
-        return false;
-      }
+  public static String validateJWTAndExtractEmail(HttpServletRequest request) {
 
-      Date expiration = claims.getPayload().getExpiration();
-      if (expiration.before(new Date())) {
-        return false;
-      }
-
-      return true;
-    } catch (JwtException e) {
-      return false;
+    Cookie[] cookies = request.getCookies();
+    if (cookies == null) {
+      throw new Error("Cookie could not be found");
     }
+
+    for (Cookie cookie : cookies) {
+      if ("auth".equals(cookie.getName())) {
+        String jwt = cookie.getValue();
+        SecretKey key = getSecretKey();
+
+        Jws<Claims> claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt);
+
+        String jwtEmail = claims.getPayload().getSubject();
+
+        Date expiration = claims.getPayload().getExpiration();
+        if (expiration.before(new Date())) {
+          throw new Error("The JWT has expired");
+        }
+        return jwtEmail;
+      }
+    }
+    throw new Error("Cookie 'auth' could not be found");
   }
 }
