@@ -13,7 +13,7 @@ import javax.crypto.SecretKey;
 
 public class JwtUtil {
 
-  private static final String BASE64_SECRET_KEY = "this-will-be-added-as-an-en-variable";
+  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
 
   // Decode the BASE64_SECRET_KEY to generate the SecretKey
   private static SecretKey getSecretKey() {
@@ -29,8 +29,7 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt =
-        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
@@ -39,12 +38,9 @@ public class JwtUtil {
     cookie.setHttpOnly(true);
     cookie.setMaxAge(30 * 24 * 60 * 60); // 30 days
     cookie.setPath("/");
+    cookie.setSecure(false);
+    cookie.setAttribute("SameSite", "None");
     response.addCookie(cookie);
-  }
-
-  public static String getJwtFromCookie(HttpServletRequest request) {
-
-    return null;
   }
 
   public static String validateJWTAndExtractEmail(HttpServletRequest request) {
