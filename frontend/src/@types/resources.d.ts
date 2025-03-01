@@ -27,6 +27,8 @@ interface Resources {
       "logout": "Log Out",
       "overview": "Overview",
       "account": "Account"
+      "settings": "Settings",
+      "patients": "Patients"
     },
     "dashboard": {
       "patient_register_success": "Patient registered successfully.",
@@ -104,7 +106,9 @@ interface Resources {
       "dashboards": "Панелі управління",
       "logout": "Вийти",
       "overview": "Огляд",
-      "account": "Обліковий запис"
+      "account": "Обліковий запис",
+      "settings": "Налаштування",
+      "patients": "Пацієнти"
     },
     "dashboard": {
       "patient_register_success": "Пацієнта успішно зареєстровано.",

@@ -4,9 +4,9 @@ import Layout from '../../generalComponents/Layout'
 const PatientsOverview = () => {
   return (
     <Layout>
-    <div>
-      <Typography variant='h3'>This is the patient overview page</Typography>
-    </div>
+      <div>
+        <Typography variant='h3'>This is the patient overview page</Typography>
+      </div>
     </Layout>
   )
 }

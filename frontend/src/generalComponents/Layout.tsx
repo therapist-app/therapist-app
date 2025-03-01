@@ -239,7 +239,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ListItemIcon sx={{ color: '#9EA2A8' }}>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary={t('Settings')} style={{marginLeft: -20}} />
+            <ListItemText primary={t('layout.settings')} style={{ marginLeft: -20 }} />
           </ListItemButton>
         </ListItem>
 
@@ -260,7 +260,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ListItemIcon sx={{ color: '#9EA2A8' }}>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary={t('Patients')} style={{marginLeft: -20}} />
+            <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
             {openPatients ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
@@ -311,7 +311,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='List patients' style={{marginLeft: 20}} />
+                <ListItemText primary='List patients' style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
 
@@ -348,7 +348,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='Create patient' style={{marginLeft: 20}}/>
+                <ListItemText primary='Create patient' style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
 
@@ -385,7 +385,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='Patient details' style={{marginLeft: 20}}/>
+                <ListItemText primary='Patient details' style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
           </Box>
