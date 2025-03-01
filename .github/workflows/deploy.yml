@@ -18,14 +18,14 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "BRANCH=main" >> $GITHUB_ENV
-            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-main" >> $GITHUB_ENV
-            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-main" >> $GITHUB_ENV
+            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-main:latest" >> $GITHUB_ENV
+            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-main:latest" >> $GITHUB_ENV
             echo "FRONTEND_DEPLOYMENT=therapist-fe-m" >> $GITHUB_ENV
             echo "BACKEND_DEPLOYMENT=therapist-be-m" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
             echo "BRANCH=production" >> $GITHUB_ENV
-            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-production" >> $GITHUB_ENV
-            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-production" >> $GITHUB_ENV
+            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-production:latest" >> $GITHUB_ENV
+            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-production:latest" >> $GITHUB_ENV
             echo "FRONTEND_DEPLOYMENT=therapist-fe-p" >> $GITHUB_ENV
             echo "BACKEND_DEPLOYMENT=therapist-be-p" >> $GITHUB_ENV
           fi
