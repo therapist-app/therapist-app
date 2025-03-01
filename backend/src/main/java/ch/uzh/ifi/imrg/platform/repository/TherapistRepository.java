@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TherapistRepository extends JpaRepository<Therapist, String> {
 
   boolean existsByEmail(String email);
+
+  Therapist getTherapistByEmail(String email);
 }
