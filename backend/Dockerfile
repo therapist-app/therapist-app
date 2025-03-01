@@ -1,3 +1,4 @@
+# Build Stage
 FROM gradle:8.5-jdk21 AS builder
 
 WORKDIR /app
@@ -12,14 +13,15 @@ RUN ./gradlew dependencies --no-daemon
 COPY src src
 RUN ./gradlew build --no-daemon
 
+# Run Stage
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY --from=builder /app/build/libs/*.jar /app/
+COPY --from=builder /app/build/libs/*.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "java -jar /app/*.jar"]
+CMD ["java", "-jar", "app.jar"]
