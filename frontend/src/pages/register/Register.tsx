@@ -3,7 +3,7 @@ import { TextField, Button, Typography, Container, Box } from '@mui/material'
 import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { loginTherapist, registerTherapist, setLoggedInTherapist } from '../../store/therapistSlice'
+import { registerTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
 
 const Register = () => {

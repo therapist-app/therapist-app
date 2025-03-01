@@ -43,12 +43,12 @@ const Login = () => {
     <Container maxWidth='xs'>
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant='h4' gutterBottom>
-          {t('register.register_therapist')}
+          {t('login.login_therapist')}
         </Typography>
       </Box>
       <form onSubmit={handleLogin}>
         <TextField
-          label={t('register.email')}
+          label={t('login.email')}
           name='email'
           type='email'
           value={formData.email}
@@ -58,7 +58,7 @@ const Login = () => {
           required
         />
         <TextField
-          label={t('register.password')}
+          label={t('login.password')}
           name='password'
           type='password'
           value={formData.password}
@@ -69,7 +69,7 @@ const Login = () => {
         />
         {error && <Typography color='error'>{error}</Typography>}
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          {t('register.register')}
+          {t('login.login')}
         </Button>
       </form>
     </Container>
