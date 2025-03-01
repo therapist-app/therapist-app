@@ -38,7 +38,8 @@ public class TherapistService {
         HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
   }
 
-  public Therapist registerTherapist(Therapist therapist, HttpServletResponse httpServletResponse) {
+  public Therapist registerTherapist(Therapist therapist,
+      HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     if (therapist.getEmail() == null) {
       throw new Error("Creating therapist failed because no email was specified");
     }
@@ -59,14 +60,14 @@ public class TherapistService {
     }
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
-    JwtUtil.addJwtCookie(httpServletResponse, jwt);
+    JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
     return createdTherapist;
   }
 
   public Therapist loginTherapist(
-      LoginTherapistDTO loginTherapistDTO, HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+      LoginTherapistDTO loginTherapistDTO, HttpServletRequest httpServletRequest,
+      HttpServletResponse httpServletResponse) {
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
@@ -78,7 +79,7 @@ public class TherapistService {
     }
 
     String jwt = JwtUtil.createJWT(loginTherapistDTO.getEmail());
-    JwtUtil.addJwtCookie(httpServletResponse, jwt);
+    JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
     return foundTherapist;
   }
 

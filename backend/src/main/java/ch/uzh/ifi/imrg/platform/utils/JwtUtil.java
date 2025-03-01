@@ -10,15 +10,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class JwtUtil {
 
-  private static final String BASE64_SECRET_KEY =
-      "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+  @Value("${app.secureCookie}")
+  private boolean secureCookie;
 
-  // Decode the BASE64_SECRET_KEY to generate the SecretKey
+  // Needs to be added as a secret environemt variable later
+  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+
   private static SecretKey getSecretKey() {
     byte[] keyBytes = Decoders.BASE64.decode(BASE64_SECRET_KEY);
     return Keys.hmacShaKeyFor(keyBytes);
@@ -32,17 +36,16 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt =
-        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
-  public static void addJwtCookie(HttpServletResponse response, String jwt) {
+  public static void addJwtCookie(HttpServletResponse response, HttpServletRequest request, String jwt) {
     Cookie cookie = new Cookie("auth", jwt);
     cookie.setHttpOnly(true);
     cookie.setMaxAge(30 * 24 * 60 * 60); // 30 days
     cookie.setPath("/");
-    cookie.setSecure(false);
+    cookie.setSecure(request.isSecure());
     cookie.setAttribute("SameSite", "Lax");
     response.addCookie(cookie);
   }
