@@ -60,7 +60,9 @@ dependencies {
 }
 
 bootJar {
-	archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+	archiveBaseName.set("app")
+	archiveVersion.set("")
+	archiveFileName.set("app.jar")
 }
 
 sonar {
