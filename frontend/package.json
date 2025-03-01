@@ -7,10 +7,10 @@
     "dev": "concurrently \"vite\" \"npm run watch:translations\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
-    "format": "prettier --check 'src/**/*.{ts,tsx,js,jsx,css,scss,json}'",
-    "format:fix": "prettier --write 'src/**/*.{ts,tsx,js,jsx,css,scss,json}'",
+    "lint": "eslint '**/src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint '**/src/**/*.{ts,tsx}' --fix",
+    "format": "prettier --check '**/src/**/*.{ts,tsx,js,jsx,css,scss,json}'",
+    "format:fix": "prettier --write '**/src/**/*.{ts,tsx,js,jsx,css,scss,json}'",
     "check-all": "npm run lint && npm run format",
     "fix-all": "npm run lint:fix && npm run format:fix",
     "prepare": "cd .. && husky frontend/.husky",
@@ -18,7 +18,7 @@
     "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": [
+    "**/src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ]
