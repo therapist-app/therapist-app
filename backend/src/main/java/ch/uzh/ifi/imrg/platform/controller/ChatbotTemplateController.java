@@ -24,7 +24,8 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO createTemplate(
       @PathVariable String therapistId, @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
     Therapist updatedTherapist = chatbotTemplateService.createTemplate(therapistId, template);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
@@ -35,14 +36,17 @@ public class ChatbotTemplateController {
       @PathVariable String therapistId,
       @PathVariable String templateId,
       @RequestBody CreateChatbotTemplateDTO templateInputDTO) {
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
-    Therapist updatedTherapist = chatbotTemplateService.updateTemplate(therapistId, templateId, template);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    Therapist updatedTherapist =
+        chatbotTemplateService.updateTemplate(therapistId, templateId, template);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
 
   @DeleteMapping("/{templateId}")
   @ResponseStatus(HttpStatus.OK)
-  public TherapistOutputDTO deleteTemplate(@PathVariable String therapistId, @PathVariable String templateId) {
+  public TherapistOutputDTO deleteTemplate(
+      @PathVariable String therapistId, @PathVariable String templateId) {
     Therapist updatedTherapist = chatbotTemplateService.deleteTemplate(therapistId, templateId);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }

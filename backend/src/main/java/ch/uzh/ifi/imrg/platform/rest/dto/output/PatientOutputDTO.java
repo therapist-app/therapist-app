@@ -9,8 +9,7 @@ public class PatientOutputDTO {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
-  public PatientOutputDTO() {
-  }
+  public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;

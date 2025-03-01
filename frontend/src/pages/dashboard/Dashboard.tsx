@@ -29,14 +29,9 @@ import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 
 import Layout from '../../generalComponents/Layout'
-import { registerPatient } from '../../services/patientService'
-import api from '../../utils/api'
+
 import { handleError } from '../../utils/handleError'
-import {
-  cloneChatbotTemplate,
-  getAllChatbotTemplatesForTherapist,
-  updateChatbotTemplate,
-} from '../../services/chatbotTemplateService'
+
 import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutputDTO'
 import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
 import { AxiosError } from 'axios'
@@ -74,10 +69,8 @@ const Dashboard = () => {
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
   useEffect(() => {
-    if (!loggedInTherapist) {
-      dispatch(getCurrentlyLoggedInTherapist())
-    }
-  }, [])
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch])
 
   const handleOpenPatientDialog = () => {
     setOpenPatientDialog(true)
@@ -145,16 +138,6 @@ const Dashboard = () => {
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleCloseBotDialog()
-    } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
-    }
-  }
-
-  const handleChatbotClick = async (chatbotId: string) => {
-    try {
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
@@ -471,7 +454,7 @@ const Dashboard = () => {
                 borderRadius: '8px',
               }}
             >
-              <CardActionArea onClick={() => handleChatbotClick(bot.id)}>
+              <CardActionArea>
                 <CardContent>
                   <Typography variant='h6'>
                     {bot.chatbotName || t('dashboard.unnamed_bot')}

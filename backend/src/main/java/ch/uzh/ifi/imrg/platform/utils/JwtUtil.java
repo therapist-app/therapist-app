@@ -13,7 +13,8 @@ import javax.crypto.SecretKey;
 
 public class JwtUtil {
 
-  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+  private static final String BASE64_SECRET_KEY =
+      "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
 
   // Decode the BASE64_SECRET_KEY to generate the SecretKey
   private static SecretKey getSecretKey() {
@@ -29,7 +30,8 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt =
+        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 

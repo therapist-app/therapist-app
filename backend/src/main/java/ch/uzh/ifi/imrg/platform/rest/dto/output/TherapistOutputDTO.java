@@ -71,13 +71,13 @@ public class TherapistOutputDTO {
   }
 
   public TherapistOutputDTO sortDTO() {
-    chatbotTemplatesOutputDTO.sort(Comparator.comparing(
-        ChatbotTemplateOutputDTO::getCreatedAt,
-        Comparator.nullsLast(Comparator.reverseOrder())));
-    patientsOutputDTO.sort(Comparator.comparing(
-        PatientOutputDTO::getCreatedAt,
-        Comparator.nullsLast(Comparator.reverseOrder())));
+    chatbotTemplatesOutputDTO.sort(
+        Comparator.comparing(
+            ChatbotTemplateOutputDTO::getCreatedAt,
+            Comparator.nullsLast(Comparator.reverseOrder())));
+    patientsOutputDTO.sort(
+        Comparator.comparing(
+            PatientOutputDTO::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())));
     return this;
   }
-
 }

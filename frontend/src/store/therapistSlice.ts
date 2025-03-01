@@ -19,7 +19,7 @@ const initialState: TherapistState = {
 
 export const getCurrentlyLoggedInTherapist = createAsyncThunk(
   'therapist/getCurrentlyLoggedInTherapist',
-  async (_, {}) => {
+  async () => {
     console.log('asdasda')
     const response = await api.get(`/therapists/me`)
     console.log(response)
