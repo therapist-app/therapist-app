@@ -7,6 +7,7 @@ import {
   Typography,
   SelectChangeEvent,
 } from '@mui/material'
+import Layout from '../../generalComponents/Layout'
 
 const Settings = () => {
   const { t, i18n } = useTranslation()
@@ -17,6 +18,7 @@ const Settings = () => {
   }
 
   return (
+    <Layout>
     <div style={{ padding: '20px' }}>
       <Typography variant='h4' gutterBottom>
         {t('settings.title')}
@@ -34,6 +36,7 @@ const Settings = () => {
         </Select>
       </FormControl>
     </div>
+    </Layout>
   )
 }
 
