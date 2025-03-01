@@ -1,7 +1,9 @@
 import { Typography } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function Header() {
+  const { t } = useTranslation()
   const location = useLocation()
   const pathname = location.pathname
   const examplePatientId = 'patient-1234'
@@ -9,26 +11,30 @@ export default function Header() {
   const exampleBotTemplateId = 'chatBotTemplate-999'
 
   const links = [
-    { path: '/', label: 'Dashboard Page' },
-    { path: '/register', label: 'Register Page' },
-    { path: '/login', label: 'Login Page' },
-    { path: '/patients', label: 'Patient Overview Page' },
+    { path: '/', label: t('header.dashboard') },
+    { path: '/register', label: t('header.register') },
+    { path: '/login', label: t('header.login') },
+    { path: '/patients', label: t('header.patients') },
     {
       path: `/patients/${examplePatientId}`,
-      label: `Example Patient Detail Page for ID: "${examplePatientId}"`,
+      label: t('header.patient_detail', { id: examplePatientId }),
     },
     {
       path: `/patients/${examplePatientId}/chatBot/create`,
-      label: 'Example Patient Create Bot Page',
+      label: t('header.patient_create_bot'),
     },
     {
       path: `/patients/${examplePatientId}/chatBot/${exampleBotId}`,
-      label: `Example Bot Edit Page for Bot ID: "${exampleBotId}"`,
+      label: t('header.bot_edit', { id: exampleBotId }),
     },
-    { path: '/chatBotTemplate/create', label: 'Create ChatBot Template Page' },
+    { path: '/chatBotTemplate/create', label: t('header.create_bot_template') },
     {
       path: `/chatBotTemplate/${exampleBotTemplateId}`,
-      label: `Edit ChatBot Template for ID: "${exampleBotTemplateId}"`,
+      label: t('header.edit_bot_template', { id: exampleBotTemplateId }),
+    },
+    {
+      path: '/settings',
+      label: t('header.settings'),
     },
   ]
 
@@ -44,8 +50,8 @@ export default function Header() {
         backgroundColor: '#D3D3D3',
       }}
     >
-      <Typography variant='h2'>This is the header</Typography>
-      <Typography variant='h4'>These are the current pages:</Typography>
+      <Typography variant='h2'>{t('header.title')}</Typography>
+      <Typography variant='h4'>{t('header.subtitle')}</Typography>
       <ul
         style={{
           display: 'flex',

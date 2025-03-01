@@ -1,6 +1,9 @@
 import { Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
+  const { t } = useTranslation()
+
   return (
     <footer
       style={{
@@ -13,7 +16,7 @@ export default function Footer() {
         backgroundColor: '#D3D3D3',
       }}
     >
-      <Typography variant='h2'>This is the footer</Typography>
+      <Typography variant='h2'>{t('footer.title')}</Typography>
     </footer>
   )
 }

@@ -1,10 +1,13 @@
 import { Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 const NotFound = () => {
+  const { t } = useTranslation()
+
   return (
     <div>
-      <Typography variant='h3'>404 - Page Not Found</Typography>
-      <Typography variant='body1'>Oops! The page you're looking for doesn't exist.</Typography>
+      <Typography variant='h3'>{t('not_found.title')}</Typography>
+      <Typography variant='body1'>{t('not_found.message')}</Typography>
     </div>
   )
 }

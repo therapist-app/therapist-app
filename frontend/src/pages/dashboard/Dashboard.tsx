@@ -42,6 +42,7 @@ import {
 import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutputDTO'
 import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
 import { AxiosError } from 'axios'
+import { useTranslation } from 'react-i18next'
 
 interface DashboardProps {
   workspaceId?: string | null
@@ -49,6 +50,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [patients, setPatients] = useState<PatientOutputDTO[]>([])
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
@@ -101,7 +103,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       }
       await registerPatient(therapistId, { name: newPatientName })
       await fetchTherapistPatients()
-      setSnackbarMessage('Patient registered successfully!')
+      setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleClosePatientDialog()
@@ -177,7 +179,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       const response = await createChatbotTemplate(chatbotConfigurations, therapistId)
       const currentChatbots = chatbots
       setChatbots([...currentChatbots, response])
-      setSnackbarMessage('Chatbot created successfully!')
+      setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleCloseBotDialog()
@@ -233,7 +235,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       const updatedChatbots = chatbots.map((bot) => (bot.id === currentChatbot.id ? response : bot))
       setChatbots(updatedChatbots)
 
-      setSnackbarMessage('Chatbot renamed successfully')
+      setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       setOpenRenameDialog(false)
@@ -254,7 +256,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       const response = await cloneChatbotTemplate(therapistId, currentChatbot.id)
 
       setChatbots([...chatbots, response])
-      setSnackbarMessage('Chatbot cloned successfully')
+      setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleMenuClose()
@@ -277,7 +279,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
       const updatedChatbots = chatbots.filter((bot) => bot.id !== currentChatbot.id)
       setChatbots(updatedChatbots)
 
-      setSnackbarMessage('Chatbot deleted successfully')
+      setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleMenuClose()
@@ -430,7 +432,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
           }}
         >
           <Typography variant='h6' gutterBottom>
-            Register a new patient
+            {t('dashboard.register_new_patient')}
           </Typography>
           <Button
             variant='contained'
@@ -439,13 +441,13 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             sx={commonButtonStyles}
             style={{ minWidth: '200px', maxWidth: '200px' }}
           >
-            Add Patient
+            {t('dashboard.add_patient')}
           </Button>
         </Card>
       </Box>
 
       <Typography variant='h5' sx={{ marginBottom: 3 }}>
-        Patients
+        {t('dashboard.patients')}
       </Typography>
       {patients.length > 0 ? (
         <Box
@@ -478,7 +480,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
                 <CardContent>
                   <Typography variant='h6'>{patient.name ?? 'Unnamed Patient'}</Typography>
                   <Typography variant='body2' color='textSecondary'>
-                    Patient ID: {patient.id}
+                    {t('dashboard.patient_id')}: {patient.id}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -487,7 +489,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         </Box>
       ) : (
         <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
-          No patients found.
+          {t('dashboard.no_patients_found')}
         </Typography>
       )}
 
@@ -496,16 +498,16 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         onClose={handleClosePatientDialog}
         PaperProps={{ sx: dialogStyle }}
       >
-        <DialogTitle>New Patient</DialogTitle>
+        <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
-            Enter information to register a new patient.
+            {t('dashboard.enter_information_register_new_patient')}
           </DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='patient-name'
-            label='Patient Name'
+            label={t('dashboard.patient_name')}
             type='text'
             fullWidth
             variant='outlined'
@@ -515,7 +517,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
-            Cancel
+            {t('dashboard.cancel')}
           </Button>
           <Button
             onClick={handleCreatePatient}
@@ -523,7 +525,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             sx={newPatientName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
             disabled={newPatientName.trim() === ''}
           >
-            Register
+            {t('dashboard.register')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -538,7 +540,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
           }}
         >
           <Typography variant='h6' gutterBottom>
-            Create new chatbot template
+            {t('dashboard.create_new_chatbot_template')}
           </Typography>
           <Button
             variant='contained'
@@ -547,13 +549,13 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             sx={commonButtonStyles}
             style={{ minWidth: '200px', maxWidth: '200px' }}
           >
-            Create bot
+            {t('dashboard.create_bot')}
           </Button>
         </Card>
       </Box>
 
       <Typography variant='h5' sx={{ mt: 6, mb: 3 }}>
-        Your Chatbot Templates
+        {t('dashboard.your_chatbot_templates')}
       </Typography>
       {chatbots.length > 0 ? (
         <Box
@@ -585,15 +587,17 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             >
               <CardActionArea onClick={() => handleChatbotClick(bot.id)}>
                 <CardContent>
-                  <Typography variant='h6'>{bot.chatbotName || 'Unnamed Bot'}</Typography>
+                  <Typography variant='h6'>
+                    {bot.chatbotName || t('dashboard.unnamed_bot')}
+                  </Typography>
                   <Typography variant='body2' color='textSecondary'>
-                    {bot.welcomeMessage || 'No welcome message set'}
+                    {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {`Language: ${bot.chatbotLanguage}`}
+                    {t('dashboard.language')}: ${bot.chatbotLanguage}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {`Role: ${bot.chatbotRole}`}
+                    {t('dashboard.role')}: ${bot.chatbotRole}
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
@@ -624,7 +628,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         </Box>
       ) : (
         <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
-          No chatbots created yet.
+          {t('dashboard.no_chatbots_created_yet')}
         </Typography>
       )}
 
@@ -635,22 +639,22 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         open={Boolean(anchorEl && currentChatbot)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleRename}>Rename</MenuItem>
-        <MenuItem onClick={handleClone}>Clone</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={handleRename}>{t('dashboard.rename')}</MenuItem>
+        <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
+        <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
 
       <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
-        <DialogTitle>New Bot</DialogTitle>
+        <DialogTitle>{t('dashboard.new_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
-            What would you like to name your bot?
+            {t('dashboard.what_would_you_like_to_name_your_bot')}
           </DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='bot-name'
-            label='Enter bot name'
+            label={t('dashboard.enter_bot_name')}
             type='text'
             fullWidth
             variant='outlined'
@@ -660,7 +664,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleCloseBotDialog} sx={cancelButtonStyles}>
-            Cancel
+            {t('dashboard.cancel')}
           </Button>
           <Button
             onClick={handleCreateChatbot}
@@ -668,7 +672,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             sx={chatbotName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
             disabled={chatbotName.trim() === ''}
           >
-            Create Bot
+            {t('dashboard.create_bot')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -678,14 +682,16 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         onClose={() => setOpenRenameDialog(false)}
         PaperProps={{ sx: dialogStyle }}
       >
-        <DialogTitle>Rename Bot</DialogTitle>
+        <DialogTitle>{t('dashboard.rename_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
-          <DialogContentText sx={{ mb: 1 }}>Enter the new name for your bot.</DialogContentText>
+          <DialogContentText sx={{ mb: 1 }}>
+            {t('dashboard.enter_new_name_for_bot')}
+          </DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='rename'
-            label='Enter new bot name'
+            label={t('dashboard.enter_new_bot_name')}
             type='text'
             fullWidth
             variant='outlined'
@@ -695,7 +701,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={() => setOpenRenameDialog(false)} sx={cancelButtonStyles}>
-            Cancel
+            {t('dashboard.cancel')}
           </Button>
           <Button
             onClick={handleRenameChatbot}
@@ -703,7 +709,7 @@ const Dashboard: React.FC<DashboardProps> = ({ workspaceId: propWorkspaceId }) =
             sx={chatbotName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
             disabled={chatbotName.trim() === ''}
           >
-            Save
+            {t('dashboard.save')}
           </Button>
         </DialogActions>
       </Dialog>

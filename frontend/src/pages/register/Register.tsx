@@ -3,9 +3,11 @@ import { TextField, Button, Typography, Container, Box } from '@mui/material'
 import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
 import { createTherapist } from '../../services/therapistService'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Register = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState<CreateTherapistDTO>({
     email: '',
@@ -43,12 +45,12 @@ const Register = () => {
     <Container maxWidth='xs'>
       <Box sx={{ textAlign: 'center', mt: 4 }}>
         <Typography variant='h4' gutterBottom>
-          Register Therapist
+          {t('register.register_therapist')}
         </Typography>
       </Box>
       <form onSubmit={handleSubmit}>
         <TextField
-          label='Email'
+          label={t('register.email')}
           name='email'
           type='email'
           value={formData.email}
@@ -58,7 +60,7 @@ const Register = () => {
           required
         />
         <TextField
-          label='Password'
+          label={t('register.password')}
           name='password'
           type='password'
           value={formData.password}
@@ -69,7 +71,7 @@ const Register = () => {
         />
         {error && <Typography color='error'>{error}</Typography>}
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          Register
+          {t('register.register')}
         </Button>
       </form>
     </Container>
