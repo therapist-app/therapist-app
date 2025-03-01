@@ -27,9 +27,6 @@
     "overview": "Огляд",
     "account": "Обліковий запис"
   },
-  "chat_bot_template": {
-
-  },
   "dashboard": {
     "patient_register_success": "Пацієнта успішно зареєстровано.",
     "chatbot_created_success": "Чат-бот успішно створений.",

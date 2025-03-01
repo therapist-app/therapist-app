@@ -27,9 +27,6 @@
     "overview": "Overview",
     "account": "Account"
   },
-  "chat_bot_template": {
-
-  },
   "dashboard":{
     "patient_register_success": "Patient registered successfully.",
     "chatbot_created_success": "Chatbot created successfully.",
