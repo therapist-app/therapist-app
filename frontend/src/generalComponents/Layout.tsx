@@ -69,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleListPatients = () => {
     setSelectedPatientItem('list')
-    navigate('/patients')
+    navigate(`/patients`)
   }
   const handleCreatePatient = () => {
     setSelectedPatientItem('create')
