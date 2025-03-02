@@ -74,12 +74,14 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
 
-    if (!PasswordUtil.checkPassword(loginTherapistDTO.getPassword(), foundTherapist.getPassword())) {
+    if (!PasswordUtil.checkPassword(
+        loginTherapistDTO.getPassword(), foundTherapist.getPassword())) {
       throw new Error("The password you entered is wrong!");
     }
 

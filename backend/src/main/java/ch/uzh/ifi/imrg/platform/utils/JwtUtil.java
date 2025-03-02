@@ -16,7 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class JwtUtil {
 
   // Needs to be added as a secret environemt variable later
-  private static final String BASE64_SECRET_KEY = "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
+  private static final String BASE64_SECRET_KEY =
+      "thiswillbeaddedasanenvariabledfsgasdlkjwerosjkvnyxcnadwkjqwdkertjnask";
 
   private static SecretKey getSecretKey() {
     byte[] keyBytes = Decoders.BASE64.decode(BASE64_SECRET_KEY);
@@ -31,7 +32,8 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt =
+        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
