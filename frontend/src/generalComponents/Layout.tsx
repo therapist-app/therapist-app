@@ -57,10 +57,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     navigate('/login')
   }
 
-  const handleDashboard = () => {
-    const workspaceId = sessionStorage.getItem('workspaceId')
-    navigate(`/?workspace_id=${workspaceId || ''}`)
-  }
   const handleSettings = () => {
     navigate('/settings')
   }
