@@ -1,16 +1,16 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-
-import { t } from 'i18next'
 import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
 import { useState } from 'react'
 import { loginTherapist } from '../../store/therapistSlice'
 
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
     email: '',
