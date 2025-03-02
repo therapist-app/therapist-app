@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Header from './generalComponents/Header'
-import Footer from './generalComponents/Footer'
 import Dashboard from './pages/dashboard/Dashboard'
 import Register from './pages/register/Register'
 import Login from './pages/login/Login'
@@ -31,7 +29,6 @@ const App = () => {
   return (
     <Router>
       <div style={appContainerStyle}>
-        <Header />
         <main style={contentStyle}>
           <Routes>
             <Route path='/' element={<RootComponent />} />
@@ -53,7 +50,6 @@ const App = () => {
             <Route path='*' element={<NotFound />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   )

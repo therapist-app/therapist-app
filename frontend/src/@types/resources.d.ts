@@ -78,16 +78,20 @@ interface Resources {
       message: 'This is the patient detail page of patient with ID'
     }
     register: {
-      register_therapist: 'Register Therapist'
+      welcome: 'Welcome to the Therapist App'
+      register_therapist: 'Register as a new Therapist'
       email: 'Email'
       password: 'Password'
       register: 'Register'
+      go_login: 'Go to the Login instead'
     }
     login: {
-      login_therapist: 'Login Therapist'
+      welcome: 'Welcome to the Therapist App'
+      login_therapist: 'Login as a Therapist'
       email: 'Email'
       password: 'Password'
       login: 'Login'
+      go_registration: 'Go to Registration instead'
     }
   }
   ua: {

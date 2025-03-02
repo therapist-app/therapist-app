@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { Button, Container, TextField, Typography } from '@mui/material'
 
 import { t } from 'i18next'
 import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
@@ -30,7 +30,7 @@ const Login = () => {
       await dispatch(loginTherapist(formData)).unwrap()
       navigate(`/`)
     } catch (e) {
-      setError('Failed to login, please try again')
+      setError(`Failed to login, please try again`)
       console.error('Failed to login', e)
     }
   }
@@ -40,39 +40,61 @@ const Login = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
+    <>
+      {' '}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          gap: '32px',
+        }}
+      >
+        <Typography variant='h2'> {t('login.welcome')}</Typography>
         <Typography variant='h4' gutterBottom>
           {t('login.login_therapist')}
         </Typography>
-      </Box>
-      <form onSubmit={handleLogin}>
-        <TextField
-          label={t('login.email')}
-          name='email'
-          type='email'
-          value={formData.email}
-          onChange={handleChange}
-          fullWidth
-          margin='normal'
-          required
-        />
-        <TextField
-          label={t('login.password')}
-          name='password'
-          type='password'
-          value={formData.password}
-          onChange={handleChange}
-          fullWidth
-          margin='normal'
-          required
-        />
-        {error && <Typography color='error'>{error}</Typography>}
-        <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          {t('login.login')}
+      </div>
+      <Container maxWidth='xs'>
+        <form onSubmit={handleLogin}>
+          <TextField
+            label={t('login.email')}
+            name='email'
+            type='email'
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            margin='normal'
+            required
+          />
+          <TextField
+            label={t('login.password')}
+            name='password'
+            type='password'
+            value={formData.password}
+            onChange={handleChange}
+            fullWidth
+            margin='normal'
+            required
+          />
+          {error && <Typography color='error'>{error}</Typography>}
+          <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+            {t('login.login')}
+          </Button>
+        </form>
+      </Container>
+      <div style={{ display: 'flex', width: '100%', marginTop: '32px', justifyContent: 'center' }}>
+        <Button
+          onClick={() => navigate('/register')}
+          color='success'
+          size='large'
+          variant='contained'
+        >
+          {t('login.go_registration')}
         </Button>
-      </form>
-    </Container>
+      </div>
+    </>
   )
 }
 
