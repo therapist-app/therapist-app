@@ -23,6 +23,12 @@
   "layout": {
     "dashboard": "Dashboard",
     "dashboards": "Dashboards",
+    "general": "General",
+    "settings": "Settings",
+    "patients": "Patients",
+    "list_patients": "List Patients",
+    "create_patient": "Create Patient",
+    "patient_details": "Patient Details",
     "logout": "Log Out",
     "overview": "Overview",
     "account": "Account"
@@ -64,7 +70,7 @@
     "welcome_message": "You are logged in as: "
   },
   "not_found": {
-    "404": "404 - Page Not Found",
+    "title": "404 - Page Not Found",
     "message": "Oops! The page you're looking for doesn't exist."
   },
   "patient_detail": {

@@ -216,7 +216,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             marginLeft: 2,
           }}
         >
-          {t('General')}
+          {t('layout.general')}
         </Typography>
 
         <ListItem disablePadding sx={{ marginY: 0.5 }}>
@@ -308,7 +308,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='List patients' style={{ marginLeft: 20 }} />
+                <ListItemText primary={t('layout.list_patients')} style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
 
@@ -345,7 +345,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='Create patient' style={{ marginLeft: 20 }} />
+                <ListItemText primary={t('layout.create_patient')} style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
 
@@ -382,7 +382,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   }),
                 }}
               >
-                <ListItemText primary='Patient details' style={{ marginLeft: 20 }} />
+                <ListItemText primary={t('layout.patient_details')} style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
           </Box>

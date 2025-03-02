@@ -23,6 +23,12 @@
   "layout": {
     "dashboard": "Панель управління",
     "dashboards": "Панелі управління",
+    "general": "Загальні",
+    "settings": "Налаштування",
+    "patients": "Пацієнти",
+    "list_patients": "Список пацієнтів",
+    "create_patient": "Створити пацієнта",
+    "patient_details": "Деталі пацієнта",
     "logout": "Вийти",
     "overview": "Огляд",
     "account": "Обліковий запис"
@@ -60,7 +66,8 @@
     "enter_bot_name": "Введіть ім'я бота",
     "rename_bot": "Перейменувати бота",
     "enter_new_name_for_bot": "Введіть нове ім'я для вашого бота.",
-    "enter_new_bot_name": "Введіть нове ім'я бота"
+    "enter_new_bot_name": "Введіть нове ім'я бота",
+    "welcome_message": "Ви увійшли як: "
   },
   "not_found": {
     "title": "404 - Сторінку не знайдено",
@@ -74,5 +81,11 @@
     "email": "Електронна пошта",
     "password": "Пароль",
     "register": "Зареєструвати"
+  },
+  "login": {
+    "login_therapist": "Увійти як терапевт",
+    "email": "Електронна пошта",
+    "password": "Пароль",
+    "login": "Увійти"
   }
 }
