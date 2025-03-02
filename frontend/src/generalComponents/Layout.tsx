@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -14,15 +14,12 @@ import {
   MenuItem,
   ListItemButton,
   ListItemIcon,
-  Collapse,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import LogoutIcon from '@mui/icons-material/Logout'
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PeopleIcon from '@mui/icons-material/People'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
 
 import logo from '../../public/Therapist-App.png'
 import { useTranslation } from 'react-i18next'
@@ -38,12 +35,11 @@ const selectedColor = '#635BFF'
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [openPatients, setOpenPatients] = useState(false)
-  const [selectedPatientItem, setSelectedPatientItem] = useState<string | null>(null)
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -61,21 +57,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     navigate('/settings')
   }
 
-  const handlePatientsClick = () => {
-    setOpenPatients(!openPatients)
-  }
-
   const handleListPatients = () => {
-    setSelectedPatientItem('list')
     navigate(`/patients`)
-  }
-  const handleCreatePatient = () => {
-    setSelectedPatientItem('create')
-    navigate('/patients/create')
-  }
-  const handlePatientDetails = () => {
-    setSelectedPatientItem('details')
-    navigate('/patients/patient-1234')
   }
 
   const menuId = 'primary-search-account-menu'
@@ -191,16 +174,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               borderRadius: 2,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              bgcolor: selectedColor,
-              color: '#fff',
+              bgcolor: location.pathname === '/' ? selectedColor : 'inherit',
+              color: location.pathname === '/' ? '#fff' : '#9EA2A8',
               '&:hover': {
-                bgcolor: selectedColor,
+                bgcolor: location.pathname === '/' ? selectedColor : '#1D2336',
+                color: '#fff',
               },
-              boxShadow: 3,
+              boxShadow: location.pathname === '/' ? 3 : 0,
             }}
             onClick={() => navigate('/')}
           >
-            <ListItemIcon sx={{ color: '#fff' }}>
+            <ListItemIcon sx={{ color: location.pathname === '/' ? '#fff' : '#9EA2A8' }}>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.overview')} />
@@ -217,7 +201,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             marginLeft: 2,
           }}
         >
-          {t('layout.general')}
+          {t('General')}
         </Typography>
 
         <ListItem disablePadding sx={{ marginY: 0.5 }}>
@@ -227,14 +211,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               borderRadius: 1,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              color: '#9EA2A8',
+              color: location.pathname === '/patients' ? '#fff' : '#9EA2A8',
+              bgcolor: location.pathname === '/patients' ? selectedColor : 'inherit',
               '&:hover': {
-                bgcolor: '#1D2336',
+                bgcolor: location.pathname === '/patients' ? selectedColor : '#1D2336',
                 color: '#fff',
               },
             }}
           >
-            <ListItemIcon sx={{ color: '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: location.pathname === '/patients' ? '#fff' : '#9EA2A8' }}>
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
@@ -248,14 +233,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               borderRadius: 1,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              color: '#9EA2A8',
+              color: location.pathname === '/settings' ? '#fff' : '#9EA2A8',
+              bgcolor: location.pathname === '/settings' ? selectedColor : 'inherit',
               '&:hover': {
-                bgcolor: '#1D2336',
+                bgcolor: location.pathname === '/settings' ? selectedColor : '#1D2336',
                 color: '#fff',
               },
             }}
           >
-            <ListItemIcon sx={{ color: '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: location.pathname === '/settings' ? '#fff' : '#9EA2A8' }}>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.settings')} style={{ marginLeft: -20 }} />

@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { Button, Container, TextField, Typography } from '@mui/material'
 
 import { t } from 'i18next'
 import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'

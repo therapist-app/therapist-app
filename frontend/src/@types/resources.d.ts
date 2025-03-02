@@ -24,11 +24,15 @@ interface Resources {
     layout: {
       dashboard: 'Dashboard'
       dashboards: 'Dashboards'
+      general: 'General'
+      settings: 'Settings'
+      patients: 'Patients'
+      list_patients: 'List Patients'
+      create_patient: 'Create Patient'
+      patient_details: 'Patient Details'
       logout: 'Log Out'
       overview: 'Overview'
       account: 'Account'
-      settings: 'Settings'
-      patients: 'Patients'
     }
     dashboard: {
       patient_register_success: 'Patient registered successfully.'
@@ -67,7 +71,7 @@ interface Resources {
       welcome_message: 'You are logged in as: '
     }
     not_found: {
-      '404': '404 - Page Not Found'
+      title: '404 - Page Not Found'
       message: "Oops! The page you're looking for doesn't exist."
     }
     patient_detail: {
@@ -115,6 +119,12 @@ interface Resources {
     layout: {
       dashboard: 'Панель управління'
       dashboards: 'Панелі управління'
+      general: 'Загальні'
+      settings: 'Налаштування'
+      patients: 'Пацієнти'
+      list_patients: 'Список пацієнтів'
+      create_patient: 'Створити пацієнта'
+      patient_details: 'Деталі пацієнта'
       logout: 'Вийти'
       overview: 'Огляд'
       account: 'Обліковий запис'
@@ -153,6 +163,7 @@ interface Resources {
       rename_bot: 'Перейменувати бота'
       enter_new_name_for_bot: "Введіть нове ім'я для вашого бота."
       enter_new_bot_name: "Введіть нове ім'я бота"
+      welcome_message: 'Ви увійшли як: '
     }
     not_found: {
       title: '404 - Сторінку не знайдено'
