@@ -44,4 +44,8 @@ public class PatientService {
     entityManager.refresh(therapist);
     return therapist;
   }
+
+  public void deletePatient(String id) {
+    patientRepository.delete(patientRepository.getPatientById(id));
+  }
 }

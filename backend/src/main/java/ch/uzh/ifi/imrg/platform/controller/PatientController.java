@@ -31,4 +31,10 @@ public class PatientController {
         patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
+
+  @DeleteMapping("/patients/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deletePatient(@PathVariable String id) {
+    patientService.deletePatient(id);
+  }
 }
