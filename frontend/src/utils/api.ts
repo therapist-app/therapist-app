@@ -6,12 +6,15 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 })
 
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.response?.data || error.message)
+    if (error.response && error.response.status === 401) {
+      window.location.href = '/login'
+    }
     return Promise.reject(error)
   }
 )
