@@ -28,7 +28,6 @@ import {
 import AddIcon from '@mui/icons-material/Add'
 import CheckIcon from '@mui/icons-material/Check'
 import Layout from '../../generalComponents/Layout'
-import { getPatientsForTherapist, registerPatient } from '../../services/patientService'
 import { handleError } from '../../utils/handleError'
 import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import { useTranslation } from 'react-i18next'
@@ -63,7 +62,9 @@ const PatientsOverview: React.FC = () => {
       if (!therapistId) {
         throw new Error('No therapistId found in session storage.')
       }
-      const response = await getPatientsForTherapist()
+      const response = await api.get(
+        `/therapists/${sessionStorage.getItem('therapistId')}/patients`
+      )
       setPatients(response)
     } catch (error) {
       const errorMessage = handleError(error)
@@ -89,7 +90,7 @@ const PatientsOverview: React.FC = () => {
       if (!therapistId) {
         throw new Error('No therapistId found in session storage.')
       }
-      await registerPatient(therapistId, { name: newPatientName })
+      await api.post(`/therapists/${therapistId}/patients`, newPatientName)
       await fetchTherapistPatients()
 
       setSnackbarMessage(t('dashboard.patient_register_success'))
