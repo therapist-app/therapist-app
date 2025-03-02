@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
 import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
+import ch.uzh.ifi.imrg.platform.utils.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -60,6 +61,9 @@ public class TherapistService {
               + therapist.getEmail()
               + "already exists");
     }
+
+    therapist.setPassword(PasswordUtil.encryptPassword(therapist.getPassword()));
+
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
@@ -70,15 +74,12 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
-    log.info(foundTherapist.getEmail());
-    log.info(foundTherapist.getPassword());
-    log.info(loginTherapistDTO.getPassword());
-    if (!foundTherapist.getPassword().equals(loginTherapistDTO.getPassword())) {
+
+    if (!PasswordUtil.checkPassword(loginTherapistDTO.getPassword(), foundTherapist.getPassword())) {
       throw new Error("The password you entered is wrong!");
     }
 
