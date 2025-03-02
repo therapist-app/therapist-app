@@ -27,7 +27,7 @@
     "overview": "Overview",
     "account": "Account"
   },
-  "dashboard":{
+  "dashboard": {
     "patient_register_success": "Patient registered successfully.",
     "chatbot_created_success": "Chatbot created successfully.",
     "chatbot_named_success": "Chatbot renamed successfully.",
@@ -60,7 +60,8 @@
     "enter_bot_name": "Enter bot name",
     "rename_bot": "Rename Bot",
     "enter_new_name_for_bot": "Enter the new name for your bot.",
-    "enter_new_bot_name": "Enter new bot name"
+    "enter_new_bot_name": "Enter new bot name",
+    "welcome_message": "You are logged in as: "
   },
   "not_found": {
     "404": "404 - Page Not Found",
@@ -74,5 +75,11 @@
     "email": "Email",
     "password": "Password",
     "register": "Register"
+  },
+  "login": {
+    "login_therapist": "Login Therapist",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login"
   }
 }

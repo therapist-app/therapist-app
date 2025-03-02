@@ -26,6 +26,8 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 
 import logo from '../../public/Therapist-App.png'
 import { useTranslation } from 'react-i18next'
+import { logoutTherapist } from '../store/therapistSlice'
+import { useAppDispatch } from '../utils/hooks'
 
 interface LayoutProps {
   children: ReactNode
@@ -36,6 +38,7 @@ const selectedColor = '#635BFF'
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -50,8 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
   const handleLogout = () => {
     handleMenuClose()
-    sessionStorage.removeItem('therapistId')
-    sessionStorage.removeItem('workspaceId')
+    dispatch(logoutTherapist())
     navigate('/login')
   }
 
@@ -189,7 +191,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <ListItem disablePadding sx={{ marginY: 1 }}>
           <ListItemButton
-            onClick={handleDashboard}
             sx={{
               borderRadius: 2,
               marginX: 2,

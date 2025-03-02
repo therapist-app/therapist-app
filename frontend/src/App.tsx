@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './generalComponents/Header'
 import Footer from './generalComponents/Footer'
 import Dashboard from './pages/dashboard/Dashboard'
@@ -25,10 +25,7 @@ const App = () => {
   }
 
   const RootComponent = () => {
-    const location = useLocation()
-    const queryParams = new URLSearchParams(location.search)
-    const workspaceId = queryParams.get('workspaceId')
-    return <Dashboard workspaceId={workspaceId} />
+    return <Dashboard />
   }
 
   return (
