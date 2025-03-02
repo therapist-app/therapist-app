@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PatientController {
 
-  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
+  private final Logger logger = LoggerFactory.getLogger(PatientController.class);
 
   private final PatientService patientService;
   private final TherapistService therapistService;
@@ -30,10 +30,8 @@ public class PatientController {
   public TherapistOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/therapists/patients");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    Therapist updatedTherapist =
-        patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist updatedTherapist = patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
 

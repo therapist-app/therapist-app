@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TherapistController {
 
-  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
+  private final Logger logger = LoggerFactory.getLogger(TherapistController.class);
 
   private final TherapistService therapistService;
 
@@ -32,8 +32,7 @@ public class TherapistController {
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
     logger.info("/therapists/me");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
   }
 
@@ -44,10 +43,8 @@ public class TherapistController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapists");
-    Therapist therapist =
-        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
-    Therapist createdTherapist =
-        therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
+    Therapist therapist = TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist createdTherapist = therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist).sortDTO();
   }
 
@@ -58,8 +55,8 @@ public class TherapistController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapists/login");
-    Therapist loggedInTherapist =
-        therapistService.loginTherapist(loginTherapistDTO, httpServletRequest, httpServletResponse);
+    Therapist loggedInTherapist = therapistService.loginTherapist(loginTherapistDTO, httpServletRequest,
+        httpServletResponse);
     System.out.println(loggedInTherapist.getPatients().size());
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
   }

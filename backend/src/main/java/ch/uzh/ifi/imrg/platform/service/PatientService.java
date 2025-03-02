@@ -18,13 +18,14 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PatientService {
 
-  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
+  private final Logger logger = LoggerFactory.getLogger(PatientService.class);
 
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -34,10 +35,9 @@ public class PatientService {
   }
 
   public Therapist createPatientForTherapist(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
