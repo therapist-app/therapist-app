@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
   boolean existsById(String id);
+
+  Patient getPatientById(String id);
 }
