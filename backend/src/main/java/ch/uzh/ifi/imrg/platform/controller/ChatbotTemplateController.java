@@ -9,12 +9,16 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.service.ChatbotTemplateService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/therapists/chatbot-templates")
 public class ChatbotTemplateController {
+
+  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
 
   private final ChatbotTemplateService chatbotTemplateService;
   private final TherapistService therapistService;
@@ -30,6 +34,7 @@ public class ChatbotTemplateController {
   public TherapistOutputDTO createTemplate(
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       HttpServletRequest httpServletRequest) {
+    logger.info("/therapists/chatbot-templates");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -46,6 +51,7 @@ public class ChatbotTemplateController {
       @PathVariable String templateId,
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       HttpServletRequest httpServletRequest) {
+    logger.info("/therapists/chatbot-templates/" + templateId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -60,6 +66,7 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO deleteTemplate(
       @PathVariable String templateId, HttpServletRequest httpServletRequest) {
+    logger.info("/therapists/chatbot-templates/" + templateId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -72,6 +79,7 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO cloneTemplate(
       @PathVariable String templateId, HttpServletRequest httpServletRequest) {
+    logger.info("/therapists/chatbot-templates/" + templateId + "/clone");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 

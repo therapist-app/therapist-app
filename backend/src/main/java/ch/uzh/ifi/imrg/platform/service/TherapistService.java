@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class TherapistService {
-  private final Logger log = LoggerFactory.getLogger(TherapistService.class);
+  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
 
   private final TherapistRepository therapistRepository;
 

@@ -6,6 +6,8 @@ import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ChatbotTemplateService {
+
+  private final Logger logger = LoggerFactory.getLogger(TherapistService.class);
 
   private final ChatbotTemplateRepository chatbotTemplateRepository;
   private final TherapistRepository therapistRepository;
