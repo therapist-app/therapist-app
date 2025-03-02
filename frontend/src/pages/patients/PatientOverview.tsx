@@ -53,9 +53,9 @@ const PatientsOverview: React.FC = () => {
   const [newPatientName, setNewPatientName] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'info' | 'success' | 'error' | 'warning'>(
-    'info'
-  )
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
   const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState(1)
   const rowsPerPage = 5
