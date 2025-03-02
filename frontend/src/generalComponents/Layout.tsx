@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -14,12 +14,15 @@ import {
   MenuItem,
   ListItemButton,
   ListItemIcon,
+  Collapse,
 } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import LogoutIcon from '@mui/icons-material/Logout'
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PeopleIcon from '@mui/icons-material/People'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 
 import logo from '../../public/Therapist-App.png'
 import { useTranslation } from 'react-i18next'
@@ -35,11 +38,12 @@ const selectedColor = '#635BFF'
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
-  const location = useLocation()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [openPatients, setOpenPatients] = useState(false)
+  const [selectedPatientItem, setSelectedPatientItem] = useState<string | null>(null)
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -57,8 +61,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     navigate('/settings')
   }
 
+  const handlePatientsClick = () => {
+    setOpenPatients(!openPatients)
+  }
+
   const handleListPatients = () => {
+    setSelectedPatientItem('list')
     navigate(`/patients`)
+  }
+  const handleCreatePatient = () => {
+    setSelectedPatientItem('create')
+    navigate('/patients/create')
+  }
+  const handlePatientDetails = () => {
+    setSelectedPatientItem('details')
+    navigate('/patients/patient-1234')
   }
 
   const menuId = 'primary-search-account-menu'
@@ -174,17 +191,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               borderRadius: 2,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              bgcolor: location.pathname === '/' ? selectedColor : 'inherit',
-              color: location.pathname === '/' ? '#fff' : '#9EA2A8',
+              bgcolor: selectedColor,
+              color: '#fff',
               '&:hover': {
-                bgcolor: location.pathname === '/' ? selectedColor : '#1D2336',
-                color: '#fff',
+                bgcolor: selectedColor,
               },
-              boxShadow: location.pathname === '/' ? 3 : 0,
+              boxShadow: 3,
             }}
-            onClick={() => navigate('/')}
           >
-            <ListItemIcon sx={{ color: location.pathname === '/' ? '#fff' : '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: '#fff' }}>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.overview')} />
@@ -206,47 +221,172 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <ListItem disablePadding sx={{ marginY: 0.5 }}>
           <ListItemButton
-            onClick={handleListPatients}
-            sx={{
-              borderRadius: 1,
-              marginX: 2,
-              maxWidth: 'calc(100% - 32px)',
-              color: location.pathname === '/patients' ? '#fff' : '#9EA2A8',
-              bgcolor: location.pathname === '/patients' ? selectedColor : 'inherit',
-              '&:hover': {
-                bgcolor: location.pathname === '/patients' ? selectedColor : '#1D2336',
-                color: '#fff',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: location.pathname === '/patients' ? '#fff' : '#9EA2A8' }}>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding sx={{ marginY: 0.5 }}>
-          <ListItemButton
             onClick={handleSettings}
             sx={{
               borderRadius: 1,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              color: location.pathname === '/settings' ? '#fff' : '#9EA2A8',
-              bgcolor: location.pathname === '/settings' ? selectedColor : 'inherit',
+              color: '#9EA2A8',
               '&:hover': {
-                bgcolor: location.pathname === '/settings' ? selectedColor : '#1D2336',
+                bgcolor: '#1D2336',
                 color: '#fff',
               },
             }}
           >
-            <ListItemIcon sx={{ color: location.pathname === '/settings' ? '#fff' : '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: '#9EA2A8' }}>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.settings')} style={{ marginLeft: -20 }} />
           </ListItemButton>
         </ListItem>
+
+        <ListItem disablePadding sx={{ marginY: 0.5 }}>
+          <ListItemButton
+            onClick={handlePatientsClick}
+            sx={{
+              borderRadius: 1,
+              marginX: 2,
+              maxWidth: 'calc(100% - 32px)',
+              color: '#9EA2A8',
+              '&:hover': {
+                bgcolor: '#1D2336',
+                color: '#fff',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: '#9EA2A8' }}>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
+            {openPatients ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+        </ListItem>
+
+        <Collapse in={openPatients} timeout='auto' unmountOnExit>
+          <Box sx={{ position: 'relative', mt: 1, mb: 1 }}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: '32px',
+                width: '1px',
+                bgcolor: '#8A94A6',
+              }}
+            />
+
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={handleListPatients}
+                sx={{
+                  ml: '48px',
+                  borderRadius: 2,
+                  maxWidth: '215px',
+                  marginLeft: '50px',
+                  position: 'relative',
+                  color: '#9EA2A8',
+                  '&:hover': {
+                    bgcolor: '#1A2030',
+                    color: '#fff',
+                  },
+                  ...(selectedPatientItem === 'list' && {
+                    bgcolor: selectedColor,
+                    color: '#fff',
+                    '&:hover': {
+                      bgcolor: selectedColor,
+                    },
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: '-19px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '4px',
+                      height: '16px',
+                      bgcolor: '#8A94A6',
+                    },
+                  }),
+                }}
+              >
+                <ListItemText primary='List patients' style={{ marginLeft: 20 }} />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={handleCreatePatient}
+                sx={{
+                  ml: '48px',
+                  borderRadius: 2,
+                  maxWidth: '215px',
+                  marginLeft: '50px',
+                  position: 'relative',
+                  color: '#9EA2A8',
+                  '&:hover': {
+                    bgcolor: '#1A2030',
+                    color: '#fff',
+                  },
+                  ...(selectedPatientItem === 'create' && {
+                    bgcolor: selectedColor,
+                    color: '#fff',
+                    '&:hover': {
+                      bgcolor: selectedColor,
+                    },
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: '-19px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '4px',
+                      height: '16px',
+                      bgcolor: '#8A94A6',
+                    },
+                  }),
+                }}
+              >
+                <ListItemText primary='Create patient' style={{ marginLeft: 20 }} />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={handlePatientDetails}
+                sx={{
+                  ml: '48px',
+                  borderRadius: 2,
+                  maxWidth: '215px',
+                  marginLeft: '50px',
+                  position: 'relative',
+                  color: '#9EA2A8',
+                  '&:hover': {
+                    bgcolor: '#1A2030',
+                    color: '#fff',
+                  },
+                  ...(selectedPatientItem === 'details' && {
+                    bgcolor: selectedColor,
+                    color: '#fff',
+                    '&:hover': {
+                      bgcolor: selectedColor,
+                    },
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: '-19px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '4px',
+                      height: '16px',
+                      bgcolor: '#8A94A6',
+                    },
+                  }),
+                }}
+              >
+                <ListItemText primary='Patient details' style={{ marginLeft: 20 }} />
+              </ListItemButton>
+            </ListItem>
+          </Box>
+        </Collapse>
       </Drawer>
 
       <Box
