@@ -40,39 +40,56 @@ const Register = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
+    <>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          gap: '32px',
+        }}
+      >
+        <Typography variant='h2'> {t('register.welcome')}</Typography>
         <Typography variant='h4' gutterBottom>
           {t('register.register_therapist')}
         </Typography>
-      </Box>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label={t('register.email')}
-          name='email'
-          type='email'
-          value={formData.email}
-          onChange={handleChange}
-          fullWidth
-          margin='normal'
-          required
-        />
-        <TextField
-          label={t('register.password')}
-          name='password'
-          type='password'
-          value={formData.password}
-          onChange={handleChange}
-          fullWidth
-          margin='normal'
-          required
-        />
-        {error && <Typography color='error'>{error}</Typography>}
-        <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          {t('register.register')}
+      </div>
+      <Container maxWidth='xs'>
+        <Box sx={{ textAlign: 'center' }}></Box>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label={t('register.email')}
+            name='email'
+            type='email'
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            margin='normal'
+            required
+          />
+          <TextField
+            label={t('register.password')}
+            name='password'
+            type='password'
+            value={formData.password}
+            onChange={handleChange}
+            fullWidth
+            margin='normal'
+            required
+          />
+          {error && <Typography color='error'>{error}</Typography>}
+          <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+            {t('register.register')}
+          </Button>
+        </form>
+      </Container>
+      <div style={{ display: 'flex', width: '100%', marginTop: '32px', justifyContent: 'center' }}>
+        <Button onClick={() => navigate('/login')} color='success' size='large' variant='contained'>
+          {t('register.go_login')}
         </Button>
-      </form>
-    </Container>
+      </div>
+    </>
   )
 }
 

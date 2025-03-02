@@ -24,15 +24,11 @@ interface Resources {
     layout: {
       dashboard: 'Dashboard'
       dashboards: 'Dashboards'
-      general: 'General'
-      settings: 'Settings'
-      patients: 'Patients'
-      list_patients: 'List Patients'
-      create_patient: 'Create Patient'
-      patient_details: 'Patient Details'
       logout: 'Log Out'
       overview: 'Overview'
       account: 'Account'
+      settings: 'Settings'
+      patients: 'Patients'
     }
     dashboard: {
       patient_register_success: 'Patient registered successfully.'
@@ -71,23 +67,27 @@ interface Resources {
       welcome_message: 'You are logged in as: '
     }
     not_found: {
-      title: '404 - Page Not Found'
+      '404': '404 - Page Not Found'
       message: "Oops! The page you're looking for doesn't exist."
     }
     patient_detail: {
       message: 'This is the patient detail page of patient with ID'
     }
     register: {
-      register_therapist: 'Register Therapist'
+      welcome: 'Welcome to the Therapist App'
+      register_therapist: 'Register as a new Therapist'
       email: 'Email'
       password: 'Password'
       register: 'Register'
+      go_login: 'Go to the Login instead'
     }
     login: {
-      login_therapist: 'Login Therapist'
+      welcome: 'Welcome to the Therapist App'
+      login_therapist: 'Login as a Therapist'
       email: 'Email'
       password: 'Password'
       login: 'Login'
+      go_registration: 'Go to Registration instead'
     }
   }
   ua: {
@@ -115,12 +115,6 @@ interface Resources {
     layout: {
       dashboard: 'Панель управління'
       dashboards: 'Панелі управління'
-      general: 'Загальні'
-      settings: 'Налаштування'
-      patients: 'Пацієнти'
-      list_patients: 'Список пацієнтів'
-      create_patient: 'Створити пацієнта'
-      patient_details: 'Деталі пацієнта'
       logout: 'Вийти'
       overview: 'Огляд'
       account: 'Обліковий запис'
@@ -159,7 +153,6 @@ interface Resources {
       rename_bot: 'Перейменувати бота'
       enter_new_name_for_bot: "Введіть нове ім'я для вашого бота."
       enter_new_bot_name: "Введіть нове ім'я бота"
-      welcome_message: 'Ви увійшли як: '
     }
     not_found: {
       title: '404 - Сторінку не знайдено'

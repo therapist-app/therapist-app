@@ -198,6 +198,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               },
               boxShadow: 3,
             }}
+            onClick={() => navigate('/')}
           >
             <ListItemIcon sx={{ color: '#fff' }}>
               <HomeIcon />
@@ -221,6 +222,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <ListItem disablePadding sx={{ marginY: 0.5 }}>
           <ListItemButton
+            onClick={handleListPatients}
+            sx={{
+              borderRadius: 1,
+              marginX: 2,
+              maxWidth: 'calc(100% - 32px)',
+              color: '#9EA2A8',
+              '&:hover': {
+                bgcolor: '#1D2336',
+                color: '#fff',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: '#9EA2A8' }}>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ marginY: 0.5 }}>
+          <ListItemButton
             onClick={handleSettings}
             sx={{
               borderRadius: 1,
@@ -239,154 +261,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ListItemText primary={t('layout.settings')} style={{ marginLeft: -20 }} />
           </ListItemButton>
         </ListItem>
-
-        <ListItem disablePadding sx={{ marginY: 0.5 }}>
-          <ListItemButton
-            onClick={handlePatientsClick}
-            sx={{
-              borderRadius: 1,
-              marginX: 2,
-              maxWidth: 'calc(100% - 32px)',
-              color: '#9EA2A8',
-              '&:hover': {
-                bgcolor: '#1D2336',
-                color: '#fff',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: '#9EA2A8' }}>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
-            {openPatients ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-        </ListItem>
-
-        <Collapse in={openPatients} timeout='auto' unmountOnExit>
-          <Box sx={{ position: 'relative', mt: 1, mb: 1 }}>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: '32px',
-                width: '1px',
-                bgcolor: '#8A94A6',
-              }}
-            />
-
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={handleListPatients}
-                sx={{
-                  ml: '48px',
-                  borderRadius: 2,
-                  maxWidth: '215px',
-                  marginLeft: '50px',
-                  position: 'relative',
-                  color: '#9EA2A8',
-                  '&:hover': {
-                    bgcolor: '#1A2030',
-                    color: '#fff',
-                  },
-                  ...(selectedPatientItem === 'list' && {
-                    bgcolor: selectedColor,
-                    color: '#fff',
-                    '&:hover': {
-                      bgcolor: selectedColor,
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: '-19px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '4px',
-                      height: '16px',
-                      bgcolor: '#8A94A6',
-                    },
-                  }),
-                }}
-              >
-                <ListItemText primary={t('layout.list_patients')} style={{ marginLeft: 20 }} />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={handleCreatePatient}
-                sx={{
-                  ml: '48px',
-                  borderRadius: 2,
-                  maxWidth: '215px',
-                  marginLeft: '50px',
-                  position: 'relative',
-                  color: '#9EA2A8',
-                  '&:hover': {
-                    bgcolor: '#1A2030',
-                    color: '#fff',
-                  },
-                  ...(selectedPatientItem === 'create' && {
-                    bgcolor: selectedColor,
-                    color: '#fff',
-                    '&:hover': {
-                      bgcolor: selectedColor,
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: '-19px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '4px',
-                      height: '16px',
-                      bgcolor: '#8A94A6',
-                    },
-                  }),
-                }}
-              >
-                <ListItemText primary={t('layout.create_patient')} style={{ marginLeft: 20 }} />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={handlePatientDetails}
-                sx={{
-                  ml: '48px',
-                  borderRadius: 2,
-                  maxWidth: '215px',
-                  marginLeft: '50px',
-                  position: 'relative',
-                  color: '#9EA2A8',
-                  '&:hover': {
-                    bgcolor: '#1A2030',
-                    color: '#fff',
-                  },
-                  ...(selectedPatientItem === 'details' && {
-                    bgcolor: selectedColor,
-                    color: '#fff',
-                    '&:hover': {
-                      bgcolor: selectedColor,
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: '-19px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '4px',
-                      height: '16px',
-                      bgcolor: '#8A94A6',
-                    },
-                  }),
-                }}
-              >
-                <ListItemText primary={t('layout.patient_details')} style={{ marginLeft: 20 }} />
-              </ListItemButton>
-            </ListItem>
-          </Box>
-        </Collapse>
       </Drawer>
 
       <Box

@@ -31,7 +31,6 @@ const App = () => {
   return (
     <Router>
       <div style={appContainerStyle}>
-        <Header />
         <main style={contentStyle}>
           <Routes>
             <Route path='/' element={<RootComponent />} />
@@ -53,7 +52,6 @@ const App = () => {
             <Route path='*' element={<NotFound />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   )
