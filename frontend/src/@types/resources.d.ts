@@ -27,11 +27,6 @@ interface Resources {
       logout: 'Log Out'
       overview: 'Overview'
       account: 'Account'
-<<<<<<< HEAD
-      settings: 'Settings'
-      patients: 'Patients'
-=======
->>>>>>> a31f528e5b50459e14e03a84a41e5ab456a61414
     }
     dashboard: {
       patient_register_success: 'Patient registered successfully.'
@@ -67,10 +62,7 @@ interface Resources {
       rename_bot: 'Rename Bot'
       enter_new_name_for_bot: 'Enter the new name for your bot.'
       enter_new_bot_name: 'Enter new bot name'
-<<<<<<< HEAD
-=======
       welcome_message: 'You are logged in as: '
->>>>>>> a31f528e5b50459e14e03a84a41e5ab456a61414
     }
     not_found: {
       '404': '404 - Page Not Found'
@@ -85,15 +77,12 @@ interface Resources {
       password: 'Password'
       register: 'Register'
     }
-<<<<<<< HEAD
-=======
     login: {
       login_therapist: 'Login Therapist'
       email: 'Email'
       password: 'Password'
       login: 'Login'
     }
->>>>>>> a31f528e5b50459e14e03a84a41e5ab456a61414
   }
   ua: {
     header: {
@@ -123,11 +112,6 @@ interface Resources {
       logout: 'Вийти'
       overview: 'Огляд'
       account: 'Обліковий запис'
-<<<<<<< HEAD
-      settings: 'Налаштування'
-      patients: 'Пацієнти'
-=======
->>>>>>> a31f528e5b50459e14e03a84a41e5ab456a61414
     }
     dashboard: {
       patient_register_success: 'Пацієнта успішно зареєстровано.'
@@ -180,8 +164,4 @@ interface Resources {
   }
 }
 
-<<<<<<< HEAD
 export default Resources
-=======
-export default Resources
->>>>>>> a31f528e5b50459e14e03a84a41e5ab456a61414
