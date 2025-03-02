@@ -7,6 +7,7 @@ import {
   Typography,
   SelectChangeEvent,
 } from '@mui/material'
+import Layout from '../../generalComponents/Layout'
 
 const Settings = () => {
   const { t, i18n } = useTranslation()
@@ -17,23 +18,25 @@ const Settings = () => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Typography variant='h4' gutterBottom>
-        {t('settings.title')}
-      </Typography>
-      <FormControl fullWidth>
-        <InputLabel id='language-select-label'>{t('settings.language')}</InputLabel>
-        <Select
-          labelId='language-select-label'
-          value={i18n.language}
-          label={t('settings.language')}
-          onChange={changeLanguage}
-        >
-          <MenuItem value='en'>English</MenuItem>
-          <MenuItem value='ua'>Українська</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
+    <Layout>
+      <div style={{ padding: '20px' }}>
+        <Typography variant='h4' gutterBottom>
+          {t('settings.title')}
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel id='language-select-label'>{t('settings.language')}</InputLabel>
+          <Select
+            labelId='language-select-label'
+            value={i18n.language}
+            label={t('settings.language')}
+            onChange={changeLanguage}
+          >
+            <MenuItem value='en'>English</MenuItem>
+            <MenuItem value='ua'>Українська</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+    </Layout>
   )
 }
 
