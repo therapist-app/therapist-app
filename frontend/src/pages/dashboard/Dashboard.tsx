@@ -59,11 +59,11 @@ const Dashboard = () => {
 
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
-  const [newPatientGender, setNewPatientGender] = useState('');
-  const [newPatientAge, setNewPatientAge] = useState('');
-  const [newPatientPhoneNumber, setNewPatientPhoneNumber] = useState('');
-  const [newPatientEmail, setNewPatientEmail] = useState('');
-  const [newPatientAddress, setNewPatientAddress] = useState('');
+  const [newPatientGender, setNewPatientGender] = useState('')
+  const [newPatientAge, setNewPatientAge] = useState('')
+  const [newPatientPhoneNumber, setNewPatientPhoneNumber] = useState('')
+  const [newPatientEmail, setNewPatientEmail] = useState('')
+  const [newPatientAddress, setNewPatientAddress] = useState('')
   const [newPatientDescription, setNewPatientDescription] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -86,27 +86,29 @@ const Dashboard = () => {
   }
 
   const handleClosePatientDialog = () => {
-    setOpenPatientDialog(false);
-    setNewPatientName('');
-    setNewPatientGender('');
-    setNewPatientAge('');
-    setNewPatientPhoneNumber('');
-    setNewPatientEmail('');
-    setNewPatientAddress('');
-    setNewPatientDescription('');
+    setOpenPatientDialog(false)
+    setNewPatientName('')
+    setNewPatientGender('')
+    setNewPatientAge('')
+    setNewPatientPhoneNumber('')
+    setNewPatientEmail('')
+    setNewPatientAddress('')
+    setNewPatientDescription('')
   }
 
   const handleCreatePatient = async () => {
     try {
-      dispatch(createPatientForTherapist({
-        name: newPatientName,
-        gender: newPatientGender,
-        age: newPatientAge,
-        phoneNumber: newPatientPhoneNumber,
-        email: newPatientEmail,
-        address: newPatientAddress,
-        description: newPatientDescription,
-      }))
+      dispatch(
+        createPatientForTherapist({
+          name: newPatientName,
+          gender: newPatientGender,
+          age: newPatientAge,
+          phoneNumber: newPatientPhoneNumber,
+          email: newPatientEmail,
+          address: newPatientAddress,
+          description: newPatientDescription,
+        })
+      )
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -408,25 +410,72 @@ const Dashboard = () => {
             value={newPatientName}
             onChange={(e) => setNewPatientName(e.target.value)}
           />
-          <FormControl fullWidth margin="dense">
-            <InputLabel id="patient-gender-label">{t('dashboard.patient_gender')}</InputLabel>
+          <FormControl fullWidth margin='dense'>
+            <InputLabel id='patient-gender-label'>{t('dashboard.patient_gender')}</InputLabel>
             <Select
-              labelId="patient-gender-label"
+              labelId='patient-gender-label'
               value={newPatientGender}
               onChange={(e) => setNewPatientGender(e.target.value)}
               label={t('dashboard.patient_gender')} // ✅ Ensure translation is passed to the label
             >
-              <MenuItem value="male">{t('dashboard.male')}</MenuItem>
-              <MenuItem value="female">{t('dashboard.female')}</MenuItem>
-              <MenuItem value="other">{t('dashboard.other')}</MenuItem>
+              <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
+              <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
+              <MenuItem value='other'>{t('dashboard.other')}</MenuItem>
             </Select>
           </FormControl>
 
-          <TextField margin='dense' id='patient-age' label={t('dashboard.patient_age')} type='number' fullWidth variant='outlined' value={newPatientAge} onChange={(e) => setNewPatientAge(e.target.value)} />
-          <TextField margin='dense' id='patient-phone-number' label={t('dashboard.patient_phone_number')} type='tel' fullWidth variant='outlined' value={newPatientPhoneNumber} onChange={(e) => setNewPatientPhoneNumber(e.target.value)} />
-          <TextField margin='dense' id='patient-email' label={t('dashboard.patient_email')} type='email' fullWidth variant='outlined' value={newPatientEmail} onChange={(e) => setNewPatientEmail(e.target.value)} />
-          <TextField margin='dense' id='patient-address' label={t('dashboard.patient_address')} type='text' fullWidth variant='outlined' value={newPatientAddress} onChange={(e) => setNewPatientAddress(e.target.value)} />
-          <TextField margin='dense' id='patient-description' label={t('dashboard.patient_description')} type='text' multiline rows={3} fullWidth variant='outlined' value={newPatientDescription} onChange={(e) => setNewPatientDescription(e.target.value)} />
+          <TextField
+            margin='dense'
+            id='patient-age'
+            label={t('dashboard.patient_age')}
+            type='number'
+            fullWidth
+            variant='outlined'
+            value={newPatientAge}
+            onChange={(e) => setNewPatientAge(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-phone-number'
+            label={t('dashboard.patient_phone_number')}
+            type='tel'
+            fullWidth
+            variant='outlined'
+            value={newPatientPhoneNumber}
+            onChange={(e) => setNewPatientPhoneNumber(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-email'
+            label={t('dashboard.patient_email')}
+            type='email'
+            fullWidth
+            variant='outlined'
+            value={newPatientEmail}
+            onChange={(e) => setNewPatientEmail(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-address'
+            label={t('dashboard.patient_address')}
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={newPatientAddress}
+            onChange={(e) => setNewPatientAddress(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-description'
+            label={t('dashboard.patient_description')}
+            type='text'
+            multiline
+            rows={3}
+            fullWidth
+            variant='outlined'
+            value={newPatientDescription}
+            onChange={(e) => setNewPatientDescription(e.target.value)}
+          />
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
