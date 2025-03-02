@@ -32,12 +32,22 @@ import { handleError } from '../../utils/handleError'
 import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import { useTranslation } from 'react-i18next'
 import api from '../../utils/api'
+import {
+  getCurrentlyLoggedInTherapist,
+  createPatientForTherapist,
+} from '../../store/therapistSlice'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import { useAppDispatch } from '../../utils/hooks'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
 
-  const [patients, setPatients] = useState<PatientOutputDTO[]>([])
+  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+  const patients: PatientOutputDTO[] = loggedInTherapist?.patientsOutputDTO || []
+
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -45,38 +55,18 @@ const PatientsOverview: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<
     'info' | 'success' | 'error' | 'warning'
   >('info')
-
   const [selected, setSelected] = useState<string[]>([])
-
   const [page, setPage] = useState(1)
   const rowsPerPage = 5
-
   const [tabValue, setTabValue] = useState(0)
+
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
 
-  const fetchTherapistPatients = async () => {
-    try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) {
-        throw new Error('No therapistId found in session storage.')
-      }
-      const response = await api.get(
-        `/therapists/${sessionStorage.getItem('therapistId')}/patients`
-      )
-      setPatients(response)
-    } catch (error) {
-      const errorMessage = handleError(error)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
-    }
-  }
-
   useEffect(() => {
-    fetchTherapistPatients()
-  }, [])
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch])
 
   const handleOpenPatientDialog = () => setOpenPatientDialog(true)
   const handleClosePatientDialog = () => {
@@ -86,13 +76,7 @@ const PatientsOverview: React.FC = () => {
 
   const handleCreatePatient = async () => {
     try {
-      const therapistId = sessionStorage.getItem('therapistId')
-      if (!therapistId) {
-        throw new Error('No therapistId found in session storage.')
-      }
-      await api.post(`/therapists/${therapistId}/patients`, newPatientName)
-      await fetchTherapistPatients()
-
+      await dispatch(createPatientForTherapist({ name: newPatientName }))
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -124,9 +108,8 @@ const PatientsOverview: React.FC = () => {
       setSnackbarMessage('Successfully deleted selected patient(s).')
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
-
       setSelected([])
-      fetchTherapistPatients()
+      dispatch(getCurrentlyLoggedInTherapist())
     } catch (error) {
       const errorMessage = handleError(error)
       setSnackbarMessage(errorMessage)
@@ -155,16 +138,13 @@ const PatientsOverview: React.FC = () => {
     boxShadow: '0 1px 2px rgba(16, 24, 40, 0.05)',
     border: '1px solid #E5E7EB',
   }
-
   const headerRowStyles = {
     mb: 2,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
   }
-
   const gradientBackground = 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)'
-
   const addButtonStyles = {
     borderRadius: '8px',
     textTransform: 'none',
@@ -177,7 +157,6 @@ const PatientsOverview: React.FC = () => {
       backgroundImage: 'none',
     },
   }
-
   const deleteButtonStyles = {
     textTransform: 'none',
     backgroundColor: '#F04438',
@@ -188,12 +167,10 @@ const PatientsOverview: React.FC = () => {
       backgroundColor: '#D92C20',
     },
   }
-
   const tabsContainerStyles = {
     mb: 2,
     borderBottom: '1px solid #E5E7EB',
   }
-
   const tabStyles = {
     textTransform: 'none',
     minWidth: 'auto',
@@ -205,7 +182,6 @@ const PatientsOverview: React.FC = () => {
       color: '#111827',
     },
   }
-
   const tableHeadStyles = {
     backgroundColor: '#fff',
     '& .MuiTableCell-root': {
@@ -215,7 +191,6 @@ const PatientsOverview: React.FC = () => {
       borderBottom: 'none',
     },
   }
-
   const tableBodyStyles = {
     '& .MuiTableRow-root': {
       borderBottom: '1px solid #E5E7EB',
@@ -226,19 +201,16 @@ const PatientsOverview: React.FC = () => {
       color: '#111827',
     },
   }
-
   const paginationRowStyles = {
     mt: 2,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
   }
-
   const dialogPaperStyles = {
     width: '500px',
     borderRadius: '12px',
   }
-
   const registerButtonStyles = {
     borderRadius: '8px',
     textTransform: 'none',
@@ -251,7 +223,6 @@ const PatientsOverview: React.FC = () => {
       backgroundImage: 'none',
     },
   }
-
   const cancelButtonStyles = {
     borderRadius: '8px',
     textTransform: 'none',
@@ -262,7 +233,6 @@ const PatientsOverview: React.FC = () => {
       backgroundColor: '#F9FAFB',
     },
   }
-
   const customUncheckedIcon = (
     <Box
       sx={{
@@ -273,7 +243,6 @@ const PatientsOverview: React.FC = () => {
       }}
     />
   )
-
   const customCheckedIcon = (
     <Box
       sx={{
@@ -289,7 +258,6 @@ const PatientsOverview: React.FC = () => {
       <CheckIcon sx={{ color: '#fff', fontSize: '18px' }} />
     </Box>
   )
-
   const headerUncheckedIcon = (
     <Box
       sx={{
@@ -300,7 +268,6 @@ const PatientsOverview: React.FC = () => {
       }}
     />
   )
-
   const headerIndeterminateIcon = (
     <Box
       sx={{
@@ -323,7 +290,6 @@ const PatientsOverview: React.FC = () => {
       />
     </Box>
   )
-
   const headerCheckedIcon = (
     <Box
       sx={{
@@ -417,7 +383,6 @@ const PatientsOverview: React.FC = () => {
                       checkedIcon={customCheckedIcon}
                     />
                   </TableCell>
-
                   <TableCell sx={{ py: 2, verticalAlign: 'middle' }}>
                     <Box display='flex' alignItems='center'>
                       <Avatar
@@ -438,9 +403,7 @@ const PatientsOverview: React.FC = () => {
                           sx={{
                             fontWeight: 600,
                             cursor: 'pointer',
-                            '&:hover': {
-                              textDecoration: 'underline',
-                            },
+                            '&:hover': { textDecoration: 'underline' },
                           }}
                           onClick={() => handlePatientClick(patient.id)}
                         >
@@ -469,7 +432,6 @@ const PatientsOverview: React.FC = () => {
           Rows per page: {rowsPerPage}{' '}
           {`${startIndex + 1}-${Math.min(endIndex, patients.length)} of ${patients.length}`}
         </Typography>
-
         <Pagination
           count={Math.ceil(patients.length / rowsPerPage)}
           page={page}
