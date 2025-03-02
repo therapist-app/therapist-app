@@ -142,21 +142,12 @@ const PatientsOverview: React.FC = () => {
   const endIndex = startIndex + rowsPerPage
   const paginatedPatients = patients.slice(startIndex, endIndex)
 
-  const handleCloseSnackbar = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') return
     setSnackbarOpen(false)
   }
 
   const allCount = patients.length || 5
-
-  const pageContainerStyles = {
-    backgroundColor: '#F9FAFB',
-    minHeight: '100vh',
-    p: 3,
-  }
 
   const tableCardStyles = {
     borderRadius: 3,
@@ -349,216 +340,208 @@ const PatientsOverview: React.FC = () => {
   )
 
   return (
-      <Layout>
-        <Box sx={headerRowStyles}>
-          <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Patients
-          </Typography>
-          <Box display='flex' alignItems='center'>
-            {selected.length > 0 && (
-              <>
-                <Typography sx={{ mr: 2 }}>{selected.length} selected</Typography>
-                <Button
-                  variant='contained'
-                  sx={{ ...deleteButtonStyles, mr: 2 }}
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
-            <Button
-              variant='contained'
-              startIcon={<AddIcon />}
-              onClick={handleOpenPatientDialog}
-              sx={addButtonStyles}
-            >
-              Add
-            </Button>
-          </Box>
-        </Box>
-
-        <Box sx={tabsContainerStyles}>
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            TabIndicatorProps={{ style: { backgroundColor: '#635BFF' } }}
-            sx={{ minHeight: '36px' }}
+    <Layout>
+      <Box sx={headerRowStyles}>
+        <Typography variant='h5' sx={{ fontWeight: 600 }}>
+          Patients
+        </Typography>
+        <Box display='flex' alignItems='center'>
+          {selected.length > 0 && (
+            <>
+              <Typography sx={{ mr: 2 }}>{selected.length} selected</Typography>
+              <Button
+                variant='contained'
+                sx={{ ...deleteButtonStyles, mr: 2 }}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            </>
+          )}
+          <Button
+            variant='contained'
+            startIcon={<AddIcon />}
+            onClick={handleOpenPatientDialog}
+            sx={addButtonStyles}
           >
-            <Tab label={`All ${allCount}`} sx={tabStyles} />
-          </Tabs>
+            Add
+          </Button>
         </Box>
+      </Box>
 
-        <TableContainer component={Paper} sx={tableCardStyles}>
-          <Table>
-            <TableHead sx={tableHeadStyles}>
-              <TableRow>
-                <TableCell padding='checkbox'>
-                  <Checkbox
-                    checked={selected.length === patients.length && patients.length > 0}
-                    indeterminate={
-                      selected.length > 0 && selected.length < patients.length
+      <Box sx={tabsContainerStyles}>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          TabIndicatorProps={{ style: { backgroundColor: '#635BFF' } }}
+          sx={{ minHeight: '36px' }}
+        >
+          <Tab label={`All ${allCount}`} sx={tabStyles} />
+        </Tabs>
+      </Box>
+
+      <TableContainer component={Paper} sx={tableCardStyles}>
+        <Table>
+          <TableHead sx={tableHeadStyles}>
+            <TableRow>
+              <TableCell padding='checkbox'>
+                <Checkbox
+                  checked={selected.length === patients.length && patients.length > 0}
+                  indeterminate={selected.length > 0 && selected.length < patients.length}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelected(patients.map((p) => p.id))
+                    } else {
+                      setSelected([])
                     }
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelected(patients.map((p) => p.id))
-                      } else {
-                        setSelected([])
-                      }
-                    }}
-                    icon={headerUncheckedIcon}
-                    checkedIcon={headerCheckedIcon}
-                    indeterminateIcon={headerIndeterminateIcon}
-                  />
-                </TableCell>
-                <TableCell>Name</TableCell>
-              </TableRow>
-            </TableHead>
+                  }}
+                  icon={headerUncheckedIcon}
+                  checkedIcon={headerCheckedIcon}
+                  indeterminateIcon={headerIndeterminateIcon}
+                />
+              </TableCell>
+              <TableCell>Name</TableCell>
+            </TableRow>
+          </TableHead>
 
-            <TableBody sx={tableBodyStyles}>
-              {paginatedPatients.length > 0 ? (
-                paginatedPatients.map((patient) => (
-                  <TableRow key={patient.id} hover>
-                    <TableCell padding='checkbox'>
-                      <Checkbox
-                        checked={selected.includes(patient.id)}
-                        onChange={() => handleSelectRow(patient.id)}
-                        icon={customUncheckedIcon}
-                        checkedIcon={customCheckedIcon}
-                      />
-                    </TableCell>
+          <TableBody sx={tableBodyStyles}>
+            {paginatedPatients.length > 0 ? (
+              paginatedPatients.map((patient) => (
+                <TableRow key={patient.id} hover>
+                  <TableCell padding='checkbox'>
+                    <Checkbox
+                      checked={selected.includes(patient.id)}
+                      onChange={() => handleSelectRow(patient.id)}
+                      icon={customUncheckedIcon}
+                      checkedIcon={customCheckedIcon}
+                    />
+                  </TableCell>
 
-                    <TableCell sx={{ py: 2, verticalAlign: 'middle' }}>
-                      <Box display='flex' alignItems='center'>
-                        <Avatar
+                  <TableCell sx={{ py: 2, verticalAlign: 'middle' }}>
+                    <Box display='flex' alignItems='center'>
+                      <Avatar
+                        sx={{
+                          width: 32,
+                          height: 32,
+                          mr: 1.5,
+                          fontSize: '0.9rem',
+                          backgroundColor: '#CBD5E1',
+                          color: '#111827',
+                        }}
+                      >
+                        {patient.name?.charAt(0).toUpperCase() || '?'}
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant='subtitle2'
                           sx={{
-                            width: 32,
-                            height: 32,
-                            mr: 1.5,
-                            fontSize: '0.9rem',
-                            backgroundColor: '#CBD5E1',
-                            color: '#111827',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            '&:hover': {
+                              textDecoration: 'underline',
+                            },
                           }}
+                          onClick={() => handlePatientClick(patient.id)}
                         >
-                          {patient.name?.charAt(0).toUpperCase() || '?'}
-                        </Avatar>
-                        <Box>
-                          <Typography
-                            variant='subtitle2'
-                            sx={{
-                              fontWeight: 600,
-                              cursor: 'pointer',
-                              '&:hover': {
-                                textDecoration: 'underline',
-                              },
-                            }}
-                            onClick={() => handlePatientClick(patient.id)}
-                          >
-                            {patient.name || 'Unnamed Patient'}
-                          </Typography>
-                        </Box>
+                          {patient.name || 'Unnamed Patient'}
+                        </Typography>
                       </Box>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    <Typography variant='body2' align='center' sx={{ py: 2 }}>
-                      {t('dashboard.no_patients_found')}
-                    </Typography>
+                    </Box>
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <Typography variant='body2' align='center' sx={{ py: 2 }}>
+                    {t('dashboard.no_patients_found')}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        <Box sx={paginationRowStyles}>
-          <Typography variant='body2' sx={{ color: '#6B7280' }}>
-            Rows per page: {rowsPerPage}{' '}
-            {`${startIndex + 1}-${Math.min(endIndex, patients.length)} of ${
-              patients.length
-            }`}
-          </Typography>
+      <Box sx={paginationRowStyles}>
+        <Typography variant='body2' sx={{ color: '#6B7280' }}>
+          Rows per page: {rowsPerPage}{' '}
+          {`${startIndex + 1}-${Math.min(endIndex, patients.length)} of ${patients.length}`}
+        </Typography>
 
-          <Pagination
-            count={Math.ceil(patients.length / rowsPerPage)}
-            page={page}
-            onChange={(_event, value) => setPage(value)}
-            sx={{
-              '& .MuiPaginationItem-root': {
-                borderRadius: '20px',
-                textTransform: 'none',
-                fontWeight: 500,
-                background: gradientBackground,
-                color: '#fff',
-                boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-                margin: '0 4px',
-                '&:hover': {
-                  backgroundColor: '#7C4DFF',
-                  backgroundImage: 'none',
-                },
-                '& .MuiPaginationItem-icon': {
-                  color: '#fff',
-                },
+        <Pagination
+          count={Math.ceil(patients.length / rowsPerPage)}
+          page={page}
+          onChange={(_event, value) => setPage(value)}
+          sx={{
+            '& .MuiPaginationItem-root': {
+              borderRadius: '20px',
+              textTransform: 'none',
+              fontWeight: 500,
+              background: gradientBackground,
+              color: '#fff',
+              boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
+              margin: '0 4px',
+              '&:hover': {
+                backgroundColor: '#7C4DFF',
+                backgroundImage: 'none',
               },
-            }}
+              '& .MuiPaginationItem-icon': {
+                color: '#fff',
+              },
+            },
+          }}
+        />
+      </Box>
+
+      <Dialog
+        open={openPatientDialog}
+        onClose={handleClosePatientDialog}
+        PaperProps={{ sx: dialogPaperStyles }}
+      >
+        <DialogTitle sx={{ fontWeight: 600 }}>New Customer</DialogTitle>
+        <DialogContent sx={{ mt: 1 }}>
+          <DialogContentText sx={{ mb: 1, color: '#6B7280' }}>
+            Enter the name of your new customer:
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='patient-name'
+            label='Customer Name'
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={newPatientName}
+            onChange={(e) => setNewPatientName(e.target.value)}
           />
-        </Box>
-
-        <Dialog
-          open={openPatientDialog}
-          onClose={handleClosePatientDialog}
-          PaperProps={{ sx: dialogPaperStyles }}
-        >
-          <DialogTitle sx={{ fontWeight: 600 }}>New Customer</DialogTitle>
-          <DialogContent sx={{ mt: 1 }}>
-            <DialogContentText sx={{ mb: 1, color: '#6B7280' }}>
-              Enter the name of your new customer:
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin='dense'
-              id='patient-name'
-              label='Customer Name'
-              type='text'
-              fullWidth
-              variant='outlined'
-              value={newPatientName}
-              onChange={(e) => setNewPatientName(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
-            <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleCreatePatient}
-              variant='contained'
-              sx={registerButtonStyles}
-              disabled={newPatientName.trim() === ''}
-            >
-              Register
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={snackbarSeverity}
-            sx={{ width: '100%' }}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
+          <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleCreatePatient}
+            variant='contained'
+            sx={registerButtonStyles}
+            disabled={newPatientName.trim() === ''}
           >
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-      </Layout>
+            Register
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Layout>
   )
 }
 
