@@ -39,6 +39,7 @@ import {
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
+import { AxiosError } from 'axios'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
@@ -52,9 +53,9 @@ const PatientsOverview: React.FC = () => {
   const [newPatientName, setNewPatientName] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'info' | 'success' | 'error' | 'warning'>(
+    'info'
+  )
   const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState(1)
   const rowsPerPage = 5
@@ -82,7 +83,7 @@ const PatientsOverview: React.FC = () => {
       setSnackbarOpen(true)
       handleClosePatientDialog()
     } catch (error) {
-      const errorMessage = handleError(error)
+      const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
       setSnackbarSeverity('error')
       setSnackbarOpen(true)
@@ -111,7 +112,7 @@ const PatientsOverview: React.FC = () => {
       setSelected([])
       dispatch(getCurrentlyLoggedInTherapist())
     } catch (error) {
-      const errorMessage = handleError(error)
+      const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
       setSnackbarSeverity('error')
       setSnackbarOpen(true)
