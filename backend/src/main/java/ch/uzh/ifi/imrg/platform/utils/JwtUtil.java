@@ -10,14 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import javax.crypto.SecretKey;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class JwtUtil {
-
-  @Value("${app.secureCookie}")
-  private boolean secureCookie;
 
   // Needs to be added as a secret environemt variable later
   private static final String BASE64_SECRET_KEY =
