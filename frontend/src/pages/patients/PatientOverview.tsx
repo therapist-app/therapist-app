@@ -23,6 +23,10 @@ import {
   Tabs,
   Tab,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   Typography,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -51,6 +55,12 @@ const PatientsOverview: React.FC = () => {
 
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
+  const [newPatientGender, setNewPatientGender] = useState('')
+  const [newPatientAge, setNewPatientAge] = useState<number | ''>('')
+  const [newPatientPhoneNumber, setNewPatientPhoneNumber] = useState('')
+  const [newPatientEmail, setNewPatientEmail] = useState('')
+  const [newPatientAddress, setNewPatientAddress] = useState('')
+  const [newPatientDescription, setNewPatientDescription] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<
@@ -77,7 +87,17 @@ const PatientsOverview: React.FC = () => {
 
   const handleCreatePatient = async () => {
     try {
-      await dispatch(createPatientForTherapist({ name: newPatientName }))
+      dispatch(
+        createPatientForTherapist({
+          name: newPatientName,
+          gender: newPatientGender,
+          age: Number(newPatientAge),
+          phoneNumber: newPatientPhoneNumber,
+          email: newPatientEmail,
+          address: newPatientAddress,
+          description: newPatientDescription,
+        })
+      )
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -208,22 +228,36 @@ const PatientsOverview: React.FC = () => {
     justifyContent: 'space-between',
     alignItems: 'center',
   }
-  const dialogPaperStyles = {
+  const dialogStyle = {
     width: '500px',
-    borderRadius: '12px',
+    height: '300px',
   }
-  const registerButtonStyles = {
-    borderRadius: '8px',
+  const commonButtonStyles = {
+    borderRadius: 20,
     textTransform: 'none',
-    background: gradientBackground,
-    color: '#fff',
-    fontWeight: 500,
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
+    lineHeight: 1.75,
+    backgroundColor: '#635BFF',
+    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
     boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
+    color: 'white',
     '&:hover': {
       backgroundColor: '#7C4DFF',
-      backgroundImage: 'none',
+    },
+    margin: 1,
+  }
+
+  const disabledButtonStyles = {
+    ...commonButtonStyles,
+    backgroundImage: 'lightgrey',
+    '&:hover': {
+      disabled: 'true',
     },
   }
+
   const cancelButtonStyles = {
     borderRadius: '8px',
     textTransform: 'none',
@@ -461,36 +495,102 @@ const PatientsOverview: React.FC = () => {
       <Dialog
         open={openPatientDialog}
         onClose={handleClosePatientDialog}
-        PaperProps={{ sx: dialogPaperStyles }}
+        PaperProps={{ sx: dialogStyle }}
       >
-        <DialogTitle sx={{ fontWeight: 600 }}>New Customer</DialogTitle>
+        <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
-          <DialogContentText sx={{ mb: 1, color: '#6B7280' }}>
-            Enter the name of your new customer:
+          <DialogContentText sx={{ mb: 1 }}>
+            {t('dashboard.enter_information_register_new_patient')}
           </DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='patient-name'
-            label='Customer Name'
+            label={t('dashboard.patient_name')}
             type='text'
             fullWidth
             variant='outlined'
             value={newPatientName}
             onChange={(e) => setNewPatientName(e.target.value)}
           />
+          <FormControl fullWidth margin='dense'>
+            <InputLabel id='patient-gender-label'>{t('dashboard.patient_gender')}</InputLabel>
+            <Select
+              labelId='patient-gender-label'
+              value={newPatientGender}
+              onChange={(e) => setNewPatientGender(e.target.value)}
+              label={t('dashboard.patient_gender')} // ✅ Ensure translation is passed to the label
+            >
+              <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
+              <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
+              <MenuItem value='other'>{t('dashboard.other')}</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            margin='dense'
+            id='patient-age'
+            label={t('dashboard.patient_age')}
+            type='number'
+            fullWidth
+            variant='outlined'
+            value={newPatientAge}
+            onChange={(e) => setNewPatientAge(e.target.value ? Number(e.target.value) : '')}
+          />
+          <TextField
+            margin='dense'
+            id='patient-phone-number'
+            label={t('dashboard.patient_phone_number')}
+            type='tel'
+            fullWidth
+            variant='outlined'
+            value={newPatientPhoneNumber}
+            onChange={(e) => setNewPatientPhoneNumber(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-email'
+            label={t('dashboard.patient_email')}
+            type='email'
+            fullWidth
+            variant='outlined'
+            value={newPatientEmail}
+            onChange={(e) => setNewPatientEmail(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-address'
+            label={t('dashboard.patient_address')}
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={newPatientAddress}
+            onChange={(e) => setNewPatientAddress(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-description'
+            label={t('dashboard.patient_description')}
+            type='text'
+            multiline
+            rows={3}
+            fullWidth
+            variant='outlined'
+            value={newPatientDescription}
+            onChange={(e) => setNewPatientDescription(e.target.value)}
+          />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
-            Cancel
+            {t('dashboard.cancel')}
           </Button>
           <Button
             onClick={handleCreatePatient}
             variant='contained'
-            sx={registerButtonStyles}
+            sx={newPatientName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
             disabled={newPatientName.trim() === ''}
           >
-            Register
+            {t('dashboard.register')}
           </Button>
         </DialogActions>
       </Dialog>
