@@ -14,8 +14,20 @@ public interface PatientMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "name", target = "name")
+  @Mapping(source = "gender", target = "gender")
+  @Mapping(source = "age", target = "age")
+  @Mapping(source = "phoneNumber", target = "phoneNumber")
+  @Mapping(source = "email", target = "email")
+  @Mapping(source = "address", target = "address")
+  @Mapping(source = "description", target = "description")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
   @Mapping(source = "name", target = "name")
+  @Mapping(source = "gender", target = "gender")
+  @Mapping(source = "age", target = "age")
+  @Mapping(source = "phoneNumber", target = "phoneNumber")
+  @Mapping(source = "email", target = "email")
+  @Mapping(source = "address", target = "address")
+  @Mapping(source = "description", target = "description")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 }

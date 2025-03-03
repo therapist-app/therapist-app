@@ -60,7 +60,7 @@ const Dashboard = () => {
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
   const [newPatientGender, setNewPatientGender] = useState('')
-  const [newPatientAge, setNewPatientAge] = useState('')
+  const [newPatientAge, setNewPatientAge] = useState<number | ''>('')
   const [newPatientPhoneNumber, setNewPatientPhoneNumber] = useState('')
   const [newPatientEmail, setNewPatientEmail] = useState('')
   const [newPatientAddress, setNewPatientAddress] = useState('')
@@ -102,7 +102,7 @@ const Dashboard = () => {
         createPatientForTherapist({
           name: newPatientName,
           gender: newPatientGender,
-          age: newPatientAge,
+          age: Number(newPatientAge),
           phoneNumber: newPatientPhoneNumber,
           email: newPatientEmail,
           address: newPatientAddress,
@@ -432,7 +432,7 @@ const Dashboard = () => {
             fullWidth
             variant='outlined'
             value={newPatientAge}
-            onChange={(e) => setNewPatientAge(e.target.value)}
+            onChange={(e) => setNewPatientAge(e.target.value ? Number(e.target.value) : '')}
           />
           <TextField
             margin='dense'
