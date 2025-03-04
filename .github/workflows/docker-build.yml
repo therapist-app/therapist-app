@@ -59,7 +59,7 @@ jobs:
   build-frontend:
     name: Build Frontend Docker Image
     runs-on: self-hosted
-    needs: [frontend-lint-and-typecheck, backend-format-check]
+    needs: [frontend-lint-and-typecheck]
     env:
       HUSKY: 0
     steps:
@@ -72,7 +72,7 @@ jobs:
   build-backend:
     name: Build Backend Docker Image
     runs-on: self-hosted
-    needs: [frontend-lint-and-typecheck, backend-format-check]
+    needs: [backend-format-check]
     env:
       HUSKY: 0
     steps:
@@ -81,3 +81,57 @@ jobs:
 
       - name: Build Backend Image with Cache
         run: docker build -t backend-test-build ./backend
+
+  sonarcloud-frontend-analysis:
+    name: SonarCloud Frontend Analysis
+    runs-on: self-hosted
+    needs: [frontend-lint-and-typecheck]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run SonarCloud Analysis for Frontend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd frontend
+          npx sonarqube-scanner \
+            -Dsonar.projectKey=therapist-app_therapist-app \
+            -Dsonar.organization=therapist-app \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+
+  sonarcloud-backend-analysis:
+    name: SonarCloud Backend Analysis
+    runs-on: self-hosted
+    needs: [backend-format-check]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Run SonarCloud Analysis for Backend
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd backend
+          ./gradlew sonarqube \
+            -Dsonar.projectKey=therapist-app_therapist-app \
+            -Dsonar.organization=therapist-app \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
