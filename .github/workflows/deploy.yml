@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-restart:
-    runs-on: [self-hosted, PC147]
+    runs-on: [self-hosted, k3s]
 
     steps:
       - name: Checkout repository
