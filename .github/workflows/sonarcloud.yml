@@ -9,7 +9,7 @@ on:
 jobs:
   sonarqube-backend:
     name: SonarQube Backend
-    runs-on: self-hosted
+    runs-on: [self-hosted, non-k3s]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,7 +39,7 @@ jobs:
 
   sonarqube-frontend:
     name: SonarQube Frontend
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, non-k3s]
     steps:
       - uses: actions/checkout@v4
         with:
