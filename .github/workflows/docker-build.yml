@@ -8,7 +8,7 @@ on:
 jobs:
   frontend-lint-and-typecheck:
     name: Run Type Checking, Linting, and Prettier
-    runs-on: self-hosted
+    runs-on: [self-hosted, k3s]
     env:
       HUSKY: 0
     steps:
@@ -37,7 +37,7 @@ jobs:
 
   backend-format-check:
     name: Check Java Formatting
-    runs-on: self-hosted
+    runs-on: [self-hosted, k3s]
     env:
       HUSKY: 0
     steps:
@@ -57,7 +57,7 @@ jobs:
 
   build-frontend:
     name: Build Frontend Docker Image
-    runs-on: self-hosted
+    runs-on: [self-hosted, k3s]
     needs: [frontend-lint-and-typecheck]
     env:
       HUSKY: 0
@@ -70,7 +70,7 @@ jobs:
 
   build-backend:
     name: Build Backend Docker Image
-    runs-on: self-hosted
+    runs-on: [self-hosted, k3s]
     needs: [backend-format-check]
     env:
       HUSKY: 0
