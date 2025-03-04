@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - production
 
 jobs:
   frontend-lint-and-typecheck:
@@ -59,7 +58,7 @@ jobs:
   build-frontend:
     name: Build Frontend Docker Image
     runs-on: self-hosted
-    needs: [frontend-lint-and-typecheck, backend-format-check]
+    needs: [frontend-lint-and-typecheck]
     env:
       HUSKY: 0
     steps:
@@ -72,7 +71,7 @@ jobs:
   build-backend:
     name: Build Backend Docker Image
     runs-on: self-hosted
-    needs: [frontend-lint-and-typecheck, backend-format-check]
+    needs: [backend-format-check]
     env:
       HUSKY: 0
     steps:
