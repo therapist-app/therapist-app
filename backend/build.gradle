@@ -71,11 +71,11 @@ bootJar {
 }
 
 sonar {
-	properties {
-    property "sonar.projectKey", "therapist-app_therapist-app"
-    property "sonar.organization", "therapist-app"
-    property "sonar.host.url", "https://sonarcloud.io"
-  }
+	 properties {
+        property "sonar.projectKey", "therapist-app_backend"
+        property "sonar.organization", "therapist-app"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 test {
