@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: therapist-app-frontend-lb
+  name: therapist-app-frontend-ingress
 spec:
   rules:
-    - host: <BASE_URL_BY_PATCH>
+    - host: therapist-app-main.jonas-blum.ch
       http:
         paths:
           - path: /

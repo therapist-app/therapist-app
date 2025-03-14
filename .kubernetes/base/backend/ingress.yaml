@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: therapist-app-backend-lb
+  name: therapist-app-backend-ingress
 spec:
   rules:
-    - host: <BASE_URL_BY_PATCH>
+    - host: backend-therapist-app-main.jonas-blum.ch # Default host, overridden in overlays
       http:
         paths:
           - path: /
@@ -13,4 +13,4 @@ spec:
               service:
                 name: therapist-app-backend-service
                 port:
-                  number: 8080
+                  number: 80
