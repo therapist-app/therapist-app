@@ -1,7 +1,5 @@
 resources:
-  - ../../../base/backend/deployment.yaml
-  - ../../../base/backend/service.yaml
-  - ../../../base/backend/ingress.yaml
+  - ../../base/backend
 
 namespace: therapist-app-main
 

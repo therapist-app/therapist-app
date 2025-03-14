@@ -1,7 +1,5 @@
 resources:
-  - ../../../base/frontend/deployment.yaml
-  - ../../../base/frontend/service.yaml
-  - ../../../base/frontend/ingress.yaml
+  - ../../base/frontend
 
 namespace: therapist-app-production
 
