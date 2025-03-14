@@ -1,6 +1,6 @@
 resources:
   - ../../../base/backend
-  - ../namespace.yaml
+  - ../../namespace.yaml
 
 namespace: therapist-app-production
 
