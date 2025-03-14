@@ -58,3 +58,4 @@ jobs:
 
             kubectl rollout restart deployment/therapist-app-backend -n therapist-app-production
             kubectl rollout restart deployment/therapist-app-frontend -n therapist-app-production
+          fi
