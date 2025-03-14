@@ -17,4 +17,35 @@ spec:
           image: jonasblum/therapist-app-backend-main
           ports:
             - containerPort: 8080
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: therapist-app-backend-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: therapist-app-backend-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: therapist-app-backend-config
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: therapist-app-backend-config
+                  key: DB_USERNAME
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: therapist-app-backend-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: therapist-app-backend-secret
+                  key: DB_PASSWORD
       nodeName: pc147

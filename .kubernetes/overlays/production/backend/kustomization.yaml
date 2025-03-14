@@ -1,8 +1,24 @@
 resources:
   - ../../../base/backend
   - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
 
 namespace: therapist-app-production
+
+configMapGenerator:
+  - name: therapist-app-backend-config
+    literals:
+      - DB_HOST=192.168.1.147
+      - DB_PORT=5432
+      - DB_NAME=therapist_app_production_db
+      - DB_USERNAME=postgres
+
+secretGenerator:
+  - name: therapist-app-backend-secret
+    envs:
+      - env.secrets
+    type: Opaque
 
 images:
   - name: jonasblum/therapist-app-backend-production
