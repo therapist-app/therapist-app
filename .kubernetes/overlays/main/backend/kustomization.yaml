@@ -1,5 +1,5 @@
 resources:
-  - ../../base/backend
+  - ../../../base/backend
 
 namespace: therapist-app-main
 

@@ -1,5 +1,5 @@
 resources:
-  - ../../base/frontend
+  - ../../../base/frontend
 
 namespace: therapist-app-production
 
