@@ -38,11 +38,6 @@ spec:
                 configMapKeyRef:
                   name: therapist-app-backend-config
                   key: DB_USERNAME
-            - name: DB_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: therapist-app-backend-config
-                  key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
