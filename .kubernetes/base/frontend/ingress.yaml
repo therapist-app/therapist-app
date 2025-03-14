@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: therapist-app-frontend-lb
+spec:
+  rules:
+    - host: <BASE_URL_BY_PATCH>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: therapist-app-frontend-service
+                port:
+                  number: 80

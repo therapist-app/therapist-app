@@ -1,0 +1,16 @@
+resources:
+  - ../../../base/frontend/deployment.yaml
+  - ../../../base/frontend/service.yaml
+  - ../../../base/frontend/ingress.yaml
+
+namespace: therapist-app-main
+
+images:
+  - name: jonasblum/therapist-app-frontend-main
+    newTag: latest
+
+patches:
+  - target:
+      kind: Ingress
+      name: therapist-app-frontend-ingress
+    path: patch-ingress.json

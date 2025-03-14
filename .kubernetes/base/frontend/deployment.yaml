@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: therapist-app-frontend
+  labels:
+    app: therapist-app-frontend
+    group: therapist-app-frontend
+spec:
+  template:
+    metadata:
+      labels:
+        app: therapist-app-frontend
+    spec:
+      containers:
+        - image: jonasblum/therapist-app-frontend-main:latest
+          imagePullPolicy: Always
+          name: therapist-app-frontend
+
+          envFrom:
+            - configMapRef:
+                name: therapist-app-shared-configmap
+            - configMapRef:
+                name: therapist-app-frontend-configmap
+            - secretRef:
+                name: therapist-app-shared-secrets
+  selector:
+    matchLabels:
+      app: therapist-app-frontend
