@@ -1,0 +1,29 @@
+resources:
+  - ../../../base/backend
+  - namespace.yaml
+
+namespace: therapist-app-main
+
+configMapGenerator:
+  - name: therapist-app-backend-config
+    literals:
+      - DB_HOST=192.168.1.147
+      - DB_PORT=5432
+      - DB_NAME=therapist_app_main_db
+      - DB_USERNAME=postgres
+
+secretGenerator:
+  - name: therapist-app-backend-secret
+    envs:
+      - env.secrets
+    type: Opaque
+
+images:
+  - name: jonasblum/therapist-app-backend-main
+    newTag: latest
+
+patches:
+  - target:
+      kind: Ingress
+      name: therapist-app-backend-ingress
+    path: patch-ingress.json

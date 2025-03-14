@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: therapist-app-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: therapist-app-frontend
+  template:
+    metadata:
+      labels:
+        app: therapist-app-frontend
+    spec:
+      containers:
+        - name: therapist-app-frontend
+          image: jonasblum/therapist-app-frontend-main
+          ports:
+            - containerPort: 80
+      nodeName: pc147

@@ -20,30 +20,41 @@ jobs:
             echo "BRANCH=main" >> $GITHUB_ENV
             echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-main:latest" >> $GITHUB_ENV
             echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-main:latest" >> $GITHUB_ENV
-            echo "FRONTEND_DEPLOYMENT=therapist-fe-m" >> $GITHUB_ENV
-            echo "BACKEND_DEPLOYMENT=therapist-be-m" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
             echo "BRANCH=production" >> $GITHUB_ENV
             echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-production:latest" >> $GITHUB_ENV
             echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-production:latest" >> $GITHUB_ENV
-            echo "FRONTEND_DEPLOYMENT=therapist-fe-p" >> $GITHUB_ENV
-            echo "BACKEND_DEPLOYMENT=therapist-be-p" >> $GITHUB_ENV
           fi
 
-      - name: Build and Push Frontend Image (Standard Docker)
+      - name: Build Images for Frontend and Backend
         run: |
           docker build --build-arg ENV_NAME=${{ env.BRANCH }} -t ${{ env.FRONTEND_IMAGE }} frontend/.
-
-      - name: Build and Push Backend Image (Standard Docker)
-        run: |
           docker build -t ${{ env.BACKEND_IMAGE }} backend/.
 
-      - name: Restart Kubernetes Deployments
+      - name: Push Images for Frontend and Backend
         run: |
           docker push ${{ env.FRONTEND_IMAGE }}
           docker push ${{ env.BACKEND_IMAGE }}
 
-          kubectl set image deployment/${{ env.FRONTEND_DEPLOYMENT }} ${{ env.FRONTEND_DEPLOYMENT }}=${{ env.FRONTEND_IMAGE }}
-          kubectl set image deployment/${{ env.BACKEND_DEPLOYMENT }} ${{ env.BACKEND_DEPLOYMENT }}=${{ env.BACKEND_IMAGE }}
-          kubectl rollout restart deployment/${{ env.FRONTEND_DEPLOYMENT }}
-          kubectl rollout restart deployment/${{ env.BACKEND_DEPLOYMENT }}
+      - name: Restart Kubernetes Deployments
+        env:
+          DB_PASSWORD_MAIN: ${{ secrets.DB_PASSWORD_MAIN }}
+          DB_PASSWORD_PRODUCTION: ${{ secrets.DB_PASSWORD_PRODUCTION }}
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "DB_PASSWORD=$DB_PASSWORD_MAIN" > .kubernetes/overlays/main/backend/env.secrets
+            
+            kubectl apply -k .kubernetes/overlays/main/backend
+            kubectl apply -k .kubernetes/overlays/main/frontend
+
+            kubectl rollout restart deployment/therapist-app-backend -n therapist-app-main
+            kubectl rollout restart deployment/therapist-app-frontend -n therapist-app-main
+
+          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then 
+            echo "DB_PASSWORD=$DB_PASSWORD_PRODUCTION" > .kubernetes/overlays/production/backend/env.secrets
+            
+            kubectl apply -k .kubernetes/overlays/production/backend
+            kubectl apply -k .kubernetes/overlays/production/frontend
+
+            kubectl rollout restart deployment/therapist-app-backend -n therapist-app-production
+            kubectl rollout restart deployment/therapist-app-frontend -n therapist-app-production
