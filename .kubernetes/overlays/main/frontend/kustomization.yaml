@@ -5,7 +5,8 @@ resources:
 namespace: therapist-app-main
 
 images:
-  - name: jonasblum/therapist-app-frontend-main
+  - name: jonasblum/image-to-be-replaced-depending-on-environment
+    newName: jonasblum/therapist-app-frontend-main
     newTag: latest
 
 patches:
