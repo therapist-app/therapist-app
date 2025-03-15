@@ -8,10 +8,10 @@
 2. Install docker and docker compose
 3. `cd backend`
 4. `docker compose up -d` or (`docker-compose up -d`)
-5. Visit `http://localhost:5050` in your browser to check if the database is running (email: admin@admin.com, password: admin)
+5. Visit `http://localhost:5050` in your browser to check if the database is running (email: <admin@admin.com>, password: admin)
 6. On `http://localhost:5050` connect to DB -> right click "Servers" -> "Register Server" -> "name" = `therapy`, "Host name/address" = `therapy-postgres`, "Port" = `5432`, "Username" = `therapy-user`, "Password" = `therapy-password`, and "Save Password?" = `Yes`
 7. `./gradlew bootRun`
-8. Visit `http://localhost:8080/therapists` -> you should see a list with three therapists
+8. Visit <http://localhost:8080> -> it should say: "The application is running."
 
 ## Frontend
 
@@ -21,22 +21,48 @@
 2. `cd frontend`
 3. `npm install`
 4. `npm run dev`
-5. Visit `http://localhost:5173` in your browser, you should see a list with three therapists
-6. Go to the register page (`http://localhost:5173/register`) and try creating a new therapist
+5. Visit <http://localhost:5173/register> and register as a new therapist
+
+## Environment Variables
+
+###  Frontend
+
+- In the frontend there are ususally no secrets (as all of the code is sent to the client anyways)
+- To add a new environment variable, add it to the `.env` file in the frontend folder and to the `.env.production.main` and `.env.production.production` files
+- When building the docker image, the environment variables from the `.env.production.main` and `.env.production.production` files are automatically added to the built image
+
+### Backend
+
+###  Non-Secret Environment Variables
+
+1. To add a new non-secret environment variable, add it to the `application-dev.properties.example`, `application-dev.properties` and `application-prod.properties` files in the backend folder.
+2. Additionally add the .env variables to the `.kubernetes/overlays/main/backend/kustomization.yaml` and `.kubernetes/overlays/production/backend/kustomization.yaml` files under the configMapGenerator section (for the main and production environments)
+3. Add the new environment variable to the `backend/src/main/java/ch/uzh/ifi/imrg/platform/utils/EnvironmentVariables.java` file so it can be easily accessed in the code
+
+###  Secret Environment Variables
+
+1. To add a new non-secret environment variable, add it to the `application-dev.properties.example`, `application-dev.properties` and `application-prod.properties` files in the backend folder.
+2. Additionally add the .env variable as a repository secret in Github under `Settings` -> `Secrets and variables` -> `New repository secret`. Add it for both main and production environments. E.g. `DB_PASSWORD_MAIN` and `DB_PASSWORD_PRODUCTION`
+3. In the `.github/workflows/deploy.yml` file under the `Restart Kubernetes Deployments` section add the new secret to env section and echo it to the kubernetes overlays file in the main and production environments (see current implementation for reference)
+4. Add the new environment variable to the `backend/src/main/java/ch/uzh/ifi/imrg/platform/utils/EnvironmentVariables.java` file so it can be easily accessed in the code
 
 ## Main and Production Environments
 
+###  Main Environment
+
 - The "main" environment shows the latest changes on the main branch
-- main environment frontend: https://therapist-app-main.jonas-blum.ch/
-- main environment backend: https://backend-therapist-app-main.jonas-blum.ch/
+- Frontend: <https://therapist-app-main.jonas-blum.ch/>
+- Backend: <https://backend-therapist-app-main.jonas-blum.ch/>
+
+### Production Environment
+
 - The "production" environment shows the latest changes on the production branch
-- production environment frontend: https://therapist-app-production.jonas-blum.ch/
-- production environment backend: https://backend-therapist-app-production.jonas-blum.ch/
+- Frontend: <https://therapist-app-production.jonas-blum.ch/>
+- Backend: <https://backend-therapist-app-production.jonas-blum.ch/>
 
 ## Pre-Commit Hooks
 
-- so you get automatic code formatting before every commit
-- for convenience and to keep the codebase clean
+- Automatically formats your code before every commit
 - on Github actions the code formatting is also checked -> so either you need to do it manually or automatically whenever you are committing code
 
 1. `cd frontend`
@@ -44,7 +70,7 @@
 3. `npm run prepare`
 4. Now whenver you commit code in the frontend the code will be formatted automatically
 
-### Running Code formatting manually (not needed if you have pre-commit hooks setup):
+### Running Code formatting manually (not needed if you have pre-commit hooks setup)
 
 1. `cd frontend`
 2. `npm run fix-all`
@@ -61,12 +87,12 @@
 5. Add the issue number to the pull request title (e.g. `5: Create login/register endpoint`)
 6. In the description of the pull request, add `-closes #5` to automatically close the issue when the pull request is merged
 7. Assign the pull request to yourself
-8. When you are done with the implementation do the file formatting for the frontend/backend wherever you worked on (formatting is applied automatically if you have the pre-commit hooks setup -> see other chapter, if not do it manually like so):
+8. When you are done with the implementation do the file formatting for the frontend/backend wherever you worked on (formatting is applied automatically if you have the pre-commit hooks setup):
 
 - For the frontend (inside the /frontend folder): `npm run fix-all`
 - For the backend (inside the /backend folder): `./gradlew spotlessApply`
 
-8. After applying the file formatting take a look at the changes of the pull request in Github under "File changed" to see that everything is correct
+8. After applying the file formatting take a look at the changes of the pull request in Github under "Files changed" to see that everything is correct
 9. If everything is correct, merge the pull request with the option "Squash and merge" (so we have a nice history with one commit per issue -> otherwise the commit history is bloated with commits)
 10. (Optional) If you cannot merge your branch into main due to a conflict do the following steps:
 
@@ -78,6 +104,6 @@
 - Do a force push of your branch `git push -f`
 - Now the conflicts should be solved and you can merge your branch into main through Github (with the option "Squash and merge")
 
-## How to update the production branch:
+## How to update the production branch
 
 `git push --force origin main:production`
