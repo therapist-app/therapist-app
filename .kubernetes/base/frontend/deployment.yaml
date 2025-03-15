@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: therapist-app-frontend
-          image: jonasblum/therapist-app-frontend-main
+          image: jonasblum/image-to-be-replaced-depending-on-environment
           ports:
             - containerPort: 80
       nodeName: pc147

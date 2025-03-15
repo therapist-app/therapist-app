@@ -5,7 +5,8 @@ resources:
 namespace: therapist-app-production
 
 images:
-  - name: jonasblum/therapist-app-frontend-production
+  - name: jonasblum/image-to-be-replaced-depending-on-environment
+    newName: jonasblum/therapist-app-frontend-production
     newTag: latest
 
 patches:
