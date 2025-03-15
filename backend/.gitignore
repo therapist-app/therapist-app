@@ -18,3 +18,5 @@ build/
 *.lock
 
 *.env
+
+src/main/resources/application-dev.properties
