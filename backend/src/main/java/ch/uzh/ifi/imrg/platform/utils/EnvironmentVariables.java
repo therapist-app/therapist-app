@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnvironmentVariables {
 
-    private static String jwtSecretKey;
+  private static String jwtSecretKey;
 
-    @Autowired
-    public EnvironmentVariables(@Value("${JWT_SECRET_KEY}") String jwtSecretKey) {
-        EnvironmentVariables.jwtSecretKey = jwtSecretKey;
-    }
+  @Autowired
+  public EnvironmentVariables(@Value("${JWT_SECRET_KEY}") String jwtSecretKey) {
+    EnvironmentVariables.jwtSecretKey = jwtSecretKey;
+  }
 
-    public static String getJwtSecretKey() {
-        return jwtSecretKey;
-    }
+  public static String getJwtSecretKey() {
+    return jwtSecretKey;
+  }
 }

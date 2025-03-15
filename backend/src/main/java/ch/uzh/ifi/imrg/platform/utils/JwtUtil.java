@@ -28,7 +28,8 @@ public class JwtUtil {
 
     SecretKey key = getSecretKey();
 
-    String jwt = Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
+    String jwt =
+        Jwts.builder().subject(email).issuedAt(now).expiration(exp).signWith(key).compact();
     return jwt;
   }
 
