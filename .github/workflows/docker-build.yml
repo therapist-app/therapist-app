@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Frontend Image with Cache
-        run: docker build -t frontend-test-build ./frontend
+        run: docker build -t frontend-therapist-app-test-build ./frontend
 
   build-backend:
     name: Build Backend Docker Image
@@ -79,4 +79,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Backend Image with Cache
-        run: docker build -t backend-test-build ./backend
+        run: docker build -t backend-therapist-app-test-build ./backend
