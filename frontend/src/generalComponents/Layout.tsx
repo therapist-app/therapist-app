@@ -47,7 +47,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [openPatients, setOpenPatients] = useState(false)
+  const [openPatients, setOpenPatients] = useState(location.pathname.startsWith('/patients'))
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -67,6 +67,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handlePatientsClick = () => {
     setOpenPatients(!openPatients)
+    if (!location.pathname.startsWith('/patients')) {
+      navigate('/patients')
+    }
   }
 
   const handleListPatients = () => {
@@ -232,7 +235,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
               '&:hover': {
-                bgcolor: location.pathname === '/patients' ? selectedColor : '#1D2336',
                 color: '#fff',
               },
             }}
