@@ -1,6 +1,7 @@
 # Maven / Gradle
 target/
 build/
+bin/
 
 .gradle/
 

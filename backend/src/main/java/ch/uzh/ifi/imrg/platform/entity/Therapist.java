@@ -95,4 +95,5 @@ public class Therapist implements Serializable {
   public LocalDateTime getUpdatedAt() {
     return updatedAt;
   }
+
 }
