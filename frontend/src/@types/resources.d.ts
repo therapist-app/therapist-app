@@ -86,6 +86,9 @@ interface Resources {
     patient_detail: {
       message: 'This is the patient detail page of patient with ID'
     }
+    patient_create: {
+      title: 'This is the page to create a new patient'
+    }
     register: {
       welcome: 'Welcome to the Therapist App'
       register_therapist: 'Register as a new Therapist'

@@ -10,6 +10,7 @@ import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import ChatBotTemplateCreate from './pages/chatBotTemplate/ChatBotTemplateCreate'
 import PatientDetail from './pages/patients/PatientDetail'
 import Settings from './pages/settings/settings.tsx'
+import PatientCreate from './pages/patients/PatientCreate.tsx'
 
 const App = () => {
   const appContainerStyle = {
@@ -35,6 +36,7 @@ const App = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/patients' element={<PatientsOverview />} />
+            <Route path='/patients/create' element={<PatientCreate />} />
             <Route path='/patients/:patientId' element={<PatientDetail />} />
             <Route path='/patients/:patientId/chatBot/create' element={<PatientChatBotCreate />} />
             <Route
