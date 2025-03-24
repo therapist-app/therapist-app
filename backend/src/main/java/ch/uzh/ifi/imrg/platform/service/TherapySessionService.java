@@ -4,17 +4,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.h2.engine.Session;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapySessionRepository;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapistDTO;
+
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapySessionDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

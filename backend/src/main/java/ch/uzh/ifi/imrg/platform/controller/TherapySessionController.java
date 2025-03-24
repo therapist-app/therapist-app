@@ -43,28 +43,9 @@ public class TherapySessionController {
             HttpServletResponse httpServletResponse) {
         logger.info("/sessions");
         Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    
-     
-        TherapySession createdSession = sessionService.c
+
+        TherapySession createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+        return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(createdSession);
     }
 
-    @PostMapping("/therapists/login")
-    @ResponseStatus(HttpStatus.OK)
-    public TherapistOutputDTO loginTherapist(
-            @RequestBody LoginTherapistDTO loginTherapistDTO,
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse) {
-        logger.info("/therapists/login");
-        Therapist loggedInTherapist = therapistService.loginTherapist(loginTherapistDTO, httpServletRequest,
-                httpServletResponse);
-        System.out.println(loggedInTherapist.getPatients().size());
-        return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
-    }
-
-    @PostMapping("/therapists/logout")
-    @ResponseStatus(HttpStatus.OK)
-    public void logoutTherapist(HttpServletResponse httpServletResponse) {
-        logger.info("/therapists/logout");
-        therapistService.logoutTherapist(httpServletResponse);
-    }
 }
