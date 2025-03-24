@@ -31,8 +31,10 @@ public class PatientController {
   public TherapistOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/therapists/patients");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    Therapist updatedTherapist = patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist updatedTherapist =
+        patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
 

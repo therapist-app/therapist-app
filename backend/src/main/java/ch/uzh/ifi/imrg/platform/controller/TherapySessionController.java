@@ -40,9 +40,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/sessions");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+    TherapySession createdSession =
+        sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(createdSession);
   }
 }
