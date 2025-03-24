@@ -47,7 +47,51 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
   const [openPatients, setOpenPatients] = useState(location.pathname.startsWith('/patients'))
+  const [openSessions, setOpenSessions] = useState(
+    location.pathname.includes('/patients/') && !location.pathname.includes('/patients/create')
+  )
+
+  const handleSessionsClick = () => {
+    setOpenSessions(!openSessions)
+    if (!location.pathname.includes('/sessions')) {
+      // Navigate to the sessions list of the current patient if we're on a patient detail page
+      const patientIdMatch = location.pathname.match(/\/patients\/([^/]+)/)
+      if (patientIdMatch && patientIdMatch[1]) {
+        navigate(`/patients/${patientIdMatch[1]}/sessions`)
+      }
+    }
+  }
+
+  const handleListSessions = () => {
+    const patientIdMatch = location.pathname.match(/\/patients\/([^/]+)/)
+    if (patientIdMatch && patientIdMatch[1]) {
+      navigate(`/patients/${patientIdMatch[1]}/sessions`)
+    }
+  }
+
+  const handleCreateSession = () => {
+    const patientIdMatch = location.pathname.match(/\/patients\/([^/]+)/)
+    if (patientIdMatch && patientIdMatch[1]) {
+      navigate(`/patients/${patientIdMatch[1]}/sessions/create`)
+    }
+  }
+
+  const handleSessionDetails = () => {
+    const patientIdMatch = location.pathname.match(/\/patients\/([^/]+)/)
+    if (patientIdMatch && patientIdMatch[1]) {
+      // Navigate to the first session if available
+      if (loggedInTherapist?.patientsOutputDTO) {
+        const patient = loggedInTherapist.patientsOutputDTO.find((p) => p.id === patientIdMatch[1])
+        if (patient?.therapySessionsOutputDTO && patient.therapySessionsOutputDTO.length > 0) {
+          navigate(
+            `/patients/${patientIdMatch[1]}/sessions/${patient.therapySessionsOutputDTO[0].id}`
+          )
+        }
+      }
+    }
+  }
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -368,6 +412,181 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <ListItemText primary='Patient details' style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
+
+            {openPatients && (
+              <>
+                <ListItem disablePadding sx={{ marginY: 0.5 }}>
+                  <ListItemButton
+                    onClick={handleSessionsClick}
+                    sx={{
+                      ml: '48px',
+                      borderRadius: 1,
+                      maxWidth: '215px',
+                      marginLeft: '50px',
+                      position: 'relative',
+                      '&:hover': {
+                        color: '#fff',
+                      },
+                    }}
+                  >
+                    <ListItemText primary='Sessions' style={{ marginLeft: 20 }} />
+                    {openSessions ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                </ListItem>
+
+                <Collapse in={openSessions} timeout='auto' unmountOnExit>
+                  <Box sx={{ position: 'relative', mt: 1, mb: 1, ml: '48px' }}>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: '32px',
+                        width: '1px',
+                        bgcolor: '#8A94A6',
+                      }}
+                    />
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleListSessions}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor:
+                            location.pathname.endsWith('/sessions') &&
+                            !location.pathname.endsWith('/create')
+                              ? selectedColor
+                              : 'transparent',
+                          color:
+                            location.pathname.endsWith('/sessions') &&
+                            !location.pathname.endsWith('/create')
+                              ? '#fff'
+                              : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor:
+                              location.pathname.endsWith('/sessions') &&
+                              !location.pathname.endsWith('/create')
+                                ? selectedColor
+                                : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor:
+                              location.pathname.endsWith('/sessions') &&
+                              !location.pathname.endsWith('/create')
+                                ? '#8A94A6'
+                                : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='List sessions' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleCreateSession}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor: location.pathname.endsWith('/sessions/create')
+                            ? selectedColor
+                            : 'transparent',
+                          color: location.pathname.endsWith('/sessions/create')
+                            ? '#fff'
+                            : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor: location.pathname.endsWith('/sessions/create')
+                              ? selectedColor
+                              : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor: location.pathname.endsWith('/sessions/create')
+                              ? '#8A94A6'
+                              : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='Create session' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleSessionDetails}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor:
+                            location.pathname.endsWith('/sessions/') &&
+                            !location.pathname.endsWith('/sessions') &&
+                            !location.pathname.endsWith('/create')
+                              ? selectedColor
+                              : 'transparent',
+                          color:
+                            location.pathname.includes('/sessions/') &&
+                            !location.pathname.endsWith('/sessions') &&
+                            !location.pathname.endsWith('/create')
+                              ? '#fff'
+                              : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor:
+                              location.pathname.includes('/sessions/') &&
+                              !location.pathname.endsWith('/sessions') &&
+                              !location.pathname.endsWith('/create')
+                                ? selectedColor
+                                : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor:
+                              location.pathname.includes('/sessions/') &&
+                              !location.pathname.endsWith('/sessions') &&
+                              !location.pathname.endsWith('/create')
+                                ? '#8A94A6'
+                                : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='Session details' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+                  </Box>
+                </Collapse>
+              </>
+            )}
           </Box>
         </Collapse>
 

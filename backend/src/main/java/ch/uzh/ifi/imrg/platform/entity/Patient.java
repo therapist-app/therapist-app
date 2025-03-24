@@ -54,7 +54,7 @@ public class Patient implements Serializable {
   private String workspaceId = UUID.randomUUID().toString();
 
   @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
-  private List<TherapySession> sessions = new ArrayList<>();
+  private List<TherapySession> therapySessions = new ArrayList<>();
 
   public String getId() {
     return id;
@@ -132,11 +132,11 @@ public class Patient implements Serializable {
     return updatedAt;
   }
 
-  public List<TherapySession> getSessions() {
-    return sessions;
+  public List<TherapySession> getTherapySessions() {
+    return therapySessions;
   }
 
-  public void setSessions(List<TherapySession> sessions) {
-    this.sessions = sessions;
+  public void setTherapySessions(List<TherapySession> sessions) {
+    this.therapySessions = sessions;
   }
 }
