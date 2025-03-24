@@ -36,14 +36,12 @@ import { handleError } from '../../utils/handleError'
 import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import { useTranslation } from 'react-i18next'
 import api from '../../utils/api'
-import {
-  getCurrentlyLoggedInTherapist,
-  createPatientForTherapist,
-} from '../../store/therapistSlice'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
 import { AxiosError } from 'axios'
+import { registerPatient } from '../../store/patientSlice'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
@@ -88,7 +86,7 @@ const PatientsOverview: React.FC = () => {
   const handleCreatePatient = async () => {
     try {
       dispatch(
-        createPatientForTherapist({
+        registerPatient({
           name: newPatientName,
           gender: newPatientGender,
           age: Number(newPatientAge),

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/patients")
 public class PatientController {
 
   private final Logger logger = LoggerFactory.getLogger(PatientController.class);
@@ -25,19 +26,17 @@ public class PatientController {
     this.therapistService = therapistService;
   }
 
-  @PostMapping("/therapists/patients")
+  @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/therapists/patients");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    Therapist updatedTherapist =
-        patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist updatedTherapist = patientService.createPatientForTherapist(loggedInTherapist.getId(), inputDTO);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
   }
 
-  @DeleteMapping("/patients/{id}")
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePatient(@PathVariable String id) {
     logger.info("/patients/" + id);

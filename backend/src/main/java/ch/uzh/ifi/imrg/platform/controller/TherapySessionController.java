@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/therapy-sessions")
 public class TherapySessionController {
 
   private final Logger logger = LoggerFactory.getLogger(TherapySessionController.class);
@@ -31,18 +33,16 @@ public class TherapySessionController {
     this.therapistService = therapistService;
   }
 
-  @PostMapping("/sessions")
+  @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public TherapySessionOutputDTO createSession(
       @RequestBody CreateTherapySessionDTO createSessionDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/sessions");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession createdSession =
-        sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+    TherapySession createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(createdSession);
   }
 }
