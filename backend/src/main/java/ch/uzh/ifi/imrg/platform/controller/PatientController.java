@@ -8,10 +8,8 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
 import ch.uzh.ifi.imrg.platform.service.PatientService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,7 +34,8 @@ public class PatientController {
   public PatientOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/patients");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     Patient registeredPatient = patientService.registerPatient(loggedInTherapist.getId(), inputDTO);
     return PatientMapper.INSTANCE.convertEntityToPatientOutputDTO(registeredPatient);
   }
@@ -46,9 +45,12 @@ public class PatientController {
   public List<PatientOutputDTO> getPatientsOfTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/patients");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     List<Patient> patients = patientService.getAllPatientsOfTherapist(loggedInTherapist);
-    return patients.stream().map(PatientMapper.INSTANCE::convertEntityToPatientOutputDTO).collect(Collectors.toList());
+    return patients.stream()
+        .map(PatientMapper.INSTANCE::convertEntityToPatientOutputDTO)
+        .collect(Collectors.toList());
   }
 
   @DeleteMapping("/{id}")

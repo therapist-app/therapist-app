@@ -4,16 +4,13 @@ import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapySessionDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapySessionMapper;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import ch.uzh.ifi.imrg.platform.service.TherapySessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -47,9 +44,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+    TherapySession createdSession =
+        sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(createdSession);
   }
 
@@ -60,11 +59,12 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions/" + therapySessionId);
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession therapySession = sessionService.getTherapySession(therapySessionId, loggedInTherapist);
+    TherapySession therapySession =
+        sessionService.getTherapySession(therapySessionId, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(therapySession);
-
   }
 
   @GetMapping("/patients/{patientId}")
@@ -74,9 +74,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions/patients/" + patientId);
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    List<TherapySession> therapySessions = sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
+    List<TherapySession> therapySessions =
+        sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
     return therapySessions.stream()
         .map(TherapySessionMapper.INSTANCE::convertEntityToSessionOutputDTO)
         .collect(Collectors.toList());
