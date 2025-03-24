@@ -33,5 +33,4 @@ public class CreateTherapySessionDTO {
   public void setPatientId(String patientId) {
     this.patientId = patientId;
   }
-
 }
