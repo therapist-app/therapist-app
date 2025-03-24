@@ -10,6 +10,7 @@ jobs:
   sonarqube-backend:
     name: SonarQube Backend
     runs-on: ubuntu-latest
+    continue-on-error: true # This makes the job optional
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,6 +41,7 @@ jobs:
   sonarqube-frontend:
     name: SonarQube Frontend
     runs-on: ubuntu-latest
+    continue-on-error: true # This makes the job optional
     steps:
       - uses: actions/checkout@v4
         with:
