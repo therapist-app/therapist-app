@@ -3,8 +3,6 @@ package ch.uzh.ifi.imrg.platform.rest.dto.output;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import ch.uzh.ifi.imrg.platform.entity.TherapySession;
-
 public class PatientOutputDTO {
 
   private String id;
@@ -19,8 +17,7 @@ public class PatientOutputDTO {
   private String email;
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
 
-  public PatientOutputDTO() {
-  }
+  public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;

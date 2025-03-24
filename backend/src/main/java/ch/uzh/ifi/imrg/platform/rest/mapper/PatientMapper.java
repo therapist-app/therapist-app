@@ -5,10 +5,8 @@ import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
