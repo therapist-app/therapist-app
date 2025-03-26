@@ -41,15 +41,16 @@ import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import {
-  cloneChatbotTemplateForTherapist,
-  createChatbotTemplateForTherapist,
-  createPatientForTherapist,
-  deleteChatbotTemplateForTherapist,
-  getCurrentlyLoggedInTherapist,
-  updateChatbotTemplateForTherapist,
-} from '../../store/therapistSlice'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
+import { registerPatient } from '../../store/patientSlice'
+import {
+  cloneChatbotTemplate,
+  createChatbotTemplate,
+  deleteChatbotTemplate,
+  updateChatbotTemplate,
+} from '../../store/chatbotTemplateSlice'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -99,7 +100,7 @@ const Dashboard = () => {
   const handleCreatePatient = async () => {
     try {
       dispatch(
-        createPatientForTherapist({
+        registerPatient({
           name: newPatientName,
           gender: newPatientGender,
           age: Number(newPatientAge),
@@ -127,7 +128,7 @@ const Dashboard = () => {
   }
 
   const handlePatientClick = (patientId: string) => {
-    navigate(`/patients/${patientId}`)
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
   const handleOpenBotDialog = () => {
@@ -157,7 +158,7 @@ const Dashboard = () => {
         workspaceId: loggedInTherapist.workspaceId,
       }
 
-      await dispatch(createChatbotTemplateForTherapist(chatbotConfigurations))
+      await dispatch(createChatbotTemplate(chatbotConfigurations))
 
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
@@ -196,7 +197,7 @@ const Dashboard = () => {
       if (!currentChatbot) return
 
       await dispatch(
-        updateChatbotTemplateForTherapist({
+        updateChatbotTemplate({
           chatbotTemplateId: currentChatbot.id,
           updateChatbotTemplateDTO: { chatbotName: chatbotName },
         })
@@ -217,7 +218,7 @@ const Dashboard = () => {
   const handleClone = async () => {
     if (!currentChatbot) return
     try {
-      await dispatch(cloneChatbotTemplateForTherapist(currentChatbot.id))
+      await dispatch(cloneChatbotTemplate(currentChatbot.id))
 
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
@@ -235,7 +236,7 @@ const Dashboard = () => {
     try {
       if (!currentChatbot) return
 
-      await dispatch(deleteChatbotTemplateForTherapist(currentChatbot.id))
+      await dispatch(deleteChatbotTemplate(currentChatbot.id))
 
       setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')

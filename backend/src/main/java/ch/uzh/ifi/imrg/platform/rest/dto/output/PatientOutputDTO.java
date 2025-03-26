@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PatientOutputDTO {
 
@@ -14,6 +15,7 @@ public class PatientOutputDTO {
   private String description;
   private int age;
   private String email;
+  private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
 
   public PatientOutputDTO() {}
 
@@ -100,5 +102,13 @@ public class PatientOutputDTO {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public List<TherapySessionOutputDTO> getTherapySessionsOutputDTO() {
+    return therapySessionsOutputDTO;
+  }
+
+  public void setTherapySessions(List<TherapySessionOutputDTO> therapySessionsOutputDTO) {
+    this.therapySessionsOutputDTO = therapySessionsOutputDTO;
   }
 }

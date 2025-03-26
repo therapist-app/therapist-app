@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/therapists/chatbot-templates")
+@RequestMapping("/chatbot-templates")
 public class ChatbotTemplateController {
 
   private final Logger logger = LoggerFactory.getLogger(ChatbotTemplateController.class);

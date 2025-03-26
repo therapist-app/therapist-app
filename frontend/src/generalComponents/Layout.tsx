@@ -1,5 +1,5 @@
-import React, { useState, ReactNode } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import React, { useState, ReactNode, useEffect } from 'react'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -26,10 +26,11 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 
 import logo from '../../public/Therapist-App.png'
 import { useTranslation } from 'react-i18next'
-import { logoutTherapist } from '../store/therapistSlice'
+import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
+import { getPageFromPath, getPathFromPage, PAGES } from '../utils/routes'
 
 interface LayoutProps {
   children: ReactNode
@@ -46,8 +47,35 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
+  useEffect(() => {
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch])
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [openPatients, setOpenPatients] = useState(location.pathname.startsWith('/patients'))
+
+  const currentPage = getPageFromPath(location.pathname)
+  const { patientId } = useParams()
+
+  const [openPatients, setOpenPatients] = useState(
+    [
+      PAGES.PATIENTS_OVERVIEW_PAGE,
+      PAGES.PATIENTS_CREATE_PAGE,
+      PAGES.PATIENTS_DETAILS_PAGE,
+      PAGES.CHATBOT_OVERVIEW_PAGE,
+      PAGES.CHATBOT_CREATE_PAGE,
+      PAGES.CHATBOT_DETAILS_PAGE,
+      PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE,
+      PAGES.THERAPY_SESSIONS_CREATE_PAGE,
+      PAGES.THERAPY_SESSIONS_DETAILS_PAGE,
+    ].includes(currentPage)
+  )
+  const [openTherapySessions, setOpenTherapySessions] = useState(
+    [
+      PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE,
+      PAGES.THERAPY_SESSIONS_CREATE_PAGE,
+      PAGES.THERAPY_SESSIONS_DETAILS_PAGE,
+    ].includes(currentPage)
+  )
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -58,29 +86,70 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const handleLogout = () => {
     handleMenuClose()
     dispatch(logoutTherapist())
-    navigate('/login')
+    navigate(getPathFromPage(PAGES.LOGIN_PAGE))
   }
 
   const handleSettings = () => {
-    navigate('/settings')
+    navigate(getPathFromPage(PAGES.SETTINGS_PAGE))
   }
 
   const handlePatientsClick = () => {
     setOpenPatients(!openPatients)
     if (!location.pathname.startsWith('/patients')) {
-      navigate('/patients')
+      navigate(getPathFromPage(PAGES.PATIENTS_OVERVIEW_PAGE))
     }
   }
 
   const handleListPatients = () => {
-    navigate(`/patients`)
+    navigate(getPathFromPage(PAGES.PATIENTS_OVERVIEW_PAGE))
   }
   const handleCreatePatient = () => {
-    navigate('/patients/create')
+    navigate(getPathFromPage(PAGES.PATIENTS_CREATE_PAGE))
   }
   const handlePatientDetails = () => {
     if (loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0) {
-      navigate(`/patients/${loggedInTherapist?.patientsOutputDTO[0].id}`)
+      navigate(
+        getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
+          patientId: loggedInTherapist?.patientsOutputDTO[0].id,
+        })
+      )
+    }
+  }
+
+  const handleTherapySessionsClick = () => {
+    setOpenTherapySessions(!openTherapySessions)
+    if (currentPage === PAGES.PATIENTS_DETAILS_PAGE && patientId) {
+      navigate(getPathFromPage(PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE, { patientId }))
+    }
+  }
+
+  const handleListTherapySessions = () => {
+    if (patientId) {
+      navigate(getPathFromPage(PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE, { patientId }))
+    }
+  }
+
+  const handleCreateTherapySession = () => {
+    if (patientId) {
+      navigate(getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, { patientId }))
+    }
+  }
+
+  const handleTherapySessionDetails = () => {
+    console.log(loggedInTherapist)
+    if (patientId) {
+      // Navigate to the first session if available
+      if (loggedInTherapist?.patientsOutputDTO) {
+        const patient = loggedInTherapist.patientsOutputDTO.find((p) => p.id === patientId)
+        if (patient?.therapySessionsOutputDTO && patient.therapySessionsOutputDTO.length > 0) {
+          navigate(
+            getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+              patientId,
+              therapySessionId: patient.therapySessionsOutputDTO[0].id,
+            })
+          )
+        }
+      }
     }
   }
 
@@ -193,21 +262,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <ListItem disablePadding sx={{ marginY: 1 }}>
           <ListItemButton
-            onClick={() => navigate('/')}
+            onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
             sx={{
               borderRadius: 2,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              bgcolor: location.pathname === '/' ? selectedColor : 'transparent',
-              color: location.pathname === '/' ? '#fff' : '#9EA2A8',
+              bgcolor: currentPage === PAGES.HOME_PAGE ? selectedColor : 'transparent',
+              color: currentPage === PAGES.HOME_PAGE ? '#fff' : '#9EA2A8',
               '&:hover': {
-                bgcolor: location.pathname === '/' ? selectedColor : '#1D2336',
+                bgcolor: currentPage === PAGES.HOME_PAGE ? selectedColor : '#1D2336',
                 color: '#fff',
               },
               boxShadow: 3,
             }}
           >
-            <ListItemIcon sx={{ color: location.pathname === '/' ? '#fff' : '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: currentPage === PAGES.HOME_PAGE ? '#fff' : '#9EA2A8' }}>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.overview')} />
@@ -239,7 +308,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               },
             }}
           >
-            <ListItemIcon sx={{ color: location.pathname === '/patients' ? '#fff' : '#9EA2A8' }}>
+            <ListItemIcon
+              sx={{ color: currentPage === PAGES.PATIENTS_OVERVIEW_PAGE ? '#fff' : '#9EA2A8' }}
+            >
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.patients')} style={{ marginLeft: -20 }} />
@@ -269,10 +340,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   maxWidth: '215px',
                   marginLeft: '50px',
                   position: 'relative',
-                  bgcolor: location.pathname === '/patients' ? selectedColor : 'transparent',
-                  color: location.pathname === '/patients' ? '#fff' : '#9EA2A8',
+                  bgcolor:
+                    currentPage === PAGES.PATIENTS_OVERVIEW_PAGE ? selectedColor : 'transparent',
+                  color: currentPage === PAGES.PATIENTS_OVERVIEW_PAGE ? '#fff' : '#9EA2A8',
                   '&:hover': {
-                    bgcolor: location.pathname === '/patients' ? selectedColor : '#1A2030',
+                    bgcolor:
+                      currentPage === PAGES.PATIENTS_OVERVIEW_PAGE ? selectedColor : '#1A2030',
                     color: '#fff',
                   },
                   '&::before': {
@@ -283,7 +356,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     transform: 'translateY(-50%)',
                     width: '4px',
                     height: '16px',
-                    bgcolor: location.pathname === '/patients' ? '#8A94A6' : 'transparent',
+                    bgcolor:
+                      currentPage === PAGES.PATIENTS_OVERVIEW_PAGE ? '#8A94A6' : 'transparent',
                   },
                 }}
               >
@@ -300,10 +374,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   maxWidth: '215px',
                   marginLeft: '50px',
                   position: 'relative',
-                  bgcolor: location.pathname === '/patients/create' ? selectedColor : 'transparent',
-                  color: location.pathname === '/patients/create' ? '#fff' : '#9EA2A8',
+                  bgcolor:
+                    currentPage === PAGES.PATIENTS_CREATE_PAGE ? selectedColor : 'transparent',
+                  color: currentPage === PAGES.PATIENTS_CREATE_PAGE ? '#fff' : '#9EA2A8',
                   '&:hover': {
-                    bgcolor: location.pathname === '/patients/create' ? selectedColor : '#1A2030',
+                    bgcolor: currentPage === PAGES.PATIENTS_CREATE_PAGE ? selectedColor : '#1A2030',
                     color: '#fff',
                   },
                   '&::before': {
@@ -314,7 +389,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     transform: 'translateY(-50%)',
                     width: '4px',
                     height: '16px',
-                    bgcolor: location.pathname === '/patients/create' ? '#8A94A6' : 'transparent',
+                    bgcolor: currentPage === PAGES.PATIENTS_CREATE_PAGE ? '#8A94A6' : 'transparent',
                   },
                 }}
               >
@@ -332,21 +407,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   marginLeft: '50px',
                   position: 'relative',
                   bgcolor:
-                    location.pathname.startsWith('/patients/') &&
-                    location.pathname !== '/patients/create'
-                      ? selectedColor
-                      : 'transparent',
-                  color:
-                    location.pathname.startsWith('/patients/') &&
-                    location.pathname !== '/patients/create'
-                      ? '#fff'
-                      : '#9EA2A8',
+                    currentPage === PAGES.PATIENTS_DETAILS_PAGE ? selectedColor : 'transparent',
+                  color: currentPage === PAGES.PATIENTS_DETAILS_PAGE ? '#fff' : '#9EA2A8',
                   '&:hover': {
                     bgcolor:
-                      location.pathname.startsWith('/patients/') &&
-                      location.pathname !== '/patients/create'
-                        ? selectedColor
-                        : '#1A2030',
+                      currentPage === PAGES.PATIENTS_DETAILS_PAGE ? selectedColor : '#1A2030',
                     color: '#fff',
                   },
                   '&::before': {
@@ -358,16 +423,178 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     width: '4px',
                     height: '16px',
                     bgcolor:
-                      location.pathname.startsWith('/patients/') &&
-                      location.pathname !== '/patients/create'
-                        ? '#8A94A6'
-                        : 'transparent',
+                      currentPage === PAGES.PATIENTS_DETAILS_PAGE ? '#8A94A6' : 'transparent',
                   },
                 }}
               >
                 <ListItemText primary='Patient details' style={{ marginLeft: 20 }} />
               </ListItemButton>
             </ListItem>
+
+            {openPatients && (
+              <>
+                <ListItem disablePadding sx={{ marginY: 0.5 }}>
+                  <ListItemButton
+                    onClick={handleTherapySessionsClick}
+                    sx={{
+                      ml: '48px',
+                      borderRadius: 1,
+                      maxWidth: '215px',
+                      marginLeft: '50px',
+                      position: 'relative',
+                      '&:hover': {
+                        color: '#fff',
+                      },
+                    }}
+                  >
+                    <ListItemText primary='Therapy Sessions' style={{ marginLeft: 20 }} />
+                    {openTherapySessions ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                </ListItem>
+
+                <Collapse in={openTherapySessions} timeout='auto' unmountOnExit>
+                  <Box sx={{ position: 'relative', mt: 1, mb: 1, ml: '48px' }}>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: '32px',
+                        width: '1px',
+                        bgcolor: '#8A94A6',
+                      }}
+                    />
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleListTherapySessions}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor:
+                            currentPage === PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE
+                              ? selectedColor
+                              : 'transparent',
+                          color:
+                            currentPage === PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE
+                              ? '#fff'
+                              : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE
+                                ? selectedColor
+                                : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE
+                                ? '#8A94A6'
+                                : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='List therapy sessions' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleCreateTherapySession}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor:
+                            currentPage === PAGES.THERAPY_SESSIONS_CREATE_PAGE
+                              ? selectedColor
+                              : 'transparent',
+                          color:
+                            currentPage === PAGES.THERAPY_SESSIONS_CREATE_PAGE ? '#fff' : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_CREATE_PAGE
+                                ? selectedColor
+                                : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_CREATE_PAGE
+                                ? '#8A94A6'
+                                : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='Create session' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={handleTherapySessionDetails}
+                        sx={{
+                          ml: '48px',
+                          borderRadius: 2,
+                          maxWidth: '215px',
+                          marginLeft: '50px',
+                          position: 'relative',
+                          bgcolor:
+                            currentPage === PAGES.THERAPY_SESSIONS_DETAILS_PAGE
+                              ? selectedColor
+                              : 'transparent',
+                          color:
+                            currentPage === PAGES.THERAPY_SESSIONS_DETAILS_PAGE
+                              ? '#fff'
+                              : '#9EA2A8',
+                          '&:hover': {
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_DETAILS_PAGE
+                                ? selectedColor
+                                : '#1A2030',
+                            color: '#fff',
+                          },
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            left: '-19px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '4px',
+                            height: '16px',
+                            bgcolor:
+                              currentPage === PAGES.THERAPY_SESSIONS_DETAILS_PAGE
+                                ? '#8A94A6'
+                                : 'transparent',
+                          },
+                        }}
+                      >
+                        <ListItemText primary='Session details' style={{ marginLeft: 20 }} />
+                      </ListItemButton>
+                    </ListItem>
+                  </Box>
+                </Collapse>
+              </>
+            )}
           </Box>
         </Collapse>
 
@@ -378,15 +605,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               borderRadius: 1,
               marginX: 2,
               maxWidth: 'calc(100% - 32px)',
-              bgcolor: location.pathname === '/settings' ? selectedColor : 'transparent',
-              color: location.pathname === '/settings' ? '#fff' : '#9EA2A8',
+              bgcolor: currentPage === PAGES.SETTINGS_PAGE ? selectedColor : 'transparent',
+              color: currentPage === PAGES.SETTINGS_PAGE ? '#fff' : '#9EA2A8',
               '&:hover': {
-                bgcolor: location.pathname === '/settings' ? selectedColor : '#1D2336',
+                bgcolor: currentPage === PAGES.SETTINGS_PAGE ? selectedColor : '#1D2336',
                 color: '#fff',
               },
             }}
           >
-            <ListItemIcon sx={{ color: location.pathname === '/settings' ? '#fff' : '#9EA2A8' }}>
+            <ListItemIcon sx={{ color: currentPage === PAGES.SETTINGS_PAGE ? '#fff' : '#9EA2A8' }}>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary={t('layout.settings')} style={{ marginLeft: -20 }} />

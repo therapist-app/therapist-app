@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { registerTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Register = () => {
   const dispatch = useAppDispatch()
@@ -32,7 +33,7 @@ const Register = () => {
 
     try {
       await dispatch(registerTherapist(formData)).unwrap()
-      navigate(`/`)
+      navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (err) {
       setError('Failed to register therapist. Please try again.')
       console.error('Registration error:', err)
@@ -85,7 +86,12 @@ const Register = () => {
         </form>
       </Container>
       <div style={{ display: 'flex', width: '100%', marginTop: '32px', justifyContent: 'center' }}>
-        <Button onClick={() => navigate('/login')} color='success' size='large' variant='contained'>
+        <Button
+          onClick={() => navigate(getPathFromPage(PAGES.LOGIN_PAGE))}
+          color='success'
+          size='large'
+          variant='contained'
+        >
           {t('register.go_login')}
         </Button>
       </div>

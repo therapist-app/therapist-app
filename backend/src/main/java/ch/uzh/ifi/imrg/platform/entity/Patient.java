@@ -3,6 +3,8 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -50,6 +52,9 @@ public class Patient implements Serializable {
 
   @Column(unique = true)
   private String workspaceId = UUID.randomUUID().toString();
+
+  @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+  private List<TherapySession> therapySessions = new ArrayList<>();
 
   public String getId() {
     return id;
@@ -125,5 +130,13 @@ public class Patient implements Serializable {
 
   public LocalDateTime getUpdatedAt() {
     return updatedAt;
+  }
+
+  public List<TherapySession> getTherapySessions() {
+    return therapySessions;
+  }
+
+  public void setTherapySessions(List<TherapySession> sessions) {
+    this.therapySessions = sessions;
   }
 }

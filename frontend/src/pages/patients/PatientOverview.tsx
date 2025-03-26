@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Alert,
@@ -36,14 +36,13 @@ import { handleError } from '../../utils/handleError'
 import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import { useTranslation } from 'react-i18next'
 import api from '../../utils/api'
-import {
-  getCurrentlyLoggedInTherapist,
-  createPatientForTherapist,
-} from '../../store/therapistSlice'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
 import { AxiosError } from 'axios'
+import { registerPatient } from '../../store/patientSlice'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
@@ -75,10 +74,6 @@ const PatientsOverview: React.FC = () => {
     setTabValue(newValue)
   }
 
-  useEffect(() => {
-    dispatch(getCurrentlyLoggedInTherapist())
-  }, [dispatch])
-
   const handleOpenPatientDialog = () => setOpenPatientDialog(true)
   const handleClosePatientDialog = () => {
     setOpenPatientDialog(false)
@@ -88,7 +83,7 @@ const PatientsOverview: React.FC = () => {
   const handleCreatePatient = async () => {
     try {
       dispatch(
-        createPatientForTherapist({
+        registerPatient({
           name: newPatientName,
           gender: newPatientGender,
           age: Number(newPatientAge),
@@ -140,7 +135,7 @@ const PatientsOverview: React.FC = () => {
   }
 
   const handlePatientClick = (patientId: string) => {
-    navigate(`/patients/${patientId}`)
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
   const startIndex = (page - 1) * rowsPerPage
