@@ -25,7 +25,8 @@ public class TherapySessionService {
 
   private final TherapySessionRepository therapySessionRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Autowired
   public TherapySessionService(
@@ -39,7 +40,7 @@ public class TherapySessionService {
       CreateTherapySessionDTO createTherapySessionDTO, Therapist loggedInTherapist) {
 
     Patient patient = patientRepository.getPatientById(createTherapySessionDTO.getPatientId());
-    if (patient.getTherapist().getId() != loggedInTherapist.getId()) {
+    if (!patient.getTherapist().getId().equals(loggedInTherapist.getId())) {
       throw new Error("Cannot create a therapy session for a patient that does not belong to you");
     }
 
@@ -56,31 +57,27 @@ public class TherapySessionService {
 
   public TherapySession getTherapySession(String therapySessionId, Therapist loggedInTherapist) {
 
-    List<TherapySession> accessibleSessions =
-        loggedInTherapist.getPatients().stream()
-            .flatMap(patient -> patient.getTherapySessions().stream())
-            .collect(Collectors.toList());
+    List<TherapySession> accessibleSessions = loggedInTherapist.getPatients().stream()
+        .flatMap(patient -> patient.getTherapySessions().stream())
+        .collect(Collectors.toList());
 
     return accessibleSessions.stream()
         .filter(session -> session.getId().equals(therapySessionId))
         .findFirst()
         .orElseThrow(
-            () ->
-                new EntityNotFoundException(
-                    "Therapy session not found or you don't have access to it"));
+            () -> new EntityNotFoundException(
+                "Therapy session not found or you don't have access to it"));
   }
 
   public List<TherapySession> getAllTherapySessionsOfPatient(
       String patientId, Therapist loggedInTherapist) {
 
-    Patient patient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(
-                () ->
-                    new EntityNotFoundException(
-                        "Patient not found or you don't have access to them"));
+    Patient patient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(
+            () -> new EntityNotFoundException(
+                "Patient not found or you don't have access to them"));
 
     return patient.getTherapySessions();
   }
