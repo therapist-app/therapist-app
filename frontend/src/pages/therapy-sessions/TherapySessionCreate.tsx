@@ -1,16 +1,18 @@
 import { Button, Typography } from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Layout from '../../generalComponents/Layout'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { useAppDispatch } from '../../utils/hooks'
 import { createTherapySession } from '../../store/therapySessionSlice'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
-const SessionCreate = () => {
+const TherapySessionCreate = () => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [therapySessionToCreate, setTherapySessionToCreate] = useState<{
     sessionStart: Date | null
@@ -31,13 +33,19 @@ const SessionCreate = () => {
     }
 
     try {
-      await dispatch(
+      const createdTherapySession = await dispatch(
         createTherapySession({
           patientId: therapySessionToCreate.patientId,
           sessionStart: therapySessionToCreate.sessionStart.toISOString(),
           sessionEnd: therapySessionToCreate.sessionEnd.toISOString(),
         })
       ).unwrap()
+      navigate(
+        getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+          therapySessionId: createdTherapySession.id ?? '',
+        })
+      )
     } catch (err) {
       console.error('Creating therapy sessions error:', err)
     }
@@ -82,4 +90,4 @@ const SessionCreate = () => {
   )
 }
 
-export default SessionCreate
+export default TherapySessionCreate

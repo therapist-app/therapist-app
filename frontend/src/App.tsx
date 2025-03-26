@@ -10,9 +10,10 @@ import ChatBotTemplateCreate from './pages/chatBotTemplate/ChatBotTemplateCreate
 import PatientDetail from './pages/patients/PatientDetail'
 import Settings from './pages/settings/settings.tsx'
 import PatientCreate from './pages/patients/PatientCreate.tsx'
-import SessionOverview from './pages/sessions/SessionOverview.tsx'
-import SessionCreate from './pages/sessions/SessionCreate.tsx'
-import SessionDetail from './pages/sessions/SessionDetail.tsx'
+import TherapySessionOverview from './pages/therapy-sessions/TherapySessionOverview.tsx'
+import TherapySessionCreate from './pages/therapy-sessions/TherapySessionCreate.tsx'
+import TherapySessionDetail from './pages/therapy-sessions/TherapySessionDetail.tsx'
+import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = () => {
   const appContainerStyle = {
@@ -34,28 +35,40 @@ const App = () => {
       <div style={appContainerStyle}>
         <main style={contentStyle}>
           <Routes>
-            <Route path='/' element={<RootComponent />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/login' element={<Login />} />
+            <Route path={ROUTES[PAGES.HOME_PAGE]} element={<RootComponent />} />
+            <Route path={ROUTES[PAGES.REGISTRATION_PAGE]} element={<Register />} />
+            <Route path={ROUTES[PAGES.LOGIN_PAGE]} element={<Login />} />
 
-            <Route path='/patients' element={<PatientsOverview />} />
-            <Route path='/patients/create' element={<PatientCreate />} />
-            <Route path='/patients/:patientId' element={<PatientDetail />} />
+            <Route path={ROUTES[PAGES.PATIENTS_OVERVIEW_PAGE]} element={<PatientsOverview />} />
+            <Route path={ROUTES[PAGES.PATIENTS_CREATE_PAGE]} element={<PatientCreate />} />
+            <Route path={ROUTES[PAGES.PATIENTS_DETAILS_PAGE]} element={<PatientDetail />} />
 
-            <Route path='/patients/:patientId/chatBot/create' element={<PatientChatBotCreate />} />
+            <Route path={ROUTES[PAGES.CHATBOT_OVERVIEW_PAGE]} element={<NotFound />} />
+            <Route path={ROUTES[PAGES.CHATBOT_CREATE_PAGE]} element={<PatientChatBotCreate />} />
+            <Route path={ROUTES[PAGES.CHATBOT_DETAILS_PAGE]} element={<PatientChatBotEdit />} />
+
             <Route
-              path='/patients/:patientId/chatBot/:chatBotId'
-              element={<PatientChatBotEdit />}
+              path={ROUTES[PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]}
+              element={<TherapySessionOverview />}
+            />
+            <Route
+              path={ROUTES[PAGES.THERAPY_SESSIONS_CREATE_PAGE]}
+              element={<TherapySessionCreate />}
+            />
+            <Route
+              path={ROUTES[PAGES.THERAPY_SESSIONS_DETAILS_PAGE]}
+              element={<TherapySessionDetail />}
             />
 
-            <Route path='/patients/:patientId/sessions' element={<SessionOverview />} />
-            <Route path='/patients/:patientId/sessions/create' element={<SessionCreate />} />
-            <Route path='/patients/:patientId/sessions/:sessionId' element={<SessionDetail />} />
+            <Route path={ROUTES[PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]} element={<NotFound />} />
+            <Route
+              path={ROUTES[PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]}
+              element={<ChatBotTemplateCreate />}
+            />
+            <Route path={ROUTES[PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]} element={<NotFound />} />
 
-            <Route path='/chatBotTemplate/create' element={<ChatBotTemplateCreate />} />
-
-            <Route path='/settings' element={<Settings />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />
+            <Route path={ROUTES[PAGES.NOT_FOUND_PAGE]} element={<NotFound />} />
           </Routes>
         </main>
       </div>

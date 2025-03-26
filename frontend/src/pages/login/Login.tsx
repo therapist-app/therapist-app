@@ -6,6 +6,7 @@ import { loginTherapist } from '../../store/therapistSlice'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../utils/hooks'
 import { useTranslation } from 'react-i18next'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Login = () => {
   const dispatch = useAppDispatch()
@@ -28,7 +29,7 @@ const Login = () => {
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
-      navigate(`/`)
+      navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (e) {
       setError(`Failed to login, please try again`)
       console.error('Failed to login', e)
@@ -86,7 +87,7 @@ const Login = () => {
       </Container>
       <div style={{ display: 'flex', width: '100%', marginTop: '32px', justifyContent: 'center' }}>
         <Button
-          onClick={() => navigate('/register')}
+          onClick={() => navigate(getPathFromPage(PAGES.REGISTRATION_PAGE))}
           color='success'
           size='large'
           variant='contained'

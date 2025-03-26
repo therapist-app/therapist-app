@@ -50,6 +50,7 @@ import {
   deleteChatbotTemplate,
   updateChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -127,7 +128,7 @@ const Dashboard = () => {
   }
 
   const handlePatientClick = (patientId: string) => {
-    navigate(`/patients/${patientId}`)
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
   const handleOpenBotDialog = () => {
