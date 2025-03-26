@@ -28,10 +28,10 @@ public class Patient implements Serializable {
   @Column(nullable = false)
   private String name;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String gender;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private int age;
 
   @Column(nullable = false, unique = true)
@@ -40,7 +40,7 @@ public class Patient implements Serializable {
   @Column(nullable = false, unique = true)
   private String email;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String address;
 
   @Column(nullable = true)
