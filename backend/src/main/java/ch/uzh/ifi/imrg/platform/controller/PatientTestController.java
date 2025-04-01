@@ -4,11 +4,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.PatientTestService;
 import jakarta.validation.Valid;
-
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tests")
 public class PatientTestController {
 
-    private final Logger logger = LoggerFactory.getLogger(PatientTestController.class);
     private final PatientTestService patientTestService;
 
     public PatientTestController(PatientTestService patientTestService) {
@@ -34,5 +29,11 @@ public class PatientTestController {
     @ResponseStatus(HttpStatus.OK)
     public List<GAD7TestOutputDTO> getTestsForPatient(@PathVariable String patientId) {
         return patientTestService.getTestsByPatient(patientId);
+    }
+
+    @GetMapping("/gad7/{testId}")
+    @ResponseStatus(HttpStatus.OK)
+    public GAD7TestOutputDTO getTestById(@PathVariable String testId) {
+        return patientTestService.getTest(testId);
     }
 }
