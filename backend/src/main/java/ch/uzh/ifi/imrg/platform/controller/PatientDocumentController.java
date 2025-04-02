@@ -5,9 +5,7 @@ import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -40,20 +38,25 @@ public class PatientDocumentController {
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
   @GetMapping("/{patientDocumentId}/download")
-  public ResponseEntity<Resource> downloadFile(@PathVariable String id,
-      HttpServletRequest httpServletRequest) throws IOException {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(id, loggedInTherapist);
+  public ResponseEntity<Resource> downloadFile(
+      @PathVariable String id, HttpServletRequest httpServletRequest) throws IOException {
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(id, loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
     return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDocument.getFileName() + "\"")
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=\"" + fileDocument.getFileName() + "\"")
         .contentType(MediaType.parseMediaType(fileDocument.getFileType()))
         .contentLength(fileDocument.getFileData().length)
         .body(resource);
