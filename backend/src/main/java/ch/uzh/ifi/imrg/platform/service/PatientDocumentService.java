@@ -37,10 +37,9 @@ public class PatientDocumentService {
   public void uploadPatientDocument(
       String patientId, MultipartFile file, Therapist loggedInTherapist) {
 
-    Patient patient =
-        patientRepository
-            .findById(patientId)
-            .orElseThrow(() -> new RuntimeException("Patient not found"));
+    Patient patient = patientRepository
+        .findById(patientId)
+        .orElseThrow(() -> new RuntimeException("Patient not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
     PatientDocument patientDocument = new PatientDocument();
@@ -55,5 +54,15 @@ public class PatientDocumentService {
     patientDocument.setExtractedText(extractedText);
 
     patientDocumentRepository.save(patientDocument);
+  }
+
+  public PatientDocument downloadPatientDocument(
+      String patientDocumentId, Therapist loggedInTherapist) {
+
+    PatientDocument patientDocument = patientDocumentRepository
+        .findById(patientDocumentId)
+        .orElseThrow(() -> new RuntimeException("Patient document not found"));
+
+    return patientDocument;
   }
 }
