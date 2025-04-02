@@ -56,6 +56,9 @@ public class Patient implements Serializable {
   @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
   private List<TherapySession> therapySessions = new ArrayList<>();
 
+  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private List<PatientDocument> documents = new ArrayList<>();
+
   public String getId() {
     return id;
   }
@@ -138,5 +141,13 @@ public class Patient implements Serializable {
 
   public void setTherapySessions(List<TherapySession> sessions) {
     this.therapySessions = sessions;
+  }
+
+  public List<PatientDocument> getDocuments() {
+    return documents;
+  }
+
+  public void setDocuments(List<PatientDocument> documents) {
+    this.documents = documents;
   }
 }
