@@ -7,6 +7,7 @@ plugins {
 	id 'jacoco'
 	id 'com.github.johnrengelman.processes' version '0.5.0'
 	id 'com.diffplug.spotless' version '6.22.0'
+	id 'org.openapi.generator' version '7.4.0'
 }
 
 group = 'ch.uzh.ifi.imrg'
@@ -64,9 +65,9 @@ dependencies {
 
 	implementation 'org.postgresql:postgresql:42.6.0'
 
-	 implementation 'io.jsonwebtoken:jjwt:0.12.6'
+	implementation 'io.jsonwebtoken:jjwt:0.12.6'
 
-	
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 }
 
 bootJar {
