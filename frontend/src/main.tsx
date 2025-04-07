@@ -11,6 +11,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import { ThemeProvider } from '@mui/material'
 import theme from './muiTheme.ts'
+import './utils/api.ts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
