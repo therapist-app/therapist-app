@@ -35,8 +35,6 @@ import Layout from '../../generalComponents/Layout'
 
 import { handleError } from '../../utils/handleError'
 
-import { ChatbotTemplateOutputDTO } from '../../dto/output/ChatbotTemplateOutputDTO'
-import { CreateChatbotTemplateDTO } from '../../dto/input/CreateChatbotTemplateDTO'
 import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -51,6 +49,7 @@ import {
   updateChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -186,7 +185,7 @@ const Dashboard = () => {
 
   const handleRename = () => {
     if (currentChatbot) {
-      setChatbotName(currentChatbot.chatbotName)
+      setChatbotName(currentChatbot.chatbotName ?? '')
       setOpenRenameDialog(true)
     }
     handleMenuClose()
@@ -198,7 +197,7 @@ const Dashboard = () => {
 
       await dispatch(
         updateChatbotTemplate({
-          chatbotTemplateId: currentChatbot.id,
+          chatbotTemplateId: currentChatbot.id ?? '',
           updateChatbotTemplateDTO: { chatbotName: chatbotName },
         })
       )
@@ -218,7 +217,7 @@ const Dashboard = () => {
   const handleClone = async () => {
     if (!currentChatbot) return
     try {
-      await dispatch(cloneChatbotTemplate(currentChatbot.id))
+      await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
 
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
@@ -236,7 +235,7 @@ const Dashboard = () => {
     try {
       if (!currentChatbot) return
 
-      await dispatch(deleteChatbotTemplate(currentChatbot.id))
+      await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
 
       setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')
@@ -373,7 +372,7 @@ const Dashboard = () => {
                 borderRadius: '8px',
               }}
             >
-              <CardActionArea onClick={() => handlePatientClick(patient.id)}>
+              <CardActionArea onClick={() => handlePatientClick(patient.id ?? '')}>
                 <CardContent>
                   <Typography variant='h6'>{patient.name ?? 'Unnamed Patient'}</Typography>
                   <Typography variant='body2' color='textSecondary'>
@@ -565,7 +564,7 @@ const Dashboard = () => {
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
-                    {getIconComponent(bot.chatbotIcon)}
+                    {getIconComponent(bot.chatbotIcon ?? '')}
                   </Typography>
                 </CardContent>
               </CardActionArea>

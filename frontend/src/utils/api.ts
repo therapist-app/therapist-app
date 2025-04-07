@@ -1,4 +1,12 @@
 import axios from 'axios'
+import BaseAPI from './api'
+import {
+  ChatbotTemplateControllerApi,
+  PatientControllerApi,
+  PatientTestControllerApi,
+  TherapistControllerApi,
+  TherapySessionControllerApi,
+} from '../api'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -18,5 +26,13 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+BaseAPI.prototype.axios = api
+
+export const chatbotTemplateApi = new ChatbotTemplateControllerApi()
+export const patientApi = new PatientControllerApi()
+export const patientTestApi = new PatientTestControllerApi()
+export const therapistApi = new TherapistControllerApi()
+export const therapySessionApi = new TherapySessionControllerApi()
 
 export default api

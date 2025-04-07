@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { CreateChatbotTemplateDTO } from '../dto/input/CreateChatbotTemplateDTO'
-import api from '../utils/api'
-import { UpdateChatbotTemplateDTO } from '../dto/input/UpdateChatbotTemplateDTO'
-import { ChatbotTemplateOutputDTO } from '../dto/output/ChatbotTemplateOutputDTO'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../api'
+import { chatbotTemplateApi } from '../utils/api'
 
 interface ChatbotTemplateState {
   selectedChatbotTemplate: ChatbotTemplateOutputDTO | null
@@ -21,7 +19,7 @@ const initialState: ChatbotTemplateState = {
 export const createChatbotTemplate = createAsyncThunk(
   'createChatbotTemplate',
   async (createChatbotTemplateDTO: CreateChatbotTemplateDTO) => {
-    const response = await api.post(`/chatbot-templates`, createChatbotTemplateDTO)
+    const response = await chatbotTemplateApi.createTemplate(createChatbotTemplateDTO)
     return response.data
   }
 )
@@ -30,10 +28,11 @@ export const updateChatbotTemplate = createAsyncThunk(
   'updateChatbotTemplate',
   async (payload: {
     chatbotTemplateId: string
-    updateChatbotTemplateDTO: UpdateChatbotTemplateDTO
+    updateChatbotTemplateDTO: CreateChatbotTemplateDTO
   }) => {
-    const response = await api.put(
-      `/chatbot-templates/${payload.chatbotTemplateId}`,
+    const response = await chatbotTemplateApi.updateTemplate(
+      payload.chatbotTemplateId,
+
       payload.updateChatbotTemplateDTO
     )
     return response.data
@@ -43,7 +42,7 @@ export const updateChatbotTemplate = createAsyncThunk(
 export const cloneChatbotTemplate = createAsyncThunk(
   'cloneChatbotTemplate',
   async (chatbotTemplateId: string) => {
-    const response = await api.post(`/chatbot-templates/${chatbotTemplateId}/clone`)
+    const response = await chatbotTemplateApi.cloneTemplate(chatbotTemplateId)
     return response.data
   }
 )
@@ -51,7 +50,7 @@ export const cloneChatbotTemplate = createAsyncThunk(
 export const deleteChatbotTemplate = createAsyncThunk(
   'deleteChatbotTemplate',
   async (chatbotTemplateId: string) => {
-    const response = await api.delete(`/chatbot-templates/${chatbotTemplateId}`)
+    const response = await chatbotTemplateApi.deleteTemplate(chatbotTemplateId)
     return response.data
   }
 )

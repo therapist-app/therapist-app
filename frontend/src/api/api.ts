@@ -1101,13 +1101,10 @@ export const PatientControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
-         * @param {CreatePatientDTO} inputDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPatientsOfTherapist: async (inputDTO: CreatePatientDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'inputDTO' is not null or undefined
-            assertParamExists('getPatientsOfTherapist', 'inputDTO', inputDTO)
+        getPatientsOfTherapist: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/patients`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1119,12 +1116,6 @@ export const PatientControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (inputDTO !== undefined) {
-                for (const [key, value] of Object.entries(inputDTO)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
 
     
@@ -1173,12 +1164,11 @@ export const PatientControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {CreatePatientDTO} inputDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPatientsOfTherapist(inputDTO: CreatePatientDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PatientOutputDTO>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPatientsOfTherapist(inputDTO, options);
+        async getPatientsOfTherapist(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PatientOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPatientsOfTherapist(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PatientControllerApi.getPatientsOfTherapist']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1213,12 +1203,11 @@ export const PatientControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {CreatePatientDTO} inputDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPatientsOfTherapist(inputDTO: CreatePatientDTO, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>> {
-            return localVarFp.getPatientsOfTherapist(inputDTO, options).then((request) => request(axios, basePath));
+        getPatientsOfTherapist(options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>> {
+            return localVarFp.getPatientsOfTherapist(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1249,12 +1238,11 @@ export interface PatientControllerApiInterface {
 
     /**
      * 
-     * @param {CreatePatientDTO} inputDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientControllerApiInterface
      */
-    getPatientsOfTherapist(inputDTO: CreatePatientDTO, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>>;
+    getPatientsOfTherapist(options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>>;
 
 }
 
@@ -1289,13 +1277,12 @@ export class PatientControllerApi extends BaseAPI implements PatientControllerAp
 
     /**
      * 
-     * @param {CreatePatientDTO} inputDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientControllerApi
      */
-    public getPatientsOfTherapist(inputDTO: CreatePatientDTO, options?: RawAxiosRequestConfig) {
-        return PatientControllerApiFp(this.configuration).getPatientsOfTherapist(inputDTO, options).then((request) => request(this.axios, this.basePath));
+    public getPatientsOfTherapist(options?: RawAxiosRequestConfig) {
+        return PatientControllerApiFp(this.configuration).getPatientsOfTherapist(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

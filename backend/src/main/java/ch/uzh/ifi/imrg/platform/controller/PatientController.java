@@ -34,8 +34,7 @@ public class PatientController {
   public PatientOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
     logger.info("/patients");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     Patient registeredPatient = patientService.registerPatient(loggedInTherapist.getId(), inputDTO);
     return PatientMapper.INSTANCE.convertEntityToPatientOutputDTO(registeredPatient);
   }
@@ -43,10 +42,9 @@ public class PatientController {
   @GetMapping()
   @ResponseStatus(HttpStatus.OK)
   public List<PatientOutputDTO> getPatientsOfTherapist(
-      @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
+      HttpServletRequest httpServletRequest) {
     logger.info("/patients");
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     List<Patient> patients = patientService.getAllPatientsOfTherapist(loggedInTherapist);
     return patients.stream()
         .map(PatientMapper.INSTANCE::convertEntityToPatientOutputDTO)
