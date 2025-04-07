@@ -38,18 +38,15 @@ public class PatientDocumentController {
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
   @GetMapping("/{patientDocumentId}/download")
   public ResponseEntity<Resource> downloadFile(
-      @PathVariable String id, HttpServletRequest httpServletRequest) throws IOException {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    PatientDocument fileDocument =
-        patientDocumentService.downloadPatientDocument(id, loggedInTherapist);
+      @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest) throws IOException {
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
