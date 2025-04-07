@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"npm run watch:translations\"",
+    "dev": "npm run generate:api && concurrently \"vite\" \"npm run watch:translations\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint \"**/src/**/*.{ts,tsx}\"",
@@ -15,7 +15,8 @@
     "fix-all": "npm run lint:fix && npm run format:fix",
     "prepare": "cd .. && husky frontend/.husky",
     "generate:resources": "i18next-resources-for-ts interface -i ./public/locales -o ./src/@types/resources.d.ts",
-    "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'"
+    "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'",
+    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true"
   },
   "lint-staged": {
     "**/src/**/*.{ts,tsx}": [
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@openapitools/openapi-generator-cli": "^2.18.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@typescript-eslint/eslint-plugin": "^8.25.0",

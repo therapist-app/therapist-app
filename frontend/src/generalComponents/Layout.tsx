@@ -110,7 +110,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     if (loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0) {
       navigate(
         getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
-          patientId: loggedInTherapist?.patientsOutputDTO[0].id,
+          patientId: loggedInTherapist?.patientsOutputDTO[0].id ?? '',
         })
       )
     }
@@ -145,7 +145,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           navigate(
             getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
               patientId,
-              therapySessionId: patient.therapySessionsOutputDTO[0].id,
+              therapySessionId: patient.therapySessionsOutputDTO[0].id ?? '',
             })
           )
         }

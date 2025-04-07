@@ -6,9 +6,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "patients")
 public class Patient implements Serializable {
@@ -55,88 +59,4 @@ public class Patient implements Serializable {
 
   @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
   private List<TherapySession> therapySessions = new ArrayList<>();
-
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getGender() {
-    return gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Therapist getTherapist() {
-    return therapist;
-  }
-
-  public void setTherapist(Therapist therapist) {
-    this.therapist = therapist;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public List<TherapySession> getTherapySessions() {
-    return therapySessions;
-  }
-
-  public void setTherapySessions(List<TherapySession> sessions) {
-    this.therapySessions = sessions;
-  }
 }

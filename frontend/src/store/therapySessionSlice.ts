@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TherapySessionOutputDTO } from '../dto/output/TherapySessionOutputDTO'
-import { CreateTherapySessionDTO } from '../dto/input/CreateTherapySessionDTO'
-import api from '../utils/api'
+
+import { therapySessionApi } from '../utils/api'
+import { CreateTherapySessionDTO, TherapySessionOutputDTO } from '../api'
 
 interface TherapistState {
   selectedTherapySession: TherapySessionOutputDTO | null
@@ -20,7 +20,7 @@ const initialState: TherapistState = {
 export const createTherapySession = createAsyncThunk(
   'createTherapySession',
   async (createTherapySessionDTO: CreateTherapySessionDTO) => {
-    const response = await api.post(`/therapy-sessions`, createTherapySessionDTO)
+    const response = await therapySessionApi.createSession(createTherapySessionDTO)
     return response.data
   }
 )
@@ -28,7 +28,7 @@ export const createTherapySession = createAsyncThunk(
 export const getTherapySession = createAsyncThunk(
   'getTherapySession',
   async (therapySessionId: string) => {
-    const response = await api.get(`/therapy-sessions/${therapySessionId}`)
+    const response = await therapySessionApi.getTherapySessionById(therapySessionId)
     return response.data
   }
 )
@@ -36,7 +36,7 @@ export const getTherapySession = createAsyncThunk(
 export const getAllTherapySessionsOfPatient = createAsyncThunk(
   'getAllTherapySessionsOfPatient',
   async (patientId: string) => {
-    const response = await api.get(`/therapy-sessions/patients/${patientId}`)
+    const response = await therapySessionApi.getTherapySessionsOfPatient(patientId)
     return response.data
   }
 )

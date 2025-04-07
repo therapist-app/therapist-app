@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import api from '../utils/api'
-import { CreatePatientDTO } from '../dto/input/CreatePatientDTO'
-import { PatientOutputDTO } from '../dto/output/PatientOutputDTO'
+import { CreatePatientDTO, PatientOutputDTO } from '../api'
+import { patientApi } from '../utils/api'
 
 interface PatientState {
   selectedPatient: PatientOutputDTO | null
@@ -20,18 +19,13 @@ const initialState: PatientState = {
 export const registerPatient = createAsyncThunk(
   'registerPatient',
   async (createPatientDTO: CreatePatientDTO) => {
-    const response = await api.post(`/patients`, createPatientDTO)
+    const response = await patientApi.createPatientForTherapist(createPatientDTO)
     return response.data
   }
 )
 
-export const getPatient = createAsyncThunk('getPatient', async (patientId: string) => {
-  const response = await api.get(`/patients/${patientId}`)
-  return response.data
-})
-
 export const getAllPatientsOfTherapist = createAsyncThunk('getAllPatientsOfTherapist', async () => {
-  const response = await api.get(`/patients`)
+  const response = await patientApi.getPatientsOfTherapist()
   return response.data
 })
 
@@ -66,19 +60,6 @@ const patientSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
-      })
-
-      .addCase(getPatient.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(getPatient.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.selectedPatient = action.payload
-      })
-      .addCase(getPatient.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
       })
 
       .addCase(getAllPatientsOfTherapist.pending, (state) => {

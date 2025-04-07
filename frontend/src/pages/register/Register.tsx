@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { TextField, Button, Typography, Container, Box } from '@mui/material'
-import { CreateTherapistDTO } from '../../dto/input/TherapistInputDTO'
+
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { registerTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { CreateTherapistDTO } from '../../api'
 
 const Register = () => {
   const dispatch = useAppDispatch()
