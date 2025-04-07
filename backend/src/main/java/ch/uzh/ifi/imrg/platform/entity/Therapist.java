@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "therapists")
 public class Therapist implements Serializable {
@@ -40,59 +44,4 @@ public class Therapist implements Serializable {
   @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public String getWorkspaceId() {
-    return workspaceId;
-  }
-
-  public void setWorkspaceId(String workspaceId) {
-    this.workspaceId = workspaceId;
-  }
-
-  public List<Patient> getPatients() {
-    return patients;
-  }
-
-  public void setPatients(List<Patient> patients) {
-    this.patients = patients;
-  }
-
-  public List<ChatbotTemplate> getChatbotTemplates() {
-    return chatbotTemplates;
-  }
-
-  public void setChatbotTemplates(List<ChatbotTemplate> chatbotTemplates) {
-    this.chatbotTemplates = chatbotTemplates;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
 }
