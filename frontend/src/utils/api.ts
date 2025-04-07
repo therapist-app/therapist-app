@@ -1,15 +1,17 @@
 import axios from 'axios'
-import BaseAPI from './api'
+
 import {
-  ChatbotTemplateControllerApi,
-  PatientControllerApi,
-  PatientTestControllerApi,
-  TherapistControllerApi,
-  TherapySessionControllerApi,
+  ChatbotTemplateControllerApiFactory,
+  PatientControllerApiFactory,
+  PatientTestControllerApiFactory,
+  TherapistControllerApiFactory,
+  TherapySessionControllerApiFactory,
 } from '../api'
 
+const baseURL: string = import.meta.env.VITE_API_BASE_URL
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -27,12 +29,10 @@ api.interceptors.response.use(
   }
 )
 
-BaseAPI.prototype.axios = api
-
-export const chatbotTemplateApi = new ChatbotTemplateControllerApi()
-export const patientApi = new PatientControllerApi()
-export const patientTestApi = new PatientTestControllerApi()
-export const therapistApi = new TherapistControllerApi()
-export const therapySessionApi = new TherapySessionControllerApi()
+export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
+export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
+export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)
+export const therapistApi = TherapistControllerApiFactory(undefined, baseURL, api)
+export const therapySessionApi = TherapySessionControllerApiFactory(undefined, baseURL, api)
 
 export default api
