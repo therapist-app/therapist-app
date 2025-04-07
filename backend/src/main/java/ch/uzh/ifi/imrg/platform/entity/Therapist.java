@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -43,5 +43,4 @@ public class Therapist implements Serializable {
 
   @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
-
 }

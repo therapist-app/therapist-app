@@ -19,5 +19,4 @@ public class ChatbotTemplateOutputDTO {
   private String workspaceId;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-
 }

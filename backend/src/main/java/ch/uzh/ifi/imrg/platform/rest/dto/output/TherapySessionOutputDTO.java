@@ -11,5 +11,4 @@ public class TherapySessionOutputDTO {
   private String id;
   private LocalDateTime sessionStart;
   private LocalDateTime sessionEnd;
-
 }

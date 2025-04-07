@@ -9,5 +9,4 @@ public class CreateTherapistDTO {
 
   private String email;
   private String password;
-
 }

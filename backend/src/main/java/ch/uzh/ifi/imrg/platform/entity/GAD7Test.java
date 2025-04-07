@@ -3,9 +3,9 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.hibernate.annotations.CreationTimestamp;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -50,5 +50,4 @@ public class GAD7Test {
 
   @Column(nullable = false)
   private int question7;
-
 }

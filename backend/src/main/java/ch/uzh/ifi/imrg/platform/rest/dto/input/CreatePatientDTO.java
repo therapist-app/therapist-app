@@ -14,8 +14,7 @@ public class CreatePatientDTO {
   private String address;
   private String description;
 
-  public CreatePatientDTO() {
-  }
+  public CreatePatientDTO() {}
 
   public CreatePatientDTO(
       String name,
@@ -33,5 +32,4 @@ public class CreatePatientDTO {
     this.address = address;
     this.description = description;
   }
-
 }

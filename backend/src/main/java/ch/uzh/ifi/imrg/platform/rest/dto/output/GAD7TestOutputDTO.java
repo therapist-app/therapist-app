@@ -19,5 +19,4 @@ public class GAD7TestOutputDTO {
   private int question5;
   private int question6;
   private int question7;
-
 }

@@ -15,5 +15,4 @@ public class CreateChatbotTemplateDTO {
   private String chatbotTone;
   private String welcomeMessage;
   private String workspaceId;
-
 }

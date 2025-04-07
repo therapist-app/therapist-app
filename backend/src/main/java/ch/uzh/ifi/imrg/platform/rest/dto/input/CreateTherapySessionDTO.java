@@ -13,5 +13,4 @@ public class CreateTherapySessionDTO {
   private LocalDateTime sessionEnd;
 
   private String patientId;
-
 }

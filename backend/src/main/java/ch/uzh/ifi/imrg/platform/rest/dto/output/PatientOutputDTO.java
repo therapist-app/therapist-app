@@ -21,12 +21,10 @@ public class PatientOutputDTO {
   private String email;
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
 
-  public PatientOutputDTO() {
-  }
+  public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;
     this.name = name;
   }
-
 }
