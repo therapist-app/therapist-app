@@ -45,9 +45,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+    TherapySession createdSession =
+        sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(createdSession);
   }
 
@@ -58,9 +60,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions/" + therapySessionId);
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySession therapySession = sessionService.getTherapySession(therapySessionId, loggedInTherapist);
+    TherapySession therapySession =
+        sessionService.getTherapySession(therapySessionId, loggedInTherapist);
     return TherapySessionMapper.INSTANCE.convertEntityToSessionOutputDTO(therapySession);
   }
 
@@ -71,9 +75,11 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-sessions/patients/" + patientId);
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    List<TherapySession> therapySessions = sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
+    List<TherapySession> therapySessions =
+        sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
     return therapySessions.stream()
         .map(TherapySessionMapper.INSTANCE::convertEntityToSessionOutputDTO)
         .collect(Collectors.toList());
@@ -85,7 +91,8 @@ public class TherapySessionController {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     logger.info("/therapy-therapySessionId/");
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     sessionService.deleteTherapySessionById(therapySessionId, loggedInTherapist);
   }
 }
