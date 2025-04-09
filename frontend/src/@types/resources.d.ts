@@ -46,6 +46,8 @@ interface Resources {
       "patient_id": "Patient ID",
       "no_patients_found": "No patients found.",
       "new_patient": "New Patient",
+<<<<<<< HEAD
+=======
       "enter_information_register_new_patient": "Enter information to register a new patient.",
       "patient_name": "Patient Name",
       "patient_gender": "Gender",
@@ -57,6 +59,7 @@ interface Resources {
       "patient_email": "E-mail",
       "patient_address": "Address",
       "patient_description": "Patient Description",
+>>>>>>> main
       "cancel": "Cancel",
       "register": "Register",
       "create_new_chatbot_template": "Create new chatbot template",
@@ -87,7 +90,29 @@ interface Resources {
       "message": "This is the patient detail page of patient with ID"
     },
     "patient_create": {
+<<<<<<< HEAD
+      "title": "This is the page to create a new patient",
+      "new_patient": "New Patient",
+      "patient_name": "Name",
+      "patient_age": "Age",
+      "patient_gender": "Sex",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "patient_marital_status": "Marital Status",
+      "patient_religion": "Religion",
+      "patient_education": "Education",
+      "patient_occupation": "Occupation",
+      "patient_income": "Income",
+      "patient_address": "Address",
+      "patient_date_of_admission": "Date of Admission",
+      "register": "Register",
+      "cancel": "Cancel",
+      "patient_register_success": "Patient registered successfully.",
+      "patient_register_failed": "Failed to register patient. Please try again."
+=======
       "title": "This is the page to create a new patient"
+>>>>>>> main
     },
     "register": {
       "welcome": "Welcome to the Therapist App",
@@ -153,6 +178,8 @@ interface Resources {
       "patient_id": "ID пацієнта",
       "no_patients_found": "Пацієнтів не знайдено.",
       "new_patient": "Новий пацієнт",
+<<<<<<< HEAD
+=======
       "enter_information_register_new_patient": "Введіть інформацію для реєстрації нового пацієнта.",
       "patient_name": "Ім'я пацієнта",
       "patient_gender": "Стать",
@@ -164,6 +191,7 @@ interface Resources {
       "patient_email": "Електронна пошта",
       "patient_address": "Адреса",
       "patient_description": "Опис пацієнта",
+>>>>>>> main
       "cancel": "Скасувати",
       "register": "Зареєструвати",
       "create_new_chatbot_template": "Створити новий шаблон чат-бота",
@@ -193,6 +221,30 @@ interface Resources {
     "patient_detail": {
       "message": "Це сторінка деталей пацієнта з ID"
     },
+<<<<<<< HEAD
+    "patient_create": {
+      "title": "Це сторінка створення нового пацієнта",
+      "new_patient": "Новий пацієнт",
+      "patient_name": "Ім'я",
+      "patient_age": "Вік",
+      "patient_gender": "Стать",
+      "male": "Чоловіча",
+      "female": "Жіноча",
+      "other": "Інша",
+      "patient_marital_status": "Сімейний стан",
+      "patient_religion": "Релігія",
+      "patient_education": "Освіта",
+      "patient_occupation": "Професія",
+      "patient_income": "Дохід",
+      "patient_address": "Адреса",
+      "patient_date_of_admission": "Дата прийому",
+      "register": "Зареєструвати",
+      "cancel": "Скасувати",
+      "patient_register_success": "Пацієнта успішно зареєстровано.",
+      "patient_register_failed": "Не вдалося зареєструвати пацієнта. Спробуйте ще раз."
+    },
+=======
+>>>>>>> main
     "register": {
       "register_therapist": "Зареєструвати терапевта",
       "email": "Електронна пошта",

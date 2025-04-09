@@ -19,6 +19,12 @@ public class PatientOutputDTO {
   private String description;
   private int age;
   private String email;
+  private String maritalStatus;
+  private String religion;
+  private String education;
+  private String occupation;
+  private String income;
+  private String dateOfAdmission;
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
 
   public PatientOutputDTO() {}

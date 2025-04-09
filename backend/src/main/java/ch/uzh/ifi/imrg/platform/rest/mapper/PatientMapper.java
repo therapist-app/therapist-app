@@ -18,14 +18,22 @@ public interface PatientMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "name", target = "name")
+  @Mapping(source = "createdAt", target = "createdAt")
+  @Mapping(source = "updatedAt", target = "updatedAt")
+  @Mapping(source = "phoneNumber", target = "phoneNumber")
+  @Mapping(source = "address", target = "address")
   @Mapping(source = "gender", target = "gender")
   @Mapping(source = "age", target = "age")
-  @Mapping(source = "phoneNumber", target = "phoneNumber")
   @Mapping(source = "email", target = "email")
-  @Mapping(source = "address", target = "address")
-  @Mapping(source = "description", target = "description")
+  @Mapping(source = "maritalStatus", target = "maritalStatus")
+  @Mapping(source = "religion", target = "religion")
+  @Mapping(source = "education", target = "education")
+  @Mapping(source = "occupation", target = "occupation")
+  @Mapping(source = "income", target = "income")
+  @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   @Mapping(source = "therapySessions", target = "therapySessionsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
+
 
   @Mapping(source = "name", target = "name")
   @Mapping(source = "gender", target = "gender")
@@ -33,8 +41,14 @@ public interface PatientMapper {
   @Mapping(source = "phoneNumber", target = "phoneNumber")
   @Mapping(source = "email", target = "email")
   @Mapping(source = "address", target = "address")
-  @Mapping(source = "description", target = "description")
+  @Mapping(source = "maritalStatus", target = "maritalStatus")
+  @Mapping(source = "religion", target = "religion")
+  @Mapping(source = "education", target = "education")
+  @Mapping(source = "occupation", target = "occupation")
+  @Mapping(source = "income", target = "income")
+  @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
+
 
   default List<TherapySessionOutputDTO> mapTherapySessions(List<TherapySession> therapySessions) {
     if (therapySessions == null) {

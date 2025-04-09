@@ -48,7 +48,22 @@ public class Patient implements Serializable {
   private String address;
 
   @Column(nullable = true)
-  private String description;
+  private String maritalStatus;
+
+  @Column(nullable = true)
+  private String religion;
+
+  @Column(nullable = true)
+  private String education;
+
+  @Column(nullable = true)
+  private String occupation;
+
+  @Column(nullable = true)
+  private String income;
+
+  @Column(nullable = true)
+  private String dateOfAdmission;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")

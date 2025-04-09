@@ -12,7 +12,12 @@ public class CreatePatientDTO {
   private String phoneNumber;
   private String email;
   private String address;
-  private String description;
+  private String maritalStatus;
+  private String religion;
+  private String education;
+  private String occupation;
+  private String income;
+  private String dateOfAdmission;
 
   public CreatePatientDTO() {}
 
@@ -23,13 +28,23 @@ public class CreatePatientDTO {
       String phoneNumber,
       String email,
       String address,
-      String description) {
+      String maritalStatus,
+      String religion,
+      String education,
+      String occupation,
+      String income,
+      String dateOfAdmission) {
     this.name = name;
     this.gender = gender;
     this.age = age;
     this.phoneNumber = phoneNumber;
     this.email = email;
     this.address = address;
-    this.description = description;
+    this.maritalStatus = maritalStatus;
+    this.religion = religion;
+    this.education = education;
+    this.occupation = occupation;
+    this.income = income;
+    this.dateOfAdmission = dateOfAdmission;
   }
 }
