@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Alert,
@@ -34,7 +34,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import Layout from '../../generalComponents/Layout'
 import { handleError } from '../../utils/handleError'
 import { useTranslation } from 'react-i18next'
-import api from '../../utils/api'
+import { patientApi } from '../../utils/api'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
@@ -70,6 +70,12 @@ const PatientsOverview: React.FC = () => {
   const rowsPerPage = 5
   const [tabValue, setTabValue] = useState(0)
 
+  const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
+
+  useEffect(() => {
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch, refreshTherapistCounter])
+
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
@@ -93,6 +99,7 @@ const PatientsOverview: React.FC = () => {
           description: newPatientDescription,
         })
       )
+      setRefreshTherapistCounter((prev) => prev + 1)
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -118,14 +125,14 @@ const PatientsOverview: React.FC = () => {
     try {
       await Promise.all(
         selected.map(async (id) => {
-          await api.delete(`/patients/${id}`)
+          await patientApi.deletePatient(id)
         })
       )
       setSnackbarMessage('Successfully deleted selected patient(s).')
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       setSelected([])
-      dispatch(getCurrentlyLoggedInTherapist())
+      setRefreshTherapistCounter((prev) => prev + 1)
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)

@@ -36,10 +36,10 @@ public class Patient implements Serializable {
   @Column(nullable = true)
   private int age;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true)
   private String phoneNumber;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true)
   private String email;
 
   @Column(nullable = true)
