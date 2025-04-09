@@ -1,10 +1,8 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CreatePatientDTO {
   private String name;
   private String gender;
@@ -14,7 +12,8 @@ public class CreatePatientDTO {
   private String address;
   private String description;
 
-  public CreatePatientDTO() {}
+  public CreatePatientDTO() {
+  }
 
   public CreatePatientDTO(
       String name,

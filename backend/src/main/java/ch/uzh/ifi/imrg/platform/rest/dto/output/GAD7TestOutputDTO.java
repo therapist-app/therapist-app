@@ -1,11 +1,9 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GAD7TestOutputDTO {
 
   private String testId;

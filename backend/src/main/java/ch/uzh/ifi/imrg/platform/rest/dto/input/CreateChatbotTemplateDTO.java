@@ -1,10 +1,8 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CreateChatbotTemplateDTO {
   private String chatbotName;
   private String description;
