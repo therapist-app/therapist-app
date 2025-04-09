@@ -64,7 +64,7 @@ const PatientDetail = () => {
                   File name <FileUpload onUpload={handleFileUpload} />
                 </div>
               </TableCell>
-              <TableCell align='right'>Actions</TableCell> {/* Add actions header */}
+              <TableCell align='right'>Delete File</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
