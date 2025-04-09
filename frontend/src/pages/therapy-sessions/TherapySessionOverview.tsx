@@ -18,6 +18,8 @@ import { useAppDispatch } from '../../utils/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { format } from 'date-fns'
+import { de } from 'date-fns/locale'
 
 const TherapySessionOverview = () => {
   const navigate = useNavigate()
@@ -59,8 +61,8 @@ const TherapySessionOverview = () => {
       >
         Create new Therapy Session
       </Button>
-      <TableContainer component={Paper}>
-        <Table aria-label='simple table'>
+      <TableContainer sx={{ width: '600px' }} component={Paper}>
+        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               <TableCell>Session Start</TableCell>
@@ -75,9 +77,19 @@ const TherapySessionOverview = () => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
                 <TableCell component='th' scope='row'>
-                  {therapySession.sessionStart}
+                  {therapySession?.sessionStart
+                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
                 </TableCell>
-                <TableCell align='right'> {therapySession.sessionEnd}</TableCell>
+                <TableCell align='right'>
+                  {therapySession?.sessionEnd
+                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
