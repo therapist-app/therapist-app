@@ -12,5 +12,4 @@ public interface PatientRepository extends JpaRepository<Patient, String> {
   Patient getPatientById(String id);
 
   boolean existsByIdAndTherapistId(String patientId, String therapistId);
-
 }

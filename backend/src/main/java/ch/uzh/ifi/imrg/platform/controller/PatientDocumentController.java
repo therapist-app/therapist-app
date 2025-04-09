@@ -3,14 +3,11 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -43,16 +40,17 @@ public class PatientDocumentController {
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
   @GetMapping("/{patientId}")
-  public List<PatientDocumentOutputDTO> getDocumentsOfPatient(@PathVariable String patientId,
-      HttpServletRequest httpServletReques) {
+  public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
+      @PathVariable String patientId, HttpServletRequest httpServletReques) {
     Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletReques);
-    List<PatientDocumentOutputDTO> patientDocuments = patientDocumentService.getDocumentsOfPatient(patientId,
-        loggedInTherapist);
+    List<PatientDocumentOutputDTO> patientDocuments =
+        patientDocumentService.getDocumentsOfPatient(patientId, loggedInTherapist);
 
     return patientDocuments;
   }
@@ -61,8 +59,10 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadFile(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest)
       throws IOException {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
