@@ -1,5 +1,10 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CreatePatientDTO {
   private String name;
   private String gender;
@@ -7,7 +12,12 @@ public class CreatePatientDTO {
   private String phoneNumber;
   private String email;
   private String address;
-  private String description;
+  private String maritalStatus;
+  private String religion;
+  private String education;
+  private String occupation;
+  private String income;
+  private String dateOfAdmission;
 
   public CreatePatientDTO() {}
 
@@ -18,69 +28,23 @@ public class CreatePatientDTO {
       String phoneNumber,
       String email,
       String address,
-      String description) {
+      String maritalStatus,
+      String religion,
+      String education,
+      String occupation,
+      String income,
+      String dateOfAdmission) {
     this.name = name;
     this.gender = gender;
     this.age = age;
     this.phoneNumber = phoneNumber;
     this.email = email;
     this.address = address;
-    this.description = description;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getGender() {
-    return gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
+    this.maritalStatus = maritalStatus;
+    this.religion = religion;
+    this.education = education;
+    this.occupation = occupation;
+    this.income = income;
+    this.dateOfAdmission = dateOfAdmission
   }
 }

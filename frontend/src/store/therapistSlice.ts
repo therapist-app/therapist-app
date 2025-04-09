@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { TherapistOutputDTO } from '../dto/output/TherapistOutputDTO'
-import api from '../utils/api'
-import { CreateTherapistDTO } from '../dto/input/TherapistInputDTO'
-import { LoginTherapistDTO } from '../dto/input/LoginTherapistDTO'
+
+import { therapistApi } from '../utils/api'
+import { CreateTherapistDTO, LoginTherapistDTO, TherapistOutputDTO } from '../api'
 
 interface TherapistState {
   loggedInTherapist: TherapistOutputDTO | null
@@ -19,7 +18,7 @@ const initialState: TherapistState = {
 export const registerTherapist = createAsyncThunk(
   'registerTherapist',
   async (createTherapistDTO: CreateTherapistDTO) => {
-    const response = await api.post(`/therapists`, createTherapistDTO)
+    const response = await therapistApi.createTherapist(createTherapistDTO)
     return response.data
   }
 )
@@ -27,19 +26,19 @@ export const registerTherapist = createAsyncThunk(
 export const loginTherapist = createAsyncThunk(
   'loginTherapist',
   async (loginTherapistDTO: LoginTherapistDTO) => {
-    const response = await api.post(`/therapists/login`, loginTherapistDTO)
+    const response = await therapistApi.loginTherapist(loginTherapistDTO)
     return response.data
   }
 )
 
 export const logoutTherapist = createAsyncThunk('logoutTherapist', async () => {
-  await api.post(`/therapists/logout`)
+  await therapistApi.logoutTherapist()
 })
 
 export const getCurrentlyLoggedInTherapist = createAsyncThunk(
   'getCurrentlyLoggedInTherapist',
   async () => {
-    const response = await api.get(`/therapists/me`)
+    const response = await therapistApi.getCurrentlyLoggedInTherapist()
     return response.data
   }
 )

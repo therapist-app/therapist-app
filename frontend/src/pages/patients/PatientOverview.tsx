@@ -24,7 +24,6 @@ import AddIcon from '@mui/icons-material/Add'
 import CheckIcon from '@mui/icons-material/Check'
 import Layout from '../../generalComponents/Layout'
 import { handleError } from '../../utils/handleError'
-import { PatientOutputDTO } from '../../dto/output/PatientOutputDTO'
 import { useTranslation } from 'react-i18next'
 import api from '../../utils/api'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
@@ -33,6 +32,7 @@ import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
 import { AxiosError } from 'axios'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { PatientOutputDTO } from '../../api'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
@@ -338,7 +338,7 @@ const PatientsOverview: React.FC = () => {
                   indeterminate={selected.length > 0 && selected.length < patients.length}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelected(patients.map((p) => p.id))
+                      setSelected(patients.map((p) => p.id ?? ''))
                     } else {
                       setSelected([])
                     }
@@ -358,8 +358,8 @@ const PatientsOverview: React.FC = () => {
                 <TableRow key={patient.id} hover>
                   <TableCell padding='checkbox'>
                     <Checkbox
-                      checked={selected.includes(patient.id)}
-                      onChange={() => handleSelectRow(patient.id)}
+                      checked={selected.includes(patient.id ?? '')}
+                      onChange={() => handleSelectRow(patient.id ?? '')}
                       icon={customUncheckedIcon}
                       checkedIcon={customCheckedIcon}
                     />
@@ -386,7 +386,7 @@ const PatientsOverview: React.FC = () => {
                             cursor: 'pointer',
                             '&:hover': { textDecoration: 'underline' },
                           }}
-                          onClick={() => handlePatientClick(patient.id)}
+                          onClick={() => handlePatientClick(patient.id ?? '')}
                         >
                           {patient.name || 'Unnamed Patient'}
                         </Typography>

@@ -54,7 +54,7 @@ const TherapySessionOverview = () => {
           <TableBody>
             {allTherapySessionsOfPatient.map((therapySession) => (
               <TableRow
-                onClick={() => handleClickOnSession(therapySession.id)}
+                onClick={() => handleClickOnSession(therapySession.id ?? '')}
                 key={therapySession.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >

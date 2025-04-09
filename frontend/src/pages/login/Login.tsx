@@ -1,5 +1,5 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-import { LoginTherapistDTO } from '../../dto/input/LoginTherapistDTO'
+
 import { useState } from 'react'
 import { loginTherapist } from '../../store/therapistSlice'
 
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../utils/hooks'
 import { useTranslation } from 'react-i18next'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { LoginTherapistDTO } from '../../api'
 
 const Login = () => {
   const dispatch = useAppDispatch()

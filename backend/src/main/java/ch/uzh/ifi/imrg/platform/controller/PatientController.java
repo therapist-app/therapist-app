@@ -42,8 +42,7 @@ public class PatientController {
 
   @GetMapping()
   @ResponseStatus(HttpStatus.OK)
-  public List<PatientOutputDTO> getPatientsOfTherapist(
-      @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
+  public List<PatientOutputDTO> getPatientsOfTherapist(HttpServletRequest httpServletRequest) {
     logger.info("/patients");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);

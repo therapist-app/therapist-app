@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Box,
   Button,
   TextField,
@@ -14,6 +17,8 @@ import { useAppDispatch } from '../../utils/hooks'
 import { registerPatient } from '../../store/patientSlice'
 import { useTranslation } from 'react-i18next'
 import Layout from '../../generalComponents/Layout'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+
 
 const PatientCreate = () => {
   const [name, setName] = useState('')
@@ -23,6 +28,8 @@ const PatientCreate = () => {
   const [religion, setReligion] = useState('')
   const [education, setEducation] = useState('')
   const [occupation, setOccupation] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
   const [income, setIncome] = useState('')
   const [address, setAddress] = useState('')
   const [dateOfAdmission, setDateOfAdmission] = useState('')
@@ -78,6 +85,8 @@ const PatientCreate = () => {
           income,
           address,
           dateOfAdmission,
+          phoneNumber,
+          email,
           mainComplaints,
           historyOfIllness,
           treatmentHistory,
@@ -100,40 +109,113 @@ const PatientCreate = () => {
   return (
     <Layout>
       <Box sx={{ p: 4, maxWidth: 800, mx: 'auto' }}>
-        <Typography variant="h4" gutterBottom>
-          {t('patient_create.new_patient')}
+        <Typography variant="h6" gutterBottom>
+          1. {t('patient_create.create_patient')}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_name')} value={name} onChange={(e) => setName(e.target.value)} />
+            <TextField
+              fullWidth
+              required
+              label={t('patient_create.patient_name')}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete="off"
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth type="number" label={t('patient_create.patient_age')} value={age} onChange={(e) => setAge(e.target.value)} />
+            <TextField
+              fullWidth
+              required
+              type="number"
+              label={t('patient_create.patient_age')}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              inputProps={{ min: 0 }}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField select fullWidth label={t('patient_create.patient_gender')} value={sex} onChange={(e) => setSex(e.target.value)}>
+            <TextField
+              select
+              fullWidth
+              required
+              label={t('patient_create.patient_gender')}
+              value={sex}
+              onChange={(e) => setSex(e.target.value)}
+            >
               <MenuItem value="male">{t('patient_create.male')}</MenuItem>
               <MenuItem value="female">{t('patient_create.female')}</MenuItem>
               <MenuItem value="other">{t('patient_create.other')}</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_marital_status')} value={maritalStatus} onChange={(e) => setMaritalStatus(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_marital_status')}
+              value={maritalStatus}
+              onChange={(e) => setMaritalStatus(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_religion')} value={religion} onChange={(e) => setReligion(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_religion')}
+              value={religion}
+              onChange={(e) => setReligion(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_education')} value={education} onChange={(e) => setEducation(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_education')}
+              value={education}
+              onChange={(e) => setEducation(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_occupation')} value={occupation} onChange={(e) => setOccupation(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_occupation')}
+              value={occupation}
+              onChange={(e) => setOccupation(e.target.value)}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label={t('patient_create.patient_income')} value={income} onChange={(e) => setIncome(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_income')}
+              value={income}
+              onChange={(e) => setIncome(e.target.value)}
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_phone')}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              type="tel"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_email')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField fullWidth label={t('patient_create.patient_address')} value={address} onChange={(e) => setAddress(e.target.value)} />
+            <TextField
+              fullWidth
+              label={t('patient_create.patient_address')}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              multiline
+              rows={2}
+            />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -146,6 +228,7 @@ const PatientCreate = () => {
             />
           </Grid>
         </Grid>
+
 
         <Box mt={4} display="flex" justifyContent="flex-end">
           <Button onClick={() => navigate('/patients')} sx={{ mr: 2 }}>
@@ -162,199 +245,352 @@ const PatientCreate = () => {
       </Box>
 
       {/* SECTION 2: Main Complaints */}
-      <Box mt={4}>
-        <Typography variant="h6">2. {t('patient_create.main_complaints')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          label={t('patient_create.main_complaints')}
-          value={mainComplaints}
-          onChange={(e) => setMainComplaints(e.target.value)}
-          sx={{ mt: 1 }}
-        />
+      <Box mt={6}>
+        <Accordion defaultExpanded>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="section2-content" id="section2-header">
+            <Typography variant="h6">
+              2. {t('patient_create.main_complaints')} & {t('patient_create.history_of_present_illness')}
+            </Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>
+            {/* Main Complaints */}
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              label={t('patient_create.main_complaints')}
+              value={mainComplaints}
+              onChange={(e) => setMainComplaints(e.target.value)}
+              sx={{ mb: 4 }}
+            />
+
+            {/* History of Present Illness - Basic Fields */}
+            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+              {t('patient_create.history_of_present_illness')}
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_duration')}
+                  value={hpiDuration}
+                  onChange={(e) => setHpiDuration(e.target.value)}
+                  placeholder="e.g., 6 months"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  select
+                  fullWidth
+                  label={t('patient_create.hpi_onset')}
+                  value={hpiOnset}
+                  onChange={(e) => setHpiOnset(e.target.value)}
+                >
+                  <MenuItem value="abrupt">{t('patient_create.onset_abrupt')}</MenuItem>
+                  <MenuItem value="acute">{t('patient_create.onset_acute')}</MenuItem>
+                  <MenuItem value="subacute">{t('patient_create.onset_subacute')}</MenuItem>
+                  <MenuItem value="insidious">{t('patient_create.onset_insidious')}</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_course')}
+                  value={hpiCourse}
+                  onChange={(e) => setHpiCourse(e.target.value)}
+                  placeholder="e.g., continuous, episodic"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_precipitating_factors')}
+                  value={hpiPrecipitatingFactors}
+                  onChange={(e) => setHpiPrecipitatingFactors(e.target.value)}
+                  multiline
+                  rows={2}
+                  placeholder="e.g., recent trauma, grief"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_aggravating_relieving')}
+                  value={hpiAggravatingRelieving}
+                  onChange={(e) => setHpiAggravatingRelieving(e.target.value)}
+                  multiline
+                  rows={2}
+                  placeholder={t('patient_create.hpi_aggravating_relieving_placeholder')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_timeline')}
+                  value={hpiTimeline}
+                  onChange={(e) => setHpiTimeline(e.target.value)}
+                  multiline
+                  rows={3}
+                  placeholder={t('patient_create.hpi_timeline_placeholder')}
+                />
+              </Grid>
+            </Grid>
+
+            {/* Advanced HPI Fields */}
+            <Box mt={4}>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="hpi-advanced-content" id="hpi-advanced-header">
+                  <Typography variant="subtitle1">{t('patient_create.hpi_advanced_details')}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('patient_create.hpi_disturbances')}
+                        value={hpiGeneral}
+                        onChange={(e) => setHpiGeneral(e.target.value)}
+                        placeholder={t('patient_create.hpi_disturbances_placeholder')}
+                        multiline
+                        rows={2}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('patient_create.hpi_suicidal_ideation')}
+                        placeholder={t('patient_create.yes_no_explanation')}
+                        value={historyOfIllness}
+                        onChange={(e) => setHistoryOfIllness(e.target.value)}
+                        multiline
+                        rows={2}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('patient_create.hpi_negative_history')}
+                        value={hpiTimeline}
+                        onChange={(e) => setHpiTimeline(e.target.value)}
+                        placeholder={t('patient_create.hpi_negative_history_placeholder')}
+                        multiline
+                        rows={2}
+                      />
+                    </Grid>
+                  </Grid>
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          </AccordionDetails>
+        </Accordion>
       </Box>
 
 
       {/* SECTION 3: History of Present Illness */}
       <Box mt={4}>
-        <Typography variant="h6">3. {t('patient_create.history_present_illness')}</Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">3. {t('patient_create.history_present_illness')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.hpi_general_info')}</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label={t('patient_create.hpi_duration')}
+                  value={hpiDuration}
+                  onChange={(e) => setHpiDuration(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  select
+                  label={t('patient_create.hpi_onset')}
+                  value={hpiOnset}
+                  onChange={(e) => setHpiOnset(e.target.value)}
+                >
+                  <MenuItem value="abrupt">{t('patient_create.hpi_onset_abrupt')}</MenuItem>
+                  <MenuItem value="acute">{t('patient_create.hpi_onset_acute')}</MenuItem>
+                  <MenuItem value="subacute">{t('patient_create.hpi_onset_subacute')}</MenuItem>
+                  <MenuItem value="insidious">{t('patient_create.hpi_onset_insidious')}</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  select
+                  label={t('patient_create.hpi_course')}
+                  value={hpiCourse}
+                  onChange={(e) => setHpiCourse(e.target.value)}
+                >
+                  <MenuItem value="continuous">{t('patient_create.hpi_course_continuous')}</MenuItem>
+                  <MenuItem value="episodic">{t('patient_create.hpi_course_episodic')}</MenuItem>
+                  <MenuItem value="fluctuating">{t('patient_create.hpi_course_fluctuating')}</MenuItem>
+                  <MenuItem value="deteriorating">{t('patient_create.hpi_course_deteriorating')}</MenuItem>
+                  <MenuItem value="improving">{t('patient_create.hpi_course_improving')}</MenuItem>
+                  <MenuItem value="unclear">{t('patient_create.hpi_course_unclear')}</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={2}
+                  label={t('patient_create.hpi_precipitating_factors')}
+                  value={hpiPrecipitatingFactors}
+                  onChange={(e) => setHpiPrecipitatingFactors(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={2}
+                  label={t('patient_create.hpi_aggravating_relieving')}
+                  value={hpiAggravatingRelieving}
+                  onChange={(e) => setHpiAggravatingRelieving(e.target.value)}
+                />
+              </Grid>
+            </Grid>
 
-        {/* a) General Info */}
-        <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.hpi_general_info')}</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label={t('patient_create.hpi_duration')}
-              value={hpiDuration}
-              onChange={(e) => setHpiDuration(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              select
-              label={t('patient_create.hpi_onset')}
-              value={hpiOnset}
-              onChange={(e) => setHpiOnset(e.target.value)}
-            >
-              <MenuItem value="abrupt">{t('patient_create.hpi_onset_abrupt')}</MenuItem>
-              <MenuItem value="acute">{t('patient_create.hpi_onset_acute')}</MenuItem>
-              <MenuItem value="subacute">{t('patient_create.hpi_onset_subacute')}</MenuItem>
-              <MenuItem value="insidious">{t('patient_create.hpi_onset_insidious')}</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              select
-              label={t('patient_create.hpi_course')}
-              value={hpiCourse}
-              onChange={(e) => setHpiCourse(e.target.value)}
-            >
-              <MenuItem value="continuous">{t('patient_create.hpi_course_continuous')}</MenuItem>
-              <MenuItem value="episodic">{t('patient_create.hpi_course_episodic')}</MenuItem>
-              <MenuItem value="fluctuating">{t('patient_create.hpi_course_fluctuating')}</MenuItem>
-              <MenuItem value="deteriorating">{t('patient_create.hpi_course_deteriorating')}</MenuItem>
-              <MenuItem value="improving">{t('patient_create.hpi_course_improving')}</MenuItem>
-              <MenuItem value="unclear">{t('patient_create.hpi_course_unclear')}</MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12}>
+            <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.hpi_symptom_timeline')}</Typography>
             <TextField
               fullWidth
               multiline
-              rows={2}
-              label={t('patient_create.hpi_precipitating_factors')}
-              value={hpiPrecipitatingFactors}
-              onChange={(e) => setHpiPrecipitatingFactors(e.target.value)}
+              rows={6}
+              value={hpiTimeline}
+              onChange={(e) => setHpiTimeline(e.target.value)}
+              label={t('patient_create.hpi_symptom_timeline')}
+              sx={{ mt: 1 }}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              multiline
-              rows={2}
-              label={t('patient_create.hpi_aggravating_relieving')}
-              value={hpiAggravatingRelieving}
-              onChange={(e) => setHpiAggravatingRelieving(e.target.value)}
-            />
-          </Grid>
-        </Grid>
-
-        {/* b) Symptom Timeline */}
-        <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.hpi_symptom_timeline')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={6}
-          value={hpiTimeline}
-          onChange={(e) => setHpiTimeline(e.target.value)}
-          label={t('patient_create.hpi_symptom_timeline')}
-          sx={{ mt: 1 }}
-        />
+          </AccordionDetails>
+        </Accordion>
       </Box>
-
 
       {/* SECTION 4: Treatment History */}
       <Box mt={4}>
-        <Typography variant="h6">4. {t('patient_create.treatment_history')}</Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">4. {t('patient_create.treatment_history')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.treatment_past')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={treatmentPast}
+              onChange={(e) => setTreatmentPast(e.target.value)}
+              label={t('patient_create.treatment_past')}
+              sx={{ mt: 1 }}
+            />
 
-        <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.treatment_past')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={treatmentPast}
-          onChange={(e) => setTreatmentPast(e.target.value)}
-          label={t('patient_create.treatment_past')}
-          sx={{ mt: 1 }}
-        />
-
-        <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.treatment_current')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={treatmentCurrent}
-          onChange={(e) => setTreatmentCurrent(e.target.value)}
-          label={t('patient_create.treatment_current')}
-          sx={{ mt: 1 }}
-        />
+            <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.treatment_current')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={treatmentCurrent}
+              onChange={(e) => setTreatmentCurrent(e.target.value)}
+              label={t('patient_create.treatment_current')}
+              sx={{ mt: 1 }}
+            />
+          </AccordionDetails>
+        </Accordion>
       </Box>
 
       {/* SECTION 5: Past History */}
       <Box mt={4}>
-        <Typography variant="h6">5. {t('patient_create.past_history')}</Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">5. {t('patient_create.past_history')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.past_medical')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={pastMedical}
+              onChange={(e) => setPastMedical(e.target.value)}
+              label={t('patient_create.past_medical')}
+              sx={{ mt: 1 }}
+            />
 
-        <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.past_medical')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={pastMedical}
-          onChange={(e) => setPastMedical(e.target.value)}
-          label={t('patient_create.past_medical')}
-          sx={{ mt: 1 }}
-        />
-
-        <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.past_psych')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={pastPsych}
-          onChange={(e) => setPastPsych(e.target.value)}
-          label={t('patient_create.past_psych')}
-          sx={{ mt: 1 }}
-        />
+            <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.past_psych')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={pastPsych}
+              onChange={(e) => setPastPsych(e.target.value)}
+              label={t('patient_create.past_psych')}
+              sx={{ mt: 1 }}
+            />
+          </AccordionDetails>
+        </Accordion>
       </Box>
 
       {/* SECTION 6: Family History */}
       <Box mt={4}>
-        <Typography variant="h6">6. {t('patient_create.family_history')}</Typography>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">6. {t('patient_create.family_history')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.family_illness')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={familyIllness}
+              onChange={(e) => setFamilyIllness(e.target.value)}
+              label={t('patient_create.family_illness')}
+              sx={{ mt: 1 }}
+            />
 
-        <Typography variant="subtitle1" sx={{ mt: 2 }}>a) {t('patient_create.family_illness')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={familyIllness}
-          onChange={(e) => setFamilyIllness(e.target.value)}
-          label={t('patient_create.family_illness')}
-          sx={{ mt: 1 }}
-        />
-
-        <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.family_social')}</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={familySocial}
-          onChange={(e) => setFamilySocial(e.target.value)}
-          label={t('patient_create.family_social')}
-          sx={{ mt: 1 }}
-        />
+            <Typography variant="subtitle1" sx={{ mt: 3 }}>b) {t('patient_create.family_social')}</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={familySocial}
+              onChange={(e) => setFamilySocial(e.target.value)}
+              label={t('patient_create.family_social')}
+              sx={{ mt: 1 }}
+            />
+          </AccordionDetails>
+        </Accordion>
       </Box>
 
       {/* SECTION 7: Personal History */}
       <Box mt={4}>
-        <Typography variant="h6">7. {t('patient_create.personal_history')}</Typography>
-
-        {[['a', personalPerinatal, setPersonalPerinatal, 'personal_perinatal'],
-          ['b', personalChildhood, setPersonalChildhood, 'personal_childhood'],
-          ['c', personalEducation, setPersonalEducation, 'personal_education'],
-          ['d', personalPlay, setPersonalPlay, 'personal_play'],
-          ['e', personalAdolescence, setPersonalAdolescence, 'personal_adolescence'],
-          ['f', personalPuberty, setPersonalPuberty, 'personal_puberty'],
-          ['g', personalObstetric, setPersonalObstetric, 'personal_obstetric'],
-          ['h', personalOccupational, setPersonalOccupational, 'personal_occupational'],
-          ['i', personalMarital, setPersonalMarital, 'personal_marital'],
-          ['j', personalPremorbid, setPersonalPremorbid, 'personal_premorbid']].map(
-            ([label, value, setter, key]) => (
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">7. {t('patient_create.personal_history')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {[
+              ['a', personalPerinatal, setPersonalPerinatal, 'personal_perinatal'],
+              ['b', personalChildhood, setPersonalChildhood, 'personal_childhood'],
+              ['c', personalEducation, setPersonalEducation, 'personal_education'],
+              ['d', personalPlay, setPersonalPlay, 'personal_play'],
+              ['e', personalAdolescence, setPersonalAdolescence, 'personal_adolescence'],
+              ['f', personalPuberty, setPersonalPuberty, 'personal_puberty'],
+              ['g', personalObstetric, setPersonalObstetric, 'personal_obstetric'],
+              ['h', personalOccupational, setPersonalOccupational, 'personal_occupational'],
+              ['i', personalMarital, setPersonalMarital, 'personal_marital'],
+              ['j', personalPremorbid, setPersonalPremorbid, 'personal_premorbid'],
+            ].map(([label, value, setter, key]) => (
               <Box key={key as string} mt={3}>
-                <Typography variant="subtitle1">{label}) {t(`patient_create.${key}`)}</Typography>
+                <Typography variant="subtitle1">
+                  {label}) {t(`patient_create.${key}`)}
+                </Typography>
                 <TextField
                   fullWidth
                   multiline
@@ -365,9 +601,11 @@ const PatientCreate = () => {
                   sx={{ mt: 1 }}
                 />
               </Box>
-            )
-          )}
+            ))}
+          </AccordionDetails>
+        </Accordion>
       </Box>
+
     </Layout>
   )
 }
