@@ -84,4 +84,9 @@ public class TherapySessionService {
 
     return patient.getTherapySessions();
   }
+
+  public void deleteTherapySessionById(String therapySessionId, Therapist loggedInTherapist) {
+    // TODO: ensure that therapist is allowed to delete session
+    therapySessionRepository.deleteById(therapySessionId);
+  }
 }

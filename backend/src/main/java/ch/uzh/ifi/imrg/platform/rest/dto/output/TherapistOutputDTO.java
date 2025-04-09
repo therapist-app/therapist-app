@@ -3,11 +3,9 @@ package ch.uzh.ifi.imrg.platform.rest.dto.output;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class TherapistOutputDTO {
   private String id;
   private String email;

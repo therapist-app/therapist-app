@@ -3,12 +3,10 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "gad7_tests")
 public class GAD7Test {

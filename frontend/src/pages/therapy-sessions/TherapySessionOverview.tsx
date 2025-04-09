@@ -1,4 +1,6 @@
 import {
+  Button,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -17,6 +19,9 @@ import { useAppDispatch } from '../../utils/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { format } from 'date-fns'
+import { de } from 'date-fns/locale'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const TherapySessionOverview = () => {
   const navigate = useNavigate()
@@ -28,7 +33,7 @@ const TherapySessionOverview = () => {
 
   useEffect(() => {
     dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
-  }, [dispatch])
+  }, [dispatch, patientId])
 
   const handleClickOnSession = (therapySessionId: string) => {
     navigate(
@@ -39,16 +44,32 @@ const TherapySessionOverview = () => {
     )
   }
 
+  const handleCreateNewSession = () => {
+    navigate(
+      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+        patientId: patientId ?? '',
+      })
+    )
+  }
+
   return (
     <Layout>
-      <Typography variant='h3'>Session Overview of patient: "{patientId}"</Typography>
+      <Typography variant='h4'>Session Overview of patient: "{patientId}"</Typography>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+      <Button
+        sx={{ marginTop: '50px', marginBottom: '20px' }}
+        variant='contained'
+        onClick={handleCreateNewSession}
+      >
+        Create new Therapy Session
+      </Button>
+      <TableContainer sx={{ width: '600px' }} component={Paper}>
+        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               <TableCell>Session Start</TableCell>
-              <TableCell align='right'>Session End</TableCell>
+              <TableCell>Session End</TableCell>
+              <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -59,9 +80,27 @@ const TherapySessionOverview = () => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
                 <TableCell component='th' scope='row'>
-                  {therapySession.sessionStart}
+                  {therapySession?.sessionStart
+                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
                 </TableCell>
-                <TableCell align='right'> {therapySession.sessionEnd}</TableCell>
+                <TableCell>
+                  {therapySession?.sessionEnd
+                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
+                </TableCell>
+                <TableCell align='right'>
+                  <IconButton
+                    aria-label='download'
+                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

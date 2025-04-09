@@ -41,6 +41,14 @@ export const getAllTherapySessionsOfPatient = createAsyncThunk(
   }
 )
 
+export const deleteTherapySession = createAsyncThunk(
+  'deleteTherapySession',
+  async (patientId: string) => {
+    const response = await therapySessionApi.deleteTherapySessionById(patientId)
+    return response.data
+  }
+)
+
 const therapySessionSlice = createSlice({
   name: 'therapySession',
   initialState,
@@ -97,6 +105,20 @@ const therapySessionSlice = createSlice({
         state.allTherapySessionsOfPatient = action.payload
       })
       .addCase(getAllTherapySessionsOfPatient.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(deleteTherapySession.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(deleteTherapySession.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        console.log(action)
+      })
+      .addCase(deleteTherapySession.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

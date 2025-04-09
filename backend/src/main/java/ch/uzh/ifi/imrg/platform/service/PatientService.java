@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
+import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
@@ -24,13 +25,15 @@ public class PatientService {
 
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;
+
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
   @PersistenceContext private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
-      TherapistRepository therapistRepository) {
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
+      @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
   }

@@ -1,17 +1,16 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Data
 @Entity
-@Table(name = "therapy_sessions")
-public class TherapySession implements Serializable {
+@Data
+@Table(name = "patient_documents")
+public class PatientDocument {
 
   @Id
   @Column(unique = true)
@@ -25,13 +24,19 @@ public class TherapySession implements Serializable {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column(name = "session_start")
-  private LocalDateTime sessionStart;
-
-  @Column(name = "session_end")
-  private LocalDateTime sessionEnd;
-
   @ManyToOne
-  @JoinColumn(name = "patient_id", referencedColumnName = "id")
+  @JoinColumn(name = "patient_id", nullable = false)
   private Patient patient;
+
+  @Column(nullable = false)
+  private String fileName;
+
+  @Column(nullable = false)
+  private String fileType;
+
+  @Lob
+  @Column(nullable = false)
+  private byte[] fileData;
+
+  @Lob @Column private String extractedText;
 }

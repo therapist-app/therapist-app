@@ -6,13 +6,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "patients")
 public class Patient implements Serializable {
@@ -59,4 +57,7 @@ public class Patient implements Serializable {
 
   @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
   private List<TherapySession> therapySessions = new ArrayList<>();
+
+  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<PatientDocument> patientDocuments = new ArrayList<>();
 }

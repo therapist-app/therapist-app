@@ -8,6 +8,7 @@ import { createTherapySession } from '../../store/therapySessionSlice'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { de } from 'date-fns/locale'
 
 const TherapySessionCreate = () => {
   const { patientId } = useParams()
@@ -55,8 +56,8 @@ const TherapySessionCreate = () => {
     <Layout>
       <Typography variant='h3'>Create Session for patient: {patientId}</Typography>
 
-      <form onSubmit={handleSubmit}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <form style={{ maxWidth: '500px', marginTop: '50px' }} onSubmit={handleSubmit}>
+        <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label='Session Start'
             value={therapySessionToCreate.sessionStart}
