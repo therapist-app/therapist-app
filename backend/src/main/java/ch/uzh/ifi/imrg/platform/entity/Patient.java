@@ -58,6 +58,6 @@ public class Patient implements Serializable {
   @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
   private List<TherapySession> therapySessions = new ArrayList<>();
 
-  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  private List<PatientDocument> documents = new ArrayList<>();
+  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<PatientDocument> patientDocuments = new ArrayList<>();
 }

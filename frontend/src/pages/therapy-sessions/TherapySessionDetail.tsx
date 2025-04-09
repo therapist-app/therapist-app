@@ -17,7 +17,7 @@ const TherapySessionDetail = () => {
 
   useEffect(() => {
     dispatch(getTherapySession(therapySessionId ?? ''))
-  }, [dispatch])
+  }, [dispatch, therapySessionId])
 
   return (
     <Layout>

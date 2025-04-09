@@ -6,9 +6,15 @@ import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,10 +43,9 @@ public class PatientDocumentService {
   public void uploadPatientDocument(
       String patientId, MultipartFile file, Therapist loggedInTherapist) {
 
-    Patient patient =
-        patientRepository
-            .findById(patientId)
-            .orElseThrow(() -> new RuntimeException("Patient not found"));
+    Patient patient = patientRepository
+        .findById(patientId)
+        .orElseThrow(() -> new RuntimeException("Patient not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
     PatientDocument patientDocument = new PatientDocument();
@@ -57,13 +62,25 @@ public class PatientDocumentService {
     patientDocumentRepository.save(patientDocument);
   }
 
+  public List<PatientDocumentOutputDTO> getDocumentsOfPatient(String patientId, Therapist loggedInTherapist) {
+    boolean exists = patientRepository.existsByIdAndTherapistId(patientId, loggedInTherapist.getId());
+    if (!exists) {
+      throw new EntityNotFoundException("Patient not found or doesn't belong to therapist");
+    }
+
+    Patient patient = patientRepository.getPatientById(patientId);
+    System.out.println("Size of patient documents" + patient.getPatientDocuments().size());
+    return patient.getPatientDocuments().stream()
+        .map(PatientDocumentMapper.INSTANCE::convertEntityToPatientDocumentOutputDTO)
+        .collect(Collectors.toList());
+  }
+
   public PatientDocument downloadPatientDocument(
       String patientDocumentId, Therapist loggedInTherapist) {
 
-    PatientDocument patientDocument =
-        patientDocumentRepository
-            .findById(patientDocumentId)
-            .orElseThrow(() -> new RuntimeException("Patient document not found"));
+    PatientDocument patientDocument = patientDocumentRepository
+        .findById(patientDocumentId)
+        .orElseThrow(() -> new RuntimeException("Patient document not found"));
 
     return patientDocument;
   }

@@ -412,6 +412,31 @@ export interface LoginTherapistDTO {
 /**
  * 
  * @export
+ * @interface PatientDocumentOutputDTO
+ */
+export interface PatientDocumentOutputDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientDocumentOutputDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientDocumentOutputDTO
+     */
+    'fileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientDocumentOutputDTO
+     */
+    'fileType'?: string;
+}
+/**
+ * 
+ * @export
  * @interface PatientOutputDTO
  */
 export interface PatientOutputDTO {
@@ -1371,6 +1396,39 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDocumentsOfPatient: async (patientId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'patientId' is not null or undefined
+            assertParamExists('getDocumentsOfPatient', 'patientId', patientId)
+            const localVarPath = `/patient-documents/{patientId}`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1406,6 +1464,18 @@ export const PatientDocumentControllerApiFp = function(configuration?: Configura
             const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.downloadFile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PatientDocumentOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDocumentsOfPatient(patientId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.getDocumentsOfPatient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -1435,6 +1505,15 @@ export const PatientDocumentControllerApiFactory = function (configuration?: Con
         downloadFile(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File> {
             return localVarFp.downloadFile(patientDocumentId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientDocumentOutputDTO>> {
+            return localVarFp.getDocumentsOfPatient(patientId, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1462,6 +1541,15 @@ export interface PatientDocumentControllerApiInterface {
      * @memberof PatientDocumentControllerApiInterface
      */
     downloadFile(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File>;
+
+    /**
+     * 
+     * @param {string} patientId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientDocumentControllerApiInterface
+     */
+    getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientDocumentOutputDTO>>;
 
 }
 
@@ -1493,6 +1581,17 @@ export class PatientDocumentControllerApi extends BaseAPI implements PatientDocu
      */
     public downloadFile(patientDocumentId: string, options?: RawAxiosRequestConfig) {
         return PatientDocumentControllerApiFp(this.configuration).downloadFile(patientDocumentId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} patientId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientDocumentControllerApi
+     */
+    public getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig) {
+        return PatientDocumentControllerApiFp(this.configuration).getDocumentsOfPatient(patientId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

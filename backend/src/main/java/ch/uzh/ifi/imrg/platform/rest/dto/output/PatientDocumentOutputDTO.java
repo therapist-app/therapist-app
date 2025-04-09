@@ -7,5 +7,4 @@ public class PatientDocumentOutputDTO {
   private String id;
   private String fileName;
   private String fileType;
-  private byte[] fileData;
 }

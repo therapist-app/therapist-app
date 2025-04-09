@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { PatientDocumentOutputDTO } from '../dto/output/PatientDocumentOutputDTO'
+
 import { patientDocumentApi } from '../utils/api'
+import { PatientDocumentOutputDTO } from '../api'
 
 interface PatientDocumentState {
   selectedPatientDocument: PatientDocumentOutputDTO | null
@@ -24,6 +25,14 @@ export const createDocumentForPatient = createAsyncThunk(
   }
 )
 
+export const getAllPatientDocumentsOfPatient = createAsyncThunk(
+  'getAllPatientDocumentsOfPatient',
+  async (patientId: string) => {
+    const response = await patientDocumentApi.getDocumentsOfPatient(patientId)
+    return response.data
+  }
+)
+
 const patientDocumentSlice = createSlice({
   name: 'patientDocument',
   initialState,
@@ -40,6 +49,22 @@ const patientDocumentSlice = createSlice({
     })
 
     builder.addCase(createDocumentForPatient.rejected, (state, action) => {
+      state.status = 'failed'
+      state.error = action.error.message || 'Something went wrong'
+      console.log(action)
+    })
+
+    builder.addCase(getAllPatientDocumentsOfPatient.pending, (state) => {
+      state.status = 'loading'
+      state.error = null
+    })
+
+    builder.addCase(getAllPatientDocumentsOfPatient.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.allPatientDocumentsOfPatient = action.payload
+    })
+
+    builder.addCase(getAllPatientDocumentsOfPatient.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.error.message || 'Something went wrong'
       console.log(action)
