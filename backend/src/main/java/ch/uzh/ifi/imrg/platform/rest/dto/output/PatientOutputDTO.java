@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.Data;
 
 @Data
@@ -20,8 +19,7 @@ public class PatientOutputDTO {
   private String email;
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
 
-  public PatientOutputDTO() {
-  }
+  public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;

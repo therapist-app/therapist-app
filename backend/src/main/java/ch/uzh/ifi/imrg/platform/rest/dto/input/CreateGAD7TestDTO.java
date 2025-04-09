@@ -38,6 +38,5 @@ public class CreateGAD7TestDTO {
   @Max(3)
   private int question7;
 
-  public CreateGAD7TestDTO() {
-  }
+  public CreateGAD7TestDTO() {}
 }

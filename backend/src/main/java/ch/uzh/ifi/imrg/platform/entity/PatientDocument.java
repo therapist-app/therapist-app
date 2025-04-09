@@ -1,10 +1,9 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -39,7 +38,5 @@ public class PatientDocument {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob
-  @Column
-  private String extractedText;
+  @Lob @Column private String extractedText;
 }

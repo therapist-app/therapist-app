@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
