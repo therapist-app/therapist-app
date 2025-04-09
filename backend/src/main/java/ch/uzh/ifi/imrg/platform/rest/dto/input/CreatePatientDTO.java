@@ -45,6 +45,6 @@ public class CreatePatientDTO {
     this.education = education;
     this.occupation = occupation;
     this.income = income;
-    this.dateOfAdmission = dateOfAdmission
+    this.dateOfAdmission = dateOfAdmission;
   }
 }
