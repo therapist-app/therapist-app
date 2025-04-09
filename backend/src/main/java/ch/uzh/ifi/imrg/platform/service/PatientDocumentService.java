@@ -42,10 +42,9 @@ public class PatientDocumentService {
   public void uploadPatientDocument(
       String patientId, MultipartFile file, Therapist loggedInTherapist) {
 
-    Patient patient =
-        patientRepository
-            .findById(patientId)
-            .orElseThrow(() -> new RuntimeException("Patient not found"));
+    Patient patient = patientRepository
+        .findById(patientId)
+        .orElseThrow(() -> new RuntimeException("Patient not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
     PatientDocument patientDocument = new PatientDocument();
@@ -64,8 +63,7 @@ public class PatientDocumentService {
 
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       String patientId, Therapist loggedInTherapist) {
-    boolean exists =
-        patientRepository.existsByIdAndTherapistId(patientId, loggedInTherapist.getId());
+    boolean exists = patientRepository.existsByIdAndTherapistId(patientId, loggedInTherapist.getId());
     if (!exists) {
       throw new EntityNotFoundException("Patient not found or doesn't belong to therapist");
     }
@@ -80,11 +78,16 @@ public class PatientDocumentService {
   public PatientDocument downloadPatientDocument(
       String patientDocumentId, Therapist loggedInTherapist) {
 
-    PatientDocument patientDocument =
-        patientDocumentRepository
-            .findById(patientDocumentId)
-            .orElseThrow(() -> new RuntimeException("Patient document not found"));
+    PatientDocument patientDocument = patientDocumentRepository
+        .findById(patientDocumentId)
+        .orElseThrow(() -> new RuntimeException("Patient document not found"));
 
     return patientDocument;
+  }
+
+  public void deleteFile(String patientDocumentId, Therapist loggedInTherapist) {
+    // Add check if patient document actually belongs to a patient that belongs to
+    // the loggedInTherapist
+    patientDocumentRepository.deleteById(patientDocumentId);
   }
 }

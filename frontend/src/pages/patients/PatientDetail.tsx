@@ -16,12 +16,15 @@ import FileUpload from '../../generalComponents/FileUpload'
 import { useAppDispatch } from '../../utils/hooks'
 import {
   createDocumentForPatient,
+  deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { RootState } from '../../store/store'
 import { useSelector } from 'react-redux'
 import DeleteIcon from '@mui/icons-material/Delete'
+import DownloadIcon from '@mui/icons-material/Download'
+import { patientDocumentApi } from '../../utils/api'
 
 const PatientDetail = () => {
   const { patientId } = useParams()
@@ -31,22 +34,46 @@ const PatientDetail = () => {
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
   )
 
+  const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
+
   useEffect(() => {
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
-  }, [dispatch, patientId])
+  }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUpload = async (file: File) => {
-    console.log(file)
-    dispatch(
+    await dispatch(
       createDocumentForPatient({
         file: file,
         patientId: patientId ?? '',
       })
     )
+    setRefreshPatientDocumentsCounter((prev) => prev + 1)
   }
 
   const handleDeleteFile = async (fileId: string) => {
-    console.log(fileId)
+    await dispatch(deleteDocumentOfPatient(fileId))
+    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+  }
+
+  const handleDownloadFile = async (fileId: string, fileName: string) => {
+    try {
+      const response = await patientDocumentApi.downloadFile(fileId, {
+        responseType: 'blob',
+      })
+
+      const file = response.data
+      const url = window.URL.createObjectURL(file)
+
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Download error:', error)
+    }
   }
 
   return (
@@ -64,7 +91,7 @@ const PatientDetail = () => {
                   File name <FileUpload onUpload={handleFileUpload} />
                 </div>
               </TableCell>
-              <TableCell align='right'>Delete File</TableCell>
+              <TableCell align='right'>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -89,6 +116,14 @@ const PatientDetail = () => {
                   {patientDocument.fileName}
                 </TableCell>
                 <TableCell align='right'>
+                  <IconButton
+                    aria-label='download'
+                    onClick={() =>
+                      handleDownloadFile(patientDocument.id ?? '', patientDocument.fileName ?? '')
+                    }
+                  >
+                    <DownloadIcon />
+                  </IconButton>
                   <IconButton
                     aria-label='delete'
                     onClick={() => handleDeleteFile(patientDocument.id ?? '')}
