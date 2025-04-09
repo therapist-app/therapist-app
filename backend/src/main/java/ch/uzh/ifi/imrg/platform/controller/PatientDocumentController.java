@@ -32,14 +32,13 @@ public class PatientDocumentController {
     this.therapistService = therapistService;
   }
 
-  @PostMapping("/{patientId}")
+  @PostMapping(path = "/{patientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public void createPatientDocument(
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
@@ -47,10 +46,8 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadFile(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest)
       throws IOException {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    PatientDocument fileDocument =
-        patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
   ChatbotTemplateControllerApiFactory,
   PatientControllerApiFactory,
+  PatientDocumentControllerApiFactory,
   PatientTestControllerApiFactory,
   TherapistControllerApiFactory,
   TherapySessionControllerApiFactory,
@@ -13,9 +14,6 @@ const baseURL: string = import.meta.env.VITE_API_BASE_URL
 const api = axios.create({
   baseURL: baseURL,
   timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   withCredentials: true,
 })
 
@@ -31,6 +29,7 @@ api.interceptors.response.use(
 
 export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
+export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
 export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)
 export const therapistApi = TherapistControllerApiFactory(undefined, baseURL, api)
 export const therapySessionApi = TherapySessionControllerApiFactory(undefined, baseURL, api)

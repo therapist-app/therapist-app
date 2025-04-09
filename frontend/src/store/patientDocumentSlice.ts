@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { PatientDocumentOutputDTO } from '../dto/output/PatientDocumentOutputDTO'
-import api from '../utils/api'
+import { patientDocumentApi } from '../utils/api'
 
 interface PatientDocumentState {
   selectedPatientDocument: PatientDocumentOutputDTO | null
@@ -19,11 +19,7 @@ const initialState: PatientDocumentState = {
 export const createDocumentForPatient = createAsyncThunk(
   'createDocumentForPatient',
   async (props: { file: File; patientId: string }) => {
-    const formData = new FormData()
-    formData.append('file', props.file)
-    const response = await api.post(`/patient-documents/${props.patientId}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
+    const response = await patientDocumentApi.createPatientDocument(props.patientId, props.file)
     return response.data
   }
 )
