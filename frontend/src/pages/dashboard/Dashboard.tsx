@@ -77,9 +77,11 @@ const Dashboard = () => {
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
+  const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
+
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
-  }, [dispatch])
+  }, [dispatch, refreshTherapistCounter])
 
   const handleOpenPatientDialog = () => {
     setOpenPatientDialog(true)
@@ -98,7 +100,7 @@ const Dashboard = () => {
 
   const handleCreatePatient = async () => {
     try {
-      dispatch(
+      await dispatch(
         registerPatient({
           name: newPatientName,
           gender: newPatientGender,
@@ -109,10 +111,12 @@ const Dashboard = () => {
           description: newPatientDescription,
         })
       )
+
       setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       handleClosePatientDialog()
+      setRefreshTherapistCounter((prev) => prev + 1)
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
@@ -159,6 +163,8 @@ const Dashboard = () => {
 
       await dispatch(createChatbotTemplate(chatbotConfigurations))
 
+      setRefreshTherapistCounter((prev) => prev + 1)
+
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -202,6 +208,8 @@ const Dashboard = () => {
         })
       )
 
+      setRefreshTherapistCounter((prev) => prev + 1)
+
       setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -218,6 +226,8 @@ const Dashboard = () => {
     if (!currentChatbot) return
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
+
+      setRefreshTherapistCounter((prev) => prev + 1)
 
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
@@ -236,6 +246,7 @@ const Dashboard = () => {
       if (!currentChatbot) return
 
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
+      setRefreshTherapistCounter((prev) => prev + 1)
 
       setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')
