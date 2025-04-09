@@ -2320,6 +2320,39 @@ export const TherapySessionControllerApiAxiosParamCreator = function (configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        deleteTherapySessionById: async (therapySessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapySessionId' is not null or undefined
+            assertParamExists('deleteTherapySessionById', 'therapySessionId', therapySessionId)
+            const localVarPath = `/therapy-sessions/{therapySessionId}`
+                .replace(`{${"therapySessionId"}}`, encodeURIComponent(String(therapySessionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         getTherapySessionById: async (therapySessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'therapySessionId' is not null or undefined
             assertParamExists('getTherapySessionById', 'therapySessionId', therapySessionId)
@@ -2408,6 +2441,18 @@ export const TherapySessionControllerApiFp = function(configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async deleteTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTherapySessionById(therapySessionId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TherapySessionControllerApi.deleteTherapySessionById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async getTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TherapySessionOutputDTO>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTherapySessionById(therapySessionId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -2444,6 +2489,15 @@ export const TherapySessionControllerApiFactory = function (configuration?: Conf
          */
         createSession(createTherapySessionDTO: CreateTherapySessionDTO, options?: RawAxiosRequestConfig): AxiosPromise<TherapySessionOutputDTO> {
             return localVarFp.createSession(createTherapySessionDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteTherapySessionById(therapySessionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2488,6 +2542,15 @@ export interface TherapySessionControllerApiInterface {
      * @throws {RequiredError}
      * @memberof TherapySessionControllerApiInterface
      */
+    deleteTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} therapySessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TherapySessionControllerApiInterface
+     */
     getTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<TherapySessionOutputDTO>;
 
     /**
@@ -2517,6 +2580,17 @@ export class TherapySessionControllerApi extends BaseAPI implements TherapySessi
      */
     public createSession(createTherapySessionDTO: CreateTherapySessionDTO, options?: RawAxiosRequestConfig) {
         return TherapySessionControllerApiFp(this.configuration).createSession(createTherapySessionDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} therapySessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TherapySessionControllerApi
+     */
+    public deleteTherapySessionById(therapySessionId: string, options?: RawAxiosRequestConfig) {
+        return TherapySessionControllerApiFp(this.configuration).deleteTherapySessionById(therapySessionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

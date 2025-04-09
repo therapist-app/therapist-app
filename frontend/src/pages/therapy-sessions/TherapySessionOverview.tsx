@@ -1,5 +1,6 @@
 import {
   Button,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -20,6 +21,7 @@ import { RootState } from '../../store/store'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const TherapySessionOverview = () => {
   const navigate = useNavigate()
@@ -66,7 +68,8 @@ const TherapySessionOverview = () => {
           <TableHead>
             <TableRow>
               <TableCell>Session Start</TableCell>
-              <TableCell align='right'>Session End</TableCell>
+              <TableCell>Session End</TableCell>
+              <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,12 +86,20 @@ const TherapySessionOverview = () => {
                       })
                     : '-'}
                 </TableCell>
-                <TableCell align='right'>
+                <TableCell>
                   {therapySession?.sessionEnd
                     ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
+                </TableCell>
+                <TableCell align='right'>
+                  <IconButton
+                    aria-label='download'
+                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
