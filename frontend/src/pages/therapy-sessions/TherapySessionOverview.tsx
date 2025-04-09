@@ -1,4 +1,5 @@
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -28,7 +29,7 @@ const TherapySessionOverview = () => {
 
   useEffect(() => {
     dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
-  }, [dispatch])
+  }, [dispatch, patientId])
 
   const handleClickOnSession = (therapySessionId: string) => {
     navigate(
@@ -39,12 +40,27 @@ const TherapySessionOverview = () => {
     )
   }
 
+  const handleCreateNewSession = () => {
+    navigate(
+      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+        patientId: patientId ?? '',
+      })
+    )
+  }
+
   return (
     <Layout>
-      <Typography variant='h3'>Session Overview of patient: "{patientId}"</Typography>
+      <Typography variant='h4'>Session Overview of patient: "{patientId}"</Typography>
 
+      <Button
+        sx={{ marginTop: '50px', marginBottom: '20px' }}
+        variant='contained'
+        onClick={handleCreateNewSession}
+      >
+        Create new Therapy Session
+      </Button>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+        <Table aria-label='simple table'>
           <TableHead>
             <TableRow>
               <TableCell>Session Start</TableCell>

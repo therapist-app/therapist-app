@@ -87,7 +87,7 @@ const PatientDetail = () => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                   File name <FileUpload onUpload={handleFileUpload} />
                 </div>
               </TableCell>

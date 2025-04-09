@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import React, { useRef } from 'react'
 
 interface FileUploadProps {
@@ -24,7 +25,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept }) => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <button onClick={() => fileInputRef.current?.click()}>Upload File</button>
+      <Button variant='contained' onClick={() => fileInputRef.current?.click()}>
+        Upload File
+      </Button>
     </div>
   )
 }
