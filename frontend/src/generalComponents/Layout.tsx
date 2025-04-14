@@ -109,17 +109,28 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             paddingLeft: '20px',
           }}
         >
-          <Button key={PAGES.HOME_PAGE} onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}>
-            {PAGE_NAMES[PAGES.HOME_PAGE]}
-          </Button>
-
-          {currentPageTrace?.slice(1).map((page) => {
+          {[PAGES.HOME_PAGE, ...(currentPageTrace?.slice(1) || [])].map((page, index) => {
             const path = getPathFromPage(page, params)
-
+            const isActive = currentPage === page
             return (
               <>
-                <KeyboardArrowDownIcon sx={{ ml: '10px' }} />
-                <Button key={page} onClick={() => navigate(path)}>
+                {' '}
+                {index !== 0 && <KeyboardArrowDownIcon sx={{ ml: '15px' }} />}
+                <Button
+                  variant={isActive ? 'contained' : 'text'}
+                  key={page}
+                  onClick={() => navigate(path)}
+                  sx={{
+                    color: isActive ? 'white' : '#9EA2A8',
+                    backgroundColor: isActive ? '#1F2937' : 'transparent',
+                    textTransform: 'none',
+                    fontWeight: isActive ? 600 : 400,
+                    fontSize: '0.9rem',
+                    justifyContent: 'flex-start',
+                    minWidth: 'unset',
+                    px: 1.5,
+                  }}
+                >
                   {PAGE_NAMES[page]}
                 </Button>
               </>
