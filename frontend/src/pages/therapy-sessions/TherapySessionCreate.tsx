@@ -54,9 +54,9 @@ const TherapySessionCreate = () => {
 
   return (
     <Layout>
-      <Typography variant='h3'>Create Session for patient: {patientId}</Typography>
+      <Typography variant='h4'>Create new session for patient: "{patientId}"</Typography>
 
-      <form style={{ maxWidth: '500px', marginTop: '50px' }} onSubmit={handleSubmit}>
+      <form style={{ maxWidth: '500px', marginTop: '30px' }} onSubmit={handleSubmit}>
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label='Session Start'

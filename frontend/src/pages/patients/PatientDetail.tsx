@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   Paper,
   Table,
@@ -9,8 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../../generalComponents/Layout'
 import FileUpload from '../../generalComponents/FileUpload'
 import { useAppDispatch } from '../../utils/hooks'
@@ -25,13 +25,20 @@ import { useSelector } from 'react-redux'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DownloadIcon from '@mui/icons-material/Download'
 import { patientDocumentApi } from '../../utils/api'
+import { getPathFromPage, PAGES } from '../../utils/routes'
+import { format } from 'date-fns'
+import { de } from 'date-fns/locale'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const PatientDetail = () => {
   const { patientId } = useParams()
-  const { t } = useTranslation()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const allPatientDocuments = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
+  )
+  const allTherapySessionsOfPatient = useSelector(
+    (state: RootState) => state.therapySession.allTherapySessionsOfPatient
   )
 
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
@@ -76,13 +83,32 @@ const PatientDetail = () => {
     }
   }
 
+  const handleClickOnSession = (therapySessionId: string) => {
+    navigate(
+      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+        patientId: patientId ?? '',
+        therapySessionId: therapySessionId,
+      })
+    )
+  }
+
+  const handleCreateNewSession = () => {
+    navigate(
+      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+        patientId: patientId ?? '',
+      })
+    )
+  }
+
   return (
     <Layout>
-      <Typography variant='h3'>
-        {t('patient_detail.message')}: "{patientId}"
+      <Typography variant='h4'>Patient details of "{patientId}"</Typography>
+
+      <Typography sx={{ marginTop: '50px' }} variant='h4'>
+        All Files
       </Typography>
 
-      <TableContainer sx={{ marginTop: '50px' }} component={Paper}>
+      <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
         <Table aria-label='simple table'>
           <TableHead>
             <TableRow>
@@ -129,6 +155,57 @@ const PatientDetail = () => {
                     onClick={() => handleDeleteFile(patientDocument.id ?? '')}
                   >
                     <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Typography sx={{ marginTop: '50px', marginBottom: '10px' }} variant='h4'>
+        All Sessions
+      </Typography>
+
+      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
+        Create new Therapy Session
+      </Button>
+      <TableContainer sx={{ width: '600px' }} component={Paper}>
+        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Session Start</TableCell>
+              <TableCell>Session End</TableCell>
+              <TableCell align='right'>View</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allTherapySessionsOfPatient.map((therapySession) => (
+              <TableRow
+                onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                key={therapySession.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+              >
+                <TableCell component='th' scope='row'>
+                  {therapySession?.sessionStart
+                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
+                </TableCell>
+                <TableCell>
+                  {therapySession?.sessionEnd
+                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                        locale: de,
+                      })
+                    : '-'}
+                </TableCell>
+                <TableCell align='right'>
+                  <IconButton
+                    aria-label='download'
+                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                  >
+                    <VisibilityIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
