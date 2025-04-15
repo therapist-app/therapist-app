@@ -123,13 +123,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   key={page}
                   onClick={() => navigate(path)}
                   sx={{
-                    color: isActive ? 'white' : '#9EA2A8',
+                    color: 'white',
                     backgroundColor: isActive ? '#1F2937' : 'transparent',
                     textTransform: 'none',
                     fontWeight: isActive ? 600 : 400,
-                    fontSize: '0.9rem',
+                    fontSize: '18px',
                     justifyContent: 'flex-start',
-                    minWidth: 'unset',
+                    width: '200px',
                     px: 1.5,
                   }}
                 >
