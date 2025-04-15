@@ -95,7 +95,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           style={{
             width: '100%',
             marginTop: '-95px',
-            marginBottom: '-100px',
+
             marginLeft: '-20px',
           }}
         />
@@ -107,6 +107,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             gap: '2px',
             alignItems: 'start',
             paddingLeft: '20px',
+
+            width: '100%',
           }}
         >
           {[PAGES.HOME_PAGE, ...(currentPageTrace?.slice(1) || [])].map((page, index) => {
