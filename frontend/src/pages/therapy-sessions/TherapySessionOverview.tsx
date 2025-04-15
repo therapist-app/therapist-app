@@ -54,14 +54,14 @@ const TherapySessionOverview = () => {
 
   return (
     <Layout>
-      <Typography variant='h4'>Session Overview of patient: "{patientId}"</Typography>
+      <Typography variant='h4'>All sessions of patient: {patientId}</Typography>
 
       <Button
         sx={{ marginTop: '50px', marginBottom: '20px' }}
         variant='contained'
         onClick={handleCreateNewSession}
       >
-        Create new Therapy Session
+        Create new session
       </Button>
       <TableContainer sx={{ width: '600px' }} component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>

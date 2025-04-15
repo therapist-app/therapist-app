@@ -25,6 +25,37 @@ export enum PAGES {
   NOT_FOUND_PAGE = 'NOT_FOUND_PAGE',
 }
 
+const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
+  [PAGES.HOME_PAGE]: [PAGES.PATIENTS_OVERVIEW_PAGE],
+  [PAGES.LOGIN_PAGE]: [],
+  [PAGES.REGISTRATION_PAGE]: [],
+  [PAGES.SETTINGS_PAGE]: [],
+
+  [PAGES.PATIENTS_OVERVIEW_PAGE]: [PAGES.PATIENTS_CREATE_PAGE, PAGES.PATIENTS_DETAILS_PAGE],
+  [PAGES.PATIENTS_CREATE_PAGE]: [],
+  [PAGES.PATIENTS_DETAILS_PAGE]: [
+    PAGES.CHATBOT_OVERVIEW_PAGE,
+    PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE,
+  ],
+
+  [PAGES.CHATBOT_OVERVIEW_PAGE]: [PAGES.CHATBOT_CREATE_PAGE, PAGES.CHATBOT_DETAILS_PAGE],
+  [PAGES.CHATBOT_CREATE_PAGE]: [],
+  [PAGES.CHATBOT_DETAILS_PAGE]: [],
+
+  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: [
+    PAGES.THERAPY_SESSIONS_CREATE_PAGE,
+    PAGES.THERAPY_SESSIONS_DETAILS_PAGE,
+  ],
+  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: [],
+  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: [],
+
+  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: [],
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: [],
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: [],
+
+  [PAGES.NOT_FOUND_PAGE]: [],
+}
+
 export const ROUTES: Record<PAGES, string> = {
   [PAGES.HOME_PAGE]: '/',
   [PAGES.LOGIN_PAGE]: '/login',
@@ -48,6 +79,31 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: '/chatBotTemplates/:chatbotTemplateId',
 
   [PAGES.NOT_FOUND_PAGE]: '*',
+}
+
+export const PAGE_NAMES: Record<PAGES, string> = {
+  [PAGES.HOME_PAGE]: 'Home',
+  [PAGES.LOGIN_PAGE]: 'Login',
+  [PAGES.REGISTRATION_PAGE]: 'Registration',
+  [PAGES.SETTINGS_PAGE]: 'Settings',
+
+  [PAGES.PATIENTS_OVERVIEW_PAGE]: 'All Patients',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'Create new Patient',
+  [PAGES.PATIENTS_DETAILS_PAGE]: 'Patient Details',
+
+  [PAGES.CHATBOT_OVERVIEW_PAGE]: 'All Chatbots',
+  [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
+  [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
+
+  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: 'All Sessions',
+  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: 'Create new Session',
+  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: 'Session Details',
+
+  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: 'All Chatbot Templates',
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'Create new Chatbot Template',
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'Chatbot Template Details',
+
+  [PAGES.NOT_FOUND_PAGE]: 'Not Found',
 }
 
 export function getPageFromPath(pathname: string): PAGES {
@@ -75,4 +131,25 @@ export function getPathFromPage(page: PAGES, params: Record<string, string> = {}
     console.error(`Failed to generate path for page ${page}`, error)
     return ROUTES[PAGES.NOT_FOUND_PAGE]
   }
+}
+
+export function findPageTrace(
+  targetPage: PAGES,
+  currentPage: PAGES = PAGES.HOME_PAGE,
+  visited = new Set<PAGES>()
+): PAGES[] | null {
+  if (visited.has(currentPage)) return null
+  visited.add(currentPage)
+
+  if (currentPage === targetPage) return [currentPage]
+
+  const children = PAGE_HIERARCHY[currentPage] || []
+  for (const child of children) {
+    const result = findPageTrace(targetPage, child, visited)
+    if (result) {
+      return [currentPage, ...result]
+    }
+  }
+
+  return null
 }
