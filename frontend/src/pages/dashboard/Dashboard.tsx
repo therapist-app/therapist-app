@@ -17,12 +17,12 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Menu,
+  MenuItem,
   Snackbar,
   Alert,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
 import AddIcon from '@mui/icons-material/Add'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 
@@ -32,21 +32,20 @@ import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 
 import Layout from '../../generalComponents/Layout'
-
 import { handleError } from '../../utils/handleError'
-
 import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
+
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { registerPatient } from '../../store/patientSlice'
 import {
-  cloneChatbotTemplate,
   createChatbotTemplate,
   deleteChatbotTemplate,
   updateChatbotTemplate,
+  cloneChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
@@ -55,6 +54,7 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
@@ -65,6 +65,7 @@ const Dashboard = () => {
   const [newPatientEmail, setNewPatientEmail] = useState('')
   const [newPatientAddress, setNewPatientAddress] = useState('')
   const [newPatientDescription, setNewPatientDescription] = useState('')
+
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<
@@ -73,6 +74,7 @@ const Dashboard = () => {
 
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
@@ -154,9 +156,15 @@ const Dashboard = () => {
         chatbotModel: 'gpt-3.5-turbo',
         chatbotIcon: 'Chatbot',
         chatbotLanguage: 'English',
-        chatbotRole: 'Possibility Engine',
+        chatbotRole: 'FAQ',
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
+        chatbotVoice: 'None',
+        chatbotGender: 'Neutral',
+        preConfiguredExercise: 'Breathing exercise',
+        additionalExercise: 'Meditation practice',
+        animation: 'Simple',
+        chatbotInputPlaceholder: 'Type your question...',
         description: '',
         workspaceId: loggedInTherapist.workspaceId,
       }
@@ -164,7 +172,6 @@ const Dashboard = () => {
       await dispatch(createChatbotTemplate(chatbotConfigurations))
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -209,7 +216,6 @@ const Dashboard = () => {
       )
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -228,7 +234,6 @@ const Dashboard = () => {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -260,51 +265,24 @@ const Dashboard = () => {
     }
   }
 
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  }
+  const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
+    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
 
-  const disabledButtonStyles = {
-    ...commonButtonStyles,
-    backgroundImage: 'lightgrey',
-    '&:hover': {
-      disabled: 'true',
-    },
-  }
+    const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
+      (bot) => bot.id === chatbotTemplateId
+    )
+    if (!selectedChatbot) return
 
-  const cancelButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'white',
-    color: '#635BFF',
-    '&:hover': {
-      backgroundColor: '#f0f0f0',
-    },
-    margin: 1,
-  }
-
-  const dialogStyle = {
-    width: '500px',
-    height: '300px',
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+        chatbotTemplateId: chatbotTemplateId,
+      }),
+      {
+        state: {
+          chatbotConfig: selectedChatbot,
+        },
+      }
+    )
   }
 
   const getIconComponent = (iconName: string) => {
@@ -324,11 +302,58 @@ const Dashboard = () => {
     }
   }
 
+  const commonButtonStyles = {
+    borderRadius: 20,
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
+    lineHeight: 1.75,
+    backgroundColor: '#635BFF',
+    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
+    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#7C4DFF',
+    },
+    margin: 1,
+  } as const
+
+  const disabledButtonStyles = {
+    ...commonButtonStyles,
+    backgroundImage: 'lightgrey',
+    '&:hover': {
+      disabled: 'true',
+    },
+  } as const
+
+  const cancelButtonStyles = {
+    borderRadius: 20,
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
+    lineHeight: 1.75,
+    backgroundColor: 'white',
+    color: '#635BFF',
+    '&:hover': {
+      backgroundColor: '#f0f0f0',
+    },
+    margin: 1,
+  } as const
+
+  const dialogStyle = {
+    width: '500px',
+    height: '300px',
+  }
+
   return (
     <Layout>
       <Box sx={{ marginBottom: 4 }}>
         <Typography sx={{ marginBottom: 4 }} variant='h4'>
-          {`${t('dashboard.welcome_message')} ${loggedInTherapist?.email}`}{' '}
+          {`${t('dashboard.welcome_message')} ${loggedInTherapist?.email}`}
         </Typography>
         <Card
           sx={{
@@ -357,14 +382,7 @@ const Dashboard = () => {
         {t('dashboard.patients')}
       </Typography>
       {loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0 ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            justifyContent: 'flex-start',
-          }}
-        >
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
           {loggedInTherapist?.patientsOutputDTO.map((patient) => (
             <Card
               key={patient.id}
@@ -427,7 +445,7 @@ const Dashboard = () => {
               labelId='patient-gender-label'
               value={newPatientGender}
               onChange={(e) => setNewPatientGender(e.target.value)}
-              label={t('dashboard.patient_gender')} // ✅ Ensure translation is passed to the label
+              label={t('dashboard.patient_gender')}
             >
               <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
               <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
@@ -559,7 +577,7 @@ const Dashboard = () => {
                 borderRadius: '8px',
               }}
             >
-              <CardActionArea>
+              <CardActionArea onClick={() => handleChatbotTemplateClick(bot.id ?? '')}>
                 <CardContent>
                   <Typography variant='h6'>
                     {bot.chatbotName || t('dashboard.unnamed_bot')}
@@ -568,10 +586,10 @@ const Dashboard = () => {
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.language')}: ${bot.chatbotLanguage}
+                    {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.role')}: ${bot.chatbotRole}
+                    {t('dashboard.role')}: {bot.chatbotRole}
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>

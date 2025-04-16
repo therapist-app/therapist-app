@@ -521,7 +521,7 @@ const PatientsOverview: React.FC = () => {
               labelId='patient-gender-label'
               value={newPatientGender}
               onChange={(e) => setNewPatientGender(e.target.value)}
-              label={t('dashboard.patient_gender')} // ✅ Ensure translation is passed to the label
+              label={t('dashboard.patient_gender')}
             >
               <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
               <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
