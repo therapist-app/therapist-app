@@ -4,9 +4,7 @@ import Register from './pages/register/Register'
 import Login from './pages/login/Login'
 import NotFound from './pages/notFound/NotFound'
 import PatientsOverview from './pages/patients/PatientOverview'
-import PatientChatBotEdit from './pages/patients/chatBots/PatientChatBotEdit'
 
-// ADD THIS:
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 
 import PatientDetail from './pages/patients/PatientDetail'
@@ -46,7 +44,6 @@ const App = () => {
             <Route path={ROUTES[PAGES.PATIENTS_DETAILS_PAGE]} element={<PatientDetail />} />
 
             <Route path={ROUTES[PAGES.CHATBOT_OVERVIEW_PAGE]} element={<NotFound />} />
-            <Route path={ROUTES[PAGES.CHATBOT_DETAILS_PAGE]} element={<PatientChatBotEdit />} />
 
             <Route
               path={ROUTES[PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]}

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+/* REMOVE the backend request import
+import axios from 'axios'
+*/
 import {
   Button,
   Box,
@@ -17,12 +20,12 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Menu,
+  MenuItem,
   Snackbar,
   Alert,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
 import AddIcon from '@mui/icons-material/Add'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 
@@ -32,20 +35,20 @@ import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 
 import Layout from '../../generalComponents/Layout'
-
 import { handleError } from '../../utils/handleError'
 import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
+
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { registerPatient } from '../../store/patientSlice'
 import {
-  cloneChatbotTemplate,
   createChatbotTemplate,
   deleteChatbotTemplate,
   updateChatbotTemplate,
+  cloneChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
@@ -54,8 +57,11 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  // Redux state: currently logged in therapist
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
+  // Patient Dialog State
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
   const [newPatientGender, setNewPatientGender] = useState('')
@@ -64,24 +70,32 @@ const Dashboard = () => {
   const [newPatientEmail, setNewPatientEmail] = useState('')
   const [newPatientAddress, setNewPatientAddress] = useState('')
   const [newPatientDescription, setNewPatientDescription] = useState('')
+
+  // Snackbar State
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info')
 
+  // Bot Creation Dialog State
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
+
+  // Menu State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
+  // For re-fetching therapist after changes
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
+  // On first load (and on refresh), fetch the therapist to get updated chatbot/patient data
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, refreshTherapistCounter])
 
+  // ----------------------
+  // PATIENT DIALOG HANDLERS
+  // ----------------------
   const handleOpenPatientDialog = () => {
     setOpenPatientDialog(true)
   }
@@ -133,6 +147,9 @@ const Dashboard = () => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
+  // -----------------------
+  // CHATBOT DIALOG HANDLERS
+  // -----------------------
   const handleOpenBotDialog = () => {
     setOpenBotDialog(true)
   }
@@ -153,9 +170,15 @@ const Dashboard = () => {
         chatbotModel: 'gpt-3.5-turbo',
         chatbotIcon: 'Chatbot',
         chatbotLanguage: 'English',
-        chatbotRole: 'Possibility Engine',
+        chatbotRole: 'FAQ',
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
+        chatbotVoice: 'None',
+        chatbotGender: 'Neutral',
+        preConfiguredExercise: 'Breathing exercise',
+        additionalExercise: 'Meditation practice',
+        animation: 'Simple',
+        chatbotInputPlaceholder: 'Type your question...',
         description: '',
         workspaceId: loggedInTherapist.workspaceId,
       }
@@ -163,7 +186,6 @@ const Dashboard = () => {
       await dispatch(createChatbotTemplate(chatbotConfigurations))
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -176,6 +198,9 @@ const Dashboard = () => {
     }
   }
 
+  // -----------------------
+  // CHATBOT MENU HANDLERS
+  // -----------------------
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     chatbot: ChatbotTemplateOutputDTO
@@ -208,7 +233,6 @@ const Dashboard = () => {
       )
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -227,7 +251,6 @@ const Dashboard = () => {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
 
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -259,58 +282,32 @@ const Dashboard = () => {
     }
   }
 
-  // NEW FUNCTION to navigate to chatbot template edit
+  // ------------------------
+  // Instead of fetching from backend: find the bot in local data & pass to navigate
+  // ------------------------
   const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
-    navigate(getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId }))
+    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
+
+    // 1) Find the matching chatbot object from the local array
+    const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
+      (bot) => bot.id === chatbotTemplateId
+    )
+    if (!selectedChatbot) return // Not found, do nothing or show error
+
+    // 2) Navigate to ChatBotTemplateEdit page, passing the selectedChatbot in "state"
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+        chatbotTemplateId: chatbotTemplateId,
+      }),
+      {
+        state: {
+          chatbotConfig: selectedChatbot,
+        },
+      }
+    )
   }
 
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  }
-
-  const disabledButtonStyles = {
-    ...commonButtonStyles,
-    backgroundImage: 'lightgrey',
-    '&:hover': {
-      disabled: 'true',
-    },
-  }
-
-  const cancelButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'white',
-    color: '#635BFF',
-    '&:hover': {
-      backgroundColor: '#f0f0f0',
-    },
-    margin: 1,
-  }
-
-  const dialogStyle = {
-    width: '500px',
-    height: '300px',
-  }
-
+  // Helper function to show different icons
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
       case 'Chatbot':
@@ -328,11 +325,64 @@ const Dashboard = () => {
     }
   }
 
+  // -----------------------
+  // BUTTON STYLES
+  // -----------------------
+  const commonButtonStyles = {
+    borderRadius: 20,
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
+    lineHeight: 1.75,
+    backgroundColor: '#635BFF',
+    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
+    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#7C4DFF',
+    },
+    margin: 1,
+  } as const
+
+  const disabledButtonStyles = {
+    ...commonButtonStyles,
+    backgroundImage: 'lightgrey',
+    '&:hover': {
+      disabled: 'true',
+    },
+  } as const
+
+  const cancelButtonStyles = {
+    borderRadius: 20,
+    textTransform: 'none',
+    fontSize: '1rem',
+    minWidth: '130px',
+    maxWidth: '130px',
+    padding: '6px 24px',
+    lineHeight: 1.75,
+    backgroundColor: 'white',
+    color: '#635BFF',
+    '&:hover': {
+      backgroundColor: '#f0f0f0',
+    },
+    margin: 1,
+  } as const
+
+  const dialogStyle = {
+    width: '500px',
+    height: '300px',
+  }
+
+  // -----------------------
+  // RENDER
+  // -----------------------
   return (
     <Layout>
       <Box sx={{ marginBottom: 4 }}>
         <Typography sx={{ marginBottom: 4 }} variant='h4'>
-          {`${t('dashboard.welcome_message')} ${loggedInTherapist?.email}`}{' '}
+          {`${t('dashboard.welcome_message')} ${loggedInTherapist?.email}`}
         </Typography>
         <Card
           sx={{
@@ -361,14 +411,7 @@ const Dashboard = () => {
         {t('dashboard.patients')}
       </Typography>
       {loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0 ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            justifyContent: 'flex-start',
-          }}
-        >
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
           {loggedInTherapist?.patientsOutputDTO.map((patient) => (
             <Card
               key={patient.id}
@@ -404,12 +447,8 @@ const Dashboard = () => {
         </Typography>
       )}
 
-      {/* New Patient Dialog */}
-      <Dialog
-        open={openPatientDialog}
-        onClose={handleClosePatientDialog}
-        PaperProps={{ sx: dialogStyle }}
-      >
+      {/* ---------------- NEW PATIENT DIALOG ---------------- */}
+      <Dialog open={openPatientDialog} onClose={handleClosePatientDialog} PaperProps={{ sx: dialogStyle }}>
         <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
@@ -508,7 +547,7 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Chatbot Creation Section */}
+      {/* ---------------- CREATE NEW CHATBOT SECTION ---------------- */}
       <Box sx={{ mt: 6, mb: 4 }}>
         <Card
           sx={{
@@ -565,7 +604,6 @@ const Dashboard = () => {
                 borderRadius: '8px',
               }}
             >
-              {/* UPDATED LINE: Navigate on click */}
               <CardActionArea onClick={() => handleChatbotTemplateClick(bot.id ?? '')}>
                 <CardContent>
                   <Typography variant='h6'>
@@ -613,7 +651,7 @@ const Dashboard = () => {
         </Typography>
       )}
 
-      {/* Menu for Chatbot Options */}
+      {/* ---------------- MENU FOR CHATBOT OPTIONS (rename, clone, delete) ---------------- */}
       <Menu
         id='chatbot-menu'
         anchorEl={anchorEl}
@@ -626,8 +664,12 @@ const Dashboard = () => {
         <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
 
-      {/* Dialog for creating a new chatbot */}
-      <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
+      {/* ---------------- NEW CHATBOT DIALOG ---------------- */}
+      <Dialog
+        open={openBotDialog}
+        onClose={handleCloseBotDialog}
+        PaperProps={{ sx: dialogStyle }}
+      >
         <DialogTitle>{t('dashboard.new_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
@@ -660,7 +702,7 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Dialog for renaming an existing chatbot */}
+      {/* ---------------- RENAME DIALOG ---------------- */}
       <Dialog
         open={openRenameDialog}
         onClose={() => setOpenRenameDialog(false)}
@@ -698,6 +740,7 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
+      {/* ---------------- SNACKBAR ---------------- */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
