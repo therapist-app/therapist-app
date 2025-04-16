@@ -34,7 +34,6 @@ import { PiBookOpenTextLight } from 'react-icons/pi'
 import Layout from '../../generalComponents/Layout'
 
 import { handleError } from '../../utils/handleError'
-
 import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -260,6 +259,11 @@ const Dashboard = () => {
     }
   }
 
+  // NEW FUNCTION to navigate to chatbot template edit
+  const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
+    navigate(getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId }))
+  }
+
   const commonButtonStyles = {
     borderRadius: 20,
     textTransform: 'none',
@@ -400,6 +404,7 @@ const Dashboard = () => {
         </Typography>
       )}
 
+      {/* New Patient Dialog */}
       <Dialog
         open={openPatientDialog}
         onClose={handleClosePatientDialog}
@@ -427,7 +432,7 @@ const Dashboard = () => {
               labelId='patient-gender-label'
               value={newPatientGender}
               onChange={(e) => setNewPatientGender(e.target.value)}
-              label={t('dashboard.patient_gender')} // ✅ Ensure translation is passed to the label
+              label={t('dashboard.patient_gender')}
             >
               <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
               <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
@@ -503,6 +508,7 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Chatbot Creation Section */}
       <Box sx={{ mt: 6, mb: 4 }}>
         <Card
           sx={{
@@ -559,7 +565,8 @@ const Dashboard = () => {
                 borderRadius: '8px',
               }}
             >
-              <CardActionArea>
+              {/* UPDATED LINE: Navigate on click */}
+              <CardActionArea onClick={() => handleChatbotTemplateClick(bot.id ?? '')}>
                 <CardContent>
                   <Typography variant='h6'>
                     {bot.chatbotName || t('dashboard.unnamed_bot')}
@@ -568,10 +575,10 @@ const Dashboard = () => {
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.language')}: ${bot.chatbotLanguage}
+                    {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.role')}: ${bot.chatbotRole}
+                    {t('dashboard.role')}: {bot.chatbotRole}
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
@@ -606,6 +613,7 @@ const Dashboard = () => {
         </Typography>
       )}
 
+      {/* Menu for Chatbot Options */}
       <Menu
         id='chatbot-menu'
         anchorEl={anchorEl}
@@ -618,6 +626,7 @@ const Dashboard = () => {
         <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
 
+      {/* Dialog for creating a new chatbot */}
       <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
         <DialogTitle>{t('dashboard.new_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
@@ -651,6 +660,7 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Dialog for renaming an existing chatbot */}
       <Dialog
         open={openRenameDialog}
         onClose={() => setOpenRenameDialog(false)}

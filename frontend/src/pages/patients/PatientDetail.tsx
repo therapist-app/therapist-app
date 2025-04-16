@@ -144,9 +144,7 @@ const PatientDetail = () => {
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter a name for your new chatbot:
-          </DialogContentText>
+          <DialogContentText>Please enter a name for your new chatbot:</DialogContentText>
           <TextField
             autoFocus
             margin='dense'
