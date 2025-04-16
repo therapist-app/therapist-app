@@ -42,4 +42,8 @@ public class ChatbotTemplate implements Serializable {
   @ManyToOne
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")
   private Therapist therapist;
+
+  @ManyToOne
+  @JoinColumn(name = "patient_id", referencedColumnName = "id")
+  private Patient patient;
 }
