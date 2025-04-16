@@ -44,6 +44,7 @@ import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { AxiosError } from 'axios'
 import { handleError } from '../../utils/handleError'
 import { useTranslation } from 'react-i18next'
+import { ChatbotTemplateOutputDTO } from '../../api'
 
 const ChatBotTemplateEdit = () => {
   const { t } = useTranslation()
@@ -51,9 +52,9 @@ const ChatBotTemplateEdit = () => {
 
   const { chatBotTemplateId } = useParams()
 
-  const { state } = useLocation() as { state?: { chatbotConfig?: any } }
+  const { state } = useLocation() as { state?: { chatbotConfig?: ChatbotTemplateOutputDTO } }
 
-  const [chatbotConfig, setChatbotConfig] = useState<any>(null)
+  const [chatbotConfig, setChatbotConfig] = useState<ChatbotTemplateOutputDTO | null>(null)
 
   const [selectedTab, setSelectedTab] = useState<'config' | 'analytics' | 'sources'>('config')
 
@@ -64,7 +65,9 @@ const ChatBotTemplateEdit = () => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
 
   const [threads, setThreads] = useState<Array<{ threadId: string }>>([])
   const [question, setQuestion] = useState('')
@@ -125,7 +128,10 @@ const ChatBotTemplateEdit = () => {
     }
   }, [chat])
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'analytics' | 'sources') => {
+  const handleTabChange = (
+    _event: React.SyntheticEvent,
+    newValue: 'config' | 'analytics' | 'sources'
+  ) => {
     setSelectedTab(newValue)
   }
 
@@ -220,10 +226,15 @@ const ChatBotTemplateEdit = () => {
     }
   }
 
-  const renderMessage = (chatItem: { question?: string; response: string | null }, index: number) => (
+  const renderMessage = (
+    chatItem: { question?: string; response: string | null },
+    index: number
+  ) => (
     <ListItem key={index} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
       {chatbotIcon && (
-        <Avatar sx={{ width: 45, height: 45, fontSize: '2rem', bgcolor: 'transparent', mr: 2, mt: 2 }}>
+        <Avatar
+          sx={{ width: 45, height: 45, fontSize: '2rem', bgcolor: 'transparent', mr: 2, mt: 2 }}
+        >
           {getIconComponent(chatbotIcon)}
         </Avatar>
       )}
@@ -466,7 +477,9 @@ const ChatBotTemplateEdit = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='preconfigured-exercises-label'>Pre-configured Exercise</InputLabel>
+                  <InputLabel id='preconfigured-exercises-label'>
+                    Pre-configured Exercise
+                  </InputLabel>
                   <Select
                     labelId='preconfigured-exercises-label'
                     id='preconfigured-exercises-select'
@@ -529,7 +542,15 @@ const ChatBotTemplateEdit = () => {
                   margin='normal'
                 />
 
-                <Box sx={{ mt: 1, ml: -1, display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
+                <Box
+                  sx={{
+                    mt: 1,
+                    ml: -1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'left',
+                  }}
+                >
                   <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
                     Save
                   </Button>
@@ -599,7 +620,13 @@ const ChatBotTemplateEdit = () => {
                       {chatItem.response && renderMessage(chatItem, index)}
 
                       {isChatbotTyping && index === chat.length - 1 && (
-                        <ListItem sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <ListItem
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-start',
+                          }}
+                        >
                           {chatbotIcon && (
                             <Avatar
                               sx={{
@@ -674,7 +701,9 @@ const ChatBotTemplateEdit = () => {
                 Total Chats (Threads): {threads.length}
               </Typography>
               {threads.length > 0 ? (
-                threads.map((t) => <Typography key={t.threadId}>Thread ID: {t.threadId}</Typography>)
+                threads.map((t) => (
+                  <Typography key={t.threadId}>Thread ID: {t.threadId}</Typography>
+                ))
               ) : (
                 <Typography>No threads found.</Typography>
               )}
@@ -720,10 +749,7 @@ const ChatBotTemplateEdit = () => {
                         >
                           <DownloadIcon />
                         </IconButton>
-                        <IconButton
-                          aria-label='delete'
-                          onClick={() => handleDeleteFile(file.id)}
-                        >
+                        <IconButton aria-label='delete' onClick={() => handleDeleteFile(file.id)}>
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>

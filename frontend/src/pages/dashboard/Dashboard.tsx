@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-/* REMOVE the backend request import
-import axios from 'axios'
-*/
 import {
   Button,
   Box,
@@ -58,10 +55,8 @@ const Dashboard = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  // Redux state: currently logged in therapist
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
-  // Patient Dialog State
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
   const [newPatientGender, setNewPatientGender] = useState('')
@@ -71,31 +66,25 @@ const Dashboard = () => {
   const [newPatientAddress, setNewPatientAddress] = useState('')
   const [newPatientDescription, setNewPatientDescription] = useState('')
 
-  // Snackbar State
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'info' | 'success' | 'error' | 'warning'>('info')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
 
-  // Bot Creation Dialog State
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
 
-  // Menu State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
   const [openRenameDialog, setOpenRenameDialog] = useState(false)
 
-  // For re-fetching therapist after changes
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
-  // On first load (and on refresh), fetch the therapist to get updated chatbot/patient data
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, refreshTherapistCounter])
 
-  // ----------------------
-  // PATIENT DIALOG HANDLERS
-  // ----------------------
   const handleOpenPatientDialog = () => {
     setOpenPatientDialog(true)
   }
@@ -147,9 +136,6 @@ const Dashboard = () => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
-  // -----------------------
-  // CHATBOT DIALOG HANDLERS
-  // -----------------------
   const handleOpenBotDialog = () => {
     setOpenBotDialog(true)
   }
@@ -198,9 +184,6 @@ const Dashboard = () => {
     }
   }
 
-  // -----------------------
-  // CHATBOT MENU HANDLERS
-  // -----------------------
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     chatbot: ChatbotTemplateOutputDTO
@@ -282,19 +265,14 @@ const Dashboard = () => {
     }
   }
 
-  // ------------------------
-  // Instead of fetching from backend: find the bot in local data & pass to navigate
-  // ------------------------
   const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
     if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
 
-    // 1) Find the matching chatbot object from the local array
     const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
       (bot) => bot.id === chatbotTemplateId
     )
-    if (!selectedChatbot) return // Not found, do nothing or show error
+    if (!selectedChatbot) return
 
-    // 2) Navigate to ChatBotTemplateEdit page, passing the selectedChatbot in "state"
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
         chatbotTemplateId: chatbotTemplateId,
@@ -307,7 +285,6 @@ const Dashboard = () => {
     )
   }
 
-  // Helper function to show different icons
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
       case 'Chatbot':
@@ -325,9 +302,6 @@ const Dashboard = () => {
     }
   }
 
-  // -----------------------
-  // BUTTON STYLES
-  // -----------------------
   const commonButtonStyles = {
     borderRadius: 20,
     textTransform: 'none',
@@ -375,9 +349,6 @@ const Dashboard = () => {
     height: '300px',
   }
 
-  // -----------------------
-  // RENDER
-  // -----------------------
   return (
     <Layout>
       <Box sx={{ marginBottom: 4 }}>
@@ -447,8 +418,11 @@ const Dashboard = () => {
         </Typography>
       )}
 
-      {/* ---------------- NEW PATIENT DIALOG ---------------- */}
-      <Dialog open={openPatientDialog} onClose={handleClosePatientDialog} PaperProps={{ sx: dialogStyle }}>
+      <Dialog
+        open={openPatientDialog}
+        onClose={handleClosePatientDialog}
+        PaperProps={{ sx: dialogStyle }}
+      >
         <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
@@ -547,7 +521,6 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* ---------------- CREATE NEW CHATBOT SECTION ---------------- */}
       <Box sx={{ mt: 6, mb: 4 }}>
         <Card
           sx={{
@@ -651,7 +624,6 @@ const Dashboard = () => {
         </Typography>
       )}
 
-      {/* ---------------- MENU FOR CHATBOT OPTIONS (rename, clone, delete) ---------------- */}
       <Menu
         id='chatbot-menu'
         anchorEl={anchorEl}
@@ -664,12 +636,7 @@ const Dashboard = () => {
         <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
 
-      {/* ---------------- NEW CHATBOT DIALOG ---------------- */}
-      <Dialog
-        open={openBotDialog}
-        onClose={handleCloseBotDialog}
-        PaperProps={{ sx: dialogStyle }}
-      >
+      <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
         <DialogTitle>{t('dashboard.new_bot')}</DialogTitle>
         <DialogContent sx={{ mt: 1 }}>
           <DialogContentText sx={{ mb: 1 }}>
@@ -702,7 +669,6 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* ---------------- RENAME DIALOG ---------------- */}
       <Dialog
         open={openRenameDialog}
         onClose={() => setOpenRenameDialog(false)}
@@ -740,7 +706,6 @@ const Dashboard = () => {
         </DialogActions>
       </Dialog>
 
-      {/* ---------------- SNACKBAR ---------------- */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
