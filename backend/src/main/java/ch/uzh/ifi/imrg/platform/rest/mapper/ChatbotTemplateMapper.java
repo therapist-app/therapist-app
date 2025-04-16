@@ -21,6 +21,12 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
+  @Mapping(source = "chatbotVoice", target = "chatbotVoice")
+  @Mapping(source = "chatbotGender", target = "chatbotGender")
+  @Mapping(source = "preConfiguredExercise", target = "preConfiguredExercise")
+  @Mapping(source = "additionalExercise", target = "additionalExercise")
+  @Mapping(source = "animation", target = "animation")
+  @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
   @Mapping(source = "workspaceId", target = "workspaceId")
   ChatbotTemplateOutputDTO convertEntityToChatbotTemplateOutputDTO(ChatbotTemplate template);
 
@@ -32,6 +38,12 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
+  @Mapping(source = "chatbotVoice", target = "chatbotVoice")
+  @Mapping(source = "chatbotGender", target = "chatbotGender")
+  @Mapping(source = "preConfiguredExercise", target = "preConfiguredExercise")
+  @Mapping(source = "additionalExercise", target = "additionalExercise")
+  @Mapping(source = "animation", target = "animation")
+  @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
   @Mapping(source = "workspaceId", target = "workspaceId")
   ChatbotTemplate convertCreateChatbotTemplateDTOtoEntity(CreateChatbotTemplateDTO templateDTO);
 }
