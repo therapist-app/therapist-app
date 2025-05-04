@@ -55,22 +55,22 @@ const TherapySessionDetail = () => {
           : '-'}
       </Typography>
 
-      <Stack direction="row" spacing={2} sx={{ marginTop: '50px', marginBottom: '20px' }}>
+      <Stack direction='row' spacing={2} sx={{ marginTop: '50px', marginBottom: '20px' }}>
         <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(getPathFromPage(PAGES.GAD7_TEST_PAGE, {
-            patientId: patientId ?? '',
-            therapySessionId: therapySessionId ?? ''
-          }))}
+          variant='contained'
+          color='primary'
+          onClick={() =>
+            navigate(
+              getPathFromPage(PAGES.GAD7_TEST_PAGE, {
+                patientId: patientId ?? '',
+                therapySessionId: therapySessionId ?? '',
+              })
+            )
+          }
         >
           Create GAD7 Test
         </Button>
-        <Button
-          variant='contained'
-          onClick={handleDeleteTherapySession}
-          color='error'
-        >
+        <Button variant='contained' onClick={handleDeleteTherapySession} color='error'>
           Delete Session
         </Button>
       </Stack>

@@ -82,98 +82,97 @@ export const GAD7test = () => {
   return (
     <Box sx={{ p: 3, maxWidth: 800, margin: '0 auto' }}>
       <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant='h4' gutterBottom>
           GAD-7 Assessment
         </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ mb: 4 }}>
-          Over the last 2 weeks, how often have you been bothered by the following
-          problems?
+        <Typography variant='subtitle1' gutterBottom sx={{ mb: 4 }}>
+          Over the last 2 weeks, how often have you been bothered by the following problems?
         </Typography>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert severity='error' sx={{ mb: 3 }}>
             {error}
           </Alert>
         )}
 
         <Stack spacing={3}>
           {questions.map((question, index) => (
-            <FormControl key={index} component="fieldset" sx={{ width: '100%' }}>
-              <FormLabel component="legend" sx={{ mb: 1, color: 'text.primary' }}>
+            <FormControl key={index} component='fieldset' sx={{ width: '100%' }}>
+              <FormLabel component='legend' sx={{ mb: 1, color: 'text.primary' }}>
                 {index + 1}. {question}
               </FormLabel>
               <RadioGroup
                 row
-                value={String(responses[index + 1] ?? '')}  
+                value={String(responses[index + 1] ?? '')}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleAnswerChange(index, parseInt(e.target.value))  
+                  handleAnswerChange(index, parseInt(e.target.value))
                 }
                 sx={{
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    '& .MuiRadio-root': {
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  '& .MuiRadio-root': {
                     '&.Mui-checked': {
-                        color: '#635BFF',
+                      color: '#635BFF',
                     },
                     '&:hover': {
-                        backgroundColor: 'rgba(99, 91, 255, 0.04)',
+                      backgroundColor: 'rgba(99, 91, 255, 0.04)',
                     },
-                    }
+                  },
                 }}
-                >
+              >
                 {answers.map((answer) => (
-                    <FormControlLabel
+                  <FormControlLabel
                     key={answer.value}
-                    value={String(answer.value)}  
+                    value={String(answer.value)}
                     control={
-                        <Radio 
+                      <Radio
                         sx={{
-                            '&.Mui-checked': {
+                          '&.Mui-checked': {
                             '& .MuiSvgIcon-root': {
-                                color: '#635BFF',
-                            }
+                              color: '#635BFF',
                             },
-                            '& .MuiSvgIcon-root': {
+                          },
+                          '& .MuiSvgIcon-root': {
                             fontSize: '20px',
-                            }
+                          },
                         }}
-                        />
+                      />
                     }
                     label={answer.label}
                     sx={{
-                        flex: 1,
-                        margin: 0,
-                        padding: '8px 12px',
-                        borderRadius: 1,
-                        transition: 'all 0.2s',
-                        '&:hover': {
+                      flex: 1,
+                      margin: 0,
+                      padding: '8px 12px',
+                      borderRadius: 1,
+                      transition: 'all 0.2s',
+                      '&:hover': {
                         backgroundColor: 'rgba(99, 91, 255, 0.04)',
-                        },
-                        '& .Mui-checked + .MuiFormControlLabel-label': {
+                      },
+                      '& .Mui-checked + .MuiFormControlLabel-label': {
                         color: '#635BFF',
                         fontWeight: 500,
-                        },
-                        '&.MuiFormControlLabel-root.Mui-checked': {
+                      },
+                      '&.MuiFormControlLabel-root.Mui-checked': {
                         backgroundColor: 'rgba(99, 91, 255, 0.08)',
-                        }
+                      },
                     }}
-                    />
+                  />
                 ))}
-                </RadioGroup>
+              </RadioGroup>
             </FormControl>
           ))}
         </Stack>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
           <Button
-            variant="outlined"
+            variant='outlined'
             onClick={() => navigate(`/patients/${patientId}/therapy-sessions/${therapySessionId}`)}
           >
             Cancel
           </Button>
           <Button
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             onClick={handleSubmit}
             disabled={!isFormComplete()}
           >

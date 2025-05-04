@@ -58,10 +58,7 @@ const App = () => {
               path={ROUTES[PAGES.THERAPY_SESSIONS_DETAILS_PAGE]}
               element={<TherapySessionDetail />}
             />
-            <Route
-              path={ROUTES[PAGES.GAD7_TEST_PAGE]}
-              element={<GAD7test />}
-            />
+            <Route path={ROUTES[PAGES.GAD7_TEST_PAGE]} element={<GAD7test />} />
 
             <Route path={ROUTES[PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]} element={<NotFound />} />
 
