@@ -1850,6 +1850,39 @@ export const PatientTestControllerApiAxiosParamCreator = function (configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTestsBySession: async (sessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sessionId' is not null or undefined
+            assertParamExists('getTestsBySession', 'sessionId', sessionId)
+            const localVarPath = `/tests/gad7/session/{sessionId}`
+                .replace(`{${"sessionId"}}`, encodeURIComponent(String(sessionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1896,6 +1929,18 @@ export const PatientTestControllerApiFp = function(configuration?: Configuration
             const localVarOperationServerBasePath = operationServerMap['PatientTestControllerApi.getTestsForPatient']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTestsBySession(sessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GAD7TestOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTestsBySession(sessionId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PatientTestControllerApi.getTestsBySession']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -1933,6 +1978,15 @@ export const PatientTestControllerApiFactory = function (configuration?: Configu
         getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<GAD7TestOutputDTO>> {
             return localVarFp.getTestsForPatient(patientId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} sessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTestsBySession(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<GAD7TestOutputDTO>> {
+            return localVarFp.getTestsBySession(sessionId, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1968,6 +2022,15 @@ export interface PatientTestControllerApiInterface {
      * @memberof PatientTestControllerApiInterface
      */
     getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<GAD7TestOutputDTO>>;
+
+    /**
+     * 
+     * @param {string} sessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientTestControllerApiInterface
+     */
+    getTestsBySession(sessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<GAD7TestOutputDTO>>;
 
 }
 
@@ -2009,6 +2072,17 @@ export class PatientTestControllerApi extends BaseAPI implements PatientTestCont
      */
     public getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig) {
         return PatientTestControllerApiFp(this.configuration).getTestsForPatient(patientId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} sessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientTestControllerApi
+     */
+    public getTestsBySession(sessionId: string, options?: RawAxiosRequestConfig) {
+        return PatientTestControllerApiFp(this.configuration).getTestsBySession(sessionId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

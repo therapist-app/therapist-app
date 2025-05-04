@@ -33,6 +33,10 @@ export interface GetTestsForPatientRequest {
   patientId: string
 }
 
+export interface GetTestsBySessionRequest {
+  sessionId: string
+}
+
 /**
  * PatientTestControllerApi - interface
  *
@@ -96,15 +100,31 @@ export interface PatientTestControllerApiInterface {
     requestParameters: GetTestsForPatientRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<GAD7TestOutputDTO>>
+
+  /**
+   *
+   * @param {string} sessionId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PatientTestControllerApiInterface
+   */
+  getTestsBySessionRaw(
+    requestParameters: GetTestsBySessionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<GAD7TestOutputDTO>>>
+
+  /**
+   */
+  getTestsBySession(
+    requestParameters: GetTestsBySessionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<GAD7TestOutputDTO>>
 }
 
 /**
  *
  */
-export class PatientTestControllerApi
-  extends runtime.BaseAPI
-  implements PatientTestControllerApiInterface
-{
+export class PatientTestControllerApi extends runtime.BaseAPI implements PatientTestControllerApiInterface {
   /**
    */
   async createTestRaw(
@@ -237,6 +257,50 @@ export class PatientTestControllerApi
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<GAD7TestOutputDTO>> {
     const response = await this.getTestsForPatientRaw(requestParameters, initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
+  async getTestsBySessionRaw(
+    requestParameters: GetTestsBySessionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<GAD7TestOutputDTO>>> {
+    if (requestParameters['sessionId'] == null) {
+      throw new runtime.RequiredError(
+        'sessionId',
+        'Required parameter "sessionId" was null or undefined when calling getTestsBySession().'
+      )
+    }
+
+    const queryParameters: any = {}
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/tests/gad7/session/{sessionId}`.replace(
+          `{${'sessionId'}}`,
+          encodeURIComponent(String(requestParameters['sessionId']))
+        ),
+        method: 'GET',
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(GAD7TestOutputDTOFromJSON)
+    )
+  }
+
+  /**
+   */
+  async getTestsBySession(
+    requestParameters: GetTestsBySessionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<GAD7TestOutputDTO>> {
+    const response = await this.getTestsBySessionRaw(requestParameters, initOverrides)
     return await response.value()
   }
 }
