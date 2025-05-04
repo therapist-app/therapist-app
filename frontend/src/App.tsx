@@ -13,6 +13,7 @@ import PatientCreate from './pages/patients/PatientCreate.tsx'
 import TherapySessionOverview from './pages/therapy-sessions/TherapySessionOverview.tsx'
 import TherapySessionCreate from './pages/therapy-sessions/TherapySessionCreate.tsx'
 import TherapySessionDetail from './pages/therapy-sessions/TherapySessionDetail.tsx'
+import GAD7test from './pages/tests/GAD7test'
 import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = () => {
@@ -56,6 +57,10 @@ const App = () => {
             <Route
               path={ROUTES[PAGES.THERAPY_SESSIONS_DETAILS_PAGE]}
               element={<TherapySessionDetail />}
+            />
+            <Route
+              path={ROUTES[PAGES.GAD7_TEST_PAGE]}
+              element={<GAD7test />}
             />
 
             <Route path={ROUTES[PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]} element={<NotFound />} />

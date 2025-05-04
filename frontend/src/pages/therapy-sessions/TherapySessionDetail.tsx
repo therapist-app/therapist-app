@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, Stack } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
@@ -55,14 +55,25 @@ const TherapySessionDetail = () => {
           : '-'}
       </Typography>
 
-      <Button
-        sx={{ marginTop: '50px', marginBottom: '20px' }}
-        variant='contained'
-        onClick={handleDeleteTherapySession}
-        color='error'
-      >
-        Delete Session
-      </Button>
+      <Stack direction="row" spacing={2} sx={{ marginTop: '50px', marginBottom: '20px' }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate(getPathFromPage(PAGES.GAD7_TEST_PAGE, {
+            patientId: patientId ?? '',
+            therapySessionId: therapySessionId ?? ''
+          }))}
+        >
+          Create GAD7 Test
+        </Button>
+        <Button
+          variant='contained'
+          onClick={handleDeleteTherapySession}
+          color='error'
+        >
+          Delete Session
+        </Button>
+      </Stack>
     </Layout>
   )
 }
