@@ -57,10 +57,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <Toolbar>
           <Typography
-            variant='h6'
+            variant='h4'
             noWrap
             component='div'
-            sx={{ flexGrow: 1, color: 'text.primary' }}
+            sx={{ flexGrow: 1, color: 'text.primary', fontWeight: 500 }}
           >
             {currentPageName}
           </Typography>
