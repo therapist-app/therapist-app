@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import {
   Button,
   TextField,
@@ -49,8 +49,6 @@ import { ChatbotTemplateOutputDTO } from '../../api'
 const ChatBotTemplateEdit = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-
-  const { chatBotTemplateId } = useParams()
 
   const { state } = useLocation() as { state?: { chatbotConfig?: ChatbotTemplateOutputDTO } }
 
@@ -349,10 +347,6 @@ const ChatBotTemplateEdit = () => {
       </style>
 
       <Layout>
-        <Typography variant='h5' sx={{ mb: 3 }}>
-          Editing Chatbot Template ID: {chatBotTemplateId}
-        </Typography>
-
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label='Configuration' value='config' />

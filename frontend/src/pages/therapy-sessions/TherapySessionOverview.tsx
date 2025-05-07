@@ -8,7 +8,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -54,13 +53,7 @@ const TherapySessionOverview = () => {
 
   return (
     <Layout>
-      <Typography variant='h4'>All sessions of patient: {patientId}</Typography>
-
-      <Button
-        sx={{ marginTop: '50px', marginBottom: '20px' }}
-        variant='contained'
-        onClick={handleCreateNewSession}
-      >
+      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
         Create new session
       </Button>
       <TableContainer sx={{ width: '600px' }} component={Paper}>

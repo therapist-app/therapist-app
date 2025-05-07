@@ -20,7 +20,8 @@ import { useAppDispatch } from '../../utils/hooks'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { PatientTestControllerApi, GAD7TestOutputDTO } from '../../api'
+import { GAD7TestOutputDTO } from '../../api'
+import { patientTestApi } from '../../utils/api'
 
 const TherapySessionDetail = () => {
   const navigate = useNavigate()
@@ -38,8 +39,7 @@ const TherapySessionDetail = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const api = new PatientTestControllerApi()
-        const response = await api.getTestsBySession(therapySessionId ?? '')
+        const response = await patientTestApi.getTestsByTherapySession(therapySessionId ?? '')
         setGad7Tests(response.data)
       } catch (error) {
         console.error('Error fetching GAD7 tests:', error)
@@ -61,11 +61,7 @@ const TherapySessionDetail = () => {
 
   return (
     <Layout>
-      <Typography variant='h4' style={{ marginBottom: '20px' }}>
-        Showing the session details of session: {therapySessionId}
-      </Typography>
-
-      <Typography style={{ marginTop: '50px' }}>
+      <Typography>
         Session start:{' '}
         {selectedTherapySession?.sessionStart
           ? format(new Date(selectedTherapySession.sessionStart), 'dd.MM.yyyy HH:mm', {

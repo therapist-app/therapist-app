@@ -133,8 +133,6 @@ const PatientDetail = () => {
 
   return (
     <Layout>
-      <Typography variant='h4'>Patient details of "{patientId}"</Typography>
-
       <Button
         variant='contained'
         onClick={handleOpenChatbotDialog}

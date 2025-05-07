@@ -352,9 +352,6 @@ const Dashboard = () => {
   return (
     <Layout>
       <Box sx={{ marginBottom: 4 }}>
-        <Typography sx={{ marginBottom: 4 }} variant='h4'>
-          {`${t('dashboard.welcome_message')} ${loggedInTherapist?.email}`}
-        </Typography>
         <Card
           sx={{
             p: 2,
