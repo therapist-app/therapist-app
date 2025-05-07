@@ -6,7 +6,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import SettingsIcon from '@mui/icons-material/Settings'
 
 import logo from '../../public/Therapist-App.png'
-import { useTranslation } from 'react-i18next'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 
@@ -22,13 +21,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
 
   const currentPage = getPageFromPath(location.pathname)
+  const currentPageName = PAGE_NAMES[currentPage]
   const currentPageTrace = findPageTrace(currentPage)
 
   const params = useParams() as Record<string, string>
@@ -63,7 +62,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             component='div'
             sx={{ flexGrow: 1, color: 'text.primary' }}
           >
-            {t('layout.dashboard')}
+            {currentPageName}
           </Typography>
           <IconButton sx={{ marginRight: 1 }} onClick={handleSettingsClicked} color='inherit'>
             <SettingsIcon />
