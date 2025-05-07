@@ -13,9 +13,9 @@ import {
   Alert,
 } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { PatientTestControllerApi } from '../../api'
 import { CreateGAD7TestDTO } from '../../api/models'
 import { ChangeEvent } from 'react'
+import { patientTestApi } from '../../utils/api'
 
 const questions = [
   'Feeling nervous, anxious or on edge.',
@@ -58,7 +58,6 @@ export const GAD7test = () => {
     }
 
     try {
-      const api = new PatientTestControllerApi()
       const testData: CreateGAD7TestDTO = {
         patientId,
         sessionId: therapySessionId,
@@ -71,7 +70,7 @@ export const GAD7test = () => {
         question7: responses[7],
       }
 
-      await api.createTest(testData)
+      await patientTestApi.createTest(testData)
       navigate(`/patients/${patientId}/therapy-sessions/${therapySessionId}`)
     } catch (err) {
       setError('Failed to submit the test. Please try again.')
