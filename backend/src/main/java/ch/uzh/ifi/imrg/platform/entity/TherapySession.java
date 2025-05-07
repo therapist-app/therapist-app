@@ -39,5 +39,4 @@ public class TherapySession implements Serializable {
 
   @OneToMany(mappedBy = "therapy_session", fetch = FetchType.EAGER)
   private List<TherapySessionNote> therapySessionNotes = new ArrayList<>();
-
 }
