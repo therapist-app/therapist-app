@@ -3,6 +3,8 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,4 +36,8 @@ public class TherapySession implements Serializable {
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
+
+  @OneToMany(mappedBy = "therapy_session", fetch = FetchType.EAGER)
+  private List<TherapySessionNote> therapySessionNotes = new ArrayList<>();
+
 }
