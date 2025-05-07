@@ -346,9 +346,6 @@ const PatientsOverview: React.FC = () => {
   return (
     <Layout>
       <Box sx={headerRowStyles}>
-        <Typography variant='h5' sx={{ fontWeight: 600 }}>
-          Patients
-        </Typography>
         <Box display='flex' alignItems='center'>
           {selected.length > 0 && (
             <>

@@ -116,4 +116,31 @@ public class PatientTestService {
     outputDTO.setQuestion7(test.getQuestion7());
     return outputDTO;
   }
+
+  public List<GAD7TestOutputDTO> getTestsByTherapySession(String sessionId) {
+    // Validate that session exists
+    therapySessionRepository
+        .findById(sessionId)
+        .orElseThrow(() -> new IllegalArgumentException("Session not found with id: " + sessionId));
+
+    List<GAD7Test> tests = gad7Repository.findByTherapySession_Id(sessionId);
+    return tests.stream()
+        .map(
+            test -> {
+              GAD7TestOutputDTO dto = new GAD7TestOutputDTO();
+              dto.setTestId(test.getTestId());
+              dto.setPatientId(test.getPatient().getId());
+              dto.setSessionId(test.getTherapySession().getId());
+              dto.setCreationDate(test.getCreationDate());
+              dto.setQuestion1(test.getQuestion1());
+              dto.setQuestion2(test.getQuestion2());
+              dto.setQuestion3(test.getQuestion3());
+              dto.setQuestion4(test.getQuestion4());
+              dto.setQuestion5(test.getQuestion5());
+              dto.setQuestion6(test.getQuestion6());
+              dto.setQuestion7(test.getQuestion7());
+              return dto;
+            })
+        .collect(Collectors.toList());
+  }
 }

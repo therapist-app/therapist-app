@@ -35,6 +35,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
 
 const PatientDetail = () => {
   const { patientId } = useParams()
@@ -55,6 +56,7 @@ const PatientDetail = () => {
 
   useEffect(() => {
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
+    dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUpload = async (file: File) => {
@@ -131,8 +133,6 @@ const PatientDetail = () => {
 
   return (
     <Layout>
-      <Typography variant='h4'>Patient details of "{patientId}"</Typography>
-
       <Button
         variant='contained'
         onClick={handleOpenChatbotDialog}

@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Layout from '../../generalComponents/Layout'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -54,9 +54,7 @@ const TherapySessionCreate = () => {
 
   return (
     <Layout>
-      <Typography variant='h4'>Create new session for patient: "{patientId}"</Typography>
-
-      <form style={{ maxWidth: '500px', marginTop: '30px' }} onSubmit={handleSubmit}>
+      <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label='Session Start'
