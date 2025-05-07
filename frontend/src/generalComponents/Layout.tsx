@@ -114,12 +114,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             const path = getPathFromPage(page, params)
             const isActive = currentPage === page
             return (
-              <>
-                {' '}
+              <React.Fragment key={page}>
                 {index !== 0 && <KeyboardArrowDownIcon sx={{ ml: '15px' }} />}
                 <Button
                   variant={isActive ? 'contained' : 'text'}
-                  key={page}
                   onClick={() => navigate(path)}
                   sx={{
                     color: 'white',
@@ -134,7 +132,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 >
                   {PAGE_NAMES[page]}
                 </Button>
-              </>
+              </React.Fragment>
             )
           })}
         </div>

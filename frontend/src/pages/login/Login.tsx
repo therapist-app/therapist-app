@@ -69,6 +69,7 @@ const Login = () => {
             fullWidth
             margin='normal'
             required
+            autoComplete='email'
           />
           <TextField
             label={t('login.password')}
@@ -79,6 +80,7 @@ const Login = () => {
             fullWidth
             margin='normal'
             required
+            autoComplete='current-password'
           />
           {error && <Typography color='error'>{error}</Typography>}
           <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
