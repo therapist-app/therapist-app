@@ -1,13 +1,12 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-
 import { ReactElement, useState } from 'react'
-import { loginTherapist } from '../../store/therapistSlice'
-
-import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../utils/hooks'
 import { useTranslation } from 'react-i18next'
-import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNavigate } from 'react-router-dom'
+
 import { LoginTherapistDTO } from '../../api'
+import { loginTherapist } from '../../store/therapistSlice'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Login = (): ReactElement => {
   const dispatch = useAppDispatch()

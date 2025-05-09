@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../api'
 import { chatbotTemplateApi } from '../utils/api'
 
@@ -57,7 +58,7 @@ export const deleteChatbotTemplate = createAsyncThunk(
 
 const chatbotTemplateSlice = createSlice({
   name: 'chatbotTemplate',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedChatbotTemplate: (state, action: PayloadAction<ChatbotTemplateOutputDTO>) => {
       state.selectedChatbotTemplate = action.payload

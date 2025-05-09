@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
-import { Link, useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Header(): ReactElement {
   const { t } = useTranslation()

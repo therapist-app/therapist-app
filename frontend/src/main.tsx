@@ -1,17 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import store from './store/store.ts'
-import { Provider } from 'react-redux'
 import './index.css'
-import App from './App.tsx'
 import './i18n'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
-import { ThemeProvider } from '@mui/material'
-import theme from './muiTheme.ts'
 import './utils/api.ts'
+
+import { ThemeProvider } from '@mui/material'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
+
+import App from './App.tsx'
+import theme from './muiTheme.ts'
+import store from './store/store.ts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

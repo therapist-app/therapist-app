@@ -1,14 +1,13 @@
-import React, { ReactNode, useEffect } from 'react'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, IconButton, Drawer, Box, Button } from '@mui/material'
-import LogoutIcon from '@mui/icons-material/Logout'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import LogoutIcon from '@mui/icons-material/Logout'
 import SettingsIcon from '@mui/icons-material/Settings'
+import { AppBar, Box, Button, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
+import React, { ReactNode, useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
-
 import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
 
 interface LayoutProps {

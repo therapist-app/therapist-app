@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { therapySessionApi } from '../utils/api'
 import { CreateTherapySessionDTO, TherapySessionOutputDTO } from '../api'
+import { therapySessionApi } from '../utils/api'
 
 interface TherapistState {
   selectedTherapySession: TherapySessionOutputDTO | null
@@ -51,7 +51,7 @@ export const deleteTherapySession = createAsyncThunk(
 
 const therapySessionSlice = createSlice({
   name: 'therapySession',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedTherapySession: (state, action: PayloadAction<TherapySessionOutputDTO>) => {
       state.selectedTherapySession = action.payload

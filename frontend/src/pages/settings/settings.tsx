@@ -1,14 +1,15 @@
-import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Typography,
   SelectChangeEvent,
+  Typography,
 } from '@mui/material'
-import Layout from '../../generalComponents/Layout'
 import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import Layout from '../../generalComponents/Layout'
 
 const Settings = (): ReactElement => {
   const { t, i18n } = useTranslation()

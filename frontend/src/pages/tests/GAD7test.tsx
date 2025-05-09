@@ -1,20 +1,20 @@
-import { ReactElement, useState } from 'react'
 import {
-  Box,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Button,
-  Paper,
-  FormControl,
-  FormLabel,
-  Stack,
   Alert,
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Paper,
+  Radio,
+  RadioGroup,
+  Stack,
+  Typography,
 } from '@mui/material'
+import { ChangeEvent, ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { CreateGAD7TestDTO } from '../../api/models'
-import { ChangeEvent } from 'react'
 import { patientTestApi } from '../../utils/api'
 
 const questions = [
@@ -59,7 +59,7 @@ export const GAD7test = (): ReactElement => {
 
     try {
       const testData: CreateGAD7TestDTO = {
-        patientId,
+        patientId: patientId,
         sessionId: therapySessionId,
         question1: responses[1],
         question2: responses[2],
