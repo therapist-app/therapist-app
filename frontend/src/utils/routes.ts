@@ -143,10 +143,14 @@ export function findPageTrace(
   currentPage: PAGES = PAGES.HOME_PAGE,
   visited = new Set<PAGES>()
 ): PAGES[] | null {
-  if (visited.has(currentPage)) return null
+  if (visited.has(currentPage)) {
+    return null
+  }
   visited.add(currentPage)
 
-  if (currentPage === targetPage) return [currentPage]
+  if (currentPage === targetPage) {
+    return [currentPage]
+  }
 
   const children = PAGE_HIERARCHY[currentPage] || []
   for (const child of children) {

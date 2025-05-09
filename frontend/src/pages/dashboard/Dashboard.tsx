@@ -128,7 +128,9 @@ const Dashboard = () => {
   }
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
@@ -206,7 +208,9 @@ const Dashboard = () => {
 
   const handleRenameChatbot = async () => {
     try {
-      if (!currentChatbot) return
+      if (!currentChatbot) {
+        return
+      }
 
       await dispatch(
         updateChatbotTemplate({
@@ -229,7 +233,9 @@ const Dashboard = () => {
   }
 
   const handleClone = async () => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
 
@@ -248,7 +254,9 @@ const Dashboard = () => {
 
   const handleDelete = async () => {
     try {
-      if (!currentChatbot) return
+      if (!currentChatbot) {
+        return
+      }
 
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
@@ -266,12 +274,16 @@ const Dashboard = () => {
   }
 
   const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
-    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
+    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) {
+      return
+    }
 
     const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
       (bot) => bot.id === chatbotTemplateId
     )
-    if (!selectedChatbot) return
+    if (!selectedChatbot) {
+      return
+    }
 
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {

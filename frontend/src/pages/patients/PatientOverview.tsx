@@ -150,7 +150,9 @@ const PatientsOverview: React.FC = () => {
   const paginatedPatients = patients.slice(startIndex, endIndex)
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 

@@ -162,7 +162,9 @@ const ChatBotTemplateEdit = () => {
 
   const handleSaveConfiguration = async () => {
     try {
-      if (!chatbotConfig) return
+      if (!chatbotConfig) {
+        return
+      }
 
       const updateChatbotTemplateDTO = {
         chatbotName,
@@ -203,7 +205,9 @@ const ChatBotTemplateEdit = () => {
   }
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
