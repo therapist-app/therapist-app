@@ -8,11 +8,12 @@ import {
   SelectChangeEvent,
 } from '@mui/material'
 import Layout from '../../generalComponents/Layout'
+import { ReactElement } from 'react'
 
-const Settings = () => {
+const Settings = (): ReactElement => {
   const { t, i18n } = useTranslation()
 
-  const changeLanguage = (event: SelectChangeEvent) => {
+  const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
     i18n.changeLanguage(selectedLanguage).then(() => {}) // Change the language
   }

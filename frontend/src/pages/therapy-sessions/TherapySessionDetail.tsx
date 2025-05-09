@@ -14,7 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../../generalComponents/Layout'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { deleteTherapySession, getTherapySession } from '../../store/therapySessionSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { format } from 'date-fns'
@@ -23,7 +23,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import { GAD7TestOutputDTO } from '../../api'
 import { patientTestApi } from '../../utils/api'
 
-const TherapySessionDetail = () => {
+const TherapySessionDetail = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, therapySessionId } = useParams()
   const dispatch = useAppDispatch()
@@ -37,7 +37,7 @@ const TherapySessionDetail = () => {
   }, [dispatch, therapySessionId])
 
   useEffect(() => {
-    const fetchTests = async () => {
+    const fetchTests = async (): Promise<void> => {
       try {
         const response = await patientTestApi.getTestsByTherapySession(therapySessionId ?? '')
         setGad7Tests(response.data)
@@ -50,7 +50,7 @@ const TherapySessionDetail = () => {
     }
   }, [therapySessionId])
 
-  const handleDeleteTherapySession = async () => {
+  const handleDeleteTherapySession = async (): Promise<void> => {
     await dispatch(deleteTherapySession(therapySessionId ?? ''))
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE, {

@@ -32,12 +32,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const params = useParams() as Record<string, string>
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch(logoutTherapist())
     navigate(getPathFromPage(PAGES.LOGIN_PAGE))
   }
 
-  const handleSettingsClicked = () => {
+  const handleSettingsClicked = (): void => {
     navigate(getPathFromPage(PAGES.SETTINGS_PAGE))
   }
 

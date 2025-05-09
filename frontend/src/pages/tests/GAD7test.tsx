@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import {
   Box,
   Typography,
@@ -34,24 +34,24 @@ const answers = [
   { value: 3, label: 'Nearly every day' },
 ]
 
-export const GAD7test = () => {
+export const GAD7test = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, therapySessionId } = useParams()
   const [responses, setResponses] = useState<{ [key: number]: number }>({})
   const [error, setError] = useState<string | null>(null)
 
-  const handleAnswerChange = (questionIndex: number, value: number) => {
+  const handleAnswerChange = (questionIndex: number, value: number): void => {
     setResponses((prev) => ({
       ...prev,
       [questionIndex + 1]: value,
     }))
   }
 
-  const isFormComplete = () => {
+  const isFormComplete = (): boolean => {
     return questions.every((_, index) => responses[index + 1] !== undefined)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (!isFormComplete()) {
       setError('Please answer all questions')
       return

@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material'
+import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function Footer() {
+export default function Footer(): ReactElement {
   const { t } = useTranslation()
 
   return (

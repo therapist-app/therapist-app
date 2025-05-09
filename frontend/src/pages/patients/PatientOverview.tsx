@@ -76,17 +76,18 @@ const PatientsOverview: React.FC = () => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, refreshTherapistCounter])
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
   }
 
-  const handleOpenPatientDialog = () => setOpenPatientDialog(true)
-  const handleClosePatientDialog = () => {
+  const handleOpenPatientDialog = (): void => setOpenPatientDialog(true)
+
+  const handleClosePatientDialog = (): void => {
     setOpenPatientDialog(false)
     setNewPatientName('')
   }
 
-  const handleCreatePatient = async () => {
+  const handleCreatePatient = async (): Promise<void> => {
     try {
       dispatch(
         registerPatient({
@@ -112,7 +113,7 @@ const PatientsOverview: React.FC = () => {
     }
   }
 
-  const handleSelectRow = (patientId: string) => {
+  const handleSelectRow = (patientId: string): void => {
     setSelected((prev) => {
       if (prev.includes(patientId)) {
         return prev.filter((id) => id !== patientId)
@@ -121,7 +122,7 @@ const PatientsOverview: React.FC = () => {
     })
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     try {
       await Promise.all(
         selected.map(async (id) => {
@@ -141,7 +142,7 @@ const PatientsOverview: React.FC = () => {
     }
   }
 
-  const handlePatientClick = (patientId: string) => {
+  const handlePatientClick = (patientId: string): void => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
@@ -149,7 +150,7 @@ const PatientsOverview: React.FC = () => {
   const endIndex = startIndex + rowsPerPage
   const paginatedPatients = patients.slice(startIndex, endIndex)
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason === 'clickaway') {
       return
     }

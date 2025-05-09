@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Layout from '../../generalComponents/Layout'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { useAppDispatch } from '../../utils/hooks'
 import { createTherapySession } from '../../store/therapySessionSlice'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -10,7 +10,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import { de } from 'date-fns/locale'
 
-const TherapySessionCreate = () => {
+const TherapySessionCreate = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ const TherapySessionCreate = () => {
     patientId: patientId ?? '',
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     if (!therapySessionToCreate.sessionStart || !therapySessionToCreate.sessionEnd) {
