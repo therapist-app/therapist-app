@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
-import { useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useAppDispatch } from '../../utils/hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
@@ -22,7 +22,7 @@ import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
-const TherapySessionOverview = () => {
+const TherapySessionOverview = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
@@ -34,7 +34,7 @@ const TherapySessionOverview = () => {
     dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
   }, [dispatch, patientId])
 
-  const handleClickOnSession = (therapySessionId: string) => {
+  const handleClickOnSession = (therapySessionId: string): void => {
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
         patientId: patientId ?? '',
@@ -43,7 +43,7 @@ const TherapySessionOverview = () => {
     )
   }
 
-  const handleCreateNewSession = () => {
+  const handleCreateNewSession = (): void => {
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
         patientId: patientId ?? '',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Button,
@@ -50,7 +50,7 @@ import {
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 
-const Dashboard = () => {
+const Dashboard = (): ReactElement => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -85,11 +85,11 @@ const Dashboard = () => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, refreshTherapistCounter])
 
-  const handleOpenPatientDialog = () => {
+  const handleOpenPatientDialog = (): void => {
     setOpenPatientDialog(true)
   }
 
-  const handleClosePatientDialog = () => {
+  const handleClosePatientDialog = (): void => {
     setOpenPatientDialog(false)
     setNewPatientName('')
     setNewPatientGender('')
@@ -100,7 +100,7 @@ const Dashboard = () => {
     setNewPatientDescription('')
   }
 
-  const handleCreatePatient = async () => {
+  const handleCreatePatient = async (): Promise<void> => {
     try {
       await dispatch(
         registerPatient({
@@ -127,25 +127,27 @@ const Dashboard = () => {
     }
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
-  const handlePatientClick = (patientId: string) => {
+  const handlePatientClick = (patientId: string): void => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
   }
 
-  const handleOpenBotDialog = () => {
+  const handleOpenBotDialog = (): void => {
     setOpenBotDialog(true)
   }
 
-  const handleCloseBotDialog = () => {
+  const handleCloseBotDialog = (): void => {
     setOpenBotDialog(false)
     setChatbotName('')
   }
 
-  const handleCreateChatbot = async () => {
+  const handleCreateChatbot = async (): Promise<void> => {
     try {
       if (!loggedInTherapist) {
         return
@@ -187,16 +189,16 @@ const Dashboard = () => {
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     chatbot: ChatbotTemplateOutputDTO
-  ) => {
+  ): void => {
     setAnchorEl(event.currentTarget)
     setCurrentChatbot(chatbot)
   }
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (): void => {
     setAnchorEl(null)
   }
 
-  const handleRename = () => {
+  const handleRename = (): void => {
     if (currentChatbot) {
       setChatbotName(currentChatbot.chatbotName ?? '')
       setOpenRenameDialog(true)
@@ -204,9 +206,11 @@ const Dashboard = () => {
     handleMenuClose()
   }
 
-  const handleRenameChatbot = async () => {
+  const handleRenameChatbot = async (): Promise<void> => {
     try {
-      if (!currentChatbot) return
+      if (!currentChatbot) {
+        return
+      }
 
       await dispatch(
         updateChatbotTemplate({
@@ -228,8 +232,10 @@ const Dashboard = () => {
     }
   }
 
-  const handleClone = async () => {
-    if (!currentChatbot) return
+  const handleClone = async (): Promise<void> => {
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
 
@@ -246,9 +252,11 @@ const Dashboard = () => {
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     try {
-      if (!currentChatbot) return
+      if (!currentChatbot) {
+        return
+      }
 
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
@@ -265,13 +273,17 @@ const Dashboard = () => {
     }
   }
 
-  const handleChatbotTemplateClick = (chatbotTemplateId: string) => {
-    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
+  const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {
+    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) {
+      return
+    }
 
     const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
       (bot) => bot.id === chatbotTemplateId
     )
-    if (!selectedChatbot) return
+    if (!selectedChatbot) {
+      return
+    }
 
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -285,7 +297,7 @@ const Dashboard = () => {
     )
   }
 
-  const getIconComponent = (iconName: string) => {
+  const getIconComponent = (iconName: string): ReactElement | null => {
     switch (iconName) {
       case 'Chatbot':
         return <TbMessageChatbot />

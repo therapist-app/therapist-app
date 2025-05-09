@@ -1,8 +1,9 @@
 import { Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Layout from '../../generalComponents/Layout'
+import { ReactElement } from 'react'
 
-const PatientCreate = () => {
+const PatientCreate = (): ReactElement => {
   const { t } = useTranslation()
 
   return (

@@ -9,7 +9,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept }) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0]
     if (file) {
       onUpload(file)

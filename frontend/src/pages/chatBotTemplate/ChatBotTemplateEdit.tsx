@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, ReactElement } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
   Button,
@@ -46,7 +46,7 @@ import { handleError } from '../../utils/handleError'
 import { useTranslation } from 'react-i18next'
 import { ChatbotTemplateOutputDTO } from '../../api'
 
-const ChatBotTemplateEdit = () => {
+const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -129,11 +129,11 @@ const ChatBotTemplateEdit = () => {
   const handleTabChange = (
     _event: React.SyntheticEvent,
     newValue: 'config' | 'analytics' | 'sources'
-  ) => {
+  ): void => {
     setSelectedTab(newValue)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
     if (!question.trim()) {
       alert('Question cannot be empty.')
@@ -160,9 +160,11 @@ const ChatBotTemplateEdit = () => {
     }
   }
 
-  const handleSaveConfiguration = async () => {
+  const handleSaveConfiguration = async (): Promise<void> => {
     try {
-      if (!chatbotConfig) return
+      if (!chatbotConfig) {
+        return
+      }
 
       const updateChatbotTemplateDTO = {
         chatbotName,
@@ -202,12 +204,14 @@ const ChatBotTemplateEdit = () => {
     }
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
-  const getIconComponent = (iconName: string) => {
+  const getIconComponent = (iconName: string): ReactElement => {
     switch (iconName) {
       case 'Chatbot':
         return <TbMessageChatbot size='1.2em' color='black' />
@@ -227,7 +231,7 @@ const ChatBotTemplateEdit = () => {
   const renderMessage = (
     chatItem: { question?: string; response: string | null },
     index: number
-  ) => (
+  ): ReactElement => (
     <ListItem key={index} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
       {chatbotIcon && (
         <Avatar
@@ -297,7 +301,7 @@ const ChatBotTemplateEdit = () => {
     margin: 1,
   }
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = (file: File): void => {
     const newFile = { id: Date.now().toString(), fileName: file.name }
     setFiles((prev) => [...prev, newFile])
     setSnackbarMessage(`File "${file.name}" uploaded successfully!`)
@@ -305,14 +309,14 @@ const ChatBotTemplateEdit = () => {
     setSnackbarOpen(true)
   }
 
-  const handleDeleteFile = (fileId: string) => {
+  const handleDeleteFile = (fileId: string): void => {
     setFiles((prev) => prev.filter((f) => f.id !== fileId))
     setSnackbarMessage(`File with ID ${fileId} deleted successfully!`)
     setSnackbarSeverity('success')
     setSnackbarOpen(true)
   }
 
-  const handleDownloadFile = (fileId: string, fileName: string) => {
+  const handleDownloadFile = (fileId: string, fileName: string): void => {
     setSnackbarMessage(`Downloading "${fileName}" (placeholder)`)
     setSnackbarSeverity('info')
     setSnackbarOpen(true)

@@ -25,7 +25,7 @@ import {
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
-import { useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { RootState } from '../../store/store'
 import { useSelector } from 'react-redux'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -37,7 +37,7 @@ import { de } from 'date-fns/locale'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
 
-const PatientDetail = () => {
+const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -59,7 +59,7 @@ const PatientDetail = () => {
     dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (file: File): Promise<void> => {
     await dispatch(
       createDocumentForPatient({
         file,
@@ -69,12 +69,12 @@ const PatientDetail = () => {
     setRefreshPatientDocumentsCounter((prev) => prev + 1)
   }
 
-  const handleDeleteFile = async (fileId: string) => {
+  const handleDeleteFile = async (fileId: string): Promise<void> => {
     await dispatch(deleteDocumentOfPatient(fileId))
     setRefreshPatientDocumentsCounter((prev) => prev + 1)
   }
 
-  const handleDownloadFile = async (fileId: string, fileName: string) => {
+  const handleDownloadFile = async (fileId: string, fileName: string): Promise<void> => {
     try {
       const response = await patientDocumentApi.downloadFile(fileId, {
         responseType: 'blob',
@@ -93,7 +93,7 @@ const PatientDetail = () => {
     }
   }
 
-  const handleClickOnSession = (therapySessionId: string) => {
+  const handleClickOnSession = (therapySessionId: string): void => {
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
         patientId: patientId ?? '',
@@ -102,7 +102,7 @@ const PatientDetail = () => {
     )
   }
 
-  const handleCreateNewSession = () => {
+  const handleCreateNewSession = (): void => {
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
         patientId: patientId ?? '',
@@ -110,16 +110,16 @@ const PatientDetail = () => {
     )
   }
 
-  const handleOpenChatbotDialog = () => {
+  const handleOpenChatbotDialog = (): void => {
     setOpenChatbotDialog(true)
   }
 
-  const handleCloseChatbotDialog = () => {
+  const handleCloseChatbotDialog = (): void => {
     setOpenChatbotDialog(false)
     setChatbotName('')
   }
 
-  const handleCreateNewChatbot = () => {
+  const handleCreateNewChatbot = (): void => {
     console.log('Chatbot created with name:', chatbotName)
 
     navigate(

@@ -28,7 +28,7 @@ export enum PAGES {
 }
 
 const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
-  [PAGES.HOME_PAGE]: [PAGES.PATIENTS_OVERVIEW_PAGE],
+  [PAGES.HOME_PAGE]: [PAGES.PATIENTS_OVERVIEW_PAGE, PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE],
   [PAGES.LOGIN_PAGE]: [],
   [PAGES.REGISTRATION_PAGE]: [],
   [PAGES.SETTINGS_PAGE]: [],
@@ -52,7 +52,10 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
   [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: [PAGES.GAD7_TEST_PAGE],
   [PAGES.GAD7_TEST_PAGE]: [],
 
-  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: [],
+  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: [
+    PAGES.CHATBOT_TEMPLATES_CREATE_PAGE,
+    PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE,
+  ],
   [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: [],
   [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: [],
 
@@ -143,10 +146,14 @@ export function findPageTrace(
   currentPage: PAGES = PAGES.HOME_PAGE,
   visited = new Set<PAGES>()
 ): PAGES[] | null {
-  if (visited.has(currentPage)) return null
+  if (visited.has(currentPage)) {
+    return null
+  }
   visited.add(currentPage)
 
-  if (currentPage === targetPage) return [currentPage]
+  if (currentPage === targetPage) {
+    return [currentPage]
+  }
 
   const children = PAGE_HIERARCHY[currentPage] || []
   for (const child of children) {

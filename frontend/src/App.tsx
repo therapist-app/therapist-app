@@ -15,8 +15,9 @@ import TherapySessionCreate from './pages/therapy-sessions/TherapySessionCreate.
 import TherapySessionDetail from './pages/therapy-sessions/TherapySessionDetail.tsx'
 import GAD7test from './pages/tests/GAD7test'
 import { PAGES, ROUTES } from './utils/routes.ts'
+import { ReactElement } from 'react'
 
-const App = () => {
+const App = (): ReactElement => {
   const appContainerStyle = {
     display: 'grid',
     gridTemplateRows: 'auto 1fr auto',
@@ -27,7 +28,7 @@ const App = () => {
     padding: '20px',
   }
 
-  const RootComponent = () => {
+  const RootComponent = (): ReactElement => {
     return <Dashboard />
   }
 
