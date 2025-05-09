@@ -58,7 +58,7 @@ export const deleteChatbotTemplate = createAsyncThunk(
 
 const chatbotTemplateSlice = createSlice({
   name: 'chatbotTemplate',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedChatbotTemplate: (state, action: PayloadAction<ChatbotTemplateOutputDTO>) => {
       state.selectedChatbotTemplate = action.payload

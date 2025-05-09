@@ -41,7 +41,7 @@ export const deleteDocumentOfPatient = createAsyncThunk(
 
 const patientDocumentSlice = createSlice({
   name: 'patientDocument',
-  initialState,
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createDocumentForPatient.pending, (state) => {

@@ -51,7 +51,7 @@ export const deleteTherapySession = createAsyncThunk(
 
 const therapySessionSlice = createSlice({
   name: 'therapySession',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedTherapySession: (state, action: PayloadAction<TherapySessionOutputDTO>) => {
       state.selectedTherapySession = action.payload

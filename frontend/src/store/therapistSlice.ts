@@ -45,7 +45,7 @@ export const getCurrentlyLoggedInTherapist = createAsyncThunk(
 
 const therapistSlice = createSlice({
   name: 'therapist',
-  initialState,
+  initialState: initialState,
   reducers: {
     setLoggedInTherapist: (state, action: PayloadAction<TherapistOutputDTO>) => {
       state.loggedInTherapist = action.payload

@@ -144,7 +144,7 @@ const PatientsOverview: React.FC = () => {
   }
 
   const handlePatientClick = (patientId: string): void => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
 
   const startIndex = (page - 1) * rowsPerPage

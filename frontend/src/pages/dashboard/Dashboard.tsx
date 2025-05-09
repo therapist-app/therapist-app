@@ -133,7 +133,7 @@ const Dashboard = (): ReactElement => {
   }
 
   const handlePatientClick = (patientId: string): void => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
 
   const handleOpenBotDialog = (): void => {
@@ -152,7 +152,7 @@ const Dashboard = (): ReactElement => {
       }
 
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
-        chatbotName,
+        chatbotName: chatbotName,
         chatbotModel: 'gpt-3.5-turbo',
         chatbotIcon: 'Chatbot',
         chatbotLanguage: 'English',

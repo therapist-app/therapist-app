@@ -11,7 +11,7 @@ i18next
   .init({
     debug: true,
     fallbackLng: 'en',
-    defaultNS,
+    defaultNS: defaultNS,
     backend: {
       loadPath: '/locales/{{lng}}.json', // Path to your translation files
     },

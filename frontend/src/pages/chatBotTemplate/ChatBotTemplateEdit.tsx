@@ -139,7 +139,7 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
     setIsLoading(true)
     setIsChatbotTyping(true)
-    const newChatEntry = { question, response: null }
+    const newChatEntry = { question: question, response: null }
     setChat((prev) => [...prev, newChatEntry])
     setQuestion('')
     try {
@@ -165,21 +165,21 @@ const ChatBotTemplateEdit: React.FC = () => {
       }
 
       const updateChatbotTemplateDTO = {
-        chatbotName,
+        chatbotName: chatbotName,
         chatbotModel: chatbotConfig.chatbotModel || 'gpt-3.5-turbo',
         description: chatbotConfig.description || '',
-        chatbotIcon,
-        chatbotLanguage,
-        chatbotRole,
-        chatbotTone,
-        welcomeMessage,
-        chatbotVoice,
-        chatbotGender,
+        chatbotIcon: chatbotIcon,
+        chatbotLanguage: chatbotLanguage,
+        chatbotRole: chatbotRole,
+        chatbotTone: chatbotTone,
+        welcomeMessage: welcomeMessage,
+        chatbotVoice: chatbotVoice,
+        chatbotGender: chatbotGender,
 
-        preConfiguredExercise,
-        additionalExercise,
+        preConfiguredExercise: preConfiguredExercise,
+        additionalExercise: additionalExercise,
         animation: chatbotAnimation,
-        chatbotInputPlaceholder,
+        chatbotInputPlaceholder: chatbotInputPlaceholder,
 
         workspaceId: chatbotConfig.workspaceId || '',
       }
@@ -187,7 +187,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: chatbotConfig.id ?? '',
-          updateChatbotTemplateDTO,
+          updateChatbotTemplateDTO: updateChatbotTemplateDTO,
         })
       )
 

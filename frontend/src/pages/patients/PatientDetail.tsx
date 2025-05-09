@@ -63,7 +63,7 @@ const PatientDetail = (): ReactElement => {
   const handleFileUpload = async (file: File): Promise<void> => {
     await dispatch(
       createDocumentForPatient({
-        file,
+        file: file,
         patientId: patientId ?? '',
       })
     )

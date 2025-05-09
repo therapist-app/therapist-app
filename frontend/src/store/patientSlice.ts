@@ -32,7 +32,7 @@ export const getAllPatientsOfTherapist = createAsyncThunk('getAllPatientsOfThera
 
 const patientSlice = createSlice({
   name: 'patient',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedPatient: (state, action: PayloadAction<PatientOutputDTO>) => {
       state.selectedPatient = action.payload

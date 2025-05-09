@@ -11,8 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { ReactElement, useState } from 'react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateGAD7TestDTO } from '../../api/models'
@@ -60,7 +59,7 @@ export const GAD7test = (): ReactElement => {
 
     try {
       const testData: CreateGAD7TestDTO = {
-        patientId,
+        patientId: patientId,
         sessionId: therapySessionId,
         question1: responses[1],
         question2: responses[2],
