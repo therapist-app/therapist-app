@@ -1,3 +1,4 @@
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
   IconButton,
@@ -9,18 +10,17 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
+import { format } from 'date-fns'
+import { de } from 'date-fns/locale'
+import { ReactElement, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
-import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
-import { ReactElement, useEffect } from 'react'
-import { useAppDispatch } from '../../utils/hooks'
-import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
+import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
+import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const TherapySessionOverview = (): ReactElement => {
   const navigate = useNavigate()

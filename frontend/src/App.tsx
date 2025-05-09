@@ -1,21 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Dashboard from './pages/dashboard/Dashboard'
-import Register from './pages/register/Register'
-import Login from './pages/login/Login'
-import NotFound from './pages/notFound/NotFound'
-import PatientsOverview from './pages/patients/PatientOverview'
+import { ReactElement } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
-
-import PatientDetail from './pages/patients/PatientDetail'
-import Settings from './pages/settings/settings.tsx'
+import Dashboard from './pages/dashboard/Dashboard'
+import Login from './pages/login/Login'
+import NotFound from './pages/notFound/NotFound'
 import PatientCreate from './pages/patients/PatientCreate.tsx'
-import TherapySessionOverview from './pages/therapy-sessions/TherapySessionOverview.tsx'
+import PatientDetail from './pages/patients/PatientDetail'
+import PatientsOverview from './pages/patients/PatientOverview'
+import Register from './pages/register/Register'
+import Settings from './pages/settings/settings.tsx'
+import GAD7test from './pages/tests/GAD7test'
 import TherapySessionCreate from './pages/therapy-sessions/TherapySessionCreate.tsx'
 import TherapySessionDetail from './pages/therapy-sessions/TherapySessionDetail.tsx'
-import GAD7test from './pages/tests/GAD7test'
+import TherapySessionOverview from './pages/therapy-sessions/TherapySessionOverview.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
-import { ReactElement } from 'react'
 
 const App = (): ReactElement => {
   const appContainerStyle = {

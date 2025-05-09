@@ -1,6 +1,6 @@
 import {
   Button,
-  Typography,
+  Paper,
   Stack,
   Table,
   TableBody,
@@ -8,20 +8,21 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Typography,
 } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
-import Layout from '../../generalComponents/Layout'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { ReactElement, useEffect, useState } from 'react'
-import { deleteTherapySession, getTherapySession } from '../../store/therapySessionSlice'
-import { useAppDispatch } from '../../utils/hooks'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
-import { getPathFromPage, PAGES } from '../../utils/routes'
+import { ReactElement, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import { GAD7TestOutputDTO } from '../../api'
+import Layout from '../../generalComponents/Layout'
+import { RootState } from '../../store/store'
+import { deleteTherapySession, getTherapySession } from '../../store/therapySessionSlice'
 import { patientTestApi } from '../../utils/api'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapySessionDetail = (): ReactElement => {
   const navigate = useNavigate()

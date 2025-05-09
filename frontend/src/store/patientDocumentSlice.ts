@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { patientDocumentApi } from '../utils/api'
 import { PatientDocumentOutputDTO } from '../api'
+import { patientDocumentApi } from '../utils/api'
 
 interface PatientDocumentState {
   allPatientDocumentsOfPatient: PatientDocumentOutputDTO[]

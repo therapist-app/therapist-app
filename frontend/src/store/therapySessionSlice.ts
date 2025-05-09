@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { therapySessionApi } from '../utils/api'
 import { CreateTherapySessionDTO, TherapySessionOutputDTO } from '../api'
+import { therapySessionApi } from '../utils/api'
 
 interface TherapistState {
   selectedTherapySession: TherapySessionOutputDTO | null

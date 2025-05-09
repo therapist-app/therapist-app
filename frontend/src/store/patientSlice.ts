@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { CreatePatientDTO, PatientOutputDTO } from '../api'
 import { patientApi } from '../utils/api'
 

@@ -1,50 +1,48 @@
-import React, { useState, useEffect, useRef, ReactElement } from 'react'
-import { useLocation } from 'react-router-dom'
+import DeleteIcon from '@mui/icons-material/Delete'
+import DownloadIcon from '@mui/icons-material/Download'
+import SendIcon from '@mui/icons-material/Send'
 import {
-  Button,
-  TextField,
-  Box,
-  Typography,
-  CircularProgress,
-  Grid,
-  Paper,
-  List,
-  ListItem,
-  Tabs,
-  Tab,
-  Snackbar,
   Alert,
   Avatar,
+  Box,
+  Button,
+  CircularProgress,
   FormControl,
-  Select,
-  MenuItem,
+  Grid,
+  IconButton,
   InputLabel,
+  List,
+  ListItem,
+  MenuItem,
+  Paper,
+  Select,
+  Snackbar,
+  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
+  Tabs,
+  TextField,
+  Typography,
 } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import DeleteIcon from '@mui/icons-material/Delete'
-import DownloadIcon from '@mui/icons-material/Download'
-
-import Layout from '../../generalComponents/Layout'
-import FileUpload from '../../generalComponents/FileUpload'
-
-import { TbMessageChatbot } from 'react-icons/tb'
-import { RiRobot2Line } from 'react-icons/ri'
-import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-
-import { useAppDispatch } from '../../utils/hooks'
-import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { AxiosError } from 'axios'
-import { handleError } from '../../utils/handleError'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
+import { PiBookOpenTextLight } from 'react-icons/pi'
+import { RiRobot2Line } from 'react-icons/ri'
+import { TbMessageChatbot } from 'react-icons/tb'
+import { useLocation } from 'react-router-dom'
+
 import { ChatbotTemplateOutputDTO } from '../../api'
+import FileUpload from '../../generalComponents/FileUpload'
+import Layout from '../../generalComponents/Layout'
+import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()

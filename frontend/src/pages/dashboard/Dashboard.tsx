@@ -1,54 +1,52 @@
-import React, { useState, useEffect, ReactElement } from 'react'
-import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
-  Button,
+  Alert,
   Box,
-  CardActionArea,
-  IconButton,
-  Typography,
+  Button,
   Card,
+  CardActionArea,
   CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField,
   FormControl,
+  IconButton,
   InputLabel,
-  Select,
   Menu,
   MenuItem,
+  Select,
   Snackbar,
-  Alert,
+  TextField,
+  Typography,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
-import AddIcon from '@mui/icons-material/Add'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-
-import { TbMessageChatbot } from 'react-icons/tb'
-import { RiRobot2Line } from 'react-icons/ri'
-import { IoPersonOutline, IoBulbOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-
-import Layout from '../../generalComponents/Layout'
-import { handleError } from '../../utils/handleError'
 import { AxiosError } from 'axios'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
+import { PiBookOpenTextLight } from 'react-icons/pi'
+import { RiRobot2Line } from 'react-icons/ri'
+import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { useAppDispatch } from '../../utils/hooks'
+import { useNavigate } from 'react-router-dom'
 
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { registerPatient } from '../../store/patientSlice'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
+import Layout from '../../generalComponents/Layout'
 import {
+  cloneChatbotTemplate,
   createChatbotTemplate,
   deleteChatbotTemplate,
   updateChatbotTemplate,
-  cloneChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
+import { registerPatient } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 
 const Dashboard = (): ReactElement => {
   const navigate = useNavigate()

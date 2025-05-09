@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
+import CheckIcon from '@mui/icons-material/Check'
 import {
   Alert,
   Avatar,
@@ -11,9 +11,14 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Pagination,
   Paper,
+  Select,
   Snackbar,
+  Tab,
   Table,
   TableBody,
   TableCell,
@@ -21,28 +26,24 @@ import {
   TableHead,
   TableRow,
   Tabs,
-  Tab,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Typography,
 } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import CheckIcon from '@mui/icons-material/Check'
-import Layout from '../../generalComponents/Layout'
-import { handleError } from '../../utils/handleError'
-import { useTranslation } from 'react-i18next'
-import { patientApi } from '../../utils/api'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { useAppDispatch } from '../../utils/hooks'
 import { AxiosError } from 'axios'
-import { registerPatient } from '../../store/patientSlice'
-import { getPathFromPage, PAGES } from '../../utils/routes'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import { PatientOutputDTO } from '../../api'
+import Layout from '../../generalComponents/Layout'
+import { registerPatient } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { patientApi } from '../../utils/api'
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()

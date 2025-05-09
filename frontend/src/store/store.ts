@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import therapistReducer from './therapistSlice'
-import patientReducer from './patientSlice'
-import patientDocumentReducer from './patientDocumentSlice'
-import therapySessionReducer from './therapySessionSlice'
+
 import chatbotTemplateReducer from './chatbotTemplateSlice'
+import patientDocumentReducer from './patientDocumentSlice'
+import patientReducer from './patientSlice'
+import therapistReducer from './therapistSlice'
+import therapySessionReducer from './therapySessionSlice'
 
 const store = configureStore({
   reducer: {

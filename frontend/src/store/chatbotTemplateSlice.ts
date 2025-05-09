@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../api'
 import { chatbotTemplateApi } from '../utils/api'
 

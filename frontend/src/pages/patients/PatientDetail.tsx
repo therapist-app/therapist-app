@@ -1,5 +1,13 @@
+import DeleteIcon from '@mui/icons-material/Delete'
+import DownloadIcon from '@mui/icons-material/Download'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Paper,
   Table,
@@ -8,34 +16,27 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   TextField,
+  Typography,
 } from '@mui/material'
+import { format } from 'date-fns'
+import { de } from 'date-fns/locale'
+import { ReactElement, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import Layout from '../../generalComponents/Layout'
+
 import FileUpload from '../../generalComponents/FileUpload'
-import { useAppDispatch } from '../../utils/hooks'
+import Layout from '../../generalComponents/Layout'
 import {
   createDocumentForPatient,
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
-import { ReactElement, useEffect, useState } from 'react'
 import { RootState } from '../../store/store'
-import { useSelector } from 'react-redux'
-import DeleteIcon from '@mui/icons-material/Delete'
-import DownloadIcon from '@mui/icons-material/Download'
-import { patientDocumentApi } from '../../utils/api'
-import { getPathFromPage, PAGES } from '../../utils/routes'
-import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
+import { patientDocumentApi } from '../../utils/api'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
