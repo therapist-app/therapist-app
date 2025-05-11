@@ -8,6 +8,8 @@ import lombok.Data;
 public class TherapySessionOutputDTO {
 
   private String id;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
   private LocalDateTime sessionStart;
   private LocalDateTime sessionEnd;
   private List<TherapySessionNoteOutputDTO> therapySessionNotesOutputDTO;

@@ -17,7 +17,9 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { GAD7TestOutputDTO } from '../../api'
+import CreateTherapySessionNoteComponent from '../../generalComponents/CreateTherapySessionNoteComponent'
 import Layout from '../../generalComponents/Layout'
+import TherapySessionNoteComponent from '../../generalComponents/TherapySessionNoteComponent'
 import { RootState } from '../../store/store'
 import { deleteTherapySession, getTherapySession } from '../../store/therapySessionSlice'
 import { patientTestApi } from '../../utils/api'
@@ -29,6 +31,9 @@ const TherapySessionDetail = (): ReactElement => {
   const { patientId, therapySessionId } = useParams()
   const dispatch = useAppDispatch()
   const [gad7Tests, setGad7Tests] = useState<GAD7TestOutputDTO[]>([])
+
+  const [showCreateTherapySessionNote, setShowCreateTherapySessionNote] = useState(false)
+
   const selectedTherapySession = useSelector(
     (state: RootState) => state.therapySession.selectedTherapySession
   )
@@ -50,6 +55,13 @@ const TherapySessionDetail = (): ReactElement => {
       fetchTests()
     }
   }, [therapySessionId])
+
+  const cancelCreateTherapySessionNote = (): void => setShowCreateTherapySessionNote(false)
+
+  const refreshTherapySession = async (): Promise<void> => {
+    await dispatch(getTherapySession(therapySessionId ?? ''))
+    setShowCreateTherapySessionNote(false)
+  }
 
   const handleDeleteTherapySession = async (): Promise<void> => {
     await dispatch(deleteTherapySession(therapySessionId ?? ''))
@@ -79,11 +91,29 @@ const TherapySessionDetail = (): ReactElement => {
           : '-'}
       </Typography>
 
-      {selectedTherapySession?.therapySessionNotesOutputDTO?.map((therapySessionNote) => (
-        <>
-          <div>{therapySessionNote.id}</div>
-        </>
-      ))}
+      {showCreateTherapySessionNote === true ? (
+        <CreateTherapySessionNoteComponent
+          cancel={cancelCreateTherapySessionNote}
+          save={refreshTherapySession}
+        />
+      ) : (
+        <></>
+      )}
+
+      {selectedTherapySession?.therapySessionNotesOutputDTO ? (
+        <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Typography variant='h5'>Your Notes:</Typography>
+          {selectedTherapySession?.therapySessionNotesOutputDTO?.map((therapySessionNote) => (
+            <TherapySessionNoteComponent
+              key={therapySessionNote.id}
+              therapySessionNote={therapySessionNote}
+              delete={refreshTherapySession}
+            />
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
 
       {gad7Tests.length > 0 && (
         <>
@@ -188,7 +218,13 @@ const TherapySessionDetail = (): ReactElement => {
       )}
 
       <Stack direction='row' spacing={2} sx={{ marginTop: '50px', marginBottom: '20px' }}>
-        <Button sx={{ marginTop: '40px' }} variant='contained' color='primary'>
+        <Button
+          sx={{ marginTop: '40px' }}
+          variant='contained'
+          color='primary'
+          onClick={() => setShowCreateTherapySessionNote(true)}
+          disabled={showCreateTherapySessionNote}
+        >
           Create new Note
         </Button>
         <Button

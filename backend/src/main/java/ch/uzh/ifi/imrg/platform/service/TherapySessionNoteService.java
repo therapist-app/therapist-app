@@ -67,6 +67,8 @@ public class TherapySessionNoteService {
     TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
         new TherapySessionNoteOutputDTO(
             therapySessionNote.getId(),
+            therapySession.getCreatedAt(),
+            therapySession.getUpdatedAt(),
             therapySessionNote.getTitle(),
             therapySessionNote.getContent());
 
@@ -82,6 +84,8 @@ public class TherapySessionNoteService {
     TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
         new TherapySessionNoteOutputDTO(
             therapySessionNote.getId(),
+            therapySessionNote.getCreatedAt(),
+            therapySessionNote.getUpdatedAt(),
             therapySessionNote.getTitle(),
             therapySessionNote.getContent());
 
@@ -104,6 +108,8 @@ public class TherapySessionNoteService {
       TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
           new TherapySessionNoteOutputDTO(
               therapySessionNote.getId(),
+              therapySessionNote.getCreatedAt(),
+              therapySessionNote.getUpdatedAt(),
               therapySessionNote.getTitle(),
               therapySessionNote.getContent());
 
@@ -131,6 +137,8 @@ public class TherapySessionNoteService {
     TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
         new TherapySessionNoteOutputDTO(
             therapySessionNote.getId(),
+            therapySessionNote.getCreatedAt(),
+            therapySessionNote.getUpdatedAt(),
             therapySessionNote.getTitle(),
             therapySessionNote.getContent());
 

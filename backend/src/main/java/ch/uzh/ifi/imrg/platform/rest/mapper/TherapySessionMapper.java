@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.entity.TherapySessionNote;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -26,8 +27,16 @@ public interface TherapySessionMapper {
     if (therapySessionNotes == null) {
       return null;
     }
-    return therapySessionNotes.stream()
-        .map(TherapySessionNoteMapper.INSTANCE::convertEntityToTherapySessionNoteOutputDTO)
-        .collect(Collectors.toList());
+    List<TherapySessionNoteOutputDTO> therapySessionNotesOutputDTO =
+        therapySessionNotes.stream()
+            .map(TherapySessionNoteMapper.INSTANCE::convertEntityToTherapySessionNoteOutputDTO)
+            .collect(Collectors.toList());
+
+    therapySessionNotesOutputDTO.sort(
+        Comparator.comparing(
+            TherapySessionNoteOutputDTO::getCreatedAt,
+            Comparator.nullsLast(Comparator.reverseOrder())));
+
+    return therapySessionNotesOutputDTO;
   }
 }
