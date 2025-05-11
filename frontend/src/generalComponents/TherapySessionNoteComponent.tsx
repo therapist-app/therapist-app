@@ -7,6 +7,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Divider,
   TextField,
   Typography,
@@ -23,8 +24,8 @@ interface TherapySessionNoteComponentProps {
 }
 
 const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = (props) => {
-  const [editingTitle, setEditingTitle] = useState(false)
-  const [editingContent, setEditingContent] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+
   const dispatch = useAppDispatch()
 
   const [originalFormData, setOriginalFormData] = useState<UpdateTherapySessionNoteDTO>({
@@ -39,8 +40,9 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
     content: props?.therapySessionNote.content,
   })
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     try {
+      setIsEditing(false)
       const updatedSession = await dispatch(updateTherapySessionNote(formData)).unwrap()
       setOriginalFormData(updatedSession)
     } catch (err) {
@@ -48,38 +50,15 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
     }
   }
 
-  const clickSaveTitle = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const clickCancel = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation()
-    setEditingTitle(false)
-    handleSubmit()
+    setIsEditing(false)
+    setFormData({ ...originalFormData })
   }
 
-  const clickCancelTitle = (event: React.MouseEvent<HTMLButtonElement>): void => {
+  const clickEdit = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation()
-    setEditingTitle(false)
-    setFormData({ ...formData, title: originalFormData.title })
-  }
-
-  const clickSaveContent = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
-    setEditingContent(false)
-    handleSubmit()
-  }
-
-  const clickCancelContent = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
-    setEditingContent(false)
-    setFormData({ ...formData, content: originalFormData.content })
-  }
-
-  const clickEditTitle = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
-    setEditingTitle(true)
-  }
-
-  const clickEditContent = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
-    setEditingContent(true)
+    setIsEditing(true)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -99,36 +78,13 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
 
   return (
     <div>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ArrowDropDownIcon />}
-          aria-controls='panel2-content'
-          id='panel2-header'
-        >
-          {editingTitle === true ? (
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', minHeight: '30px' }}>
-              <TextField
-                name='title'
-                value={formData.title}
-                onChange={handleChange}
-                label='Title'
-              />
-              <span
-                style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickSaveTitle}
-              >
-                <CheckIcon style={{ color: 'green' }} />
-              </span>
-
-              <span
-                style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickCancelTitle}
-              >
-                {' '}
-                <ClearIcon style={{ color: 'red' }} />
-              </span>
-            </div>
-          ) : (
+      {isEditing === false ? (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls='panel2-content'
+            id='panel2-header'
+          >
             <div
               style={{
                 display: 'flex',
@@ -141,7 +97,7 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
               <Typography component='span'>{formData.title}</Typography>
               <span
                 style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickEditTitle}
+                onClick={clickEdit}
               >
                 <EditIcon sx={{ height: '20px', width: '20px' }} style={{ color: 'blue' }} />
               </span>
@@ -158,35 +114,9 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
                 <DeleteIcon sx={{ height: '20px', width: '20px' }} style={{ color: 'red' }} />
               </span>
             </div>
-          )}
-        </AccordionSummary>
-        <Divider />
-        <AccordionDetails sx={{ padding: '16px' }}>
-          {editingContent === true ? (
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', minHeight: '40px' }}>
-              <TextField
-                multiline
-                name='content'
-                value={formData.content}
-                onChange={handleChange}
-                label='Content'
-                fullWidth
-              />
-              <span
-                style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickSaveContent}
-              >
-                <CheckIcon style={{ color: 'green' }} />
-              </span>
-
-              <span
-                style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickCancelContent}
-              >
-                <ClearIcon style={{ color: 'red' }} />
-              </span>
-            </div>
-          ) : (
+          </AccordionSummary>
+          <Divider />
+          <AccordionDetails sx={{ padding: '16px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', minHeight: '40px' }}>
               <Typography
                 sx={{
@@ -195,16 +125,45 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
               >
                 {formData.content}
               </Typography>
-              <span
-                style={{ cursor: 'pointer', height: '20px', width: '20px' }}
-                onClick={clickEditContent}
-              >
-                <EditIcon sx={{ height: '20px', width: '20px' }} style={{ color: 'blue' }} />
-              </span>
             </div>
-          )}
-        </AccordionDetails>
-      </Accordion>
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <form
+            style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
+            onSubmit={handleSubmit}
+          >
+            <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
+
+            <TextField
+              multiline
+              name='content'
+              value={formData.content}
+              onChange={handleChange}
+              label='Content'
+            />
+
+            <div
+              style={{
+                display: 'flex',
+                width: '100%',
+                gap: '10px',
+
+                justifyContent: 'center',
+              }}
+            >
+              <Button type='submit' variant='contained' color='primary' fullWidth>
+                <CheckIcon />
+              </Button>
+
+              <Button variant='contained' color='error' fullWidth onClick={clickCancel}>
+                <ClearIcon />
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   )
 }

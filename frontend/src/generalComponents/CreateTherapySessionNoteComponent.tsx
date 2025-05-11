@@ -46,7 +46,7 @@ const CreateTherapySessionNoteComponent: React.FC<CreateTherapySessionNoteCompon
   }
 
   return (
-    <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <Typography variant='h5'>New Note:</Typography>
       <form
         style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}
@@ -67,7 +67,7 @@ const CreateTherapySessionNoteComponent: React.FC<CreateTherapySessionNoteCompon
             display: 'flex',
             width: '100%',
             gap: '10px',
-            marginTop: '10px',
+
             justifyContent: 'center',
           }}
         >
