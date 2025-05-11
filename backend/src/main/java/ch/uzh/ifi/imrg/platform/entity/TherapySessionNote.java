@@ -25,9 +25,9 @@ public class TherapySessionNote {
 
   @Column() private String title;
 
-  @Column() private String note;
+  @Column() private String content;
 
   @ManyToOne
-  @JoinColumn(name = "therapy_session", referencedColumnName = "id")
+  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
   private TherapySession therapySession;
 }
