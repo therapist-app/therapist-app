@@ -1,10 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,9 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "therapy_sessions")
-public class TherapySession implements Serializable {
-
+@Table(name = "therapy_session_notes")
+public class TherapySessionNote {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -27,16 +23,11 @@ public class TherapySession implements Serializable {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column(name = "session_start")
-  private LocalDateTime sessionStart;
+  @Column() private String title;
 
-  @Column(name = "session_end")
-  private LocalDateTime sessionEnd;
+  @Column() private String content;
 
   @ManyToOne
-  @JoinColumn(name = "patient_id", referencedColumnName = "id")
-  private Patient patient;
-
-  @OneToMany(mappedBy = "therapySession", fetch = FetchType.EAGER)
-  private List<TherapySessionNote> therapySessionNotes = new ArrayList<>();
+  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
+  private TherapySession therapySession;
 }
