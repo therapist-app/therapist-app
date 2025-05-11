@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CreateTherapySessionDTO, TherapySessionOutputDTO } from '../api'
-import { therapySessionApi } from '../utils/api'
+import {
+  CreateTherapySessionDTO,
+  CreateTherapySessionNoteDTO,
+  TherapySessionOutputDTO,
+  UpdateTherapySessionNoteDTO,
+} from '../api'
+import { therapySessionApi, therapySessionNoteApi } from '../utils/api'
 
-interface TherapistState {
+interface TherapySessionState {
   selectedTherapySession: TherapySessionOutputDTO | null
   allTherapySessionsOfPatient: TherapySessionOutputDTO[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
 
-const initialState: TherapistState = {
+const initialState: TherapySessionState = {
   selectedTherapySession: null,
   allTherapySessionsOfPatient: [],
   status: 'idle',
@@ -46,6 +51,33 @@ export const deleteTherapySession = createAsyncThunk(
   async (patientId: string) => {
     const response = await therapySessionApi.deleteTherapySessionById(patientId)
     return response.data
+  }
+)
+
+export const createTherapySessionNote = createAsyncThunk(
+  'createTherapySessionNote',
+  async (createTherapySessionNoteDTO: CreateTherapySessionNoteDTO) => {
+    const response = await therapySessionNoteApi.createTherapySessionNote(
+      createTherapySessionNoteDTO
+    )
+    return response.data
+  }
+)
+
+export const updateTherapySessionNote = createAsyncThunk(
+  'updateTherapySessionNote',
+  async (updateTherapySessionNoteDTO: UpdateTherapySessionNoteDTO) => {
+    const response = await therapySessionNoteApi.updateTherapySessionNote(
+      updateTherapySessionNoteDTO
+    )
+    return response.data
+  }
+)
+
+export const deleteTherapySessionNote = createAsyncThunk(
+  'deleteTherapySessionNote',
+  async (therapySessionNoteId: string) => {
+    await therapySessionNoteApi.deleteTherapySessionById1(therapySessionNoteId)
   }
 )
 
@@ -119,6 +151,48 @@ const therapySessionSlice = createSlice({
         console.log(action)
       })
       .addCase(deleteTherapySession.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(createTherapySessionNote.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(createTherapySessionNote.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        console.log(action)
+      })
+      .addCase(createTherapySessionNote.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(updateTherapySessionNote.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateTherapySessionNote.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        console.log(action)
+      })
+      .addCase(updateTherapySessionNote.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(deleteTherapySessionNote.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(deleteTherapySessionNote.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        console.log(action)
+      })
+      .addCase(deleteTherapySessionNote.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

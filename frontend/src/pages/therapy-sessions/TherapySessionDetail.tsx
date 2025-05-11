@@ -79,6 +79,12 @@ const TherapySessionDetail = (): ReactElement => {
           : '-'}
       </Typography>
 
+      {selectedTherapySession?.therapySessionNotesOutputDTO?.map((therapySessionNote) => (
+        <>
+          <div>{therapySessionNote.id}</div>
+        </>
+      ))}
+
       {gad7Tests.length > 0 && (
         <>
           <Typography variant='h5' style={{ marginTop: '40px', marginBottom: '20px' }}>
@@ -182,6 +188,9 @@ const TherapySessionDetail = (): ReactElement => {
       )}
 
       <Stack direction='row' spacing={2} sx={{ marginTop: '50px', marginBottom: '20px' }}>
+        <Button sx={{ marginTop: '40px' }} variant='contained' color='primary'>
+          Create new Note
+        </Button>
         <Button
           variant='contained'
           color='primary'
