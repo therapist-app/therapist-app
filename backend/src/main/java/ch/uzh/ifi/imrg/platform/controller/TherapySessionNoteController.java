@@ -42,7 +42,6 @@ public class TherapySessionNoteController {
       @RequestBody CreateTherapySessionNoteDTO createTherapySessionNoteDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-session-notes");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -58,7 +57,6 @@ public class TherapySessionNoteController {
       @PathVariable String therapySessionNoteId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-sessions-notes/" + therapySessionNoteId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -73,7 +71,6 @@ public class TherapySessionNoteController {
       @RequestBody UpdateTherapySessionNoteDTO updateTherapySessionNoteDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("PUT: /therapy-session-notes");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -88,7 +85,6 @@ public class TherapySessionNoteController {
       @PathVariable String therapySessionNoteId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("DELETE: /therapy-session-notes/" + therapySessionNoteId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     therapySessionNoteService.deleteTherapySessionNoteById(therapySessionNoteId, loggedInTherapist);

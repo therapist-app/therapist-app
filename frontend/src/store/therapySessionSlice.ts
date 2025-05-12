@@ -48,8 +48,8 @@ export const getAllTherapySessionsOfPatient = createAsyncThunk(
 
 export const deleteTherapySession = createAsyncThunk(
   'deleteTherapySession',
-  async (patientId: string) => {
-    const response = await therapySessionApi.deleteTherapySessionById(patientId)
+  async (therapySessionId: string) => {
+    const response = await therapySessionApi.deleteTherapySessionById(therapySessionId)
     return response.data
   }
 )

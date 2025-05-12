@@ -147,6 +147,8 @@ public class TherapySessionNoteService {
 
   public void deleteTherapySessionNoteById(
       String therapySessionNoteId, Therapist loggedInTherapist) {
-    therapySessionNoteRepository.deleteById(therapySessionNoteId);
+    TherapySessionNote therapySessionNote =
+        therapySessionNoteRepository.getReferenceById(therapySessionNoteId);
+    therapySessionNote.getTherapySession().getTherapySessionNotes().remove(therapySessionNote);
   }
 }

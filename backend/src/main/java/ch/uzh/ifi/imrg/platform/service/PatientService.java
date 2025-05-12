@@ -69,6 +69,7 @@ public class PatientService {
   }
 
   public void deletePatient(String id) {
-    patientRepository.delete(patientRepository.getPatientById(id));
+    Patient patient = patientRepository.getPatientById(id);
+    patient.getTherapist().getPatients().remove(patient);
   }
 }

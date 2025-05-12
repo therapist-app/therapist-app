@@ -33,7 +33,6 @@ public class TherapistController {
   @GetMapping("/me")
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
-    logger.info("/therapists/me");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
@@ -45,7 +44,6 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapists");
     Therapist therapist =
         TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     Therapist createdTherapist =
@@ -59,17 +57,14 @@ public class TherapistController {
       @RequestBody LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapists/login");
     Therapist loggedInTherapist =
         therapistService.loginTherapist(loginTherapistDTO, httpServletRequest, httpServletResponse);
-    System.out.println(loggedInTherapist.getPatients().size());
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(loggedInTherapist).sortDTO();
   }
 
   @PostMapping("/logout")
   @ResponseStatus(HttpStatus.OK)
   public void logoutTherapist(HttpServletResponse httpServletResponse) {
-    logger.info("/therapists/logout");
     therapistService.logoutTherapist(httpServletResponse);
   }
 }
