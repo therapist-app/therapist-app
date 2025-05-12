@@ -34,7 +34,6 @@ public class ChatbotTemplateController {
   public TherapistOutputDTO createTemplate(
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       HttpServletRequest httpServletRequest) {
-    logger.info("/therapists/chatbot-templates");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -51,7 +50,6 @@ public class ChatbotTemplateController {
       @PathVariable String templateId,
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       HttpServletRequest httpServletRequest) {
-    logger.info("/therapists/chatbot-templates/" + templateId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -66,7 +64,6 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO deleteTemplate(
       @PathVariable String templateId, HttpServletRequest httpServletRequest) {
-    logger.info("/therapists/chatbot-templates/" + templateId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -79,7 +76,6 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO cloneTemplate(
       @PathVariable String templateId, HttpServletRequest httpServletRequest) {
-    logger.info("/therapists/chatbot-templates/" + templateId + "/clone");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 

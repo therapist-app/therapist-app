@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO: ensure that a therapist is only allowed to do stuff to their own sessions
+
 @Service
 @Transactional
 public class TherapySessionService {
@@ -86,7 +88,9 @@ public class TherapySessionService {
   }
 
   public void deleteTherapySessionById(String therapySessionId, Therapist loggedInTherapist) {
-    // TODO: ensure that therapist is allowed to delete session
-    therapySessionRepository.deleteById(therapySessionId);
+
+    logger.info("Deleting therapy session with ID: " + therapySessionId);
+    TherapySession therapySession = getTherapySession(therapySessionId, loggedInTherapist);
+    therapySession.getPatient().getTherapySessions().remove(therapySession);
   }
 }

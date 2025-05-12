@@ -71,7 +71,6 @@ public class PatientDocumentService {
     }
 
     Patient patient = patientRepository.getPatientById(patientId);
-    System.out.println("Size of patient documents" + patient.getPatientDocuments().size());
     return patient.getPatientDocuments().stream()
         .map(PatientDocumentMapper.INSTANCE::convertEntityToPatientDocumentOutputDTO)
         .collect(Collectors.toList());
@@ -91,6 +90,8 @@ public class PatientDocumentService {
   public void deleteFile(String patientDocumentId, Therapist loggedInTherapist) {
     // Add check if patient document actually belongs to a patient that belongs to
     // the loggedInTherapist
-    patientDocumentRepository.deleteById(patientDocumentId);
+
+    PatientDocument patientDocument = patientDocumentRepository.getReferenceById(patientDocumentId);
+    patientDocument.getPatient().getPatientDocuments().remove(patientDocument);
   }
 }

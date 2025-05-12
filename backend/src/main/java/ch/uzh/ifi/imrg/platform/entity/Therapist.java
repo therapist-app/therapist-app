@@ -36,9 +36,17 @@ public class Therapist implements Serializable {
   @Column(unique = true)
   private String workspaceId = UUID.randomUUID().toString();
 
-  @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "therapist",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<Patient> patients = new ArrayList<>();
 
-  @OneToMany(mappedBy = "therapist", fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "therapist",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 }

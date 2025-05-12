@@ -82,6 +82,8 @@ public class ChatbotTemplateService {
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    template.getTherapist().getChatbotTemplates().remove(template);
+
     chatbotTemplateRepository.delete(template);
     chatbotTemplateRepository.flush();
 

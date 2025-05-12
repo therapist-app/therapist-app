@@ -670,6 +670,18 @@ export interface TherapySessionNoteOutputDTO {
      * @type {string}
      * @memberof TherapySessionNoteOutputDTO
      */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TherapySessionNoteOutputDTO
+     */
+    'updatedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TherapySessionNoteOutputDTO
+     */
     'title'?: string;
     /**
      * 
@@ -690,6 +702,18 @@ export interface TherapySessionOutputDTO {
      * @memberof TherapySessionOutputDTO
      */
     'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TherapySessionOutputDTO
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TherapySessionOutputDTO
+     */
+    'updatedAt'?: string;
     /**
      * 
      * @type {string}

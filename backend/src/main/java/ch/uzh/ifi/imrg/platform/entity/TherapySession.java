@@ -37,6 +37,17 @@ public class TherapySession implements Serializable {
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
-  @OneToMany(mappedBy = "therapySession", fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "therapySession",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<TherapySessionNote> therapySessionNotes = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "therapySession",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<GAD7Test> GAD7Tests = new ArrayList<>();
 }

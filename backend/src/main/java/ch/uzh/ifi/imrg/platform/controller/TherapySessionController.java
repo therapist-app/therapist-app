@@ -44,7 +44,6 @@ public class TherapySessionController {
       @RequestBody CreateTherapySessionDTO createSessionDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-sessions");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -59,7 +58,6 @@ public class TherapySessionController {
       @PathVariable String therapySessionId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-sessions/" + therapySessionId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -74,7 +72,6 @@ public class TherapySessionController {
       @PathVariable String patientId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-sessions/patients/" + patientId);
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
@@ -86,13 +83,14 @@ public class TherapySessionController {
   }
 
   @DeleteMapping("/{therapySessionId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteTherapySessionById(
       @PathVariable String therapySessionId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    logger.info("/therapy-therapySessionId/");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+
     sessionService.deleteTherapySessionById(therapySessionId, loggedInTherapist);
   }
 }

@@ -55,12 +55,24 @@ public class Patient implements Serializable {
   @Column(unique = true)
   private String workspaceId = UUID.randomUUID().toString();
 
-  @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<TherapySession> therapySessions = new ArrayList<>();
 
-  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<PatientDocument> patientDocuments = new ArrayList<>();
 
-  @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 }
