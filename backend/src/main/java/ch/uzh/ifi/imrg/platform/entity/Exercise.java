@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,35 +10,38 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
-
 @Data
 @Entity
 @Table(name = "exercises")
 public class Exercise {
 
-    @Id
-    @Column(unique = true)
-    private String id = UUID.randomUUID().toString();
+  @Id
+  @Column(unique = true)
+  private String id = UUID.randomUUID().toString();
 
-    @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
-    @Column()
-    private String title;
+  @Column() private String title;
 
-    @Column()
-    private ExerciseType exerciseType;
+  @Column() private ExerciseType exerciseType;
 
-    @OneToMany(mappedBy = "exercise", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExerciseText> exerciseTexts = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "exercise",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ExerciseText> exerciseTexts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExerciseFile> exerciseFiles = new ArrayList<>();
-
+  @OneToMany(
+      mappedBy = "exercise",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ExerciseFile> exerciseFiles = new ArrayList<>();
 }

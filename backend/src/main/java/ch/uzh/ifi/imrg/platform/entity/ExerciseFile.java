@@ -12,40 +12,35 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "exercise_files")
 public class ExerciseFile {
 
-    @Id
-    @Column(unique = true)
-    private String id = UUID.randomUUID().toString();
+  @Id
+  @Column(unique = true)
+  private String id = UUID.randomUUID().toString();
 
-    @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    private String fileName;
+  @Column(nullable = false)
+  private String fileName;
 
-    @Column(nullable = false)
-    private String fileType;
+  @Column(nullable = false)
+  private String fileType;
 
-    @Lob
-    @Column(nullable = false)
-    private byte[] fileData;
+  @Lob
+  @Column(nullable = false)
+  private byte[] fileData;
 
-    @Lob
-    @Column
-    private String extractedText;
+  @Lob @Column private String extractedText;
 
-    @Column
-    private String description;
+  @Column private String description;
 
-    @Column()
-    private Integer orderNumber;
+  @Column() private Integer orderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "exercise_id", referencedColumnName = "id")
-    private Exercise exercise;
-
+  @ManyToOne
+  @JoinColumn(name = "exercise_id", referencedColumnName = "id")
+  private Exercise exercise;
 }

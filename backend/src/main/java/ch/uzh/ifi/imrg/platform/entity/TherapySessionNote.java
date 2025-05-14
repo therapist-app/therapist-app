@@ -23,11 +23,9 @@ public class TherapySessionNote {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column()
-  private String title;
+  @Column() private String title;
 
-  @Column()
-  private String content;
+  @Column() private String content;
 
   @ManyToOne
   @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
