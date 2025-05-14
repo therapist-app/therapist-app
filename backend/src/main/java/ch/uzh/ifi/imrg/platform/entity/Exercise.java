@@ -1,0 +1,43 @@
+package ch.uzh.ifi.imrg.platform.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
+
+@Data
+@Entity
+@Table(name = "exercises")
+public class Exercise {
+
+    @Id
+    @Column(unique = true)
+    private String id = UUID.randomUUID().toString();
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column()
+    private String title;
+
+    @Column()
+    private ExerciseType exerciseType;
+
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseText> exerciseTexts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseFile> exerciseFiles = new ArrayList<>();
+
+}
