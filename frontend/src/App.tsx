@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import Dashboard from './pages/dashboard/Dashboard'
+import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
+import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
+import ExerciseOverview from './pages/exercises/ExerciseOverview.tsx'
 import Login from './pages/login/Login'
 import NotFound from './pages/notFound/NotFound'
 import PatientCreate from './pages/patients/PatientCreate.tsx'
@@ -58,7 +61,12 @@ const App = (): ReactElement => {
               path={ROUTES[PAGES.THERAPY_SESSIONS_DETAILS_PAGE]}
               element={<TherapySessionDetail />}
             />
+
             <Route path={ROUTES[PAGES.GAD7_TEST_PAGE]} element={<GAD7test />} />
+
+            <Route path={ROUTES[PAGES.EXERCISES_CREATE_PAGE]} element={<ExerciseCreate />} />
+            <Route path={ROUTES[PAGES.EXERCISES_DETAILS_PAGE]} element={<ExerciseDetail />} />
+            <Route path={ROUTES[PAGES.EXERCISES_OVERVIEW_PAGE]} element={<ExerciseOverview />} />
 
             <Route path={ROUTES[PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]} element={<NotFound />} />
 
