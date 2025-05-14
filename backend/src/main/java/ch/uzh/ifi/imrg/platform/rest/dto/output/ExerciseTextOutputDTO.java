@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ExerciseTextOutputDTO {
-    private String id;
-    private String text;
-    private Integer orderNumber;
+  private String id;
+  private String text;
+  private Integer orderNumber;
 }

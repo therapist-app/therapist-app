@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class ExerciseFileOutputDTO {
-    private String id;
-    private String fileName;
-    private String fileType;
-    private String extractedText;
-    private String description;
-    private Integer orderNumber;
+  private String id;
+  private String fileName;
+  private String fileType;
+  private String extractedText;
+  private String description;
+  private Integer orderNumber;
 }

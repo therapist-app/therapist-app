@@ -38,7 +38,5 @@ public class PatientDocument {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob
-  @Column
-  private String extractedText;
+  @Lob @Column private String extractedText;
 }
