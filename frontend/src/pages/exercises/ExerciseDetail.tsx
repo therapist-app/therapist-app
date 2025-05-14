@@ -88,8 +88,17 @@ const ExerciseDetail = (): ReactElement => {
             )}
           </div>
         ))}
-        <CreateExerciseText createdExercise={refreshExercise} />
-        <CreateExerciseFile createdExerciseFile={refreshExercise} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+            marginTop: '20px',
+          }}
+        >
+          <CreateExerciseFile createdExerciseFile={refreshExercise} />
+          <CreateExerciseText createdExercise={refreshExercise} />
+        </div>
       </div>
     </Layout>
   )
