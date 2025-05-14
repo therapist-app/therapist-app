@@ -61,9 +61,9 @@ public class ExerciseFileService {
     exerciseFileRepository.save(exerciseFile);
   }
 
-  public byte[] getExerciseFileContent(String id) {
+  public ExerciseFile getExerciseFile(String id) {
     ExerciseFile exerciseFile = exerciseFileRepository.getReferenceById(id);
-    return exerciseFile.getFileData();
+    return exerciseFile;
   }
 
   public void updateExerciseFile(UpdateExerciseFileDTO updateExerciseFileDTO) {
