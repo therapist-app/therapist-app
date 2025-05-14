@@ -52,7 +52,9 @@ const CreateExerciseText: React.FC<CreateExerciseTextProps> = (props: CreateExer
   return (
     <div>
       {isCreatingExerciseText === false ? (
-        <Button onClick={showExerciseTextField}>Add Text</Button>
+        <Button variant='contained' color='primary' onClick={showExerciseTextField}>
+          Add Text
+        </Button>
       ) : (
         <form
           style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}

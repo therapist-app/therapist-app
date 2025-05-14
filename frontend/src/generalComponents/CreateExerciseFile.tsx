@@ -1,11 +1,7 @@
-import CheckIcon from '@mui/icons-material/Check'
-import ClearIcon from '@mui/icons-material/Clear'
-import { Button, TextField } from '@mui/material'
-import { ReactElement, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { CreateExerciseFileDTO, CreateExerciseTextDTO } from '../api'
-import { createExerciseFile, createExerciseText } from '../store/exerciseSlice'
+import { CreateExerciseFileDTO } from '../api'
+import { createExerciseFile } from '../store/exerciseSlice'
 import { useAppDispatch } from '../utils/hooks'
 import FileUpload from './FileUpload'
 
@@ -14,24 +10,8 @@ interface CreateExerciseFileProps {
 }
 
 const CreateExerciseFile: React.FC<CreateExerciseFileProps> = (props: CreateExerciseFileProps) => {
-  const { patientId, therapySessionId, exerciseId } = useParams()
+  const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
-  const [exerciseText, setExerciseText] = useState('')
-
-  const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setExerciseText(e.target.value)
-  }
-
-  const showExerciseTextField = (): void => {
-    setIsCreatingExerciseText(true)
-  }
-
-  const showCreateExerciseButton = (): void => {
-    setExerciseText('')
-    setIsCreatingExerciseText(false)
-  }
 
   const handleUpload = async (file: File): Promise<void> => {
     try {
@@ -42,7 +22,6 @@ const CreateExerciseFile: React.FC<CreateExerciseFileProps> = (props: CreateExer
       await dispatch(
         createExerciseFile({ createExerciseFileDTO: createExerciseFileDTO, file: file })
       )
-      showCreateExerciseButton()
     } catch (err) {
       console.error('Registration error:', err)
     } finally {
@@ -50,40 +29,7 @@ const CreateExerciseFile: React.FC<CreateExerciseFileProps> = (props: CreateExer
     }
   }
 
-  return (
-    <div>
-      {isCreatingExerciseText === false ? (
-        <Button onClick={showExerciseTextField}>Add Text</Button>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}>
-          <FileUpload onUpload={handleUpload} />
-          <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              gap: '10px',
-
-              justifyContent: 'center',
-            }}
-          >
-            <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-              <CheckIcon />
-            </Button>
-
-            <Button
-              variant='contained'
-              color='error'
-              fullWidth
-              sx={{ mt: 2 }}
-              onClick={showCreateExerciseButton}
-            >
-              <ClearIcon />
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
+  return <FileUpload onUpload={handleUpload} />
 }
 
 export default CreateExerciseFile
