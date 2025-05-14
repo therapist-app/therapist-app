@@ -1578,7 +1578,7 @@ export const ExerciseControllerApiAxiosParamCreator = function (configuration?: 
         getAllExercisesOfTherapySession: async (therapySessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'therapySessionId' is not null or undefined
             assertParamExists('getAllExercisesOfTherapySession', 'therapySessionId', therapySessionId)
-            const localVarPath = `/exercises/{therapySessionId}`
+            const localVarPath = `/exercises/therapy-session/{therapySessionId}`
                 .replace(`{${"therapySessionId"}}`, encodeURIComponent(String(therapySessionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
