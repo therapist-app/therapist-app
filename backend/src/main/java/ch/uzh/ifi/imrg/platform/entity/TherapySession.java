@@ -50,4 +50,11 @@ public class TherapySession implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<GAD7Test> GAD7Tests = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "therapySession",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Exercise> exercises = new ArrayList<>();
 }

@@ -44,4 +44,8 @@ public class Exercise {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<ExerciseFile> exerciseFiles = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
+  private TherapySession therapySession;
 }
