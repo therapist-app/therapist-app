@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import chatbotTemplateReducer from './chatbotTemplateSlice'
+import exerciseReducer from './exerciseSlice'
 import patientDocumentReducer from './patientDocumentSlice'
 import patientReducer from './patientSlice'
 import therapistReducer from './therapistSlice'
@@ -13,6 +14,7 @@ const store = configureStore({
     patientDocument: patientDocumentReducer,
     therapySession: therapySessionReducer,
     chatbotTemplate: chatbotTemplateReducer,
+    exercise: exerciseReducer,
   },
 })
 
