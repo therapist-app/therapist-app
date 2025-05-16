@@ -80,25 +80,29 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <Typography sx={{ fontWeight: 'bold' }}>{exercise.orderNumber}.</Typography>
 
-            <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
+            <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
             </Button>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickDelete}>
               <DeleteIcon style={{ color: 'red' }} />
-              <ClearIcon />
-              <CheckIcon />
             </Button>
           </div>
 
-          <Typography>{exercise.text}</Typography>
+          <Typography
+            sx={{
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {exercise.text}
+          </Typography>
         </>
       ) : (
         <>
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <TextField
               select
-              sx={{ fontWeight: 'bold' }}
+              sx={{ fontWeight: 'bold', width: '75px' }}
               label='Order'
               name='orderNumber'
               value={formData.orderNumber}
@@ -111,7 +115,7 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
               ))}
             </TextField>
 
-            <Button sx={{ minWidth: '10px' }} onClick={clickCancel}>
+            <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickCancel}>
               <ClearIcon style={{ color: 'red' }} />
             </Button>
 

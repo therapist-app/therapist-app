@@ -49,39 +49,75 @@ public class ExerciseTextService {
     exerciseTextRepository.save(exerciseText);
   }
 
-  public void updateExerciseText(UpdateExerciseTextDTO updateExerciseTextDTO) {
-    ExerciseText exerciseText =
-        exerciseTextRepository.getReferenceById(updateExerciseTextDTO.getId());
+  public void updateExerciseText(UpdateExerciseTextDTO dto) {
+    ExerciseText target = exerciseTextRepository.getReferenceById(dto.getId());
+    Exercise exercise = target.getExercise();
 
-    if (updateExerciseTextDTO.getText() != null) {
-      exerciseText.setText(updateExerciseTextDTO.getText());
+    // 1) Update the text if provided
+    if (dto.getText() != null) {
+      target.setText(dto.getText());
     }
 
-    if (updateExerciseTextDTO.getOrderNumber() != null) {
-      Exercise exercise = exerciseText.getExercise();
-      Integer totalNumberOfFilesAndTexts =
-          exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
-      if (updateExerciseTextDTO.getOrderNumber() > totalNumberOfFilesAndTexts) {
-        exerciseText.setOrderNumber(totalNumberOfFilesAndTexts + 1);
-      } else {
-        exerciseText.setOrderNumber(updateExerciseTextDTO.getOrderNumber());
-        for (ExerciseFile exerciseFile2 : exercise.getExerciseFiles()) {
-          if (exerciseFile2.getOrderNumber() >= updateExerciseTextDTO.getOrderNumber()) {
-            exerciseFile2.setOrderNumber(exerciseFile2.getOrderNumber() + 1);
-            exerciseFileRepository.save(exerciseFile2);
+    // 2) Only if they passed in an order number do we need to shuffle anything
+    if (dto.getOrderNumber() != null) {
+      int oldOrder = target.getOrderNumber();
+      int newOrder = dto.getOrderNumber();
+
+      // total existing slots = files + texts
+      int totalSlots = exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
+      // clamp to [1..totalSlots]
+      newOrder = Math.max(1, Math.min(newOrder, totalSlots));
+
+      // if nothing to do, skip the heavy lifting
+      if (newOrder != oldOrder) {
+
+        // 3) For each **other** file/text, shift its order in the gap between old and
+        // new
+        // - if moving **up**: bump everything in [new, old-1] **up** by +1
+        // - if moving **down**: push everything in [old+1, new] **down** by -1
+        if (newOrder < oldOrder) {
+          // moving up
+          for (ExerciseFile file : exercise.getExerciseFiles()) {
+            int ord = file.getOrderNumber();
+            if (ord >= newOrder && ord < oldOrder) {
+              file.setOrderNumber(ord + 1);
+              exerciseFileRepository.save(file);
+            }
+          }
+          for (ExerciseText text : exercise.getExerciseTexts()) {
+            if (text.getId().equals(dto.getId())) continue;
+            int ord = text.getOrderNumber();
+            if (ord >= newOrder && ord < oldOrder) {
+              text.setOrderNumber(ord + 1);
+              exerciseTextRepository.save(text);
+            }
+          }
+        } else {
+          // moving down
+          for (ExerciseFile file : exercise.getExerciseFiles()) {
+            int ord = file.getOrderNumber();
+            if (ord <= newOrder && ord > oldOrder) {
+              file.setOrderNumber(ord - 1);
+              exerciseFileRepository.save(file);
+            }
+          }
+          for (ExerciseText text : exercise.getExerciseTexts()) {
+            if (text.getId().equals(dto.getId())) continue;
+            int ord = text.getOrderNumber();
+            if (ord <= newOrder && ord > oldOrder) {
+              text.setOrderNumber(ord - 1);
+              exerciseTextRepository.save(text);
+            }
           }
         }
 
-        for (ExerciseText exerciseText2 : exercise.getExerciseTexts()) {
-          if (exerciseText2.getOrderNumber() >= updateExerciseTextDTO.getOrderNumber()
-              && exerciseText2.getId() != exerciseText.getId()) {
-            exerciseText2.setOrderNumber(exerciseText2.getOrderNumber() + 1);
-            exerciseTextRepository.save(exerciseText2);
-          }
-        }
+        // 4) Finally, set the target to its new slot
+        target.setOrderNumber(newOrder);
       }
     }
-    exerciseTextRepository.save(exerciseText);
+
+    // 5) Persist the target last so that its newOrder is final
+    exerciseTextRepository.save(target);
   }
 
   public void deleteExerciseText(String id) {
