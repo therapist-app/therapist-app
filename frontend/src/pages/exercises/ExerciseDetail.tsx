@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { ExerciseFileOutputDTO, ExerciseTextOutputDTO } from '../../api'
 import CreateExerciseFile from '../../generalComponents/CreateExerciseFile'
 import CreateExerciseText from '../../generalComponents/CreateExerciseText'
 import Layout from '../../generalComponents/Layout'
+import ShowExerciseText from '../../generalComponents/ShowExerciseText'
 import { getExerciseById } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
@@ -15,6 +16,7 @@ interface SortedExerciseDetails {
   exerciseFile: ExerciseFileOutputDTO | undefined
   exerciseText: ExerciseTextOutputDTO | undefined
   orderNumber: number
+  id: string
 }
 
 const ExerciseDetail = (): ReactElement => {
@@ -53,6 +55,7 @@ const ExerciseDetail = (): ReactElement => {
           exerciseFile: exerciseFile,
           exerciseText: undefined,
           orderNumber: i,
+          id: exerciseFile.id ?? '',
         })
       }
 
@@ -64,6 +67,7 @@ const ExerciseDetail = (): ReactElement => {
           exerciseFile: undefined,
           exerciseText: exerciseText,
           orderNumber: i,
+          id: exerciseText.id ?? '',
         })
       }
     }
@@ -75,19 +79,19 @@ const ExerciseDetail = (): ReactElement => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <Typography variant='h5'>Title: {selectedExercise?.title}</Typography>
         <Typography>Exercise Type: {selectedExercise?.exerciseType}</Typography>
-        {sortedExerciseDetails.map((exercise) => (
-          <div>
-            {exercise.exerciseFile ? (
-              <Typography>
-                {exercise.orderNumber} | {exercise.exerciseFile.fileName}
-              </Typography>
-            ) : (
-              <Typography>
-                {exercise.orderNumber} | {exercise.exerciseText?.text}
-              </Typography>
-            )}
-          </div>
-        ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+          {sortedExerciseDetails.map((exercise) => (
+            <React.Fragment key={exercise.id}>
+              <div>
+                {exercise.exerciseFile ? (
+                  <>yeet</>
+                ) : (
+                  <ShowExerciseText exercise={exercise.exerciseText!} refresh={refreshExercise} />
+                )}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
         <div
           style={{
             display: 'flex',
