@@ -49,7 +49,7 @@ public class ExerciseFileService {
     exerciseFile.setFileType(file.getContentType());
     exerciseFile.setExtractedText(extractedText);
     exerciseFile.setOrderNumber(
-        exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size());
+        exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size() + 1);
     exerciseFile.setDescription(createExerciseFileDTO.getDescription());
 
     try {
@@ -67,8 +67,7 @@ public class ExerciseFileService {
   }
 
   public void updateExerciseFile(UpdateExerciseFileDTO updateExerciseFileDTO) {
-    ExerciseFile exerciseFile =
-        exerciseFileRepository.getReferenceById(updateExerciseFileDTO.getId());
+    ExerciseFile exerciseFile = exerciseFileRepository.getReferenceById(updateExerciseFileDTO.getId());
 
     if (updateExerciseFileDTO.getDescription() != null) {
       exerciseFile.setDescription(updateExerciseFileDTO.getDescription());
@@ -76,14 +75,14 @@ public class ExerciseFileService {
 
     if (updateExerciseFileDTO.getOrderNumber() != null) {
       Exercise exercise = exerciseFile.getExercise();
-      Integer totalNumberOfFilesAndTexts =
-          exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
-      if (updateExerciseFileDTO.getOrderNumber() >= totalNumberOfFilesAndTexts) {
-        exerciseFile.setOrderNumber(totalNumberOfFilesAndTexts);
+      Integer totalNumberOfFilesAndTexts = exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
+      if (updateExerciseFileDTO.getOrderNumber() > totalNumberOfFilesAndTexts) {
+        exerciseFile.setOrderNumber(totalNumberOfFilesAndTexts + 1);
       } else {
         exerciseFile.setOrderNumber(updateExerciseFileDTO.getOrderNumber());
         for (ExerciseFile exerciseFile2 : exercise.getExerciseFiles()) {
-          if (exerciseFile2.getOrderNumber() >= updateExerciseFileDTO.getOrderNumber()) {
+          if (exerciseFile2.getOrderNumber() >= updateExerciseFileDTO.getOrderNumber()
+              && exerciseFile2.getId() != exerciseFile.getId()) {
             exerciseFile2.setOrderNumber(exerciseFile2.getOrderNumber() + 1);
             exerciseFileRepository.save(exerciseFile2);
           }

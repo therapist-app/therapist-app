@@ -46,7 +46,7 @@ const ExerciseDetail = (): ReactElement => {
     const totalNumberOfDetails =
       selectedExercise.exerciseFilesOutputDTO.length +
       selectedExercise.exerciseTextsOutputDTO.length
-    for (let i = 0; i < totalNumberOfDetails; i++) {
+    for (let i = 1; i <= totalNumberOfDetails; i++) {
       const exerciseFile = selectedExercise.exerciseFilesOutputDTO.find(
         (ef) => ef.orderNumber === i
       )
@@ -92,7 +92,11 @@ const ExerciseDetail = (): ReactElement => {
               {exercise.exerciseFile ? (
                 <>yeet</>
               ) : (
-                <ShowExerciseText exercise={exercise.exerciseText!} refresh={refreshExercise} />
+                <ShowExerciseText
+                  exercise={exercise.exerciseText!}
+                  numberOfExercises={sortedExerciseDetails.length}
+                  refresh={refreshExercise}
+                />
               )}
             </div>
           ))}
