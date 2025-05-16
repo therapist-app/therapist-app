@@ -67,7 +67,8 @@ public class ExerciseFileService {
   }
 
   public void updateExerciseFile(UpdateExerciseFileDTO updateExerciseFileDTO) {
-    ExerciseFile exerciseFile = exerciseFileRepository.getReferenceById(updateExerciseFileDTO.getId());
+    ExerciseFile exerciseFile =
+        exerciseFileRepository.getReferenceById(updateExerciseFileDTO.getId());
 
     if (updateExerciseFileDTO.getDescription() != null) {
       exerciseFile.setDescription(updateExerciseFileDTO.getDescription());
@@ -75,7 +76,8 @@ public class ExerciseFileService {
 
     if (updateExerciseFileDTO.getOrderNumber() != null) {
       Exercise exercise = exerciseFile.getExercise();
-      Integer totalNumberOfFilesAndTexts = exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
+      Integer totalNumberOfFilesAndTexts =
+          exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
       if (updateExerciseFileDTO.getOrderNumber() > totalNumberOfFilesAndTexts) {
         exerciseFile.setOrderNumber(totalNumberOfFilesAndTexts + 1);
       } else {
