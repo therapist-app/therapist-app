@@ -43,15 +43,14 @@ public class ExerciseTextService {
     ExerciseText exerciseText = new ExerciseText();
     exerciseText.setExercise(exercise);
     exerciseText.setOrderNumber(
-        exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size());
+        exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size() + 1);
     exerciseText.setText(createExerciseTextDTO.getText());
 
     exerciseTextRepository.save(exerciseText);
   }
 
   public void updateExerciseText(UpdateExerciseTextDTO updateExerciseTextDTO) {
-    ExerciseText exerciseText =
-        exerciseTextRepository.getReferenceById(updateExerciseTextDTO.getId());
+    ExerciseText exerciseText = exerciseTextRepository.getReferenceById(updateExerciseTextDTO.getId());
 
     if (updateExerciseTextDTO.getText() != null) {
       exerciseText.setText(updateExerciseTextDTO.getText());
@@ -59,10 +58,9 @@ public class ExerciseTextService {
 
     if (updateExerciseTextDTO.getOrderNumber() != null) {
       Exercise exercise = exerciseText.getExercise();
-      Integer totalNumberOfFilesAndTexts =
-          exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
-      if (updateExerciseTextDTO.getOrderNumber() >= totalNumberOfFilesAndTexts) {
-        exerciseText.setOrderNumber(totalNumberOfFilesAndTexts);
+      Integer totalNumberOfFilesAndTexts = exercise.getExerciseFiles().size() + exercise.getExerciseTexts().size();
+      if (updateExerciseTextDTO.getOrderNumber() > totalNumberOfFilesAndTexts) {
+        exerciseText.setOrderNumber(totalNumberOfFilesAndTexts + 1);
       } else {
         exerciseText.setOrderNumber(updateExerciseTextDTO.getOrderNumber());
         for (ExerciseFile exerciseFile2 : exercise.getExerciseFiles()) {
@@ -73,7 +71,8 @@ public class ExerciseTextService {
         }
 
         for (ExerciseText exerciseText2 : exercise.getExerciseTexts()) {
-          if (exerciseText2.getOrderNumber() >= updateExerciseTextDTO.getOrderNumber()) {
+          if (exerciseText2.getOrderNumber() >= updateExerciseTextDTO.getOrderNumber()
+              && exerciseText2.getId() != exerciseText.getId()) {
             exerciseText2.setOrderNumber(exerciseText2.getOrderNumber() + 1);
             exerciseTextRepository.save(exerciseText2);
           }
