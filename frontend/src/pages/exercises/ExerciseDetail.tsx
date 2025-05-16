@@ -79,17 +79,22 @@ const ExerciseDetail = (): ReactElement => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <Typography variant='h5'>Title: {selectedExercise?.title}</Typography>
         <Typography>Exercise Type: {selectedExercise?.exerciseType}</Typography>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '40px' }}>
           {sortedExerciseDetails.map((exercise) => (
-            <React.Fragment key={exercise.id}>
-              <div>
-                {exercise.exerciseFile ? (
-                  <>yeet</>
-                ) : (
-                  <ShowExerciseText exercise={exercise.exerciseText!} refresh={refreshExercise} />
-                )}
-              </div>
-            </React.Fragment>
+            <div
+              key={exercise.id}
+              style={{
+                border: '1px solid black',
+                borderRadius: '5px',
+                padding: '20px',
+              }}
+            >
+              {exercise.exerciseFile ? (
+                <>yeet</>
+              ) : (
+                <ShowExerciseText exercise={exercise.exerciseText!} refresh={refreshExercise} />
+              )}
+            </div>
           ))}
         </div>
         <div

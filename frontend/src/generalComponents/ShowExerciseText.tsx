@@ -32,10 +32,6 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
         display: 'flex',
         gap: '20px',
         flexDirection: 'column',
-        border: '1px solid black',
-
-        borderRadius: '5px',
-        padding: '20px',
       }}
     >
       <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
