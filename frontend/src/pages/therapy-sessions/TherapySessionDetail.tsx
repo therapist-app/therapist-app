@@ -20,6 +20,7 @@ import { GAD7TestOutputDTO } from '../../api'
 import CreateTherapySessionNoteComponent from '../../generalComponents/CreateTherapySessionNoteComponent'
 import Layout from '../../generalComponents/Layout'
 import TherapySessionNoteComponent from '../../generalComponents/TherapySessionNoteComponent'
+import { getAllExercisesOfTherapySession } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { deleteTherapySession, getTherapySession } from '../../store/therapySessionSlice'
 import { patientTestApi } from '../../utils/api'
@@ -37,9 +38,13 @@ const TherapySessionDetail = (): ReactElement => {
   const selectedTherapySession = useSelector(
     (state: RootState) => state.therapySession.selectedTherapySession
   )
+  const allExercises = useSelector(
+    (state: RootState) => state.exercise.allExercisesOfTherapySession
+  )
 
   useEffect(() => {
     dispatch(getTherapySession(therapySessionId ?? ''))
+    dispatch(getAllExercisesOfTherapySession(therapySessionId ?? ''))
   }, [dispatch, therapySessionId])
 
   useEffect(() => {
@@ -68,6 +73,25 @@ const TherapySessionDetail = (): ReactElement => {
     navigate(
       getPathFromPage(PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE, {
         patientId: patientId ?? '',
+      })
+    )
+  }
+
+  const navigateToSpecificExercise = (exerciseId: string): void => {
+    navigate(
+      getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
+        patientId: patientId ?? '',
+        therapySessionId: therapySessionId ?? '',
+        exerciseId: exerciseId ?? '',
+      })
+    )
+  }
+
+  const navigateToCreateExercises = (): void => {
+    navigate(
+      getPathFromPage(PAGES.EXERCISES_CREATE_PAGE, {
+        patientId: patientId ?? '',
+        therapySessionId: therapySessionId ?? '',
       })
     )
   }
@@ -129,6 +153,39 @@ const TherapySessionDetail = (): ReactElement => {
           ) : (
             <>
               <Typography>You don't have any notes yet...</Typography>
+            </>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
+            <Typography variant='h5'>Exercises:</Typography>
+            <Button variant='contained' color='primary' onClick={navigateToCreateExercises}>
+              Create new Exercise
+            </Button>
+          </div>
+          {allExercises && allExercises.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              {allExercises.map((exercise) => (
+                <Button
+                  sx={{
+                    maxWidth: '500px',
+                    textAlign: 'left',
+                    alignItems: 'start',
+                    justifyContent: 'start',
+                  }}
+                  color='primary'
+                  onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
+                >
+                  <span>
+                    {exercise.title} | {exercise.exerciseType}
+                  </span>
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <>
+              <Typography>You don't have any exercises yet...</Typography>
             </>
           )}
         </div>
