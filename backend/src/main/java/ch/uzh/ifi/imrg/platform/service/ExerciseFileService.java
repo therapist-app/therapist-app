@@ -102,8 +102,7 @@ public class ExerciseFileService {
             }
           }
           for (ExerciseText text : exercise.getExerciseTexts()) {
-            if (text.getId().equals(dto.getId()))
-              continue;
+            if (text.getId().equals(dto.getId())) continue;
             int ord = text.getOrderNumber();
             if (ord >= newOrder && ord < oldOrder) {
               text.setOrderNumber(ord + 1);
@@ -120,8 +119,7 @@ public class ExerciseFileService {
             }
           }
           for (ExerciseText text : exercise.getExerciseTexts()) {
-            if (text.getId().equals(dto.getId()))
-              continue;
+            if (text.getId().equals(dto.getId())) continue;
             int ord = text.getOrderNumber();
             if (ord <= newOrder && ord > oldOrder) {
               text.setOrderNumber(ord - 1);
