@@ -7,7 +7,7 @@
     "dev": "npm run generate:api && concurrently \"vite\" \"npm run watch:translations\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint \"**/src/**/*.{ts,tsx}\"",
+    "lint": "eslint \"**/src/**/*.{ts,tsx}\" --max-warnings=0",
     "lint:fix": "eslint \"**/src/**/*.{ts,tsx}\" --fix",
     "format": "prettier --check \"**/src/**/*.{ts,tsx,js,jsx,css,scss,json}\"",
     "format:fix": "prettier --write \"**/src/**/*.{ts,tsx,js,jsx,css,scss,json}\"",

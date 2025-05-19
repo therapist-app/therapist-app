@@ -40,7 +40,7 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
     content: props?.therapySessionNote.content,
   })
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+  const handleSubmit = async (): Promise<void> => {
     try {
       setIsEditing(false)
       const updatedSession = await dispatch(updateTherapySessionNote(formData)).unwrap()
