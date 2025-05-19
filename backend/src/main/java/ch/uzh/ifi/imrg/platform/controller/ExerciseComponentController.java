@@ -54,8 +54,7 @@ public class ExerciseComponentController {
   @GetMapping("/{exerciseComponentId}/download")
   public ResponseEntity<Resource> downloadExerciseComponentFile(
       @PathVariable String exerciseComponentId) {
-    ExerciseComponent exerciseComponent =
-        exerciseComponentService.getExerciseComponent(exerciseComponentId);
+    ExerciseComponent exerciseComponent = exerciseComponentService.downloadExerciseComponent(exerciseComponentId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()

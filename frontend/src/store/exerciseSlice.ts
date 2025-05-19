@@ -85,8 +85,12 @@ export const createExerciseComponent = createAsyncThunk(
 export const downloadExerciseComponent = createAsyncThunk(
   'downloadExerciseComponent',
   async (exerciseComponentId: string) => {
-    const response = await exerciseComponentApi.downloadExerciseComponentFile(exerciseComponentId)
-    return response.data
+    const response = await exerciseComponentApi.downloadExerciseComponentFile(exerciseComponentId, {
+      responseType: 'blob',
+    })
+    const file = response.data
+    const url = window.URL.createObjectURL(file)
+    return url
   }
 )
 
@@ -210,20 +214,6 @@ const exerciseSlice = createSlice({
         console.log(action)
       })
       .addCase(createExerciseComponent.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
-      })
-
-      .addCase(downloadExerciseComponent.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(downloadExerciseComponent.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        console.log(action)
-      })
-      .addCase(downloadExerciseComponent.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

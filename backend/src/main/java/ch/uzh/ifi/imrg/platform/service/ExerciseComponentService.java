@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseComponentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,19 +28,18 @@ public class ExerciseComponentService {
   private final ExerciseComponentMapper exerciseComponentMapper = ExerciseComponentMapper.INSTANCE;
 
   public ExerciseComponentService(
-      @Qualifier("exerciseComponentRepository")
-          ExerciseComponentRepository exerciseComponentRepository,
+      @Qualifier("exerciseComponentRepository") ExerciseComponentRepository exerciseComponentRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
     this.exerciseComponentRepository = exerciseComponentRepository;
     this.exerciseRepository = exerciseRepository;
   }
 
   public void createExerciseComponent(CreateExerciseComponentDTO createExerciseComponentDTO) {
-    Exercise exercise =
-        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
 
     ExerciseComponent exerciseComponent = new ExerciseComponent();
     exerciseComponent.setExercise(exercise);
+    exerciseComponent.setExerciseComponentType(createExerciseComponentDTO.getExerciseComponentType());
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
     exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
 
@@ -48,13 +48,13 @@ public class ExerciseComponentService {
 
   public void createExerciseComponentWithFile(
       CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file) {
-    Exercise exercise =
-        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
 
     String extractedText = DocumentParserUtil.extractText(file);
 
     ExerciseComponent exerciseComponent = new ExerciseComponent();
     exerciseComponent.setExercise(exercise);
+    exerciseComponent.setExerciseComponentType(createExerciseComponentDTO.getExerciseComponentType());
     exerciseComponent.setFileName(file.getOriginalFilename());
     exerciseComponent.setFileType(file.getContentType());
     exerciseComponent.setExtractedText(extractedText);
@@ -72,6 +72,12 @@ public class ExerciseComponentService {
 
   public ExerciseComponent getExerciseComponent(String id) {
     ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
+    return exerciseComponent;
+  }
+
+  public ExerciseComponent downloadExerciseComponent(String id) {
+    ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
+    exerciseComponent.getFileData();
     return exerciseComponent;
   }
 

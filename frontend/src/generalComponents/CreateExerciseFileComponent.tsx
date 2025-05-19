@@ -109,7 +109,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             <Typography>{selectedFile?.name}</Typography>
           )}
 
-          <TextField label='description' value={description} onChange={handleChangeDescription} />
+          <TextField label='Description' value={description} onChange={handleChangeDescription} />
           <div
             style={{
               display: 'flex',

@@ -10,6 +10,8 @@ import {
 import CreateExerciseFileComponent from '../../generalComponents/CreateExerciseFileComponent'
 import CreateExerciseTextComponent from '../../generalComponents/CreateExerciseTextComponent'
 import Layout from '../../generalComponents/Layout'
+import LoadingSpinner from '../../generalComponents/LoadingSpinner'
+import ShowExerciseFileComponent from '../../generalComponents/ShowExerciseFileComponent'
 import ShowExerciseTextComponent from '../../generalComponents/ShowExerciseTextComponent'
 import { getExerciseById } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
@@ -18,28 +20,51 @@ import { useAppDispatch } from '../../utils/hooks'
 const ExerciseDetail = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, therapySessionId, exerciseId } = useParams()
+
   const dispatch = useAppDispatch()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
+
+  const exerciseStatus = useSelector((state: RootState) => state.exercise.status)
 
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
   )
 
-  const refreshExercise = (): void => {
-    dispatch(getExerciseById(exerciseId ?? ''))
+  const refreshExercise = async (): Promise<void> => {
+    try {
+      await dispatch(getExerciseById(exerciseId ?? ''))
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   useEffect(() => {
     refreshExercise()
-  }, [dispatch, exerciseId])
+  }, [])
+
+  if (exerciseStatus === 'loading') {
+    return (
+      <Layout>
+        <LoadingSpinner />{' '}
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <Typography variant='h5'>Title: {selectedExercise?.title}</Typography>
         <Typography>Exercise Type: {selectedExercise?.exerciseType}</Typography>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '40px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            marginTop: '40px',
+            maxWidth: '600px',
+          }}
+        >
           {selectedExercise?.exerciseComponentsOutputDTO &&
             selectedExercise.exerciseComponentsOutputDTO.map((exerciseComponent) => (
               <div
@@ -51,9 +76,25 @@ const ExerciseDetail = (): ReactElement => {
                 }}
               >
                 {exerciseComponent.exerciseComponentType ===
-                ExerciseComponentOutputDTOExerciseComponentTypeEnum.File ? (
-                  <>yeet</>
-                ) : (
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image && (
+                  <ShowExerciseFileComponent
+                    exerciseComponent={exerciseComponent}
+                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                    refresh={refreshExercise}
+                    isImageComponent
+                  />
+                )}
+                {exerciseComponent.exerciseComponentType ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.File && (
+                  <ShowExerciseFileComponent
+                    exerciseComponent={exerciseComponent}
+                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                    refresh={refreshExercise}
+                    isImageComponent={false}
+                  />
+                )}
+                {exerciseComponent.exerciseComponentType ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text && (
                   <ShowExerciseTextComponent
                     exerciseComponent={exerciseComponent}
                     numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}

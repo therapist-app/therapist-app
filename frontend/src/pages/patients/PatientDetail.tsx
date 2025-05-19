@@ -25,6 +25,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import FileDownload from '../../generalComponents/FileDownload'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import {
@@ -75,23 +76,13 @@ const PatientDetail = (): ReactElement => {
     setRefreshPatientDocumentsCounter((prev) => prev + 1)
   }
 
-  const handleDownloadFile = async (fileId: string, fileName: string): Promise<void> => {
-    try {
-      const response = await patientDocumentApi.downloadFile(fileId, {
-        responseType: 'blob',
-      })
-      const file = response.data
-      const url = window.URL.createObjectURL(file)
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', fileName)
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-      window.URL.revokeObjectURL(url)
-    } catch (error) {
-      console.error('Download error:', error)
-    }
+  const downloadFile = async (fileId: string, fileName: string): Promise<string> => {
+    const response = await patientDocumentApi.downloadFile(fileId, {
+      responseType: 'blob',
+    })
+    const file = response.data
+    const url = window.URL.createObjectURL(file)
+    return url
   }
 
   const handleClickOnSession = (therapySessionId: string): void => {
@@ -206,14 +197,12 @@ const PatientDetail = (): ReactElement => {
                   {patientDocument.fileName}
                 </TableCell>
                 <TableCell align='right'>
-                  <IconButton
-                    aria-label='download'
-                    onClick={() =>
-                      handleDownloadFile(patientDocument.id ?? '', patientDocument.fileName ?? '')
+                  <FileDownload
+                    download={() =>
+                      downloadFile(patientDocument.id ?? '', patientDocument.fileName ?? '')
                     }
-                  >
-                    <DownloadIcon />
-                  </IconButton>
+                    fileName={patientDocument.fileName ?? ''}
+                  />
                   <IconButton
                     aria-label='delete'
                     onClick={() => handleDeleteFile(patientDocument.id ?? '')}

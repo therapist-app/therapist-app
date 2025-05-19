@@ -8,13 +8,14 @@ const ImageComponent: React.FC<ImageComponentProps> = ({ imageFile }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!imageFile) {
+    if (!(imageFile instanceof Blob)) {
+      setImageUrl(null)
       return
     }
+
     const url = URL.createObjectURL(imageFile)
     setImageUrl(url)
 
-    // Clean up the object URL when the component unmounts or file changes
     return (): void => URL.revokeObjectURL(url)
   }, [imageFile])
 
