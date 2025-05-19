@@ -1,8 +1,12 @@
-import { Button, TextField, Typography } from '@mui/material'
+import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { CreateExerciseDTO, ExerciseOutputDTOExerciseTypeEnum } from '../../api'
+import {
+  CreateExerciseDTO,
+  CreateExerciseDTOExerciseTypeEnum,
+  ExerciseOutputDTOExerciseTypeEnum,
+} from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
 import { useAppDispatch } from '../../utils/hooks'
@@ -42,7 +46,7 @@ const ExerciseCreate = (): ReactElement => {
 
   return (
     <Layout>
-      <form onSubmit={handleSubmit}>
+      <form style={{ maxWidth: '600px' }} onSubmit={handleSubmit}>
         <TextField
           label='Title'
           name='title'
@@ -52,16 +56,23 @@ const ExerciseCreate = (): ReactElement => {
           margin='normal'
           required
         />
+
         <TextField
+          select
+          sx={{ fontWeight: 'bold' }}
           label='Exercise Type'
           name='exerciseType'
           value={formData.exerciseType}
           onChange={handleChange}
-          fullWidth
-          margin='normal'
           required
-          autoComplete='current-password'
-        />
+          fullWidth
+        >
+          {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
 
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
           Submit

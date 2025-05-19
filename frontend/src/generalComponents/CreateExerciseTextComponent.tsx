@@ -75,7 +75,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
         </Button>
       ) : (
         <form
-          style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}
           onSubmit={handleSubmit}
         >
           <TextField

@@ -118,7 +118,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           {isImageComponent ? (
             <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
           ) : (
-            <Typography>{exerciseComponent.fileName}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
 
           <Typography
@@ -159,7 +159,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           {isImageComponent ? (
             <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
           ) : (
-            <Typography>{exerciseComponent.fileName}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
 
           <TextField
