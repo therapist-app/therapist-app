@@ -11,6 +11,7 @@ configMapGenerator:
       - DB_PORT=5432
       - DB_NAME=therapist_app_main_db
       - DB_USERNAME=therapist-user
+      - LOCAL_LLM_URL=vllm-imrg.ifi.uzh.ch
 
 secretGenerator:
   - name: therapist-app-backend-secret
