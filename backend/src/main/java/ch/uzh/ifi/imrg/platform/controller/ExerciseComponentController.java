@@ -1,7 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
@@ -55,7 +54,8 @@ public class ExerciseComponentController {
   @GetMapping("/{exerciseComponentId}/download")
   public ResponseEntity<Resource> downloadExerciseComponentFile(
       @PathVariable String exerciseComponentId) {
-    ExerciseComponent exerciseComponent = exerciseComponentService.getExerciseComponent(exerciseComponentId);
+    ExerciseComponent exerciseComponent =
+        exerciseComponentService.getExerciseComponent(exerciseComponentId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()
