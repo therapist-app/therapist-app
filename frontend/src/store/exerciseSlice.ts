@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   CreateExerciseComponentDTO,
   CreateExerciseDTO,
+  ExerciseComponentOutputDTO,
+  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   ExerciseOutputDTO,
   TherapySessionOutputDTO,
   UpdateExerciseComponentDTO,
@@ -13,6 +15,7 @@ import { exerciseApi, exerciseComponentApi } from '../utils/api'
 interface ExerciseState {
   selectedExercise: ExerciseOutputDTO | null
   allExercisesOfTherapySession: ExerciseOutputDTO[]
+  addingExerciseComponent: ExerciseComponentOutputDTOExerciseComponentTypeEnum | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
@@ -20,6 +23,7 @@ interface ExerciseState {
 const initialState: ExerciseState = {
   selectedExercise: null,
   allExercisesOfTherapySession: [],
+  addingExerciseComponent: null,
   status: 'idle',
   error: null,
 }
@@ -117,6 +121,12 @@ const exerciseSlice = createSlice({
     },
     clearAllExercisesOfTherapySession: (state) => {
       state.allExercisesOfTherapySession = []
+    },
+    setAddingExerciseComponent: (
+      state,
+      action: PayloadAction<ExerciseComponentOutputDTOExerciseComponentTypeEnum | null>
+    ) => {
+      state.addingExerciseComponent = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -254,5 +264,6 @@ export const {
   setAllExercisesOfTherapySession,
   clearSelectedExercise,
   clearAllExercisesOfTherapySession,
+  setAddingExerciseComponent,
 } = exerciseSlice.actions
 export default exerciseSlice.reducer

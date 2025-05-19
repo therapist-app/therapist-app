@@ -22,6 +22,10 @@ const ExerciseDetail = (): ReactElement => {
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
 
+  const addingExerciseComponent = useSelector(
+    (state: RootState) => state.exercise.addingExerciseComponent
+  )
+
   const refreshExercise = (): void => {
     dispatch(getExerciseById(exerciseId ?? ''))
   }
@@ -62,13 +66,35 @@ const ExerciseDetail = (): ReactElement => {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
             gap: '15px',
             marginTop: '20px',
           }}
         >
-          <CreateExerciseFileComponent createdExerciseFile={refreshExercise} />
-          <CreateExerciseTextComponent createdExercise={refreshExercise} />
+          <CreateExerciseTextComponent
+            createdExercise={refreshExercise}
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
+            }
+          />
+
+          <CreateExerciseFileComponent
+            createdExerciseFile={refreshExercise}
+            isImageComponent
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
+            }
+          />
+
+          <CreateExerciseFileComponent
+            createdExerciseFile={refreshExercise}
+            isImageComponent={false}
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+            }
+          />
         </div>
       </div>
     </Layout>

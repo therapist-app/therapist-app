@@ -8,11 +8,12 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../api'
-import { createExerciseComponent } from '../store/exerciseSlice'
+import { createExerciseComponent, setAddingExerciseComponent } from '../store/exerciseSlice'
 import { useAppDispatch } from '../utils/hooks'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void
+  active: boolean
 }
 
 const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
@@ -29,12 +30,14 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   }
 
   const showExerciseTextField = (): void => {
+    dispatch(setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text))
     setIsCreatingExerciseText(true)
   }
 
-  const showCreateExerciseButton = (): void => {
+  const cancel = (): void => {
     setExerciseText('')
     setIsCreatingExerciseText(false)
+    dispatch(setAddingExerciseComponent(null))
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -52,12 +55,16 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
           file: undefined,
         })
       )
-      showCreateExerciseButton()
+      cancel()
     } catch (err) {
       console.error('Registration error:', err)
     } finally {
       props.createdExercise()
     }
+  }
+
+  if (!props.active) {
+    return null
   }
 
   return (
@@ -90,13 +97,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
               <CheckIcon />
             </Button>
 
-            <Button
-              variant='contained'
-              color='error'
-              fullWidth
-              sx={{ mt: 2 }}
-              onClick={showCreateExerciseButton}
-            >
+            <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={cancel}>
               <ClearIcon />
             </Button>
           </div>
