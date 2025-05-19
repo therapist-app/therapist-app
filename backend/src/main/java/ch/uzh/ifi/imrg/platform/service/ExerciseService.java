@@ -4,7 +4,7 @@ import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapySessionRepository;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExcerciseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseMapper;
@@ -33,15 +33,14 @@ public class ExerciseService {
     this.therapySessionRepository = therapySessionRepository;
   }
 
-  public ExerciseOutputDTO createExercise(CreateExcerciseDTO createExcerciseDTO) {
+  public ExerciseOutputDTO createExercise(CreateExerciseDTO createExerciseDTO) {
 
-    TherapySession therapySession =
-        therapySessionRepository.getReferenceById(createExcerciseDTO.getTherapySessionId());
+    TherapySession therapySession = therapySessionRepository.getReferenceById(createExerciseDTO.getTherapySessionId());
 
     Exercise exercise = new Exercise();
     exercise.setTherapySession(therapySession);
-    exercise.setTitle(createExcerciseDTO.getTitle());
-    exercise.setExerciseType(createExcerciseDTO.getExerciseType());
+    exercise.setTitle(createExerciseDTO.getTitle());
+    exercise.setExerciseType(createExerciseDTO.getExerciseType());
 
     Exercise savedExercise = exerciseRepository.save(exercise);
 
@@ -69,11 +68,11 @@ public class ExerciseService {
       exercise.setExerciseType(updateExerciseDTO.getExerciseType());
     }
 
-    Exercise updatedExcercise = exerciseRepository.save(exercise);
-    return exerciseMapper.convertEntityToExerciseOutputDTO(updatedExcercise);
+    Exercise updatedExercise = exerciseRepository.save(exercise);
+    return exerciseMapper.convertEntityToExerciseOutputDTO(updatedExercise);
   }
 
-  public void deleteExcercise(String id) {
+  public void deleteExercise(String id) {
     Exercise exercise = exerciseRepository.getReferenceById(id);
     exercise.getTherapySession().getExercises().remove(exercise);
   }

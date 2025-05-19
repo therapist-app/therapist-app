@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { CreateExcerciseDTO, ExerciseOutputDTOExerciseTypeEnum } from '../../api'
+import { CreateExerciseDTO, ExerciseOutputDTOExerciseTypeEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
 import { useAppDispatch } from '../../utils/hooks'
@@ -13,7 +13,7 @@ const ExerciseCreate = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, therapySessionId } = useParams()
 
-  const [formData, setFormData] = useState<CreateExcerciseDTO>({
+  const [formData, setFormData] = useState<CreateExerciseDTO>({
     title: '',
     exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
     therapySessionId: therapySessionId,

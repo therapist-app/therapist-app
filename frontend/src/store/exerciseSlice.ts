@@ -1,16 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
-  CreateExcerciseDTO,
-  CreateExerciseFileDTO,
-  CreateExerciseTextDTO,
+  CreateExerciseComponentDTO,
+  CreateExerciseDTO,
   ExerciseOutputDTO,
   TherapySessionOutputDTO,
+  UpdateExerciseComponentDTO,
   UpdateExerciseDTO,
-  UpdateExerciseFileDTO,
-  UpdateExerciseTextDTO,
 } from '../api'
-import { exerciseApi, exerciseFileApi, exerciseTextApi } from '../utils/api'
+import { exerciseApi, exerciseComponentApi } from '../utils/api'
 
 interface ExerciseState {
   selectedExercise: ExerciseOutputDTO | null
@@ -28,7 +26,7 @@ const initialState: ExerciseState = {
 
 export const createExercise = createAsyncThunk(
   'createExercise',
-  async (createExerciseDTO: CreateExcerciseDTO) => {
+  async (createExerciseDTO: CreateExerciseDTO) => {
     const response = await exerciseApi.createExercise(createExerciseDTO)
     return response.data
   }
@@ -56,65 +54,50 @@ export const updateExercise = createAsyncThunk(
 )
 
 export const deleteExcercise = createAsyncThunk('deleteExcercise', async (exerciseId: string) => {
-  const response = await exerciseApi.deleteExcercise(exerciseId)
+  const response = await exerciseApi.deleteExercise(exerciseId)
   return response.data
 })
 
-export const createExerciseFile = createAsyncThunk(
-  'createExerciseFile',
-  async (props: { createExerciseFileDTO: CreateExerciseFileDTO; file: File }) => {
-    const response = await exerciseFileApi.createExerciseFile(
-      props.createExerciseFileDTO,
-      props.file
+export const createExerciseComponent = createAsyncThunk(
+  'createExerciseComponent',
+  async (props: {
+    createExerciseComponentDTO: CreateExerciseComponentDTO
+    file: File | undefined
+  }) => {
+    if (props.file) {
+      const response = await exerciseComponentApi.createExerciseComponentWithFile(
+        props.createExerciseComponentDTO,
+        props.file
+      )
+      return response.data
+    }
+    const response = await exerciseComponentApi.createExerciseComponent(
+      props.createExerciseComponentDTO
     )
     return response.data
   }
 )
 
-export const downloadExerciseFile = createAsyncThunk(
-  'downloadExerciseFile',
-  async (exerciseFileId: string) => {
-    const response = await exerciseFileApi.downloadExerciseFile(exerciseFileId)
+export const downloadExerciseComponent = createAsyncThunk(
+  'downloadExerciseComponent',
+  async (exerciseComponentId: string) => {
+    const response = await exerciseComponentApi.downloadExerciseComponentFile(exerciseComponentId)
     return response.data
   }
 )
 
-export const updateExerciseFile = createAsyncThunk(
-  'updateExerciseFile',
-  async (updateExerciseFileDTO: UpdateExerciseFileDTO) => {
-    const response = await exerciseFileApi.updateExerciseFile(updateExerciseFileDTO)
+export const updateExerciseComponent = createAsyncThunk(
+  'updateExerciseComponent',
+  async (updateExerciseComponentDTO: UpdateExerciseComponentDTO) => {
+    const response = await exerciseComponentApi.updateExerciseComponent(updateExerciseComponentDTO)
     return response.data
   }
 )
 
-export const deleteExerciseFile = createAsyncThunk(
-  'deleteExerciseFile',
-  async (exerciseFileId: string) => {
-    const response = await exerciseFileApi.deleteExcerciseFile(exerciseFileId)
-    return response.data
-  }
-)
-
-export const createExerciseText = createAsyncThunk(
-  'createExerciseText',
-  async (createExerciseTextDTO: CreateExerciseTextDTO) => {
-    const response = await exerciseTextApi.createExerciseText(createExerciseTextDTO)
-    return response.data
-  }
-)
-
-export const updateExerciseText = createAsyncThunk(
-  'updateExerciseText',
-  async (updateExerciseTextDTO: UpdateExerciseTextDTO) => {
-    const response = await exerciseTextApi.updateExerciseText(updateExerciseTextDTO)
-    return response.data
-  }
-)
-
-export const deleteExerciseText = createAsyncThunk(
-  'deleteExerciseText',
-  async (exerciseTextId: string) => {
-    const response = await exerciseTextApi.deleteExerciseText(exerciseTextId)
+export const deleteExerciseComponent = createAsyncThunk(
+  'deleteExerciseComponent',
+  async (exerciseComponentId: string) => {
+    const response = await exerciseComponentApi.deleteExerciseComponent(exerciseComponentId)
     return response.data
   }
 )
@@ -208,99 +191,57 @@ const exerciseSlice = createSlice({
         console.log(action)
       })
 
-      .addCase(createExerciseFile.pending, (state) => {
+      .addCase(createExerciseComponent.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(createExerciseFile.fulfilled, (state, action) => {
+      .addCase(createExerciseComponent.fulfilled, (state, action) => {
         state.status = 'succeeded'
         console.log(action)
       })
-      .addCase(createExerciseFile.rejected, (state, action) => {
+      .addCase(createExerciseComponent.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
       })
 
-      .addCase(downloadExerciseFile.pending, (state) => {
+      .addCase(downloadExerciseComponent.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(downloadExerciseFile.fulfilled, (state, action) => {
+      .addCase(downloadExerciseComponent.fulfilled, (state, action) => {
         state.status = 'succeeded'
         console.log(action)
       })
-      .addCase(downloadExerciseFile.rejected, (state, action) => {
+      .addCase(downloadExerciseComponent.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
       })
 
-      .addCase(updateExerciseFile.pending, (state) => {
+      .addCase(updateExerciseComponent.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(updateExerciseFile.fulfilled, (state, action) => {
+      .addCase(updateExerciseComponent.fulfilled, (state, action) => {
         state.status = 'succeeded'
         console.log(action)
       })
-      .addCase(updateExerciseFile.rejected, (state, action) => {
+      .addCase(updateExerciseComponent.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
       })
 
-      .addCase(deleteExerciseFile.pending, (state) => {
+      .addCase(deleteExerciseComponent.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(deleteExerciseFile.fulfilled, (state, action) => {
+      .addCase(deleteExerciseComponent.fulfilled, (state, action) => {
         state.status = 'succeeded'
         console.log(action)
       })
-      .addCase(deleteExerciseFile.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
-      })
-
-      .addCase(createExerciseText.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(createExerciseText.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        console.log(action)
-      })
-      .addCase(createExerciseText.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
-      })
-
-      .addCase(updateExerciseText.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(updateExerciseText.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        console.log(action)
-      })
-      .addCase(updateExerciseText.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
-      })
-
-      .addCase(deleteExerciseText.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(deleteExerciseText.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        console.log(action)
-      })
-      .addCase(deleteExerciseText.rejected, (state, action) => {
+      .addCase(deleteExerciseComponent.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

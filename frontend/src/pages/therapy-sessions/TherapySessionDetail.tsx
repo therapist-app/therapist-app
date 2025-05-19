@@ -168,6 +168,7 @@ const TherapySessionDetail = (): ReactElement => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
               {allExercises.map((exercise) => (
                 <Button
+                  key={exercise.id ?? ''}
                   sx={{
                     maxWidth: '500px',
                     textAlign: 'left',

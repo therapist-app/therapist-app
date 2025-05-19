@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExcerciseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.ExerciseService;
@@ -32,8 +32,8 @@ public class ExerciseController {
 
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
-  public ExerciseOutputDTO createExercise(@RequestBody CreateExcerciseDTO createExcerciseDTO) {
-    return exerciseService.createExercise(createExcerciseDTO);
+  public ExerciseOutputDTO createExercise(@RequestBody CreateExerciseDTO createExerciseDTO) {
+    return exerciseService.createExercise(createExerciseDTO);
   }
 
   @GetMapping("/{exerciseId}")
@@ -57,7 +57,7 @@ public class ExerciseController {
 
   @DeleteMapping("/{exerciseId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExcercise(@PathVariable String exerciseId) {
-    exerciseService.deleteExcercise(exerciseId);
+  public void deleteExercise(@PathVariable String exerciseId) {
+    exerciseService.deleteExercise(exerciseId);
   }
 }

@@ -4,15 +4,20 @@ import { Button, TextField } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { CreateExerciseTextDTO } from '../api'
-import { createExerciseText } from '../store/exerciseSlice'
+import {
+  CreateExerciseComponentDTO,
+  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
+} from '../api'
+import { createExerciseComponent } from '../store/exerciseSlice'
 import { useAppDispatch } from '../utils/hooks'
 
-interface CreateExerciseTextProps {
+interface CreateExerciseTextComponentProps {
   createdExercise(): void
 }
 
-const CreateExerciseText: React.FC<CreateExerciseTextProps> = (props: CreateExerciseTextProps) => {
+const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
+  props: CreateExerciseTextComponentProps
+) => {
   const { patientId, therapySessionId, exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
@@ -36,11 +41,17 @@ const CreateExerciseText: React.FC<CreateExerciseTextProps> = (props: CreateExer
     e.preventDefault()
 
     try {
-      const createExerciseTextDTO: CreateExerciseTextDTO = {
+      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        text: exerciseText,
+        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
+        description: exerciseText,
       }
-      await dispatch(createExerciseText(createExerciseTextDTO))
+      await dispatch(
+        createExerciseComponent({
+          createExerciseComponentDTO: createExerciseComponentDTO,
+          file: undefined,
+        })
+      )
       showCreateExerciseButton()
     } catch (err) {
       console.error('Registration error:', err)
@@ -95,4 +106,4 @@ const CreateExerciseText: React.FC<CreateExerciseTextProps> = (props: CreateExer
   )
 }
 
-export default CreateExerciseText
+export default CreateExerciseTextComponent

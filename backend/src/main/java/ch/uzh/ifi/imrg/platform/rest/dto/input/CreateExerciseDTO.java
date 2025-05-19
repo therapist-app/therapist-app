@@ -4,7 +4,7 @@ import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import lombok.Data;
 
 @Data
-public class CreateExcerciseDTO {
+public class CreateExerciseDTO {
   private String therapySessionId;
   private String title;
   private ExerciseType exerciseType;

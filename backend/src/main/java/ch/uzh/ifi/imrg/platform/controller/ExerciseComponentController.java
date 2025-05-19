@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
@@ -35,20 +36,26 @@ public class ExerciseComponentController {
     this.exerciseComponentService = exerciseComponentService;
   }
 
-  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public void createExerciseComponent(
+      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO) {
+    exerciseComponentService.createExerciseComponent(createExerciseComponentDTO);
+  }
+
+  @PostMapping(path = "/with-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public void createExerciseComponentWithFile(
       @RequestPart("metadata") CreateExerciseComponentDTO createExerciseComponentDTO,
       @RequestPart("file") MultipartFile file,
       HttpServletRequest request) {
-    exerciseComponentService.createExerciseComponent(createExerciseComponentDTO, file);
+    exerciseComponentService.createExerciseComponentWithFile(createExerciseComponentDTO, file);
   }
 
   @GetMapping("/{exerciseComponentId}/download")
   public ResponseEntity<Resource> downloadExerciseComponentFile(
       @PathVariable String exerciseComponentId) {
-    ExerciseComponent exerciseComponent =
-        exerciseComponentService.getExerciseComponent(exerciseComponentId);
+    ExerciseComponent exerciseComponent = exerciseComponentService.getExerciseComponent(exerciseComponentId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()
@@ -69,7 +76,7 @@ public class ExerciseComponentController {
 
   @DeleteMapping("/{exerciseComponentId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExcerciseComponent(@PathVariable String exerciseComponentId) {
-    exerciseComponentService.deleteExcerciseComponent(exerciseComponentId);
+  public void deleteExerciseComponent(@PathVariable String exerciseComponentId) {
+    exerciseComponentService.deleteExerciseComponent(exerciseComponentId);
   }
 }

@@ -27,17 +27,27 @@ public class ExerciseComponentService {
   private final ExerciseComponentMapper exerciseComponentMapper = ExerciseComponentMapper.INSTANCE;
 
   public ExerciseComponentService(
-      @Qualifier("exerciseComponentRepository")
-          ExerciseComponentRepository exerciseComponentRepository,
+      @Qualifier("exerciseComponentRepository") ExerciseComponentRepository exerciseComponentRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
     this.exerciseComponentRepository = exerciseComponentRepository;
     this.exerciseRepository = exerciseRepository;
   }
 
   public void createExerciseComponent(
+      CreateExerciseComponentDTO createExerciseComponentDTO) {
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+
+    ExerciseComponent exerciseComponent = new ExerciseComponent();
+    exerciseComponent.setExercise(exercise);
+    exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
+    exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
+
+    exerciseComponentRepository.save(exerciseComponent);
+  }
+
+  public void createExerciseComponentWithFile(
       CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file) {
-    Exercise exercise =
-        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
 
     String extractedText = DocumentParserUtil.extractText(file);
 
@@ -118,7 +128,7 @@ public class ExerciseComponentService {
     exerciseComponentRepository.save(target);
   }
 
-  public void deleteExcerciseComponent(String id) {
+  public void deleteExerciseComponent(String id) {
     ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
     Exercise exercise = exerciseComponent.getExercise();
 

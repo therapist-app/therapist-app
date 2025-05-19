@@ -5,30 +5,32 @@ import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
-import { ExerciseTextOutputDTO, UpdateExerciseTextDTO } from '../api'
-import { deleteExerciseText, updateExerciseText } from '../store/exerciseSlice'
+import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../api'
+import { deleteExerciseComponent, updateExerciseComponent } from '../store/exerciseSlice'
 import { useAppDispatch } from '../utils/hooks'
 
-interface ShowExerciseTextProps {
-  exercise: ExerciseTextOutputDTO
+interface ShowExerciseTextComponentProps {
+  exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
 }
 
-const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTextProps) => {
-  const { exercise } = props
+const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
+  props: ShowExerciseTextComponentProps
+) => {
+  const { exerciseComponent } = props
   const dispatch = useAppDispatch()
 
-  const originalFormData: UpdateExerciseTextDTO = {
-    id: exercise.id ?? '',
-    text: exercise.text,
-    orderNumber: exercise.orderNumber,
+  const originalFormData: UpdateExerciseComponentDTO = {
+    id: exerciseComponent.id ?? '',
+    description: exerciseComponent.description,
+    orderNumber: exerciseComponent.orderNumber,
   }
 
-  const [formData, setFormData] = useState<UpdateExerciseTextDTO>({
-    id: exercise.id ?? '',
-    text: exercise.text,
-    orderNumber: exercise.orderNumber,
+  const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
+    id: exerciseComponent.id ?? '',
+    description: exerciseComponent.description,
+    orderNumber: exerciseComponent.orderNumber,
   })
 
   const [isEditing, setIsEditing] = useState(false)
@@ -54,7 +56,7 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      await dispatch(updateExerciseText(formData)).unwrap()
+      await dispatch(updateExerciseComponent(formData)).unwrap()
       setIsEditing(false)
       props.refresh()
     } catch (err) {
@@ -63,7 +65,7 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
   }
 
   const clickDelete = async (): Promise<void> => {
-    await dispatch(deleteExerciseText(exercise.id ?? ''))
+    await dispatch(deleteExerciseComponent(exerciseComponent.id ?? ''))
 
     props.refresh()
   }
@@ -78,7 +80,7 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
       {isEditing === false ? (
         <>
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <Typography sx={{ fontWeight: 'bold' }}>{exercise.orderNumber}.</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.orderNumber}.</Typography>
 
             <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
@@ -94,7 +96,7 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
               whiteSpace: 'pre-line',
             }}
           >
-            {exercise.text}
+            {exerciseComponent.description}
           </Typography>
         </>
       ) : (
@@ -126,8 +128,8 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
 
           <TextField
             multiline
-            name='text'
-            value={formData.text}
+            name='description'
+            value={formData.description}
             onChange={handleChange}
             label='Text'
           />
@@ -137,4 +139,4 @@ const ShowExerciseText: React.FC<ShowExerciseTextProps> = (props: ShowExerciseTe
   )
 }
 
-export default ShowExerciseText
+export default ShowExerciseTextComponent
