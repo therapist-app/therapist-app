@@ -27,23 +27,14 @@ public class Exercise {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column() private String title;
+  @Column()
+  private String title;
 
-  @Column() private ExerciseType exerciseType;
+  @Column()
+  private ExerciseType exerciseType;
 
-  @OneToMany(
-      mappedBy = "exercise",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<ExerciseText> exerciseTexts = new ArrayList<>();
-
-  @OneToMany(
-      mappedBy = "exercise",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<ExerciseFile> exerciseFiles = new ArrayList<>();
+  @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")

@@ -7,10 +7,12 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import ch.uzh.ifi.imrg.platform.enums.ExerciseComponentType;
+
 @Data
 @Entity
-@Table(name = "exercise_texts")
-public class ExerciseText {
+@Table(name = "exercise_components")
+public class ExerciseComponent {
 
   @Id
   @Column(unique = true)
@@ -24,9 +26,25 @@ public class ExerciseText {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column() private String text;
+  @Column
+  private ExerciseComponentType exerciseComponentType;
 
-  @Column() private Integer orderNumber;
+  @Column
+  private String description;
+
+  private String fileName;
+
+  private String fileType;
+
+  @Lob
+  private byte[] fileData;
+
+  @Lob
+  @Column
+  private String extractedText;
+
+  @Column()
+  private Integer orderNumber;
 
   @ManyToOne
   @JoinColumn(name = "exercise_id", referencedColumnName = "id")

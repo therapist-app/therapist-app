@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
-import ch.uzh.ifi.imrg.platform.repository.ExerciseTextRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapySessionRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExcerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
@@ -29,7 +28,6 @@ public class ExerciseService {
 
   public ExerciseService(
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("exerciseTextRepository") ExerciseTextRepository exerciseTextRepository,
       @Qualifier("therapySessionRepository") TherapySessionRepository therapySessionRepository) {
     this.exerciseRepository = exerciseRepository;
     this.therapySessionRepository = therapySessionRepository;
@@ -37,8 +35,7 @@ public class ExerciseService {
 
   public ExerciseOutputDTO createExercise(CreateExcerciseDTO createExcerciseDTO) {
 
-    TherapySession therapySession =
-        therapySessionRepository.getReferenceById(createExcerciseDTO.getTherapySessionId());
+    TherapySession therapySession = therapySessionRepository.getReferenceById(createExcerciseDTO.getTherapySessionId());
 
     Exercise exercise = new Exercise();
     exercise.setTherapySession(therapySession);

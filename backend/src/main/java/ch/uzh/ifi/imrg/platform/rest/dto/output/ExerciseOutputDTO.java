@@ -9,6 +9,5 @@ public class ExerciseOutputDTO {
   private String id;
   private String title;
   private ExerciseType exerciseType;
-  private List<ExerciseTextOutputDTO> exerciseTextsOutputDTO;
-  private List<ExerciseFileOutputDTO> exerciseFilesOutputDTO;
+  private List<ExerciseComponentOutputDTO> exerciseComponentsOutputDTO;
 }

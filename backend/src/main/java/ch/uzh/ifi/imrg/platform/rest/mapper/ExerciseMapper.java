@@ -1,11 +1,10 @@
 package ch.uzh.ifi.imrg.platform.rest.mapper;
 
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
-import ch.uzh.ifi.imrg.platform.entity.ExerciseFile;
-import ch.uzh.ifi.imrg.platform.entity.ExerciseText;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseFileOutputDTO;
+import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseComponentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseTextOutputDTO;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -19,29 +18,16 @@ public interface ExerciseMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "title", target = "title")
   @Mapping(source = "exerciseType", target = "exerciseType")
-  @Mapping(source = "exerciseTexts", target = "exerciseTextsOutputDTO")
-  @Mapping(source = "exerciseFiles", target = "exerciseFilesOutputDTO")
+  @Mapping(source = "exerciseComponents", target = "exerciseComponentsOutputDTO")
   ExerciseOutputDTO convertEntityToExerciseOutputDTO(Exercise exercise);
 
-  default List<ExerciseTextOutputDTO> mapExerciseTexts(List<ExerciseText> exerciseTexts) {
-    if (exerciseTexts == null) {
+  default List<ExerciseComponentOutputDTO> mapExerciseComponents(List<ExerciseComponent> exerciseComponents) {
+    if (exerciseComponents == null) {
       return null;
     }
-    List<ExerciseTextOutputDTO> exerciseTextOutputDTOs =
-        exerciseTexts.stream()
-            .map(ExerciseTextMapper.INSTANCE::convertEntityToExerciseTextOutputDTO)
-            .collect(Collectors.toList());
-    return exerciseTextOutputDTOs;
-  }
-
-  default List<ExerciseFileOutputDTO> mapExerciseFiles(List<ExerciseFile> exerciseFiles) {
-    if (exerciseFiles == null) {
-      return null;
-    }
-    List<ExerciseFileOutputDTO> exerciseFileOutputDTOs =
-        exerciseFiles.stream()
-            .map(ExerciseFileMapper.INSTANCE::convertEntityToExerciseFileOutputDTO)
-            .collect(Collectors.toList());
-    return exerciseFileOutputDTOs;
+    List<ExerciseComponentOutputDTO> exerciseComponentsOutputDTOs = exerciseComponents.stream()
+        .map(ExerciseComponentMapper.INSTANCE::convertEntityToExerciseComponentOutputDTO)
+        .collect(Collectors.toList());
+    return exerciseComponentsOutputDTOs;
   }
 }
