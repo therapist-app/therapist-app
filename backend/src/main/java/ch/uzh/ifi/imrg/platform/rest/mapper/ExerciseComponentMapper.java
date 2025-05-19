@@ -17,5 +17,6 @@ public interface ExerciseComponentMapper {
   @Mapping(source = "fileType", target = "fileType")
   @Mapping(source = "extractedText", target = "extractedText")
   @Mapping(source = "orderNumber", target = "orderNumber")
-  ExerciseComponentOutputDTO convertEntityToExerciseComponentOutputDTO(ExerciseComponent exerciseComponent);
+  ExerciseComponentOutputDTO convertEntityToExerciseComponentOutputDTO(
+      ExerciseComponent exerciseComponent);
 }

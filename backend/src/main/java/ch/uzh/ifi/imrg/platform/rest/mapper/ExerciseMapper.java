@@ -4,7 +4,6 @@ import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseComponentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -21,13 +20,15 @@ public interface ExerciseMapper {
   @Mapping(source = "exerciseComponents", target = "exerciseComponentsOutputDTO")
   ExerciseOutputDTO convertEntityToExerciseOutputDTO(Exercise exercise);
 
-  default List<ExerciseComponentOutputDTO> mapExerciseComponents(List<ExerciseComponent> exerciseComponents) {
+  default List<ExerciseComponentOutputDTO> mapExerciseComponents(
+      List<ExerciseComponent> exerciseComponents) {
     if (exerciseComponents == null) {
       return null;
     }
-    List<ExerciseComponentOutputDTO> exerciseComponentsOutputDTOs = exerciseComponents.stream()
-        .map(ExerciseComponentMapper.INSTANCE::convertEntityToExerciseComponentOutputDTO)
-        .collect(Collectors.toList());
+    List<ExerciseComponentOutputDTO> exerciseComponentsOutputDTOs =
+        exerciseComponents.stream()
+            .map(ExerciseComponentMapper.INSTANCE::convertEntityToExerciseComponentOutputDTO)
+            .collect(Collectors.toList());
     return exerciseComponentsOutputDTOs;
   }
 }

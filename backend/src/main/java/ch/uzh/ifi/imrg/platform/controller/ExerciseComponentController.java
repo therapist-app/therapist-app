@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseComponentOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -46,8 +45,10 @@ public class ExerciseComponentController {
   }
 
   @GetMapping("/{exerciseComponentId}/download")
-  public ResponseEntity<Resource> downloadExerciseComponentFile(@PathVariable String exerciseComponentId) {
-    ExerciseComponent exerciseComponent = exerciseComponentService.getExerciseComponent(exerciseComponentId);
+  public ResponseEntity<Resource> downloadExerciseComponentFile(
+      @PathVariable String exerciseComponentId) {
+    ExerciseComponent exerciseComponent =
+        exerciseComponentService.getExerciseComponent(exerciseComponentId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()
@@ -61,7 +62,8 @@ public class ExerciseComponentController {
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public void updateExerciseComponent(@RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO) {
+  public void updateExerciseComponent(
+      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO) {
     exerciseComponentService.updateExerciseComponent(updateExerciseComponentDTO);
   }
 

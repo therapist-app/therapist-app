@@ -35,7 +35,8 @@ public class ExerciseService {
 
   public ExerciseOutputDTO createExercise(CreateExcerciseDTO createExcerciseDTO) {
 
-    TherapySession therapySession = therapySessionRepository.getReferenceById(createExcerciseDTO.getTherapySessionId());
+    TherapySession therapySession =
+        therapySessionRepository.getReferenceById(createExcerciseDTO.getTherapySessionId());
 
     Exercise exercise = new Exercise();
     exercise.setTherapySession(therapySession);

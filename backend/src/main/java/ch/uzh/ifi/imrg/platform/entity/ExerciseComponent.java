@@ -1,13 +1,12 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.enums.ExerciseComponentType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import ch.uzh.ifi.imrg.platform.enums.ExerciseComponentType;
 
 @Data
 @Entity
@@ -26,25 +25,19 @@ public class ExerciseComponent {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column
-  private ExerciseComponentType exerciseComponentType;
+  @Column private ExerciseComponentType exerciseComponentType;
 
-  @Column
-  private String description;
+  @Column private String description;
 
   private String fileName;
 
   private String fileType;
 
-  @Lob
-  private byte[] fileData;
+  @Lob private byte[] fileData;
 
-  @Lob
-  @Column
-  private String extractedText;
+  @Lob @Column private String extractedText;
 
-  @Column()
-  private Integer orderNumber;
+  @Column() private Integer orderNumber;
 
   @ManyToOne
   @JoinColumn(name = "exercise_id", referencedColumnName = "id")

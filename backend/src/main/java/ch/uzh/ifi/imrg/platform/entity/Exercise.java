@@ -27,13 +27,15 @@ public class Exercise {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column()
-  private String title;
+  @Column() private String title;
 
-  @Column()
-  private ExerciseType exerciseType;
+  @Column() private ExerciseType exerciseType;
 
-  @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "exercise",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @ManyToOne

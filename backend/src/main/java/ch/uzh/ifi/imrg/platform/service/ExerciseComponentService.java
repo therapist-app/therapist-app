@@ -6,7 +6,6 @@ import ch.uzh.ifi.imrg.platform.repository.ExerciseComponentRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseComponentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseComponentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import jakarta.transaction.Transactional;
@@ -28,15 +27,17 @@ public class ExerciseComponentService {
   private final ExerciseComponentMapper exerciseComponentMapper = ExerciseComponentMapper.INSTANCE;
 
   public ExerciseComponentService(
-      @Qualifier("exerciseComponentRepository") ExerciseComponentRepository exerciseComponentRepository,
+      @Qualifier("exerciseComponentRepository")
+          ExerciseComponentRepository exerciseComponentRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
     this.exerciseComponentRepository = exerciseComponentRepository;
     this.exerciseRepository = exerciseRepository;
-
   }
 
-  public void createExerciseComponent(CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file) {
-    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+  public void createExerciseComponent(
+      CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file) {
+    Exercise exercise =
+        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
 
     String extractedText = DocumentParserUtil.extractText(file);
 
@@ -45,8 +46,7 @@ public class ExerciseComponentService {
     exerciseComponent.setFileName(file.getOriginalFilename());
     exerciseComponent.setFileType(file.getContentType());
     exerciseComponent.setExtractedText(extractedText);
-    exerciseComponent.setOrderNumber(
-        exercise.getExerciseComponents().size() + 1);
+    exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
     exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
 
     try {
