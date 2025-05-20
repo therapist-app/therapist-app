@@ -79,7 +79,7 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
   return (
     <div>
       {isEditing === false ? (
-        <Accordion>
+        <Accordion sx={{ maxWidth: '600px' }}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls='panel2-content'
