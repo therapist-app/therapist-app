@@ -1,4 +1,6 @@
-import { Typography } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Button, Typography } from '@mui/material'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -13,9 +15,10 @@ import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import ShowExerciseFileComponent from '../../generalComponents/ShowExerciseFileComponent'
 import ShowExerciseTextComponent from '../../generalComponents/ShowExerciseTextComponent'
-import { getExerciseById } from '../../store/exerciseSlice'
+import { deleteExcercise, getExerciseById } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const ExerciseDetail = (): ReactElement => {
   const navigate = useNavigate()
@@ -37,6 +40,16 @@ const ExerciseDetail = (): ReactElement => {
     } catch (e) {
       console.error(e)
     }
+  }
+
+  const handleDeleteExercise = async (): Promise<void> => {
+    await dispatch(deleteExcercise(exerciseId ?? ''))
+    navigate(
+      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+        patientId: patientId ?? '',
+        therapySessionId: therapySessionId ?? '',
+      })
+    )
   }
 
   useEffect(() => {
@@ -137,6 +150,10 @@ const ExerciseDetail = (): ReactElement => {
             }
           />
         </div>
+        <Button sx={{ alignSelf: 'start', marginTop: '50px' }} onClick={handleDeleteExercise}>
+          <Typography color='error'>Delete Exercise</Typography>
+          <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />
+        </Button>
       </div>
     </Layout>
   )

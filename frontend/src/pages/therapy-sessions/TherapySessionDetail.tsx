@@ -164,31 +164,47 @@ const TherapySessionDetail = (): ReactElement => {
               Create new Exercise
             </Button>
           </div>
-          {allExercises && allExercises.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              {allExercises.map((exercise) => (
-                <Button
-                  key={exercise.id ?? ''}
-                  sx={{
-                    maxWidth: '500px',
-                    textAlign: 'left',
-                    alignItems: 'start',
-                    justifyContent: 'start',
-                  }}
-                  color='primary'
-                  onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
-                >
-                  <span>
-                    {exercise.title} | {exercise.exerciseType}
-                  </span>
-                </Button>
-              ))}
-            </div>
-          ) : (
-            <>
-              <Typography>You don't have any exercises yet...</Typography>
-            </>
-          )}
+
+          <TableContainer sx={{ marginTop: '10px', maxWidth: '600px' }} component={Paper}>
+            <Table aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                      Exercise
+                    </div>
+                  </TableCell>
+                  <TableCell align='right'>Exercise Type</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allExercises.map((exercise) => (
+                  <TableRow
+                    onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
+                    key={exercise.id}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <TableCell
+                      sx={{
+                        maxWidth: 400,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                      component='th'
+                      scope='row'
+                    >
+                      {exercise.title}
+                    </TableCell>
+                    <TableCell align='right'>{exercise.exerciseType}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
 
         <>
