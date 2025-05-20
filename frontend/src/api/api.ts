@@ -238,6 +238,76 @@ export interface CreateChatbotTemplateDTO {
 /**
  * 
  * @export
+ * @interface CreateExerciseComponentDTO
+ */
+export interface CreateExerciseComponentDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseComponentDTO
+     */
+    'exerciseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseComponentDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseComponentDTO
+     */
+    'exerciseComponentType'?: CreateExerciseComponentDTOExerciseComponentTypeEnum;
+}
+
+export const CreateExerciseComponentDTOExerciseComponentTypeEnum = {
+    Text: 'TEXT',
+    InputField: 'INPUT_FIELD',
+    File: 'FILE',
+    Image: 'IMAGE',
+    YoutubeVideo: 'YOUTUBE_VIDEO'
+} as const;
+
+export type CreateExerciseComponentDTOExerciseComponentTypeEnum = typeof CreateExerciseComponentDTOExerciseComponentTypeEnum[keyof typeof CreateExerciseComponentDTOExerciseComponentTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface CreateExerciseDTO
+ */
+export interface CreateExerciseDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'therapySessionId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'exerciseType'?: CreateExerciseDTOExerciseTypeEnum;
+}
+
+export const CreateExerciseDTOExerciseTypeEnum = {
+    Journaling: 'JOURNALING',
+    Breathing: 'BREATHING',
+    Other: 'OTHER'
+} as const;
+
+export type CreateExerciseDTOExerciseTypeEnum = typeof CreateExerciseDTOExerciseTypeEnum[keyof typeof CreateExerciseDTOExerciseTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface CreateGAD7TestDTO
  */
 export interface CreateGAD7TestDTO {
@@ -414,6 +484,106 @@ export interface CreateTherapySessionNoteDTO {
      */
     'content'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface ExerciseComponentOutputDTO
+ */
+export interface ExerciseComponentOutputDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'exerciseComponentType'?: ExerciseComponentOutputDTOExerciseComponentTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'fileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'fileType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'extractedText'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseComponentOutputDTO
+     */
+    'orderNumber'?: number;
+}
+
+export const ExerciseComponentOutputDTOExerciseComponentTypeEnum = {
+    Text: 'TEXT',
+    InputField: 'INPUT_FIELD',
+    File: 'FILE',
+    Image: 'IMAGE',
+    YoutubeVideo: 'YOUTUBE_VIDEO'
+} as const;
+
+export type ExerciseComponentOutputDTOExerciseComponentTypeEnum = typeof ExerciseComponentOutputDTOExerciseComponentTypeEnum[keyof typeof ExerciseComponentOutputDTOExerciseComponentTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface ExerciseOutputDTO
+ */
+export interface ExerciseOutputDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'exerciseType'?: ExerciseOutputDTOExerciseTypeEnum;
+    /**
+     * 
+     * @type {Array<ExerciseComponentOutputDTO>}
+     * @memberof ExerciseOutputDTO
+     */
+    'exerciseComponentsOutputDTO'?: Array<ExerciseComponentOutputDTO>;
+}
+
+export const ExerciseOutputDTOExerciseTypeEnum = {
+    Journaling: 'JOURNALING',
+    Breathing: 'BREATHING',
+    Other: 'OTHER'
+} as const;
+
+export type ExerciseOutputDTOExerciseTypeEnum = typeof ExerciseOutputDTOExerciseTypeEnum[keyof typeof ExerciseOutputDTOExerciseTypeEnum];
+
 /**
  * 
  * @export
@@ -733,6 +903,65 @@ export interface TherapySessionOutputDTO {
      */
     'therapySessionNotesOutputDTO'?: Array<TherapySessionNoteOutputDTO>;
 }
+/**
+ * 
+ * @export
+ * @interface UpdateExerciseComponentDTO
+ */
+export interface UpdateExerciseComponentDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseComponentDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseComponentDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateExerciseComponentDTO
+     */
+    'orderNumber'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateExerciseDTO
+ */
+export interface UpdateExerciseDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'exerciseType'?: UpdateExerciseDTOExerciseTypeEnum;
+}
+
+export const UpdateExerciseDTOExerciseTypeEnum = {
+    Journaling: 'JOURNALING',
+    Breathing: 'BREATHING',
+    Other: 'OTHER'
+} as const;
+
+export type UpdateExerciseDTOExerciseTypeEnum = typeof UpdateExerciseDTOExerciseTypeEnum[keyof typeof UpdateExerciseDTOExerciseTypeEnum];
+
 /**
  * 
  * @export
@@ -1222,6 +1451,866 @@ export class ChatbotTemplateControllerApi extends BaseAPI implements ChatbotTemp
      */
     public updateTemplate(templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig) {
         return ChatbotTemplateControllerApiFp(this.configuration).updateTemplate(templateId, createChatbotTemplateDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ExerciseComponentControllerApi - axios parameter creator
+ * @export
+ */
+export const ExerciseComponentControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} createExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseComponent: async (createExerciseComponentDTO: CreateExerciseComponentDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createExerciseComponentDTO' is not null or undefined
+            assertParamExists('createExerciseComponent', 'createExerciseComponentDTO', createExerciseComponentDTO)
+            const localVarPath = `/exercise-components/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createExerciseComponentDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} metadata 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseComponentWithFile: async (metadata: CreateExerciseComponentDTO, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'metadata' is not null or undefined
+            assertParamExists('createExerciseComponentWithFile', 'metadata', metadata)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('createExerciseComponentWithFile', 'file', file)
+            const localVarPath = `/exercise-components/with-file`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (metadata !== undefined) { 
+                localVarFormParams.append('metadata', new Blob([JSON.stringify(metadata)], { type: "application/json", }));
+            }
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteExerciseComponent: async (exerciseComponentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseComponentId' is not null or undefined
+            assertParamExists('deleteExerciseComponent', 'exerciseComponentId', exerciseComponentId)
+            const localVarPath = `/exercise-components/{exerciseComponentId}`
+                .replace(`{${"exerciseComponentId"}}`, encodeURIComponent(String(exerciseComponentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadExerciseComponentFile: async (exerciseComponentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseComponentId' is not null or undefined
+            assertParamExists('downloadExerciseComponentFile', 'exerciseComponentId', exerciseComponentId)
+            const localVarPath = `/exercise-components/{exerciseComponentId}/download`
+                .replace(`{${"exerciseComponentId"}}`, encodeURIComponent(String(exerciseComponentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateExerciseComponentDTO} updateExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExerciseComponent: async (updateExerciseComponentDTO: UpdateExerciseComponentDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateExerciseComponentDTO' is not null or undefined
+            assertParamExists('updateExerciseComponent', 'updateExerciseComponentDTO', updateExerciseComponentDTO)
+            const localVarPath = `/exercise-components/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateExerciseComponentDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ExerciseComponentControllerApi - functional programming interface
+ * @export
+ */
+export const ExerciseComponentControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ExerciseComponentControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} createExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createExerciseComponent(createExerciseComponentDTO: CreateExerciseComponentDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createExerciseComponent(createExerciseComponentDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseComponentControllerApi.createExerciseComponent']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} metadata 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createExerciseComponentWithFile(metadata: CreateExerciseComponentDTO, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createExerciseComponentWithFile(metadata, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseComponentControllerApi.createExerciseComponentWithFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteExerciseComponent(exerciseComponentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteExerciseComponent(exerciseComponentId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseComponentControllerApi.deleteExerciseComponent']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadExerciseComponentFile(exerciseComponentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<File>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadExerciseComponentFile(exerciseComponentId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseComponentControllerApi.downloadExerciseComponentFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {UpdateExerciseComponentDTO} updateExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateExerciseComponent(updateExerciseComponentDTO: UpdateExerciseComponentDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateExerciseComponent(updateExerciseComponentDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseComponentControllerApi.updateExerciseComponent']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ExerciseComponentControllerApi - factory interface
+ * @export
+ */
+export const ExerciseComponentControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ExerciseComponentControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} createExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseComponent(createExerciseComponentDTO: CreateExerciseComponentDTO, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createExerciseComponent(createExerciseComponentDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {CreateExerciseComponentDTO} metadata 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExerciseComponentWithFile(metadata: CreateExerciseComponentDTO, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createExerciseComponentWithFile(metadata, file, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteExerciseComponent(exerciseComponentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteExerciseComponent(exerciseComponentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} exerciseComponentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadExerciseComponentFile(exerciseComponentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File> {
+            return localVarFp.downloadExerciseComponentFile(exerciseComponentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateExerciseComponentDTO} updateExerciseComponentDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExerciseComponent(updateExerciseComponentDTO: UpdateExerciseComponentDTO, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.updateExerciseComponent(updateExerciseComponentDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ExerciseComponentControllerApi - interface
+ * @export
+ * @interface ExerciseComponentControllerApi
+ */
+export interface ExerciseComponentControllerApiInterface {
+    /**
+     * 
+     * @param {CreateExerciseComponentDTO} createExerciseComponentDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApiInterface
+     */
+    createExerciseComponent(createExerciseComponentDTO: CreateExerciseComponentDTO, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {CreateExerciseComponentDTO} metadata 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApiInterface
+     */
+    createExerciseComponentWithFile(metadata: CreateExerciseComponentDTO, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} exerciseComponentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApiInterface
+     */
+    deleteExerciseComponent(exerciseComponentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} exerciseComponentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApiInterface
+     */
+    downloadExerciseComponentFile(exerciseComponentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File>;
+
+    /**
+     * 
+     * @param {UpdateExerciseComponentDTO} updateExerciseComponentDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApiInterface
+     */
+    updateExerciseComponent(updateExerciseComponentDTO: UpdateExerciseComponentDTO, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+}
+
+/**
+ * ExerciseComponentControllerApi - object-oriented interface
+ * @export
+ * @class ExerciseComponentControllerApi
+ * @extends {BaseAPI}
+ */
+export class ExerciseComponentControllerApi extends BaseAPI implements ExerciseComponentControllerApiInterface {
+    /**
+     * 
+     * @param {CreateExerciseComponentDTO} createExerciseComponentDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApi
+     */
+    public createExerciseComponent(createExerciseComponentDTO: CreateExerciseComponentDTO, options?: RawAxiosRequestConfig) {
+        return ExerciseComponentControllerApiFp(this.configuration).createExerciseComponent(createExerciseComponentDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CreateExerciseComponentDTO} metadata 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApi
+     */
+    public createExerciseComponentWithFile(metadata: CreateExerciseComponentDTO, file: File, options?: RawAxiosRequestConfig) {
+        return ExerciseComponentControllerApiFp(this.configuration).createExerciseComponentWithFile(metadata, file, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} exerciseComponentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApi
+     */
+    public deleteExerciseComponent(exerciseComponentId: string, options?: RawAxiosRequestConfig) {
+        return ExerciseComponentControllerApiFp(this.configuration).deleteExerciseComponent(exerciseComponentId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} exerciseComponentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApi
+     */
+    public downloadExerciseComponentFile(exerciseComponentId: string, options?: RawAxiosRequestConfig) {
+        return ExerciseComponentControllerApiFp(this.configuration).downloadExerciseComponentFile(exerciseComponentId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateExerciseComponentDTO} updateExerciseComponentDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseComponentControllerApi
+     */
+    public updateExerciseComponent(updateExerciseComponentDTO: UpdateExerciseComponentDTO, options?: RawAxiosRequestConfig) {
+        return ExerciseComponentControllerApiFp(this.configuration).updateExerciseComponent(updateExerciseComponentDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ExerciseControllerApi - axios parameter creator
+ * @export
+ */
+export const ExerciseControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {CreateExerciseDTO} createExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExercise: async (createExerciseDTO: CreateExerciseDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createExerciseDTO' is not null or undefined
+            assertParamExists('createExercise', 'createExerciseDTO', createExerciseDTO)
+            const localVarPath = `/exercises/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createExerciseDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteExercise: async (exerciseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseId' is not null or undefined
+            assertParamExists('deleteExercise', 'exerciseId', exerciseId)
+            const localVarPath = `/exercises/{exerciseId}`
+                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllExercisesOfTherapySession: async (therapySessionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapySessionId' is not null or undefined
+            assertParamExists('getAllExercisesOfTherapySession', 'therapySessionId', therapySessionId)
+            const localVarPath = `/exercises/therapy-session/{therapySessionId}`
+                .replace(`{${"therapySessionId"}}`, encodeURIComponent(String(therapySessionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExerciseById: async (exerciseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseId' is not null or undefined
+            assertParamExists('getExerciseById', 'exerciseId', exerciseId)
+            const localVarPath = `/exercises/{exerciseId}`
+                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateExerciseDTO} updateExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExercise: async (updateExerciseDTO: UpdateExerciseDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateExerciseDTO' is not null or undefined
+            assertParamExists('updateExercise', 'updateExerciseDTO', updateExerciseDTO)
+            const localVarPath = `/exercises/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateExerciseDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ExerciseControllerApi - functional programming interface
+ * @export
+ */
+export const ExerciseControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ExerciseControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateExerciseDTO} createExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createExercise(createExerciseDTO: CreateExerciseDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createExercise(createExerciseDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseControllerApi.createExercise']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteExercise(exerciseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteExercise(exerciseId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseControllerApi.deleteExercise']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllExercisesOfTherapySession(therapySessionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllExercisesOfTherapySession(therapySessionId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseControllerApi.getAllExercisesOfTherapySession']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getExerciseById(exerciseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExerciseById(exerciseId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseControllerApi.getExerciseById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {UpdateExerciseDTO} updateExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateExercise(updateExerciseDTO: UpdateExerciseDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateExercise(updateExerciseDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExerciseControllerApi.updateExercise']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ExerciseControllerApi - factory interface
+ * @export
+ */
+export const ExerciseControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ExerciseControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateExerciseDTO} createExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createExercise(createExerciseDTO: CreateExerciseDTO, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO> {
+            return localVarFp.createExercise(createExerciseDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteExercise(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteExercise(exerciseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} therapySessionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllExercisesOfTherapySession(therapySessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseOutputDTO>> {
+            return localVarFp.getAllExercisesOfTherapySession(therapySessionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExerciseById(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO> {
+            return localVarFp.getExerciseById(exerciseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateExerciseDTO} updateExerciseDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExercise(updateExerciseDTO: UpdateExerciseDTO, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO> {
+            return localVarFp.updateExercise(updateExerciseDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ExerciseControllerApi - interface
+ * @export
+ * @interface ExerciseControllerApi
+ */
+export interface ExerciseControllerApiInterface {
+    /**
+     * 
+     * @param {CreateExerciseDTO} createExerciseDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApiInterface
+     */
+    createExercise(createExerciseDTO: CreateExerciseDTO, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO>;
+
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApiInterface
+     */
+    deleteExercise(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} therapySessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApiInterface
+     */
+    getAllExercisesOfTherapySession(therapySessionId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ExerciseOutputDTO>>;
+
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApiInterface
+     */
+    getExerciseById(exerciseId: string, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO>;
+
+    /**
+     * 
+     * @param {UpdateExerciseDTO} updateExerciseDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApiInterface
+     */
+    updateExercise(updateExerciseDTO: UpdateExerciseDTO, options?: RawAxiosRequestConfig): AxiosPromise<ExerciseOutputDTO>;
+
+}
+
+/**
+ * ExerciseControllerApi - object-oriented interface
+ * @export
+ * @class ExerciseControllerApi
+ * @extends {BaseAPI}
+ */
+export class ExerciseControllerApi extends BaseAPI implements ExerciseControllerApiInterface {
+    /**
+     * 
+     * @param {CreateExerciseDTO} createExerciseDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApi
+     */
+    public createExercise(createExerciseDTO: CreateExerciseDTO, options?: RawAxiosRequestConfig) {
+        return ExerciseControllerApiFp(this.configuration).createExercise(createExerciseDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApi
+     */
+    public deleteExercise(exerciseId: string, options?: RawAxiosRequestConfig) {
+        return ExerciseControllerApiFp(this.configuration).deleteExercise(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} therapySessionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApi
+     */
+    public getAllExercisesOfTherapySession(therapySessionId: string, options?: RawAxiosRequestConfig) {
+        return ExerciseControllerApiFp(this.configuration).getAllExercisesOfTherapySession(therapySessionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApi
+     */
+    public getExerciseById(exerciseId: string, options?: RawAxiosRequestConfig) {
+        return ExerciseControllerApiFp(this.configuration).getExerciseById(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateExerciseDTO} updateExerciseDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseControllerApi
+     */
+    public updateExercise(updateExerciseDTO: UpdateExerciseDTO, options?: RawAxiosRequestConfig) {
+        return ExerciseControllerApiFp(this.configuration).updateExercise(updateExerciseDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
