@@ -1,14 +1,10 @@
-import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Button, Typography } from '@mui/material'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  ExerciseComponentOutputDTO,
-  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
-} from '../../api'
+import { ExerciseComponentOutputDTOExerciseComponentTypeEnum } from '../../api'
 import CreateExerciseFileComponent from '../../generalComponents/CreateExerciseFileComponent'
 import CreateExerciseTextComponent from '../../generalComponents/CreateExerciseTextComponent'
 import Layout from '../../generalComponents/Layout'
@@ -53,8 +49,15 @@ const ExerciseDetail = (): ReactElement => {
   }
 
   useEffect(() => {
+    const refreshExercise = async (): Promise<void> => {
+      try {
+        await dispatch(getExerciseById(exerciseId ?? ''))
+      } catch (e) {
+        console.error(e)
+      }
+    }
     refreshExercise()
-  }, [])
+  }, [exerciseId, dispatch])
 
   if (exerciseStatus === 'loading') {
     return (

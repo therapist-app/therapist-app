@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import DownloadIcon from '@mui/icons-material/Download'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
@@ -76,7 +75,7 @@ const PatientDetail = (): ReactElement => {
     setRefreshPatientDocumentsCounter((prev) => prev + 1)
   }
 
-  const downloadFile = async (fileId: string, fileName: string): Promise<string> => {
+  const downloadFile = async (fileId: string): Promise<string> => {
     const response = await patientDocumentApi.downloadFile(fileId, {
       responseType: 'blob',
     })
@@ -198,9 +197,7 @@ const PatientDetail = (): ReactElement => {
                 </TableCell>
                 <TableCell align='right'>
                   <FileDownload
-                    download={() =>
-                      downloadFile(patientDocument.id ?? '', patientDocument.fileName ?? '')
-                    }
+                    download={() => downloadFile(patientDocument.id ?? '')}
                     fileName={patientDocument.fileName ?? ''}
                   />
                   <IconButton

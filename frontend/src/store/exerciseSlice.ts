@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   CreateExerciseComponentDTO,
   CreateExerciseDTO,
-  ExerciseComponentOutputDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   ExerciseOutputDTO,
   TherapySessionOutputDTO,

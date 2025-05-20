@@ -1,7 +1,7 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
-import { ReactElement, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -19,7 +19,7 @@ interface CreateExerciseTextComponentProps {
 const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
   props: CreateExerciseTextComponentProps
 ) => {
-  const { patientId, therapySessionId, exerciseId } = useParams()
+  const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
 

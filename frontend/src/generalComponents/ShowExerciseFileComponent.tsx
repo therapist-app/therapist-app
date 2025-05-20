@@ -36,7 +36,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
     }
     console.log('Fired')
     downloadImageFile()
-  }, [])
+  }, [dispatch, exerciseComponent.id])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
