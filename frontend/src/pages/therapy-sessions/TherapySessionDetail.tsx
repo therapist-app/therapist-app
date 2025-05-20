@@ -165,46 +165,50 @@ const TherapySessionDetail = (): ReactElement => {
             </Button>
           </div>
 
-          <TableContainer sx={{ marginTop: '10px', maxWidth: '600px' }} component={Paper}>
-            <Table aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                      Exercise
-                    </div>
-                  </TableCell>
-                  <TableCell align='right'>Exercise Type</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {allExercises.map((exercise) => (
-                  <TableRow
-                    onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
-                    key={exercise.id}
-                    sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <TableCell
-                      sx={{
-                        maxWidth: 400,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                      component='th'
-                      scope='row'
-                    >
-                      {exercise.title}
+          {allExercises.length > 0 ? (
+            <TableContainer sx={{ marginTop: '10px', maxWidth: '600px' }} component={Paper}>
+              <Table aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                        Exercise
+                      </div>
                     </TableCell>
-                    <TableCell align='right'>{exercise.exerciseType}</TableCell>
+                    <TableCell align='right'>Exercise Type</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {allExercises.map((exercise) => (
+                    <TableRow
+                      onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
+                      key={exercise.id}
+                      sx={{
+                        '&:last-child td, &:last-child th': { border: 0 },
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <TableCell
+                        sx={{
+                          maxWidth: 400,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                        component='th'
+                        scope='row'
+                      >
+                        {exercise.title}
+                      </TableCell>
+                      <TableCell align='right'>{exercise.exerciseType}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Typography>You haven't added any exercises yet...</Typography>
+          )}
         </div>
 
         <>
