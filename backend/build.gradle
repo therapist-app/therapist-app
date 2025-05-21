@@ -44,7 +44,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux' // <--- ADD THIS LINE
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -73,7 +73,6 @@ dependencies {
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
 }
-
 
 bootJar {
 	archiveBaseName.set("app")
@@ -114,28 +113,6 @@ spotless {
 	}
 }
 
-openApiGenerate {
-	generatorName = 'java'
-	remoteInputSpec = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
-	outputDir = "$projectDir/src/generated/java"
-	apiPackage = 'ch.uzh.ifi.imrg.generated.api'
-	modelPackage = 'ch.uzh.ifi.imrg.generated.model'
-	invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
-	modelNameSuffix = "PatientAPI"
-	apiNameSuffix = "PatientAPI"
-	typeMappings = ["time": "LocalTime"]
-    importMappings = ["LocalTime": "java.time.LocalTime"]
-	configOptions = [
-		library: 'webclient',
-		dateLibrary: 'java8',
-		useTags: 'true',
-		hideGenerationTimestamp: 'true',
-	]
-}
-
-
-
-
 sourceSets {
 	main {
 		java {
@@ -143,7 +120,48 @@ sourceSets {
 		}
 	}
 }
+def openApiSpecUrl = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
 
+tasks.named('openApiGenerate') {
+    onlyIf {
+        if (project.hasProperty('skipOpenApiGenerate') && project.property('skipOpenApiGenerate') == 'true') {
+            logger.lifecycle("⏭️ Skipping openApiGenerate because -PskipOpenApiGenerate was set")
+            return false
+        }
 
+        try {
+            def connection = new URL(openApiSpecUrl).openConnection() as HttpURLConnection
+            connection.setRequestMethod("HEAD")
+            connection.setConnectTimeout(2000)
+            connection.setReadTimeout(2000)
+            connection.connect()
+            def reachable = connection.getResponseCode() == 200
+            if (!reachable) logger.warn("⚠️ openApiGenerate skipped: URL returned status ${connection.getResponseCode()}")
+            return reachable
+        } catch (Exception e) {
+            logger.warn("⚠️ openApiGenerate skipped: Could not connect to OpenAPI URL - ${e.message}")
+            return false
+        }
+    }
 
-compileJava.dependsOn tasks.openApiGenerate
+    generatorName = 'java'
+    remoteInputSpec = openApiSpecUrl
+    outputDir = "$projectDir/src/generated/java"
+    apiPackage = 'ch.uzh.ifi.imrg.generated.api'
+    modelPackage = 'ch.uzh.ifi.imrg.generated.model'
+    invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
+    modelNameSuffix = "PatientAPI"
+    apiNameSuffix = "PatientAPI"
+    typeMappings = ["time": "LocalTime"]
+    importMappings = ["LocalTime": "java.time.LocalTime"]
+    configOptions = [
+        library: 'webclient',
+        dateLibrary: 'java8',
+        useTags: 'true',
+        hideGenerationTimestamp: 'true',
+    ]
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('openApiGenerate')
+}

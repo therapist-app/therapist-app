@@ -12,6 +12,7 @@ configMapGenerator:
       - DB_NAME=therapist_app_production_db
       - DB_USERNAME=therapist-user
       - LOCAL_LLM_URL=vllm-imrg.ifi.uzh.ch
+      - PATIENT_APP_URL=https://backend-patient-app-production.jonas-blum.ch
 
 secretGenerator:
   - name: therapist-app-backend-secret
