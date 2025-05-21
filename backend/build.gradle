@@ -111,6 +111,7 @@ sourceSets {
 		}
 	}
 }
+
 def openApiSpecUrl = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
 
 tasks.named('openApiGenerate') {
