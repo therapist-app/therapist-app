@@ -57,7 +57,7 @@ public class PatientService {
     try {
       CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
       createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
-      createPatientDTOPatientAPI.password("Password");
+      createPatientDTOPatientAPI.password("password");
 
       PatientAppAPIs.patientControllerPatientAPI
           .registerPatient(createPatientDTOPatientAPI)
