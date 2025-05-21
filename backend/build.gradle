@@ -109,7 +109,7 @@ defaultTasks 'bootJar', 'build'
 
 spotless {
 	java {
-		target 'src/**/*.java'
+		target 'src/main/**/*.java'
 		googleJavaFormat()
 	}
 }

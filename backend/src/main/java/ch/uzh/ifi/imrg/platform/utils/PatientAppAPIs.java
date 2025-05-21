@@ -15,5 +15,4 @@ public class PatientAppAPIs {
     patientControllerPatientAPI = new PatientControllerPatientAPI();
     patientControllerPatientAPI.getApiClient().setBasePath(PATIENT_APP_URL);
   }
-
 }

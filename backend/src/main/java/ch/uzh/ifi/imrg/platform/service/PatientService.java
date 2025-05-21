@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
@@ -19,10 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
-import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
-import reactor.core.publisher.Mono;
-
 @Service
 @Transactional
 public class PatientService {
@@ -34,8 +31,7 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -46,9 +42,10 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -63,7 +60,8 @@ public class PatientService {
       createPatientDTOPatientAPI.password("Password");
 
       PatientAppAPIs.patientControllerPatientAPI
-          .registerPatient(createPatientDTOPatientAPI).block();
+          .registerPatient(createPatientDTOPatientAPI)
+          .block();
     } catch (WebClientResponseException e) {
       logger.error(e.toString());
     }
@@ -72,10 +70,11 @@ public class PatientService {
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient = loggedInTherapist.getPatients().stream()
-        .filter(p -> p.getId().equals(patientId))
-        .findFirst()
-        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient =
+        loggedInTherapist.getPatients().stream()
+            .filter(p -> p.getId().equals(patientId))
+            .findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 
