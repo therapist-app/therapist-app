@@ -1,0 +1,251 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- description: Generated server url
+  url: http://backend-patient-app-main.jonas-blum.ch
+paths:
+  /patients/register:
+    post:
+      operationId: registerPatient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePatientDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: Created
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /patients/logout:
+    post:
+      operationId: logoutTherapist
+      responses:
+        "200":
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: application/json
+  /patients/login:
+    post:
+      operationId: loginTherapist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginPatientDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /patients/conversations:
+    post:
+      operationId: createConversation
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateConversationOutputDTO'
+          description: Created
+      tags:
+      - conversation-controller
+      x-accepts: '*/*'
+  /patients/conversations/{conversationId}:
+    get:
+      operationId: getAllMessages
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CompleteConversationOutputDTO'
+          description: OK
+      tags:
+      - conversation-controller
+      x-accepts: '*/*'
+    post:
+      operationId: sendMessage
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageOutputDTO'
+          description: OK
+      tags:
+      - conversation-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /patients/me:
+    get:
+      operationId: getCurrentlyLoggedInPatient
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+  /:
+    get:
+      operationId: helloWorld
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: OK
+      tags:
+      - patient-app-application
+      x-accepts: text/plain
+components:
+  schemas:
+    CreatePatientDTO:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      type: object
+    PatientOutputDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        phoneNumber: phoneNumber
+        address: address
+        gender: gender
+        name: name
+        description: description
+        id: id
+        age: 0
+        email: email
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        phoneNumber:
+          type: string
+        address:
+          type: string
+        gender:
+          type: string
+        description:
+          type: string
+        age:
+          format: int32
+          type: integer
+        email:
+          type: string
+      type: object
+    LoginPatientDTO:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      type: object
+    CreateConversationOutputDTO:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    CreateMessageDTO:
+      properties:
+        message:
+          type: string
+      type: object
+    MessageOutputDTO:
+      example:
+        requestMessage: requestMessage
+        conversationId: conversationId
+        id: id
+        responseMessage: responseMessage
+        timestamp: timestamp
+      properties:
+        timestamp:
+          type: string
+        id:
+          type: string
+        conversationId:
+          type: string
+        responseMessage:
+          type: string
+        requestMessage:
+          type: string
+      type: object
+    CompleteConversationOutputDTO:
+      example:
+        messages:
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        id: id
+      properties:
+        id:
+          type: string
+        messages:
+          items:
+            $ref: '#/components/schemas/MessageOutputDTO'
+          type: array
+      type: object
+

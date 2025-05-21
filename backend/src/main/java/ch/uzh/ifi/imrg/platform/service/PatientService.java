@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.api.PatientAppApplicationPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
@@ -7,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
@@ -28,7 +30,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -39,10 +42,9 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -50,16 +52,21 @@ public class PatientService {
     patientRepository.save(patient);
     patientRepository.flush();
 
+    CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI(
+        patient.getEmail(),
+        "password");
+
+    PatientAppAPIs.patientControllerPatientAPI.registerPatient(createPatientDTOPatientAPI);
+
     entityManager.refresh(therapist);
     return patient;
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 
