@@ -37,13 +37,15 @@ springBoot {
 }
 
 dependencies {
-	//project lombok
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux' // <--- ADD THIS LINE
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
@@ -51,8 +53,6 @@ dependencies {
 	testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 
@@ -61,16 +61,18 @@ dependencies {
 	}
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-	implementation group: 'org.json', name: 'json', version: '20240303'
 
 	implementation 'org.postgresql:postgresql:42.6.0'
-
+	implementation 'org.json:json:20240303'
 	implementation 'io.jsonwebtoken:jjwt:0.12.6'
-
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 	implementation 'org.apache.tika:tika-core:2.9.1'
-    implementation 'org.apache.tika:tika-parsers-standard-package:2.9.1'
+	implementation 'org.apache.tika:tika-parsers-standard-package:2.9.1'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+	implementation 'javax.annotation:javax.annotation-api:1.3.2'
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
+
 
 bootJar {
 	archiveBaseName.set("app")
@@ -79,12 +81,12 @@ bootJar {
 }
 
 sonar {
-	 properties {
-        property "sonar.projectKey", "therapist-app_backend"
-        property "sonar.organization", "therapist-app"
-        property "sonar.host.url", "https://sonarcloud.io"
+	properties {
+		property "sonar.projectKey", "therapist-app_backend"
+		property "sonar.organization", "therapist-app"
+		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.coverage.exclusions", "=**/*"
-    }
+	}
 }
 
 test {
@@ -101,11 +103,39 @@ if (secretPropsFile.exists()) {
 		ext[name] = value
 	}
 }
+
 defaultTasks 'bootJar', 'build'
 
 spotless {
-    java {
-        target 'src/**/*.java'
-        googleJavaFormat()
-    }
+	java {
+		target 'src/**/*.java'
+		googleJavaFormat()
+	}
 }
+
+// ---------- OPENAPI GENERATION CONFIG ----------
+openApiGenerate {
+	generatorName = 'java'
+	remoteInputSpec = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
+	outputDir = "$buildDir/generated/openapi"
+	apiPackage = 'ch.uzh.ifi.imrg.generated.api'
+	modelPackage = 'ch.uzh.ifi.imrg.generated.model'
+	invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
+	configOptions = [
+		library: 'webclient', // Valid alternative to 'restclient'
+		dateLibrary: 'java8',
+		useTags: 'true',
+		hideGenerationTimestamp: 'true'
+	]
+}
+
+
+sourceSets {
+	main {
+		java {
+			srcDir "$buildDir/generated/openapi/src/main/java"
+		}
+	}
+}
+
+compileJava.dependsOn tasks.openApiGenerate
