@@ -31,7 +31,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -42,10 +43,9 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -63,8 +63,10 @@ public class PatientService {
           .registerPatient(createPatientDTOPatientAPI)
           .block();
     } catch (WebClientResponseException e) {
+      System.out.println(e.toString());
       logger.error(e.toString());
     } catch (Error e2) {
+      System.out.println(e2.toString());
       logger.error(e2.toString());
     }
 
@@ -72,11 +74,10 @@ public class PatientService {
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 
