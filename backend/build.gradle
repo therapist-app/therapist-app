@@ -95,7 +95,6 @@ test {
 	maxParallelForks = 1
 }
 
-
 defaultTasks 'bootJar', 'build'
 
 spotless {
