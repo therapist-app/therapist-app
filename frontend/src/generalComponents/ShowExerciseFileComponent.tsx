@@ -96,10 +96,12 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
     >
       {isEditing === false ? (
         <>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.orderNumber}.</Typography>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickEdit}>
+            <Typography variant='h6'>{isImageComponent ? 'Image' : 'File'}</Typography>
+
+            <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
             </Button>
 

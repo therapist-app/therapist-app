@@ -1,15 +1,17 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Button, Typography } from '@mui/material'
+import { Button, Divider, Typography } from '@mui/material'
 import { ReactElement, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ExerciseComponentOutputDTOExerciseComponentTypeEnum } from '../../api'
 import CreateExerciseFileComponent from '../../generalComponents/CreateExerciseFileComponent'
+import CreateExerciseInputFieldComponent from '../../generalComponents/CreateExerciseInputFieldComponent'
 import CreateExerciseTextComponent from '../../generalComponents/CreateExerciseTextComponent'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import ShowExerciseFileComponent from '../../generalComponents/ShowExerciseFileComponent'
+import ShowExerciseInputFieldComponent from '../../generalComponents/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from '../../generalComponents/ShowExerciseTextComponent'
 import { deleteExcercise, getExerciseById } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
@@ -70,17 +72,33 @@ const ExerciseDetail = (): ReactElement => {
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <Typography variant='h5'>Title: {selectedExercise?.title}</Typography>
-        <Typography>Exercise Type: {selectedExercise?.exerciseType}</Typography>
+        <Typography variant='h4'>
+          Title: <strong>{selectedExercise?.title}</strong>
+        </Typography>
+        <Typography variant='h5'>
+          Exercise Type: <strong>{selectedExercise?.exerciseType}</strong>
+        </Typography>
+
+        <Divider style={{ margin: '40px 0' }} />
+
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            marginTop: '40px',
+
             maxWidth: '600px',
           }}
         >
+          {selectedExercise?.exerciseComponentsOutputDTO &&
+          selectedExercise.exerciseComponentsOutputDTO.length > 0 ? (
+            <Typography variant='h5'>Exercise Components: </Typography>
+          ) : (
+            <Typography sx={{ marginBottom: '20px' }} variant='h5'>
+              You haven' added any exercise components yet...{' '}
+            </Typography>
+          )}
+
           {selectedExercise?.exerciseComponentsOutputDTO &&
             selectedExercise.exerciseComponentsOutputDTO.map((exerciseComponent) => (
               <div
@@ -112,6 +130,15 @@ const ExerciseDetail = (): ReactElement => {
                 {exerciseComponent.exerciseComponentType ===
                   ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text && (
                   <ShowExerciseTextComponent
+                    exerciseComponent={exerciseComponent}
+                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                    refresh={refreshExercise}
+                  />
+                )}
+
+                {exerciseComponent.exerciseComponentType ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField && (
+                  <ShowExerciseInputFieldComponent
                     exerciseComponent={exerciseComponent}
                     numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
                     refresh={refreshExercise}
@@ -152,12 +179,22 @@ const ExerciseDetail = (): ReactElement => {
               addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
             }
           />
+
+          <CreateExerciseInputFieldComponent
+            createdInputField={refreshExercise}
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField
+            }
+          />
         </div>
-        <Button sx={{ alignSelf: 'start', marginTop: '50px' }} onClick={handleDeleteExercise}>
-          <Typography color='error'>Delete Exercise</Typography>
-          <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />
-        </Button>
       </div>
+      <Divider style={{ margin: '50px 0' }} />
+      <Button sx={{ alignSelf: 'start' }} onClick={handleDeleteExercise}>
+        <Typography color='error'>Delete Exercise</Typography>
+        <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />
+      </Button>
     </Layout>
   )
 }

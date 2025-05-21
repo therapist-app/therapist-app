@@ -9,14 +9,14 @@ import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../store/exerciseSlice'
 import { useAppDispatch } from '../utils/hooks'
 
-interface ShowExerciseTextComponentProps {
+interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
 }
 
-const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
-  props: ShowExerciseTextComponentProps
+const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
+  props: ShowExerciseInputFieldComponentProps
 ) => {
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
@@ -82,7 +82,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>Text</Typography>
+            <Typography variant='h6'>Input Field</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
@@ -103,7 +103,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 'px', alignItems: 'center' }}>
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
@@ -133,7 +133,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
             name='description'
             value={formData.description}
             onChange={handleChange}
-            label='Text'
+            label='Description of Input'
           />
         </>
       )}
@@ -141,4 +141,4 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
   )
 }
 
-export default ShowExerciseTextComponent
+export default ShowExerciseInputFieldComponent
