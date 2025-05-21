@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.utils;
 
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
