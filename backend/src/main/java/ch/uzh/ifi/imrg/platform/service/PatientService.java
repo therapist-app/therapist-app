@@ -63,7 +63,11 @@ public class PatientService {
           .registerPatient(createPatientDTOPatientAPI)
           .block();
     } catch (WebClientResponseException e) {
+      System.out.println(e.toString());
       logger.error(e.toString());
+    } catch (Error e2) {
+      System.out.println(e2.toString());
+      logger.error(e2.toString());
     }
 
     return patient;
