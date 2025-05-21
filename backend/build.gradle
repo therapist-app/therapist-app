@@ -113,16 +113,15 @@ spotless {
 	}
 }
 
-// ---------- OPENAPI GENERATION CONFIG ----------
 openApiGenerate {
 	generatorName = 'java'
 	remoteInputSpec = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
-	outputDir = "$buildDir/generated/openapi"
+	outputDir = "$projectDir/src/generated/java"
 	apiPackage = 'ch.uzh.ifi.imrg.generated.api'
 	modelPackage = 'ch.uzh.ifi.imrg.generated.model'
 	invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
 	configOptions = [
-		library: 'webclient', // Valid alternative to 'restclient'
+		library: 'webclient',
 		dateLibrary: 'java8',
 		useTags: 'true',
 		hideGenerationTimestamp: 'true'
@@ -130,12 +129,16 @@ openApiGenerate {
 }
 
 
+
+
 sourceSets {
 	main {
 		java {
-			srcDir "$buildDir/generated/openapi/src/main/java"
+			srcDir "$projectDir/src/generated/java/src/main/java"
 		}
 	}
 }
+
+
 
 compileJava.dependsOn tasks.openApiGenerate
