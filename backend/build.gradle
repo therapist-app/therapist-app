@@ -95,14 +95,6 @@ test {
 	maxParallelForks = 1
 }
 
-File secretPropsFile = file('./local.properties')
-if (secretPropsFile.exists()) {
-	Properties p = new Properties()
-	p.load(new FileInputStream(secretPropsFile))
-	p.each { name, value ->
-		ext[name] = value
-	}
-}
 
 defaultTasks 'bootJar', 'build'
 
