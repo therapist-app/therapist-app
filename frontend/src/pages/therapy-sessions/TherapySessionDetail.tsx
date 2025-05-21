@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Paper,
   Stack,
   Table,
@@ -198,7 +199,7 @@ const TherapySessionDetail = (): ReactElement => {
                         component='th'
                         scope='row'
                       >
-                        {exercise.title}
+                        <strong>{exercise.title}</strong>
                       </TableCell>
                       <TableCell align='right'>{exercise.exerciseType}</TableCell>
                     </TableRow>
@@ -335,6 +336,8 @@ const TherapySessionDetail = (): ReactElement => {
             <Typography>You haven't recorded any GAD 7 tests...</Typography>
           )}
         </>
+
+        <Divider style={{ margin: '20px 0' }} />
 
         <Stack direction='row' spacing={2}>
           <Button variant='contained' onClick={handleDeleteTherapySession} color='error'>
