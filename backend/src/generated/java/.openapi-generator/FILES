@@ -1,6 +1,5 @@
 .github/workflows/maven.yml
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -45,13 +44,3 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java
-src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPITest.java

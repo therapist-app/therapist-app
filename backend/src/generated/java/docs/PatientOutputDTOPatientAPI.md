@@ -9,8 +9,8 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **String** |  |  [optional] |
 |**name** | **String** |  |  [optional] |
-|**createdAt** | **OffsetDateTime** |  |  [optional] |
-|**updatedAt** | **OffsetDateTime** |  |  [optional] |
+|**createdAt** | **String** |  |  [optional] |
+|**updatedAt** | **String** |  |  [optional] |
 |**phoneNumber** | **String** |  |  [optional] |
 |**address** | **String** |  |  [optional] |
 |**gender** | **String** |  |  [optional] |

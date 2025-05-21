@@ -71,6 +71,7 @@ dependencies {
 	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
 	implementation 'javax.annotation:javax.annotation-api:1.3.2'
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
 }
 
 
@@ -122,11 +123,13 @@ openApiGenerate {
 	invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
 	modelNameSuffix = "PatientAPI"
 	apiNameSuffix = "PatientAPI"
+	typeMappings = ["time": "LocalTime"]
+    importMappings = ["LocalTime": "java.time.LocalTime"]
 	configOptions = [
 		library: 'webclient',
 		dateLibrary: 'java8',
 		useTags: 'true',
-		hideGenerationTimestamp: 'true'
+		hideGenerationTimestamp: 'true',
 	]
 }
 

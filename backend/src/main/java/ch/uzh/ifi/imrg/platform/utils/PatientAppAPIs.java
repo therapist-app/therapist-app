@@ -12,7 +12,8 @@ public class PatientAppAPIs {
   @Autowired
   public PatientAppAPIs() {
     String PATIENT_APP_URL = EnvironmentVariables.PATIENT_APP_URL;
-    patientControllerPatientAPI =
-        new PatientControllerPatientAPI().getApiClient().setBasePath(PATIENT_APP_URL);
+    patientControllerPatientAPI = new PatientControllerPatientAPI();
+    patientControllerPatientAPI.getApiClient().setBasePath(PATIENT_APP_URL);
   }
+
 }

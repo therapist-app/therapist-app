@@ -17,6 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
+import reactor.core.publisher.Mono;
 
 @Service
 @Transactional
@@ -29,7 +34,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -40,32 +46,36 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
 
     patientRepository.save(patient);
     patientRepository.flush();
-
-    CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
-        new CreatePatientDTOPatientAPI(patient.getEmail(), "password");
-
-    PatientAppAPIs.patientControllerPatientAPI.registerPatient(createPatientDTOPatientAPI);
-
     entityManager.refresh(therapist);
+
+    try {
+      CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
+      createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
+      createPatientDTOPatientAPI.password("Password");
+
+      PatientAppAPIs.patientControllerPatientAPI
+          .registerPatient(createPatientDTOPatientAPI).block();
+    } catch (WebClientResponseException e) {
+      logger.error(e.toString());
+    }
+
     return patient;
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 
