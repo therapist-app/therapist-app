@@ -120,6 +120,8 @@ openApiGenerate {
 	apiPackage = 'ch.uzh.ifi.imrg.generated.api'
 	modelPackage = 'ch.uzh.ifi.imrg.generated.model'
 	invokerPackage = 'ch.uzh.ifi.imrg.generated.invoker'
+	modelNameSuffix = "PatientAPI"
+	apiNameSuffix = "PatientAPI"
 	configOptions = [
 		library: 'webclient',
 		dateLibrary: 'java8',
