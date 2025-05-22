@@ -1,11 +1,11 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapySessionNoteDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateTherapySessionNoteDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionNoteOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingNoteDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import ch.uzh.ifi.imrg.platform.service.TherapySessionNoteService;
+import ch.uzh.ifi.imrg.platform.service.MeetingNoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -27,56 +27,51 @@ public class TherapySessionNoteController {
 
   private final Logger logger = LoggerFactory.getLogger(TherapySessionController.class);
 
-  private final TherapySessionNoteService therapySessionNoteService;
+  private final MeetingNoteService therapySessionNoteService;
   private final TherapistService therapistService;
 
   TherapySessionNoteController(
-      TherapySessionNoteService therapySessionNoteService, TherapistService therapistService) {
+      MeetingNoteService therapySessionNoteService, TherapistService therapistService) {
     this.therapySessionNoteService = therapySessionNoteService;
     this.therapistService = therapistService;
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public TherapySessionNoteOutputDTO createTherapySessionNote(
-      @RequestBody CreateTherapySessionNoteDTO createTherapySessionNoteDTO,
+  public MeetingNoteOutputDTO createTherapySessionNote(
+      @RequestBody CreateMeetingNoteDTO createTherapySessionNoteDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
-        therapySessionNoteService.createTherapySessionNote(
-            createTherapySessionNoteDTO, loggedInTherapist);
+    MeetingNoteOutputDTO therapySessionNoteOutputDTO = therapySessionNoteService.createMeetingNote(
+        createTherapySessionNoteDTO, loggedInTherapist);
     return therapySessionNoteOutputDTO;
   }
 
   @GetMapping("/{therapySessionNoteId}")
   @ResponseStatus(HttpStatus.OK)
-  public TherapySessionNoteOutputDTO getTherapySessionNoteById(
+  public MeetingNoteOutputDTO getTherapySessionNoteById(
       @PathVariable String therapySessionNoteId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
-        therapySessionNoteService.getTherapySessionNote(therapySessionNoteId, loggedInTherapist);
+    MeetingNoteOutputDTO therapySessionNoteOutputDTO = therapySessionNoteService
+        .getMeetingNote(therapySessionNoteId, loggedInTherapist);
     return therapySessionNoteOutputDTO;
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public TherapySessionNoteOutputDTO updateTherapySessionNote(
-      @RequestBody UpdateTherapySessionNoteDTO updateTherapySessionNoteDTO,
+  public MeetingNoteOutputDTO updateTherapySessionNote(
+      @RequestBody UpdateMeetingNoteDTO updateTherapySessionNoteDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    TherapySessionNoteOutputDTO therapySessionNoteOutputDTO =
-        therapySessionNoteService.updateTherapySessionNote(
-            updateTherapySessionNoteDTO, loggedInTherapist);
+    MeetingNoteOutputDTO therapySessionNoteOutputDTO = therapySessionNoteService.updateTherapySessionNote(
+        updateTherapySessionNoteDTO, loggedInTherapist);
     return therapySessionNoteOutputDTO;
   }
 
@@ -85,8 +80,7 @@ public class TherapySessionNoteController {
       @PathVariable String therapySessionNoteId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     therapySessionNoteService.deleteTherapySessionNoteById(therapySessionNoteId, loggedInTherapist);
   }
 }

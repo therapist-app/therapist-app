@@ -40,6 +40,6 @@ public class PatientTestController {
   @GetMapping("/gad7/session/{sessionId}")
   @ResponseStatus(HttpStatus.OK)
   public List<GAD7TestOutputDTO> getTestsByTherapySession(@PathVariable String sessionId) {
-    return patientTestService.getTestsByTherapySession(sessionId);
+    return patientTestService.getTestsByMeeting(sessionId);
   }
 }

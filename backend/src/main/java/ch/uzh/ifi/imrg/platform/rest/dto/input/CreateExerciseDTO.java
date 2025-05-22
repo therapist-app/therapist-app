@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class CreateExerciseDTO {
-  private String therapySessionId;
   private String title;
   private ExerciseType exerciseType;
 }
