@@ -4,27 +4,23 @@ import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { CreateTherapySessionNoteDTO } from '../api'
+import { CreateMeetingNoteDTO } from '../api'
+import { createMeetingNote } from '../store/meetingSlice'
 import { RootState } from '../store/store'
-import { createTherapySessionNote } from '../store/therapySessionSlice'
 import { useAppDispatch } from '../utils/hooks'
 
-interface CreateTherapySessionNoteComponentProps {
+interface CreateMeetingNoteComponentProps {
   save(): void
   cancel(): void
 }
 
-const CreateTherapySessionNoteComponent: React.FC<CreateTherapySessionNoteComponentProps> = (
-  props
-) => {
+const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
 
-  const selectedTherapySession = useSelector(
-    (state: RootState) => state.therapySession.selectedTherapySession
-  )
+  const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
-  const [formData, setFormData] = useState<CreateTherapySessionNoteDTO>({
-    therapySessionId: selectedTherapySession?.id ?? '',
+  const [formData, setFormData] = useState<CreateMeetingNoteDTO>({
+    meetingId: selectedMeeting?.id ?? '',
     title: '',
     content: '',
   })
@@ -37,7 +33,7 @@ const CreateTherapySessionNoteComponent: React.FC<CreateTherapySessionNoteCompon
     e.preventDefault()
 
     try {
-      await dispatch(createTherapySessionNote(formData)).unwrap()
+      await dispatch(createMeetingNote(formData)).unwrap()
     } catch (err) {
       console.error('Registration error:', err)
     } finally {
@@ -84,4 +80,4 @@ const CreateTherapySessionNoteComponent: React.FC<CreateTherapySessionNoteCompon
   )
 }
 
-export default CreateTherapySessionNoteComponent
+export default CreateMeetingNoteComponent

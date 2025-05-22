@@ -43,7 +43,7 @@ const ExerciseDetail = (): ReactElement => {
   const handleDeleteExercise = async (): Promise<void> => {
     await dispatch(deleteExcercise(exerciseId ?? ''))
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
         therapySessionId: therapySessionId ?? '',
       })

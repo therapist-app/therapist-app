@@ -14,36 +14,36 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 
-import { TherapySessionNoteOutputDTO, UpdateTherapySessionNoteDTO } from '../api'
-import { deleteTherapySessionNote, updateTherapySessionNote } from '../store/therapySessionSlice'
+import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../api'
+import { deleteMeetingNote, updateMeetingNote } from '../store/meetingSlice'
 import { useAppDispatch } from '../utils/hooks'
 
-interface TherapySessionNoteComponentProps {
-  therapySessionNote: TherapySessionNoteOutputDTO
+interface MeetingNoteComponentProps {
+  meetingNote: MeetingNoteOutputDTO
   delete(): void
 }
 
-const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = (props) => {
+const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const dispatch = useAppDispatch()
 
-  const [originalFormData, setOriginalFormData] = useState<UpdateTherapySessionNoteDTO>({
-    id: props?.therapySessionNote.id ?? '',
-    title: props?.therapySessionNote.title,
-    content: props?.therapySessionNote.content,
+  const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({
+    id: props?.meetingNote.id ?? '',
+    title: props?.meetingNote.title,
+    content: props?.meetingNote.content,
   })
 
-  const [formData, setFormData] = useState<UpdateTherapySessionNoteDTO>({
-    id: props?.therapySessionNote.id ?? '',
-    title: props?.therapySessionNote.title,
-    content: props?.therapySessionNote.content,
+  const [formData, setFormData] = useState<UpdateMeetingNoteDTO>({
+    id: props?.meetingNote.id ?? '',
+    title: props?.meetingNote.title,
+    content: props?.meetingNote.content,
   })
 
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsEditing(false)
-      const updatedSession = await dispatch(updateTherapySessionNote(formData)).unwrap()
+      const updatedSession = await dispatch(updateMeetingNote(formData)).unwrap()
       setOriginalFormData(updatedSession)
     } catch (err) {
       console.error('Registration error:', err)
@@ -68,7 +68,7 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
   const deleteNote = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     event.stopPropagation()
     try {
-      await dispatch(deleteTherapySessionNote(formData.id ?? ''))
+      await dispatch(deleteMeetingNote(formData.id ?? ''))
     } catch (e) {
       console.error(e)
     } finally {
@@ -168,4 +168,4 @@ const TherapySessionNoteComponent: React.FC<TherapySessionNoteComponentProps> = 
   )
 }
 
-export default TherapySessionNoteComponent
+export default MeetingNoteComponent

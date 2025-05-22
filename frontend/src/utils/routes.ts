@@ -14,9 +14,9 @@ export enum PAGES {
   CHATBOT_CREATE_PAGE = 'CHATBOT_CREATE_PAGE',
   CHATBOT_DETAILS_PAGE = 'CHATBOT_DETAILS_PAGE',
 
-  THERAPY_SESSIONS_OVERVIEW_PAGE = 'THERAPY_SESSIONS_OVERVIEW_PAGE',
-  THERAPY_SESSIONS_CREATE_PAGE = 'THERAPY_SESSIONS_CREATE_PAGE',
-  THERAPY_SESSIONS_DETAILS_PAGE = 'THERAPY_SESSIONS_DETAILS_PAGE',
+  MEETINGS_OVERVIEW_PAGE = 'MEETINGS_OVERVIEW_PAGE',
+  MEETINGS_CREATE_PAGE = 'MEETINGS_CREATE_PAGE',
+  MEETINGS_DETAILS_PAGE = 'MEETINGS_DETAILS_PAGE',
 
   GAD7_TEST_PAGE = 'GAD7_TEST_PAGE',
 
@@ -41,19 +41,17 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
   [PAGES.PATIENTS_CREATE_PAGE]: [],
   [PAGES.PATIENTS_DETAILS_PAGE]: [
     PAGES.CHATBOT_OVERVIEW_PAGE,
-    PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE,
+    PAGES.MEETINGS_OVERVIEW_PAGE,
+    PAGES.EXERCISES_OVERVIEW_PAGE,
   ],
 
   [PAGES.CHATBOT_OVERVIEW_PAGE]: [PAGES.CHATBOT_CREATE_PAGE, PAGES.CHATBOT_DETAILS_PAGE],
   [PAGES.CHATBOT_CREATE_PAGE]: [],
   [PAGES.CHATBOT_DETAILS_PAGE]: [],
 
-  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: [
-    PAGES.THERAPY_SESSIONS_CREATE_PAGE,
-    PAGES.THERAPY_SESSIONS_DETAILS_PAGE,
-  ],
-  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: [],
-  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: [PAGES.GAD7_TEST_PAGE, PAGES.EXERCISES_OVERVIEW_PAGE],
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: [PAGES.MEETINGS_CREATE_PAGE, PAGES.MEETINGS_DETAILS_PAGE],
+  [PAGES.MEETINGS_CREATE_PAGE]: [],
+  [PAGES.MEETINGS_DETAILS_PAGE]: [PAGES.GAD7_TEST_PAGE],
 
   [PAGES.GAD7_TEST_PAGE]: [],
 
@@ -85,18 +83,15 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.CHATBOT_CREATE_PAGE]: '/patients/:patientId/chatBots/create',
   [PAGES.CHATBOT_DETAILS_PAGE]: '/patients/:patientId/chatBots/:chatBotId',
 
-  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: '/patients/:patientId/therapy-sessions',
-  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: '/patients/:patientId/therapy-sessions/create',
-  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: '/patients/:patientId/therapy-sessions/:therapySessionId',
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: '/patients/:patientId/meetings',
+  [PAGES.MEETINGS_CREATE_PAGE]: '/patients/:patientId/meetings/create',
+  [PAGES.MEETINGS_DETAILS_PAGE]: '/patients/:patientId/meetings/:meetingId',
 
-  [PAGES.GAD7_TEST_PAGE]: '/patients/:patientId/therapy-sessions/:therapySessionId/gad7',
+  [PAGES.GAD7_TEST_PAGE]: '/patients/:patientId/meetings/:meetingId/gad7',
 
-  [PAGES.EXERCISES_OVERVIEW_PAGE]:
-    '/patients/:patientId/therapy-sessions/:therapySessionId/exercises',
-  [PAGES.EXERCISES_CREATE_PAGE]:
-    '/patients/:patientId/therapy-sessions/:therapySessionId/exercises/create',
-  [PAGES.EXERCISES_DETAILS_PAGE]:
-    '/patients/:patientId/therapy-sessions/:therapySessionId/exercises/:exerciseId',
+  [PAGES.EXERCISES_OVERVIEW_PAGE]: '/patients/:patientId/exercises',
+  [PAGES.EXERCISES_CREATE_PAGE]: '/patients/:patientId/exercises/create',
+  [PAGES.EXERCISES_DETAILS_PAGE]: '/patients/:patientId/exercises/:exerciseId',
 
   [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: '/chatBotTemplates',
   [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: '/chatBotTemplates/create',
@@ -119,9 +114,9 @@ export const PAGE_NAMES: Record<PAGES, string> = {
   [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
   [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
 
-  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: 'All Sessions',
-  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: 'Create new Session',
-  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: 'Session Details',
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: 'All Meetings',
+  [PAGES.MEETINGS_CREATE_PAGE]: 'Create new Meeting',
+  [PAGES.MEETINGS_DETAILS_PAGE]: 'Meeting Details',
 
   [PAGES.GAD7_TEST_PAGE]: 'GAD-7 Assessment',
 
