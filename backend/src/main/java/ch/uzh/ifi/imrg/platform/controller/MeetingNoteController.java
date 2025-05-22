@@ -39,7 +39,7 @@ public class MeetingNoteController {
     return meetingNoteOutputDTO;
   }
 
-  @GetMapping("/{meetingNote}")
+  @GetMapping("/{meetingNoteId}")
   @ResponseStatus(HttpStatus.OK)
   public MeetingNoteOutputDTO getMeetingNoteById(@PathVariable String meetingNoteId) {
 
