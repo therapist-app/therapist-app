@@ -1,18 +1,15 @@
 package ch.uzh.ifi.imrg.platform.service;
 
-import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
-import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
+import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +27,7 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
@@ -41,8 +37,7 @@ public class MeetingService {
     this.patientRepository = patientRepository;
   }
 
-  public Meeting createMeeting(
-      CreateMeetingDTO createMeetingDTO) {
+  public Meeting createMeeting(CreateMeetingDTO createMeetingDTO) {
 
     Patient patient = patientRepository.getPatientById(createMeetingDTO.getPatientId());
 
@@ -60,15 +55,14 @@ public class MeetingService {
   public MeetingOutputDTO getMeeting(String meetingId) {
     Meeting meeting = meetingRepository.getReferenceById(meetingId);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(meeting);
-
   }
 
-  public List<MeetingOutputDTO> getAllMeetingsOfPatient(
-      String patientId) {
+  public List<MeetingOutputDTO> getAllMeetingsOfPatient(String patientId) {
 
     Patient patient = patientRepository.getReferenceById(patientId);
 
-    return patient.getMeetings().stream().map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
+    return patient.getMeetings().stream()
+        .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
   }
 

@@ -19,8 +19,7 @@ public class PatientOutputDTO {
   private String email;
   private List<MeetingOutputDTO> meetingsOutputDTO;
 
-  public PatientOutputDTO() {
-  }
+  public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;

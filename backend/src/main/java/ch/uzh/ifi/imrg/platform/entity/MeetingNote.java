@@ -23,11 +23,9 @@ public class MeetingNote {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column()
-  private String title;
+  @Column() private String title;
 
-  @Column()
-  private String content;
+  @Column() private String content;
 
   @ManyToOne
   @JoinColumn(name = "meeting_id", referencedColumnName = "id")

@@ -15,55 +15,71 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "patients")
 public class Patient implements Serializable {
 
-    @Id
-    @Column(unique = true)
-    private String id = UUID.randomUUID().toString();
+  @Id
+  @Column(unique = true)
+  private String id = UUID.randomUUID().toString();
 
-    @Column(name = "created_at", updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = true)
-    private String gender;
+  @Column(nullable = true)
+  private String gender;
 
-    @Column(nullable = true)
-    private int age;
+  @Column(nullable = true)
+  private int age;
 
-    @Column(nullable = true)
-    private String phoneNumber;
+  @Column(nullable = true)
+  private String phoneNumber;
 
-    @Column(nullable = true)
-    private String email;
+  @Column(nullable = true)
+  private String email;
 
-    @Column(nullable = true)
-    private String address;
+  @Column(nullable = true)
+  private String address;
 
-    @Column(nullable = true)
-    private String description;
+  @Column(nullable = true)
+  private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "therapist_id", referencedColumnName = "id")
-    private Therapist therapist;
+  @ManyToOne
+  @JoinColumn(name = "therapist_id", referencedColumnName = "id")
+  private Therapist therapist;
 
-    @Column(unique = true)
-    private String workspaceId = UUID.randomUUID().toString();
+  @Column(unique = true)
+  private String workspaceId = UUID.randomUUID().toString();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Meeting> meetings = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Meeting> meetings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PatientDocument> patientDocuments = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<PatientDocument> patientDocuments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Exercise> exercises = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Exercise> exercises = new ArrayList<>();
 }

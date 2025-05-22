@@ -1,12 +1,12 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import ch.uzh.ifi.imrg.platform.service.MeetingService;
+import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -32,8 +32,7 @@ public class TherapySessionController {
   private final MeetingService sessionService;
   private final TherapistService therapistService;
 
-  TherapySessionController(
-      MeetingService sessionService, TherapistService therapistService) {
+  TherapySessionController(MeetingService sessionService, TherapistService therapistService) {
     this.sessionService = sessionService;
     this.therapistService = therapistService;
   }
@@ -44,9 +43,11 @@ public class TherapySessionController {
       @RequestBody CreateMeetingDTO createSessionDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    Meeting createdSession = sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
+    Meeting createdSession =
+        sessionService.createTherapySession(createSessionDTO, loggedInTherapist);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdSession);
   }
 
@@ -56,7 +57,8 @@ public class TherapySessionController {
       @PathVariable String therapySessionId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
     Meeting therapySession = sessionService.getTherapySession(therapySessionId, loggedInTherapist);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(therapySession);
@@ -68,9 +70,11 @@ public class TherapySessionController {
       @PathVariable String patientId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    List<Meeting> therapySessions = sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
+    List<Meeting> therapySessions =
+        sessionService.getAllTherapySessionsOfPatient(patientId, loggedInTherapist);
     return therapySessions.stream()
         .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
@@ -82,7 +86,8 @@ public class TherapySessionController {
       @PathVariable String therapySessionId,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
     sessionService.deleteTherapySessionById(therapySessionId, loggedInTherapist);
   }

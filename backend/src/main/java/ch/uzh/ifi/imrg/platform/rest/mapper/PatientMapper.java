@@ -1,10 +1,10 @@
 package ch.uzh.ifi.imrg.platform.rest.mapper;
 
-import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
+import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
