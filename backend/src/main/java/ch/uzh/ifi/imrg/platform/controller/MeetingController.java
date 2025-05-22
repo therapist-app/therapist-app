@@ -1,16 +1,12 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
-
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import ch.uzh.ifi.imrg.platform.service.MeetingService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,8 +35,7 @@ public class MeetingController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public MeetingOutputDTO createMeeting(
-      @RequestBody CreateMeetingDTO createMeetingDTO) {
+  public MeetingOutputDTO createMeeting(@RequestBody CreateMeetingDTO createMeetingDTO) {
 
     Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdMeeting);
@@ -48,8 +43,7 @@ public class MeetingController {
 
   @GetMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingOutputDTO getMeetingById(
-      @PathVariable String meetingId) {
+  public MeetingOutputDTO getMeetingById(@PathVariable String meetingId) {
 
     MeetingOutputDTO meetingOutputDTO = meetingService.getMeeting(meetingId);
     return meetingOutputDTO;
@@ -57,8 +51,7 @@ public class MeetingController {
 
   @GetMapping("/patients/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<MeetingOutputDTO> getMeetingsOfPatient(
-      @PathVariable String patientId) {
+  public List<MeetingOutputDTO> getMeetingsOfPatient(@PathVariable String patientId) {
 
     List<MeetingOutputDTO> meetingOutputDTOs = meetingService.getAllMeetingsOfPatient(patientId);
     return meetingOutputDTOs;
@@ -66,8 +59,7 @@ public class MeetingController {
 
   @DeleteMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteMeetingById(
-      @PathVariable String meetingId) {
+  public void deleteMeetingById(@PathVariable String meetingId) {
     meetingService.deleteMeetingById(meetingId);
   }
 }

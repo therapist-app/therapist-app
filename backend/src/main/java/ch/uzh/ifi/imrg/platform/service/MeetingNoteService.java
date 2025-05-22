@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.MeetingNote;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.MeetingNoteRepository;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -29,8 +28,7 @@ public class MeetingNoteService {
   private final MeetingNoteRepository meetingNoteRepository;
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired
   public MeetingNoteService(
@@ -57,12 +55,13 @@ public class MeetingNoteService {
     meetingNote.setMeeting(meeting);
     meetingNoteRepository.save(meetingNote);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
-        meetingNote.getId(),
-        meeting.getCreatedAt(),
-        meeting.getUpdatedAt(),
-        meetingNote.getTitle(),
-        meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        new MeetingNoteOutputDTO(
+            meetingNote.getId(),
+            meeting.getCreatedAt(),
+            meeting.getUpdatedAt(),
+            meetingNote.getTitle(),
+            meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
@@ -71,34 +70,34 @@ public class MeetingNoteService {
 
     MeetingNote meetingNote = meetingNoteRepository.getReferenceById(meetingNoteId);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
-        meetingNote.getId(),
-        meetingNote.getCreatedAt(),
-        meetingNote.getUpdatedAt(),
-        meetingNote.getTitle(),
-        meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        new MeetingNoteOutputDTO(
+            meetingNote.getId(),
+            meetingNote.getCreatedAt(),
+            meetingNote.getUpdatedAt(),
+            meetingNote.getTitle(),
+            meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
 
-  public List<MeetingNoteOutputDTO> getAllmeetingsNotesOfmeeting(
-      String meetingId) {
+  public List<MeetingNoteOutputDTO> getAllmeetingsNotesOfmeeting(String meetingId) {
 
     Meeting meeting = this.meetingRepository.getReferenceById(meetingId);
     if (meeting == null) {
-      throw new EntityNotFoundException(
-          "The meeting with ID: " + meetingId + " was not found.");
+      throw new EntityNotFoundException("The meeting with ID: " + meetingId + " was not found.");
     }
 
     List<MeetingNoteOutputDTO> meetingNoteOutputDTOs = new ArrayList<>();
 
     for (MeetingNote meetingNote : meeting.getMeetingNotes()) {
-      MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
-          meetingNote.getId(),
-          meetingNote.getCreatedAt(),
-          meetingNote.getUpdatedAt(),
-          meetingNote.getTitle(),
-          meetingNote.getContent());
+      MeetingNoteOutputDTO meetingNoteOutputDTO =
+          new MeetingNoteOutputDTO(
+              meetingNote.getId(),
+              meetingNote.getCreatedAt(),
+              meetingNote.getUpdatedAt(),
+              meetingNote.getTitle(),
+              meetingNote.getContent());
 
       meetingNoteOutputDTOs.add(meetingNoteOutputDTO);
     }
@@ -106,8 +105,7 @@ public class MeetingNoteService {
     return meetingNoteOutputDTOs;
   }
 
-  public MeetingNoteOutputDTO updatemeetingNote(
-      UpdateMeetingNoteDTO updatemeetingNoteDTO) {
+  public MeetingNoteOutputDTO updatemeetingNote(UpdateMeetingNoteDTO updatemeetingNoteDTO) {
     MeetingNote meetingNote = meetingNoteRepository.getReferenceById(updatemeetingNoteDTO.getId());
 
     if (updatemeetingNoteDTO.getTitle() != null) {
@@ -120,12 +118,13 @@ public class MeetingNoteService {
 
     meetingNoteRepository.save(meetingNote);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
-        meetingNote.getId(),
-        meetingNote.getCreatedAt(),
-        meetingNote.getUpdatedAt(),
-        meetingNote.getTitle(),
-        meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        new MeetingNoteOutputDTO(
+            meetingNote.getId(),
+            meetingNote.getCreatedAt(),
+            meetingNote.getUpdatedAt(),
+            meetingNote.getTitle(),
+            meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
