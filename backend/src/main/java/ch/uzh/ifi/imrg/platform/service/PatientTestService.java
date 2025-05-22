@@ -36,13 +36,11 @@ public class PatientTestService {
       throw new IllegalArgumentException("Patient not found with id: " + dto.getPatientId());
     }
 
-    Meeting meeting =
-        meetingRepository
-            .findById(dto.getMeetingId())
-            .orElseThrow(
-                () ->
-                    new IllegalArgumentException(
-                        "Meeting not found with id: " + dto.getMeetingId()));
+    Meeting meeting = meetingRepository
+        .findById(dto.getMeetingId())
+        .orElseThrow(
+            () -> new IllegalArgumentException(
+                "Meeting not found with id: " + dto.getMeetingId()));
 
     GAD7Test test = new GAD7Test();
     test.setPatient(patient);
@@ -96,11 +94,10 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId) {
-    GAD7Test test =
-        gad7Repository
-            .findById(testId)
-            .orElseThrow(
-                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test = gad7Repository
+        .findById(testId)
+        .orElseThrow(
+            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
     outputDTO.setTestId(test.getTestId());
@@ -117,13 +114,13 @@ public class PatientTestService {
     return outputDTO;
   }
 
-  public List<GAD7TestOutputDTO> getTestsByMeeting(String sessionId) {
-    // Validate that session exists
+  public List<GAD7TestOutputDTO> getTestsByMeeting(String meetingId) {
+    // Validate that meeting exists
     meetingRepository
-        .findById(sessionId)
-        .orElseThrow(() -> new IllegalArgumentException("Session not found with id: " + sessionId));
+        .findById(meetingId)
+        .orElseThrow(() -> new IllegalArgumentException("Meeting not found with id: " + meetingId));
 
-    List<GAD7Test> tests = gad7Repository.findByMeeting_Id(sessionId);
+    List<GAD7Test> tests = gad7Repository.findByMeeting_Id(meetingId);
     return tests.stream()
         .map(
             test -> {

@@ -36,11 +36,11 @@ public interface PatientMapper {
   @Mapping(source = "description", target = "description")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 
-  default List<MeetingOutputDTO> mapTherapySessions(List<Meeting> therapySessions) {
-    if (therapySessions == null) {
+  default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
+    if (meetings == null) {
       return null;
     }
-    return therapySessions.stream()
+    return meetings.stream()
         .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
   }
