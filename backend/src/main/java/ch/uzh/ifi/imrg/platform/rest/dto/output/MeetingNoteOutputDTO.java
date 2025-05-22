@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TherapySessionNoteOutputDTO {
+public class MeetingNoteOutputDTO {
   private String id;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;

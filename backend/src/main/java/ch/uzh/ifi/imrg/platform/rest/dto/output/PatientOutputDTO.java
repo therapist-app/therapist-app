@@ -17,9 +17,10 @@ public class PatientOutputDTO {
   private String description;
   private int age;
   private String email;
-  private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
+  private List<MeetingOutputDTO> meetingsOutputDTO;
 
-  public PatientOutputDTO() {}
+  public PatientOutputDTO() {
+  }
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;

@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class CreateTherapySessionDTO {
+public class CreateMeetingDTO {
 
-  private LocalDateTime sessionStart;
+  private LocalDateTime meetingStart;
 
-  private LocalDateTime sessionEnd;
+  private LocalDateTime meetingEnd;
 
   private String patientId;
 }

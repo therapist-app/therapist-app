@@ -9,8 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "therapy_session_notes")
-public class TherapySessionNote {
+@Table(name = "meeting_notes")
+public class MeetingNote {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -23,11 +23,13 @@ public class TherapySessionNote {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column() private String title;
+  @Column()
+  private String title;
 
-  @Column() private String content;
+  @Column()
+  private String content;
 
   @ManyToOne
-  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
-  private TherapySession therapySession;
+  @JoinColumn(name = "meeting_id", referencedColumnName = "id")
+  private Meeting meeting;
 }
