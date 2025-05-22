@@ -15,12 +15,12 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 const ExerciseCreate = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { patientId, therapySessionId } = useParams()
+  const { patientId, meetingId } = useParams()
 
   const [formData, setFormData] = useState<CreateExerciseDTO>({
     title: '',
     exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
-    therapySessionId: therapySessionId,
+    patientId: patientId,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -36,7 +36,7 @@ const ExerciseCreate = (): ReactElement => {
         getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
           exerciseId: createdExercise.id ?? '',
           patientId: patientId ?? '',
-          therapySessionId: therapySessionId ?? '',
+          meetingId: meetingId ?? '',
         })
       )
     } catch (err) {

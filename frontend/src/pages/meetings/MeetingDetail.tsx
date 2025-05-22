@@ -85,7 +85,7 @@ const MeetingDetail = (): ReactElement => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
         <div>
           <Typography>
-            Session start:{' '}
+            Meeting start:{' '}
             {selectedMeeting?.meetingStart
               ? format(new Date(selectedMeeting.meetingStart), 'dd.MM.yyyy HH:mm', {
                   locale: de,
@@ -93,7 +93,7 @@ const MeetingDetail = (): ReactElement => {
               : '-'}
           </Typography>
           <Typography>
-            Session end:{' '}
+            Meeting end:{' '}
             {selectedMeeting?.meetingEnd
               ? format(new Date(selectedMeeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
                   locale: de,
@@ -275,7 +275,7 @@ const MeetingDetail = (): ReactElement => {
 
           <Stack direction='row' spacing={2}>
             <Button variant='contained' onClick={handleDeleteMeeting} color='error'>
-              Delete Session
+              Delete Meeting
             </Button>
           </Stack>
         </div>

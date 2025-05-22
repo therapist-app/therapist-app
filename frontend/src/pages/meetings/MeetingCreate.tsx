@@ -49,7 +49,7 @@ const MeetingCreate = (): ReactElement => {
         })
       )
     } catch (err) {
-      console.error('Creating therapy sessions error:', err)
+      console.error('Creating meetings error:', err)
     }
   }
 
@@ -58,7 +58,7 @@ const MeetingCreate = (): ReactElement => {
       <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
-            label='Session Start'
+            label='Meeting Start'
             value={meetingToCreate.meetingStart}
             onChange={(newValue: Date | null) => {
               setMeetingToCreate({
@@ -70,7 +70,7 @@ const MeetingCreate = (): ReactElement => {
           />
 
           <DateTimePicker
-            label='Session End'
+            label='Meeting End'
             value={meetingToCreate.meetingEnd}
             onChange={(newValue: Date | null) => {
               setMeetingToCreate({
@@ -83,7 +83,7 @@ const MeetingCreate = (): ReactElement => {
         </LocalizationProvider>
 
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          Create Session
+          Create Meeting
         </Button>
       </form>
     </Layout>

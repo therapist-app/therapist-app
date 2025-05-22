@@ -32,7 +32,7 @@ const MeetingOverview = (): ReactElement => {
     dispatch(getAllMeetingsOfPatient(patientId ?? ''))
   }, [dispatch, patientId])
 
-  const handleClickOnSession = (meetingId: string): void => {
+  const handleClickOnMeeting = (meetingId: string): void => {
     navigate(
       getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
@@ -41,7 +41,7 @@ const MeetingOverview = (): ReactElement => {
     )
   }
 
-  const handleCreateNewSession = (): void => {
+  const handleCreateNewMeeting = (): void => {
     navigate(
       getPathFromPage(PAGES.MEETINGS_CREATE_PAGE, {
         patientId: patientId ?? '',
@@ -51,22 +51,22 @@ const MeetingOverview = (): ReactElement => {
 
   return (
     <Layout>
-      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
-        Create new session
+      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewMeeting}>
+        Create new Meeting
       </Button>
       <TableContainer sx={{ width: '600px' }} component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Session Start</TableCell>
-              <TableCell>Session End</TableCell>
+              <TableCell>Meeting Start</TableCell>
+              <TableCell>Meeting End</TableCell>
               <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {allMeetingsOfPatient.map((meeting) => (
               <TableRow
-                onClick={() => handleClickOnSession(meeting.id ?? '')}
+                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                 key={meeting.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
@@ -87,7 +87,7 @@ const MeetingOverview = (): ReactElement => {
                 <TableCell align='right'>
                   <IconButton
                     aria-label='download'
-                    onClick={() => handleClickOnSession(meeting.id ?? '')}
+                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                   >
                     <VisibilityIcon />
                   </IconButton>
