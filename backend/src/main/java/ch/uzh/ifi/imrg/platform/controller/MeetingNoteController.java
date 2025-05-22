@@ -58,7 +58,7 @@ public class MeetingNoteController {
   }
 
   @DeleteMapping("/{meetingNoteId}")
-  public void deletemeetingById(@PathVariable String meetingNoteId) {
+  public void deleteMeetingNoteById(@PathVariable String meetingNoteId) {
     meetingNoteService.deleteMeetingNoteById(meetingNoteId);
   }
 }

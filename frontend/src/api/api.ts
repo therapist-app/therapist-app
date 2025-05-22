@@ -2937,9 +2937,9 @@ export const MeetingNoteControllerApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletemeetingById: async (meetingNoteId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteMeetingNoteById: async (meetingNoteId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'meetingNoteId' is not null or undefined
-            assertParamExists('deletemeetingById', 'meetingNoteId', meetingNoteId)
+            assertParamExists('deleteMeetingNoteById', 'meetingNoteId', meetingNoteId)
             const localVarPath = `/meeting-notes/{meetingNoteId}`
                 .replace(`{${"meetingNoteId"}}`, encodeURIComponent(String(meetingNoteId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3060,10 +3060,10 @@ export const MeetingNoteControllerApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletemeetingById(meetingNoteId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deletemeetingById(meetingNoteId, options);
+        async deleteMeetingNoteById(meetingNoteId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMeetingNoteById(meetingNoteId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MeetingNoteControllerApi.deletemeetingById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['MeetingNoteControllerApi.deleteMeetingNoteById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3115,8 +3115,8 @@ export const MeetingNoteControllerApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletemeetingById(meetingNoteId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deletemeetingById(meetingNoteId, options).then((request) => request(axios, basePath));
+        deleteMeetingNoteById(meetingNoteId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteMeetingNoteById(meetingNoteId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3161,7 +3161,7 @@ export interface MeetingNoteControllerApiInterface {
      * @throws {RequiredError}
      * @memberof MeetingNoteControllerApiInterface
      */
-    deletemeetingById(meetingNoteId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    deleteMeetingNoteById(meetingNoteId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
@@ -3208,8 +3208,8 @@ export class MeetingNoteControllerApi extends BaseAPI implements MeetingNoteCont
      * @throws {RequiredError}
      * @memberof MeetingNoteControllerApi
      */
-    public deletemeetingById(meetingNoteId: string, options?: RawAxiosRequestConfig) {
-        return MeetingNoteControllerApiFp(this.configuration).deletemeetingById(meetingNoteId, options).then((request) => request(this.axios, this.basePath));
+    public deleteMeetingNoteById(meetingNoteId: string, options?: RawAxiosRequestConfig) {
+        return MeetingNoteControllerApiFp(this.configuration).deleteMeetingNoteById(meetingNoteId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

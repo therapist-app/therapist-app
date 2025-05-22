@@ -7,45 +7,45 @@ import { ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
-import { createTherapySession } from '../../store/therapySessionSlice'
+import { createMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
-const TherapySessionCreate = (): ReactElement => {
+const MeetingCreate = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [therapySessionToCreate, setTherapySessionToCreate] = useState<{
-    sessionStart: Date | null
-    sessionEnd: Date | null
+  const [meetingToCreate, setMeetingToCreate] = useState<{
+    meetingStart: Date | null
+    meetingEnd: Date | null
     patientId: string
   }>({
-    sessionStart: null,
-    sessionEnd: null,
+    meetingStart: null,
+    meetingEnd: null,
     patientId: patientId ?? '',
   })
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
-    if (!therapySessionToCreate.sessionStart || !therapySessionToCreate.sessionEnd) {
+    if (!meetingToCreate.meetingStart || !meetingToCreate.meetingEnd) {
       console.error('Start and end dates are required')
       return
     }
 
     try {
-      const createdTherapySession = await dispatch(
-        createTherapySession({
-          patientId: therapySessionToCreate.patientId,
-          sessionStart: therapySessionToCreate.sessionStart.toISOString(),
-          sessionEnd: therapySessionToCreate.sessionEnd.toISOString(),
+      const createdMeeting = await dispatch(
+        createMeeting({
+          patientId: meetingToCreate.patientId,
+          meetingStart: meetingToCreate.meetingStart.toISOString(),
+          meetingEnd: meetingToCreate.meetingEnd.toISOString(),
         })
       ).unwrap()
       navigate(
-        getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+        getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
           patientId: patientId ?? '',
-          therapySessionId: createdTherapySession.id ?? '',
+          meetingId: createdMeeting.id ?? '',
         })
       )
     } catch (err) {
@@ -59,11 +59,11 @@ const TherapySessionCreate = (): ReactElement => {
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label='Session Start'
-            value={therapySessionToCreate.sessionStart}
+            value={meetingToCreate.meetingStart}
             onChange={(newValue: Date | null) => {
-              setTherapySessionToCreate({
-                ...therapySessionToCreate,
-                sessionStart: newValue,
+              setMeetingToCreate({
+                ...meetingToCreate,
+                meetingStart: newValue,
               })
             }}
             sx={{ mt: 2, width: '100%' }}
@@ -71,11 +71,11 @@ const TherapySessionCreate = (): ReactElement => {
 
           <DateTimePicker
             label='Session End'
-            value={therapySessionToCreate.sessionEnd}
+            value={meetingToCreate.meetingEnd}
             onChange={(newValue: Date | null) => {
-              setTherapySessionToCreate({
-                ...therapySessionToCreate,
-                sessionEnd: newValue,
+              setMeetingToCreate({
+                ...meetingToCreate,
+                meetingEnd: newValue,
               })
             }}
             sx={{ mt: 2, width: '100%' }}
@@ -90,4 +90,4 @@ const TherapySessionCreate = (): ReactElement => {
   )
 }
 
-export default TherapySessionCreate
+export default MeetingCreate

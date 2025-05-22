@@ -27,13 +27,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import FileDownload from '../../generalComponents/FileDownload'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
+import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
   createDocumentForPatient,
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
 import { RootState } from '../../store/store'
-import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -46,8 +46,9 @@ const PatientDetail = (): ReactElement => {
   const allPatientDocuments = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
   )
-  const allTherapySessionsOfPatient = useSelector(
-    (state: RootState) => state.therapySession.allTherapySessionsOfPatient
+  const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
+  const allExercisesOfPatient = useSelector(
+    (state: RootState) => state.exercise.allExercisesOfPatient
   )
 
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
@@ -57,7 +58,7 @@ const PatientDetail = (): ReactElement => {
 
   useEffect(() => {
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
-    dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
+    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUpload = async (file: File): Promise<void> => {
@@ -84,18 +85,18 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  const handleClickOnSession = (therapySessionId: string): void => {
+  const handleClickOnMeeting = (meetingId: string): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId,
+        meetingId: meetingId,
       })
     )
   }
 
-  const handleCreateNewSession = (): void => {
+  const handleCreateNewMeeting = (): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_CREATE_PAGE, {
         patientId: patientId ?? '',
       })
     )
@@ -120,6 +121,15 @@ const PatientDetail = (): ReactElement => {
     )
 
     handleCloseChatbotDialog()
+  }
+
+  const navigateToSpecificExercise = (exerciseId: string): void => {
+    navigate(
+      getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
+        patientId: patientId ?? '',
+        exerciseId: exerciseId ?? '',
+      })
+    )
   }
 
   return (
@@ -214,38 +224,38 @@ const PatientDetail = (): ReactElement => {
       </TableContainer>
 
       <Typography sx={{ marginTop: '50px', marginBottom: '10px' }} variant='h4'>
-        All Sessions
+        All Meetings
       </Typography>
 
-      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
-        Create new Therapy Session
+      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewMeeting}>
+        Create new Therapy Meeting
       </Button>
       <TableContainer sx={{ width: '600px' }} component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Session Start</TableCell>
-              <TableCell>Session End</TableCell>
+              <TableCell>Meeting Start</TableCell>
+              <TableCell>Meeting End</TableCell>
               <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTherapySessionsOfPatient.map((therapySession) => (
+            {allMeetingsOfPatient.map((meeting) => (
               <TableRow
-                onClick={() => handleClickOnSession(therapySession.id ?? '')}
-                key={therapySession.id}
+                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
+                key={meeting.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
                 <TableCell component='th' scope='row'>
-                  {therapySession?.sessionStart
-                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingStart
+                    ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
                 </TableCell>
                 <TableCell>
-                  {therapySession?.sessionEnd
-                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingEnd
+                    ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
@@ -253,7 +263,7 @@ const PatientDetail = (): ReactElement => {
                 <TableCell align='right'>
                   <IconButton
                     aria-label='download'
-                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                   >
                     <VisibilityIcon />
                   </IconButton>
@@ -263,6 +273,49 @@ const PatientDetail = (): ReactElement => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {allExercisesOfPatient.length > 0 ? (
+        <TableContainer sx={{ marginTop: '10px', maxWidth: '600px' }} component={Paper}>
+          <Table aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>Exercise</div>
+                </TableCell>
+                <TableCell align='right'>Exercise Type</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allExercisesOfPatient.map((exercise) => (
+                <TableRow
+                  onClick={() => navigateToSpecificExercise(exercise.id ?? '')}
+                  key={exercise.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    cursor: 'pointer',
+                  }}
+                >
+                  <TableCell
+                    sx={{
+                      maxWidth: 400,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                    component='th'
+                    scope='row'
+                  >
+                    <strong>{exercise.title}</strong>
+                  </TableCell>
+                  <TableCell align='right'>{exercise.exerciseType}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography>You haven't added any exercises yet...</Typography>
+      )}
     </Layout>
   )
 }
