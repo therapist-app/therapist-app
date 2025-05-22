@@ -36,11 +36,13 @@ public class PatientTestService {
       throw new IllegalArgumentException("Patient not found with id: " + dto.getPatientId());
     }
 
-    Meeting meeting = meetingRepository
-        .findById(dto.getMeetingId())
-        .orElseThrow(
-            () -> new IllegalArgumentException(
-                "Meeting not found with id: " + dto.getMeetingId()));
+    Meeting meeting =
+        meetingRepository
+            .findById(dto.getMeetingId())
+            .orElseThrow(
+                () ->
+                    new IllegalArgumentException(
+                        "Meeting not found with id: " + dto.getMeetingId()));
 
     GAD7Test test = new GAD7Test();
     test.setPatient(patient);
@@ -94,10 +96,11 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId) {
-    GAD7Test test = gad7Repository
-        .findById(testId)
-        .orElseThrow(
-            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test =
+        gad7Repository
+            .findById(testId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
     outputDTO.setTestId(test.getTestId());

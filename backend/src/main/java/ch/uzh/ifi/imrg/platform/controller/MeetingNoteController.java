@@ -4,7 +4,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.MeetingNoteService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,8 +25,7 @@ public class MeetingNoteController {
 
   private final MeetingNoteService meetingNoteService;
 
-  MeetingNoteController(
-      MeetingNoteService meetingNoteService) {
+  MeetingNoteController(MeetingNoteService meetingNoteService) {
     this.meetingNoteService = meetingNoteService;
   }
 
@@ -36,15 +34,14 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO createMeetingNote(
       @RequestBody CreateMeetingNoteDTO createMeetingDTO) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService
-        .createMeetingNote(createMeetingDTO);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.createMeetingNote(createMeetingDTO);
     return meetingNoteOutputDTO;
   }
 
   @GetMapping("/{meetingNote}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingNoteOutputDTO getMeetingNoteById(
-      @PathVariable String meetingNoteId) {
+  public MeetingNoteOutputDTO getMeetingNoteById(@PathVariable String meetingNoteId) {
 
     MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.getMeetingNote(meetingNoteId);
     return meetingNoteOutputDTO;
@@ -55,14 +52,13 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO updateMeetingNote(
       @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.updatemeetingNote(
-        updateMeetingNoteDTO);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO);
     return meetingNoteOutputDTO;
   }
 
   @DeleteMapping("/{meetingNoteId}")
-  public void deletemeetingById(
-      @PathVariable String meetingNoteId) {
+  public void deletemeetingById(@PathVariable String meetingNoteId) {
     meetingNoteService.deleteMeetingNoteById(meetingNoteId);
   }
 }

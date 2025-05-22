@@ -44,8 +44,7 @@ public class ExerciseController {
 
   @GetMapping("/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<ExerciseOutputDTO> getAllExercisesOfPatient(
-      @PathVariable String patientId) {
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(@PathVariable String patientId) {
     return exerciseService.getAllExercisesOfPatient(patientId);
   }
 
