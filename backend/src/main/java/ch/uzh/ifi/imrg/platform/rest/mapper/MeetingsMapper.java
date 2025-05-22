@@ -22,19 +22,18 @@ public interface MeetingsMapper {
   @Mapping(source = "meetingNotes", target = "meetingNotesOutputDTO")
   MeetingOutputDTO convertEntityToMeetingOutputDTO(Meeting meeting);
 
-  default List<MeetingNoteOutputDTO> mapMeetingNotes(
-      List<MeetingNote> meetingNotes) {
+  default List<MeetingNoteOutputDTO> mapMeetingNotes(List<MeetingNote> meetingNotes) {
     if (meetingNotes == null) {
       return null;
     }
-    List<MeetingNoteOutputDTO> meetingNotesOutputDTO = meetingNotes.stream()
-        .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
-        .collect(Collectors.toList());
+    List<MeetingNoteOutputDTO> meetingNotesOutputDTO =
+        meetingNotes.stream()
+            .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
+            .collect(Collectors.toList());
 
     meetingNotesOutputDTO.sort(
         Comparator.comparing(
-            MeetingNoteOutputDTO::getCreatedAt,
-            Comparator.nullsLast(Comparator.reverseOrder())));
+            MeetingNoteOutputDTO::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())));
 
     return meetingNotesOutputDTO;
   }

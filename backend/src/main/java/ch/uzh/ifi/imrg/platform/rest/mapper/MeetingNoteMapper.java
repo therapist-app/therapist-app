@@ -13,6 +13,5 @@ public interface MeetingNoteMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "title", target = "title")
   @Mapping(source = "content", target = "content")
-  MeetingNoteOutputDTO convertEntityToMeetingNoteOutputDTO(
-      MeetingNote meetingNote);
+  MeetingNoteOutputDTO convertEntityToMeetingNoteOutputDTO(MeetingNote meetingNote);
 }
