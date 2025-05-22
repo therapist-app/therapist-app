@@ -5,12 +5,12 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class TherapySessionOutputDTO {
+public class MeetingOutputDTO {
 
   private String id;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private LocalDateTime sessionStart;
-  private LocalDateTime sessionEnd;
-  private List<TherapySessionNoteOutputDTO> therapySessionNotesOutputDTO;
+  private LocalDateTime meetingStart;
+  private LocalDateTime meetingEnd;
+  private List<MeetingNoteOutputDTO> meetingNotesOutputDTO;
 }

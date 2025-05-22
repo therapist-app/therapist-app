@@ -12,8 +12,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "therapy_sessions")
-public class TherapySession implements Serializable {
+@Table(name = "meetings")
+public class Meeting implements Serializable {
 
   @Id
   @Column(unique = true)
@@ -27,34 +27,27 @@ public class TherapySession implements Serializable {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  @Column(name = "session_start")
-  private LocalDateTime sessionStart;
+  @Column(name = "meeting_start")
+  private LocalDateTime meetingStart;
 
-  @Column(name = "session_end")
-  private LocalDateTime sessionEnd;
+  @Column(name = "meeting_end")
+  private LocalDateTime meetingEnd;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
   @OneToMany(
-      mappedBy = "therapySession",
+      mappedBy = "meeting",
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<TherapySessionNote> therapySessionNotes = new ArrayList<>();
+  private List<MeetingNote> meetingNotes = new ArrayList<>();
 
   @OneToMany(
-      mappedBy = "therapySession",
+      mappedBy = "meeting",
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<GAD7Test> GAD7Tests = new ArrayList<>();
-
-  @OneToMany(
-      mappedBy = "therapySession",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Exercise> exercises = new ArrayList<>();
 }

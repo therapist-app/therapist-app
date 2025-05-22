@@ -60,7 +60,7 @@ public class Patient implements Serializable {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<TherapySession> therapySessions = new ArrayList<>();
+  private List<Meeting> meetings = new ArrayList<>();
 
   @OneToMany(
       mappedBy = "patient",
@@ -75,4 +75,11 @@ public class Patient implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Exercise> exercises = new ArrayList<>();
 }

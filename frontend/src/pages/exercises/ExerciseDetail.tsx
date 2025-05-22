@@ -20,7 +20,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const ExerciseDetail = (): ReactElement => {
   const navigate = useNavigate()
-  const { patientId, therapySessionId, exerciseId } = useParams()
+  const { patientId, meetingId, exerciseId } = useParams()
 
   const dispatch = useAppDispatch()
 
@@ -43,9 +43,9 @@ const ExerciseDetail = (): ReactElement => {
   const handleDeleteExercise = async (): Promise<void> => {
     await dispatch(deleteExcercise(exerciseId ?? ''))
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId ?? '',
+        meetingId: meetingId ?? '',
       })
     )
   }

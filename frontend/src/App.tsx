@@ -7,6 +7,9 @@ import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
 import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
 import ExerciseOverview from './pages/exercises/ExerciseOverview.tsx'
 import Login from './pages/login/Login'
+import MeetingCreate from './pages/meetings/MeetingCreate.tsx'
+import MeetingDetail from './pages/meetings/MeetingDetail.tsx'
+import MeetingOverview from './pages/meetings/MeetingOverview.tsx'
 import NotFound from './pages/notFound/NotFound'
 import PatientCreate from './pages/patients/PatientCreate.tsx'
 import PatientDetail from './pages/patients/PatientDetail'
@@ -14,9 +17,6 @@ import PatientsOverview from './pages/patients/PatientOverview'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
 import GAD7test from './pages/tests/GAD7test'
-import TherapySessionCreate from './pages/therapy-sessions/TherapySessionCreate.tsx'
-import TherapySessionDetail from './pages/therapy-sessions/TherapySessionDetail.tsx'
-import TherapySessionOverview from './pages/therapy-sessions/TherapySessionOverview.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = (): ReactElement => {
@@ -49,18 +49,9 @@ const App = (): ReactElement => {
 
             <Route path={ROUTES[PAGES.CHATBOT_OVERVIEW_PAGE]} element={<NotFound />} />
 
-            <Route
-              path={ROUTES[PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]}
-              element={<TherapySessionOverview />}
-            />
-            <Route
-              path={ROUTES[PAGES.THERAPY_SESSIONS_CREATE_PAGE]}
-              element={<TherapySessionCreate />}
-            />
-            <Route
-              path={ROUTES[PAGES.THERAPY_SESSIONS_DETAILS_PAGE]}
-              element={<TherapySessionDetail />}
-            />
+            <Route path={ROUTES[PAGES.MEETINGS_OVERVIEW_PAGE]} element={<MeetingOverview />} />
+            <Route path={ROUTES[PAGES.MEETINGS_CREATE_PAGE]} element={<MeetingCreate />} />
+            <Route path={ROUTES[PAGES.MEETINGS_DETAILS_PAGE]} element={<MeetingDetail />} />
 
             <Route path={ROUTES[PAGES.GAD7_TEST_PAGE]} element={<GAD7test />} />
 

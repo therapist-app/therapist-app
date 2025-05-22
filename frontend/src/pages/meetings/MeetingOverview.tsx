@@ -17,35 +17,33 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
-import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
-const TherapySessionOverview = (): ReactElement => {
+const MeetingOverview = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
-  const allTherapySessionsOfPatient = useSelector(
-    (state: RootState) => state.therapySession.allTherapySessionsOfPatient
-  )
+  const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
 
   useEffect(() => {
-    dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
+    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
   }, [dispatch, patientId])
 
-  const handleClickOnSession = (therapySessionId: string): void => {
+  const handleClickOnMeeting = (meetingId: string): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId,
+        meetingId: meetingId,
       })
     )
   }
 
-  const handleCreateNewSession = (): void => {
+  const handleCreateNewMeeting = (): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_CREATE_PAGE, {
         patientId: patientId ?? '',
       })
     )
@@ -53,35 +51,35 @@ const TherapySessionOverview = (): ReactElement => {
 
   return (
     <Layout>
-      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
-        Create new session
+      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewMeeting}>
+        Create new Meeting
       </Button>
       <TableContainer sx={{ width: '600px' }} component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Session Start</TableCell>
-              <TableCell>Session End</TableCell>
+              <TableCell>Meeting Start</TableCell>
+              <TableCell>Meeting End</TableCell>
               <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTherapySessionsOfPatient.map((therapySession) => (
+            {allMeetingsOfPatient.map((meeting) => (
               <TableRow
-                onClick={() => handleClickOnSession(therapySession.id ?? '')}
-                key={therapySession.id}
+                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
+                key={meeting.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
                 <TableCell component='th' scope='row'>
-                  {therapySession?.sessionStart
-                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingStart
+                    ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
                 </TableCell>
                 <TableCell>
-                  {therapySession?.sessionEnd
-                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingEnd
+                    ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
@@ -89,7 +87,7 @@ const TherapySessionOverview = (): ReactElement => {
                 <TableCell align='right'>
                   <IconButton
                     aria-label='download'
-                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                   >
                     <VisibilityIcon />
                   </IconButton>
@@ -103,4 +101,4 @@ const TherapySessionOverview = (): ReactElement => {
   )
 }
 
-export default TherapySessionOverview
+export default MeetingOverview

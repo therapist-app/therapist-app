@@ -39,6 +39,6 @@ public class Exercise {
   private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @ManyToOne
-  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
-  private TherapySession therapySession;
+  @JoinColumn(name = "meeting_id", referencedColumnName = "id")
+  private Patient patient;
 }

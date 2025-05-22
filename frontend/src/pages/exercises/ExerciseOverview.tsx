@@ -19,13 +19,13 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const ExerciseOverview = (): ReactElement => {
   const navigate = useNavigate()
-  const { patientId, therapySessionId } = useParams()
+  const { patientId, meetingId } = useParams()
 
   const navigateToCreateExercises = (): void => {
     navigate(
       getPathFromPage(PAGES.EXERCISES_CREATE_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId ?? '',
+        meetingId: meetingId ?? '',
       })
     )
   }
@@ -34,15 +34,13 @@ const ExerciseOverview = (): ReactElement => {
     navigate(
       getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId ?? '',
+        meetingId: meetingId ?? '',
         exerciseId: exerciseId ?? '',
       })
     )
   }
 
-  const allExercises = useSelector(
-    (state: RootState) => state.exercise.allExercisesOfTherapySession
-  )
+  const allExercises = useSelector((state: RootState) => state.exercise.allExercisesOfPatient)
 
   return (
     <Layout>
