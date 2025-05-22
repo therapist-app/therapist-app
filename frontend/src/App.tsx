@@ -7,9 +7,9 @@ import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
 import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
 import ExerciseOverview from './pages/exercises/ExerciseOverview.tsx'
 import Login from './pages/login/Login'
-import TherapySessionCreate from './pages/meetings/MeetingCreate.tsx'
-import TherapySessionDetail from './pages/meetings/MeetingDetail.tsx'
-import TherapySessionOverview from './pages/meetings/MeetingOverview.tsx'
+import MeetingCreate from './pages/meetings/MeetingCreate.tsx'
+import MeetingDetail from './pages/meetings/MeetingDetail.tsx'
+import MeetingOverview from './pages/meetings/MeetingOverview.tsx'
 import NotFound from './pages/notFound/NotFound'
 import PatientCreate from './pages/patients/PatientCreate.tsx'
 import PatientDetail from './pages/patients/PatientDetail'
@@ -49,12 +49,9 @@ const App = (): ReactElement => {
 
             <Route path={ROUTES[PAGES.CHATBOT_OVERVIEW_PAGE]} element={<NotFound />} />
 
-            <Route
-              path={ROUTES[PAGES.MEETINGS_OVERVIEW_PAGE]}
-              element={<TherapySessionOverview />}
-            />
-            <Route path={ROUTES[PAGES.MEETINGS_CREATE_PAGE]} element={<TherapySessionCreate />} />
-            <Route path={ROUTES[PAGES.MEETINGS_DETAILS_PAGE]} element={<TherapySessionDetail />} />
+            <Route path={ROUTES[PAGES.MEETINGS_OVERVIEW_PAGE]} element={<MeetingOverview />} />
+            <Route path={ROUTES[PAGES.MEETINGS_CREATE_PAGE]} element={<MeetingCreate />} />
+            <Route path={ROUTES[PAGES.MEETINGS_DETAILS_PAGE]} element={<MeetingDetail />} />
 
             <Route path={ROUTES[PAGES.GAD7_TEST_PAGE]} element={<GAD7test />} />
 

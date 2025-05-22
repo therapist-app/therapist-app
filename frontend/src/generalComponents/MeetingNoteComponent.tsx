@@ -43,8 +43,8 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsEditing(false)
-      const updatedSession = await dispatch(updateMeetingNote(formData)).unwrap()
-      setOriginalFormData(updatedSession)
+      const updatedMeeting = await dispatch(updateMeetingNote(formData)).unwrap()
+      setOriginalFormData(updatedMeeting)
     } catch (err) {
       console.error('Registration error:', err)
     }

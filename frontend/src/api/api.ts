@@ -282,6 +282,12 @@ export interface CreateExerciseDTO {
      * @type {string}
      * @memberof CreateExerciseDTO
      */
+    'patientId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
     'title'?: string;
     /**
      * 
