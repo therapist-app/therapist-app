@@ -29,7 +29,8 @@ public class MeetingNoteService {
   private final MeetingNoteRepository meetingNoteRepository;
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Autowired
   public MeetingNoteService(
@@ -56,51 +57,48 @@ public class MeetingNoteService {
     meetingNote.setMeeting(meeting);
     meetingNoteRepository.save(meetingNote);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        new MeetingNoteOutputDTO(
-            meetingNote.getId(),
-            meeting.getCreatedAt(),
-            meeting.getUpdatedAt(),
-            meetingNote.getTitle(),
-            meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
+        meetingNote.getId(),
+        meeting.getCreatedAt(),
+        meeting.getUpdatedAt(),
+        meetingNote.getTitle(),
+        meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
 
-  public MeetingNoteOutputDTO getMeetingNote(String meetingNoteId, Therapist loggedInTherapist) {
+  public MeetingNoteOutputDTO getMeetingNote(String meetingNoteId) {
 
     MeetingNote meetingNote = meetingNoteRepository.getReferenceById(meetingNoteId);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        new MeetingNoteOutputDTO(
-            meetingNote.getId(),
-            meetingNote.getCreatedAt(),
-            meetingNote.getUpdatedAt(),
-            meetingNote.getTitle(),
-            meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
+        meetingNote.getId(),
+        meetingNote.getCreatedAt(),
+        meetingNote.getUpdatedAt(),
+        meetingNote.getTitle(),
+        meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
 
   public List<MeetingNoteOutputDTO> getAllmeetingsNotesOfmeeting(
-      String therappySessionId, Therapist loggedInTherapist) {
+      String meetingId) {
 
-    Meeting meeting = this.meetingRepository.getReferenceById(therappySessionId);
+    Meeting meeting = this.meetingRepository.getReferenceById(meetingId);
     if (meeting == null) {
       throw new EntityNotFoundException(
-          "The meeting with ID: " + therappySessionId + " was not found.");
+          "The meeting with ID: " + meetingId + " was not found.");
     }
 
     List<MeetingNoteOutputDTO> meetingNoteOutputDTOs = new ArrayList<>();
 
     for (MeetingNote meetingNote : meeting.getMeetingNotes()) {
-      MeetingNoteOutputDTO meetingNoteOutputDTO =
-          new MeetingNoteOutputDTO(
-              meetingNote.getId(),
-              meetingNote.getCreatedAt(),
-              meetingNote.getUpdatedAt(),
-              meetingNote.getTitle(),
-              meetingNote.getContent());
+      MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
+          meetingNote.getId(),
+          meetingNote.getCreatedAt(),
+          meetingNote.getUpdatedAt(),
+          meetingNote.getTitle(),
+          meetingNote.getContent());
 
       meetingNoteOutputDTOs.add(meetingNoteOutputDTO);
     }
@@ -109,7 +107,7 @@ public class MeetingNoteService {
   }
 
   public MeetingNoteOutputDTO updatemeetingNote(
-      UpdateMeetingNoteDTO updatemeetingNoteDTO, Therapist loggedInTherapist) {
+      UpdateMeetingNoteDTO updatemeetingNoteDTO) {
     MeetingNote meetingNote = meetingNoteRepository.getReferenceById(updatemeetingNoteDTO.getId());
 
     if (updatemeetingNoteDTO.getTitle() != null) {
@@ -122,18 +120,17 @@ public class MeetingNoteService {
 
     meetingNoteRepository.save(meetingNote);
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        new MeetingNoteOutputDTO(
-            meetingNote.getId(),
-            meetingNote.getCreatedAt(),
-            meetingNote.getUpdatedAt(),
-            meetingNote.getTitle(),
-            meetingNote.getContent());
+    MeetingNoteOutputDTO meetingNoteOutputDTO = new MeetingNoteOutputDTO(
+        meetingNote.getId(),
+        meetingNote.getCreatedAt(),
+        meetingNote.getUpdatedAt(),
+        meetingNote.getTitle(),
+        meetingNote.getContent());
 
     return meetingNoteOutputDTO;
   }
 
-  public void deletemeetingNoteById(String meetingNoteId, Therapist loggedInTherapist) {
+  public void deleteMeetingNoteById(String meetingNoteId) {
     MeetingNote meetingNote = meetingNoteRepository.getReferenceById(meetingNoteId);
     meetingNote.getMeeting().getMeetingNotes().remove(meetingNote);
   }

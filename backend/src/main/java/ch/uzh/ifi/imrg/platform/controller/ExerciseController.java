@@ -42,11 +42,11 @@ public class ExerciseController {
     return exerciseService.getExerciseById(exerciseId);
   }
 
-  @GetMapping("/therapy-session/{therapySessionId}")
+  @GetMapping("/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<ExerciseOutputDTO> getAllExercisesOfTherapySession(
-      @PathVariable String therapySessionId) {
-    return exerciseService.getAllExercisesOfTherapySession(therapySessionId);
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(
+      @PathVariable String patientId) {
+    return exerciseService.getAllExercisesOfPatient(patientId);
   }
 
   @PutMapping("/")

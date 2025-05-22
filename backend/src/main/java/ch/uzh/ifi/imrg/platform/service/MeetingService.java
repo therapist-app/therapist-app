@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// TODO: ensure that a therapist is only allowed to do stuff to their own sessions
-
 @Service
 @Transactional
 public class MeetingService {
@@ -27,7 +25,8 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
