@@ -34,11 +34,13 @@ public class ChatMessageService {
 
     String systemPrompt = buildSystemPrompt(req.getConfig());
 
-    List<ChatMessageDTO> messages = new ArrayList<>();
-    messages.add(new ChatMessageDTO("system", systemPrompt));
-    messages.add(new ChatMessageDTO("user", req.getMessage()));
+    List<ChatMessageDTO> msgs = new ArrayList<>();
+    msgs.add(new ChatMessageDTO("system", systemPrompt));
+    if (req.getHistory() != null && !req.getHistory().isEmpty())
+      msgs.addAll(req.getHistory());
+    msgs.add(new ChatMessageDTO("user", req.getMessage()));
 
-    return callRemote(modelRequest(messages));
+    return callRemote(modelRequest(msgs));
   }
 
   private ChatCompletionResponseDTO callRemote(RemoteRequest payload) {
