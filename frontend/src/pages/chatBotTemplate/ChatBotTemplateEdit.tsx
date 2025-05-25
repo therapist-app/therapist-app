@@ -43,9 +43,10 @@ import Layout from '../../generalComponents/Layout'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
-import { ChatControllerApi } from '../../api/apis/ChatControllerApi';
-import { ChatMessageDTO }  from '../../api/models/ChatMessageDTO';   
-import { ChatCompletionRequestDTO } from '../../api/models/ChatCompletionRequestDTO'; 
+import { ChatControllerApiWithConfig }
+  from '../../api/apis/ChatControllerApiWithConfig';
+import { ChatCompletionWithConfigRequestDTO }
+  from '../../api/models/ChatCompletionWithConfigRequestDTO';
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -84,7 +85,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
   const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
-  const chatApi = new ChatControllerApi();
+  const chatApi = new ChatControllerApiWithConfig();
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -135,54 +136,36 @@ const ChatBotTemplateEdit: React.FC = () => {
     setSelectedTab(newValue)
   }
 
-  const buildSystemPrompt = (): string => {
-    const parts: string[] = [
-      'You are a helpful assistant.',                                   // always
-      chatbotRole            && `Your role is **${chatbotRole}**.`,
-      chatbotTone            && `Speak with a **${chatbotTone}** tone.`,
-      chatbotLanguage        && `Reply in **${chatbotLanguage}**.`,
-      chatbotVoice && chatbotVoice !== 'None'
-      ? `When text-to-speech is requested, use a **${chatbotVoice}** voice.`
-      : '',
-      chatbotGender          && `Your persona is **${chatbotGender}**.`,
-      preConfiguredExercise  && `You can guide the user through the pre-configured exercise: “${preConfiguredExercise}”.`,
-      additionalExercise     && `Optionally you may offer the additional exercise: “${additionalExercise}”.`,
-      welcomeMessage         && `Your default welcome message is: “${welcomeMessage}”.`,
-    ];
-  
-    // filter out undefined / '' entries and join with newlines
-    return parts.filter(Boolean).join('\n');
-  };
-
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
   
-    /* 1️⃣ validate & optimistic UI */
     const userPrompt = question.trim();
     if (!userPrompt) return;
   
-    setChat(prev => [...prev, { question: userPrompt, response: null }]);
+    setChat((prev) => [...prev, { question: userPrompt, response: null }]);
     setQuestion('');
     setIsChatbotTyping(true);
   
     try {
-      /* 2️⃣ craft the request for the backend */
-      const payload: ChatCompletionRequestDTO = {
-        messages: [
-          { role: 'system', content: buildSystemPrompt() },  // ← config injected here
-          { role: 'user',   content: userPrompt },
-        ],
+      const payload: ChatCompletionWithConfigRequestDTO = {
+        config: {
+          chatbotRole,
+          chatbotTone,
+          chatbotLanguage,
+          chatbotVoice,
+          chatbotGender,
+          preConfiguredExercise,
+          additionalExercise,
+          welcomeMessage,
+        },
+        message: userPrompt,
       };
   
-      /* 3️⃣ call Spring proxy → vLLM */
-      const { content } = await chatApi.chatCompletion({
-        chatCompletionRequestDTO: payload,
-      });
+      const { content } = await chatApi.chatCompletionWithConfig({ body: payload });
   
-      /* 4️⃣ display assistant answer */
-      setChat(prev => {
+      setChat((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           ...updated.at(-1)!,
@@ -196,8 +179,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
   
-      /* mark last entry as failed */
-      setChat(prev => {
+      setChat((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           ...updated.at(-1)!,

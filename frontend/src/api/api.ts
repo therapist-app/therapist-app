@@ -26,19 +26,6 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface ChatCompletionRequestDTO
- */
-export interface ChatCompletionRequestDTO {
-    /**
-     * 
-     * @type {Array<ChatMessageDTO>}
-     * @memberof ChatCompletionRequestDTO
-     */
-    'messages'?: Array<ChatMessageDTO>;
-}
-/**
- * 
- * @export
  * @interface ChatCompletionResponseDTO
  */
 export interface ChatCompletionResponseDTO {
@@ -52,21 +39,76 @@ export interface ChatCompletionResponseDTO {
 /**
  * 
  * @export
- * @interface ChatMessageDTO
+ * @interface ChatCompletionWithConfigRequestDTO
  */
-export interface ChatMessageDTO {
+export interface ChatCompletionWithConfigRequestDTO {
+    /**
+     * 
+     * @type {ChatbotConfigDTO}
+     * @memberof ChatCompletionWithConfigRequestDTO
+     */
+    'config'?: ChatbotConfigDTO;
     /**
      * 
      * @type {string}
-     * @memberof ChatMessageDTO
+     * @memberof ChatCompletionWithConfigRequestDTO
      */
-    'role'?: string;
+    'message'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ChatbotConfigDTO
+ */
+export interface ChatbotConfigDTO {
     /**
      * 
      * @type {string}
-     * @memberof ChatMessageDTO
+     * @memberof ChatbotConfigDTO
      */
-    'content'?: string;
+    'chatbotRole'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'chatbotTone'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'chatbotLanguage'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'chatbotVoice'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'chatbotGender'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'preConfiguredExercise'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'additionalExercise'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotConfigDTO
+     */
+    'welcomeMessage'?: string;
 }
 /**
  * 
@@ -1154,14 +1196,14 @@ export const ChatControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
-         * @param {ChatCompletionRequestDTO} chatCompletionRequestDTO 
+         * @param {ChatCompletionWithConfigRequestDTO} chatCompletionWithConfigRequestDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chat: async (chatCompletionRequestDTO: ChatCompletionRequestDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'chatCompletionRequestDTO' is not null or undefined
-            assertParamExists('chat', 'chatCompletionRequestDTO', chatCompletionRequestDTO)
-            const localVarPath = `/api/chat/completions`;
+        chatWithConfig: async (chatCompletionWithConfigRequestDTO: ChatCompletionWithConfigRequestDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatCompletionWithConfigRequestDTO' is not null or undefined
+            assertParamExists('chatWithConfig', 'chatCompletionWithConfigRequestDTO', chatCompletionWithConfigRequestDTO)
+            const localVarPath = `/api/chat/completions-with-config`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1180,7 +1222,7 @@ export const ChatControllerApiAxiosParamCreator = function (configuration?: Conf
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(chatCompletionRequestDTO, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(chatCompletionWithConfigRequestDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1199,14 +1241,14 @@ export const ChatControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {ChatCompletionRequestDTO} chatCompletionRequestDTO 
+         * @param {ChatCompletionWithConfigRequestDTO} chatCompletionWithConfigRequestDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async chat(chatCompletionRequestDTO: ChatCompletionRequestDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatCompletionResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.chat(chatCompletionRequestDTO, options);
+        async chatWithConfig(chatCompletionWithConfigRequestDTO: ChatCompletionWithConfigRequestDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatCompletionResponseDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.chatWithConfig(chatCompletionWithConfigRequestDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.chat']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ChatControllerApi.chatWithConfig']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1221,12 +1263,12 @@ export const ChatControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
-         * @param {ChatCompletionRequestDTO} chatCompletionRequestDTO 
+         * @param {ChatCompletionWithConfigRequestDTO} chatCompletionWithConfigRequestDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chat(chatCompletionRequestDTO: ChatCompletionRequestDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatCompletionResponseDTO> {
-            return localVarFp.chat(chatCompletionRequestDTO, options).then((request) => request(axios, basePath));
+        chatWithConfig(chatCompletionWithConfigRequestDTO: ChatCompletionWithConfigRequestDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatCompletionResponseDTO> {
+            return localVarFp.chatWithConfig(chatCompletionWithConfigRequestDTO, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1239,12 +1281,12 @@ export const ChatControllerApiFactory = function (configuration?: Configuration,
 export interface ChatControllerApiInterface {
     /**
      * 
-     * @param {ChatCompletionRequestDTO} chatCompletionRequestDTO 
+     * @param {ChatCompletionWithConfigRequestDTO} chatCompletionWithConfigRequestDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatControllerApiInterface
      */
-    chat(chatCompletionRequestDTO: ChatCompletionRequestDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatCompletionResponseDTO>;
+    chatWithConfig(chatCompletionWithConfigRequestDTO: ChatCompletionWithConfigRequestDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatCompletionResponseDTO>;
 
 }
 
@@ -1257,13 +1299,13 @@ export interface ChatControllerApiInterface {
 export class ChatControllerApi extends BaseAPI implements ChatControllerApiInterface {
     /**
      * 
-     * @param {ChatCompletionRequestDTO} chatCompletionRequestDTO 
+     * @param {ChatCompletionWithConfigRequestDTO} chatCompletionWithConfigRequestDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatControllerApi
      */
-    public chat(chatCompletionRequestDTO: ChatCompletionRequestDTO, options?: RawAxiosRequestConfig) {
-        return ChatControllerApiFp(this.configuration).chat(chatCompletionRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    public chatWithConfig(chatCompletionWithConfigRequestDTO: ChatCompletionWithConfigRequestDTO, options?: RawAxiosRequestConfig) {
+        return ChatControllerApiFp(this.configuration).chatWithConfig(chatCompletionWithConfigRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
