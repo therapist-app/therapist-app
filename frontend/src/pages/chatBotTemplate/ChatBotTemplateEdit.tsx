@@ -29,7 +29,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { ReactElement, useEffect, useRef, useState, ReactNode } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
@@ -38,16 +38,14 @@ import { TbMessageChatbot } from 'react-icons/tb'
 import { useLocation } from 'react-router-dom'
 
 import { ChatbotTemplateOutputDTO } from '../../api'
+import { ChatControllerApiWithConfig } from '../../api/apis/ChatControllerApiWithConfig'
+import { ChatCompletionWithConfigRequestDTO } from '../../api/models/ChatCompletionWithConfigRequestDTO'
+import { ChatMessageDTO } from '../../api/models/ChatMessageDTO'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
-import { ChatControllerApiWithConfig }
-  from '../../api/apis/ChatControllerApiWithConfig';
-import { ChatCompletionWithConfigRequestDTO }
-  from '../../api/models/ChatCompletionWithConfigRequestDTO';
-import { ChatMessageDTO } from '../../api/models/ChatMessageDTO';
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -59,7 +57,8 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const [selectedTab, setSelectedTab] = useState<'config' | 'analytics' | 'sources'>('config')
 
-  const [chat, setChat] = useState<Array<{ question?: string; response: string | null }>>([])
+  const [chat, setChat] = useState<Array<{ question?: string; response: ReactNode | null }>>([])
+
   const [isLoading, setIsLoading] = useState(false)
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
@@ -87,7 +86,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
   const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
-  const chatApi = new ChatControllerApiWithConfig();
+  const chatApi = new ChatControllerApiWithConfig()
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -141,12 +140,14 @@ const ChatBotTemplateEdit: React.FC = () => {
   const formatResponse = (text: string): ReactNode => {
     const lines = text.split('\n')
     const output: ReactNode[] = []
-  
+
     let listBuffer: ReactNode[] = []
     let listType: 'ul' | 'ol' | null = null
-  
-    const flushList = () => {
-      if (!listType) return
+
+    const flushList = (): void => {
+      if (!listType) {
+        return
+      }
       const Wrapper = (listType === 'ul' ? 'ul' : 'ol') as React.ElementType
       output.push(
         <Wrapper key={output.length} style={{ margin: '0.75em 0' }}>
@@ -156,20 +157,18 @@ const ChatBotTemplateEdit: React.FC = () => {
       listBuffer = []
       listType = null
     }
-  
+
     const parseInline = (str: string): ReactNode[] => {
       const nodes: ReactNode[] = []
       const boldRe = /\*\*(.+?)\*\*/g
       let lastIndex = 0
       let match: RegExpExecArray | null
-  
+
       while ((match = boldRe.exec(str)) !== null) {
         if (match.index > lastIndex) {
           nodes.push(str.slice(lastIndex, match.index))
         }
-        nodes.push(
-          <strong key={match.index}>{match[1]}</strong>
-        )
+        nodes.push(<strong key={match.index}>{match[1]}</strong>)
         lastIndex = match.index + match[0].length
       }
       if (lastIndex < str.length) {
@@ -177,20 +176,20 @@ const ChatBotTemplateEdit: React.FC = () => {
       }
       return nodes
     }
-  
+
     lines.forEach((raw, idx) => {
       const line = raw.trim()
-  
+
       if (!line) {
         flushList()
         return
       }
-  
+
       const h = line.match(/^(#{1,6})\s+(.*)$/)
       if (h) {
         flushList()
         const level = h[1].length
-        const Tag = (`h${level}`) as React.ElementType
+        const Tag = `h${level}` as React.ElementType
         output.push(
           <Tag key={idx} style={{ margin: '1em 0 0.5em' }}>
             {parseInline(h[2])}
@@ -198,7 +197,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         )
         return
       }
-  
+
       const ol = line.match(/^\d+\.\s+(.*)$/)
       if (ol) {
         if (listType !== 'ol') {
@@ -212,7 +211,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         )
         return
       }
-  
+
       const ul = line.match(/^[-*]\s+(.*)$/)
       if (ul) {
         if (listType !== 'ul') {
@@ -226,7 +225,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         )
         return
       }
-  
+
       flushList()
       output.push(
         <p key={idx} style={{ margin: '0.75em 0', lineHeight: 1.5 }}>
@@ -234,75 +233,78 @@ const ChatBotTemplateEdit: React.FC = () => {
         </p>
       )
     })
-  
+
     flushList()
-  
+
     return <div>{output}</div>
   }
-  
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     const userPrompt = question.trim()
-    if (!userPrompt) return
-  
-    setChat(prev => [...prev, { question: userPrompt, response: null }])
+    if (!userPrompt) {
+      return
+    }
+
+    setChat((prev) => [...prev, { question: userPrompt, response: null }])
     setQuestion('')
     setIsChatbotTyping(true)
     setIsStreaming(false)
     setIsLoading(true)
-  
+
     try {
-      const history: ChatMessageDTO[] = chat.flatMap(msg => {
+      const history: ChatMessageDTO[] = chat.flatMap((msg) => {
         const out: ChatMessageDTO[] = []
-        if (msg.question)  out.push({ role: 'user',      content: msg.question })
-        if (msg.response)  out.push({ role: 'assistant', content: msg.response })
+        if (msg.question) {
+          out.push({ role: 'user', content: msg.question })
+        }
+        if (msg.response) {
+          out.push({ role: 'assistant', content: msg.response })
+        }
         return out
       })
-  
+
       const payload: ChatCompletionWithConfigRequestDTO = {
         config: {
-          chatbotRole,
-          chatbotTone,
-          chatbotLanguage,
-          chatbotVoice,
-          chatbotGender,
-          preConfiguredExercise,
-          additionalExercise,
-          welcomeMessage,
+          chatbotRole: chatbotRole,
+          chatbotTone: chatbotTone,
+          chatbotLanguage: chatbotLanguage,
+          chatbotVoice: chatbotVoice,
+          chatbotGender: chatbotGender,
+          preConfiguredExercise: preConfiguredExercise,
+          additionalExercise: additionalExercise,
+          welcomeMessage: welcomeMessage,
         },
-        history,
+        history: history,
         message: userPrompt,
       }
-  
-      const { content: fullText } =
-        await chatApi.chatCompletionWithConfig({ body: payload })
-  
+
+      const { content: fullText } = await chatApi.chatCompletionWithConfig({ body: payload })
+
       setIsChatbotTyping(false)
-  
+
       const idx = chat.length
-      setChat(prev => {
+      setChat((prev) => {
         const copy = [...prev]
         copy[idx] = { ...copy[idx], response: '' }
         return copy
       })
-  
+
       setIsStreaming(true)
       const CHUNK = 5
       let pos = 0
       const total = fullText.length
-  
-      const typeChunk = () => {
+
+      const typeChunk = (): void => {
         pos = Math.min(pos + CHUNK, total)
         const slice = fullText.slice(0, pos)
         const formatted = formatResponse(slice)
-        setChat(prev => {
+        setChat((prev) => {
           const copy = [...prev]
-          copy[idx] = { ...copy[idx], response: formatted as any }
+          copy[idx] = { ...copy[idx], response: formatted }
           return copy
         })
-  
+
         if (pos < total) {
           setTimeout(typeChunk, 0)
         } else {
@@ -310,16 +312,15 @@ const ChatBotTemplateEdit: React.FC = () => {
           setIsLoading(false)
         }
       }
-  
+
       typeChunk()
-  
     } catch (err) {
       console.error(err)
       setSnackbarMessage('Chat service unavailable.')
       setSnackbarSeverity('error')
       setSnackbarOpen(true)
-  
-      setChat(prev => {
+
+      setChat((prev) => {
         const copy = [...prev]
         copy[copy.length - 1] = {
           ...copy[copy.length - 1],
@@ -332,8 +333,6 @@ const ChatBotTemplateEdit: React.FC = () => {
       setIsLoading(false)
     }
   }
-  
-
 
   const handleSaveConfiguration = async (): Promise<void> => {
     try {
@@ -793,85 +792,81 @@ const ChatBotTemplateEdit: React.FC = () => {
                       {chatItem.response && renderMessage(chatItem, index)}
 
                       {isChatbotTyping && !isStreaming && index === chat.length - 1 && (
-  <ListItem
-    sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}
-  >
-    {chatbotIcon && (
-      <Avatar
-        sx={{
-          width: 45,
-          height: 45,
-          fontSize: '2rem',
-          bgcolor: 'transparent',
-          mr: 2,
-          mt: 2,
-        }}
-      >
-        {getIconComponent(chatbotIcon)}
-      </Avatar>
-    )}
-    <Box sx={{ maxWidth: '80%' }}>
-      <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-        {chatbotName || 'Chatbot'}
-      </Typography>
-      <Box
-        sx={{
-          px: 2,
-          bgcolor: '#E5E5E5',
-          borderRadius: '20px',
-          minHeight: '40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div className='typing-indicator'>
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-        </div>
-      </Box>
-    </Box>
-  </ListItem>
-)}
-
+                        <ListItem
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-start',
+                          }}
+                        >
+                          {chatbotIcon && (
+                            <Avatar
+                              sx={{
+                                width: 45,
+                                height: 45,
+                                fontSize: '2rem',
+                                bgcolor: 'transparent',
+                                mr: 2,
+                                mt: 2,
+                              }}
+                            >
+                              {getIconComponent(chatbotIcon)}
+                            </Avatar>
+                          )}
+                          <Box sx={{ maxWidth: '80%' }}>
+                            <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
+                              {chatbotName || 'Chatbot'}
+                            </Typography>
+                            <Box
+                              sx={{
+                                px: 2,
+                                bgcolor: '#E5E5E5',
+                                borderRadius: '20px',
+                                minHeight: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <div className='typing-indicator'>
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                              </div>
+                            </Box>
+                          </Box>
+                        </ListItem>
+                      )}
                     </React.Fragment>
                   ))}
                 </List>
 
                 <Box
-  component="form"
-  onSubmit={handleSubmit}
-  sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, ml: 2, mb: 1, mr: 1 }}
->
-  <TextField
-    fullWidth
-    label={chatbotInputPlaceholder || 'Type a message...'}
-    variant="outlined"
-    value={question}
-    onChange={(e) => setQuestion(e.target.value)}
-    sx={{
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '20px',
-      },
-    }}
-  />
-  <Button
-    type="submit"
-    variant="contained"
-    sx={
-      !question || isChatbotTyping
-        ? disabledButtonStyles
-        : sendButtonStyles
-    }
-    disabled={!question || isChatbotTyping || isLoading}
-  >
-    {isChatbotTyping
-      ? <CircularProgress size={24} />
-      : <SendIcon />}
-  </Button>
-</Box>
-
+                  component='form'
+                  onSubmit={handleSubmit}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, ml: 2, mb: 1, mr: 1 }}
+                >
+                  <TextField
+                    fullWidth
+                    label={chatbotInputPlaceholder || 'Type a message...'}
+                    variant='outlined'
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '20px',
+                      },
+                    }}
+                  />
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    sx={!question || isChatbotTyping ? disabledButtonStyles : sendButtonStyles}
+                    disabled={!question || isChatbotTyping || isLoading}
+                  >
+                    {isChatbotTyping ? <CircularProgress size={24} /> : <SendIcon />}
+                  </Button>
+                </Box>
               </Paper>
             </Grid>
           </Grid>
