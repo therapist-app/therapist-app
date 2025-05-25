@@ -36,8 +36,7 @@ public class ChatMessageService {
 
     List<ChatMessageDTO> msgs = new ArrayList<>();
     msgs.add(new ChatMessageDTO("system", systemPrompt));
-    if (req.getHistory() != null && !req.getHistory().isEmpty())
-      msgs.addAll(req.getHistory());
+    if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO("user", req.getMessage()));
 
     return callRemote(modelRequest(msgs));
