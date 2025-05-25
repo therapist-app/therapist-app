@@ -258,7 +258,6 @@ const ChatBotTemplateEdit: React.FC = () => {
         if (msg.question) {
           out.push({ role: 'user', content: msg.question })
         }
-        // only include if it's a string
         if (typeof msg.response === 'string') {
           out.push({ role: 'assistant', content: msg.response })
         }
