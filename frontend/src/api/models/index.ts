@@ -11,3 +11,5 @@ export * from './LoginTherapistDTO'
 export * from './PatientOutputDTO'
 export * from './TherapistOutputDTO'
 export * from './TherapySessionOutputDTO'
+export * from './ChatCompletionWithConfigRequestDTO';
+
