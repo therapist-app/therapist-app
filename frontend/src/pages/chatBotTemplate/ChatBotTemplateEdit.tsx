@@ -258,7 +258,8 @@ const ChatBotTemplateEdit: React.FC = () => {
         if (msg.question) {
           out.push({ role: 'user', content: msg.question })
         }
-        if (msg.response) {
+        // only include if it's a string
+        if (typeof msg.response === 'string') {
           out.push({ role: 'assistant', content: msg.response })
         }
         return out
@@ -403,17 +404,11 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const renderMessage = (
-    chatItem: { question?: string; response: string | null },
+    chatItem: { question?: string; response: ReactNode | null },
     index: number
   ): ReactElement => (
     <ListItem key={index} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-      {chatbotIcon && (
-        <Avatar
-          sx={{ width: 45, height: 45, fontSize: '2rem', bgcolor: 'transparent', mr: 2, mt: 2 }}
-        >
-          {getIconComponent(chatbotIcon)}
-        </Avatar>
-      )}
+      {chatbotIcon && <Avatar /* … */>{getIconComponent(chatbotIcon)}</Avatar>}
       <Box sx={{ flex: 1, maxWidth: '80%', marginRight: 'auto' }}>
         <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
           {chatbotName || 'Chatbot'}
