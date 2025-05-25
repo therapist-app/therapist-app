@@ -50,10 +50,35 @@ export interface ChatCompletionWithConfigRequestDTO {
     'config'?: ChatbotConfigDTO;
     /**
      * 
+     * @type {Array<ChatMessageDTO>}
+     * @memberof ChatCompletionWithConfigRequestDTO
+     */
+    'history'?: Array<ChatMessageDTO>;
+    /**
+     * 
      * @type {string}
      * @memberof ChatCompletionWithConfigRequestDTO
      */
     'message'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ChatMessageDTO
+ */
+export interface ChatMessageDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatMessageDTO
+     */
+    'role'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatMessageDTO
+     */
+    'content'?: string;
 }
 /**
  * 
