@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface ChatCompletionResponseDTO
+ */
+export interface ChatCompletionResponseDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatCompletionResponseDTO
+     */
+    'content'?: string;
+}
+

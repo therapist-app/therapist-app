@@ -13,6 +13,24 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface LoginTherapistDTO
+ */
+export interface LoginTherapistDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginTherapistDTO
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginTherapistDTO
+     */
+    'password'?: string;
+}
+

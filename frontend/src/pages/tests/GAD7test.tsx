@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateGAD7TestDTO } from '../../api/models'
 import { patientTestApi } from '../../utils/api'
-import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const questions = [
   'Feeling nervous, anxious or on edge.',
@@ -73,14 +73,25 @@ export const GAD7test = (): ReactElement => {
 
       await patientTestApi.createTest(testData)
 
-      navigate(getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE), {
-        patientId: patientId,
-        meetingId: meetingId,
-      })
+      navigate(
+        getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+          meetingId: meetingId ?? '',
+        })
+      )
     } catch (err) {
       setError('Failed to submit the test. Please try again.')
       console.error('Error submitting GAD-7 test:', err)
     }
+  }
+
+  const handleCancel = (): void => {
+    navigate(
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
+        patientId: patientId ?? '',
+        meetingId: meetingId ?? '',
+      })
+    )
   }
 
   return (
@@ -168,10 +179,7 @@ export const GAD7test = (): ReactElement => {
         </Stack>
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
-          <Button
-            variant='outlined'
-            onClick={() => navigate(`/patients/${patientId}/therapy-sessions/${meetingId}`)}
-          >
+          <Button variant='outlined' onClick={handleCancel}>
             Cancel
           </Button>
           <Button

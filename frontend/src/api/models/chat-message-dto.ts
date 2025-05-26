@@ -13,6 +13,24 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface ChatMessageDTO
+ */
+export interface ChatMessageDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatMessageDTO
+     */
+    'role'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatMessageDTO
+     */
+    'content'?: string;
+}
+
