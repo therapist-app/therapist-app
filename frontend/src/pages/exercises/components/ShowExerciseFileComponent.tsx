@@ -3,23 +3,40 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../api'
-import { deleteExerciseComponent, updateExerciseComponent } from '../store/exerciseSlice'
-import { useAppDispatch } from '../utils/hooks'
+import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
+import FileDownload from '../../../generalComponents/FileDownload'
+import {
+  deleteExerciseComponent,
+  downloadExerciseComponent,
+  updateExerciseComponent,
+} from '../../../store/exerciseSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
-interface ShowExerciseTextComponentProps {
+interface ShowExerciseFileComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
+  isImageComponent: boolean
   refresh(): void
 }
 
-const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
-  props: ShowExerciseTextComponentProps
+const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
+  props: ShowExerciseFileComponentProps
 ) => {
-  const { exerciseComponent } = props
+  const { exerciseComponent, isImageComponent } = props
   const dispatch = useAppDispatch()
+  const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    const downloadImageFile = async (): Promise<void> => {
+      console.log('Downloading Image file')
+      const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+      setImageFileUrl(fileUrl)
+    }
+    console.log('Fired')
+    downloadImageFile()
+  }, [dispatch, exerciseComponent.id])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
@@ -82,16 +99,29 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>Text</Typography>
+            <Typography variant='h6'>{isImageComponent ? 'Image' : 'File'}</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
             </Button>
 
+            <FileDownload
+              download={() =>
+                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+              }
+              fileName={exerciseComponent.fileName ?? ''}
+            />
+
             <Button sx={{ minWidth: '10px' }} onClick={clickDelete}>
               <DeleteIcon style={{ color: 'red' }} />
             </Button>
           </div>
+
+          {isImageComponent ? (
+            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
+          ) : (
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
+          )}
 
           <Typography
             sx={{
@@ -128,6 +158,12 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
             </Button>
           </div>
 
+          {isImageComponent ? (
+            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
+          ) : (
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
+          )}
+
           <TextField
             multiline
             name='description'
@@ -141,4 +177,4 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
   )
 }
 
-export default ShowExerciseTextComponent
+export default ShowExerciseFileComponent

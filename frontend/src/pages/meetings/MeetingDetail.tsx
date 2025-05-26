@@ -18,14 +18,15 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { GAD7TestOutputDTO } from '../../api'
-import CreateMeetingNoteComponent from '../../generalComponents/CreateMeetingNoteComponent'
 import Layout from '../../generalComponents/Layout'
-import MeetingNoteComponent from '../../generalComponents/MeetingNoteComponent'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import { patientTestApi } from '../../utils/api'
+import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
+import MeetingNoteComponent from './components/MeetingNoteComponent'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()
@@ -75,8 +76,8 @@ const MeetingDetail = (): ReactElement => {
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
         <div>
-          <Typography>Meeting start: formatDateNicely(selectedMeeting?.meetingStart)</Typography>
-          <Typography>Meeting end: formatDateNicely(selectedMeeting?.meetingEnd)</Typography>
+          <Typography>Meeting start: {formatDateNicely(selectedMeeting?.meetingStart)}</Typography>
+          <Typography>Meeting end: {formatDateNicely(selectedMeeting?.meetingEnd)}</Typography>
         </div>
 
         {showCreateMeetingNote === true ? (

@@ -3,40 +3,23 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../api'
-import {
-  deleteExerciseComponent,
-  downloadExerciseComponent,
-  updateExerciseComponent,
-} from '../store/exerciseSlice'
-import { useAppDispatch } from '../utils/hooks'
-import FileDownload from './FileDownload'
+import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
+import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
-interface ShowExerciseFileComponentProps {
+interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
-  isImageComponent: boolean
   refresh(): void
 }
 
-const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
-  props: ShowExerciseFileComponentProps
+const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
+  props: ShowExerciseInputFieldComponentProps
 ) => {
-  const { exerciseComponent, isImageComponent } = props
+  const { exerciseComponent } = props
   const dispatch = useAppDispatch()
-  const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(undefined)
-
-  useEffect(() => {
-    const downloadImageFile = async (): Promise<void> => {
-      console.log('Downloading Image file')
-      const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-      setImageFileUrl(fileUrl)
-    }
-    console.log('Fired')
-    downloadImageFile()
-  }, [dispatch, exerciseComponent.id])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
@@ -99,29 +82,16 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>{isImageComponent ? 'Image' : 'File'}</Typography>
+            <Typography variant='h6'>Input Field</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
             </Button>
 
-            <FileDownload
-              download={() =>
-                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-              }
-              fileName={exerciseComponent.fileName ?? ''}
-            />
-
             <Button sx={{ minWidth: '10px' }} onClick={clickDelete}>
               <DeleteIcon style={{ color: 'red' }} />
             </Button>
           </div>
-
-          {isImageComponent ? (
-            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
-          ) : (
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-          )}
 
           <Typography
             sx={{
@@ -133,7 +103,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 'px', alignItems: 'center' }}>
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
@@ -158,18 +128,12 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
             </Button>
           </div>
 
-          {isImageComponent ? (
-            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
-          ) : (
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-          )}
-
           <TextField
             multiline
             name='description'
             value={formData.description}
             onChange={handleChange}
-            label='Text'
+            label='Description of Input'
           />
         </>
       )}
@@ -177,4 +141,4 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
   )
 }
 
-export default ShowExerciseFileComponent
+export default ShowExerciseInputFieldComponent

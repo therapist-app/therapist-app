@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
   Dialog,
@@ -19,8 +18,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -40,6 +37,7 @@ import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
+import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -49,7 +47,6 @@ const PatientDetail = (): ReactElement => {
   const allPatientDocuments = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
   )
-  const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
 
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
 
@@ -84,23 +81,6 @@ const PatientDetail = (): ReactElement => {
     const file = response.data
     const url = window.URL.createObjectURL(file)
     return url
-  }
-
-  const handleClickOnMeeting = (meetingId: string): void => {
-    navigate(
-      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
-        patientId: patientId ?? '',
-        meetingId: meetingId,
-      })
-    )
-  }
-
-  const handleCreateNewMeeting = (): void => {
-    navigate(
-      getPathFromPage(PAGES.MEETINGS_CREATE_PAGE, {
-        patientId: patientId ?? '',
-      })
-    )
   }
 
   const handleOpenChatbotDialog = (): void => {
@@ -226,62 +206,7 @@ const PatientDetail = (): ReactElement => {
 
       <Divider style={{ margin: '50px 0' }} />
 
-      <div
-        style={{
-          display: 'flex',
-          gap: '30px',
-          alignItems: 'center',
-          marginBottom: '10px',
-        }}
-      >
-        <Typography variant='h4'>All Meetings</Typography>
-        <Button variant='contained' onClick={handleCreateNewMeeting}>
-          Create new Meeting
-        </Button>
-      </div>
-      <TableContainer sx={{ width: '600px' }} component={Paper}>
-        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Meeting Start</TableCell>
-              <TableCell>Meeting End</TableCell>
-              <TableCell align='right'>View</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allMeetingsOfPatient.map((meeting) => (
-              <TableRow
-                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
-                key={meeting.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
-              >
-                <TableCell component='th' scope='row'>
-                  {meeting?.meetingStart
-                    ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
-                        locale: de,
-                      })
-                    : '-'}
-                </TableCell>
-                <TableCell>
-                  {meeting?.meetingEnd
-                    ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
-                        locale: de,
-                      })
-                    : '-'}
-                </TableCell>
-                <TableCell align='right'>
-                  <IconButton
-                    aria-label='download'
-                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
-                  >
-                    <VisibilityIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <MeetingOverviewComponent />
 
       <Divider style={{ margin: '50px 0' }} />
 

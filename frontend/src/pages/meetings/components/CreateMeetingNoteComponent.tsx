@@ -4,10 +4,10 @@ import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { CreateMeetingNoteDTO } from '../api'
-import { createMeetingNote } from '../store/meetingSlice'
-import { RootState } from '../store/store'
-import { useAppDispatch } from '../utils/hooks'
+import { CreateMeetingNoteDTO } from '../../../api'
+import { createMeetingNote } from '../../../store/meetingSlice'
+import { RootState } from '../../../store/store'
+import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateMeetingNoteComponentProps {
   save(): void

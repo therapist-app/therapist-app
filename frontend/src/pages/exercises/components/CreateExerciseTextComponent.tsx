@@ -7,38 +7,36 @@ import { useParams } from 'react-router-dom'
 import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
-} from '../api'
-import { createExerciseComponent, setAddingExerciseComponent } from '../store/exerciseSlice'
-import { useAppDispatch } from '../utils/hooks'
+} from '../../../api'
+import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
-interface CreateExerciseInputFieldComponentProps {
-  createdInputField(): void
+interface CreateExerciseTextComponentProps {
+  createdExercise(): void
   active: boolean
 }
 
-const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
-  props: CreateExerciseInputFieldComponentProps
+const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
+  props: CreateExerciseTextComponentProps
 ) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
-  const [description, setDescription] = useState('')
+  const [exerciseText, setExerciseText] = useState('')
 
-  const [isCreatingExerciseInputField, setIsCreatingExerciseInputField] = useState(false)
+  const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setDescription(e.target.value)
+    setExerciseText(e.target.value)
   }
 
-  const showExerciseInputField = (): void => {
-    dispatch(
-      setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField)
-    )
-    setIsCreatingExerciseInputField(true)
+  const showExerciseTextField = (): void => {
+    dispatch(setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text))
+    setIsCreatingExerciseText(true)
   }
 
   const cancel = (): void => {
-    setDescription('')
-    setIsCreatingExerciseInputField(false)
+    setExerciseText('')
+    setIsCreatingExerciseText(false)
     dispatch(setAddingExerciseComponent(null))
   }
 
@@ -48,8 +46,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     try {
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField,
-        description: description,
+        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
+        description: exerciseText,
       }
       await dispatch(
         createExerciseComponent({
@@ -61,7 +59,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     } catch (err) {
       console.error('Registration error:', err)
     } finally {
-      props.createdInputField()
+      props.createdExercise()
     }
   }
 
@@ -71,9 +69,9 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 
   return (
     <div>
-      {isCreatingExerciseInputField === false ? (
-        <Button variant='contained' color='primary' onClick={showExerciseInputField}>
-          Add Input Field
+      {isCreatingExerciseText === false ? (
+        <Button variant='contained' color='primary' onClick={showExerciseTextField}>
+          Add Text
         </Button>
       ) : (
         <form
@@ -82,8 +80,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
         >
           <TextField
             multiline
-            label='Description of Input'
-            value={description}
+            label='Text'
+            value={exerciseText}
             onChange={handleChange}
           ></TextField>
           <div
@@ -91,6 +89,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
               display: 'flex',
               width: '100%',
               gap: '10px',
+
               justifyContent: 'center',
             }}
           >
@@ -108,4 +107,4 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   )
 }
 
-export default CreateExerciseInputFieldComponent
+export default CreateExerciseTextComponent
