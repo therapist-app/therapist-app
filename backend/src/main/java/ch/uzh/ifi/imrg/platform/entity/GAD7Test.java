@@ -1,7 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,7 +17,7 @@ public class GAD7Test {
 
   @CreationTimestamp
   @Column(name = "creation_date", updatable = false)
-  private LocalDateTime creationDate;
+  private Instant creationDate;
 
   // Associations to Patient and Meeting
   @ManyToOne

@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.Data;
 
 @Data
@@ -9,7 +9,7 @@ public class GAD7TestOutputDTO {
   private String testId;
   private String patientId;
   private String meetingId;
-  private LocalDateTime creationDate;
+  private Instant creationDate;
   private int question1;
   private int question2;
   private int question3;

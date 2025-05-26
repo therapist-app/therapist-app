@@ -1,14 +1,14 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.Data;
 
 @Data
 public class CreateMeetingDTO {
 
-  private LocalDateTime meetingStart;
+  private Instant meetingStart;
 
-  private LocalDateTime meetingEnd;
+  private Instant meetingEnd;
 
   private String patientId;
 }

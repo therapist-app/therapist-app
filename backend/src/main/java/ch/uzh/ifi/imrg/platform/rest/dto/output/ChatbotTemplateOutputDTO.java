@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.Data;
 
 @Data
@@ -21,6 +21,6 @@ public class ChatbotTemplateOutputDTO {
   private String animation;
   private String chatbotInputPlaceholder;
   private String workspaceId;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private Instant createdAt;
+  private Instant updatedAt;
 }
