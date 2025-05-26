@@ -8,11 +8,11 @@ import {
   CreateExerciseComponentDTO,
   CreateExerciseComponentDTOExerciseComponentTypeEnum,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
-} from '../api'
-import { createExerciseComponent, setAddingExerciseComponent } from '../store/exerciseSlice'
-import { useAppDispatch } from '../utils/hooks'
-import FileUpload from './FileUpload'
-import ImageComponent from './ImageComponent'
+} from '../../../api'
+import FileUpload from '../../../generalComponents/FileUpload'
+import ImageComponent from '../../../generalComponents/ImageComponent'
+import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseFileComponentProps {
   createdExerciseFile(): void

@@ -5,18 +5,18 @@ import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
-import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../api'
-import { deleteExerciseComponent, updateExerciseComponent } from '../store/exerciseSlice'
-import { useAppDispatch } from '../utils/hooks'
+import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
+import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
-interface ShowExerciseInputFieldComponentProps {
+interface ShowExerciseTextComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
 }
 
-const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
-  props: ShowExerciseInputFieldComponentProps
+const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
+  props: ShowExerciseTextComponentProps
 ) => {
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
@@ -82,7 +82,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>Input Field</Typography>
+            <Typography variant='h6'>Text</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
@@ -103,7 +103,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: 'px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
@@ -133,7 +133,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
             name='description'
             value={formData.description}
             onChange={handleChange}
-            label='Description of Input'
+            label='Text'
           />
         </>
       )}
@@ -141,4 +141,4 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
   )
 }
 
-export default ShowExerciseInputFieldComponent
+export default ShowExerciseTextComponent

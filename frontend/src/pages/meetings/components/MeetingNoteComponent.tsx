@@ -14,9 +14,9 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 
-import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../api'
-import { deleteMeetingNote, updateMeetingNote } from '../store/meetingSlice'
-import { useAppDispatch } from '../utils/hooks'
+import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
+import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
+import { useAppDispatch } from '../../../utils/hooks'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO

@@ -22,19 +22,19 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   UpdateExerciseDTO,
 } from '../../api'
-import CreateExerciseFileComponent from '../../generalComponents/CreateExerciseFileComponent'
-import CreateExerciseInputFieldComponent from '../../generalComponents/CreateExerciseInputFieldComponent'
-import CreateExerciseTextComponent from '../../generalComponents/CreateExerciseTextComponent'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
-import ShowExerciseFileComponent from '../../generalComponents/ShowExerciseFileComponent'
-import ShowExerciseInputFieldComponent from '../../generalComponents/ShowExerciseInputFieldComponent'
-import ShowExerciseTextComponent from '../../generalComponents/ShowExerciseTextComponent'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import CreateExerciseFileComponent from './components/CreateExerciseFileComponent'
+import CreateExerciseInputFieldComponent from './components/CreateExerciseInputFieldComponent'
+import CreateExerciseTextComponent from './components/CreateExerciseTextComponent'
+import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
+import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
+import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
