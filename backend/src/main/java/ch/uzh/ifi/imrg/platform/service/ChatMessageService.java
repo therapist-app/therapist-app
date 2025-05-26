@@ -2,10 +2,10 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatCompletionResponseDTO;
+import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +16,6 @@ import org.springframework.web.client.RestTemplate;
 public class ChatMessageService {
 
   private final RestTemplate restTemplate;
-
-  @Value("${LOCAL_LLM_API_KEY}")
-  private String apiKey;
-
-  @Value("${LOCAL_LLM_URL}")
-  private String url;
-
-  @Value("${LOCAL_LLM_MODEL}")
-  private String model;
 
   public ChatMessageService(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -45,19 +36,22 @@ public class ChatMessageService {
   private ChatCompletionResponseDTO callRemote(RemoteRequest payload) {
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setBearerAuth(apiKey);
+    headers.setBearerAuth(EnvironmentVariables.LOCAL_LLM_API_KEY);
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     ResponseEntity<RemoteResponse> response =
         restTemplate.exchange(
-            url, HttpMethod.POST, new HttpEntity<>(payload, headers), RemoteResponse.class);
+            EnvironmentVariables.LOCAL_LLM_URL,
+            HttpMethod.POST,
+            new HttpEntity<>(payload, headers),
+            RemoteResponse.class);
 
     String assistantReply = response.getBody().choices[0].message.content;
     return new ChatCompletionResponseDTO(assistantReply);
   }
 
   private RemoteRequest modelRequest(List<ChatMessageDTO> messages) {
-    return new RemoteRequest(model, messages);
+    return new RemoteRequest(EnvironmentVariables.LOCAL_LLM_MODEL, messages);
   }
 
   private String buildSystemPrompt(ChatbotConfigDTO c) {
