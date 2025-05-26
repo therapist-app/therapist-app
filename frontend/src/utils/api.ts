@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {
   ChatbotTemplateControllerApiFactory,
+  ChatControllerApiFactory,
   ExerciseComponentControllerApiFactory,
   ExerciseControllerApiFactory,
   PatientControllerApiFactory,
@@ -39,5 +40,6 @@ export const therapySessionApi = TherapySessionControllerApiFactory(undefined, b
 export const therapySessionNoteApi = TherapySessionNoteControllerApiFactory(undefined, baseURL, api)
 export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
+export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
 
 export default api
