@@ -18,7 +18,6 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import {
-  CreateExerciseDTO,
   CreateExerciseDTOExerciseTypeEnum,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   UpdateExerciseDTO,

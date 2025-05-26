@@ -71,15 +71,6 @@ const MeetingDetail = (): ReactElement => {
     )
   }
 
-  const navigateToCreateExercises = (): void => {
-    navigate(
-      getPathFromPage(PAGES.EXERCISES_CREATE_PAGE, {
-        patientId: patientId ?? '',
-        meetingId: meetingId ?? '',
-      })
-    )
-  }
-
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
