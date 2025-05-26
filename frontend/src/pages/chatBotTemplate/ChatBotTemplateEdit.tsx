@@ -38,12 +38,12 @@ import { TbMessageChatbot } from 'react-icons/tb'
 import { useLocation } from 'react-router-dom'
 
 import { ChatbotTemplateOutputDTO } from '../../api'
-import { ChatControllerApiWithConfig } from '../../api/apis/ChatControllerApiWithConfig'
 import { ChatCompletionWithConfigRequestDTO } from '../../api/models/ChatCompletionWithConfigRequestDTO'
 import { ChatMessageDTO } from '../../api/models/ChatMessageDTO'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
+import { chatApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -86,7 +86,6 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
   const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
-  const chatApi = new ChatControllerApiWithConfig()
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -279,7 +278,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         message: userPrompt,
       }
 
-      const { content: fullText } = await chatApi.chatCompletionWithConfig({ body: payload })
+      const fullText = (await chatApi.chatWithConfig(payload)).data.content ?? ''
 
       setIsChatbotTyping(false)
 
