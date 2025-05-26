@@ -5,12 +5,12 @@ import {
   ChatControllerApiFactory,
   ExerciseComponentControllerApiFactory,
   ExerciseControllerApiFactory,
+  MeetingControllerApiFactory,
+  MeetingNoteControllerApiFactory,
   PatientControllerApiFactory,
   PatientDocumentControllerApiFactory,
   PatientTestControllerApiFactory,
   TherapistControllerApiFactory,
-  TherapySessionControllerApiFactory,
-  TherapySessionNoteControllerApiFactory,
 } from '../api'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
@@ -36,8 +36,8 @@ export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
 export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)
 export const therapistApi = TherapistControllerApiFactory(undefined, baseURL, api)
-export const therapySessionApi = TherapySessionControllerApiFactory(undefined, baseURL, api)
-export const therapySessionNoteApi = TherapySessionNoteControllerApiFactory(undefined, baseURL, api)
+export const meetingApi = MeetingControllerApiFactory(undefined, baseURL, api)
+export const meetingNoteApi = MeetingNoteControllerApiFactory(undefined, baseURL, api)
 export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)

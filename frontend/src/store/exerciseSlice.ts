@@ -5,7 +5,7 @@ import {
   CreateExerciseDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   ExerciseOutputDTO,
-  TherapySessionOutputDTO,
+  MeetingOutputDTO,
   UpdateExerciseComponentDTO,
   UpdateExerciseDTO,
 } from '../api'
@@ -13,7 +13,7 @@ import { exerciseApi, exerciseComponentApi } from '../utils/api'
 
 interface ExerciseState {
   selectedExercise: ExerciseOutputDTO | null
-  allExercisesOfTherapySession: ExerciseOutputDTO[]
+  allExercisesOfPatient: ExerciseOutputDTO[]
   addingExerciseComponent: ExerciseComponentOutputDTOExerciseComponentTypeEnum | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
@@ -21,7 +21,7 @@ interface ExerciseState {
 
 const initialState: ExerciseState = {
   selectedExercise: null,
-  allExercisesOfTherapySession: [],
+  allExercisesOfPatient: [],
   addingExerciseComponent: null,
   status: 'idle',
   error: null,
@@ -40,10 +40,10 @@ export const getExerciseById = createAsyncThunk('getExerciseById', async (exerci
   return response.data
 })
 
-export const getAllExercisesOfTherapySession = createAsyncThunk(
-  'getAllExercisesOfTherapySession',
-  async (therapySessionId: string) => {
-    const response = await exerciseApi.getAllExercisesOfTherapySession(therapySessionId)
+export const getAllExercisesOfPatient = createAsyncThunk(
+  'getAllExercisesOfPatient',
+  async (patientId: string) => {
+    const response = await exerciseApi.getAllExercisesOfPatient(patientId)
     return response.data
   }
 )
@@ -116,14 +116,14 @@ const exerciseSlice = createSlice({
     setSelectedExercise: (state, action: PayloadAction<ExerciseOutputDTO>) => {
       state.selectedExercise = action.payload
     },
-    setAllExercisesOfTherapySession: (state, action: PayloadAction<TherapySessionOutputDTO[]>) => {
-      state.allExercisesOfTherapySession = action.payload
+    setAllExercisesOfMeeting: (state, action: PayloadAction<MeetingOutputDTO[]>) => {
+      state.allExercisesOfPatient = action.payload
     },
     clearSelectedExercise: (state) => {
       state.selectedExercise = null
     },
-    clearAllExercisesOfTherapySession: (state) => {
-      state.allExercisesOfTherapySession = []
+    clearAllExercisesOfMeeting: (state) => {
+      state.allExercisesOfPatient = []
     },
     setAddingExerciseComponent: (
       state,
@@ -162,15 +162,15 @@ const exerciseSlice = createSlice({
         console.log(action)
       })
 
-      .addCase(getAllExercisesOfTherapySession.pending, (state) => {
+      .addCase(getAllExercisesOfPatient.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(getAllExercisesOfTherapySession.fulfilled, (state, action) => {
+      .addCase(getAllExercisesOfPatient.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.allExercisesOfTherapySession = action.payload
+        state.allExercisesOfPatient = action.payload
       })
-      .addCase(getAllExercisesOfTherapySession.rejected, (state, action) => {
+      .addCase(getAllExercisesOfPatient.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
@@ -250,9 +250,9 @@ const exerciseSlice = createSlice({
 
 export const {
   setSelectedExercise,
-  setAllExercisesOfTherapySession,
+  setAllExercisesOfMeeting,
   clearSelectedExercise,
-  clearAllExercisesOfTherapySession,
+  clearAllExercisesOfMeeting,
   setAddingExerciseComponent,
 } = exerciseSlice.actions
 export default exerciseSlice.reducer

@@ -19,14 +19,14 @@ public class GAD7Test {
   @Column(name = "creation_date", updatable = false)
   private LocalDateTime creationDate;
 
-  // Associations to Patient and TherapySession
+  // Associations to Patient and Meeting
   @ManyToOne
   @JoinColumn(name = "patient_id", nullable = false)
   private Patient patient;
 
   @ManyToOne
-  @JoinColumn(name = "session_id", nullable = false)
-  private TherapySession therapySession;
+  @JoinColumn(name = "meeting_id", nullable = false)
+  private Meeting meeting;
 
   @Column(nullable = false)
   private int question1;

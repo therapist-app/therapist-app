@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   IconButton,
   Paper,
   Table,
@@ -27,16 +28,18 @@ import { useNavigate, useParams } from 'react-router-dom'
 import FileDownload from '../../generalComponents/FileDownload'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
+import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
+import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
   createDocumentForPatient,
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
 import { RootState } from '../../store/store'
-import { getAllTherapySessionsOfPatient } from '../../store/therapySessionSlice'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -46,9 +49,7 @@ const PatientDetail = (): ReactElement => {
   const allPatientDocuments = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
   )
-  const allTherapySessionsOfPatient = useSelector(
-    (state: RootState) => state.therapySession.allTherapySessionsOfPatient
-  )
+  const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
 
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
 
@@ -57,7 +58,8 @@ const PatientDetail = (): ReactElement => {
 
   useEffect(() => {
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
-    dispatch(getAllTherapySessionsOfPatient(patientId ?? ''))
+    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
+    dispatch(getAllExercisesOfPatient(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUpload = async (file: File): Promise<void> => {
@@ -84,18 +86,18 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  const handleClickOnSession = (therapySessionId: string): void => {
+  const handleClickOnMeeting = (meetingId: string): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        therapySessionId: therapySessionId,
+        meetingId: meetingId,
       })
     )
   }
 
-  const handleCreateNewSession = (): void => {
+  const handleCreateNewMeeting = (): void => {
     navigate(
-      getPathFromPage(PAGES.THERAPY_SESSIONS_CREATE_PAGE, {
+      getPathFromPage(PAGES.MEETINGS_CREATE_PAGE, {
         patientId: patientId ?? '',
       })
     )
@@ -159,17 +161,26 @@ const PatientDetail = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
-      <Typography sx={{ marginTop: '50px' }} variant='h4'>
-        All Files
-      </Typography>
+      <Divider style={{ margin: '50px 0' }} />
+
+      <div
+        style={{
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'center',
+          marginBottom: '10px',
+        }}
+      >
+        <Typography variant='h4'>All Files</Typography>
+        <FileUpload onUpload={handleFileUpload} />
+      </div>
+
       <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
         <Table aria-label='simple table'>
           <TableHead>
             <TableRow>
               <TableCell>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                  File name <FileUpload onUpload={handleFileUpload} />
-                </div>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>File name</div>
               </TableCell>
               <TableCell align='right'>Actions</TableCell>
             </TableRow>
@@ -213,39 +224,47 @@ const PatientDetail = (): ReactElement => {
         </Table>
       </TableContainer>
 
-      <Typography sx={{ marginTop: '50px', marginBottom: '10px' }} variant='h4'>
-        All Sessions
-      </Typography>
+      <Divider style={{ margin: '50px 0' }} />
 
-      <Button sx={{ marginBottom: '20px' }} variant='contained' onClick={handleCreateNewSession}>
-        Create new Therapy Session
-      </Button>
+      <div
+        style={{
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'center',
+          marginBottom: '10px',
+        }}
+      >
+        <Typography variant='h4'>All Meetings</Typography>
+        <Button variant='contained' onClick={handleCreateNewMeeting}>
+          Create new Meeting
+        </Button>
+      </div>
       <TableContainer sx={{ width: '600px' }} component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Session Start</TableCell>
-              <TableCell>Session End</TableCell>
+              <TableCell>Meeting Start</TableCell>
+              <TableCell>Meeting End</TableCell>
               <TableCell align='right'>View</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTherapySessionsOfPatient.map((therapySession) => (
+            {allMeetingsOfPatient.map((meeting) => (
               <TableRow
-                onClick={() => handleClickOnSession(therapySession.id ?? '')}
-                key={therapySession.id}
+                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
+                key={meeting.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
               >
                 <TableCell component='th' scope='row'>
-                  {therapySession?.sessionStart
-                    ? format(new Date(therapySession.sessionStart), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingStart
+                    ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
                 </TableCell>
                 <TableCell>
-                  {therapySession?.sessionEnd
-                    ? format(new Date(therapySession.sessionEnd), 'dd.MM.yyyy HH:mm', {
+                  {meeting?.meetingEnd
+                    ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
                         locale: de,
                       })
                     : '-'}
@@ -253,7 +272,7 @@ const PatientDetail = (): ReactElement => {
                 <TableCell align='right'>
                   <IconButton
                     aria-label='download'
-                    onClick={() => handleClickOnSession(therapySession.id ?? '')}
+                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                   >
                     <VisibilityIcon />
                   </IconButton>
@@ -263,6 +282,10 @@ const PatientDetail = (): ReactElement => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <ExerciseOverviewComponent />
     </Layout>
   )
 }

@@ -17,7 +17,7 @@ public class PatientOutputDTO {
   private String description;
   private int age;
   private String email;
-  private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
+  private List<MeetingOutputDTO> meetingsOutputDTO;
 
   public PatientOutputDTO() {}
 

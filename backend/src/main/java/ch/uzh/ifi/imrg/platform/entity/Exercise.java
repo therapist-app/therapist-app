@@ -31,6 +31,14 @@ public class Exercise {
 
   @Column() private ExerciseType exerciseType;
 
+  @Column(name = "exercise_start")
+  private LocalDateTime exerciseStart;
+
+  @Column(name = "exercise_end")
+  private LocalDateTime exerciseEnd;
+
+  @Column() private Boolean isPaused;
+
   @OneToMany(
       mappedBy = "exercise",
       fetch = FetchType.LAZY,
@@ -39,6 +47,6 @@ public class Exercise {
   private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @ManyToOne
-  @JoinColumn(name = "therapy_session_id", referencedColumnName = "id")
-  private TherapySession therapySession;
+  @JoinColumn(name = "patient_id", referencedColumnName = "id")
+  private Patient patient;
 }

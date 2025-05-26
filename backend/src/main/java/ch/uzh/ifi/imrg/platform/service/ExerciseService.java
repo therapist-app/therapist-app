@@ -1,9 +1,9 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
-import ch.uzh.ifi.imrg.platform.entity.TherapySession;
+import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapySessionRepository;
+import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
@@ -22,26 +22,28 @@ public class ExerciseService {
   private final Logger logger = LoggerFactory.getLogger(PatientService.class);
 
   private final ExerciseRepository exerciseRepository;
-  private final TherapySessionRepository therapySessionRepository;
+  private final PatientRepository patientRepository;
 
   private final ExerciseMapper exerciseMapper = ExerciseMapper.INSTANCE;
 
   public ExerciseService(
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("therapySessionRepository") TherapySessionRepository therapySessionRepository) {
+      @Qualifier("patientRepository") PatientRepository patientRepository) {
     this.exerciseRepository = exerciseRepository;
-    this.therapySessionRepository = therapySessionRepository;
+    this.patientRepository = patientRepository;
   }
 
   public ExerciseOutputDTO createExercise(CreateExerciseDTO createExerciseDTO) {
 
-    TherapySession therapySession =
-        therapySessionRepository.getReferenceById(createExerciseDTO.getTherapySessionId());
+    Patient patient = patientRepository.getReferenceById(createExerciseDTO.getPatientId());
 
     Exercise exercise = new Exercise();
-    exercise.setTherapySession(therapySession);
+    exercise.setPatient(patient);
     exercise.setTitle(createExerciseDTO.getTitle());
     exercise.setExerciseType(createExerciseDTO.getExerciseType());
+    exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
+    exercise.setExerciseEnd(createExerciseDTO.getExerciseEnd());
+    exercise.setIsPaused(false);
 
     Exercise savedExercise = exerciseRepository.save(exercise);
 
@@ -53,9 +55,12 @@ public class ExerciseService {
     return exerciseMapper.convertEntityToExerciseOutputDTO(exercise);
   }
 
-  public List<ExerciseOutputDTO> getAllExercisesOfTherapySession(String therapySessionId) {
-    TherapySession therapySession = therapySessionRepository.getReferenceById(therapySessionId);
-    return therapySession.getExercises().stream()
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(String patientId) {
+    Patient patient = patientRepository.getReferenceById(patientId);
+
+    List<Exercise> exercises = patient.getExercises();
+
+    return exercises.stream()
         .map(exerciseMapper::convertEntityToExerciseOutputDTO)
         .collect(Collectors.toList());
   }
@@ -69,12 +74,24 @@ public class ExerciseService {
       exercise.setExerciseType(updateExerciseDTO.getExerciseType());
     }
 
+    if (updateExerciseDTO.getExerciseStart() != null) {
+      exercise.setExerciseStart(updateExerciseDTO.getExerciseStart());
+    }
+
+    if (updateExerciseDTO.getExerciseEnd() != null) {
+      exercise.setExerciseEnd(updateExerciseDTO.getExerciseEnd());
+    }
+
+    if (updateExerciseDTO.getIsPaused() != null) {
+      exercise.setIsPaused(updateExerciseDTO.getIsPaused());
+    }
+
     Exercise updatedExercise = exerciseRepository.save(exercise);
     return exerciseMapper.convertEntityToExerciseOutputDTO(updatedExercise);
   }
 
   public void deleteExercise(String id) {
     Exercise exercise = exerciseRepository.getReferenceById(id);
-    exercise.getTherapySession().getExercises().remove(exercise);
+    exercise.getPatient().getExercises().remove(exercise);
   }
 }

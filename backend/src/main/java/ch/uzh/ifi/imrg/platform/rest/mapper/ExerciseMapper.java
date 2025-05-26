@@ -18,6 +18,9 @@ public interface ExerciseMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "title", target = "title")
   @Mapping(source = "exerciseType", target = "exerciseType")
+  @Mapping(source = "exerciseStart", target = "exerciseStart")
+  @Mapping(source = "exerciseEnd", target = "exerciseEnd")
+  @Mapping(source = "isPaused", target = "isPaused")
   @Mapping(source = "exerciseComponents", target = "exerciseComponentsOutputDTO")
   ExerciseOutputDTO convertEntityToExerciseOutputDTO(Exercise exercise);
 

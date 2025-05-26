@@ -37,9 +37,11 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useLocation } from 'react-router-dom'
 
-import { ChatbotTemplateOutputDTO } from '../../api'
-import { ChatCompletionWithConfigRequestDTO } from '../../api/models/ChatCompletionWithConfigRequestDTO'
-import { ChatMessageDTO } from '../../api/models/ChatMessageDTO'
+import {
+  ChatbotTemplateOutputDTO,
+  ChatCompletionWithConfigRequestDTO,
+  ChatMessageDTO,
+} from '../../api'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
