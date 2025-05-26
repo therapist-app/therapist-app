@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import lombok.Data;
@@ -12,8 +12,8 @@ public class TherapistOutputDTO {
   private String workspaceId;
   private List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO;
   private List<PatientOutputDTO> patientsOutputDTO;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private Instant createdAt;
+  private Instant updatedAt;
 
   public TherapistOutputDTO sortDTO() {
     chatbotTemplatesOutputDTO.sort(

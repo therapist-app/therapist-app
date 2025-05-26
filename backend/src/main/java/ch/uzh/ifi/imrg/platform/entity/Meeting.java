@@ -2,7 +2,7 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,17 +21,17 @@ public class Meeting implements Serializable {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Column(name = "meeting_start")
-  private LocalDateTime meetingStart;
+  private Instant meetingStart;
 
   @Column(name = "meeting_end")
-  private LocalDateTime meetingEnd;
+  private Instant meetingEnd;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")

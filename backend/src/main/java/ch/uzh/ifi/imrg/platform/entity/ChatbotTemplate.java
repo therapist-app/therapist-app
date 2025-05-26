@@ -2,7 +2,7 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,11 +19,11 @@ public class ChatbotTemplate implements Serializable {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Column(nullable = false)
   private String chatbotName;

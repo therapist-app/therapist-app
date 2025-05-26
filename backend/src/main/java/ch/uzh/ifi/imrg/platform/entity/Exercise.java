@@ -2,7 +2,7 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,21 +21,21 @@ public class Exercise {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Column() private String title;
 
   @Column() private ExerciseType exerciseType;
 
   @Column(name = "exercise_start")
-  private LocalDateTime exerciseStart;
+  private Instant exerciseStart;
 
   @Column(name = "exercise_end")
-  private LocalDateTime exerciseEnd;
+  private Instant exerciseEnd;
 
   @Column() private Boolean isPaused;
 
