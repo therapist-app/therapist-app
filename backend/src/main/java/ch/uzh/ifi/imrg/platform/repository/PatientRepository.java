@@ -4,7 +4,7 @@ import ch.uzh.ifi.imrg.platform.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("patientRepository")
 public interface PatientRepository extends JpaRepository<Patient, String> {
 
   boolean existsById(String id);

@@ -38,6 +38,24 @@ export interface UpdateExerciseDTO {
      * @memberof UpdateExerciseDTO
      */
     'exerciseType'?: UpdateExerciseDTOExerciseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'exerciseStart'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'exerciseEnd'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateExerciseDTO
+     */
+    'isPaused'?: boolean;
 }
 
 export const UpdateExerciseDTOExerciseTypeEnum = {

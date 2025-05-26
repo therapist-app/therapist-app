@@ -43,6 +43,24 @@ export interface ExerciseOutputDTO {
     'exerciseType'?: ExerciseOutputDTOExerciseTypeEnum;
     /**
      * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'exerciseStart'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'exerciseEnd'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExerciseOutputDTO
+     */
+    'isPaused'?: boolean;
+    /**
+     * 
      * @type {Array<ExerciseComponentOutputDTO>}
      * @memberof ExerciseOutputDTO
      */

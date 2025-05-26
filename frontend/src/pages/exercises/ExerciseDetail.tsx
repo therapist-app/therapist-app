@@ -1,10 +1,28 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Button, Divider, Typography } from '@mui/material'
-import { ReactElement, useEffect } from 'react'
+import EditIcon from '@mui/icons-material/Edit'
+import {
+  Button,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { de } from 'date-fns/locale'
+import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ExerciseComponentOutputDTOExerciseComponentTypeEnum } from '../../api'
+import {
+  CreateExerciseDTO,
+  CreateExerciseDTOExerciseTypeEnum,
+  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
+  UpdateExerciseDTO,
+} from '../../api'
 import CreateExerciseFileComponent from '../../generalComponents/CreateExerciseFileComponent'
 import CreateExerciseInputFieldComponent from '../../generalComponents/CreateExerciseInputFieldComponent'
 import CreateExerciseTextComponent from '../../generalComponents/CreateExerciseTextComponent'
@@ -13,14 +31,20 @@ import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import ShowExerciseFileComponent from '../../generalComponents/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from '../../generalComponents/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from '../../generalComponents/ShowExerciseTextComponent'
-import { deleteExcercise, getExerciseById } from '../../store/exerciseSlice'
+import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
+import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
+type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
+  exerciseStart: Date | null
+  exerciseEnd: Date | null
+}
+
 const ExerciseDetail = (): ReactElement => {
   const navigate = useNavigate()
-  const { patientId, meetingId, exerciseId } = useParams()
+  const { patientId, exerciseId } = useParams()
 
   const dispatch = useAppDispatch()
 
@@ -31,6 +55,52 @@ const ExerciseDetail = (): ReactElement => {
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
   )
+
+  const [formData, setFormData] = useState<ExerciseFormData>({
+    title: selectedExercise?.title,
+    exerciseType: selectedExercise?.exerciseType,
+    exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
+    exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
+    isPaused: selectedExercise?.isPaused,
+  })
+
+  const [isEditingExercise, setIsEditingExercise] = useState(false)
+
+  const toggleIsEditingExercise = (isEditing: boolean): void => {
+    if (isEditing) {
+      setFormData({
+        title: selectedExercise?.title,
+        exerciseType: selectedExercise?.exerciseType,
+        exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
+        exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
+        isPaused: selectedExercise?.isPaused,
+      })
+      setIsEditingExercise(true)
+    } else {
+      setIsEditingExercise(false)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+
+    try {
+      const UpdateExerciseDTO: UpdateExerciseDTO = {
+        ...formData,
+        exerciseStart: formData.exerciseStart?.toISOString(),
+        exerciseEnd: formData.exerciseEnd?.toISOString(),
+        id: exerciseId ?? '',
+      }
+      await dispatch(updateExercise(UpdateExerciseDTO))
+      setIsEditingExercise(false)
+    } catch (err) {
+      console.error('Registration error:', err)
+    }
+  }
 
   const refreshExercise = async (): Promise<void> => {
     try {
@@ -43,9 +113,8 @@ const ExerciseDetail = (): ReactElement => {
   const handleDeleteExercise = async (): Promise<void> => {
     await dispatch(deleteExcercise(exerciseId ?? ''))
     navigate(
-      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.EXERCISES_OVERVIEW_PAGE, {
         patientId: patientId ?? '',
-        meetingId: meetingId ?? '',
       })
     )
   }
@@ -72,12 +141,117 @@ const ExerciseDetail = (): ReactElement => {
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <Typography variant='h4'>
-          Title: <strong>{selectedExercise?.title}</strong>
-        </Typography>
-        <Typography variant='h5'>
-          Exercise Type: <strong>{selectedExercise?.exerciseType}</strong>
-        </Typography>
+        {isEditingExercise === false ? (
+          <>
+            {' '}
+            <Typography variant='h4'>
+              Title: <strong>{selectedExercise?.title}</strong>
+            </Typography>
+            <Typography variant='h5'>
+              Exercise Type: <strong>{selectedExercise?.exerciseType}</strong>
+            </Typography>
+            <Typography>
+              Exercise Start: <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
+            </Typography>
+            <Typography>
+              Exercise End: <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
+            </Typography>
+            <Typography>
+              Is currently paused: {selectedExercise?.isPaused ? 'Yes' : 'No'}
+            </Typography>
+            <Button
+              onClick={() => toggleIsEditingExercise(true)}
+              variant='outlined'
+              sx={{ width: 'fit-content', marginTop: '10px' }}
+            >
+              <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} /> Edit Exercise
+            </Button>
+          </>
+        ) : (
+          <>
+            {' '}
+            <form
+              onSubmit={handleSubmit}
+              style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
+            >
+              <TextField
+                label='Title'
+                name='title'
+                value={formData.title}
+                onChange={handleChange}
+                fullWidth
+                margin='normal'
+                required
+              />
+              <TextField
+                select
+                sx={{ fontWeight: 'bold' }}
+                label='Exercise Type'
+                name='exerciseType'
+                value={formData.exerciseType}
+                onChange={handleChange}
+                required
+                fullWidth
+              >
+                {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{ width: 'fit-content' }}
+                    name='isPaused'
+                    checked={formData.isPaused}
+                    onChange={() => setFormData({ ...formData, isPaused: !formData.isPaused })}
+                  />
+                }
+                label='Is Exercise Paused'
+              ></FormControlLabel>
+              <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label='Exercise Start'
+                  value={formData.exerciseStart}
+                  onChange={(newValue: Date | null) => {
+                    setFormData({
+                      ...formData,
+                      exerciseStart: newValue,
+                    })
+                  }}
+                  sx={{ width: '100%' }}
+                />
+
+                <DateTimePicker
+                  label='Exercise End'
+                  value={formData.exerciseEnd}
+                  onChange={(newValue: Date | null) => {
+                    setFormData({
+                      ...formData,
+                      exerciseEnd: newValue,
+                    })
+                  }}
+                  sx={{ width: '100%' }}
+                />
+              </LocalizationProvider>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <Button
+                  variant='contained'
+                  color='error'
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={() => toggleIsEditingExercise(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </>
+        )}
 
         <Divider style={{ margin: '40px 0' }} />
 

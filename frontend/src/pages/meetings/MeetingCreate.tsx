@@ -6,21 +6,23 @@ import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { CreateMeetingDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+
+type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
+  meetingStart: Date | null
+  meetingEnd: Date | null
+}
 
 const MeetingCreate = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [meetingToCreate, setMeetingToCreate] = useState<{
-    meetingStart: Date | null
-    meetingEnd: Date | null
-    patientId: string
-  }>({
+  const [meetingFormData, setMeetingFormData] = useState<MeetingFormData>({
     meetingStart: null,
     meetingEnd: null,
     patientId: patientId ?? '',
@@ -29,19 +31,18 @@ const MeetingCreate = (): ReactElement => {
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
-    if (!meetingToCreate.meetingStart || !meetingToCreate.meetingEnd) {
+    if (!meetingFormData.meetingStart || !meetingFormData.meetingEnd) {
       console.error('Start and end dates are required')
       return
     }
 
     try {
-      const createdMeeting = await dispatch(
-        createMeeting({
-          patientId: meetingToCreate.patientId,
-          meetingStart: meetingToCreate.meetingStart.toISOString(),
-          meetingEnd: meetingToCreate.meetingEnd.toISOString(),
-        })
-      ).unwrap()
+      const createMeetingDTO: CreateMeetingDTO = {
+        ...meetingFormData,
+        meetingStart: meetingFormData.meetingStart.toISOString(),
+        meetingEnd: meetingFormData.meetingEnd.toISOString(),
+      }
+      const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
       navigate(
         getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -59,10 +60,10 @@ const MeetingCreate = (): ReactElement => {
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label='Meeting Start'
-            value={meetingToCreate.meetingStart}
+            value={meetingFormData.meetingStart}
             onChange={(newValue: Date | null) => {
-              setMeetingToCreate({
-                ...meetingToCreate,
+              setMeetingFormData({
+                ...meetingFormData,
                 meetingStart: newValue,
               })
             }}
@@ -71,10 +72,10 @@ const MeetingCreate = (): ReactElement => {
 
           <DateTimePicker
             label='Meeting End'
-            value={meetingToCreate.meetingEnd}
+            value={meetingFormData.meetingEnd}
             onChange={(newValue: Date | null) => {
-              setMeetingToCreate({
-                ...meetingToCreate,
+              setMeetingFormData({
+                ...meetingFormData,
                 meetingEnd: newValue,
               })
             }}

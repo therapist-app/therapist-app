@@ -38,6 +38,18 @@ export interface CreateExerciseDTO {
      * @memberof CreateExerciseDTO
      */
     'exerciseType'?: CreateExerciseDTOExerciseTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'exerciseStart'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'exerciseEnd'?: string;
 }
 
 export const CreateExerciseDTOExerciseTypeEnum = {

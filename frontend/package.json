@@ -16,7 +16,7 @@
     "prepare": "cd .. && husky frontend/.husky",
     "generate:resources": "i18next-resources-for-ts interface -i ./public/locales -o ./src/@types/resources.d.ts",
     "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'",
-    "generate:api": "rm -rf src/api && openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models"
+    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models"
   },
   "lint-staged": {
     "**/src/**/*.{ts,tsx}": [

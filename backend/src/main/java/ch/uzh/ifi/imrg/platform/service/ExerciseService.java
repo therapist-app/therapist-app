@@ -35,9 +35,15 @@ public class ExerciseService {
 
   public ExerciseOutputDTO createExercise(CreateExerciseDTO createExerciseDTO) {
 
+    Patient patient = patientRepository.getReferenceById(createExerciseDTO.getPatientId());
+
     Exercise exercise = new Exercise();
+    exercise.setPatient(patient);
     exercise.setTitle(createExerciseDTO.getTitle());
     exercise.setExerciseType(createExerciseDTO.getExerciseType());
+    exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
+    exercise.setExerciseEnd(createExerciseDTO.getExerciseEnd());
+    exercise.setIsPaused(false);
 
     Exercise savedExercise = exerciseRepository.save(exercise);
 
@@ -51,7 +57,10 @@ public class ExerciseService {
 
   public List<ExerciseOutputDTO> getAllExercisesOfPatient(String patientId) {
     Patient patient = patientRepository.getReferenceById(patientId);
-    return patient.getExercises().stream()
+
+    List<Exercise> exercises = patient.getExercises();
+
+    return exercises.stream()
         .map(exerciseMapper::convertEntityToExerciseOutputDTO)
         .collect(Collectors.toList());
   }
@@ -63,6 +72,18 @@ public class ExerciseService {
     }
     if (updateExerciseDTO.getExerciseType() != null) {
       exercise.setExerciseType(updateExerciseDTO.getExerciseType());
+    }
+
+    if (updateExerciseDTO.getExerciseStart() != null) {
+      exercise.setExerciseStart(updateExerciseDTO.getExerciseStart());
+    }
+
+    if (updateExerciseDTO.getExerciseEnd() != null) {
+      exercise.setExerciseEnd(updateExerciseDTO.getExerciseEnd());
+    }
+
+    if (updateExerciseDTO.getIsPaused() != null) {
+      exercise.setIsPaused(updateExerciseDTO.getIsPaused());
     }
 
     Exercise updatedExercise = exerciseRepository.save(exercise);
