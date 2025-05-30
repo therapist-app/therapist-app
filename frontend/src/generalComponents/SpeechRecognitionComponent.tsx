@@ -1,6 +1,5 @@
-import React, { FC, MouseEventHandler, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 
-// Type Definitions
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
   readonly results: SpeechRecognitionResultList
@@ -51,62 +50,101 @@ declare global {
 
 const BrowserSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
-// Component Props
+interface LanguageOption {
+  code: string
+  name: string
+}
+
+const defaultLanguages: LanguageOption[] = [
+  { code: 'en-US', name: 'English (US)' },
+  { code: 'en-GB', name: 'English (UK)' },
+  { code: 'es-ES', name: 'Español (España)' },
+  { code: 'fr-FR', name: 'Français (France)' },
+  { code: 'de-DE', name: 'Deutsch (Deutschland)' },
+  { code: 'it-IT', name: 'Italiano (Italia)' },
+  { code: 'ja-JP', name: '日本語 (日本)' },
+  { code: 'ko-KR', name: '한국어 (대한민국)' },
+  { code: 'pt-BR', name: 'Português (Brasil)' },
+  { code: 'zh-CN', name: '中文 (简体)' },
+]
+
 interface SpeechToTextProps {
   value: string
   onChange: (newValue: string) => void
   language?: string
+  availableLanguages?: LanguageOption[]
   placeholder?: string
 }
 
-// Style definitions
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     maxWidth: '600px',
-
     fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     backgroundColor: '#ffffff',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    padding: '24px',
+  },
+  languageSelectContainer: {
+    marginBottom: '20px',
+    position: 'relative',
+  },
+  languageSelectLabel: {
+    display: 'block',
+    fontSize: '12px',
+    color: '#6b7280',
+    marginBottom: '4px',
+    fontWeight: 500,
+  },
+  languageSelect: {
+    width: '100%',
+    padding: '10px 30px 10px 12px',
+    fontSize: '16px',
+    border: '1px solid #d1d5db',
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    color: '#1f2937',
+    appearance: 'none',
+    backgroundImage: `url('data:image/svg+xml;utf8,<svg fill="%236b7280" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>')`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 10px center',
+    cursor: 'pointer',
+    boxSizing: 'border-box',
   },
   textareaContainer: {
     marginTop: '12px',
     marginBottom: '12px',
-    marginRight: '12px',
     display: 'flex',
     gap: '15px',
+    alignItems: 'flex-start',
   },
   textarea: {
-    width: '100%',
+    flexGrow: 1,
     padding: '12px',
-    border: '1px solid #d1d5db', // gray-300
+    border: '1px solid #d1d5db',
     borderRadius: '8px',
     minHeight: '150px',
     fontSize: '16px',
-    color: '#1f2937', // gray-800
+    color: '#1f2937',
     boxSizing: 'border-box',
     lineHeight: '1.5',
     transition: 'border-color 0.2s, box-shadow 0.2s',
   },
-  textareaFocus: {
-    // Note: pseudo-classes like :focus need JS or different approach
-    borderColor: '#3b82f6', // blue-500
-    boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.4)',
-  },
   textareaListening: {
-    backgroundColor: '#f3f4f6', // gray-100
+    backgroundColor: '#f3f4f6',
     cursor: 'not-allowed',
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     gap: '16px',
+    flexShrink: 0,
   },
   button: {
-    padding: '12px 20px',
-    fontSize: '16px',
+    padding: '10px 15px',
+    fontSize: '14px',
     fontWeight: 500,
     borderRadius: '8px',
     border: 'none',
@@ -117,13 +155,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'center',
     gap: '8px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+    width: '180px',
+    textAlign: 'center',
   },
   startButton: {
-    backgroundColor: '#22c55e', // green-500
+    backgroundColor: '#22c55e',
     color: 'white',
   },
   stopButton: {
-    backgroundColor: '#ef4444', // red-500
+    backgroundColor: '#ef4444',
     color: 'white',
   },
   disabledButton: {
@@ -133,9 +173,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   errorMessage: {
     padding: '12px 16px',
-    backgroundColor: '#fee2e2', // red-100
-    border: '1px solid #fecaca', // red-200
-    color: '#b91c1c', // red-700
+    backgroundColor: '#fee2e2',
+    border: '1px solid #fecaca',
+    color: '#b91c1c',
     borderRadius: '8px',
     marginBottom: '20px',
     whiteSpace: 'pre-wrap',
@@ -147,28 +187,17 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   infoMessage: {
     textAlign: 'center',
-    color: '#4b5563', // gray-600
+    color: '#4b5563',
     marginTop: '20px',
     fontSize: '14px',
   },
   compatibilityMessage: {
     padding: '12px 16px',
-    backgroundColor: '#fef3c7', // amber-100
-    border: '1px solid #fde68a', // amber-200
-    color: '#92400e', // amber-700
+    backgroundColor: '#fef3c7',
+    border: '1px solid #fde68a',
+    color: '#92400e',
     borderRadius: '8px',
     marginTop: '20px',
-  },
-  // For the wrapper example
-  speechToTextContainerWrapper: {
-    backgroundColor: '#f0f2f5', // A light gray background
-    minHeight: '100vh',
-    paddingTop: '40px',
-    paddingBottom: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
   },
 }
 
@@ -176,19 +205,26 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   value,
   onChange,
   language = 'en-US',
+  availableLanguages = defaultLanguages,
   placeholder = 'Speak or type here...',
 }) => {
   const [isListening, setIsListening] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(language)
+
   const recognitionRef = useRef<ISpeechRecognition | null>(null)
   const initialStartRef = useRef(true)
   const finalizedTranscriptUpToLastEventRef = useRef<string>('')
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const valueRef = useRef(value)
   const onChangeRef = useRef(onChange)
 
   useEffect(() => {
     valueRef.current = value
+    if (textareaRef.current) {
+      textareaRef.current.scrollTop = textareaRef.current.scrollHeight
+    }
   }, [value])
 
   useEffect(() => {
@@ -196,9 +232,31 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   }, [onChange])
 
   useEffect(() => {
+    setSelectedLanguage(language)
+  }, [language])
+
+  useEffect(() => {
     if (!BrowserSpeechRecognition) {
       setError('Web Speech API is not supported in this browser. Please try Chrome or Edge.')
-      return
+      return (): void => {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop()
+          recognitionRef.current.onstart = null
+          recognitionRef.current.onresult = null
+          recognitionRef.current.onerror = null
+          recognitionRef.current.onend = null
+          recognitionRef.current = null
+        }
+      }
+    }
+
+    if (recognitionRef.current) {
+      recognitionRef.current.stop()
+      recognitionRef.current.onstart = null
+      recognitionRef.current.onresult = null
+      recognitionRef.current.onerror = null
+      recognitionRef.current.onend = null
+      recognitionRef.current = null
     }
 
     recognitionRef.current = new BrowserSpeechRecognition()
@@ -206,12 +264,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
     recognition.continuous = true
     recognition.interimResults = true
-    recognition.lang = language
+    recognition.lang = selectedLanguage
 
     recognition.onstart = (): void => {
       setIsListening(true)
       setError(null)
-      console.log('Speech recognition started.')
     }
 
     recognition.onresult = (event: SpeechRecognitionEvent): void => {
@@ -238,9 +295,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent): void => {
-      console.error('Speech recognition error:', event.error, event.message)
       let errorMessage = `Error: ${event.error}`
-      // ... (error message formatting as before)
       if (event.error === 'no-speech') {
         errorMessage = 'No speech detected. Please try speaking a bit louder or clearer.'
       } else if (event.error === 'audio-capture') {
@@ -258,9 +313,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
     recognition.onend = (): void => {
       setIsListening(false)
-      console.log('Speech recognition ended.')
-      // The text in the textarea (value prop) will reflect the last state from onresult.
-      // If the last part was interim, it remains, editable by the user.
     }
 
     return (): void => {
@@ -273,7 +325,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         recognitionRef.current = null
       }
     }
-  }, [language])
+  }, [selectedLanguage])
+
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedLanguage(event.target.value)
+  }
 
   const handleStartListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault()
@@ -285,14 +341,12 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           textToStartWith += '\n\n'
           onChangeRef.current(textToStartWith)
         }
-        // Anchor the finalized transcript ref to the current text (including potential newlines)
         finalizedTranscriptUpToLastEventRef.current = textToStartWith
 
         setError(null)
         recognitionRef.current.start()
         initialStartRef.current = false
       } catch (e: unknown) {
-        console.error('Error starting speech recognition:', e)
         const typedError = e as { message?: string }
         setError(`Could not start recognition: ${typedError.message || 'Unknown error'}`)
         setIsListening(false)
@@ -303,6 +357,12 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault()
     if (recognitionRef.current && isListening) {
+      const currentText = valueRef.current
+      if (currentText.trim() !== '') {
+        const textWithNewlines = currentText + '\n\n'
+        onChangeRef.current(textWithNewlines)
+        finalizedTranscriptUpToLastEventRef.current = textWithNewlines
+      }
       recognitionRef.current.stop()
     }
   }
@@ -311,18 +371,15 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     if (!isListening) {
       const newText = event.target.value
       onChangeRef.current(newText)
-      // If user edits, the finalized transcript should also reflect this manual change
       finalizedTranscriptUpToLastEventRef.current = newText
     }
   }
 
-  // Combine base and conditional styles for textarea
   const textareaStyle = {
     ...styles.textarea,
     ...(isListening ? styles.textareaListening : {}),
   }
 
-  // Combine base and conditional styles for buttons
   const startButtonStyle = {
     ...styles.button,
     ...styles.startButton,
@@ -336,8 +393,28 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
   return (
     <div style={styles.container}>
+      <div style={styles.languageSelectContainer}>
+        <label htmlFor='language-select' style={styles.languageSelectLabel}>
+          Language:
+        </label>
+        <select
+          id='language-select'
+          value={selectedLanguage}
+          onChange={handleLanguageChange}
+          style={styles.languageSelect}
+          disabled={isListening}
+        >
+          {availableLanguages.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div style={styles.textareaContainer}>
         <textarea
+          ref={textareaRef}
           value={value}
           onChange={handleTextChange}
           readOnly={isListening}
@@ -345,7 +422,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           style={textareaStyle}
           rows={6}
         />
-
         <div style={styles.buttonContainer}>
           <button
             onClick={handleStartListening}
@@ -355,7 +431,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
               if (!(isListening || !BrowserSpeechRecognition)) {
                 e.currentTarget.style.backgroundColor = '#16a34a'
               }
-            }} // green-600
+            }}
             onMouseLeave={(e) => {
               if (!(isListening || !BrowserSpeechRecognition)) {
                 e.currentTarget.style.backgroundColor = styles.startButton.backgroundColor as string
@@ -381,7 +457,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
               if (isListening) {
                 e.currentTarget.style.backgroundColor = '#dc2626'
               }
-            }} // red-600
+            }}
             onMouseLeave={(e) => {
               if (isListening) {
                 e.currentTarget.style.backgroundColor = styles.stopButton.backgroundColor as string
@@ -413,7 +489,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
       )}
 
       {isListening && !error && (
-        <p style={{ ...styles.infoMessage, color: '#16a34a' /* green-600 */, fontWeight: 500 }}>
+        <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
           Listening... Speak into your microphone.
         </p>
       )}
