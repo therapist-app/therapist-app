@@ -63,7 +63,7 @@ interface SpeechToTextProps {
   language?: string // Make language prop optional with a default
 }
 
-const SpeechToText: FC<SpeechToTextProps> = ({ language = 'en-US' }) => {
+const SpeechRecognitionComponent: FC<SpeechToTextProps> = ({ language = 'en-US' }) => {
   const [isListening, setIsListening] = useState<boolean>(false)
   const [transcript, setTranscript] = useState<string>('')
   const [interimTranscript, setInterimTranscript] = useState<string>('')
@@ -240,4 +240,4 @@ const SpeechToText: FC<SpeechToTextProps> = ({ language = 'en-US' }) => {
   )
 }
 
-export default SpeechToText
+export default SpeechRecognitionComponent

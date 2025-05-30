@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
+import SpeechRecognitionComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -76,6 +77,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
           </Button>
         </div>
       </form>
+      <SpeechRecognitionComponent />
     </div>
   )
 }
