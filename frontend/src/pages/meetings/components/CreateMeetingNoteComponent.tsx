@@ -47,7 +47,17 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        border: '1px solid black',
+        padding: '20px',
+        borderRadius: '20px',
+        maxWidth: '700px',
+      }}
+    >
       <Typography variant='h5'>New Note:</Typography>
       <form
         style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}
