@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, MouseEventHandler, useEffect, useRef, useState } from 'react'
 
 // Type Definitions
 interface SpeechRecognitionEvent extends Event {
@@ -63,23 +63,18 @@ interface SpeechToTextProps {
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     maxWidth: '600px',
-    margin: '40px auto',
-    padding: '24px',
+
     fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     backgroundColor: '#ffffff',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   },
-  heading: {
-    fontSize: '28px',
-    fontWeight: 600,
-    textAlign: 'center',
-    color: '#333',
-    marginBottom: '30px',
-  },
   textareaContainer: {
-    marginBottom: '24px',
-    position: 'relative',
+    marginTop: '12px',
+    marginBottom: '12px',
+    marginRight: '12px',
+    display: 'flex',
+    gap: '15px',
   },
   textarea: {
     width: '100%',
@@ -104,11 +99,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     gap: '16px',
-    marginBottom: '24px',
   },
   button: {
     padding: '12px 20px',
@@ -178,7 +172,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 }
 
-const App: FC<SpeechToTextProps> = ({
+const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   value,
   onChange,
   language = 'en-US',
@@ -281,7 +275,8 @@ const App: FC<SpeechToTextProps> = ({
     }
   }, [language])
 
-  const handleStartListening = (): void => {
+  const handleStartListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault()
     if (recognitionRef.current && !isListening) {
       try {
         let textToStartWith = valueRef.current
@@ -305,7 +300,8 @@ const App: FC<SpeechToTextProps> = ({
     }
   }
 
-  const handleStopListening = (): void => {
+  const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault()
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop()
     }
@@ -340,8 +336,6 @@ const App: FC<SpeechToTextProps> = ({
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>Speech Input</h2>
-
       <div style={styles.textareaContainer}>
         <textarea
           value={value}
@@ -351,64 +345,64 @@ const App: FC<SpeechToTextProps> = ({
           style={textareaStyle}
           rows={6}
         />
-      </div>
 
-      <div style={styles.buttonContainer}>
-        <button
-          onClick={handleStartListening}
-          disabled={isListening || !BrowserSpeechRecognition}
-          style={startButtonStyle}
-          onMouseEnter={(e) => {
-            if (!(isListening || !BrowserSpeechRecognition)) {
-              e.currentTarget.style.backgroundColor = '#16a34a'
-            }
-          }} // green-600
-          onMouseLeave={(e) => {
-            if (!(isListening || !BrowserSpeechRecognition)) {
-              e.currentTarget.style.backgroundColor = styles.startButton.backgroundColor as string
-            }
-          }}
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            fill='currentColor'
-            style={{ width: '20px', height: '20px' }}
+        <div style={styles.buttonContainer}>
+          <button
+            onClick={handleStartListening}
+            disabled={isListening || !BrowserSpeechRecognition}
+            style={startButtonStyle}
+            onMouseEnter={(e) => {
+              if (!(isListening || !BrowserSpeechRecognition)) {
+                e.currentTarget.style.backgroundColor = '#16a34a'
+              }
+            }} // green-600
+            onMouseLeave={(e) => {
+              if (!(isListening || !BrowserSpeechRecognition)) {
+                e.currentTarget.style.backgroundColor = styles.startButton.backgroundColor as string
+              }
+            }}
           >
-            <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
-            <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
-          </svg>
-          Start Listening
-        </button>
-        <button
-          onClick={handleStopListening}
-          disabled={!isListening}
-          style={stopButtonStyle}
-          onMouseEnter={(e) => {
-            if (isListening) {
-              e.currentTarget.style.backgroundColor = '#dc2626'
-            }
-          }} // red-600
-          onMouseLeave={(e) => {
-            if (isListening) {
-              e.currentTarget.style.backgroundColor = styles.stopButton.backgroundColor as string
-            }
-          }}
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            fill='currentColor'
-            style={{ width: '20px', height: '20px' }}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              style={{ width: '20px', height: '20px' }}
+            >
+              <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
+              <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
+            </svg>
+            Start Listening
+          </button>
+          <button
+            onClick={handleStopListening}
+            disabled={!isListening}
+            style={stopButtonStyle}
+            onMouseEnter={(e) => {
+              if (isListening) {
+                e.currentTarget.style.backgroundColor = '#dc2626'
+              }
+            }} // red-600
+            onMouseLeave={(e) => {
+              if (isListening) {
+                e.currentTarget.style.backgroundColor = styles.stopButton.backgroundColor as string
+              }
+            }}
           >
-            <path
-              fillRule='evenodd'
-              d='M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z'
-              clipRule='evenodd'
-            />
-          </svg>
-          Stop Listening
-        </button>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              style={{ width: '20px', height: '20px' }}
+            >
+              <path
+                fillRule='evenodd'
+                d='M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z'
+                clipRule='evenodd'
+              />
+            </svg>
+            Stop Listening
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -437,13 +431,4 @@ const App: FC<SpeechToTextProps> = ({
   )
 }
 
-const SpeechToTextContainer: FC = () => {
-  const [text, setText] = useState('')
-  return (
-    <div style={styles.speechToTextContainerWrapper}>
-      <App value={text} onChange={setText} language='en-US' />
-    </div>
-  )
-}
-
-export default SpeechToTextContainer
+export default SpeechToTextComponent

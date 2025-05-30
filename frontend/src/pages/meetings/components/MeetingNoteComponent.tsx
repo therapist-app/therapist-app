@@ -15,6 +15,7 @@ import {
 import { useState } from 'react'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
+import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 
@@ -63,6 +64,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleContentChange = (newValue: string): void => {
+    setFormData({ ...formData, content: newValue })
   }
 
   const deleteNote = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
@@ -136,12 +141,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
           >
             <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
-            <TextField
-              multiline
-              name='content'
-              value={formData.content}
-              onChange={handleChange}
-              label='Content'
+            <SpeechToTextComponent
+              placeholder='Content (Type or Speak)'
+              value={formData.content ?? ''}
+              onChange={handleContentChange}
             />
 
             <div

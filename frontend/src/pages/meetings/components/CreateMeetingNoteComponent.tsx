@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
-import SpeechRecognitionComponent from '../../../generalComponents/SpeechRecognitionComponent'
+import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -30,6 +30,10 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+  const handleContentChange = (newValue: string): void => {
+    setFormData({ ...formData, content: newValue })
+  }
+
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
@@ -51,12 +55,10 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
       >
         <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
-        <TextField
-          multiline
-          name='content'
-          value={formData.content}
-          onChange={handleChange}
-          label='Content'
+        <SpeechToTextComponent
+          placeholder='Content (Type or Speak)'
+          value={formData.content ?? ''}
+          onChange={handleContentChange}
         />
 
         <div
@@ -77,7 +79,6 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
           </Button>
         </div>
       </form>
-      <SpeechRecognitionComponent />
     </div>
   )
 }
