@@ -58,9 +58,10 @@ interface LanguageOption {
 const defaultLanguages: LanguageOption[] = [
   { code: 'en-US', name: 'English (US)' },
   { code: 'en-GB', name: 'English (UK)' },
+  { code: 'de-DE', name: 'Deutsch (Deutschland)' },
+  { code: 'uk-UA', name: 'Українська (Україна)' },
   { code: 'es-ES', name: 'Español (España)' },
   { code: 'fr-FR', name: 'Français (France)' },
-  { code: 'de-DE', name: 'Deutsch (Deutschland)' },
   { code: 'it-IT', name: 'Italiano (Italia)' },
   { code: 'ja-JP', name: '日本語 (日本)' },
   { code: 'ko-KR', name: '한국어 (대한민국)' },
