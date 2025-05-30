@@ -80,12 +80,6 @@ const MeetingDetail = (): ReactElement => {
           <Typography>Meeting end: {formatDateNicely(selectedMeeting?.meetingEnd)}</Typography>
         </div>
 
-        {showCreateMeetingNote === true ? (
-          <CreateMeetingNoteComponent cancel={cancelCreateMeetingNote} save={refreshMeeting} />
-        ) : (
-          <></>
-        )}
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
             <Typography variant='h5'>Your Notes:</Typography>
@@ -98,6 +92,11 @@ const MeetingDetail = (): ReactElement => {
               Create new Note
             </Button>
           </div>
+          {showCreateMeetingNote === true ? (
+            <CreateMeetingNoteComponent cancel={cancelCreateMeetingNote} save={refreshMeeting} />
+          ) : (
+            <></>
+          )}
           {selectedMeeting?.meetingNotesOutputDTO &&
           selectedMeeting?.meetingNotesOutputDTO?.length > 0 ? (
             <>
