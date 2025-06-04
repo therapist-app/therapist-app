@@ -115,13 +115,18 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
-*ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/{conversationId} | 
-*ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/{conversationId} | 
+*ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
+*ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
 *PatientAppApplicationPatientAPI* | [**helloWorld**](docs/PatientAppApplicationPatientAPI.md#helloWorld) | **GET** / | 
 *PatientControllerPatientAPI* | [**getCurrentlyLoggedInPatient**](docs/PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me | 
+*PatientControllerPatientAPI* | [**getLanguage**](docs/PatientControllerPatientAPI.md#getLanguage) | **GET** /patients/language | 
+*PatientControllerPatientAPI* | [**getOnboarded**](docs/PatientControllerPatientAPI.md#getOnboarded) | **GET** /patients/onboarded | 
 *PatientControllerPatientAPI* | [**loginTherapist**](docs/PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login | 
 *PatientControllerPatientAPI* | [**logoutTherapist**](docs/PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout | 
 *PatientControllerPatientAPI* | [**registerPatient**](docs/PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register | 
+*PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
+*PatientControllerPatientAPI* | [**setOnboarded**](docs/PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded | 
 
 
 ## Documentation for Models
@@ -132,7 +137,10 @@ Class | Method | HTTP request | Description
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
  - [LoginPatientDTOPatientAPI](docs/LoginPatientDTOPatientAPI.md)
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
+ - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
+ - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
+ - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
 
 
 <a id="documentation-for-authorization"></a>

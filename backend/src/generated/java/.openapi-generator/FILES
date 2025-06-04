@@ -13,9 +13,12 @@ docs/CreateMessageDTOPatientAPI.md
 docs/CreatePatientDTOPatientAPI.md
 docs/LoginPatientDTOPatientAPI.md
 docs/MessageOutputDTOPatientAPI.md
+docs/NameConversationOutputDTOPatientAPI.md
 docs/PatientAppApplicationPatientAPI.md
 docs/PatientControllerPatientAPI.md
 docs/PatientOutputDTOPatientAPI.md
+docs/PutLanguageDTOPatientAPI.md
+docs/PutOnboardedDTOPatientAPI.md
 git_push.sh
 gradle.properties
 gradle/wrapper/gradle-wrapper.jar
@@ -44,7 +47,10 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java
@@ -54,4 +60,7 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.jav
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPITest.java
