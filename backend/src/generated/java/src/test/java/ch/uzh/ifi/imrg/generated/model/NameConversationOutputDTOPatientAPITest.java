@@ -23,17 +23,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Model tests for PatientOutputDTOPatientAPI
+ * Model tests for NameConversationOutputDTOPatientAPI
  */
-public class PatientOutputDTOPatientAPITest {
-    private final PatientOutputDTOPatientAPI model = new PatientOutputDTOPatientAPI();
+public class NameConversationOutputDTOPatientAPITest {
+    private final NameConversationOutputDTOPatientAPI model = new NameConversationOutputDTOPatientAPI();
 
     /**
-     * Model tests for PatientOutputDTOPatientAPI
+     * Model tests for NameConversationOutputDTOPatientAPI
      */
     @Test
-    public void testPatientOutputDTOPatientAPI() {
-        // TODO: test PatientOutputDTOPatientAPI
+    public void testNameConversationOutputDTOPatientAPI() {
+        // TODO: test NameConversationOutputDTOPatientAPI
     }
 
     /**
@@ -50,38 +50,6 @@ public class PatientOutputDTOPatientAPITest {
     @Test
     public void nameTest() {
         // TODO: test name
-    }
-
-    /**
-     * Test the property 'description'
-     */
-    @Test
-    public void descriptionTest() {
-        // TODO: test description
-    }
-
-    /**
-     * Test the property 'email'
-     */
-    @Test
-    public void emailTest() {
-        // TODO: test email
-    }
-
-    /**
-     * Test the property 'language'
-     */
-    @Test
-    public void languageTest() {
-        // TODO: test language
-    }
-
-    /**
-     * Test the property 'onboarded'
-     */
-    @Test
-    public void onboardedTest() {
-        // TODO: test onboarded
     }
 
 }

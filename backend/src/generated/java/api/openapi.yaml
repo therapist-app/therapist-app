@@ -6,6 +6,62 @@ servers:
 - description: Generated server url
   url: http://backend-patient-app-main.jonas-blum.ch
 paths:
+  /patients/onboarded:
+    get:
+      operationId: getOnboarded
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+    put:
+      operationId: setOnboarded
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutOnboardedDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
+  /patients/language:
+    get:
+      operationId: getLanguage
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+    put:
+      operationId: setLanguage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutLanguageDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/register:
     post:
       operationId: registerPatient
@@ -68,7 +124,7 @@ paths:
       tags:
       - conversation-controller
       x-accepts: '*/*'
-  /patients/conversations/{conversationId}:
+  /patients/conversations/messages/{conversationId}:
     get:
       operationId: getAllMessages
       parameters:
@@ -129,6 +185,21 @@ paths:
       tags:
       - patient-controller
       x-accepts: '*/*'
+  /patients/conversations/{patientId}:
+    get:
+      operationId: nameConversationDTO
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/NameConversationOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - conversation-controller
+      x-accepts: '*/*'
   /:
     get:
       operationId: helloWorld
@@ -144,6 +215,16 @@ paths:
       x-accepts: text/plain
 components:
   schemas:
+    PutOnboardedDTO:
+      properties:
+        onboarded:
+          type: boolean
+      type: object
+    PutLanguageDTO:
+      properties:
+        language:
+          type: string
+      type: object
     CreatePatientDTO:
       properties:
         email:
@@ -153,38 +234,25 @@ components:
       type: object
     PatientOutputDTO:
       example:
-        createdAt: createdAt
-        phoneNumber: phoneNumber
-        address: address
-        gender: gender
+        onboarded: true
         name: name
         description: description
+        language: language
         id: id
-        age: 0
         email: email
-        updatedAt: updatedAt
       properties:
         id:
           type: string
         name:
           type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        phoneNumber:
-          type: string
-        address:
-          type: string
-        gender:
-          type: string
         description:
           type: string
-        age:
-          format: int32
-          type: integer
         email:
           type: string
+        language:
+          type: string
+        onboarded:
+          type: boolean
       type: object
     LoginPatientDTO:
       properties:
@@ -224,8 +292,19 @@ components:
         requestMessage:
           type: string
       type: object
+    NameConversationOutputDTO:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
     CompleteConversationOutputDTO:
       example:
+        name: name
         messages:
         - requestMessage: requestMessage
           conversationId: conversationId
@@ -240,6 +319,8 @@ components:
         id: id
       properties:
         id:
+          type: string
+        name:
           type: string
         messages:
           items:

@@ -17,6 +17,7 @@ import ch.uzh.ifi.imrg.generated.model.CompleteConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.NameConversationOutputDTOPatientAPI;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -56,6 +57,18 @@ public class ConversationControllerPatientAPITest {
     public void getAllMessagesTest()  {
         String conversationId = null;
         CompleteConversationOutputDTOPatientAPI response = api.getAllMessages(conversationId).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void nameConversationDTOTest()  {
+        List<NameConversationOutputDTOPatientAPI> response = api.nameConversationDTO().collectList().block();
 
         // TODO: test validations
     }

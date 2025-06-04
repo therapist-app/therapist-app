@@ -15,42 +15,34 @@ package ch.uzh.ifi.imrg.generated.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * CompleteConversationOutputDTOPatientAPI
+ * NameConversationOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES
+  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
+  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME
 })
-@JsonTypeName("CompleteConversationOutputDTO")
+@JsonTypeName("NameConversationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class CompleteConversationOutputDTOPatientAPI {
+public class NameConversationOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
-  public static final String JSON_PROPERTY_MESSAGES = "messages";
-  private List<MessageOutputDTOPatientAPI> messages;
-
-  public CompleteConversationOutputDTOPatientAPI() {
+  public NameConversationOutputDTOPatientAPI() {
   }
 
-  public CompleteConversationOutputDTOPatientAPI id(String id) {
+  public NameConversationOutputDTOPatientAPI id(String id) {
     
     this.id = id;
     return this;
@@ -76,7 +68,7 @@ public class CompleteConversationOutputDTOPatientAPI {
   }
 
 
-  public CompleteConversationOutputDTOPatientAPI name(String name) {
+  public NameConversationOutputDTOPatientAPI name(String name) {
     
     this.name = name;
     return this;
@@ -101,40 +93,6 @@ public class CompleteConversationOutputDTOPatientAPI {
     this.name = name;
   }
 
-
-  public CompleteConversationOutputDTOPatientAPI messages(List<MessageOutputDTOPatientAPI> messages) {
-    
-    this.messages = messages;
-    return this;
-  }
-
-  public CompleteConversationOutputDTOPatientAPI addMessagesItem(MessageOutputDTOPatientAPI messagesItem) {
-    if (this.messages == null) {
-      this.messages = new ArrayList<>();
-    }
-    this.messages.add(messagesItem);
-    return this;
-  }
-
-   /**
-   * Get messages
-   * @return messages
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MESSAGES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public List<MessageOutputDTOPatientAPI> getMessages() {
-    return messages;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_MESSAGES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMessages(List<MessageOutputDTOPatientAPI> messages) {
-    this.messages = messages;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -143,24 +101,22 @@ public class CompleteConversationOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CompleteConversationOutputDTOPatientAPI completeConversationOutputDTO = (CompleteConversationOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, completeConversationOutputDTO.id) &&
-        Objects.equals(this.name, completeConversationOutputDTO.name) &&
-        Objects.equals(this.messages, completeConversationOutputDTO.messages);
+    NameConversationOutputDTOPatientAPI nameConversationOutputDTO = (NameConversationOutputDTOPatientAPI) o;
+    return Objects.equals(this.id, nameConversationOutputDTO.id) &&
+        Objects.equals(this.name, nameConversationOutputDTO.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, messages);
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CompleteConversationOutputDTOPatientAPI {\n");
+    sb.append("class NameConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    messages: ").append(toIndentedString(messages)).append("\n");
     sb.append("}");
     return sb.toString();
   }

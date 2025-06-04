@@ -5,6 +5,8 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.LoginPatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +113,134 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec getCurrentlyLoggedInPatientWithResponseSpec() throws WebClientResponseException {
         return getCurrentlyLoggedInPatientRequestCreation();
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getLanguageRequestCreation() throws WebClientResponseException {
+        Object postBody = null;
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/language", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<PatientOutputDTOPatientAPI> getLanguage() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getLanguageRequestCreation().bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseEntity&lt;PatientOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<PatientOutputDTOPatientAPI>> getLanguageWithHttpInfo() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getLanguageRequestCreation().toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getLanguageWithResponseSpec() throws WebClientResponseException {
+        return getLanguageRequestCreation();
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getOnboardedRequestCreation() throws WebClientResponseException {
+        Object postBody = null;
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/onboarded", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<PatientOutputDTOPatientAPI> getOnboarded() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getOnboardedRequestCreation().bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseEntity&lt;PatientOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<PatientOutputDTOPatientAPI>> getOnboardedWithHttpInfo() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getOnboardedRequestCreation().toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getOnboardedWithResponseSpec() throws WebClientResponseException {
+        return getOnboardedRequestCreation();
     }
     /**
      * 
@@ -318,5 +448,143 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec registerPatientWithResponseSpec(CreatePatientDTOPatientAPI createPatientDTOPatientAPI) throws WebClientResponseException {
         return registerPatientRequestCreation(createPatientDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putLanguageDTOPatientAPI The putLanguageDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec setLanguageRequestCreation(PutLanguageDTOPatientAPI putLanguageDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = putLanguageDTOPatientAPI;
+        // verify the required parameter 'putLanguageDTOPatientAPI' is set
+        if (putLanguageDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'putLanguageDTOPatientAPI' when calling setLanguage", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/language", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putLanguageDTOPatientAPI The putLanguageDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> setLanguage(PutLanguageDTOPatientAPI putLanguageDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setLanguageRequestCreation(putLanguageDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putLanguageDTOPatientAPI The putLanguageDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> setLanguageWithHttpInfo(PutLanguageDTOPatientAPI putLanguageDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setLanguageRequestCreation(putLanguageDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putLanguageDTOPatientAPI The putLanguageDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec setLanguageWithResponseSpec(PutLanguageDTOPatientAPI putLanguageDTOPatientAPI) throws WebClientResponseException {
+        return setLanguageRequestCreation(putLanguageDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putOnboardedDTOPatientAPI The putOnboardedDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec setOnboardedRequestCreation(PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = putOnboardedDTOPatientAPI;
+        // verify the required parameter 'putOnboardedDTOPatientAPI' is set
+        if (putOnboardedDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'putOnboardedDTOPatientAPI' when calling setOnboarded", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/onboarded", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putOnboardedDTOPatientAPI The putOnboardedDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> setOnboarded(PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setOnboardedRequestCreation(putOnboardedDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putOnboardedDTOPatientAPI The putOnboardedDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> setOnboardedWithHttpInfo(PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setOnboardedRequestCreation(putOnboardedDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putOnboardedDTOPatientAPI The putOnboardedDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec setOnboardedWithResponseSpec(PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI) throws WebClientResponseException {
+        return setOnboardedRequestCreation(putOnboardedDTOPatientAPI);
     }
 }

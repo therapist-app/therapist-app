@@ -6,6 +6,7 @@ import ch.uzh.ifi.imrg.generated.model.CompleteConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.NameConversationOutputDTOPatientAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +148,7 @@ public class ConversationControllerPatientAPI {
         String[] localVarAuthNames = new String[] {  };
 
         ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/conversations/{conversationId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/patients/conversations/messages/{conversationId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -191,6 +192,70 @@ public class ConversationControllerPatientAPI {
      * 
      * 
      * <p><b>200</b> - OK
+     * @return List&lt;NameConversationOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec nameConversationDTORequestCreation() throws WebClientResponseException {
+        Object postBody = null;
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] {  };
+
+        ParameterizedTypeReference<NameConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NameConversationOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/conversations/{patientId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return List&lt;NameConversationOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Flux<NameConversationOutputDTOPatientAPI> nameConversationDTO() throws WebClientResponseException {
+        ParameterizedTypeReference<NameConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NameConversationOutputDTOPatientAPI>() {};
+        return nameConversationDTORequestCreation().bodyToFlux(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseEntity&lt;List&lt;NameConversationOutputDTOPatientAPI&gt;&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<List<NameConversationOutputDTOPatientAPI>>> nameConversationDTOWithHttpInfo() throws WebClientResponseException {
+        ParameterizedTypeReference<NameConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NameConversationOutputDTOPatientAPI>() {};
+        return nameConversationDTORequestCreation().toEntityList(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec nameConversationDTOWithResponseSpec() throws WebClientResponseException {
+        return nameConversationDTORequestCreation();
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
      * @param createMessageDTOPatientAPI The createMessageDTOPatientAPI parameter
      * @return MessageOutputDTOPatientAPI
@@ -228,7 +293,7 @@ public class ConversationControllerPatientAPI {
         String[] localVarAuthNames = new String[] {  };
 
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/conversations/{conversationId}", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/patients/conversations/messages/{conversationId}", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**

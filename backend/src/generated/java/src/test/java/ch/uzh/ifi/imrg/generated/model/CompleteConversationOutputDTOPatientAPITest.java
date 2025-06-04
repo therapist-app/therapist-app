@@ -49,6 +49,14 @@ public class CompleteConversationOutputDTOPatientAPITest {
     }
 
     /**
+     * Test the property 'name'
+     */
+    @Test
+    public void nameTest() {
+        // TODO: test name
+    }
+
+    /**
      * Test the property 'messages'
      */
     @Test

@@ -29,14 +29,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   PatientOutputDTOPatientAPI.JSON_PROPERTY_ID,
   PatientOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_CREATED_AT,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_UPDATED_AT,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_PHONE_NUMBER,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_ADDRESS,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_GENDER,
   PatientOutputDTOPatientAPI.JSON_PROPERTY_DESCRIPTION,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_AGE,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_EMAIL
+  PatientOutputDTOPatientAPI.JSON_PROPERTY_EMAIL,
+  PatientOutputDTOPatientAPI.JSON_PROPERTY_LANGUAGE,
+  PatientOutputDTOPatientAPI.JSON_PROPERTY_ONBOARDED
 })
 @JsonTypeName("PatientOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -47,29 +43,17 @@ public class PatientOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
-  public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private String createdAt;
-
-  public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private String updatedAt;
-
-  public static final String JSON_PROPERTY_PHONE_NUMBER = "phoneNumber";
-  private String phoneNumber;
-
-  public static final String JSON_PROPERTY_ADDRESS = "address";
-  private String address;
-
-  public static final String JSON_PROPERTY_GENDER = "gender";
-  private String gender;
-
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private String description;
 
-  public static final String JSON_PROPERTY_AGE = "age";
-  private Integer age;
-
   public static final String JSON_PROPERTY_EMAIL = "email";
   private String email;
+
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  private String language;
+
+  public static final String JSON_PROPERTY_ONBOARDED = "onboarded";
+  private Boolean onboarded;
 
   public PatientOutputDTOPatientAPI() {
   }
@@ -126,136 +110,6 @@ public class PatientOutputDTOPatientAPI {
   }
 
 
-  public PatientOutputDTOPatientAPI createdAt(String createdAt) {
-    
-    this.createdAt = createdAt;
-    return this;
-  }
-
-   /**
-   * Get createdAt
-   * @return createdAt
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getCreatedAt() {
-    return createdAt;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCreatedAt(String createdAt) {
-    this.createdAt = createdAt;
-  }
-
-
-  public PatientOutputDTOPatientAPI updatedAt(String updatedAt) {
-    
-    this.updatedAt = updatedAt;
-    return this;
-  }
-
-   /**
-   * Get updatedAt
-   * @return updatedAt
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getUpdatedAt() {
-    return updatedAt;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUpdatedAt(String updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-
-  public PatientOutputDTOPatientAPI phoneNumber(String phoneNumber) {
-    
-    this.phoneNumber = phoneNumber;
-    return this;
-  }
-
-   /**
-   * Get phoneNumber
-   * @return phoneNumber
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PHONE_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_PHONE_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-
-  public PatientOutputDTOPatientAPI address(String address) {
-    
-    this.address = address;
-    return this;
-  }
-
-   /**
-   * Get address
-   * @return address
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getAddress() {
-    return address;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-
-  public PatientOutputDTOPatientAPI gender(String gender) {
-    
-    this.gender = gender;
-    return this;
-  }
-
-   /**
-   * Get gender
-   * @return gender
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_GENDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getGender() {
-    return gender;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_GENDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-
   public PatientOutputDTOPatientAPI description(String description) {
     
     this.description = description;
@@ -279,32 +133,6 @@ public class PatientOutputDTOPatientAPI {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(String description) {
     this.description = description;
-  }
-
-
-  public PatientOutputDTOPatientAPI age(Integer age) {
-    
-    this.age = age;
-    return this;
-  }
-
-   /**
-   * Get age
-   * @return age
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_AGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public Integer getAge() {
-    return age;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_AGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAge(Integer age) {
-    this.age = age;
   }
 
 
@@ -333,6 +161,58 @@ public class PatientOutputDTOPatientAPI {
     this.email = email;
   }
 
+
+  public PatientOutputDTOPatientAPI language(String language) {
+    
+    this.language = language;
+    return this;
+  }
+
+   /**
+   * Get language
+   * @return language
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getLanguage() {
+    return language;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+
+  public PatientOutputDTOPatientAPI onboarded(Boolean onboarded) {
+    
+    this.onboarded = onboarded;
+    return this;
+  }
+
+   /**
+   * Get onboarded
+   * @return onboarded
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ONBOARDED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getOnboarded() {
+    return onboarded;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ONBOARDED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOnboarded(Boolean onboarded) {
+    this.onboarded = onboarded;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -344,19 +224,15 @@ public class PatientOutputDTOPatientAPI {
     PatientOutputDTOPatientAPI patientOutputDTO = (PatientOutputDTOPatientAPI) o;
     return Objects.equals(this.id, patientOutputDTO.id) &&
         Objects.equals(this.name, patientOutputDTO.name) &&
-        Objects.equals(this.createdAt, patientOutputDTO.createdAt) &&
-        Objects.equals(this.updatedAt, patientOutputDTO.updatedAt) &&
-        Objects.equals(this.phoneNumber, patientOutputDTO.phoneNumber) &&
-        Objects.equals(this.address, patientOutputDTO.address) &&
-        Objects.equals(this.gender, patientOutputDTO.gender) &&
         Objects.equals(this.description, patientOutputDTO.description) &&
-        Objects.equals(this.age, patientOutputDTO.age) &&
-        Objects.equals(this.email, patientOutputDTO.email);
+        Objects.equals(this.email, patientOutputDTO.email) &&
+        Objects.equals(this.language, patientOutputDTO.language) &&
+        Objects.equals(this.onboarded, patientOutputDTO.onboarded);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, createdAt, updatedAt, phoneNumber, address, gender, description, age, email);
+    return Objects.hash(id, name, description, email, language, onboarded);
   }
 
   @Override
@@ -365,14 +241,10 @@ public class PatientOutputDTOPatientAPI {
     sb.append("class PatientOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
-    sb.append("    address: ").append(toIndentedString(address)).append("\n");
-    sb.append("    gender: ").append(toIndentedString(gender)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    age: ").append(toIndentedString(age)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    language: ").append(toIndentedString(language)).append("\n");
+    sb.append("    onboarded: ").append(toIndentedString(onboarded)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -16,6 +16,8 @@ package ch.uzh.ifi.imrg.generated.api;
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.LoginPatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
 import org.junit.Test;
 import org.junit.Ignore;
 
@@ -42,6 +44,30 @@ public class PatientControllerPatientAPITest {
     @Test
     public void getCurrentlyLoggedInPatientTest()  {
         PatientOutputDTOPatientAPI response = api.getCurrentlyLoggedInPatient().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getLanguageTest()  {
+        PatientOutputDTOPatientAPI response = api.getLanguage().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getOnboardedTest()  {
+        PatientOutputDTOPatientAPI response = api.getOnboarded().block();
 
         // TODO: test validations
     }
@@ -80,6 +106,32 @@ public class PatientControllerPatientAPITest {
     public void registerPatientTest()  {
         CreatePatientDTOPatientAPI createPatientDTOPatientAPI = null;
         PatientOutputDTOPatientAPI response = api.registerPatient(createPatientDTOPatientAPI).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void setLanguageTest()  {
+        PutLanguageDTOPatientAPI putLanguageDTOPatientAPI = null;
+        api.setLanguage(putLanguageDTOPatientAPI).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void setOnboardedTest()  {
+        PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI = null;
+        api.setOnboarded(putOnboardedDTOPatientAPI).block();
 
         // TODO: test validations
     }
