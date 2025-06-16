@@ -17,29 +17,14 @@
 /**
  * 
  * @export
- * @interface ChatMessageDTO
+ * @interface TherapistChatCompletionOutputDTO
  */
-export interface ChatMessageDTO {
+export interface TherapistChatCompletionOutputDTO {
     /**
      * 
      * @type {string}
-     * @memberof ChatMessageDTO
-     */
-    'chatRole'?: ChatMessageDTOChatRoleEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatMessageDTO
+     * @memberof TherapistChatCompletionOutputDTO
      */
     'content'?: string;
 }
-
-export const ChatMessageDTOChatRoleEnum = {
-    User: 'USER',
-    Assistant: 'ASSISTANT',
-    System: 'SYSTEM'
-} as const;
-
-export type ChatMessageDTOChatRoleEnum = typeof ChatMessageDTOChatRoleEnum[keyof typeof ChatMessageDTOChatRoleEnum];
-
 

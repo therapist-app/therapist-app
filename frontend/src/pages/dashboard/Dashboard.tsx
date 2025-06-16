@@ -92,12 +92,12 @@ const Dashboard = (): ReactElement => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await dispatch(getCurrentlyLoggedInTherapist())
-      if (loggedInTherapist) {
-        dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id ?? ''))
+      if (loggedInTherapist?.id) {
+        dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id))
       }
     }
     fetchData()
-  }, [dispatch, refreshTherapistCounter, loggedInTherapist])
+  }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
 
   const handleFileUpload = async (file: File): Promise<void> => {
     await dispatch(
