@@ -127,14 +127,17 @@ def openApiSpecUrl = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs
 
 tasks.named('openApiGenerate') {
 	// --- MODIFICATION START ---
+	// This line forces Gradle to always run this task, bypassing the UP-TO-DATE check.
+	// This is necessary because Gradle can't detect changes in the remote OpenAPI spec.
+	outputs.upToDateWhen { false }
+	// --- MODIFICATION END ---
+
 	// This "doFirst" action runs right before the generator executes.
-	// It deletes the output directory to ensure the spec and code are always regenerated
-	// when this task runs. This block is NOT executed if the "onlyIf" condition below is false.
+	// It deletes the output directory to ensure the spec and code are always regenerated.
 	doFirst {
 		logger.lifecycle("🧹 Cleaning OpenAPI output directory for fresh generation...")
 		delete("$projectDir/src/generated")
 	}
-	// --- MODIFICATION END ---
 
 	// This condition block runs before the task executes.
 	// If it returns false, the entire task (including the "doFirst" block) is skipped.
@@ -188,20 +191,7 @@ tasks.named('openApiGenerate') {
 	skipValidateSpec.set(true)
 }
 
-// Ensure compileJava depends on openApiGenerate
+// Ensure that the Java compilation task runs after the OpenAPI code has been generated.
 tasks.named('compileJava') {
-    dependsOn tasks.named('openApiGenerate')
+	dependsOn tasks.named('openApiGenerate')
 }
-
-// Ensure bootRun also depends on openApiGenerate (unless skipped)
-tasks.named('bootRun') {
-    dependsOn {
-        if (project.hasProperty('skipOpenApiGenerate') && project.property('skipOpenApiGenerate') == 'true') {
-            logger.lifecycle("⏭️ Not adding openApiGenerate as dependency of bootRun due to -PskipOpenApiGenerate")
-            return []
-        }
-        logger.lifecycle("📎 Adding openApiGenerate as dependency of bootRun")
-        return [tasks.named('openApiGenerate')]
-    }
-}
-
