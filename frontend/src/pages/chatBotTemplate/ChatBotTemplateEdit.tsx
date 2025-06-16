@@ -41,6 +41,7 @@ import {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
   ChatMessageDTO,
+  ChatMessageDTOChatRoleEnum,
 } from '../../api'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
@@ -257,10 +258,10 @@ const ChatBotTemplateEdit: React.FC = () => {
       const history: ChatMessageDTO[] = chat.flatMap((msg) => {
         const out: ChatMessageDTO[] = []
         if (msg.question) {
-          out.push({ role: 'user', content: msg.question })
+          out.push({ chatRole: ChatMessageDTOChatRoleEnum.User, content: msg.question })
         }
         if (typeof msg.response === 'string') {
-          out.push({ role: 'assistant', content: msg.response })
+          out.push({ chatRole: ChatMessageDTOChatRoleEnum.Assistant, content: msg.response })
         }
         return out
       })
