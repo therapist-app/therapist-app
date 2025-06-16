@@ -13,10 +13,12 @@
 
 package ch.uzh.ifi.imrg.generated.api;
 
+import ch.uzh.ifi.imrg.generated.model.ChangePasswordDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.LoginPatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutNameDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -42,6 +44,19 @@ public class PatientControllerPatientAPITest {
      * 
      */
     @Test
+    public void changePasswordTest()  {
+        ChangePasswordDTOPatientAPI changePasswordDTOPatientAPI = null;
+        api.changePassword(changePasswordDTOPatientAPI).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
     public void getCurrentlyLoggedInPatientTest()  {
         PatientOutputDTOPatientAPI response = api.getCurrentlyLoggedInPatient().block();
 
@@ -56,6 +71,18 @@ public class PatientControllerPatientAPITest {
     @Test
     public void getLanguageTest()  {
         PatientOutputDTOPatientAPI response = api.getLanguage().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getNameTest()  {
+        PatientOutputDTOPatientAPI response = api.getName().block();
 
         // TODO: test validations
     }
@@ -119,6 +146,19 @@ public class PatientControllerPatientAPITest {
     public void setLanguageTest()  {
         PutLanguageDTOPatientAPI putLanguageDTOPatientAPI = null;
         api.setLanguage(putLanguageDTOPatientAPI).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void setNameTest()  {
+        PutNameDTOPatientAPI putNameDTOPatientAPI = null;
+        api.setName(putNameDTOPatientAPI).block();
 
         // TODO: test validations
     }

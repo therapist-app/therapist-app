@@ -118,29 +118,42 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
 *ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
+*MeetingControllerPatientAPI* | [**createMeeting**](docs/MeetingControllerPatientAPI.md#createMeeting) | **POST** /patients/{patientId}/meetings | 
+*MeetingControllerPatientAPI* | [**deleteMeeting**](docs/MeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /patients/{patientId}/meetings/{meetingId} | 
+*MeetingControllerPatientAPI* | [**getMeeting**](docs/MeetingControllerPatientAPI.md#getMeeting) | **GET** /patients/{patientId}/meetings/{meetingId} | 
+*MeetingControllerPatientAPI* | [**listMeetings**](docs/MeetingControllerPatientAPI.md#listMeetings) | **GET** /patients/{patientId}/meetings | 
+*MeetingControllerPatientAPI* | [**updateMeeting**](docs/MeetingControllerPatientAPI.md#updateMeeting) | **PUT** /patients/{patientId}/meetings/{meetingId} | 
 *PatientAppApplicationPatientAPI* | [**helloWorld**](docs/PatientAppApplicationPatientAPI.md#helloWorld) | **GET** / | 
+*PatientControllerPatientAPI* | [**changePassword**](docs/PatientControllerPatientAPI.md#changePassword) | **PUT** /patients/password | 
 *PatientControllerPatientAPI* | [**getCurrentlyLoggedInPatient**](docs/PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me | 
 *PatientControllerPatientAPI* | [**getLanguage**](docs/PatientControllerPatientAPI.md#getLanguage) | **GET** /patients/language | 
+*PatientControllerPatientAPI* | [**getName**](docs/PatientControllerPatientAPI.md#getName) | **GET** /patients/name | 
 *PatientControllerPatientAPI* | [**getOnboarded**](docs/PatientControllerPatientAPI.md#getOnboarded) | **GET** /patients/onboarded | 
 *PatientControllerPatientAPI* | [**loginTherapist**](docs/PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login | 
 *PatientControllerPatientAPI* | [**logoutTherapist**](docs/PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout | 
 *PatientControllerPatientAPI* | [**registerPatient**](docs/PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register | 
 *PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
+*PatientControllerPatientAPI* | [**setName**](docs/PatientControllerPatientAPI.md#setName) | **PUT** /patients/name | 
 *PatientControllerPatientAPI* | [**setOnboarded**](docs/PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded | 
 
 
 ## Documentation for Models
 
+ - [ChangePasswordDTOPatientAPI](docs/ChangePasswordDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
+ - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
  - [LoginPatientDTOPatientAPI](docs/LoginPatientDTOPatientAPI.md)
+ - [MeetingOutputDTOPatientAPI](docs/MeetingOutputDTOPatientAPI.md)
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
  - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
+ - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
+ - [UpdateMeetingDTOPatientAPI](docs/UpdateMeetingDTOPatientAPI.md)
 
 
 <a id="documentation-for-authorization"></a>

@@ -126,14 +126,9 @@ sourceSets {
 def openApiSpecUrl = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs'
 
 tasks.named('openApiGenerate') {
-	// --- MODIFICATION START ---
-	// This line forces Gradle to always run this task, bypassing the UP-TO-DATE check.
-	// This is necessary because Gradle can't detect changes in the remote OpenAPI spec.
-	outputs.upToDateWhen { false }
-	// --- MODIFICATION END ---
 
-	// This "doFirst" action runs right before the generator executes.
-	// It deletes the output directory to ensure the spec and code are always regenerated.
+	outputs.upToDateWhen { false }
+	
 	doFirst {
 		logger.lifecycle("🧹 Cleaning OpenAPI output directory for fresh generation...")
 		delete("$projectDir/src/generated")

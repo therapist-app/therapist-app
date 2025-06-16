@@ -6,6 +6,107 @@ servers:
 - description: Generated server url
   url: http://backend-patient-app-main.jonas-blum.ch
 paths:
+  /patients/{patientId}/meetings/{meetingId}:
+    delete:
+      operationId: deleteMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - meeting-controller
+      x-accepts: application/json
+    get:
+      operationId: getMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: OK
+      tags:
+      - meeting-controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMeetingDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: OK
+      tags:
+      - meeting-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /patients/password:
+    put:
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordDTO'
+        required: true
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/onboarded:
     get:
       operationId: getOnboarded
@@ -26,6 +127,34 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PutOnboardedDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
+  /patients/name:
+    get:
+      operationId: getName
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+    put:
+      operationId: setName
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutNameDTO'
         required: true
       responses:
         "200":
@@ -62,6 +191,56 @@ paths:
       - patient-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/{patientId}/meetings:
+    get:
+      operationId: listMeetings
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/MeetingOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - meeting-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeetingDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: Created
+      tags:
+      - meeting-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/register:
     post:
       operationId: registerPatient
@@ -215,14 +394,104 @@ paths:
       x-accepts: text/plain
 components:
   schemas:
+    UpdateMeetingDTO:
+      properties:
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          type: string
+      type: object
+    MeetingOutputDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        meetingStatus: PENDING
+        patientId: patientId
+        externalMeetingId: externalMeetingId
+        location: location
+        id: id
+        endAt: 2000-01-23T04:56:07.000+00:00
+        startAt: 2000-01-23T04:56:07.000+00:00
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        externalMeetingId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        patientId:
+          type: string
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          type: string
+      type: object
+    ChangePasswordDTO:
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          maxLength: 2147483647
+          minLength: 8
+          pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
+          type: string
+        confirmPassword:
+          type: string
+      required:
+      - confirmPassword
+      - newPassword
+      - oldPassword
+      type: object
     PutOnboardedDTO:
       properties:
         onboarded:
           type: boolean
       type: object
+    PutNameDTO:
+      properties:
+        name:
+          type: string
+      type: object
     PutLanguageDTO:
       properties:
         language:
+          type: string
+      type: object
+    CreateMeetingDTO:
+      properties:
+        externalMeetingId:
+          type: string
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
           type: string
       type: object
     CreatePatientDTO:
@@ -230,7 +499,12 @@ components:
         email:
           type: string
         password:
+          maxLength: 2147483647
+          minLength: 8
+          pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
           type: string
+      required:
+      - password
       type: object
     PatientOutputDTO:
       example:
