@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/application-api.ts
 apis/chat-controller-api.ts
@@ -13,6 +12,7 @@ apis/patient-controller-api.ts
 apis/patient-document-controller-api.ts
 apis/patient-test-controller-api.ts
 apis/therapist-controller-api.ts
+apis/therapist-document-controller-api.ts
 base.ts
 common.ts
 configuration.ts
@@ -29,6 +29,7 @@ models/create-exercise-dto.ts
 models/create-gad7-test-dto.ts
 models/create-meeting-dto.ts
 models/create-meeting-note-dto.ts
+models/create-patient-document-from-therapist-document-dto.ts
 models/create-patient-dto.ts
 models/create-therapist-dto.ts
 models/exercise-component-output-dto.ts
@@ -40,6 +41,7 @@ models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
+models/therapist-document-output-dto.ts
 models/therapist-output-dto.ts
 models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts

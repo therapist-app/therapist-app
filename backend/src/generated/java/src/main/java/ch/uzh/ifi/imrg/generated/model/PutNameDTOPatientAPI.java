@@ -24,73 +24,43 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * CreatePatientDTOPatientAPI
+ * PutNameDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CreatePatientDTOPatientAPI.JSON_PROPERTY_EMAIL,
-  CreatePatientDTOPatientAPI.JSON_PROPERTY_PASSWORD
+  PutNameDTOPatientAPI.JSON_PROPERTY_NAME
 })
-@JsonTypeName("CreatePatientDTO")
+@JsonTypeName("PutNameDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class CreatePatientDTOPatientAPI {
-  public static final String JSON_PROPERTY_EMAIL = "email";
-  private String email;
+public class PutNameDTOPatientAPI {
+  public static final String JSON_PROPERTY_NAME = "name";
+  private String name;
 
-  public static final String JSON_PROPERTY_PASSWORD = "password";
-  private String password;
-
-  public CreatePatientDTOPatientAPI() {
+  public PutNameDTOPatientAPI() {
   }
 
-  public CreatePatientDTOPatientAPI email(String email) {
+  public PutNameDTOPatientAPI name(String name) {
     
-    this.email = email;
+    this.name = name;
     return this;
   }
 
    /**
-   * Get email
-   * @return email
+   * Get name
+   * @return name
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EMAIL)
+  @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getEmail() {
-    return email;
+  public String getName() {
+    return name;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EMAIL)
+  @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-
-  public CreatePatientDTOPatientAPI password(String password) {
-    
-    this.password = password;
-    return this;
-  }
-
-   /**
-   * Get password
-   * @return password
-  **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public String getPassword() {
-    return password;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_PASSWORD)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPassword(String password) {
-    this.password = password;
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override
@@ -101,22 +71,20 @@ public class CreatePatientDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreatePatientDTOPatientAPI createPatientDTO = (CreatePatientDTOPatientAPI) o;
-    return Objects.equals(this.email, createPatientDTO.email) &&
-        Objects.equals(this.password, createPatientDTO.password);
+    PutNameDTOPatientAPI putNameDTO = (PutNameDTOPatientAPI) o;
+    return Objects.equals(this.name, putNameDTO.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, password);
+    return Objects.hash(name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreatePatientDTOPatientAPI {\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("class PutNameDTOPatientAPI {\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -3,9 +3,11 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
+import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
+import ch.uzh.ifi.imrg.platform.repository.TherapistDocumentRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapistDocumentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
@@ -27,15 +29,16 @@ public class PatientDocumentService {
   private final Logger logger = LoggerFactory.getLogger(PatientDocumentService.class);
 
   private final PatientRepository patientRepository;
-  private final TherapistRepository therapistRepository;
+  private final TherapistDocumentRepository therapistDocumentRepository;
   private final PatientDocumentRepository patientDocumentRepository;
 
   public PatientDocumentService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
+      @Qualifier("therapistDocumentRepository")
+          TherapistDocumentRepository therapistDocumentRepository,
       @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
     this.patientRepository = patientRepository;
-    this.therapistRepository = therapistRepository;
+    this.therapistDocumentRepository = therapistDocumentRepository;
     this.patientDocumentRepository = patientDocumentRepository;
   }
 
@@ -58,6 +61,26 @@ public class PatientDocumentService {
       throw new RuntimeException("Failed to read file bytes", e);
     }
     patientDocument.setExtractedText(extractedText);
+
+    patientDocumentRepository.save(patientDocument);
+  }
+
+  public void createPatientDocumentFromTherapistDocument(
+      CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO) {
+    TherapistDocument therapistDocument =
+        therapistDocumentRepository
+            .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
+            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+
+    PatientDocument patientDocument = new PatientDocument();
+    patientDocument.setPatient(
+        patientRepository
+            .findById(createPatientDocumentFromTherapistDocumentDTO.getPatientId())
+            .orElseThrow(() -> new RuntimeException("Patient not found")));
+    patientDocument.setFileName(therapistDocument.getFileName());
+    patientDocument.setFileType(therapistDocument.getFileType());
+    patientDocument.setFileData(therapistDocument.getFileData());
+    patientDocument.setExtractedText(therapistDocument.getExtractedText());
 
     patientDocumentRepository.save(patientDocument);
   }

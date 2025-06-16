@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapistDocumentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
@@ -45,6 +46,15 @@ public class PatientDocumentController {
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
+  @PostMapping("/from-therapist-document")
+  public void createPatientDocumentFromTherapistDocument(
+      @RequestBody
+          CreatePatientDocumentFromTherapistDocumentDTO
+              createPatientDocumentFromTherapistDocumentDTO) {
+    patientDocumentService.createPatientDocumentFromTherapistDocument(
+        createPatientDocumentFromTherapistDocumentDTO);
+  }
+
   @GetMapping("/{patientId}")
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       @PathVariable String patientId, HttpServletRequest httpServletReques) {
@@ -56,7 +66,7 @@ public class PatientDocumentController {
   }
 
   @GetMapping("/{patientDocumentId}/download")
-  public ResponseEntity<Resource> downloadFile(
+  public ResponseEntity<Resource> downloadPatientDocument(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest)
       throws IOException {
     Therapist loggedInTherapist =
@@ -76,7 +86,7 @@ public class PatientDocumentController {
   }
 
   @DeleteMapping("/{patientDocumentId}")
-  public void deleteFile(
+  public void deletePatientDocument(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest) {
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);

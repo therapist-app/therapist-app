@@ -49,4 +49,11 @@ public class Therapist implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "therapist",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 }

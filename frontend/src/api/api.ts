@@ -25,4 +25,5 @@ export * from './apis/patient-controller-api';
 export * from './apis/patient-document-controller-api';
 export * from './apis/patient-test-controller-api';
 export * from './apis/therapist-controller-api';
+export * from './apis/therapist-document-controller-api';
 
