@@ -22,27 +22,27 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
-import type { PatientDocumentOutputDTO } from '../models';
+import type { TherapistDocumentOutputDTO } from '../models';
 /**
- * PatientDocumentControllerApi - axios parameter creator
+ * TherapistDocumentControllerApi - axios parameter creator
  * @export
  */
-export const PatientDocumentControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+export const TherapistDocumentControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPatientDocument: async (patientId: string, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'patientId' is not null or undefined
-            assertParamExists('createPatientDocument', 'patientId', patientId)
+        createTherapistDocument: async (therapistId: string, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapistId' is not null or undefined
+            assertParamExists('createTherapistDocument', 'therapistId', therapistId)
             // verify required parameter 'file' is not null or undefined
-            assertParamExists('createPatientDocument', 'file', file)
-            const localVarPath = `/patient-documents/{patientId}`
-                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
+            assertParamExists('createTherapistDocument', 'file', file)
+            const localVarPath = `/therapist-documents/{therapistId}`
+                .replace(`{${"therapistId"}}`, encodeURIComponent(String(therapistId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -75,15 +75,15 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePatientDocument: async (patientDocumentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'patientDocumentId' is not null or undefined
-            assertParamExists('deletePatientDocument', 'patientDocumentId', patientDocumentId)
-            const localVarPath = `/patient-documents/{patientDocumentId}`
-                .replace(`{${"patientDocumentId"}}`, encodeURIComponent(String(patientDocumentId)));
+        deleteTherapistDocument: async (therapistDocumentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapistDocumentId' is not null or undefined
+            assertParamExists('deleteTherapistDocument', 'therapistDocumentId', therapistDocumentId)
+            const localVarPath = `/therapist-documents/{therapistDocumentId}`
+                .replace(`{${"therapistDocumentId"}}`, encodeURIComponent(String(therapistDocumentId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -108,15 +108,15 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadPatientDocument: async (patientDocumentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'patientDocumentId' is not null or undefined
-            assertParamExists('downloadPatientDocument', 'patientDocumentId', patientDocumentId)
-            const localVarPath = `/patient-documents/{patientDocumentId}/download`
-                .replace(`{${"patientDocumentId"}}`, encodeURIComponent(String(patientDocumentId)));
+        downloadTherapistDocument: async (therapistDocumentId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapistDocumentId' is not null or undefined
+            assertParamExists('downloadTherapistDocument', 'therapistDocumentId', therapistDocumentId)
+            const localVarPath = `/therapist-documents/{therapistDocumentId}/download`
+                .replace(`{${"therapistDocumentId"}}`, encodeURIComponent(String(therapistDocumentId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -141,15 +141,15 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
         },
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocumentsOfPatient: async (patientId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'patientId' is not null or undefined
-            assertParamExists('getDocumentsOfPatient', 'patientId', patientId)
-            const localVarPath = `/patient-documents/{patientId}`
-                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
+        getDocumentsOfTherapist: async (therapistId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'therapistId' is not null or undefined
+            assertParamExists('getDocumentsOfTherapist', 'therapistId', therapistId)
+            const localVarPath = `/therapist-documents/{therapistId}`
+                .replace(`{${"therapistId"}}`, encodeURIComponent(String(therapistId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -176,206 +176,206 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
 };
 
 /**
- * PatientDocumentControllerApi - functional programming interface
+ * TherapistDocumentControllerApi - functional programming interface
  * @export
  */
-export const PatientDocumentControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PatientDocumentControllerApiAxiosParamCreator(configuration)
+export const TherapistDocumentControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = TherapistDocumentControllerApiAxiosParamCreator(configuration)
     return {
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createPatientDocument(patientId, file, options);
+        async createTherapistDocument(therapistId: string, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createTherapistDocument(therapistId, file, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.createPatientDocument']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TherapistDocumentControllerApi.createTherapistDocument']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deletePatientDocument(patientDocumentId, options);
+        async deleteTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTherapistDocument(therapistDocumentId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.deletePatientDocument']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TherapistDocumentControllerApi.deleteTherapistDocument']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async downloadPatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<File>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadPatientDocument(patientDocumentId, options);
+        async downloadTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<File>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadTherapistDocument(therapistDocumentId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.downloadPatientDocument']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TherapistDocumentControllerApi.downloadTherapistDocument']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PatientDocumentOutputDTO>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getDocumentsOfPatient(patientId, options);
+        async getDocumentsOfTherapist(therapistId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TherapistDocumentOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDocumentsOfTherapist(therapistId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.getDocumentsOfPatient']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TherapistDocumentControllerApi.getDocumentsOfTherapist']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * PatientDocumentControllerApi - factory interface
+ * TherapistDocumentControllerApi - factory interface
  * @export
  */
-export const PatientDocumentControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PatientDocumentControllerApiFp(configuration)
+export const TherapistDocumentControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = TherapistDocumentControllerApiFp(configuration)
     return {
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.createPatientDocument(patientId, file, options).then((request) => request(axios, basePath));
+        createTherapistDocument(therapistId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createTherapistDocument(therapistId, file, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deletePatientDocument(patientDocumentId, options).then((request) => request(axios, basePath));
+        deleteTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteTherapistDocument(therapistDocumentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} patientDocumentId 
+         * @param {string} therapistDocumentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        downloadPatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File> {
-            return localVarFp.downloadPatientDocument(patientDocumentId, options).then((request) => request(axios, basePath));
+        downloadTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File> {
+            return localVarFp.downloadTherapistDocument(therapistDocumentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} patientId 
+         * @param {string} therapistId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientDocumentOutputDTO>> {
-            return localVarFp.getDocumentsOfPatient(patientId, options).then((request) => request(axios, basePath));
+        getDocumentsOfTherapist(therapistId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<TherapistDocumentOutputDTO>> {
+            return localVarFp.getDocumentsOfTherapist(therapistId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * PatientDocumentControllerApi - interface
+ * TherapistDocumentControllerApi - interface
  * @export
- * @interface PatientDocumentControllerApi
+ * @interface TherapistDocumentControllerApi
  */
-export interface PatientDocumentControllerApiInterface {
+export interface TherapistDocumentControllerApiInterface {
     /**
      * 
-     * @param {string} patientId 
+     * @param {string} therapistId 
      * @param {File} file 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApiInterface
+     * @memberof TherapistDocumentControllerApiInterface
      */
-    createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    createTherapistDocument(therapistId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
-     * @param {string} patientDocumentId 
+     * @param {string} therapistDocumentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApiInterface
+     * @memberof TherapistDocumentControllerApiInterface
      */
-    deletePatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    deleteTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
-     * @param {string} patientDocumentId 
+     * @param {string} therapistDocumentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApiInterface
+     * @memberof TherapistDocumentControllerApiInterface
      */
-    downloadPatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File>;
+    downloadTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig): AxiosPromise<File>;
 
     /**
      * 
-     * @param {string} patientId 
+     * @param {string} therapistId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApiInterface
+     * @memberof TherapistDocumentControllerApiInterface
      */
-    getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientDocumentOutputDTO>>;
+    getDocumentsOfTherapist(therapistId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<TherapistDocumentOutputDTO>>;
 
 }
 
 /**
- * PatientDocumentControllerApi - object-oriented interface
+ * TherapistDocumentControllerApi - object-oriented interface
  * @export
- * @class PatientDocumentControllerApi
+ * @class TherapistDocumentControllerApi
  * @extends {BaseAPI}
  */
-export class PatientDocumentControllerApi extends BaseAPI implements PatientDocumentControllerApiInterface {
+export class TherapistDocumentControllerApi extends BaseAPI implements TherapistDocumentControllerApiInterface {
     /**
      * 
-     * @param {string} patientId 
+     * @param {string} therapistId 
      * @param {File} file 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApi
+     * @memberof TherapistDocumentControllerApi
      */
-    public createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig) {
-        return PatientDocumentControllerApiFp(this.configuration).createPatientDocument(patientId, file, options).then((request) => request(this.axios, this.basePath));
+    public createTherapistDocument(therapistId: string, file: File, options?: RawAxiosRequestConfig) {
+        return TherapistDocumentControllerApiFp(this.configuration).createTherapistDocument(therapistId, file, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} patientDocumentId 
+     * @param {string} therapistDocumentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApi
+     * @memberof TherapistDocumentControllerApi
      */
-    public deletePatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig) {
-        return PatientDocumentControllerApiFp(this.configuration).deletePatientDocument(patientDocumentId, options).then((request) => request(this.axios, this.basePath));
+    public deleteTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig) {
+        return TherapistDocumentControllerApiFp(this.configuration).deleteTherapistDocument(therapistDocumentId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} patientDocumentId 
+     * @param {string} therapistDocumentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApi
+     * @memberof TherapistDocumentControllerApi
      */
-    public downloadPatientDocument(patientDocumentId: string, options?: RawAxiosRequestConfig) {
-        return PatientDocumentControllerApiFp(this.configuration).downloadPatientDocument(patientDocumentId, options).then((request) => request(this.axios, this.basePath));
+    public downloadTherapistDocument(therapistDocumentId: string, options?: RawAxiosRequestConfig) {
+        return TherapistDocumentControllerApiFp(this.configuration).downloadTherapistDocument(therapistDocumentId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {string} patientId 
+     * @param {string} therapistId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientDocumentControllerApi
+     * @memberof TherapistDocumentControllerApi
      */
-    public getDocumentsOfPatient(patientId: string, options?: RawAxiosRequestConfig) {
-        return PatientDocumentControllerApiFp(this.configuration).getDocumentsOfPatient(patientId, options).then((request) => request(this.axios, this.basePath));
+    public getDocumentsOfTherapist(therapistId: string, options?: RawAxiosRequestConfig) {
+        return TherapistDocumentControllerApiFp(this.configuration).getDocumentsOfTherapist(therapistId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

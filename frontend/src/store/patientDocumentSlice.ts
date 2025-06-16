@@ -34,7 +34,7 @@ export const getAllPatientDocumentsOfPatient = createAsyncThunk(
 export const deleteDocumentOfPatient = createAsyncThunk(
   'deleteDocumentOfPatient',
   async (patientDocumentId: string) => {
-    const response = await patientDocumentApi.deleteFile(patientDocumentId)
+    const response = await patientDocumentApi.deletePatientDocument(patientDocumentId)
     return response.data
   }
 )

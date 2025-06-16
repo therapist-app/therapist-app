@@ -40,8 +40,7 @@ public class TherapistDocumentController {
       @PathVariable String therapistId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     therapistDocumentService.uploadTherapistDocument(therapistId, file, loggedInTherapist);
   }
 
@@ -49,20 +48,19 @@ public class TherapistDocumentController {
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
       @PathVariable String therapistId, HttpServletRequest httpServletReques) {
     Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletReques);
-    List<TherapistDocumentOutputDTO> therapistDocuments =
-        therapistDocumentService.getDocumentsOfTherapist(therapistId, loggedInTherapist);
+    List<TherapistDocumentOutputDTO> therapistDocuments = therapistDocumentService.getDocumentsOfTherapist(therapistId,
+        loggedInTherapist);
 
     return therapistDocuments;
   }
 
   @GetMapping("/{therapistDocumentId}/download")
-  public ResponseEntity<Resource> downloadFile(
+  public ResponseEntity<Resource> downloadTherapistDocument(
       @PathVariable String therapistDocumentId, HttpServletRequest httpServletRequest)
       throws IOException {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    TherapistDocument fileDocument =
-        therapistDocumentService.downloadTherapistDocument(therapistDocumentId, loggedInTherapist);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    TherapistDocument fileDocument = therapistDocumentService.downloadTherapistDocument(therapistDocumentId,
+        loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
@@ -76,10 +74,9 @@ public class TherapistDocumentController {
   }
 
   @DeleteMapping("/{therapistDocumentId}")
-  public void deleteFile(
+  public void deleteTherapistDocument(
       @PathVariable String therapistDocumentId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     therapistDocumentService.deleteFile(therapistDocumentId, loggedInTherapist);
   }
 }

@@ -76,7 +76,7 @@ const PatientDetail = (): ReactElement => {
   }
 
   const downloadFile = async (fileId: string): Promise<string> => {
-    const response = await patientDocumentApi.downloadFile(fileId, {
+    const response = await patientDocumentApi.downloadPatientDocument(fileId, {
       responseType: 'blob',
     })
     const file = response.data

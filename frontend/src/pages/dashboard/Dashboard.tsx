@@ -44,7 +44,13 @@ import {
 } from '../../store/chatbotTemplateSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
+import {
+  createDocumentForTherapist,
+  deleteDocumentOfTherapist,
+  getAllTherapistDocumentsOfTherapist,
+} from '../../store/therapistDocumentSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { patientDocumentApi, therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -55,6 +61,9 @@ const Dashboard = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+  const allTherapistDocuments = useSelector(
+    (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
+  )
 
   const [openPatientDialog, setOpenPatientDialog] = useState(false)
   const [newPatientName, setNewPatientName] = useState('')
@@ -81,8 +90,38 @@ const Dashboard = (): ReactElement => {
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
   useEffect(() => {
-    dispatch(getCurrentlyLoggedInTherapist())
-  }, [dispatch, refreshTherapistCounter])
+    const fetchData = async (): Promise<void> => {
+      await dispatch(getCurrentlyLoggedInTherapist())
+      if (loggedInTherapist) {
+        dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id ?? ''))
+      }
+    }
+    fetchData()
+  }, [dispatch, refreshTherapistCounter, loggedInTherapist])
+
+  const handleFileUpload = async (file: File): Promise<void> => {
+    await dispatch(
+      createDocumentForTherapist({
+        file: file,
+        therapistId: loggedInTherapist?.id ?? '',
+      })
+    )
+    setRefreshTherapistCounter((prev) => prev + 1)
+  }
+
+  const handleDeleteFile = async (fileId: string): Promise<void> => {
+    await dispatch(deleteDocumentOfTherapist(fileId))
+    setRefreshTherapistCounter((prev) => prev + 1)
+  }
+
+  const downloadFile = async (fileId: string): Promise<string> => {
+    const response = await therapistDocumentApi.downloadTherapistDocument(fileId, {
+      responseType: 'blob',
+    })
+    const file = response.data
+    const url = window.URL.createObjectURL(file)
+    return url
+  }
 
   const handleOpenPatientDialog = (): void => {
     setOpenPatientDialog(true)
@@ -633,8 +672,8 @@ const Dashboard = (): ReactElement => {
       )}
 
       <FilesTable
-        title='Files'
-        allDocuments={allPatientDocuments}
+        title='Your Files'
+        allDocuments={allTherapistDocuments}
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}

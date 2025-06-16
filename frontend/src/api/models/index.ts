@@ -19,6 +19,7 @@ export * from './meeting-note-output-dto';
 export * from './meeting-output-dto';
 export * from './patient-document-output-dto';
 export * from './patient-output-dto';
+export * from './therapist-document-output-dto';
 export * from './therapist-output-dto';
 export * from './update-exercise-component-dto';
 export * from './update-exercise-dto';

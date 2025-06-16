@@ -5,6 +5,7 @@ import exerciseReducer from './exerciseSlice'
 import meetingReducer from './meetingSlice'
 import patientDocumentReducer from './patientDocumentSlice'
 import patientReducer from './patientSlice'
+import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
     meeting: meetingReducer,
     chatbotTemplate: chatbotTemplateReducer,
     exercise: exerciseReducer,
+    therapistDocument: therapistDocumentReducer,
   },
 })
 
