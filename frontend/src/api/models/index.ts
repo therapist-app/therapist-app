@@ -20,6 +20,8 @@ export * from './meeting-note-output-dto';
 export * from './meeting-output-dto';
 export * from './patient-document-output-dto';
 export * from './patient-output-dto';
+export * from './therapist-chat-completion-dto';
+export * from './therapist-chat-completion-output-dto';
 export * from './therapist-document-output-dto';
 export * from './therapist-output-dto';
 export * from './update-exercise-component-dto';

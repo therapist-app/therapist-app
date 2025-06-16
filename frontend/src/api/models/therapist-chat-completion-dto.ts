@@ -13,33 +13,27 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { ChatMessageDTO } from './chat-message-dto';
 
 /**
  * 
  * @export
- * @interface ChatMessageDTO
+ * @interface TherapistChatCompletionDTO
  */
-export interface ChatMessageDTO {
+export interface TherapistChatCompletionDTO {
+    /**
+     * 
+     * @type {Array<ChatMessageDTO>}
+     * @memberof TherapistChatCompletionDTO
+     */
+    'chatMessages'?: Array<ChatMessageDTO>;
     /**
      * 
      * @type {string}
-     * @memberof ChatMessageDTO
+     * @memberof TherapistChatCompletionDTO
      */
-    'chatRole'?: ChatMessageDTOChatRoleEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatMessageDTO
-     */
-    'content'?: string;
+    'patientId'?: string;
 }
-
-export const ChatMessageDTOChatRoleEnum = {
-    User: 'USER',
-    Assistant: 'ASSISTANT',
-    System: 'SYSTEM'
-} as const;
-
-export type ChatMessageDTOChatRoleEnum = typeof ChatMessageDTOChatRoleEnum[keyof typeof ChatMessageDTOChatRoleEnum];
-
 

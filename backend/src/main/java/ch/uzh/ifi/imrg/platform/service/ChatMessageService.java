@@ -2,56 +2,30 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatCompletionResponseDTO;
-import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @Transactional
 public class ChatMessageService {
 
-  private final RestTemplate restTemplate;
-
-  public ChatMessageService(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
-  }
+  public ChatMessageService() {}
 
   public ChatCompletionResponseDTO chat(ChatCompletionWithConfigRequestDTO req) {
 
     String systemPrompt = buildSystemPrompt(req.getConfig());
 
     List<ChatMessageDTO> msgs = new ArrayList<>();
-    msgs.add(new ChatMessageDTO("system", systemPrompt));
+    msgs.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
-    msgs.add(new ChatMessageDTO("user", req.getMessage()));
+    msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
-    return callRemote(modelRequest(msgs));
-  }
-
-  private ChatCompletionResponseDTO callRemote(RemoteRequest payload) {
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setBearerAuth(EnvironmentVariables.LOCAL_LLM_API_KEY);
-    headers.setContentType(MediaType.APPLICATION_JSON);
-
-    ResponseEntity<RemoteResponse> response =
-        restTemplate.exchange(
-            EnvironmentVariables.LOCAL_LLM_URL,
-            HttpMethod.POST,
-            new HttpEntity<>(payload, headers),
-            RemoteResponse.class);
-
-    String assistantReply = response.getBody().choices[0].message.content;
-    return new ChatCompletionResponseDTO(assistantReply);
-  }
-
-  private RemoteRequest modelRequest(List<ChatMessageDTO> messages) {
-    return new RemoteRequest(EnvironmentVariables.LOCAL_LLM_MODEL, messages);
+    String responseMessage = LLMUZH.callLLM(msgs);
+    return new ChatCompletionResponseDTO(responseMessage);
   }
 
   private String buildSystemPrompt(ChatbotConfigDTO c) {
@@ -83,14 +57,5 @@ public class ChatMessageService {
 
   private boolean nonEmpty(String s) {
     return s != null && !s.isBlank();
-  }
-
-  private record RemoteRequest(
-      String model, @JsonProperty("messages") List<ChatMessageDTO> messages) {}
-
-  private record RemoteResponse(RemoteChoice[] choices) {
-    private record RemoteChoice(RemoteMessage message) {}
-
-    private record RemoteMessage(String content) {}
   }
 }
