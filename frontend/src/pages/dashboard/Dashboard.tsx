@@ -50,7 +50,7 @@ import {
   getAllTherapistDocumentsOfTherapist,
 } from '../../store/therapistDocumentSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { patientDocumentApi, therapistDocumentApi } from '../../utils/api'
+import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -677,7 +677,6 @@ const Dashboard = (): ReactElement => {
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
-        handleCreatePatientDocumentFromTherapistDocument={null}
       />
 
       <Menu

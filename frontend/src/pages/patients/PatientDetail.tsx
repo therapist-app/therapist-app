@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete'
 import {
   Button,
   Dialog,
@@ -7,24 +6,13 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
-  Typography,
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import FileDownload from '../../generalComponents/FileDownload'
 import FilesTable from '../../generalComponents/FilesTable'
-import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'

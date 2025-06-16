@@ -21,7 +21,6 @@ interface FilesTableProps {
   handleFileUpload: (file: File) => void
   handleDeleteFile: (fileId: string) => void
   downloadFile: (fileId: string) => Promise<string>
-  handleCreatePatientDocumentFromTherapistDocument: ((therapistDocumentId: string) => void) | null
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
