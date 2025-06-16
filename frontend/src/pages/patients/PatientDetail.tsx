@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import FileDownload from '../../generalComponents/FileDownload'
+import FilesTable from '../../generalComponents/FilesTable'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
@@ -143,66 +144,13 @@ const PatientDetail = (): ReactElement => {
 
       <Divider style={{ margin: '50px 0' }} />
 
-      <div
-        style={{
-          display: 'flex',
-          gap: '30px',
-          alignItems: 'center',
-          marginBottom: '10px',
-        }}
-      >
-        <Typography variant='h4'>All Files</Typography>
-        <FileUpload onUpload={handleFileUpload} />
-      </div>
-
-      <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
-        <Table aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>File name</div>
-              </TableCell>
-              <TableCell align='right'>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allPatientDocuments.map((patientDocument) => (
-              <TableRow
-                key={patientDocument.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                  cursor: 'pointer',
-                }}
-              >
-                <TableCell
-                  sx={{
-                    maxWidth: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                  component='th'
-                  scope='row'
-                >
-                  {patientDocument.fileName}
-                </TableCell>
-                <TableCell align='right'>
-                  <FileDownload
-                    download={() => downloadFile(patientDocument.id ?? '')}
-                    fileName={patientDocument.fileName ?? ''}
-                  />
-                  <IconButton
-                    aria-label='delete'
-                    onClick={() => handleDeleteFile(patientDocument.id ?? '')}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <FilesTable
+        title='Files of Patient'
+        allDocuments={allPatientDocuments}
+        handleFileUpload={handleFileUpload}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+      />
 
       <Divider style={{ margin: '50px 0' }} />
 

@@ -34,6 +34,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
+import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import {
   cloneChatbotTemplate,
@@ -630,6 +631,14 @@ const Dashboard = (): ReactElement => {
           {t('dashboard.no_chatbots_created_yet')}
         </Typography>
       )}
+
+      <FilesTable
+        title='Files'
+        allDocuments={allPatientDocuments}
+        handleFileUpload={handleFileUpload}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+      />
 
       <Menu
         id='chatbot-menu'

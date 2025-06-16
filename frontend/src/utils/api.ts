@@ -41,5 +41,3 @@ export const meetingNoteApi = MeetingNoteControllerApiFactory(undefined, baseURL
 export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
-
-export default api
