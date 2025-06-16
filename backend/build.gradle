@@ -188,7 +188,20 @@ tasks.named('openApiGenerate') {
 	skipValidateSpec.set(true)
 }
 
-// Ensure that the Java compilation task runs after the OpenAPI code has been generated.
+// Ensure compileJava depends on openApiGenerate
 tasks.named('compileJava') {
-	dependsOn tasks.named('openApiGenerate')
+    dependsOn tasks.named('openApiGenerate')
 }
+
+// Ensure bootRun also depends on openApiGenerate (unless skipped)
+tasks.named('bootRun') {
+    dependsOn {
+        if (project.hasProperty('skipOpenApiGenerate') && project.property('skipOpenApiGenerate') == 'true') {
+            logger.lifecycle("⏭️ Not adding openApiGenerate as dependency of bootRun due to -PskipOpenApiGenerate")
+            return []
+        }
+        logger.lifecycle("📎 Adding openApiGenerate as dependency of bootRun")
+        return [tasks.named('openApiGenerate')]
+    }
+}
+
