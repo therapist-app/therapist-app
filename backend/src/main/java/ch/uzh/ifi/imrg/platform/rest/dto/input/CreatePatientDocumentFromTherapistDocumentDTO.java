@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class CreatePatientDocumentFromTherapistDocumentDTO {
-    private String therapistDocumentId;
-    private String patientId;
-
+  private String therapistDocumentId;
+  private String patientId;
 }

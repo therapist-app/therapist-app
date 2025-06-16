@@ -41,13 +41,16 @@ public class PatientDocumentController {
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
   }
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
-      @RequestBody CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO) {
+      @RequestBody
+          CreatePatientDocumentFromTherapistDocumentDTO
+              createPatientDocumentFromTherapistDocumentDTO) {
     patientDocumentService.createPatientDocumentFromTherapistDocument(
         createPatientDocumentFromTherapistDocumentDTO);
   }
@@ -56,8 +59,8 @@ public class PatientDocumentController {
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       @PathVariable String patientId, HttpServletRequest httpServletReques) {
     Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletReques);
-    List<PatientDocumentOutputDTO> patientDocuments = patientDocumentService.getDocumentsOfPatient(patientId,
-        loggedInTherapist);
+    List<PatientDocumentOutputDTO> patientDocuments =
+        patientDocumentService.getDocumentsOfPatient(patientId, loggedInTherapist);
 
     return patientDocuments;
   }
@@ -66,8 +69,10 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadPatientDocument(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest)
       throws IOException {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
@@ -83,7 +88,8 @@ public class PatientDocumentController {
   @DeleteMapping("/{patientDocumentId}")
   public void deletePatientDocument(
       @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     patientDocumentService.deleteFile(patientDocumentId, loggedInTherapist);
   }
 }
