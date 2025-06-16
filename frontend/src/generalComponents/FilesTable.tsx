@@ -21,6 +21,7 @@ interface FilesTableProps {
   handleFileUpload: (file: File) => void
   handleDeleteFile: (fileId: string) => void
   downloadFile: (fileId: string) => Promise<string>
+  handleCreatePatientDocumentFromTherapistDocument: ((therapistDocumentId: string) => void) | null
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
@@ -56,7 +57,6 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
                 key={document.id}
                 sx={{
                   '&:last-child td, &:last-child th': { border: 0 },
-                  cursor: 'pointer',
                 }}
               >
                 <TableCell

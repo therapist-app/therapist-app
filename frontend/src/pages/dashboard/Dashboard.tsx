@@ -677,6 +677,7 @@ const Dashboard = (): ReactElement => {
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
+        handleCreatePatientDocumentFromTherapistDocument={null}
       />
 
       <Menu
