@@ -116,7 +116,6 @@ spotless {
 sourceSets {
 	main {
 		java {
-			// Ensure the generated source is included in the main source set
 			srcDir "$projectDir/src/generated/java/src/main/java"
 		}
 	}
@@ -171,8 +170,8 @@ tasks.named('openApiGenerate') {
 	apiNameSuffix = "PatientAPI"
 
 	// Type mappings for Java 8+ dates
-	typeMappings = ["time": "LocalTime"]
-	importMappings = ["LocalTime": "java.time.LocalTime"]
+	typeMappings = ["time": "Instant"]
+	importMappings = ["Instant": "java.time.Instant"]
 
 	// Generator configuration options
 	configOptions = [
