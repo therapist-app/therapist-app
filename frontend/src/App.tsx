@@ -22,8 +22,10 @@ import { PAGES, ROUTES } from './utils/routes.ts'
 const App = (): ReactElement => {
   const appContainerStyle = {
     display: 'grid',
+
     gridTemplateRows: 'auto 1fr auto',
     minHeight: '100vh',
+    boxSizing: 'border-box' as const,
   }
 
   const contentStyle = {

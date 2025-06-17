@@ -1,8 +1,19 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SettingsIcon from '@mui/icons-material/Settings'
-import { AppBar, Box, Button, Drawer, IconButton, Toolbar, Typography } from '@mui/material'
-import React, { ReactNode, useEffect } from 'react'
+import {
+  AppBar,
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@mui/material'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
@@ -28,6 +39,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const currentPage = getPageFromPath(location.pathname)
   const currentPageName = PAGE_NAMES[currentPage]
   const currentPageTrace = findPageTrace(currentPage)
+
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [assistantInput, setAssistantInput] = useState('')
+
+  const handleExpandClicked = (): void => {
+    setIsExpanded(!isExpanded)
+  }
+
+  const handleAssistantInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setAssistantInput(event.target.value)
+  }
 
   const params = useParams() as Record<string, string>
 
@@ -143,11 +165,78 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           flexGrow: 1,
           p: 3,
           backgroundColor: 'white',
+          pb: '120px',
         }}
       >
         <Toolbar />
-        {children}
+        <div
+          style={{
+            display: isExpanded ? 'none' : 'block',
+          }}
+        >
+          {children}
+        </div>
       </Box>
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: drawerWidth,
+          right: 0,
+          height: isExpanded ? `calc(100vh - 64px)` : '120px',
+          backgroundColor: 'grey',
+          boxSizing: 'border-box',
+          padding: '20px',
+        }}
+      >
+        {isExpanded === true ? (
+          <IconButton
+            style={{
+              color: 'white',
+              position: 'absolute',
+              top: 7,
+              right: 20,
+              height: '30px',
+              width: '30px',
+            }}
+            onClick={handleExpandClicked}
+          >
+            <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
+          </IconButton>
+        ) : (
+          <IconButton
+            style={{
+              color: 'white',
+              position: 'absolute',
+              top: 7,
+              right: 20,
+              height: '30px',
+              width: '30px',
+            }}
+            onClick={handleExpandClicked}
+          >
+            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
+          </IconButton>
+        )}
+
+        <TextField
+          value={assistantInput}
+          onChange={handleAssistantInputChange}
+          placeholder='Ask your personal assistant...'
+          sx={{
+            width: 'calc(100% - 40px)',
+            height: '60px',
+            position: 'absolute',
+            bottom: 20,
+            left: 20,
+            backgroundColor: 'white',
+            borderRadius: '10px',
+            '& .MuiOutlinedInput-root': {
+              height: '100%',
+            },
+          }}
+        />
+      </div>
     </Box>
   )
 }
