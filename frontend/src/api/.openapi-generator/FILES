@@ -11,7 +11,7 @@ apis/meeting-note-controller-api.ts
 apis/patient-controller-api.ts
 apis/patient-document-controller-api.ts
 apis/patient-test-controller-api.ts
-apis/therapist-chat-controller-api.ts
+apis/therapist-chatbot-controller-api.ts
 apis/therapist-controller-api.ts
 apis/therapist-document-controller-api.ts
 base.ts
@@ -42,8 +42,8 @@ models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
-models/therapist-chat-completion-dto.ts
-models/therapist-chat-completion-output-dto.ts
+models/therapist-chatbot-input-dto.ts
+models/therapist-chatbot-output-dto.ts
 models/therapist-document-output-dto.ts
 models/therapist-output-dto.ts
 models/update-exercise-component-dto.ts

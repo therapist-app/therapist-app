@@ -11,36 +11,33 @@ import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatCompletionOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.*;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class TherapistChatMessageService {
+public class TherapistChatbotService {
   private final PatientRepository patientRepository;
-  private final TherapistRepository therapistRepository;
 
-  public TherapistChatMessageService(
-      @Qualifier("patientRepository") PatientRepository patientRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
+  public TherapistChatbotService(
+      @Qualifier("patientRepository") PatientRepository patientRepository) {
     this.patientRepository = patientRepository;
-    this.therapistRepository = therapistRepository;
   }
 
-  public TherapistChatCompletionOutputDTO chat(
-      TherapistChatCompletionDTO therapistChatCompletionDTO, Therapist loggedInTherapist) {
+  public TherapistChatbotOutputDTO chat(
+      TherapistChatbotInputDTO therapistChatbotInputDTO, Therapist loggedInTherapist) {
     List<Patient> patients;
 
-    if (therapistChatCompletionDTO.getPatientId() != null) {
+    if (therapistChatbotInputDTO.getPatientId() != null) {
       patients = new ArrayList<>();
-      patients.add(patientRepository.getReferenceById(therapistChatCompletionDTO.getPatientId()));
+      patients.add(patientRepository.getReferenceById(therapistChatbotInputDTO.getPatientId()));
     } else {
       patients = loggedInTherapist.getPatients();
     }
@@ -48,15 +45,14 @@ public class TherapistChatMessageService {
     String systemPrompt = buildSystemPrompt(loggedInTherapist, patients);
     List<ChatMessageDTO> chatMessages = new ArrayList<>();
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
-    chatMessages.addAll(therapistChatCompletionDTO.getChatMessages());
+    chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());
 
     System.out.println(chatMessages);
 
     String responseMessage = LLMUZH.callLLM(chatMessages);
-    TherapistChatCompletionOutputDTO therapistChatCompletionOutputDTO =
-        new TherapistChatCompletionOutputDTO();
-    therapistChatCompletionOutputDTO.setContent(responseMessage);
-    return therapistChatCompletionOutputDTO;
+    TherapistChatbotOutputDTO therapistChatbotOutputDTO = new TherapistChatbotOutputDTO();
+    therapistChatbotOutputDTO.setContent(responseMessage);
+    return therapistChatbotOutputDTO;
   }
 
   private String buildSystemPrompt(Therapist loggedInTherapist, List<Patient> patients) {
@@ -83,12 +79,11 @@ public class TherapistChatMessageService {
 
       String patientMeetingsString = "";
       for (Meeting meeting : patient.getMeetings()) {
-        patientMeetingsString +=
-            "Meeting from: "
-                + meeting.getMeetingStart()
-                + ", to: "
-                + meeting.getMeetingEnd()
-                + "\n";
+        patientMeetingsString += "Meeting from: "
+            + meeting.getMeetingStart()
+            + ", to: "
+            + meeting.getMeetingEnd()
+            + "\n";
 
         String meetingNotesString = "";
         for (MeetingNote meetingNote : meeting.getMeetingNotes()) {
@@ -117,10 +112,8 @@ public class TherapistChatMessageService {
         String exerciseComponentsString = "";
         for (ExerciseComponent exerciseComponent : exercise.getExerciseComponents()) {
 
-          exerciseComponentsString +=
-              "\nExercise component description: " + exerciseComponent.getDescription();
-          exerciseComponentsString +=
-              "\nExercise component type: " + exerciseComponent.getExerciseComponentType();
+          exerciseComponentsString += "\nExercise component description: " + exerciseComponent.getDescription();
+          exerciseComponentsString += "\nExercise component type: " + exerciseComponent.getExerciseComponentType();
           exerciseComponentsString += "\n\n";
         }
         if (!exerciseComponentsString.equals("")) {
@@ -138,8 +131,7 @@ public class TherapistChatMessageService {
           if (patientDocument.getExtractedText() != null
               && !patientDocument.getExtractedText().equals("")) {
             patientDocumentsString += "Patient document title: " + patientDocument.getFileName();
-            patientDocumentsString +=
-                "\nPatient document content: " + patientDocument.getExtractedText();
+            patientDocumentsString += "\nPatient document content: " + patientDocument.getExtractedText();
             patientDocumentsString += "\n\n";
           }
         }

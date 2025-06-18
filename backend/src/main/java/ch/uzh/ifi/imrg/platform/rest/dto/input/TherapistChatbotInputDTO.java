@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class TherapistChatCompletionDTO {
+public class TherapistChatbotInputDTO {
   private List<ChatMessageDTO> chatMessages;
   private String patientId;
 }

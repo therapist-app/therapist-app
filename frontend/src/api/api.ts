@@ -24,7 +24,7 @@ export * from './apis/meeting-note-controller-api';
 export * from './apis/patient-controller-api';
 export * from './apis/patient-document-controller-api';
 export * from './apis/patient-test-controller-api';
-export * from './apis/therapist-chat-controller-api';
+export * from './apis/therapist-chatbot-controller-api';
 export * from './apis/therapist-controller-api';
 export * from './apis/therapist-document-controller-api';
 
