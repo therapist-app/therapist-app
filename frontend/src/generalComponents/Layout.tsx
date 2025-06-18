@@ -288,9 +288,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           onClick={handleExpandClicked}
         >
           {isExpanded ? (
-            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
-          ) : (
             <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
+          ) : (
+            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
           )}
         </IconButton>
       </div>
