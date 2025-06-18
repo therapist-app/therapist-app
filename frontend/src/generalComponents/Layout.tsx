@@ -208,66 +208,51 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           position: 'fixed',
           top: 64,
           left: drawerWidth,
-          right: 0,
-          height: isExpanded ? `calc(100vh - 150px)` : '120px',
+          height: `calc(100vh - 164px)`,
           backgroundColor: '#b4b6b4',
           boxSizing: 'border-box',
-          padding: '20px',
-
+          padding: '20px 30px',
+          visibility: isExpanded ? 'visible' : 'hidden',
           overflowY: 'auto',
+          width: '100%',
         }}
       >
-        {isExpanded === true ? (
-          <div>
-            <IconButton
-              style={{
-                color: 'black',
-                position: 'absolute',
-                top: 7,
-                right: 20,
-                height: '30px',
-                width: '30px',
-              }}
-              onClick={handleExpandClicked}
-            >
-              <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
-            </IconButton>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '15px',
-                paddingRight: '50px',
-              }}
-            >
-              {therapistChatbotMessages.map((message, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '10px' }}>
-                  {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
-                    <PersonIcon />
-                  ) : (
-                    <AssistantIcon />
-                  )}
-                  <Typography sx={{ color: 'black' }}>{message.content}</Typography>
-                </div>
-              ))}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+            paddingRight: '50px',
+          }}
+        >
+          {therapistChatbotMessages.map((message, idx) => (
+            <div key={idx} style={{ display: 'flex', gap: '10px' }}>
+              {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
+                <PersonIcon />
+              ) : (
+                <AssistantIcon />
+              )}
+              <Typography sx={{ color: 'black' }}>{message.content}</Typography>
             </div>
-          </div>
-        ) : (
-          <IconButton
-            style={{
-              color: 'black',
-              position: 'absolute',
-              top: 7,
-              right: 20,
-              height: '30px',
-              width: '30px',
-            }}
-            onClick={handleExpandClicked}
-          >
-            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
-          </IconButton>
-        )}
+          ))}
+        </div>
+      </div>
 
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: drawerWidth,
+          right: 0,
+
+          backgroundColor: '#b4b6b4',
+          display: 'flex',
+          gap: '10px',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          padding: '20px',
+        }}
+      >
         <TextField
           value={therapistChatbotInput}
           onChange={handleAssistantInputChange}
@@ -279,11 +264,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           }}
           placeholder='Ask your personal assistant...'
           sx={{
-            width: 'calc(100% - 40px)',
+            width: '100%',
             height: '60px',
-            position: 'absolute',
-            bottom: 20,
-            left: 20,
             backgroundColor: 'white',
             borderRadius: '10px',
             '& .MuiOutlinedInput-root': {
@@ -293,9 +275,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         ></TextField>
         <IconButton
           onClick={handleChatWithTherapistChatbot}
-          sx={{ position: 'absolute', right: 25, bottom: 30 }}
+          sx={{ position: 'absolute', right: 70, bottom: 30 }}
         >
           <SendIcon sx={{ color: 'black' }} />
+        </IconButton>
+        <IconButton
+          style={{
+            color: 'black',
+            height: '30px',
+            width: '30px',
+          }}
+          onClick={handleExpandClicked}
+        >
+          {isExpanded ? (
+            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
+          ) : (
+            <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
+          )}
         </IconButton>
       </div>
     </Box>
