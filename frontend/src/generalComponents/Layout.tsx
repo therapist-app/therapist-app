@@ -269,25 +269,39 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         ></TextField>
         <IconButton
           onClick={handleChatWithTherapistChatbot}
-          sx={{ position: 'absolute', right: 70, bottom: 30 }}
+          sx={{ position: 'absolute', right: isExpanded ? 30 : 70, bottom: 30 }}
         >
           <SendIcon sx={{ color: 'black' }} />
         </IconButton>
+        {!isExpanded && (
+          <IconButton
+            style={{
+              color: 'black',
+              height: '30px',
+              width: '30px',
+            }}
+            onClick={handleExpandClicked}
+          >
+            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
+          </IconButton>
+        )}
+      </div>
+
+      {isExpanded && (
         <IconButton
           style={{
             color: 'black',
             height: '30px',
             width: '30px',
+            position: 'fixed',
+            top: 80,
+            right: 20,
           }}
           onClick={handleExpandClicked}
         >
-          {isExpanded ? (
-            <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
-          ) : (
-            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
-          )}
+          <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
         </IconButton>
-      </div>
+      )}
     </Box>
   )
 }
