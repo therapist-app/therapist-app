@@ -13,6 +13,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,101 +56,152 @@ public class TherapistChatbotService {
   }
 
   private String buildSystemPrompt(Therapist loggedInTherapist, List<Patient> patients) {
-    String systemPrompt = "You are a helpful assistant to this therapist.";
-    systemPrompt += "Try to answer his questions precicely.";
-    systemPrompt += "The current date and time is: " + java.time.Instant.now();
-    systemPrompt += "\n\n";
+    StringBuilder promptBuilder = new StringBuilder();
 
-    String therapistDocumentsString = "";
-    for (TherapistDocument therapistDocument : loggedInTherapist.getTherapistDocuments()) {
-      if (therapistDocument.getExtractedText() != null) {
-        therapistDocumentsString += therapistDocument.getExtractedText();
-        therapistDocumentsString += "\n\n";
+    // 1. Define the AI's Persona and Core Directives clearly at the start.
+    promptBuilder.append("# AI Assistant Directives\n\n");
+    promptBuilder.append(
+        "You are a specialized AI assistant for a therapist. Your primary goal is to help the therapist by providing precise and context-aware answers to their questions.\n\n");
+    promptBuilder.append("## Core Rules:\n");
+    promptBuilder.append("1.  **Analyze an entire query before answering.**\n");
+    promptBuilder.append(
+        "2.  **Base all answers strictly on the information provided below.** Do not invent or infer information that isn't present in the context.\n");
+    promptBuilder.append(
+        "3.  **If the answer is not in the provided documents or patient data, explicitly state that.** For example, say 'The answer could not be found in the provided context.'\n");
+    promptBuilder.append(
+        "4.  **Maintain patient confidentiality in your responses.** Refer to patients by name only as provided here.\n");
+    promptBuilder.append(
+        "5.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
+
+    // 2. Provide General Context, like date and time.
+    DateTimeFormatter formatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+    promptBuilder.append("--- \n");
+    promptBuilder.append("## General Context\n");
+    promptBuilder
+        .append("- **Current Date and Time:** ")
+        .append(formatter.format(java.time.Instant.now()))
+        .append("\n\n");
+
+    // 3. Structure the Therapist's context documents clearly.
+    if (loggedInTherapist.getTherapistDocuments() != null
+        && !loggedInTherapist.getTherapistDocuments().isEmpty()) {
+      promptBuilder.append("## Therapist's General Documents\n");
+      promptBuilder.append(
+          "The following documents provide general context. Use them to answer questions that are not specific to a single patient.\n\n");
+      for (TherapistDocument doc : loggedInTherapist.getTherapistDocuments()) {
+        if (doc.getExtractedText() != null && !doc.getExtractedText().isBlank()) {
+          promptBuilder
+              .append("### Document: ")
+              .append(doc.getFileName() != null ? doc.getFileName() : "Untitled")
+              .append("\n");
+          promptBuilder.append("```text\n");
+          promptBuilder.append(doc.getExtractedText().trim()).append("\n");
+          promptBuilder.append("```\n\n");
+        }
       }
     }
-    if (!therapistDocumentsString.equals("")) {
-      systemPrompt += "Use the following documents as context:";
-      systemPrompt += therapistDocumentsString;
-    }
 
-    String patientString = "";
-    for (Patient patient : patients) {
-      patientString += "Patient name: " + patient.getName() + "\n";
+    // 4. Structure all patient data under a main heading, with each patient clearly separated.
+    promptBuilder.append("---\n# Patient Information\n");
+    if (patients == null || patients.isEmpty()) {
+      promptBuilder.append("No patient data has been provided.\n");
+    } else {
+      for (Patient patient : patients) {
+        promptBuilder.append("\n---\n\n"); // Use a horizontal rule to clearly separate patients.
+        promptBuilder.append("## Patient: ").append(patient.getName()).append("\n\n");
 
-      String patientMeetingsString = "";
-      for (Meeting meeting : patient.getMeetings()) {
-        patientMeetingsString +=
-            "Meeting from: "
-                + meeting.getMeetingStart()
-                + ", to: "
-                + meeting.getMeetingEnd()
-                + "\n";
-
-        String meetingNotesString = "";
-        for (MeetingNote meetingNote : meeting.getMeetingNotes()) {
-          meetingNotesString += "Meeting note title: " + meetingNote.getTitle();
-          meetingNotesString += "\nMeeting note content: " + meetingNote.getContent();
-          meetingNotesString += "\n\n";
-        }
-        if (!meetingNotesString.equals("")) {
-          patientMeetingsString += "The Meeting contains the following meeting notes:\n";
-          patientMeetingsString += meetingNotesString;
-        }
-      }
-      if (!patientMeetingsString.equals("")) {
-        patientString += "The patient has scheduled the following meetings:\n";
-        patientString += patientMeetingsString;
-      }
-
-      String exercisesString = "";
-      for (Exercise exercise : patient.getExercises()) {
-        exercisesString += "Exercise name: " + exercise.getTitle();
-        exercisesString += "\nExercise type: " + exercise.getExerciseType();
-        exercisesString += "\nExercise start date: " + exercise.getExerciseStart();
-        exercisesString += "\nExercise end date: " + exercise.getExerciseEnd();
-        exercisesString += "\nIs exercise currently paused: " + exercise.getIsPaused();
-
-        String exerciseComponentsString = "";
-        for (ExerciseComponent exerciseComponent : exercise.getExerciseComponents()) {
-
-          exerciseComponentsString +=
-              "\nExercise component description: " + exerciseComponent.getDescription();
-          exerciseComponentsString +=
-              "\nExercise component type: " + exerciseComponent.getExerciseComponentType();
-          exerciseComponentsString += "\n\n";
-        }
-        if (!exerciseComponentsString.equals("")) {
-          exercisesString += "\nExercise components:\n";
-          exercisesString += exerciseComponentsString;
-        }
-
-        exercisesString += "\n\n";
-      }
-      if (!exercisesString.equals("")) {
-        patientString += "The patient has the following exercises:\n";
-
-        String patientDocumentsString = "";
-        for (PatientDocument patientDocument : patient.getPatientDocuments()) {
-          if (patientDocument.getExtractedText() != null
-              && !patientDocument.getExtractedText().equals("")) {
-            patientDocumentsString += "Patient document title: " + patientDocument.getFileName();
-            patientDocumentsString +=
-                "\nPatient document content: " + patientDocument.getExtractedText();
-            patientDocumentsString += "\n\n";
+        // Patient Documents
+        if (patient.getPatientDocuments() != null && !patient.getPatientDocuments().isEmpty()) {
+          promptBuilder.append("### Patient Documents\n");
+          for (PatientDocument doc : patient.getPatientDocuments()) {
+            if (doc.getExtractedText() != null && !doc.getExtractedText().isBlank()) {
+              promptBuilder.append("- **Document Title:** ").append(doc.getFileName()).append("\n");
+              promptBuilder
+                  .append("  **Content:**\n  ```text\n")
+                  .append(doc.getExtractedText().trim())
+                  .append("\n  ```\n");
+            }
           }
+          promptBuilder.append("\n");
         }
-        if (!patientDocumentsString.equals("")) {
-          patientString += "The patient has the following documents:\n";
-          patientString += patientDocumentsString;
-        }
-      }
 
-      if (!patientString.equals("")) {
-        systemPrompt += "Patient information:\n";
-        systemPrompt += patientString;
+        // Patient Meetings
+        if (patient.getMeetings() != null && !patient.getMeetings().isEmpty()) {
+          promptBuilder.append("### Meetings\n");
+          for (Meeting meeting : patient.getMeetings()) {
+            String startTime =
+                meeting.getMeetingStart() != null
+                    ? formatter.format(meeting.getMeetingStart())
+                    : "N/A";
+            String endTime =
+                meeting.getMeetingEnd() != null ? formatter.format(meeting.getMeetingEnd()) : "N/A";
+            promptBuilder
+                .append("- **Meeting Time:** From ")
+                .append(startTime)
+                .append(" to ")
+                .append(endTime)
+                .append("\n");
+
+            if (meeting.getMeetingNotes() != null && !meeting.getMeetingNotes().isEmpty()) {
+              promptBuilder.append("  **Meeting Notes:**\n");
+              for (MeetingNote note : meeting.getMeetingNotes()) {
+                promptBuilder.append("    - **Title:** ").append(note.getTitle()).append("\n");
+                promptBuilder
+                    .append("      **Content:** ")
+                    .append(note.getContent().trim())
+                    .append("\n");
+              }
+            }
+          }
+          promptBuilder.append("\n");
+        }
+
+        // Patient Exercises
+        if (patient.getExercises() != null && !patient.getExercises().isEmpty()) {
+          promptBuilder.append("### Exercises\n");
+          for (Exercise exercise : patient.getExercises()) {
+            promptBuilder.append("- **Exercise:** ").append(exercise.getTitle()).append("\n");
+            promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
+            String exerciseStart =
+                exercise.getExerciseStart() != null
+                    ? formatter.format(exercise.getExerciseStart())
+                    : "N/A";
+            String exerciseEnd =
+                exercise.getExerciseEnd() != null
+                    ? formatter.format(exercise.getExerciseEnd())
+                    : "Ongoing";
+            promptBuilder
+                .append("  - **Duration:** ")
+                .append(exerciseStart)
+                .append(" to ")
+                .append(exerciseEnd)
+                .append("\n");
+            promptBuilder
+                .append("  - **Status:** ")
+                .append(exercise.getIsPaused() ? "Paused" : "Active")
+                .append("\n");
+
+            if (exercise.getExerciseComponents() != null
+                && !exercise.getExerciseComponents().isEmpty()) {
+              promptBuilder.append("  - **Components:**\n");
+              for (ExerciseComponent component : exercise.getExerciseComponents()) {
+                promptBuilder
+                    .append("    - **Description:** ")
+                    .append(component.getDescription())
+                    .append("\n");
+                promptBuilder
+                    .append("      **Type:** ")
+                    .append(component.getExerciseComponentType())
+                    .append("\n");
+              }
+            }
+          }
+          promptBuilder.append("\n");
+        }
       }
     }
 
-    return systemPrompt;
+    return promptBuilder.toString();
   }
 }
