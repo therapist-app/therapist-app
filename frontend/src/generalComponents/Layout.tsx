@@ -211,31 +211,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           height: `calc(100vh - 164px)`,
           backgroundColor: '#b4b6b4',
           boxSizing: 'border-box',
-          padding: '20px 30px',
+          padding: '20px 40px 20px 30px',
           visibility: isExpanded ? 'visible' : 'hidden',
           overflowY: 'auto',
-          width: '100%',
+          width: `calc(100vw - ${drawerWidth}px)`,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '15px',
-            paddingRight: '50px',
-          }}
-        >
-          {therapistChatbotMessages.map((message, idx) => (
-            <div key={idx} style={{ display: 'flex', gap: '10px' }}>
-              {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
-                <PersonIcon />
-              ) : (
-                <AssistantIcon />
-              )}
-              <Typography sx={{ color: 'black' }}>{message.content}</Typography>
-            </div>
-          ))}
-        </div>
+        {therapistChatbotMessages.map((message, idx) => (
+          <div key={idx} style={{ display: 'flex', gap: '10px' }}>
+            {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
+              <PersonIcon />
+            ) : (
+              <AssistantIcon />
+            )}
+            <Typography sx={{ color: 'black' }}>{message.content}</Typography>
+          </div>
+        ))}
       </div>
 
       <div
