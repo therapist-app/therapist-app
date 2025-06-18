@@ -10,6 +10,7 @@ import {
   PatientControllerApiFactory,
   PatientDocumentControllerApiFactory,
   PatientTestControllerApiFactory,
+  TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
 } from '../api'
@@ -38,6 +39,7 @@ export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined,
 export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)
 export const therapistApi = TherapistControllerApiFactory(undefined, baseURL, api)
 export const therapistDocumentApi = TherapistDocumentControllerApiFactory(undefined, baseURL, api)
+export const therapistChatbotApi = TherapistChatbotControllerApiFactory(undefined, baseURL, api)
 export const meetingApi = MeetingControllerApiFactory(undefined, baseURL, api)
 export const meetingNoteApi = MeetingNoteControllerApiFactory(undefined, baseURL, api)
 export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)

@@ -1,95 +1,67 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {
-  CreateTherapistDTO,
-  LoginTherapistDTO,
-  TherapistChatCompletionOutputDTO,
-  TherapistOutputDTO,
-} from '../api'
-import { therapistApi } from '../utils/api'
+import { ChatMessageDTO, ChatMessageDTOChatRoleEnum, TherapistChatbotInputDTO } from '../api'
+import { therapistChatbotApi } from '../utils/api'
+import { createAppAsyncThunk } from './thunk'
 
 interface TherapistChatbotState {
-  messages: TherapistChatCompletionOutputDTO[]
+  therapistChatbotMessages: ChatMessageDTO[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
 
 const initialState: TherapistChatbotState = {
-  messages: [],
+  therapistChatbotMessages: [],
   status: 'idle',
   error: null,
 }
 
-export const sendChat = createAsyncThunk(
-  'registerTherapist',
-  async (createTherapistDTO: CreateTherapistDTO) => {
-    const response = await therapistApi.createTherapist(createTherapistDTO)
+export const chatWithTherapistChatbot = createAppAsyncThunk(
+  'chatWithTherapistChatbot',
+  async (payload: { newMessage: string; patientId: string | undefined }, thunkAPI) => {
+    thunkAPI.dispatch(
+      addMessage({
+        chatRole: ChatMessageDTOChatRoleEnum.User,
+        content: payload.newMessage,
+      })
+    )
+    const currentMessages = thunkAPI.getState().therapistChatbot.therapistChatbotMessages
+    console.log(currentMessages)
+    const therapistChatbotInputDTO: TherapistChatbotInputDTO = {
+      chatMessages: currentMessages,
+      patientId: payload.patientId,
+    }
+
+    const response = await therapistChatbotApi.chatWithTherapistChatbot(therapistChatbotInputDTO)
     return response.data
   }
 )
 
-const therapistSlice = createSlice({
-  name: 'therapist',
+const therapistChatbotSlice = createSlice({
+  name: 'therapistChatbot',
   initialState: initialState,
   reducers: {
-    setLoggedInTherapist: (state, action: PayloadAction<TherapistOutputDTO>) => {
-      state.loggedInTherapist = action.payload
+    addMessage: (state, action: PayloadAction<ChatMessageDTO>) => {
+      state.therapistChatbotMessages.push(action.payload)
     },
-    clearLoggedInTherapist: (state) => {
-      state.loggedInTherapist = null
+    clearMessages: (state) => {
+      state.therapistChatbotMessages = []
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerTherapist.pending, (state) => {
+      .addCase(chatWithTherapistChatbot.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(registerTherapist.fulfilled, (state, action) => {
+      .addCase(chatWithTherapistChatbot.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.loggedInTherapist = action.payload
+        state.therapistChatbotMessages.push({
+          chatRole: ChatMessageDTOChatRoleEnum.Assistant,
+          content: action.payload.content,
+        })
       })
-      .addCase(registerTherapist.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
-      })
-
-      .addCase(loginTherapist.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(loginTherapist.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.loggedInTherapist = action.payload
-      })
-      .addCase(loginTherapist.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-      })
-
-      .addCase(logoutTherapist.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(logoutTherapist.fulfilled, (state) => {
-        state.status = 'succeeded'
-        state.loggedInTherapist = null
-      })
-      .addCase(logoutTherapist.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-      })
-
-      .addCase(getCurrentlyLoggedInTherapist.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(getCurrentlyLoggedInTherapist.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.loggedInTherapist = action.payload
-      })
-      .addCase(getCurrentlyLoggedInTherapist.rejected, (state, action) => {
+      .addCase(chatWithTherapistChatbot.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
@@ -97,5 +69,5 @@ const therapistSlice = createSlice({
   },
 })
 
-export const { setLoggedInTherapist, clearLoggedInTherapist } = therapistSlice.actions
-export default therapistSlice.reducer
+export const { clearMessages, addMessage } = therapistChatbotSlice.actions
+export default therapistChatbotSlice.reducer

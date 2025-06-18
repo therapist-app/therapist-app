@@ -1,7 +1,10 @@
+import AssistantIcon from '@mui/icons-material/Assistant'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LogoutIcon from '@mui/icons-material/Logout'
+import PersonIcon from '@mui/icons-material/Person'
+import SendIcon from '@mui/icons-material/Send'
 import SettingsIcon from '@mui/icons-material/Settings'
 import {
   AppBar,
@@ -14,9 +17,13 @@ import {
   Typography,
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
+import { ChatMessageDTOChatRoleEnum } from '../api'
+import { RootState } from '../store/store'
+import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
@@ -32,6 +39,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
   const dispatch = useAppDispatch()
 
+  const { patientId } = useParams()
+
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
@@ -41,14 +50,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const currentPageTrace = findPageTrace(currentPage)
 
   const [isExpanded, setIsExpanded] = useState(false)
-  const [assistantInput, setAssistantInput] = useState('')
+  const [therapistChatbotInput, setTherapistChatbotInput] = useState('')
+
+  const therapistChatbotMessages = useSelector(
+    (state: RootState) => state.therapistChatbot.therapistChatbotMessages
+  )
 
   const handleExpandClicked = (): void => {
+    if (isExpanded) {
+      dispatch(clearMessages())
+      setTherapistChatbotInput('')
+    }
     setIsExpanded(!isExpanded)
   }
 
   const handleAssistantInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setAssistantInput(event.target.value)
+    setTherapistChatbotInput(event.target.value)
+  }
+
+  const handleChatWithTherapistChatbot = async (): Promise<void> => {
+    setTherapistChatbotInput('')
+    setIsExpanded(true)
+
+    await dispatch(
+      chatWithTherapistChatbot({ newMessage: therapistChatbotInput, patientId: patientId })
+    )
   }
 
   const params = useParams() as Record<string, string>
@@ -180,33 +206,56 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         style={{
           position: 'fixed',
-          bottom: 0,
+          top: 64,
           left: drawerWidth,
           right: 0,
-          height: isExpanded ? `calc(100vh - 64px)` : '120px',
-          backgroundColor: 'grey',
+          height: isExpanded ? `calc(100vh - 150px)` : '120px',
+          backgroundColor: '#b4b6b4',
           boxSizing: 'border-box',
           padding: '20px',
+
+          overflowY: 'auto',
         }}
       >
         {isExpanded === true ? (
-          <IconButton
-            style={{
-              color: 'white',
-              position: 'absolute',
-              top: 7,
-              right: 20,
-              height: '30px',
-              width: '30px',
-            }}
-            onClick={handleExpandClicked}
-          >
-            <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
-          </IconButton>
+          <div>
+            <IconButton
+              style={{
+                color: 'black',
+                position: 'absolute',
+                top: 7,
+                right: 20,
+                height: '30px',
+                width: '30px',
+              }}
+              onClick={handleExpandClicked}
+            >
+              <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
+            </IconButton>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '15px',
+                paddingRight: '50px',
+              }}
+            >
+              {therapistChatbotMessages.map((message, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '10px' }}>
+                  {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
+                    <PersonIcon />
+                  ) : (
+                    <AssistantIcon />
+                  )}
+                  <Typography sx={{ color: 'black' }}>{message.content}</Typography>
+                </div>
+              ))}
+            </div>
+          </div>
         ) : (
           <IconButton
             style={{
-              color: 'white',
+              color: 'black',
               position: 'absolute',
               top: 7,
               right: 20,
@@ -220,8 +269,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         )}
 
         <TextField
-          value={assistantInput}
+          value={therapistChatbotInput}
           onChange={handleAssistantInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleChatWithTherapistChatbot()
+            }
+          }}
           placeholder='Ask your personal assistant...'
           sx={{
             width: 'calc(100% - 40px)',
@@ -235,7 +290,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               height: '100%',
             },
           }}
-        />
+        ></TextField>
+        <IconButton
+          onClick={handleChatWithTherapistChatbot}
+          sx={{ position: 'absolute', right: 25, bottom: 30 }}
+        >
+          <SendIcon sx={{ color: 'black' }} />
+        </IconButton>
       </div>
     </Box>
   )

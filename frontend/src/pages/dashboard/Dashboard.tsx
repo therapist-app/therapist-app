@@ -44,6 +44,7 @@ import {
 } from '../../store/chatbotTemplateSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
+import { chatWithTherapistChatbot } from '../../store/therapistChatbotSlice'
 import {
   createDocumentForTherapist,
   deleteDocumentOfTherapist,
