@@ -9,7 +9,6 @@ import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -17,7 +16,6 @@ import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,11 +77,12 @@ public class TherapistChatbotService {
 
       String patientMeetingsString = "";
       for (Meeting meeting : patient.getMeetings()) {
-        patientMeetingsString += "Meeting from: "
-            + meeting.getMeetingStart()
-            + ", to: "
-            + meeting.getMeetingEnd()
-            + "\n";
+        patientMeetingsString +=
+            "Meeting from: "
+                + meeting.getMeetingStart()
+                + ", to: "
+                + meeting.getMeetingEnd()
+                + "\n";
 
         String meetingNotesString = "";
         for (MeetingNote meetingNote : meeting.getMeetingNotes()) {
@@ -112,8 +111,10 @@ public class TherapistChatbotService {
         String exerciseComponentsString = "";
         for (ExerciseComponent exerciseComponent : exercise.getExerciseComponents()) {
 
-          exerciseComponentsString += "\nExercise component description: " + exerciseComponent.getDescription();
-          exerciseComponentsString += "\nExercise component type: " + exerciseComponent.getExerciseComponentType();
+          exerciseComponentsString +=
+              "\nExercise component description: " + exerciseComponent.getDescription();
+          exerciseComponentsString +=
+              "\nExercise component type: " + exerciseComponent.getExerciseComponentType();
           exerciseComponentsString += "\n\n";
         }
         if (!exerciseComponentsString.equals("")) {
@@ -131,7 +132,8 @@ public class TherapistChatbotService {
           if (patientDocument.getExtractedText() != null
               && !patientDocument.getExtractedText().equals("")) {
             patientDocumentsString += "Patient document title: " + patientDocument.getFileName();
-            patientDocumentsString += "\nPatient document content: " + patientDocument.getExtractedText();
+            patientDocumentsString +=
+                "\nPatient document content: " + patientDocument.getExtractedText();
             patientDocumentsString += "\n\n";
           }
         }

@@ -27,7 +27,8 @@ public class TherapistChatbotController {
   public TherapistChatbotOutputDTO chatWithTherapistChatbot(
       @RequestBody TherapistChatbotInputDTO therapistChatbotInputDTO,
       HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return therapistChatbotService.chat(therapistChatbotInputDTO, loggedInTherapist);
   }
 }
