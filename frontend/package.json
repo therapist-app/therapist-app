@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "(npm run generate:api || true) && concurrently \"vite\" \"npm run watch:translations\"",
+    "dev": "npm run generate:api:if-available && concurrently \"vite\" \"npm run watch:translations\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint \"**/src/**/*.{ts,tsx}\" --max-warnings=0",
@@ -16,7 +16,8 @@
     "prepare": "cd .. && husky frontend/.husky",
     "generate:resources": "i18next-resources-for-ts interface -i ./public/locales -o ./src/@types/resources.d.ts",
     "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'",
-    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models"
+    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models",
+    "generate:api:if-available": "wait-on http://localhost:8080/v3/api-docs -t 5000 && rimraf src/api && npm run generate:api || true"
   },
   "lint-staged": {
     "**/src/**/*.{ts,tsx}": [
@@ -70,11 +71,13 @@
     "lint-staged": "^15.4.3",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.25.0",
     "typescript-json-schema": "^0.65.1",
     "vite": "^6.3.0",
     "vite-node": "^3.0.7",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "wait-on": "^8.0.3"
   }
 }
