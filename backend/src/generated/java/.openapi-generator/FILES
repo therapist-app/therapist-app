@@ -13,6 +13,10 @@ docs/CreateConversationOutputDTOPatientAPI.md
 docs/CreateMeetingDTOPatientAPI.md
 docs/CreateMessageDTOPatientAPI.md
 docs/CreatePatientDTOPatientAPI.md
+docs/GetAllJournalEntriesDTOPatientAPI.md
+docs/JournalEntryControllerPatientAPI.md
+docs/JournalEntryOutputDTOPatientAPI.md
+docs/JournalEntryRequestDTOPatientAPI.md
 docs/LoginPatientDTOPatientAPI.md
 docs/MeetingControllerPatientAPI.md
 docs/MeetingOutputDTOPatientAPI.md
@@ -35,6 +39,7 @@ pom.xml
 settings.gradle
 src/main/AndroidManifest.xml
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java
@@ -54,6 +59,9 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatient
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
@@ -64,6 +72,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java
@@ -73,6 +82,9 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatient
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPITest.java

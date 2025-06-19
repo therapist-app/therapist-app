@@ -118,6 +118,12 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
 *ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
+*JournalEntryControllerPatientAPI* | [**create**](docs/JournalEntryControllerPatientAPI.md#create) | **POST** /patients/journal-entries | 
+*JournalEntryControllerPatientAPI* | [**deleteEntry**](docs/JournalEntryControllerPatientAPI.md#deleteEntry) | **DELETE** /patients/journal-entries/{entryId} | 
+*JournalEntryControllerPatientAPI* | [**getAllTags**](docs/JournalEntryControllerPatientAPI.md#getAllTags) | **GET** /patients/journal-entries/tags | 
+*JournalEntryControllerPatientAPI* | [**getOne**](docs/JournalEntryControllerPatientAPI.md#getOne) | **GET** /patients/journal-entries/{entryId} | 
+*JournalEntryControllerPatientAPI* | [**listAll**](docs/JournalEntryControllerPatientAPI.md#listAll) | **GET** /patients/journal-entries | 
+*JournalEntryControllerPatientAPI* | [**updateJournalEntry**](docs/JournalEntryControllerPatientAPI.md#updateJournalEntry) | **PUT** /patients/journal-entries/{entryId} | 
 *MeetingControllerPatientAPI* | [**createMeeting**](docs/MeetingControllerPatientAPI.md#createMeeting) | **POST** /patients/{patientId}/meetings | 
 *MeetingControllerPatientAPI* | [**deleteMeeting**](docs/MeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /patients/{patientId}/meetings/{meetingId} | 
 *MeetingControllerPatientAPI* | [**getMeeting**](docs/MeetingControllerPatientAPI.md#getMeeting) | **GET** /patients/{patientId}/meetings/{meetingId} | 
@@ -145,6 +151,9 @@ Class | Method | HTTP request | Description
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
+ - [GetAllJournalEntriesDTOPatientAPI](docs/GetAllJournalEntriesDTOPatientAPI.md)
+ - [JournalEntryOutputDTOPatientAPI](docs/JournalEntryOutputDTOPatientAPI.md)
+ - [JournalEntryRequestDTOPatientAPI](docs/JournalEntryRequestDTOPatientAPI.md)
  - [LoginPatientDTOPatientAPI](docs/LoginPatientDTOPatientAPI.md)
  - [MeetingOutputDTOPatientAPI](docs/MeetingOutputDTOPatientAPI.md)
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
