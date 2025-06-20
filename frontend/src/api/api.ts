@@ -271,7 +271,37 @@ export interface CreatePatientDTO {
      * @type {string}
      * @memberof CreatePatientDTO
      */
-    'description'?: string;
+    'maritalStatus'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'religion'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'education'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'occupation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'income'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'dateOfAdmission'?: string;
 }
 /**
  * 
@@ -475,6 +505,42 @@ export interface PatientOutputDTO {
      * @memberof PatientOutputDTO
      */
     'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'maritalStatus'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'religion'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'education'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'occupation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'income'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'dateOfAdmission'?: string;
     /**
      * 
      * @type {Array<TherapySessionOutputDTO>}

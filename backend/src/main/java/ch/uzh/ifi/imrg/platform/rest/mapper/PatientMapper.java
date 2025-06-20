@@ -34,7 +34,6 @@ public interface PatientMapper {
   @Mapping(source = "therapySessions", target = "therapySessionsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
-
   @Mapping(source = "name", target = "name")
   @Mapping(source = "gender", target = "gender")
   @Mapping(source = "age", target = "age")
@@ -48,7 +47,6 @@ public interface PatientMapper {
   @Mapping(source = "income", target = "income")
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
-
 
   default List<TherapySessionOutputDTO> mapTherapySessions(List<TherapySession> therapySessions) {
     if (therapySessions == null) {
