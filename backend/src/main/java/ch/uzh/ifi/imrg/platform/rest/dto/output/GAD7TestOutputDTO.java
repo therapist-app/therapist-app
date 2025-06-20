@@ -1,17 +1,15 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.LocalDateTime;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.Instant;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GAD7TestOutputDTO {
 
   private String testId;
   private String patientId;
-  private String sessionId;
-  private LocalDateTime creationDate;
+  private String meetingId;
+  private Instant creationDate;
   private int question1;
   private int question2;
   private int question3;

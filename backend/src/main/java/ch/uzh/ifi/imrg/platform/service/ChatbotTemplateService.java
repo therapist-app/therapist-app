@@ -54,6 +54,20 @@ public class ChatbotTemplateService {
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
 
     existingTemplate.setChatbotName(template.getChatbotName());
+    existingTemplate.setDescription(template.getDescription());
+    existingTemplate.setChatbotModel(template.getChatbotModel());
+    existingTemplate.setChatbotIcon(template.getChatbotIcon());
+    existingTemplate.setChatbotLanguage(template.getChatbotLanguage());
+    existingTemplate.setChatbotRole(template.getChatbotRole());
+    existingTemplate.setChatbotTone(template.getChatbotTone());
+    existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
+    existingTemplate.setChatbotVoice(template.getChatbotVoice());
+    existingTemplate.setChatbotGender(template.getChatbotGender());
+    existingTemplate.setPreConfiguredExercise(template.getPreConfiguredExercise());
+    existingTemplate.setAdditionalExercise(template.getAdditionalExercise());
+    existingTemplate.setAnimation(template.getAnimation());
+    existingTemplate.setChatbotInputPlaceholder(template.getChatbotInputPlaceholder());
+
     chatbotTemplateRepository.save(existingTemplate);
     chatbotTemplateRepository.flush();
 
@@ -68,6 +82,8 @@ public class ChatbotTemplateService {
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    template.getTherapist().getChatbotTemplates().remove(template);
+
     chatbotTemplateRepository.delete(template);
     chatbotTemplateRepository.flush();
 
@@ -92,6 +108,12 @@ public class ChatbotTemplateService {
     clone.setChatbotRole(original.getChatbotRole());
     clone.setChatbotTone(original.getChatbotTone());
     clone.setWelcomeMessage(original.getWelcomeMessage());
+    clone.setChatbotVoice(original.getChatbotVoice());
+    clone.setChatbotGender(original.getChatbotGender());
+    clone.setPreConfiguredExercise(original.getPreConfiguredExercise());
+    clone.setAdditionalExercise(original.getAdditionalExercise());
+    clone.setAnimation(original.getAnimation());
+    clone.setChatbotInputPlaceholder(original.getChatbotInputPlaceholder());
     clone.setTherapist(original.getTherapist());
     clone.setWorkspaceId(original.getWorkspaceId());
 
@@ -100,5 +122,11 @@ public class ChatbotTemplateService {
 
     entityManager.refresh(therapist);
     return therapist;
+  }
+
+  public ChatbotTemplate findTemplateByIdAndTherapistId(String therapistId, String templateId) {
+    return chatbotTemplateRepository
+        .findByIdAndTherapistId(templateId, therapistId)
+        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
   }
 }

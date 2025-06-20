@@ -1,17 +1,152 @@
-import { Typography } from '@mui/material'
-import { useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import Layout from '../../generalComponents/Layout'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  TextField,
+} from '@mui/material'
+import { ReactElement, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const PatientDetail = () => {
+import FilesTable from '../../generalComponents/FilesTable'
+import Layout from '../../generalComponents/Layout'
+import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
+import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
+import {
+  createDocumentForPatient,
+  deleteDocumentOfPatient,
+  getAllPatientDocumentsOfPatient,
+} from '../../store/patientDocumentSlice'
+import { RootState } from '../../store/store'
+import { patientDocumentApi } from '../../utils/api'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
+import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
+import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
+
+const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
-  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const allPatientDocuments = useSelector(
+    (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
+  )
+
+  const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
+
+  const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
+  const [chatbotName, setChatbotName] = useState('')
+
+  useEffect(() => {
+    dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
+    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
+    dispatch(getAllExercisesOfPatient(patientId ?? ''))
+  }, [dispatch, patientId, refreshPatientDocumentsCounter])
+
+  const handleFileUpload = async (file: File): Promise<void> => {
+    await dispatch(
+      createDocumentForPatient({
+        file: file,
+        patientId: patientId ?? '',
+      })
+    )
+    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+  }
+
+  const handleDeleteFile = async (fileId: string): Promise<void> => {
+    await dispatch(deleteDocumentOfPatient(fileId))
+    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+  }
+
+  const downloadFile = async (fileId: string): Promise<string> => {
+    const response = await patientDocumentApi.downloadPatientDocument(fileId, {
+      responseType: 'blob',
+    })
+    const file = response.data
+    const url = window.URL.createObjectURL(file)
+    return url
+  }
+
+  const handleOpenChatbotDialog = (): void => {
+    setOpenChatbotDialog(true)
+  }
+
+  const handleCloseChatbotDialog = (): void => {
+    setOpenChatbotDialog(false)
+    setChatbotName('')
+  }
+
+  const handleCreateNewChatbot = (): void => {
+    console.log('Chatbot created with name:', chatbotName)
+
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+        chatbotTemplateId: 'newBot',
+      })
+    )
+
+    handleCloseChatbotDialog()
+  }
 
   return (
     <Layout>
-      <Typography variant='h3'>
-        {t('patient_detail.message')}: "{patientId}"
-      </Typography>
+      <Button
+        variant='contained'
+        onClick={handleOpenChatbotDialog}
+        sx={{ marginTop: '20px', marginBottom: '20px' }}
+      >
+        Create new Chatbot
+      </Button>
+
+      <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
+        <DialogTitle>Create a new Chatbot</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please enter a name for your new chatbot:</DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            label='Chatbot Name'
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={chatbotName}
+            onChange={(e) => setChatbotName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseChatbotDialog}>Cancel</Button>
+          <Button
+            onClick={handleCreateNewChatbot}
+            variant='contained'
+            disabled={!chatbotName.trim()}
+          >
+            Create Bot
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <FilesTable
+        title='Files of Patient'
+        allDocuments={allPatientDocuments}
+        handleFileUpload={handleFileUpload}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+      />
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <MeetingOverviewComponent />
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <ExerciseOverviewComponent />
     </Layout>
   )
 }

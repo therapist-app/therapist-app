@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { CreatePatientDTO, PatientOutputDTO } from '../api'
 import { patientApi } from '../utils/api'
 
@@ -30,8 +31,8 @@ export const getAllPatientsOfTherapist = createAsyncThunk('getAllPatientsOfThera
 })
 
 const patientSlice = createSlice({
-  name: 'therapist',
-  initialState,
+  name: 'patient',
+  initialState: initialState,
   reducers: {
     setSelectedPatient: (state, action: PayloadAction<PatientOutputDTO>) => {
       state.selectedPatient = action.payload

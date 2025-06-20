@@ -13,6 +13,7 @@
  */
 
 
+
 import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
@@ -2225,5 +2226,17 @@ export class TherapySessionControllerApi extends BaseAPI implements TherapySessi
     }
 }
 
-
+export * from './apis/application-api';
+export * from './apis/chat-controller-api';
+export * from './apis/chatbot-template-controller-api';
+export * from './apis/exercise-component-controller-api';
+export * from './apis/exercise-controller-api';
+export * from './apis/meeting-controller-api';
+export * from './apis/meeting-note-controller-api';
+export * from './apis/patient-controller-api';
+export * from './apis/patient-document-controller-api';
+export * from './apis/patient-test-controller-api';
+export * from './apis/therapist-chatbot-controller-api';
+export * from './apis/therapist-controller-api';
+export * from './apis/therapist-document-controller-api';
 

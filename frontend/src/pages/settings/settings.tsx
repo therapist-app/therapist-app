@@ -1,18 +1,20 @@
-import { useTranslation } from 'react-i18next'
 import {
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Typography,
   SelectChangeEvent,
+  Typography,
 } from '@mui/material'
+import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import Layout from '../../generalComponents/Layout'
 
-const Settings = () => {
+const Settings = (): ReactElement => {
   const { t, i18n } = useTranslation()
 
-  const changeLanguage = (event: SelectChangeEvent) => {
+  const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
     i18n.changeLanguage(selectedLanguage).then(() => {}) // Change the language
   }

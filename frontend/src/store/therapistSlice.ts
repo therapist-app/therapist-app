@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { therapistApi } from '../utils/api'
 import { CreateTherapistDTO, LoginTherapistDTO, TherapistOutputDTO } from '../api'
+import { therapistApi } from '../utils/api'
 
 interface TherapistState {
   loggedInTherapist: TherapistOutputDTO | null
@@ -45,7 +45,7 @@ export const getCurrentlyLoggedInTherapist = createAsyncThunk(
 
 const therapistSlice = createSlice({
   name: 'therapist',
-  initialState,
+  initialState: initialState,
   reducers: {
     setLoggedInTherapist: (state, action: PayloadAction<TherapistOutputDTO>) => {
       state.loggedInTherapist = action.payload

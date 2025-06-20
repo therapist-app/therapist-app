@@ -36,4 +36,10 @@ public class PatientTestController {
   public GAD7TestOutputDTO getTestById(@PathVariable String testId) {
     return patientTestService.getTest(testId);
   }
+
+  @GetMapping("/gad7/meeting/{meetingId}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<GAD7TestOutputDTO> getTestsByMeeting(@PathVariable String meetingId) {
+    return patientTestService.getTestsByMeeting(meetingId);
+  }
 }

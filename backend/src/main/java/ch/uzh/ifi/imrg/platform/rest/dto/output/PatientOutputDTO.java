@@ -1,18 +1,16 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PatientOutputDTO {
 
   private String id;
   private String name;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private Instant createdAt;
+  private Instant updatedAt;
   private String phoneNumber;
   private String address;
   private String gender;
@@ -26,6 +24,8 @@ public class PatientOutputDTO {
   private String income;
   private String dateOfAdmission;
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
+  private List<MeetingOutputDTO> meetingsOutputDTO;
+
 
   public PatientOutputDTO() {}
 

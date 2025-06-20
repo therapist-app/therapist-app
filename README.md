@@ -1,8 +1,6 @@
 # Therapist App
 
-## Backend
-
-### How to run
+## How to run Backend
 
 1. Install openjdk-21, when typing `java --version` in the terminal the output should be `openjdk 21 2023-09-19`
 2. Install docker and docker compose
@@ -14,9 +12,7 @@
 8. `./gradlew bootRun`
 9. Visit <http://localhost:8080> -> it should say: "The application is running."
 
-## Frontend
-
-### How to run
+## How to run Frontend
 
 1. Install nodejs 22.14.0 -> when typing `node -v` in the terminal, the output should be `v22.14.0`
 2. `cd frontend`

@@ -14,15 +14,59 @@ export enum PAGES {
   CHATBOT_CREATE_PAGE = 'CHATBOT_CREATE_PAGE',
   CHATBOT_DETAILS_PAGE = 'CHATBOT_DETAILS_PAGE',
 
-  THERAPY_SESSIONS_OVERVIEW_PAGE = 'THERAPY_SESSIONS_OVERVIEW_PAGE',
-  THERAPY_SESSIONS_CREATE_PAGE = 'THERAPY_SESSIONS_CREATE_PAGE',
-  THERAPY_SESSIONS_DETAILS_PAGE = 'THERAPY_SESSIONS_DETAILS_PAGE',
+  MEETINGS_OVERVIEW_PAGE = 'MEETINGS_OVERVIEW_PAGE',
+  MEETINGS_CREATE_PAGE = 'MEETINGS_CREATE_PAGE',
+  MEETINGS_DETAILS_PAGE = 'MEETINGS_DETAILS_PAGE',
+
+  GAD7_TEST_PAGE = 'GAD7_TEST_PAGE',
+
+  EXERCISES_OVERVIEW_PAGE = 'EXERCISES_OVERVIEW_PAGE',
+  EXERCISES_CREATE_PAGE = 'EXERCISES_CREATE_PAGE',
+  EXERCISES_DETAILS_PAGE = 'EXERCISES_DETAILS_PAGE',
 
   CHATBOT_TEMPLATES_OVERVIEW_PAGE = 'CHATBOT_TEMPLATES_OVERVIEW_PAGE',
   CHATBOT_TEMPLATES_CREATE_PAGE = 'CHATBOT_TEMPLATES_CREATE_PAGE',
   CHATBOT_TEMPLATES_DETAILS_PAGE = 'CHATBOT_TEMPLATES_DETAILS_PAGE',
 
   NOT_FOUND_PAGE = 'NOT_FOUND_PAGE',
+}
+
+const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
+  [PAGES.HOME_PAGE]: [PAGES.PATIENTS_OVERVIEW_PAGE, PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE],
+  [PAGES.LOGIN_PAGE]: [],
+  [PAGES.REGISTRATION_PAGE]: [],
+  [PAGES.SETTINGS_PAGE]: [],
+
+  [PAGES.PATIENTS_OVERVIEW_PAGE]: [PAGES.PATIENTS_CREATE_PAGE, PAGES.PATIENTS_DETAILS_PAGE],
+  [PAGES.PATIENTS_CREATE_PAGE]: [],
+  [PAGES.PATIENTS_DETAILS_PAGE]: [
+    PAGES.CHATBOT_OVERVIEW_PAGE,
+    PAGES.MEETINGS_OVERVIEW_PAGE,
+    PAGES.EXERCISES_OVERVIEW_PAGE,
+  ],
+
+  [PAGES.CHATBOT_OVERVIEW_PAGE]: [PAGES.CHATBOT_CREATE_PAGE, PAGES.CHATBOT_DETAILS_PAGE],
+  [PAGES.CHATBOT_CREATE_PAGE]: [],
+  [PAGES.CHATBOT_DETAILS_PAGE]: [],
+
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: [PAGES.MEETINGS_CREATE_PAGE, PAGES.MEETINGS_DETAILS_PAGE],
+  [PAGES.MEETINGS_CREATE_PAGE]: [],
+  [PAGES.MEETINGS_DETAILS_PAGE]: [PAGES.GAD7_TEST_PAGE],
+
+  [PAGES.GAD7_TEST_PAGE]: [],
+
+  [PAGES.EXERCISES_OVERVIEW_PAGE]: [PAGES.EXERCISES_CREATE_PAGE, PAGES.EXERCISES_DETAILS_PAGE],
+  [PAGES.EXERCISES_CREATE_PAGE]: [],
+  [PAGES.EXERCISES_DETAILS_PAGE]: [],
+
+  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: [
+    PAGES.CHATBOT_TEMPLATES_CREATE_PAGE,
+    PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE,
+  ],
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: [],
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: [],
+
+  [PAGES.NOT_FOUND_PAGE]: [],
 }
 
 export const ROUTES: Record<PAGES, string> = {
@@ -39,15 +83,52 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.CHATBOT_CREATE_PAGE]: '/patients/:patientId/chatBots/create',
   [PAGES.CHATBOT_DETAILS_PAGE]: '/patients/:patientId/chatBots/:chatBotId',
 
-  [PAGES.THERAPY_SESSIONS_OVERVIEW_PAGE]: '/patients/:patientId/therapy-sessions',
-  [PAGES.THERAPY_SESSIONS_CREATE_PAGE]: '/patients/:patientId/therapy-sessions/create',
-  [PAGES.THERAPY_SESSIONS_DETAILS_PAGE]: '/patients/:patientId/therapy-sessions/:therapySessionId',
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: '/patients/:patientId/meetings',
+  [PAGES.MEETINGS_CREATE_PAGE]: '/patients/:patientId/meetings/create',
+  [PAGES.MEETINGS_DETAILS_PAGE]: '/patients/:patientId/meetings/:meetingId',
+
+  [PAGES.GAD7_TEST_PAGE]: '/patients/:patientId/meetings/:meetingId/gad7',
+
+  [PAGES.EXERCISES_OVERVIEW_PAGE]: '/patients/:patientId/exercises',
+  [PAGES.EXERCISES_CREATE_PAGE]: '/patients/:patientId/exercises/create',
+  [PAGES.EXERCISES_DETAILS_PAGE]: '/patients/:patientId/exercises/:exerciseId',
 
   [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: '/chatBotTemplates',
   [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: '/chatBotTemplates/create',
   [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: '/chatBotTemplates/:chatbotTemplateId',
 
   [PAGES.NOT_FOUND_PAGE]: '*',
+}
+
+export const PAGE_NAMES: Record<PAGES, string> = {
+  [PAGES.HOME_PAGE]: 'Home',
+  [PAGES.LOGIN_PAGE]: 'Login',
+  [PAGES.REGISTRATION_PAGE]: 'Registration',
+  [PAGES.SETTINGS_PAGE]: 'Settings',
+
+  [PAGES.PATIENTS_OVERVIEW_PAGE]: 'All Patients',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'Create new Patient',
+  [PAGES.PATIENTS_DETAILS_PAGE]: 'Patient Details',
+
+  [PAGES.CHATBOT_OVERVIEW_PAGE]: 'All Chatbots',
+  [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
+  [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
+
+  [PAGES.MEETINGS_OVERVIEW_PAGE]: 'All Meetings',
+  [PAGES.MEETINGS_CREATE_PAGE]: 'Create new Meeting',
+  [PAGES.MEETINGS_DETAILS_PAGE]: 'Meeting Details',
+
+  [PAGES.GAD7_TEST_PAGE]: 'GAD-7 Assessment',
+
+  [PAGES.EXERCISES_OVERVIEW_PAGE]: 'All Exercises',
+  [PAGES.EXERCISES_CREATE_PAGE]: 'Create Exercise',
+  [PAGES.EXERCISES_DETAILS_PAGE]: 'Exercise Details',
+
+  [PAGES.CHATBOT_TEMPLATES_OVERVIEW_PAGE]: 'All Chatbot Templates',
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'Create new Chatbot Template',
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'Chatbot Template Details',
+
+  [PAGES.NOT_FOUND_PAGE]: 'Not Found',
 }
 
 export function getPageFromPath(pathname: string): PAGES {
@@ -75,4 +156,29 @@ export function getPathFromPage(page: PAGES, params: Record<string, string> = {}
     console.error(`Failed to generate path for page ${page}`, error)
     return ROUTES[PAGES.NOT_FOUND_PAGE]
   }
+}
+
+export function findPageTrace(
+  targetPage: PAGES,
+  currentPage: PAGES = PAGES.HOME_PAGE,
+  visited = new Set<PAGES>()
+): PAGES[] | null {
+  if (visited.has(currentPage)) {
+    return null
+  }
+  visited.add(currentPage)
+
+  if (currentPage === targetPage) {
+    return [currentPage]
+  }
+
+  const children = PAGE_HIERARCHY[currentPage] || []
+  for (const child of children) {
+    const result = findPageTrace(targetPage, child, visited)
+    if (result) {
+      return [currentPage, ...result]
+    }
+  }
+
+  return null
 }

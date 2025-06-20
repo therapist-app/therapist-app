@@ -1,4 +1,5 @@
 import 'i18next'
+
 import { defaultNS } from '../i18n'
 import Resources from './resources'
 

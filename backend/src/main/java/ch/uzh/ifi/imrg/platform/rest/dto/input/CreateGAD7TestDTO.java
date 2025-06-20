@@ -2,15 +2,13 @@ package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CreateGAD7TestDTO {
 
   private String patientId;
-  private String sessionId;
+  private String meetingId;
 
   @Min(0)
   @Max(3)

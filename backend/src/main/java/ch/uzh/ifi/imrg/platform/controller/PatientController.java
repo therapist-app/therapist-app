@@ -33,7 +33,6 @@ public class PatientController {
   @ResponseStatus(HttpStatus.CREATED)
   public PatientOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, HttpServletRequest httpServletRequest) {
-    logger.info("/patients");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     Patient registeredPatient = patientService.registerPatient(loggedInTherapist.getId(), inputDTO);
@@ -43,7 +42,6 @@ public class PatientController {
   @GetMapping()
   @ResponseStatus(HttpStatus.OK)
   public List<PatientOutputDTO> getPatientsOfTherapist(HttpServletRequest httpServletRequest) {
-    logger.info("/patients");
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     List<Patient> patients = patientService.getAllPatientsOfTherapist(loggedInTherapist);
@@ -55,7 +53,6 @@ public class PatientController {
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePatient(@PathVariable String id) {
-    logger.info("/patients/" + id);
     patientService.deletePatient(id);
   }
 }

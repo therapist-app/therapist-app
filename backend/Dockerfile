@@ -11,7 +11,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew dependencies --no-daemon
 
 COPY src src
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build --no-daemon -PskipOpenApiGenerate=true
 
 # Run Stage
 FROM eclipse-temurin:21-jre

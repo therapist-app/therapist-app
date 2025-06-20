@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material'
+import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const NotFound = () => {
+const NotFound = (): ReactElement => {
   const { t } = useTranslation()
 
   return (

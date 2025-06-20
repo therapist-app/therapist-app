@@ -1,15 +1,14 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-
-import { useState } from 'react'
-import { loginTherapist } from '../../store/therapistSlice'
-
-import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../utils/hooks'
+import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getPathFromPage, PAGES } from '../../utils/routes'
-import { LoginTherapistDTO } from '../../api'
+import { useNavigate } from 'react-router-dom'
 
-const Login = () => {
+import { LoginTherapistDTO } from '../../api'
+import { loginTherapist } from '../../store/therapistSlice'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
+
+const Login = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
@@ -20,7 +19,7 @@ const Login = () => {
   })
   const [error, setError] = useState<string | null>(null)
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
     setError(null)
 
@@ -37,7 +36,7 @@ const Login = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -69,6 +68,7 @@ const Login = () => {
             fullWidth
             margin='normal'
             required
+            autoComplete='email'
           />
           <TextField
             label={t('login.password')}
@@ -79,6 +79,7 @@ const Login = () => {
             fullWidth
             margin='normal'
             required
+            autoComplete='current-password'
           />
           {error && <Typography color='error'>{error}</Typography>}
           <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>

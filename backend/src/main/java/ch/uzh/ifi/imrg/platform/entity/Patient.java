@@ -2,17 +2,15 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "patients")
 public class Patient implements Serializable {
@@ -23,11 +21,11 @@ public class Patient implements Serializable {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Column(nullable = false)
   private String name;
@@ -38,10 +36,10 @@ public class Patient implements Serializable {
   @Column(nullable = true)
   private int age;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true)
   private String phoneNumber;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true)
   private String email;
 
   @Column(nullable = true)
@@ -72,6 +70,31 @@ public class Patient implements Serializable {
   @Column(unique = true)
   private String workspaceId = UUID.randomUUID().toString();
 
-  @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
-  private List<TherapySession> therapySessions = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Meeting> meetings = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<PatientDocument> patientDocuments = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Exercise> exercises = new ArrayList<>();
 }

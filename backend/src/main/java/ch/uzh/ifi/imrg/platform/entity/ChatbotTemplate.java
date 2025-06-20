@@ -2,15 +2,13 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "chatbot_templates")
 public class ChatbotTemplate implements Serializable {
@@ -21,11 +19,11 @@ public class ChatbotTemplate implements Serializable {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDateTime updatedAt;
+  private Instant updatedAt;
 
   @Column(nullable = false)
   private String chatbotName;
@@ -37,6 +35,12 @@ public class ChatbotTemplate implements Serializable {
   private String chatbotRole;
   private String chatbotTone;
   private String welcomeMessage;
+  private String chatbotVoice;
+  private String chatbotGender;
+  private String preConfiguredExercise;
+  private String additionalExercise;
+  private String animation;
+  private String chatbotInputPlaceholder;
 
   @Column(nullable = false)
   private String workspaceId;
@@ -44,4 +48,8 @@ public class ChatbotTemplate implements Serializable {
   @ManyToOne
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")
   private Therapist therapist;
+
+  @ManyToOne
+  @JoinColumn(name = "patient_id", referencedColumnName = "id")
+  private Patient patient;
 }

@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class JwtUtil {
 
   private static SecretKey getSecretKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(EnvironmentVariables.getJwtSecretKey());
+    byte[] keyBytes = Decoders.BASE64.decode(EnvironmentVariables.JWT_SECRET_KEY);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 

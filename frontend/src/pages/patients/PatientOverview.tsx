@@ -1,14 +1,24 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
+import CheckIcon from '@mui/icons-material/Check'
 import {
   Alert,
   Avatar,
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Pagination,
   Paper,
+  Select,
   Snackbar,
+  Tab,
   Table,
   TableBody,
   TableCell,
@@ -17,22 +27,25 @@ import {
   TableRow,
   Tabs,
   Tab,
-
+  TextField,
   Typography,
 } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import CheckIcon from '@mui/icons-material/Check'
-import Layout from '../../generalComponents/Layout'
-import { handleError } from '../../utils/handleError'
-import { useTranslation } from 'react-i18next'
-import api from '../../utils/api'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
-import { useAppDispatch } from '../../utils/hooks'
 import { AxiosError } from 'axios'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import { PatientOutputDTO } from '../../api'
+import Layout from '../../generalComponents/Layout'
+import { registerPatient } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { patientApi } from '../../utils/api'
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const PatientsOverview: React.FC = () => {
   const navigate = useNavigate()
@@ -52,31 +65,42 @@ const PatientsOverview: React.FC = () => {
   const rowsPerPage = 5
   const [tabValue, setTabValue] = useState(0)
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+  const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
+
+  useEffect(() => {
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch, refreshTherapistCounter])
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
   }
 
   const handleSelectRow = (patientId: string) => {
-    setSelected((prev) => {
-      if (prev.includes(patientId)) {
-        return prev.filter((id) => id !== patientId)
-      }
-      return [...prev, patientId]
-    })
+  const handleOpenPatientDialog = (): void => setOpenPatientDialog(true)
+
+  const handleClosePatientDialog = (): void => {
+    setOpenPatientDialog(false)
+    setNewPatientName('')
   }
 
-  const handleDelete = async () => {
+  const handleCreatePatient = async (): Promise<void> => {
     try {
-      await Promise.all(
-        selected.map(async (id) => {
-          await api.delete(`/patients/${id}`)
+      dispatch(
+        registerPatient({
+          name: newPatientName,
+          gender: newPatientGender,
+          age: Number(newPatientAge),
+          phoneNumber: newPatientPhoneNumber,
+          email: newPatientEmail,
+          address: newPatientAddress,
+          description: newPatientDescription,
         })
       )
-      setSnackbarMessage('Successfully deleted selected patient(s).')
+      setRefreshTherapistCounter((prev) => prev + 1)
+      setSnackbarMessage(t('dashboard.patient_register_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
-      setSelected([])
-      dispatch(getCurrentlyLoggedInTherapist())
+      handleClosePatientDialog()
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
@@ -85,16 +109,47 @@ const PatientsOverview: React.FC = () => {
     }
   }
 
-  const handlePatientClick = (patientId: string) => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId }))
+  const handleSelectRow = (patientId: string): void => {
+    setSelected((prev) => {
+      if (prev.includes(patientId)) {
+        return prev.filter((id) => id !== patientId)
+      }
+      return [...prev, patientId]
+    })
+  }
+
+  const handleDelete = async (): Promise<void> => {
+    try {
+      await Promise.all(
+        selected.map(async (id) => {
+          await patientApi.deletePatient(id)
+        })
+      )
+      setSnackbarMessage('Successfully deleted selected patient(s).')
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      setSelected([])
+      setRefreshTherapistCounter((prev) => prev + 1)
+    } catch (error) {
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
+    }
+  }
+
+  const handlePatientClick = (patientId: string): void => {
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
 
   const startIndex = (page - 1) * rowsPerPage
   const endIndex = startIndex + rowsPerPage
   const paginatedPatients = patients.slice(startIndex, endIndex)
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
@@ -290,9 +345,6 @@ const PatientsOverview: React.FC = () => {
   return (
     <Layout>
       <Box sx={headerRowStyles}>
-        <Typography variant='h5' sx={{ fontWeight: 600 }}>
-          Patients
-        </Typography>
         <Box display='flex' alignItems='center'>
           {selected.length > 0 && (
             <>
@@ -445,7 +497,103 @@ const PatientsOverview: React.FC = () => {
         <AddIcon sx={{ mr: 1 }} />
         {t('dashboard.new_patient')}
       </Button>
+        <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
+        <DialogContent sx={{ mt: 1 }}>
+          <DialogContentText sx={{ mb: 1 }}>
+            {t('dashboard.enter_information_register_new_patient')}
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='patient-name'
+            label={t('dashboard.patient_name')}
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={newPatientName}
+            onChange={(e) => setNewPatientName(e.target.value)}
+          />
+          <FormControl fullWidth margin='dense'>
+            <InputLabel id='patient-gender-label'>{t('dashboard.patient_gender')}</InputLabel>
+            <Select
+              labelId='patient-gender-label'
+              value={newPatientGender}
+              onChange={(e) => setNewPatientGender(e.target.value)}
+              label={t('dashboard.patient_gender')}
+            >
+              <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
+              <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
+              <MenuItem value='other'>{t('dashboard.other')}</MenuItem>
+            </Select>
+          </FormControl>
 
+          <TextField
+            margin='dense'
+            id='patient-age'
+            label={t('dashboard.patient_age')}
+            type='number'
+            fullWidth
+            variant='outlined'
+            value={newPatientAge}
+            onChange={(e) => setNewPatientAge(e.target.value ? Number(e.target.value) : '')}
+          />
+          <TextField
+            margin='dense'
+            id='patient-phone-number'
+            label={t('dashboard.patient_phone_number')}
+            type='tel'
+            fullWidth
+            variant='outlined'
+            value={newPatientPhoneNumber}
+            onChange={(e) => setNewPatientPhoneNumber(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-email'
+            label={t('dashboard.patient_email')}
+            type='email'
+            fullWidth
+            variant='outlined'
+            value={newPatientEmail}
+            onChange={(e) => setNewPatientEmail(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-address'
+            label={t('dashboard.patient_address')}
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={newPatientAddress}
+            onChange={(e) => setNewPatientAddress(e.target.value)}
+          />
+          <TextField
+            margin='dense'
+            id='patient-description'
+            label={t('dashboard.patient_description')}
+            type='text'
+            multiline
+            rows={3}
+            fullWidth
+            variant='outlined'
+            value={newPatientDescription}
+            onChange={(e) => setNewPatientDescription(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
+          <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
+            {t('dashboard.cancel')}
+          </Button>
+          <Button
+            onClick={handleCreatePatient}
+            variant='contained'
+            sx={newPatientName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
+            disabled={newPatientName.trim() === ''}
+          >
+            {t('dashboard.register')}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import {
   Accordion,
@@ -15,7 +16,10 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../utils/hooks'
 import { registerPatient } from '../../store/patientSlice'
+import { Typography } from '@mui/material'
+import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import Layout from '../../generalComponents/Layout'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
@@ -68,6 +72,7 @@ const PatientCreate = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
   const dispatch = useAppDispatch()
+const PatientCreate = (): ReactElement => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 

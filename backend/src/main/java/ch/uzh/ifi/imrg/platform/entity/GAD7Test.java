@@ -1,14 +1,12 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "gad7_tests")
 public class GAD7Test {
@@ -19,16 +17,16 @@ public class GAD7Test {
 
   @CreationTimestamp
   @Column(name = "creation_date", updatable = false)
-  private LocalDateTime creationDate;
+  private Instant creationDate;
 
-  // Associations to Patient and TherapySession
+  // Associations to Patient and Meeting
   @ManyToOne
   @JoinColumn(name = "patient_id", nullable = false)
   private Patient patient;
 
   @ManyToOne
-  @JoinColumn(name = "session_id", nullable = false)
-  private TherapySession therapySession;
+  @JoinColumn(name = "meeting_id", nullable = false)
+  private Meeting meeting;
 
   @Column(nullable = false)
   private int question1;

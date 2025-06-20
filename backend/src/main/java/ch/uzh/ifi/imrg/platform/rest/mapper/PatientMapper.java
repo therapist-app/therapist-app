@@ -1,10 +1,10 @@
 package ch.uzh.ifi.imrg.platform.rest.mapper;
 
+import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -32,6 +32,10 @@ public interface PatientMapper {
   @Mapping(source = "income", target = "income")
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   @Mapping(source = "therapySessions", target = "therapySessionsOutputDTO")
+  @Mapping(source = "address", target = "address")
+  @Mapping(source = "description", target = "description")
+  @Mapping(source = "meetings", target = "meetingsOutputDTO")
+
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
   @Mapping(source = "name", target = "name")
@@ -48,12 +52,12 @@ public interface PatientMapper {
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 
-  default List<TherapySessionOutputDTO> mapTherapySessions(List<TherapySession> therapySessions) {
-    if (therapySessions == null) {
+  default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
+    if (meetings == null) {
       return null;
     }
-    return therapySessions.stream()
-        .map(TherapySessionMapper.INSTANCE::convertEntityToSessionOutputDTO)
+    return meetings.stream()
+        .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
   }
 }
