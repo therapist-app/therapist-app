@@ -26,7 +26,6 @@ public class PatientOutputDTO {
   private List<TherapySessionOutputDTO> therapySessionsOutputDTO;
   private List<MeetingOutputDTO> meetingsOutputDTO;
 
-
   public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {

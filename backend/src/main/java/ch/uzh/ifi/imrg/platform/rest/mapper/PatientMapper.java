@@ -35,7 +35,6 @@ public interface PatientMapper {
   @Mapping(source = "address", target = "address")
   @Mapping(source = "description", target = "description")
   @Mapping(source = "meetings", target = "meetingsOutputDTO")
-
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
   @Mapping(source = "name", target = "name")
