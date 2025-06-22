@@ -112,7 +112,7 @@ const ExerciseDetail = (): ReactElement => {
   const handleDeleteExercise = async (): Promise<void> => {
     await dispatch(deleteExcercise(exerciseId ?? ''))
     navigate(
-      getPathFromPage(PAGES.EXERCISES_OVERVIEW_PAGE, {
+      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
         patientId: patientId ?? '',
       })
     )
@@ -198,17 +198,7 @@ const ExerciseDetail = (): ReactElement => {
                   </MenuItem>
                 ))}
               </TextField>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{ width: 'fit-content' }}
-                    name='isPaused'
-                    checked={formData.isPaused}
-                    onChange={() => setFormData({ ...formData, isPaused: !formData.isPaused })}
-                  />
-                }
-                label='Is Exercise Paused'
-              ></FormControlLabel>
+
               <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label='Exercise Start'
@@ -234,6 +224,17 @@ const ExerciseDetail = (): ReactElement => {
                   sx={{ width: '100%' }}
                 />
               </LocalizationProvider>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{ width: 'fit-content' }}
+                    name='isPaused'
+                    checked={formData.isPaused}
+                    onChange={() => setFormData({ ...formData, isPaused: !formData.isPaused })}
+                  />
+                }
+                label='Is Exercise Paused'
+              ></FormControlLabel>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
                   variant='contained'
@@ -268,7 +269,7 @@ const ExerciseDetail = (): ReactElement => {
             <Typography variant='h5'>Exercise Components: </Typography>
           ) : (
             <Typography sx={{ marginBottom: '20px' }} variant='h5'>
-              You haven' added any exercise components yet...{' '}
+              You haven't added any exercise components yet...{' '}
             </Typography>
           )}
 

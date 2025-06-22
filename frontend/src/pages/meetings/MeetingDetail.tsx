@@ -22,7 +22,6 @@ import Layout from '../../generalComponents/Layout'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import { patientTestApi } from '../../utils/api'
-import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
@@ -66,7 +65,7 @@ const MeetingDetail = (): ReactElement => {
   const handleDeleteMeeting = async (): Promise<void> => {
     await dispatch(deleteMeeting(meetingId ?? ''))
     navigate(
-      getPathFromPage(PAGES.MEETINGS_OVERVIEW_PAGE, {
+      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
         patientId: patientId ?? '',
       })
     )
@@ -76,8 +75,23 @@ const MeetingDetail = (): ReactElement => {
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
         <div>
-          <Typography>Meeting start: {formatDateNicely(selectedMeeting?.meetingStart)}</Typography>
-          <Typography>Meeting end: {formatDateNicely(selectedMeeting?.meetingEnd)}</Typography>
+          <Typography>
+            <strong>Meeting start:</strong>{' '}
+            {selectedMeeting?.meetingStart
+              ? format(new Date(selectedMeeting.meetingStart), 'dd.MM.yyyy HH:mm', { locale: de })
+              : ''}
+          </Typography>
+          <Typography>
+            <strong>Duration:</strong>{' '}
+            {selectedMeeting?.meetingEnd && selectedMeeting?.meetingStart
+              ? Math.floor(
+                  (new Date(selectedMeeting.meetingEnd).getTime() -
+                    new Date(selectedMeeting.meetingStart).getTime()) /
+                    60000
+                )
+              : 0}{' '}
+            minutes
+          </Typography>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -123,7 +137,7 @@ const MeetingDetail = (): ReactElement => {
               alignItems: 'center',
             }}
           >
-            <Typography variant='h5'>GAD7 Tests History: </Typography>
+            <Typography variant='h5'>GAD7 Tests: </Typography>
             <Button
               variant='contained'
               color='primary'

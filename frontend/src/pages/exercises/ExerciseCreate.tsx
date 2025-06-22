@@ -18,7 +18,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
-  exerciseEnd: Date | null
+  durationInWeeks: number
 }
 
 const ExerciseCreate = (): ReactElement => {
@@ -29,8 +29,8 @@ const ExerciseCreate = (): ReactElement => {
   const [formData, setFormData] = useState<ExerciseFormData>({
     title: '',
     exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
-    exerciseStart: null,
-    exerciseEnd: null,
+    exerciseStart: new Date(),
+    durationInWeeks: 3,
     patientId: patientId,
   })
 
@@ -42,10 +42,13 @@ const ExerciseCreate = (): ReactElement => {
     e.preventDefault()
 
     try {
+      const exerciseStart = formData.exerciseStart ?? new Date()
       const createExerciseDTO: CreateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
-        exerciseEnd: formData.exerciseEnd?.toISOString(),
+        exerciseEnd: new Date(
+          exerciseStart.getTime() + formData.durationInWeeks * 7 * 24 * 60 * 60 * 1000
+        ).toISOString(),
       }
       const createdExercise = await dispatch(createExercise(createExerciseDTO)).unwrap()
       navigate(
@@ -106,13 +109,14 @@ const ExerciseCreate = (): ReactElement => {
             sx={{ width: '100%' }}
           />
 
-          <DateTimePicker
-            label='Exercise End'
-            value={formData.exerciseEnd}
-            onChange={(newValue: Date | null) => {
+          <TextField
+            label='Duration in Weeks'
+            type='number'
+            value={formData.durationInWeeks}
+            onChange={(e) => {
               setFormData({
                 ...formData,
-                exerciseEnd: newValue,
+                durationInWeeks: Number(e.target.value),
               })
             }}
             sx={{ width: '100%' }}

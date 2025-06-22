@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -14,7 +14,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null
-  meetingEnd: Date | null
+  durationInMinutes: number
 }
 
 const MeetingCreate = (): ReactElement => {
@@ -23,16 +23,16 @@ const MeetingCreate = (): ReactElement => {
   const navigate = useNavigate()
 
   const [meetingFormData, setMeetingFormData] = useState<MeetingFormData>({
-    meetingStart: null,
-    meetingEnd: null,
+    meetingStart: new Date(),
+    durationInMinutes: 60,
     patientId: patientId ?? '',
   })
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
-    if (!meetingFormData.meetingStart || !meetingFormData.meetingEnd) {
-      console.error('Start and end dates are required')
+    if (!meetingFormData.meetingStart) {
+      console.error('Start date is required')
       return
     }
 
@@ -40,7 +40,9 @@ const MeetingCreate = (): ReactElement => {
       const createMeetingDTO: CreateMeetingDTO = {
         ...meetingFormData,
         meetingStart: meetingFormData.meetingStart.toISOString(),
-        meetingEnd: meetingFormData.meetingEnd.toISOString(),
+        meetingEnd: new Date(
+          meetingFormData.meetingStart.getTime() + meetingFormData.durationInMinutes * 60000
+        ).toISOString(),
       }
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
       navigate(
@@ -70,15 +72,16 @@ const MeetingCreate = (): ReactElement => {
             sx={{ mt: 2, width: '100%' }}
           />
 
-          <DateTimePicker
-            label='Meeting End'
-            value={meetingFormData.meetingEnd}
-            onChange={(newValue: Date | null) => {
+          <TextField
+            label='Duration in Minutes'
+            type='number'
+            value={meetingFormData.durationInMinutes}
+            onChange={(e) =>
               setMeetingFormData({
                 ...meetingFormData,
-                meetingEnd: newValue,
+                durationInMinutes: Number(e.target.value),
               })
-            }}
+            }
             sx={{ mt: 2, width: '100%' }}
           />
         </LocalizationProvider>
