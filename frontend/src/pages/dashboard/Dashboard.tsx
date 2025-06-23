@@ -57,7 +57,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Dashboard = (): ReactElement => {
   const navigate = useNavigate()
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
@@ -172,7 +172,7 @@ const Dashboard = (): ReactElement => {
   }
 
   const handlePatientClick = (patientId: string): void => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {patientId: patientId}))
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
 
   const handleOpenBotDialog = (): void => {
@@ -252,7 +252,7 @@ const Dashboard = (): ReactElement => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: currentChatbot.id ?? '',
-          updateChatbotTemplateDTO: {chatbotName: chatbotName},
+          updateChatbotTemplateDTO: { chatbotName: chatbotName },
         })
       )
 
@@ -337,15 +337,15 @@ const Dashboard = (): ReactElement => {
   const getIconComponent = (iconName: string): ReactElement | null => {
     switch (iconName) {
       case 'Chatbot':
-        return <TbMessageChatbot/>
+        return <TbMessageChatbot />
       case 'Robot':
-        return <RiRobot2Line/>
+        return <RiRobot2Line />
       case 'Person':
-        return <IoPersonOutline/>
+        return <IoPersonOutline />
       case 'Bulb':
-        return <IoBulbOutline/>
+        return <IoBulbOutline />
       case 'Book':
-        return <PiBookOpenTextLight/>
+        return <PiBookOpenTextLight />
       default:
         return null
     }
@@ -400,7 +400,7 @@ const Dashboard = (): ReactElement => {
 
   return (
     <Layout>
-      <Box sx={{marginBottom: 4}}>
+      <Box sx={{ marginBottom: 4 }}>
         <Card
           sx={{
             p: 2,
@@ -416,19 +416,19 @@ const Dashboard = (): ReactElement => {
             variant='contained'
             onClick={() => navigate(getPathFromPage(PAGES.PATIENTS_CREATE_PAGE))}
             sx={commonButtonStyles}
-            style={{minWidth: '200px', maxWidth: '200px'}}
+            style={{ minWidth: '200px', maxWidth: '200px' }}
           >
-            <AddIcon sx={{mr: 1}}/>
+            <AddIcon sx={{ mr: 1 }} />
             {t('dashboard.new_patient')}
           </Button>
         </Card>
       </Box>
 
-      <Typography variant='h5' sx={{marginBottom: 3}}>
+      <Typography variant='h5' sx={{ marginBottom: 3 }}>
         {t('dashboard.patients')}
       </Typography>
       {loggedInTherapist?.patientsOutputDTO && loggedInTherapist.patientsOutputDTO.length > 0 ? (
-        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start'}}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
           {loggedInTherapist?.patientsOutputDTO.map((patient) => (
             <Card
               key={patient.id}
@@ -459,7 +459,7 @@ const Dashboard = (): ReactElement => {
           ))}
         </Box>
       ) : (
-        <Typography variant='subtitle1' sx={{textAlign: 'center'}}>
+        <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
           {t('dashboard.no_patients_found')}
         </Typography>
       )}
@@ -467,11 +467,11 @@ const Dashboard = (): ReactElement => {
       <Dialog
         open={openPatientDialog}
         onClose={handleClosePatientDialog}
-        PaperProps={{sx: dialogStyle}}
+        PaperProps={{ sx: dialogStyle }}
       >
         <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
-        <DialogContent sx={{mt: 1}}>
-          <DialogContentText sx={{mb: 1}}>
+        <DialogContent sx={{ mt: 1 }}>
+          <DialogContentText sx={{ mb: 1 }}>
             {t('dashboard.enter_information_register_new_patient')}
           </DialogContentText>
           <TextField
@@ -551,7 +551,7 @@ const Dashboard = (): ReactElement => {
             onChange={(e) => setNewPatientDescription(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{justifyContent: 'right', pr: 2}}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
             {t('dashboard.cancel')}
           </Button>
@@ -565,7 +565,7 @@ const Dashboard = (): ReactElement => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Box sx={{mt: 6, mb: 4}}>
+      <Box sx={{ mt: 6, mb: 4 }}>
         <Card
           sx={{
             p: 2,
@@ -579,17 +579,17 @@ const Dashboard = (): ReactElement => {
           </Typography>
           <Button
             variant='contained'
-            startIcon={<AddIcon/>}
+            startIcon={<AddIcon />}
             onClick={handleOpenBotDialog}
             sx={commonButtonStyles}
-            style={{minWidth: '200px', maxWidth: '200px'}}
+            style={{ minWidth: '200px', maxWidth: '200px' }}
           >
             {t('dashboard.create_bot')}
           </Button>
         </Card>
       </Box>
 
-      <Typography variant='h5' sx={{mt: 6, mb: 3}}>
+      <Typography variant='h5' sx={{ mt: 6, mb: 3 }}>
         {t('dashboard.your_chatbot_templates')}
       </Typography>
       {loggedInTherapist?.chatbotTemplatesOutputDTO &&
@@ -629,14 +629,14 @@ const Dashboard = (): ReactElement => {
                   <Typography variant='body2' color='textSecondary'>
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
-                  <Typography variant='body1' sx={{mt: 1}}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
-                  <Typography variant='body1' sx={{mt: 1}}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.role')}: {bot.chatbotRole}
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-                  <Typography variant='body1' sx={{fontSize: '48px', textAlign: 'center'}}>
+                  <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
                     {getIconComponent(bot.chatbotIcon ?? '')}
                   </Typography>
                 </CardContent>
@@ -655,14 +655,14 @@ const Dashboard = (): ReactElement => {
                   aria-haspopup='true'
                   onClick={(event) => handleMenuClick(event, bot)}
                 >
-                  <MoreVertIcon/>
+                  <MoreVertIcon />
                 </IconButton>
               </CardActions>
             </Card>
           ))}
         </Box>
       ) : (
-        <Typography variant='subtitle1' sx={{textAlign: 'center'}}>
+        <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
           {t('dashboard.no_chatbots_created_yet')}
         </Typography>
       )}
@@ -684,14 +684,10 @@ const Dashboard = (): ReactElement => {
         <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
         <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
-      <Dialog
-        open={openBotDialog}
-        onClose={handleCloseBotDialog}
-        PaperProps={{sx: dialogStyle}}
-      >
+      <Dialog open={openBotDialog} onClose={handleCloseBotDialog} PaperProps={{ sx: dialogStyle }}>
         <DialogTitle>{t('dashboard.new_bot')}</DialogTitle>
-        <DialogContent sx={{mt: 1}}>
-          <DialogContentText sx={{mb: 1}}>
+        <DialogContent sx={{ mt: 1 }}>
+          <DialogContentText sx={{ mb: 1 }}>
             {t('dashboard.what_would_you_like_to_name_your_bot')}
           </DialogContentText>
           <TextField
@@ -706,7 +702,7 @@ const Dashboard = (): ReactElement => {
             onChange={(e) => setChatbotName(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{justifyContent: 'right', pr: 2}}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={handleCloseBotDialog} sx={cancelButtonStyles}>
             {t('dashboard.cancel')}
           </Button>
@@ -723,11 +719,11 @@ const Dashboard = (): ReactElement => {
       <Dialog
         open={openRenameDialog}
         onClose={() => setOpenRenameDialog(false)}
-        PaperProps={{sx: dialogStyle}}
+        PaperProps={{ sx: dialogStyle }}
       >
         <DialogTitle>{t('dashboard.rename_bot')}</DialogTitle>
-        <DialogContent sx={{mt: 1}}>
-          <DialogContentText sx={{mb: 1}}>
+        <DialogContent sx={{ mt: 1 }}>
+          <DialogContentText sx={{ mb: 1 }}>
             {t('dashboard.enter_new_name_for_bot')}
           </DialogContentText>
           <TextField
@@ -742,7 +738,7 @@ const Dashboard = (): ReactElement => {
             onChange={(e) => setChatbotName(e.target.value)}
           />
         </DialogContent>
-        <DialogActions sx={{justifyContent: 'right', pr: 2}}>
+        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
           <Button onClick={() => setOpenRenameDialog(false)} sx={cancelButtonStyles}>
             {t('dashboard.cancel')}
           </Button>
@@ -760,13 +756,13 @@ const Dashboard = (): ReactElement => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{width: '100%'}}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </Layout>
-    )
-  }
-  export default Dashboard
+  )
+}
+export default Dashboard
