@@ -71,7 +71,7 @@ const PatientCreate: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     try {
       dispatch(
         registerPatient({
