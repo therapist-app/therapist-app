@@ -31,9 +31,8 @@ public class CounselingPlan {
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<ExerciseComponent> counselingPlanPhases = new ArrayList<>();
+  private List<CounselingPlanPhase> counselingPlanPhases = new ArrayList<>();
 
-  @ManyToOne
-  @JoinColumn(name = "patient_id", referencedColumnName = "id")
+  @OneToOne(fetch = FetchType.EAGER, mappedBy = "counselingPlan")
   private Patient patient;
 }

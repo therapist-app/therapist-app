@@ -97,6 +97,20 @@ const PatientDetail = (): ReactElement => {
     <Layout>
       <Button
         variant='contained'
+        onClick={() =>
+          navigate(
+            getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
+              patientId: patientId ?? '',
+            })
+          )
+        }
+        sx={{ marginTop: '20px', marginBottom: '20px' }}
+      >
+        Go to Counseling Plan
+      </Button>
+      <Divider style={{ margin: '20px 0' }} />
+      <Button
+        variant='contained'
         onClick={handleOpenChatbotDialog}
         sx={{ marginTop: '20px', marginBottom: '20px' }}
       >

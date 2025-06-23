@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
+import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
@@ -49,6 +50,7 @@ public class PatientService {
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
+    patient.setCounselingPlan(new CounselingPlan());
 
     patientRepository.save(patient);
     patientRepository.flush();

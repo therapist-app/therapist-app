@@ -1,0 +1,29 @@
+package ch.uzh.ifi.imrg.platform.service;
+
+import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
+import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
+import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanMapper;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
+@Transactional
+public class CounselingPlanService {
+
+  private final CounselingPlanRepository counselingPlanRepository;
+  private final PatientRepository patientRepository;
+
+  public CounselingPlanService(
+      CounselingPlanRepository counselingPlanRepository, PatientRepository patientRepository) {
+    this.counselingPlanRepository = counselingPlanRepository;
+    this.patientRepository = patientRepository;
+  }
+
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId) {
+    CounselingPlan counselingPlan =
+        patientRepository.getReferenceById(patientId).getCounselingPlan();
+    return CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
+  }
+}
