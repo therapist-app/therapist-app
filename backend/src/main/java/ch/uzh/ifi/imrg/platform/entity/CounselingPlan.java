@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,8 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "exercises")
-public class Exercise {
+@Table(name = "counseling_plans")
+public class CounselingPlan {
 
   @Id
   @Column(unique = true)
@@ -27,30 +26,14 @@ public class Exercise {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
-
-  @Column() private ExerciseType exerciseType;
-
-  @Column(name = "exercise_start")
-  private Instant exerciseStart;
-
-  @Column(name = "exercise_end")
-  private Instant exerciseEnd;
-
-  @Column() private Boolean isPaused;
-
   @OneToMany(
-      mappedBy = "exercise",
+      mappedBy = "counselingPlan",
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
+  private List<ExerciseComponent> counselingPlanPhases = new ArrayList<>();
 
-  @ManyToOne(optional = false)
+  @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
-
-  @ManyToOne(optional = true)
-  @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")
-  private CounselingPlanPhase counselingPlanPhase;
 }
