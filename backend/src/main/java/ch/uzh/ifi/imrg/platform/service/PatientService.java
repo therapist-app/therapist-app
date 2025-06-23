@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
+import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
@@ -29,6 +30,7 @@ public class PatientService {
 
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;
+  private final CounselingPlanRepository counselingPlanRepository;
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
@@ -37,9 +39,11 @@ public class PatientService {
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
       @Qualifier("therapistRepository") TherapistRepository therapistRepository,
-      @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
+      @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository,
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
+    this.counselingPlanRepository = counselingPlanRepository;
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
@@ -50,7 +54,10 @@ public class PatientService {
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
-    patient.setCounselingPlan(new CounselingPlan());
+
+    CounselingPlan counselingPlan = new CounselingPlan();
+    counselingPlanRepository.save(counselingPlan);
+    patient.setCounselingPlan(counselingPlan);
 
     patientRepository.save(patient);
     patientRepository.flush();

@@ -1,8 +1,10 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
+import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
@@ -17,25 +19,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CounselingPlanPhaseService {
 
+  private final CounselingPlanRepository counselingPlanRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
   private final ExerciseRepository exerciseRepository;
 
   public CounselingPlanPhaseService(
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
-      @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
+      @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
+    this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
   }
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
       CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO) {
+    CounselingPlan counselingPlan =
+        counselingPlanRepository.getReferenceById(
+            createCounselingPlanPhaseDTO.getCounselingPlanId());
+
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
     counselingPlanPhase.setPhaseName(createCounselingPlanPhaseDTO.getPhaseName());
     counselingPlanPhase.setStartDate(createCounselingPlanPhaseDTO.getStartDate());
     counselingPlanPhase.setEndDate(createCounselingPlanPhaseDTO.getEndDate());
+    counselingPlanPhase.setCounselingPlan(counselingPlan);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
     counselingPlanPhaseRepository.flush();
+    ;
     return CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
         counselingPlanPhase);
   }
@@ -79,6 +90,12 @@ public class CounselingPlanPhaseService {
   }
 
   public void deleteCounselingPlanPhase(String id) {
-    counselingPlanPhaseRepository.deleteById(id);
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(id)
+            .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
+    counselingPlanPhase.getCounselingPlan().getCounselingPlanPhases().remove(counselingPlanPhase);
+    counselingPlanRepository.save(counselingPlanPhase.getCounselingPlan());
+    counselingPlanRepository.flush();
   }
 }

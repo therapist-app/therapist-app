@@ -3,6 +3,9 @@ import axios from 'axios'
 import {
   ChatbotTemplateControllerApiFactory,
   ChatControllerApiFactory,
+  CounselingPlanControllerApiFactory,
+  CounselingPlanPhaseControllerApiFactory,
+  CounselingPlanPhaseGoalControllerApiFactory,
   ExerciseComponentControllerApiFactory,
   ExerciseControllerApiFactory,
   MeetingControllerApiFactory,
@@ -45,3 +48,14 @@ export const meetingNoteApi = MeetingNoteControllerApiFactory(undefined, baseURL
 export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
+export const counselingPlanApi = CounselingPlanControllerApiFactory(undefined, baseURL, api)
+export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(
+  undefined,
+  baseURL,
+  api
+)
+export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFactory(
+  undefined,
+  baseURL,
+  api
+)
