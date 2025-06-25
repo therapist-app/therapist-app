@@ -4,67 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/output/PatientOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/output/PatientOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/@types/i18next.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/i18next.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/FileDownload.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/FileDownload.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/FileUpload.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/FileUpload.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/FilesTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/FilesTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/ImageComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/ImageComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/LoadingSpinner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/LoadingSpinner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/PdfViewer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/PdfViewer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/generalComponents/SpeechRecognitionComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/generalComponents/SpeechRecognitionComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/i18n.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/i18n.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/muiTheme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/muiTheme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/chatBotTemplate/ChatBotTemplateEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/chatBotTemplate/ChatBotTemplateEdit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/ExerciseCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/ExerciseCreate.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/ExerciseDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/ExerciseDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseFileComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseFileComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseInputFieldComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseInputFieldComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseTextComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/CreateExerciseTextComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ExerciseOverviewComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ExerciseOverviewComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseFileComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseFileComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseInputFieldComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseInputFieldComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseTextComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/exercises/components/ShowExerciseTextComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/login/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/meetings/MeetingCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/meetings/MeetingCreate.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/meetings/MeetingDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/meetings/MeetingDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/meetings/components/CreateMeetingNoteComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/meetings/components/CreateMeetingNoteComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/meetings/components/MeetingNoteComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/meetings/components/MeetingNoteComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/meetings/components/MeetingOverviewComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/meetings/components/MeetingOverviewComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/notFound/NotFound.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/notFound/NotFound.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/register/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/register/Register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/settings/settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/settings/settings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/tests/GAD7test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/tests/GAD7test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/chatbotTemplateSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/chatbotTemplateSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/exerciseSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/exerciseSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/meetingSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/meetingSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/patientDocumentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/patientDocumentSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/patientSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/patientSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/therapistChatbotSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/therapistChatbotSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/therapistDocumentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/therapistDocumentSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/therapistSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/therapistSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/thunk.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/thunk.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/dateUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/dateUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/handleError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/handleError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/vite-env.d.ts" afterDir="false" />
-    </list>
+    <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -172,7 +112,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx</url>
-          <line>247</line>
+          <line>250</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
