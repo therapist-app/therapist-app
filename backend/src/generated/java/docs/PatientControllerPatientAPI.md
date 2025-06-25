@@ -4,14 +4,14 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**changePassword**](PatientControllerPatientAPI.md#changePassword) | **PUT** /patients/password |  |
+| [**changePassword**](PatientControllerPatientAPI.md#changePassword) | **PUT** /patients/passwords |  |
 | [**getCurrentlyLoggedInPatient**](PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me |  |
 | [**getLanguage**](PatientControllerPatientAPI.md#getLanguage) | **GET** /patients/language |  |
 | [**getName**](PatientControllerPatientAPI.md#getName) | **GET** /patients/name |  |
 | [**getOnboarded**](PatientControllerPatientAPI.md#getOnboarded) | **GET** /patients/onboarded |  |
 | [**loginTherapist**](PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login |  |
 | [**logoutTherapist**](PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout |  |
-| [**registerPatient**](PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register |  |
+| [**registerPatient**](PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register | This endpoint will be removed |
 | [**setLanguage**](PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language |  |
 | [**setName**](PatientControllerPatientAPI.md#setName) | **PUT** /patients/name |  |
 | [**setOnboarded**](PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded |  |
@@ -31,6 +31,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -38,6 +39,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         ChangePasswordDTOPatientAPI changePasswordDTOPatientAPI = new ChangePasswordDTOPatientAPI(); // ChangePasswordDTOPatientAPI | 
@@ -67,7 +74,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -94,6 +101,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -101,6 +109,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         try {
@@ -127,7 +141,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -154,6 +168,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -161,6 +176,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         try {
@@ -187,7 +208,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -214,6 +235,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -221,6 +243,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         try {
@@ -247,7 +275,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -274,6 +302,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -281,6 +310,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         try {
@@ -307,7 +342,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -334,6 +369,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -341,6 +377,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         LoginPatientDTOPatientAPI loginPatientDTOPatientAPI = new LoginPatientDTOPatientAPI(); // LoginPatientDTOPatientAPI | 
@@ -371,7 +413,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -398,6 +440,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -405,6 +448,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         try {
@@ -430,7 +479,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -448,7 +497,9 @@ No authorization required
 
 > PatientOutputDTOPatientAPI registerPatient(createPatientDTOPatientAPI)
 
+This endpoint will be removed
 
+@Therapist app: pleas use /coach/patients/register as endpoint
 
 ### Example
 
@@ -457,6 +508,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -464,6 +516,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI(); // CreatePatientDTOPatientAPI | 
@@ -494,7 +552,7 @@ public class Example {
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -521,6 +579,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -528,6 +587,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         PutLanguageDTOPatientAPI putLanguageDTOPatientAPI = new PutLanguageDTOPatientAPI(); // PutLanguageDTOPatientAPI | 
@@ -557,7 +622,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -584,6 +649,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -591,6 +657,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         PutNameDTOPatientAPI putNameDTOPatientAPI = new PutNameDTOPatientAPI(); // PutNameDTOPatientAPI | 
@@ -620,7 +692,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 
@@ -647,6 +719,7 @@ No authorization required
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
 import ch.uzh.ifi.imrg.generated.api.PatientControllerPatientAPI;
 
@@ -654,6 +727,12 @@ public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
 
         PatientControllerPatientAPI apiInstance = new PatientControllerPatientAPI(defaultClient);
         PutOnboardedDTOPatientAPI putOnboardedDTOPatientAPI = new PutOnboardedDTOPatientAPI(); // PutOnboardedDTOPatientAPI | 
@@ -683,7 +762,7 @@ null (empty response body)
 
 ### Authorization
 
-No authorization required
+[X-Coach-Key](../README.md#X-Coach-Key)
 
 ### HTTP request headers
 

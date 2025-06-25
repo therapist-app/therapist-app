@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.NameConversationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutSharingDTOPatientAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +75,7 @@ public class ConversationControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/conversations", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -119,6 +120,75 @@ public class ConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec deleteChatRequestCreation(String conversationId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'conversationId' is set
+        if (conversationId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling deleteChat", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("conversationId", conversationId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/conversations/{conversationId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> deleteChat(String conversationId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deleteChatRequestCreation(conversationId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> deleteChatWithHttpInfo(String conversationId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deleteChatRequestCreation(conversationId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec deleteChatWithResponseSpec(String conversationId) throws WebClientResponseException {
+        return deleteChatRequestCreation(conversationId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
      * @return CompleteConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
@@ -145,7 +215,7 @@ public class ConversationControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/conversations/messages/{conversationId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -212,7 +282,7 @@ public class ConversationControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<NameConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NameConversationOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/conversations/{patientId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -290,7 +360,7 @@ public class ConversationControllerPatientAPI {
         };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/conversations/messages/{conversationId}", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -335,5 +405,84 @@ public class ConversationControllerPatientAPI {
      */
     public ResponseSpec sendMessageWithResponseSpec(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
         return sendMessageRequestCreation(conversationId, createMessageDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @param putSharingDTOPatientAPI The putSharingDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec updateSharingRequestCreation(String conversationId, PutSharingDTOPatientAPI putSharingDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = putSharingDTOPatientAPI;
+        // verify the required parameter 'conversationId' is set
+        if (conversationId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling updateSharing", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'putSharingDTOPatientAPI' is set
+        if (putSharingDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'putSharingDTOPatientAPI' when calling updateSharing", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("conversationId", conversationId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/conversations/{conversationId}", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @param putSharingDTOPatientAPI The putSharingDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> updateSharing(String conversationId, PutSharingDTOPatientAPI putSharingDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return updateSharingRequestCreation(conversationId, putSharingDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @param putSharingDTOPatientAPI The putSharingDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> updateSharingWithHttpInfo(String conversationId, PutSharingDTOPatientAPI putSharingDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return updateSharingRequestCreation(conversationId, putSharingDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param conversationId The conversationId parameter
+     * @param putSharingDTOPatientAPI The putSharingDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec updateSharingWithResponseSpec(String conversationId, PutSharingDTOPatientAPI putSharingDTOPatientAPI) throws WebClientResponseException {
+        return updateSharingRequestCreation(conversationId, putSharingDTOPatientAPI);
     }
 }
