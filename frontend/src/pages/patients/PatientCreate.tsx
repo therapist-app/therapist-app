@@ -1,26 +1,27 @@
-import { ReactElement } from 'react'
-import React, { useState } from 'react'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
   Box,
   Button,
-  TextField,
-  Typography,
   Grid,
   MenuItem,
   Snackbar,
-  Alert,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  TextField,
+  Typography,
 } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../utils/hooks'
-import { registerPatient } from '../../store/patientSlice'
+import { AxiosError } from 'axios'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Layout from '../../generalComponents/Layout'
-import {getPathFromPage, PAGES} from "../../utils/routes.ts";
+import { useNavigate } from 'react-router-dom'
 
+import Layout from '../../generalComponents/Layout'
+import { registerPatient } from '../../store/patientSlice'
+import { handleError } from '../../utils/handleError.ts'
+import { useAppDispatch } from '../../utils/hooks'
+import { getPathFromPage, PAGES } from '../../utils/routes.ts'
 
 const PatientCreate = (): ReactElement => {
   const [name, setName] = useState('')
@@ -31,16 +32,12 @@ const PatientCreate = (): ReactElement => {
   const [education, setEducation] = useState('')
   const [occupation, setOccupation] = useState('')
   const [income, setIncome] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
   const [dateOfAdmission, setDateOfAdmission] = useState('')
   const [mainComplaints, setMainComplaints] = useState('')
   const [historyOfIllness, setHistoryOfIllness] = useState('')
-  const [treatmentHistory, setTreatmentHistory] = useState('')
-  const [pastHistory, setPastHistory] = useState('')
-  const [familyHistory, setFamilyHistory] = useState('')
-  const [personalHistory, setPersonalHistory] = useState('')
   const [hpiGeneral, setHpiGeneral] = useState('')
   const [hpiDuration, setHpiDuration] = useState('')
   const [hpiOnset, setHpiOnset] = useState('')
@@ -75,65 +72,64 @@ const PatientCreate = (): ReactElement => {
   const navigate = useNavigate()
   const handleSubmit = async (): Promise<void> => {
     try {
-      await dispatch(registerPatient({
-        name,
-        gender: sex,
-        age: Number(age),
-        phoneNumber,
-        email,
-        address,
-        maritalStatus,
-        religion,
-        education,
-        occupation,
-        income,
-        dateOfAdmission,
-        mainComplaints,
-        historyOfIllness,
-        treatmentHistory,
-        pastHistory,
-        familyHistory,
-        personalHistory,
-        hpiGeneral,
-        hpiDuration,
-        hpiOnset,
-        hpiCourse,
-        hpiPrecipitatingFactors,
-        hpiAggravatingRelieving,
-        hpiTimeline,
-        treatmentPast,
-        treatmentCurrent,
-        pastMedical,
-        pastPsych,
-        familyIllness,
-        familySocial,
-        personalPerinatal,
-        personalChildhood,
-        personalEducation,
-        personalPlay,
-        personalAdolescence,
-        personalPuberty,
-        personalObstetric,
-        personalOccupational,
-        personalMarital,
-        personalPremorbid,
-      }));
+      await dispatch(
+        registerPatient({
+          name: name,
+          gender: sex,
+          age: Number(age),
+          phoneNumber: phoneNumber,
+          email: email,
+          address: address,
+          maritalStatus: maritalStatus,
+          religion: religion,
+          education: education,
+          occupation: occupation,
+          income: income,
+          dateOfAdmission: dateOfAdmission,
+          mainComplaints: mainComplaints,
+          historyOfIllness: historyOfIllness,
+          hpiGeneral: hpiGeneral,
+          hpiDuration: hpiDuration,
+          hpiOnset: hpiOnset,
+          hpiCourse: hpiCourse,
+          hpiPrecipitatingFactors: hpiPrecipitatingFactors,
+          hpiAggravatingRelieving: hpiAggravatingRelieving,
+          hpiTimeline: hpiTimeline,
+          treatmentPast: treatmentPast,
+          treatmentCurrent: treatmentCurrent,
+          pastMedical: pastMedical,
+          pastPsych: pastPsych,
+          familyIllness: familyIllness,
+          familySocial: familySocial,
+          personalPerinatal: personalPerinatal,
+          personalChildhood: personalChildhood,
+          personalEducation: personalEducation,
+          personalPlay: personalPlay,
+          personalAdolescence: personalAdolescence,
+          personalPuberty: personalPuberty,
+          personalObstetric: personalObstetric,
+          personalOccupational: personalOccupational,
+          personalMarital: personalMarital,
+          personalPremorbid: personalPremorbid,
+        })
+      )
 
-      setSnackbarMessage(t('patient_create.patient_register_success'));
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      navigate('/patients');
-    } catch (err) {
-      setSnackbarMessage(t('patient_create.patient_register_failed'));
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      setSnackbarMessage(t('patient_create.patient_register_success'))
+      setSnackbarSeverity('success')
+      setSnackbarOpen(true)
+      navigate('/patients')
+    } catch (error) {
+      const errorMessage = handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
-  };
+  }
 
   return (
     <Layout>
-      <Box sx={{p: 4, maxWidth: 800, mx: 'auto'}}>
-        <Typography variant="h6" gutterBottom>
+      <Box sx={{ p: 4, maxWidth: 800, mx: 'auto' }}>
+        <Typography variant='h6' gutterBottom>
           1. {t('patient_create.create_patient')}
         </Typography>
         <Grid container spacing={2}>
@@ -144,18 +140,18 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.patient_name')}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              autoComplete="off"
+              autoComplete='off'
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               required
-              type="number"
+              type='number'
               label={t('patient_create.patient_age')}
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              inputProps={{min: 0}}
+              inputProps={{ min: 0 }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -167,9 +163,9 @@ const PatientCreate = (): ReactElement => {
               value={sex}
               onChange={(e) => setSex(e.target.value)}
             >
-              <MenuItem value="male">{t('patient_create.male')}</MenuItem>
-              <MenuItem value="female">{t('patient_create.female')}</MenuItem>
-              <MenuItem value="other">{t('patient_create.other')}</MenuItem>
+              <MenuItem value='male'>{t('patient_create.male')}</MenuItem>
+              <MenuItem value='female'>{t('patient_create.female')}</MenuItem>
+              <MenuItem value='other'>{t('patient_create.other')}</MenuItem>
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -210,7 +206,7 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.patient_income')}
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              type="number"
+              type='number'
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -219,7 +215,7 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.patient_phone')}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              type="tel"
+              type='tel'
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -228,7 +224,7 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.patient_email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="email"
+              type='email'
             />
           </Grid>
           <Grid item xs={12}>
@@ -244,32 +240,41 @@ const PatientCreate = (): ReactElement => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              type="date"
+              type='date'
               label={t('patient_create.patient_date_of_admission')}
-              InputLabelProps={{shrink: true}}
+              InputLabelProps={{ shrink: true }}
               value={dateOfAdmission}
               onChange={(e) => setDateOfAdmission(e.target.value)}
             />
           </Grid>
         </Grid>
-        <Box mt={4} display="flex" justifyContent="flex-end">
-          <Button onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))} sx={{mr: 2}}>
+        <Box mt={4} display='flex' justifyContent='flex-end'>
+          <Button onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))} sx={{ mr: 2 }}>
             {t('patient_create.cancel')}
           </Button>
-          <Button variant="contained" onClick={handleSubmit} disabled={!name || !age}>
+          <Button variant='contained' onClick={handleSubmit} disabled={!name || !age}>
             {t('patient_create.register')}
           </Button>
         </Box>
-        <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+        >
           <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
         </Snackbar>
       </Box>
       {/* SECTION 2: Main Complaints */}
       <Box mt={6}>
         <Accordion defaultExpanded>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="section2-content" id="section2-header">
-            <Typography variant="h6">
-              2. {t('patient_create.main_complaints')} & {t('patient_create.history_of_present_illness')}
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls='section2-content'
+            id='section2-header'
+          >
+            <Typography variant='h6'>
+              2. {t('patient_create.main_complaints')} &{' '}
+              {t('patient_create.history_of_present_illness')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -281,11 +286,11 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.main_complaints')}
               value={mainComplaints}
               onChange={(e) => setMainComplaints(e.target.value)}
-              sx={{mb: 4}}
+              sx={{ mb: 4 }}
             />
 
             {/* History of Present Illness - Basic Fields */}
-            <Typography variant="subtitle1" sx={{mb: 2}}>
+            <Typography variant='subtitle1' sx={{ mb: 2 }}>
               {t('patient_create.history_of_present_illness')}
             </Typography>
             <Grid container spacing={2}>
@@ -295,7 +300,7 @@ const PatientCreate = (): ReactElement => {
                   label={t('patient_create.hpi_duration')}
                   value={hpiDuration}
                   onChange={(e) => setHpiDuration(e.target.value)}
-                  placeholder="e.g., 6 months"
+                  placeholder='e.g., 6 months'
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -306,10 +311,10 @@ const PatientCreate = (): ReactElement => {
                   value={hpiOnset}
                   onChange={(e) => setHpiOnset(e.target.value)}
                 >
-                  <MenuItem value="abrupt">{t('patient_create.onset_abrupt')}</MenuItem>
-                  <MenuItem value="acute">{t('patient_create.onset_acute')}</MenuItem>
-                  <MenuItem value="subacute">{t('patient_create.onset_subacute')}</MenuItem>
-                  <MenuItem value="insidious">{t('patient_create.onset_insidious')}</MenuItem>
+                  <MenuItem value='abrupt'>{t('patient_create.onset_abrupt')}</MenuItem>
+                  <MenuItem value='acute'>{t('patient_create.onset_acute')}</MenuItem>
+                  <MenuItem value='subacute'>{t('patient_create.onset_subacute')}</MenuItem>
+                  <MenuItem value='insidious'>{t('patient_create.onset_insidious')}</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -318,7 +323,7 @@ const PatientCreate = (): ReactElement => {
                   label={t('patient_create.hpi_course')}
                   value={hpiCourse}
                   onChange={(e) => setHpiCourse(e.target.value)}
-                  placeholder="e.g., continuous, episodic"
+                  placeholder='e.g., continuous, episodic'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -329,7 +334,7 @@ const PatientCreate = (): ReactElement => {
                   onChange={(e) => setHpiPrecipitatingFactors(e.target.value)}
                   multiline
                   rows={2}
-                  placeholder="e.g., recent trauma, grief"
+                  placeholder='e.g., recent trauma, grief'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -359,9 +364,14 @@ const PatientCreate = (): ReactElement => {
             {/* Advanced HPI Fields */}
             <Box mt={4}>
               <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="hpi-advanced-content"
-                                  id="hpi-advanced-header">
-                  <Typography variant="subtitle1">{t('patient_create.hpi_advanced_details')}</Typography>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls='hpi-advanced-content'
+                  id='hpi-advanced-header'
+                >
+                  <Typography variant='subtitle1'>
+                    {t('patient_create.hpi_advanced_details')}
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid container spacing={2}>
@@ -408,15 +418,16 @@ const PatientCreate = (): ReactElement => {
         </Accordion>
       </Box>
 
-
       {/* SECTION 3: History of Present Illness */}
       <Box mt={4}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography variant="h6">3. {t('patient_create.history_present_illness')}</Typography>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant='h6'>3. {t('patient_create.history_present_illness')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="subtitle1" sx={{mt: 2}}>a) {t('patient_create.hpi_general_info')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 2 }}>
+              a) {t('patient_create.hpi_general_info')}
+            </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -434,10 +445,10 @@ const PatientCreate = (): ReactElement => {
                   value={hpiOnset}
                   onChange={(e) => setHpiOnset(e.target.value)}
                 >
-                  <MenuItem value="abrupt">{t('patient_create.hpi_onset_abrupt')}</MenuItem>
-                  <MenuItem value="acute">{t('patient_create.hpi_onset_acute')}</MenuItem>
-                  <MenuItem value="subacute">{t('patient_create.hpi_onset_subacute')}</MenuItem>
-                  <MenuItem value="insidious">{t('patient_create.hpi_onset_insidious')}</MenuItem>
+                  <MenuItem value='abrupt'>{t('patient_create.hpi_onset_abrupt')}</MenuItem>
+                  <MenuItem value='acute'>{t('patient_create.hpi_onset_acute')}</MenuItem>
+                  <MenuItem value='subacute'>{t('patient_create.hpi_onset_subacute')}</MenuItem>
+                  <MenuItem value='insidious'>{t('patient_create.hpi_onset_insidious')}</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -448,12 +459,18 @@ const PatientCreate = (): ReactElement => {
                   value={hpiCourse}
                   onChange={(e) => setHpiCourse(e.target.value)}
                 >
-                  <MenuItem value="continuous">{t('patient_create.hpi_course_continuous')}</MenuItem>
-                  <MenuItem value="episodic">{t('patient_create.hpi_course_episodic')}</MenuItem>
-                  <MenuItem value="fluctuating">{t('patient_create.hpi_course_fluctuating')}</MenuItem>
-                  <MenuItem value="deteriorating">{t('patient_create.hpi_course_deteriorating')}</MenuItem>
-                  <MenuItem value="improving">{t('patient_create.hpi_course_improving')}</MenuItem>
-                  <MenuItem value="unclear">{t('patient_create.hpi_course_unclear')}</MenuItem>
+                  <MenuItem value='continuous'>
+                    {t('patient_create.hpi_course_continuous')}
+                  </MenuItem>
+                  <MenuItem value='episodic'>{t('patient_create.hpi_course_episodic')}</MenuItem>
+                  <MenuItem value='fluctuating'>
+                    {t('patient_create.hpi_course_fluctuating')}
+                  </MenuItem>
+                  <MenuItem value='deteriorating'>
+                    {t('patient_create.hpi_course_deteriorating')}
+                  </MenuItem>
+                  <MenuItem value='improving'>{t('patient_create.hpi_course_improving')}</MenuItem>
+                  <MenuItem value='unclear'>{t('patient_create.hpi_course_unclear')}</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={12}>
@@ -478,7 +495,9 @@ const PatientCreate = (): ReactElement => {
               </Grid>
             </Grid>
 
-            <Typography variant="subtitle1" sx={{mt: 3}}>b) {t('patient_create.hpi_symptom_timeline')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 3 }}>
+              b) {t('patient_create.hpi_symptom_timeline')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -486,7 +505,7 @@ const PatientCreate = (): ReactElement => {
               value={hpiTimeline}
               onChange={(e) => setHpiTimeline(e.target.value)}
               label={t('patient_create.hpi_symptom_timeline')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
           </AccordionDetails>
         </Accordion>
@@ -495,11 +514,13 @@ const PatientCreate = (): ReactElement => {
       {/* SECTION 4: Treatment History */}
       <Box mt={4}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography variant="h6">4. {t('patient_create.treatment_history')}</Typography>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant='h6'>4. {t('patient_create.treatment_history')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="subtitle1" sx={{mt: 2}}>a) {t('patient_create.treatment_past')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 2 }}>
+              a) {t('patient_create.treatment_past')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -507,10 +528,12 @@ const PatientCreate = (): ReactElement => {
               value={treatmentPast}
               onChange={(e) => setTreatmentPast(e.target.value)}
               label={t('patient_create.treatment_past')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
 
-            <Typography variant="subtitle1" sx={{mt: 3}}>b) {t('patient_create.treatment_current')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 3 }}>
+              b) {t('patient_create.treatment_current')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -518,7 +541,7 @@ const PatientCreate = (): ReactElement => {
               value={treatmentCurrent}
               onChange={(e) => setTreatmentCurrent(e.target.value)}
               label={t('patient_create.treatment_current')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
           </AccordionDetails>
         </Accordion>
@@ -527,11 +550,13 @@ const PatientCreate = (): ReactElement => {
       {/* SECTION 5: Past History */}
       <Box mt={4}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography variant="h6">5. {t('patient_create.past_history')}</Typography>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant='h6'>5. {t('patient_create.past_history')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="subtitle1" sx={{mt: 2}}>a) {t('patient_create.past_medical')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 2 }}>
+              a) {t('patient_create.past_medical')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -539,10 +564,12 @@ const PatientCreate = (): ReactElement => {
               value={pastMedical}
               onChange={(e) => setPastMedical(e.target.value)}
               label={t('patient_create.past_medical')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
 
-            <Typography variant="subtitle1" sx={{mt: 3}}>b) {t('patient_create.past_psych')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 3 }}>
+              b) {t('patient_create.past_psych')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -550,7 +577,7 @@ const PatientCreate = (): ReactElement => {
               value={pastPsych}
               onChange={(e) => setPastPsych(e.target.value)}
               label={t('patient_create.past_psych')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
           </AccordionDetails>
         </Accordion>
@@ -559,11 +586,13 @@ const PatientCreate = (): ReactElement => {
       {/* SECTION 6: Family History */}
       <Box mt={4}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography variant="h6">6. {t('patient_create.family_history')}</Typography>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant='h6'>6. {t('patient_create.family_history')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="subtitle1" sx={{mt: 2}}>a) {t('patient_create.family_illness')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 2 }}>
+              a) {t('patient_create.family_illness')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -571,10 +600,12 @@ const PatientCreate = (): ReactElement => {
               value={familyIllness}
               onChange={(e) => setFamilyIllness(e.target.value)}
               label={t('patient_create.family_illness')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
 
-            <Typography variant="subtitle1" sx={{mt: 3}}>b) {t('patient_create.family_social')}</Typography>
+            <Typography variant='subtitle1' sx={{ mt: 3 }}>
+              b) {t('patient_create.family_social')}
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -582,7 +613,7 @@ const PatientCreate = (): ReactElement => {
               value={familySocial}
               onChange={(e) => setFamilySocial(e.target.value)}
               label={t('patient_create.family_social')}
-              sx={{mt: 1}}
+              sx={{ mt: 1 }}
             />
           </AccordionDetails>
         </Accordion>
@@ -591,8 +622,8 @@ const PatientCreate = (): ReactElement => {
       {/* SECTION 7: Personal History */}
       <Box mt={4}>
         <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography variant="h6">7. {t('patient_create.personal_history')}</Typography>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant='h6'>7. {t('patient_create.personal_history')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             {[
@@ -608,7 +639,7 @@ const PatientCreate = (): ReactElement => {
               ['j', personalPremorbid, setPersonalPremorbid, 'personal_premorbid'],
             ].map(([label, value, setter, key]) => (
               <Box key={key as string} mt={3}>
-                <Typography variant="subtitle1">
+                <Typography variant='subtitle1'>
                   {label}) {t(`patient_create.${key}`)}
                 </Typography>
                 <TextField
@@ -616,9 +647,11 @@ const PatientCreate = (): ReactElement => {
                   multiline
                   rows={4}
                   value={value as string}
-                  onChange={(e) => (setter as React.Dispatch<React.SetStateAction<string>>)(e.target.value)}
+                  onChange={(e) =>
+                    (setter as React.Dispatch<React.SetStateAction<string>>)(e.target.value)
+                  }
                   label={t(`patient_create.${key}`)}
-                  sx={{mt: 1}}
+                  sx={{ mt: 1 }}
                 />
               </Box>
             ))}

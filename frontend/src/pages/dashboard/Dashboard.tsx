@@ -39,7 +39,6 @@ import {
   deleteChatbotTemplate,
   updateChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
-import { registerPatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import {
   createDocumentForTherapist,
@@ -54,7 +53,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Dashboard = (): ReactElement => {
   const navigate = useNavigate()
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
@@ -82,20 +81,20 @@ const Dashboard = (): ReactElement => {
       await dispatch(getCurrentlyLoggedInTherapist())
       if (loggedInTherapist?.id) {
         dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id))
-        }
       }
-      fetchData()
-    }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
-
-    const handleFileUpload = async (file: File): Promise<void> => {
-      await dispatch(
-        createDocumentForTherapist({
-          file: file,
-          therapistId: loggedInTherapist?.id ?? '',
-        })
-      )
-      setRefreshTherapistCounter((prev) => prev + 1)
     }
+    fetchData()
+  }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
+
+  const handleFileUpload = async (file: File): Promise<void> => {
+    await dispatch(
+      createDocumentForTherapist({
+        file: file,
+        therapistId: loggedInTherapist?.id ?? '',
+      })
+    )
+    setRefreshTherapistCounter((prev) => prev + 1)
+  }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     await dispatch(deleteDocumentOfTherapist(fileId))
@@ -111,12 +110,14 @@ const Dashboard = (): ReactElement => {
     return url
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
   const handlePatientClick = (patientId: string): void => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {patientId: patientId}))
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
   const handleOpenBotDialog = (): void => {
     setOpenBotDialog(true)
@@ -185,7 +186,7 @@ const Dashboard = (): ReactElement => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: currentChatbot.id ?? '',
-          updateChatbotTemplateDTO: {chatbotName: chatbotName},
+          updateChatbotTemplateDTO: { chatbotName: chatbotName },
         })
       )
       setRefreshTherapistCounter((prev) => prev + 1)
@@ -254,20 +255,21 @@ const Dashboard = (): ReactElement => {
         state: {
           chatbotConfig: selectedChatbot,
         },
-      })
+      }
+    )
   }
   const getIconComponent = (iconName: string): ReactElement | null => {
     switch (iconName) {
       case 'Chatbot':
-        return <TbMessageChatbot/>
+        return <TbMessageChatbot />
       case 'Robot':
-        return <RiRobot2Line/>
+        return <RiRobot2Line />
       case 'Person':
-        return <IoPersonOutline/>
+        return <IoPersonOutline />
       case 'Bulb':
-        return <IoBulbOutline/>
+        return <IoBulbOutline />
       case 'Book':
-        return <PiBookOpenTextLight/>
+        return <PiBookOpenTextLight />
       default:
         return null
     }

@@ -7,12 +7,11 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper
 public interface PatientMapper {
@@ -30,16 +29,7 @@ public interface PatientMapper {
   @Mapping(source = "email", target = "email")
   @Mapping(source = "description", target = "description")
   @Mapping(source = "meetings", target = "meetingsOutputDTO")
-  @Mapping(source = "maritalStatus", target = "maritalStatus")
-  @Mapping(source = "religion", target = "religion")
-  @Mapping(source = "education", target = "education")
-  @Mapping(source = "occupation", target = "occupation")
-  @Mapping(source = "income", target = "income")
-  @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   @Mapping(source = "therapySessions", target = "therapySessionsOutputDTO")
-  @Mapping(source = "address", target = "address")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "meetings", target = "meetingsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
   @Mapping(source = "name", target = "name")

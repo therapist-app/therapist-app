@@ -18,10 +18,6 @@ public class CreatePatientDTO {
   private String dateOfAdmission;
   private String mainComplaints;
   private String historyOfIllness;
-  private String treatmentHistory;
-  private String pastHistory;
-  private String familyHistory;
-  private String personalHistory;
   private String hpiGeneral;
   private String hpiDuration;
   private String hpiOnset;
