@@ -13,7 +13,7 @@
 
 package ch.uzh.ifi.imrg.generated.model;
 
-import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOExerciseElementsInnerPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -27,17 +27,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Model tests for CompleteConversationOutputDTOPatientAPI
+ * Model tests for ExerciseOutputDTOPatientAPI
  */
-public class CompleteConversationOutputDTOPatientAPITest {
-    private final CompleteConversationOutputDTOPatientAPI model = new CompleteConversationOutputDTOPatientAPI();
+public class ExerciseOutputDTOPatientAPITest {
+    private final ExerciseOutputDTOPatientAPI model = new ExerciseOutputDTOPatientAPI();
 
     /**
-     * Model tests for CompleteConversationOutputDTOPatientAPI
+     * Model tests for ExerciseOutputDTOPatientAPI
      */
     @Test
-    public void testCompleteConversationOutputDTOPatientAPI() {
-        // TODO: test CompleteConversationOutputDTOPatientAPI
+    public void testExerciseOutputDTOPatientAPI() {
+        // TODO: test ExerciseOutputDTOPatientAPI
     }
 
     /**
@@ -57,27 +57,19 @@ public class CompleteConversationOutputDTOPatientAPITest {
     }
 
     /**
-     * Test the property 'shareWithCoach'
+     * Test the property 'description'
      */
     @Test
-    public void shareWithCoachTest() {
-        // TODO: test shareWithCoach
+    public void descriptionTest() {
+        // TODO: test description
     }
 
     /**
-     * Test the property 'shareWithAi'
+     * Test the property 'exerciseElements'
      */
     @Test
-    public void shareWithAiTest() {
-        // TODO: test shareWithAi
-    }
-
-    /**
-     * Test the property 'messages'
-     */
-    @Test
-    public void messagesTest() {
-        // TODO: test messages
+    public void exerciseElementsTest() {
+        // TODO: test exerciseElements
     }
 
 }

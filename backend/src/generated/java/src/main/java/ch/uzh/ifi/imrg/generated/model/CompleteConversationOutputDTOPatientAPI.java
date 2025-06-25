@@ -33,6 +33,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_COACH,
+  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_AI,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES
 })
 @JsonTypeName("CompleteConversationOutputDTO")
@@ -43,6 +45,12 @@ public class CompleteConversationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
+
+  public static final String JSON_PROPERTY_SHARE_WITH_COACH = "shareWithCoach";
+  private Boolean shareWithCoach;
+
+  public static final String JSON_PROPERTY_SHARE_WITH_AI = "shareWithAi";
+  private Boolean shareWithAi;
 
   public static final String JSON_PROPERTY_MESSAGES = "messages";
   private List<MessageOutputDTOPatientAPI> messages;
@@ -102,6 +110,58 @@ public class CompleteConversationOutputDTOPatientAPI {
   }
 
 
+  public CompleteConversationOutputDTOPatientAPI shareWithCoach(Boolean shareWithCoach) {
+    
+    this.shareWithCoach = shareWithCoach;
+    return this;
+  }
+
+   /**
+   * Get shareWithCoach
+   * @return shareWithCoach
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SHARE_WITH_COACH)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getShareWithCoach() {
+    return shareWithCoach;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_SHARE_WITH_COACH)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setShareWithCoach(Boolean shareWithCoach) {
+    this.shareWithCoach = shareWithCoach;
+  }
+
+
+  public CompleteConversationOutputDTOPatientAPI shareWithAi(Boolean shareWithAi) {
+    
+    this.shareWithAi = shareWithAi;
+    return this;
+  }
+
+   /**
+   * Get shareWithAi
+   * @return shareWithAi
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SHARE_WITH_AI)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getShareWithAi() {
+    return shareWithAi;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_SHARE_WITH_AI)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setShareWithAi(Boolean shareWithAi) {
+    this.shareWithAi = shareWithAi;
+  }
+
+
   public CompleteConversationOutputDTOPatientAPI messages(List<MessageOutputDTOPatientAPI> messages) {
     
     this.messages = messages;
@@ -146,12 +206,14 @@ public class CompleteConversationOutputDTOPatientAPI {
     CompleteConversationOutputDTOPatientAPI completeConversationOutputDTO = (CompleteConversationOutputDTOPatientAPI) o;
     return Objects.equals(this.id, completeConversationOutputDTO.id) &&
         Objects.equals(this.name, completeConversationOutputDTO.name) &&
+        Objects.equals(this.shareWithCoach, completeConversationOutputDTO.shareWithCoach) &&
+        Objects.equals(this.shareWithAi, completeConversationOutputDTO.shareWithAi) &&
         Objects.equals(this.messages, completeConversationOutputDTO.messages);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, messages);
+    return Objects.hash(id, name, shareWithCoach, shareWithAi, messages);
   }
 
   @Override
@@ -160,6 +222,8 @@ public class CompleteConversationOutputDTOPatientAPI {
     sb.append("class CompleteConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    shareWithCoach: ").append(toIndentedString(shareWithCoach)).append("\n");
+    sb.append("    shareWithAi: ").append(toIndentedString(shareWithAi)).append("\n");
     sb.append("    messages: ").append(toIndentedString(messages)).append("\n");
     sb.append("}");
     return sb.toString();

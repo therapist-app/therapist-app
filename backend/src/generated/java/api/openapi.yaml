@@ -169,6 +169,46 @@ paths:
       - journal-entry-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/conversations/{conversationId}:
+    delete:
+      operationId: deleteChat
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - conversation-controller
+      x-accepts: application/json
+    put:
+      operationId: updateSharing
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutSharingDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - conversation-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/meetings/{meetingId}:
     delete:
       operationId: deleteMeeting
@@ -406,6 +446,30 @@ paths:
       - conversation-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /coach/{patientId}/exercises:
+    post:
+      operationId: createExercise
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseInputDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+      tags:
+      - exercise-controller-coach
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/meetings:
     get:
       operationId: listMeetings
@@ -510,6 +574,70 @@ paths:
           description: OK
       tags:
       - journal-entry-controller
+      x-accepts: '*/*'
+  /patients/exercises:
+    get:
+      operationId: getExerciseOverview
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExercisesOverviewOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
+  /patients/exercises/{exerciseId}:
+    get:
+      operationId: GetExerciseOutputDTOMock
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
+  /patients/exercises/{exerciseId}/{mediaId}:
+    get:
+      operationId: getPictureMock
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: mediaId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseMediaOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
       x-accepts: '*/*'
   /patients/conversations/{patientId}:
     get:
@@ -623,6 +751,13 @@ components:
         sharedWithTherapist:
           type: boolean
         aiAccessAllowed:
+          type: boolean
+      type: object
+    PutSharingDTO:
+      properties:
+        shareWithCoach:
+          type: boolean
+        shareWithAi:
           type: boolean
       type: object
     UpdateMeetingDTO:
@@ -756,6 +891,78 @@ components:
         requestMessage:
           type: string
       type: object
+    ExerciseElementInputDTO:
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      type: object
+    ExerciseFileElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/FileData'
+        type: object
+      type: object
+    ExerciseImageElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/ImageData'
+        type: object
+      type: object
+    ExerciseInputDTO:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        pictureData:
+          type: string
+        exerciseElements:
+          items:
+            $ref: '#/components/schemas/ExerciseInputDTO_exerciseElements_inner'
+          type: array
+      type: object
+    ExerciseTextInputElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/TextInputData'
+        type: object
+      type: object
+    FileData:
+      example:
+        name: name
+        id: id
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+      type: object
+    ImageData:
+      properties:
+        id:
+          type: string
+        alt:
+          type: string
+      type: object
+    TextInputData:
+      properties:
+        label:
+          type: string
+        placeholder:
+          type: string
+        required:
+          type: boolean
+      type: object
     CreateMeetingDTO:
       properties:
         externalMeetingId:
@@ -801,6 +1008,101 @@ components:
         aiAccessAllowed:
           type: boolean
       type: object
+    ExercisesOverviewOutputDTO:
+      example:
+        pictureId: pictureId
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        pictureId:
+          type: string
+      type: object
+    ExerciseElementOutputDTO:
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      type: object
+    ExerciseFileElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/FileData'
+        type: object
+      example:
+        data:
+          name: name
+          id: id
+        id: id
+        type: type
+      type: object
+    ExerciseImageElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/ImageData'
+        type: object
+      type: object
+    ExerciseOutputDTO:
+      example:
+        exerciseElements:
+        - data:
+            name: name
+            id: id
+          id: id
+          type: type
+        - data:
+            name: name
+            id: id
+          id: id
+          type: type
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        exerciseElements:
+          items:
+            $ref: '#/components/schemas/ExerciseOutputDTO_exerciseElements_inner'
+          type: array
+      type: object
+    ExerciseTextInputElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/TextInputData'
+        type: object
+      type: object
+    ExerciseMediaOutputDTO:
+      example:
+        data:
+        - data
+        - data
+        id: id
+      properties:
+        id:
+          type: string
+        data:
+          items:
+            format: byte
+            type: string
+          type: array
+      type: object
     NameConversationOutputDTO:
       example:
         name: name
@@ -813,6 +1115,7 @@ components:
       type: object
     CompleteConversationOutputDTO:
       example:
+        shareWithAi: true
         name: name
         messages:
         - requestMessage: requestMessage
@@ -826,16 +1129,31 @@ components:
           responseMessage: responseMessage
           timestamp: timestamp
         id: id
+        shareWithCoach: true
       properties:
         id:
           type: string
         name:
           type: string
+        shareWithCoach:
+          type: boolean
+        shareWithAi:
+          type: boolean
         messages:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
       type: object
+    ExerciseInputDTO_exerciseElements_inner:
+      oneOf:
+      - $ref: '#/components/schemas/ExerciseFileElementInputDTO'
+      - $ref: '#/components/schemas/ExerciseImageElementInputDTO'
+      - $ref: '#/components/schemas/ExerciseTextInputElementInputDTO'
+    ExerciseOutputDTO_exerciseElements_inner:
+      oneOf:
+      - $ref: '#/components/schemas/ExerciseFileElementOutputDTO'
+      - $ref: '#/components/schemas/ExerciseImageElementOutputDTO'
+      - $ref: '#/components/schemas/ExerciseTextInputElementOutputDTO'
   securitySchemes:
     X-Coach-Key:
       description: Your coach’s API key

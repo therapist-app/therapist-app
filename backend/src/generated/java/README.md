@@ -129,9 +129,15 @@ Class | Method | HTTP request | Description
 *CoachMeetingControllerPatientAPI* | [**updateMeeting**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachPatientControllerPatientAPI* | [**registerPatient1**](docs/CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
+*ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
 *ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
+*ExerciseControllerPatientAPI* | [**getExerciseOutputDTOMock**](docs/ExerciseControllerPatientAPI.md#getExerciseOutputDTOMock) | **GET** /patients/exercises/{exerciseId} | 
+*ExerciseControllerPatientAPI* | [**getExerciseOverview**](docs/ExerciseControllerPatientAPI.md#getExerciseOverview) | **GET** /patients/exercises | 
+*ExerciseControllerPatientAPI* | [**getPictureMock**](docs/ExerciseControllerPatientAPI.md#getPictureMock) | **GET** /patients/exercises/{exerciseId}/{mediaId} | 
+*ExerciseControllerCoachPatientAPI* | [**createExercise**](docs/ExerciseControllerCoachPatientAPI.md#createExercise) | **POST** /coach/{patientId}/exercises | 
 *JournalEntryControllerPatientAPI* | [**create**](docs/JournalEntryControllerPatientAPI.md#create) | **POST** /patients/journal-entries | 
 *JournalEntryControllerPatientAPI* | [**deleteEntry**](docs/JournalEntryControllerPatientAPI.md#deleteEntry) | **DELETE** /patients/journal-entries/{entryId} | 
 *JournalEntryControllerPatientAPI* | [**getAllTags**](docs/JournalEntryControllerPatientAPI.md#getAllTags) | **GET** /patients/journal-entries/tags | 
@@ -160,7 +166,23 @@ Class | Method | HTTP request | Description
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
+ - [ExerciseElementInputDTOPatientAPI](docs/ExerciseElementInputDTOPatientAPI.md)
+ - [ExerciseElementOutputDTOPatientAPI](docs/ExerciseElementOutputDTOPatientAPI.md)
+ - [ExerciseFileElementInputDTOPatientAPI](docs/ExerciseFileElementInputDTOPatientAPI.md)
+ - [ExerciseFileElementOutputDTOPatientAPI](docs/ExerciseFileElementOutputDTOPatientAPI.md)
+ - [ExerciseImageElementInputDTOPatientAPI](docs/ExerciseImageElementInputDTOPatientAPI.md)
+ - [ExerciseImageElementOutputDTOPatientAPI](docs/ExerciseImageElementOutputDTOPatientAPI.md)
+ - [ExerciseInputDTOExerciseElementsInnerPatientAPI](docs/ExerciseInputDTOExerciseElementsInnerPatientAPI.md)
+ - [ExerciseInputDTOPatientAPI](docs/ExerciseInputDTOPatientAPI.md)
+ - [ExerciseMediaOutputDTOPatientAPI](docs/ExerciseMediaOutputDTOPatientAPI.md)
+ - [ExerciseOutputDTOExerciseElementsInnerPatientAPI](docs/ExerciseOutputDTOExerciseElementsInnerPatientAPI.md)
+ - [ExerciseOutputDTOPatientAPI](docs/ExerciseOutputDTOPatientAPI.md)
+ - [ExerciseTextInputElementInputDTOPatientAPI](docs/ExerciseTextInputElementInputDTOPatientAPI.md)
+ - [ExerciseTextInputElementOutputDTOPatientAPI](docs/ExerciseTextInputElementOutputDTOPatientAPI.md)
+ - [ExercisesOverviewOutputDTOPatientAPI](docs/ExercisesOverviewOutputDTOPatientAPI.md)
+ - [FileDataPatientAPI](docs/FileDataPatientAPI.md)
  - [GetAllJournalEntriesDTOPatientAPI](docs/GetAllJournalEntriesDTOPatientAPI.md)
+ - [ImageDataPatientAPI](docs/ImageDataPatientAPI.md)
  - [JournalEntryOutputDTOPatientAPI](docs/JournalEntryOutputDTOPatientAPI.md)
  - [JournalEntryRequestDTOPatientAPI](docs/JournalEntryRequestDTOPatientAPI.md)
  - [LoginPatientDTOPatientAPI](docs/LoginPatientDTOPatientAPI.md)
@@ -171,6 +193,8 @@ Class | Method | HTTP request | Description
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
+ - [PutSharingDTOPatientAPI](docs/PutSharingDTOPatientAPI.md)
+ - [TextInputDataPatientAPI](docs/TextInputDataPatientAPI.md)
  - [UpdateMeetingDTOPatientAPI](docs/UpdateMeetingDTOPatientAPI.md)
 
 
