@@ -1,97 +1,11 @@
 openapi: 3.0.1
-info:
-  title: OpenAPI definition
-  version: v0
 servers:
 - description: Generated server url
   url: http://backend-patient-app-main.jonas-blum.ch
+security:
+- X-Coach-Key: []
 paths:
-  /patients/{patientId}/meetings/{meetingId}:
-    delete:
-      operationId: deleteMeeting
-      parameters:
-      - explode: false
-        in: path
-        name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: meetingId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "204":
-          description: No Content
-      tags:
-      - meeting-controller
-      x-accepts: application/json
-    get:
-      operationId: getMeeting
-      parameters:
-      - explode: false
-        in: path
-        name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: meetingId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/MeetingOutputDTO'
-          description: OK
-      tags:
-      - meeting-controller
-      x-accepts: '*/*'
-    put:
-      operationId: updateMeeting
-      parameters:
-      - explode: false
-        in: path
-        name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: meetingId
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateMeetingDTO'
-        required: true
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/MeetingOutputDTO'
-          description: OK
-      tags:
-      - meeting-controller
-      x-content-type: application/json
-      x-accepts: '*/*'
-  /patients/password:
+  /patients/passwords:
     put:
       operationId: changePassword
       requestBody:
@@ -255,13 +169,85 @@ paths:
       - journal-entry-controller
       x-content-type: application/json
       x-accepts: '*/*'
-  /patients/{patientId}/meetings:
-    get:
-      operationId: listMeetings
+  /patients/conversations/{conversationId}:
+    delete:
+      operationId: deleteChat
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - conversation-controller
+      x-accepts: application/json
+    put:
+      operationId: updateSharing
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutSharingDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - conversation-controller
+      x-content-type: application/json
+      x-accepts: application/json
+  /coach/patients/{patientId}/meetings/{meetingId}:
+    delete:
+      operationId: deleteMeeting
       parameters:
       - explode: false
         in: path
         name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-meeting-controller
+      x-accepts: application/json
+    get:
+      operationId: getMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: meetingId
         required: true
         schema:
           type: string
@@ -271,15 +257,15 @@ paths:
           content:
             '*/*':
               schema:
-                items:
-                  $ref: '#/components/schemas/MeetingOutputDTO'
-                type: array
+                $ref: '#/components/schemas/MeetingOutputDTO'
           description: OK
+      security:
+      - X-Coach-Key: []
       tags:
-      - meeting-controller
+      - coach-meeting-controller
       x-accepts: '*/*'
-    post:
-      operationId: createMeeting
+    put:
+      operationId: updateMeeting
       parameters:
       - explode: false
         in: path
@@ -288,25 +274,35 @@ paths:
         schema:
           type: string
         style: simple
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateMeetingDTO'
+              $ref: '#/components/schemas/UpdateMeetingDTO'
         required: true
       responses:
-        "201":
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MeetingOutputDTO'
-          description: Created
+          description: OK
+      security:
+      - X-Coach-Key: []
       tags:
-      - meeting-controller
+      - coach-meeting-controller
       x-content-type: application/json
       x-accepts: '*/*'
   /patients/register:
     post:
+      description: "@Therapist app: pleas use /coach/patients/register as endpoint"
       operationId: registerPatient
       requestBody:
         content:
@@ -321,6 +317,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PatientOutputDTO'
           description: Created
+      summary: This endpoint will be removed
       tags:
       - patient-controller
       x-content-type: application/json
@@ -449,6 +446,106 @@ paths:
       - conversation-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /coach/{patientId}/exercises:
+    post:
+      operationId: createExercise
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseInputDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+      tags:
+      - exercise-controller-coach
+      x-content-type: application/json
+      x-accepts: application/json
+  /coach/patients/{patientId}/meetings:
+    get:
+      operationId: listMeetings
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/MeetingOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-meeting-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeetingDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-meeting-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /coach/patients/register:
+    post:
+      operationId: registerPatient_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePatientDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-patient-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/me:
     get:
       operationId: getCurrentlyLoggedInPatient
@@ -477,6 +574,70 @@ paths:
           description: OK
       tags:
       - journal-entry-controller
+      x-accepts: '*/*'
+  /patients/exercises:
+    get:
+      operationId: getExerciseOverview
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExercisesOverviewOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
+  /patients/exercises/{exerciseId}:
+    get:
+      operationId: GetExerciseOutputDTOMock
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
+  /patients/exercises/{exerciseId}/{mediaId}:
+    get:
+      operationId: getPictureMock
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: mediaId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseMediaOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
       x-accepts: '*/*'
   /patients/conversations/{patientId}:
     get:
@@ -508,77 +669,18 @@ paths:
       x-accepts: text/plain
 components:
   schemas:
-    UpdateMeetingDTO:
-      properties:
-        startAt:
-          format: date-time
-          type: string
-        endAt:
-          format: date-time
-          type: string
-        location:
-          type: string
-        meetingStatus:
-          enum:
-          - PENDING
-          - CONFIRMED
-          - CANCELLED
-          type: string
-      type: object
-    MeetingOutputDTO:
-      example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        meetingStatus: PENDING
-        patientId: patientId
-        externalMeetingId: externalMeetingId
-        location: location
-        id: id
-        endAt: 2000-01-23T04:56:07.000+00:00
-        startAt: 2000-01-23T04:56:07.000+00:00
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      properties:
-        id:
-          type: string
-        externalMeetingId:
-          type: string
-        createdAt:
-          format: date-time
-          type: string
-        updatedAt:
-          format: date-time
-          type: string
-        patientId:
-          type: string
-        startAt:
-          format: date-time
-          type: string
-        endAt:
-          format: date-time
-          type: string
-        location:
-          type: string
-        meetingStatus:
-          enum:
-          - PENDING
-          - CONFIRMED
-          - CANCELLED
-          type: string
-      type: object
     ChangePasswordDTO:
       properties:
-        oldPassword:
+        currentPassword:
           type: string
         newPassword:
           maxLength: 2147483647
           minLength: 8
           pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
           type: string
-        confirmPassword:
-          type: string
       required:
-      - confirmPassword
+      - currentPassword
       - newPassword
-      - oldPassword
       type: object
     PutOnboardedDTO:
       properties:
@@ -651,9 +753,53 @@ components:
         aiAccessAllowed:
           type: boolean
       type: object
-    CreateMeetingDTO:
+    PutSharingDTO:
       properties:
+        shareWithCoach:
+          type: boolean
+        shareWithAi:
+          type: boolean
+      type: object
+    UpdateMeetingDTO:
+      properties:
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          type: string
+      type: object
+    MeetingOutputDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        meetingStatus: PENDING
+        patientId: patientId
+        externalMeetingId: externalMeetingId
+        location: location
+        id: id
+        endAt: 2000-01-23T04:56:07.000+00:00
+        startAt: 2000-01-23T04:56:07.000+00:00
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
         externalMeetingId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        patientId:
           type: string
         startAt:
           format: date-time
@@ -662,6 +808,12 @@ components:
           format: date-time
           type: string
         location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
           type: string
       type: object
     CreatePatientDTO:
@@ -673,7 +825,10 @@ components:
           minLength: 8
           pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
           type: string
+        coachAccessKey:
+          type: string
       required:
+      - coachAccessKey
       - password
       type: object
     PatientOutputDTO:
@@ -736,6 +891,91 @@ components:
         requestMessage:
           type: string
       type: object
+    ExerciseElementInputDTO:
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      type: object
+    ExerciseFileElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/FileData'
+        type: object
+      type: object
+    ExerciseImageElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/ImageData'
+        type: object
+      type: object
+    ExerciseInputDTO:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        pictureData:
+          type: string
+        exerciseElements:
+          items:
+            $ref: '#/components/schemas/ExerciseInputDTO_exerciseElements_inner'
+          type: array
+      type: object
+    ExerciseTextInputElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/TextInputData'
+        type: object
+      type: object
+    FileData:
+      example:
+        name: name
+        id: id
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+      type: object
+    ImageData:
+      properties:
+        id:
+          type: string
+        alt:
+          type: string
+      type: object
+    TextInputData:
+      properties:
+        label:
+          type: string
+        placeholder:
+          type: string
+        required:
+          type: boolean
+      type: object
+    CreateMeetingDTO:
+      properties:
+        externalMeetingId:
+          type: string
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+      type: object
     GetAllJournalEntriesDTO:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -768,6 +1008,101 @@ components:
         aiAccessAllowed:
           type: boolean
       type: object
+    ExercisesOverviewOutputDTO:
+      example:
+        pictureId: pictureId
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        pictureId:
+          type: string
+      type: object
+    ExerciseElementOutputDTO:
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      type: object
+    ExerciseFileElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/FileData'
+        type: object
+      example:
+        data:
+          name: name
+          id: id
+        id: id
+        type: type
+      type: object
+    ExerciseImageElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/ImageData'
+        type: object
+      type: object
+    ExerciseOutputDTO:
+      example:
+        exerciseElements:
+        - data:
+            name: name
+            id: id
+          id: id
+          type: type
+        - data:
+            name: name
+            id: id
+          id: id
+          type: type
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        exerciseElements:
+          items:
+            $ref: '#/components/schemas/ExerciseOutputDTO_exerciseElements_inner'
+          type: array
+      type: object
+    ExerciseTextInputElementOutputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementOutputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/TextInputData'
+        type: object
+      type: object
+    ExerciseMediaOutputDTO:
+      example:
+        data:
+        - data
+        - data
+        id: id
+      properties:
+        id:
+          type: string
+        data:
+          items:
+            format: byte
+            type: string
+          type: array
+      type: object
     NameConversationOutputDTO:
       example:
         name: name
@@ -780,6 +1115,7 @@ components:
       type: object
     CompleteConversationOutputDTO:
       example:
+        shareWithAi: true
         name: name
         messages:
         - requestMessage: requestMessage
@@ -793,14 +1129,35 @@ components:
           responseMessage: responseMessage
           timestamp: timestamp
         id: id
+        shareWithCoach: true
       properties:
         id:
           type: string
         name:
           type: string
+        shareWithCoach:
+          type: boolean
+        shareWithAi:
+          type: boolean
         messages:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
       type: object
+    ExerciseInputDTO_exerciseElements_inner:
+      oneOf:
+      - $ref: '#/components/schemas/ExerciseFileElementInputDTO'
+      - $ref: '#/components/schemas/ExerciseImageElementInputDTO'
+      - $ref: '#/components/schemas/ExerciseTextInputElementInputDTO'
+    ExerciseOutputDTO_exerciseElements_inner:
+      oneOf:
+      - $ref: '#/components/schemas/ExerciseFileElementOutputDTO'
+      - $ref: '#/components/schemas/ExerciseImageElementOutputDTO'
+      - $ref: '#/components/schemas/ExerciseTextInputElementOutputDTO'
+  securitySchemes:
+    X-Coach-Key:
+      description: Your coach’s API key
+      in: header
+      name: X-Coach-Key
+      type: apiKey
 

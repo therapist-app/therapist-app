@@ -80,7 +80,7 @@ public class JournalEntryControllerPatientAPI {
         };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/journal-entries", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -151,7 +151,7 @@ public class JournalEntryControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
         return apiClient.invokeAPI("/patients/journal-entries/{entryId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -216,7 +216,7 @@ public class JournalEntryControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<Set<String>> localVarReturnType = new ParameterizedTypeReference<Set<String>>() {};
         return apiClient.invokeAPI("/patients/journal-entries/tags", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -287,7 +287,7 @@ public class JournalEntryControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/journal-entries/{entryId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -354,7 +354,7 @@ public class JournalEntryControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<GetAllJournalEntriesDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<GetAllJournalEntriesDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/journal-entries", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
@@ -432,7 +432,7 @@ public class JournalEntryControllerPatientAPI {
         };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalEntryOutputDTOPatientAPI>() {};
         return apiClient.invokeAPI("/patients/journal-entries/{entryId}", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);

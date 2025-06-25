@@ -28,15 +28,15 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class MeetingControllerPatientAPI {
+public class CoachMeetingControllerPatientAPI {
     private ApiClient apiClient;
 
-    public MeetingControllerPatientAPI() {
+    public CoachMeetingControllerPatientAPI() {
         this(new ApiClient());
     }
 
     @Autowired
-    public MeetingControllerPatientAPI(ApiClient apiClient) {
+    public CoachMeetingControllerPatientAPI(ApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -86,10 +86,10 @@ public class MeetingControllerPatientAPI {
         };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MeetingOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MeetingOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/{patientId}/meetings", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/coach/patients/{patientId}/meetings", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -166,10 +166,10 @@ public class MeetingControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return apiClient.invokeAPI("/patients/{patientId}/meetings/{meetingId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/coach/patients/{patientId}/meetings/{meetingId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -247,10 +247,10 @@ public class MeetingControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MeetingOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MeetingOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/{patientId}/meetings/{meetingId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/coach/patients/{patientId}/meetings/{meetingId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -324,10 +324,10 @@ public class MeetingControllerPatientAPI {
         final String[] localVarContentTypes = { };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MeetingOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MeetingOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/{patientId}/meetings", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/coach/patients/{patientId}/meetings", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -411,10 +411,10 @@ public class MeetingControllerPatientAPI {
         };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {  };
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MeetingOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MeetingOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/{patientId}/meetings/{meetingId}", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/coach/patients/{patientId}/meetings/{meetingId}", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
