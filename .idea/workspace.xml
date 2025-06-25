@@ -5,13 +5,79 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/.github/workflows/maven.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/.github/workflows/maven.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/ChangePasswordDTOPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/ChangePasswordDTOPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/ConversationControllerPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/ConversationControllerPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/CreatePatientDTOPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/CreatePatientDTOPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/JournalEntryControllerPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/JournalEntryControllerPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/MeetingControllerPatientAPI.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/PatientAppApplicationPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/PatientAppApplicationPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/docs/PatientControllerPatientAPI.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/docs/PatientControllerPatientAPI.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/ApiClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/JavaTimeFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/JavaTimeFormatter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/RFC3339DateFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/RFC3339DateFormat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/StringUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/invoker/StringUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPITest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/GetAllJournalEntriesDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPITest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPITest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/test/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPITest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/dto/input/CreatePatientDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/dto/input/CreatePatientDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/locales/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/locales/ua.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/locales/ua.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +92,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -43,6 +112,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -63,7 +135,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;11-patient-registration-frontend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;84-patient-create-page&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/therapist-app&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -91,11 +163,35 @@
       <workItem from="1740515439721" duration="223000" />
       <workItem from="1740515701915" duration="25853000" />
       <workItem from="1741013527678" duration="734000" />
+      <workItem from="1750856052585" duration="8469000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx</url>
+          <line>254</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

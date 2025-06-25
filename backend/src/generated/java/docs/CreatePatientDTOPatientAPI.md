@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**email** | **String** |  |  [optional] |
 |**password** | **String** |  |  |
+|**coachAccessKey** | **String** |  |  |
 
 
 

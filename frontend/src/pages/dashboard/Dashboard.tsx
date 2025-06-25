@@ -12,12 +12,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
   IconButton,
-  InputLabel,
   Menu,
   MenuItem,
-  Select,
   Snackbar,
   TextField,
   Typography,
@@ -57,22 +54,13 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const Dashboard = (): ReactElement => {
   const navigate = useNavigate()
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
   const allTherapistDocuments = useSelector(
     (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
   )
-
-  const [openPatientDialog, setOpenPatientDialog] = useState(false)
-  const [newPatientName, setNewPatientName] = useState('')
-  const [newPatientGender, setNewPatientGender] = useState('')
-  const [newPatientAge, setNewPatientAge] = useState<number | ''>('')
-  const [newPatientPhoneNumber, setNewPatientPhoneNumber] = useState('')
-  const [newPatientEmail, setNewPatientEmail] = useState('')
-  const [newPatientAddress, setNewPatientAddress] = useState('')
-  const [newPatientDescription, setNewPatientDescription] = useState('')
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -94,20 +82,20 @@ const Dashboard = (): ReactElement => {
       await dispatch(getCurrentlyLoggedInTherapist())
       if (loggedInTherapist?.id) {
         dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id))
+        }
       }
-    }
-    fetchData()
-  }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
+      fetchData()
+    }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
 
-  const handleFileUpload = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForTherapist({
-        file: file,
-        therapistId: loggedInTherapist?.id ?? '',
-      })
-    )
-    setRefreshTherapistCounter((prev) => prev + 1)
-  }
+    const handleFileUpload = async (file: File): Promise<void> => {
+      await dispatch(
+        createDocumentForTherapist({
+          file: file,
+          therapistId: loggedInTherapist?.id ?? '',
+        })
+      )
+      setRefreshTherapistCounter((prev) => prev + 1)
+    }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     await dispatch(deleteDocumentOfTherapist(fileId))
@@ -123,74 +111,25 @@ const Dashboard = (): ReactElement => {
     return url
   }
 
-  const handleOpenPatientDialog = (): void => {
-    setOpenPatientDialog(true)
-  }
-
-  const handleClosePatientDialog = (): void => {
-    setOpenPatientDialog(false)
-    setNewPatientName('')
-    setNewPatientGender('')
-    setNewPatientAge('')
-    setNewPatientPhoneNumber('')
-    setNewPatientEmail('')
-    setNewPatientAddress('')
-    setNewPatientDescription('')
-  }
-
-  const handleCreatePatient = async (): Promise<void> => {
-    try {
-      await dispatch(
-        registerPatient({
-          name: newPatientName,
-          gender: newPatientGender,
-          age: Number(newPatientAge),
-          phoneNumber: newPatientPhoneNumber,
-          email: newPatientEmail,
-          address: newPatientAddress,
-          description: newPatientDescription,
-        })
-      )
-
-      setSnackbarMessage(t('dashboard.patient_register_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
-      handleClosePatientDialog()
-      setRefreshTherapistCounter((prev) => prev + 1)
-    } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
-    }
-  }
-
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return
-    }
+  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') return
     setSnackbarOpen(false)
   }
-
   const handlePatientClick = (patientId: string): void => {
-    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
+    navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {patientId: patientId}))
   }
-
   const handleOpenBotDialog = (): void => {
     setOpenBotDialog(true)
   }
-
   const handleCloseBotDialog = (): void => {
     setOpenBotDialog(false)
     setChatbotName('')
   }
-
   const handleCreateChatbot = async (): Promise<void> => {
     try {
       if (!loggedInTherapist) {
         return
       }
-
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
         chatbotName: chatbotName,
         chatbotModel: 'gpt-3.5-turbo',
@@ -208,9 +147,7 @@ const Dashboard = (): ReactElement => {
         description: '',
         workspaceId: loggedInTherapist.workspaceId,
       }
-
       await dispatch(createChatbotTemplate(chatbotConfigurations))
-
       setRefreshTherapistCounter((prev) => prev + 1)
       setSnackbarMessage(t('dashboard.chatbot_created_success'))
       setSnackbarSeverity('success')
@@ -223,7 +160,6 @@ const Dashboard = (): ReactElement => {
       setSnackbarOpen(true)
     }
   }
-
   const handleMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     chatbot: ChatbotTemplateOutputDTO
@@ -231,11 +167,9 @@ const Dashboard = (): ReactElement => {
     setAnchorEl(event.currentTarget)
     setCurrentChatbot(chatbot)
   }
-
   const handleMenuClose = (): void => {
     setAnchorEl(null)
   }
-
   const handleRename = (): void => {
     if (currentChatbot) {
       setChatbotName(currentChatbot.chatbotName ?? '')
@@ -243,20 +177,17 @@ const Dashboard = (): ReactElement => {
     }
     handleMenuClose()
   }
-
   const handleRenameChatbot = async (): Promise<void> => {
     try {
       if (!currentChatbot) {
         return
       }
-
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: currentChatbot.id ?? '',
-          updateChatbotTemplateDTO: { chatbotName: chatbotName },
+          updateChatbotTemplateDTO: {chatbotName: chatbotName},
         })
       )
-
       setRefreshTherapistCounter((prev) => prev + 1)
       setSnackbarMessage(t('dashboard.chatbot_named_success'))
       setSnackbarSeverity('success')
@@ -269,14 +200,12 @@ const Dashboard = (): ReactElement => {
       setSnackbarOpen(true)
     }
   }
-
   const handleClone = async (): Promise<void> => {
     if (!currentChatbot) {
       return
     }
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
-
       setRefreshTherapistCounter((prev) => prev + 1)
       setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
       setSnackbarSeverity('success')
@@ -289,16 +218,13 @@ const Dashboard = (): ReactElement => {
       setSnackbarOpen(true)
     }
   }
-
   const handleDelete = async (): Promise<void> => {
     try {
       if (!currentChatbot) {
         return
       }
-
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-
       setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
@@ -310,19 +236,16 @@ const Dashboard = (): ReactElement => {
       setSnackbarOpen(true)
     }
   }
-
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {
     if (!loggedInTherapist?.chatbotTemplatesOutputDTO) {
       return
     }
-
     const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
       (bot) => bot.id === chatbotTemplateId
     )
     if (!selectedChatbot) {
       return
     }
-
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
         chatbotTemplateId: chatbotTemplateId,
@@ -331,27 +254,24 @@ const Dashboard = (): ReactElement => {
         state: {
           chatbotConfig: selectedChatbot,
         },
-      }
-    )
+      })
   }
-
   const getIconComponent = (iconName: string): ReactElement | null => {
     switch (iconName) {
       case 'Chatbot':
-        return <TbMessageChatbot />
+        return <TbMessageChatbot/>
       case 'Robot':
-        return <RiRobot2Line />
+        return <RiRobot2Line/>
       case 'Person':
-        return <IoPersonOutline />
+        return <IoPersonOutline/>
       case 'Bulb':
-        return <IoBulbOutline />
+        return <IoBulbOutline/>
       case 'Book':
-        return <PiBookOpenTextLight />
+        return <PiBookOpenTextLight/>
       default:
         return null
     }
   }
-
   const commonButtonStyles = {
     borderRadius: 20,
     textTransform: 'none',
@@ -369,7 +289,6 @@ const Dashboard = (): ReactElement => {
     },
     margin: 1,
   } as const
-
   const disabledButtonStyles = {
     ...commonButtonStyles,
     backgroundImage: 'lightgrey',
@@ -377,7 +296,6 @@ const Dashboard = (): ReactElement => {
       disabled: 'true',
     },
   } as const
-
   const cancelButtonStyles = {
     borderRadius: 20,
     textTransform: 'none',
@@ -393,7 +311,6 @@ const Dashboard = (): ReactElement => {
     },
     margin: 1,
   } as const
-
   const dialogStyle = {
     width: '500px',
     height: '300px',
@@ -416,7 +333,7 @@ const Dashboard = (): ReactElement => {
           <Button
             variant='contained'
             startIcon={<AddIcon />}
-            onClick={handleOpenPatientDialog}
+            onClick={() => navigate(getPathFromPage(PAGES.PATIENTS_CREATE_PAGE))}
             sx={commonButtonStyles}
             style={{ minWidth: '200px', maxWidth: '200px' }}
           >
@@ -464,109 +381,6 @@ const Dashboard = (): ReactElement => {
           {t('dashboard.no_patients_found')}
         </Typography>
       )}
-
-      <Dialog
-        open={openPatientDialog}
-        onClose={handleClosePatientDialog}
-        PaperProps={{ sx: dialogStyle }}
-      >
-        <DialogTitle>{t('dashboard.new_patient')}</DialogTitle>
-        <DialogContent sx={{ mt: 1 }}>
-          <DialogContentText sx={{ mb: 1 }}>
-            {t('dashboard.enter_information_register_new_patient')}
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='patient-name'
-            label={t('dashboard.patient_name')}
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={newPatientName}
-            onChange={(e) => setNewPatientName(e.target.value)}
-          />
-          <FormControl fullWidth margin='dense'>
-            <InputLabel id='patient-gender-label'>{t('dashboard.patient_gender')}</InputLabel>
-            <Select
-              labelId='patient-gender-label'
-              value={newPatientGender}
-              onChange={(e) => setNewPatientGender(e.target.value)}
-              label={t('dashboard.patient_gender')}
-            >
-              <MenuItem value='male'>{t('dashboard.male')}</MenuItem>
-              <MenuItem value='female'>{t('dashboard.female')}</MenuItem>
-              <MenuItem value='other'>{t('dashboard.other')}</MenuItem>
-            </Select>
-          </FormControl>
-
-          <TextField
-            margin='dense'
-            id='patient-age'
-            label={t('dashboard.patient_age')}
-            type='number'
-            fullWidth
-            variant='outlined'
-            value={newPatientAge}
-            onChange={(e) => setNewPatientAge(e.target.value ? Number(e.target.value) : '')}
-          />
-          <TextField
-            margin='dense'
-            id='patient-phone-number'
-            label={t('dashboard.patient_phone_number')}
-            type='tel'
-            fullWidth
-            variant='outlined'
-            value={newPatientPhoneNumber}
-            onChange={(e) => setNewPatientPhoneNumber(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='patient-email'
-            label={t('dashboard.patient_email')}
-            type='email'
-            fullWidth
-            variant='outlined'
-            value={newPatientEmail}
-            onChange={(e) => setNewPatientEmail(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='patient-address'
-            label={t('dashboard.patient_address')}
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={newPatientAddress}
-            onChange={(e) => setNewPatientAddress(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='patient-description'
-            label={t('dashboard.patient_description')}
-            type='text'
-            multiline
-            rows={3}
-            fullWidth
-            variant='outlined'
-            value={newPatientDescription}
-            onChange={(e) => setNewPatientDescription(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'right', pr: 2 }}>
-          <Button onClick={handleClosePatientDialog} sx={cancelButtonStyles}>
-            {t('dashboard.cancel')}
-          </Button>
-          <Button
-            onClick={handleCreatePatient}
-            variant='contained'
-            sx={newPatientName.trim() !== '' ? commonButtonStyles : disabledButtonStyles}
-            disabled={newPatientName.trim() === ''}
-          >
-            {t('dashboard.register')}
-          </Button>
-        </DialogActions>
-      </Dialog>
 
       <Box sx={{ mt: 6, mb: 4 }}>
         <Card

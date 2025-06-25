@@ -7,6 +7,8 @@ api/openapi.yaml
 build.gradle
 build.sbt
 docs/ChangePasswordDTOPatientAPI.md
+docs/CoachMeetingControllerPatientAPI.md
+docs/CoachPatientControllerPatientAPI.md
 docs/CompleteConversationOutputDTOPatientAPI.md
 docs/ConversationControllerPatientAPI.md
 docs/CreateConversationOutputDTOPatientAPI.md
@@ -18,7 +20,6 @@ docs/JournalEntryControllerPatientAPI.md
 docs/JournalEntryOutputDTOPatientAPI.md
 docs/JournalEntryRequestDTOPatientAPI.md
 docs/LoginPatientDTOPatientAPI.md
-docs/MeetingControllerPatientAPI.md
 docs/MeetingOutputDTOPatientAPI.md
 docs/MessageOutputDTOPatientAPI.md
 docs/NameConversationOutputDTOPatientAPI.md
@@ -38,9 +39,10 @@ gradlew.bat
 pom.xml
 settings.gradle
 src/main/AndroidManifest.xml
+src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java
-src/main/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/invoker/ApiClient.java
@@ -71,9 +73,10 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPITest.java

@@ -1,16 +1,16 @@
-# PatientAppApplicationPatientAPI
+# CoachPatientControllerPatientAPI
 
 All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**helloWorld**](PatientAppApplicationPatientAPI.md#helloWorld) | **GET** / |  |
+| [**registerPatient1**](CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register |  |
 
 
 
-## helloWorld
+## registerPatient1
 
-> String helloWorld()
+> PatientOutputDTOPatientAPI registerPatient1(createPatientDTOPatientAPI)
 
 
 
@@ -23,7 +23,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.PatientAppApplicationPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.CoachPatientControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -36,12 +36,13 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        PatientAppApplicationPatientAPI apiInstance = new PatientAppApplicationPatientAPI(defaultClient);
+        CoachPatientControllerPatientAPI apiInstance = new CoachPatientControllerPatientAPI(defaultClient);
+        CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI(); // CreatePatientDTOPatientAPI | 
         try {
-            String result = apiInstance.helloWorld();
+            PatientOutputDTOPatientAPI result = apiInstance.registerPatient1(createPatientDTOPatientAPI);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling PatientAppApplicationPatientAPI#helloWorld");
+            System.err.println("Exception when calling CoachPatientControllerPatientAPI#registerPatient1");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -53,11 +54,14 @@ public class Example {
 
 ### Parameters
 
-This endpoint does not need any parameter.
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **createPatientDTOPatientAPI** | [**CreatePatientDTOPatientAPI**](CreatePatientDTOPatientAPI.md)|  | |
 
 ### Return type
 
-**String**
+[**PatientOutputDTOPatientAPI**](PatientOutputDTOPatientAPI.md)
 
 ### Authorization
 
@@ -65,12 +69,12 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: text/plain
+- **Content-Type**: application/json
+- **Accept**: */*
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | OK |  -  |
+| **201** | Created |  -  |
 
