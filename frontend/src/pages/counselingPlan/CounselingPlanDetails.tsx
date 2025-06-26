@@ -1,5 +1,5 @@
 import { Divider, Typography } from '@mui/material'
-import { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -15,6 +15,8 @@ const CounselingPlanDetails = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
+
+  const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
   useEffect(() => {
     if (patientId) {
@@ -40,17 +42,28 @@ const CounselingPlanDetails = (): ReactElement => {
         }}
       >
         <Typography variant='h5'>Counseling Plan Phases:</Typography>
-        {counselingPlan?.counselingPlanPhasesOutputDTO?.map((phase) => (
-          <>
-            <CounselingPlanPhaseDetail
-              key={phase.id}
-              phase={phase}
-              onSuccess={handleCreateCounselingPlanPhase}
-            />
+        <ul>
+          {counselingPlan?.counselingPlanPhasesOutputDTO?.map((phase, idx) => (
+            <li key={phase.id}>
+              <CounselingPlanPhaseDetail
+                phase={phase}
+                onSuccess={handleCreateCounselingPlanPhase}
+              />
 
-            <Divider style={{ width: '100%' }} />
-          </>
-        ))}
+              {idx !== amountOfPhases - 1 && (
+                <Divider
+                  style={{
+                    margin: '20px 0',
+                    width: '500px',
+                    height: '2px',
+                    color: 'black',
+                    backgroundColor: 'black',
+                  }}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
 
         <CreateCounselingPlanePhase
           counselingPlanId={counselingPlan?.id || ''}

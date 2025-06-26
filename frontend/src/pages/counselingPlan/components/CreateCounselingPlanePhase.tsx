@@ -56,7 +56,7 @@ const CreateCounselingPlanePhase = ({
   return (
     <>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
+        <Button variant='contained' onClick={() => setOpen(true)} sx={{ marginTop: '20px' }}>
           Add a phase
         </Button>
       ) : (

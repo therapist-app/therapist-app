@@ -26,6 +26,7 @@ const CounselingPlanPhaseDetail = ({
       <Typography variant='h6'>{phase.phaseName}</Typography>
       <Typography variant='body1'>Start Date: {formatDateNicely(phase.startDate)}</Typography>
       <Typography variant='body1'>End Date: {formatDateNicely(phase.endDate)}</Typography>
+      <div></div>
       <Typography variant='h6'>Goals:</Typography>
       <ul style={{ margin: 0 }}>
         {phase.phaseGoalsOutputDTO?.map((goal) => (
@@ -51,6 +52,7 @@ const CounselingPlanPhaseDetail = ({
       <AddCounselingPlanExercise
         counselingPlanPhaseId={phase.id || ''}
         onSuccess={handleCreateCounselingPlanPhaseGoal}
+        counselingPlanPhase={phase}
       />
     </div>
   )
