@@ -13,6 +13,7 @@
 
 package ch.uzh.ifi.imrg.generated.api;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInformationInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseMediaOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExercisesOverviewOutputDTOPatientAPI;
@@ -40,9 +41,9 @@ public class ExerciseControllerPatientAPITest {
      * 
      */
     @Test
-    public void getExerciseOutputDTOMockTest()  {
+    public void getExerciseOutputDTOTest()  {
         String exerciseId = null;
-        ExerciseOutputDTOPatientAPI response = api.getExerciseOutputDTOMock(exerciseId).block();
+        ExerciseOutputDTOPatientAPI response = api.getExerciseOutputDTO(exerciseId).block();
 
         // TODO: test validations
     }
@@ -65,10 +66,24 @@ public class ExerciseControllerPatientAPITest {
      * 
      */
     @Test
-    public void getPictureMockTest()  {
+    public void getPictureTest()  {
         String exerciseId = null;
         String mediaId = null;
-        ExerciseMediaOutputDTOPatientAPI response = api.getPictureMock(exerciseId, mediaId).block();
+        ExerciseMediaOutputDTOPatientAPI response = api.getPicture(exerciseId, mediaId).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void postExerciseFeedbackTest()  {
+        String exerciseId = null;
+        ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTOPatientAPI = null;
+        api.postExerciseFeedback(exerciseId, exerciseInformationInputDTOPatientAPI).block();
 
         // TODO: test validations
     }

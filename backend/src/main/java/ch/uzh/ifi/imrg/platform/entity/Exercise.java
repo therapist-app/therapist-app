@@ -46,7 +46,10 @@ public class Exercise {
       orphanRemoval = true)
   private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
+
+  @ManyToMany(mappedBy = "phaseExercises")
+  private List<CounselingPlanPhase> counselingPlanPhases;
 }

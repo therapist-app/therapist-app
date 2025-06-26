@@ -102,9 +102,9 @@ public class CoachExerciseControllerPatientAPIExample {
         String patientId = "patientId_example"; // String | 
         ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI = new ExerciseInputDTOPatientAPI(); // ExerciseInputDTOPatientAPI | 
         try {
-            apiInstance.createExercise1(patientId, exerciseInputDTOPatientAPI);
+            apiInstance.createExercise(patientId, exerciseInputDTOPatientAPI);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachExerciseControllerPatientAPI#createExercise1");
+            System.err.println("Exception when calling CoachExerciseControllerPatientAPI#createExercise");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -121,15 +121,19 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*CoachExerciseControllerPatientAPI* | [**createExercise1**](docs/CoachExerciseControllerPatientAPI.md#createExercise1) | **POST** /coach/patients/{patientId}/exercises | 
+*CoachExerciseControllerPatientAPI* | [**createExercise**](docs/CoachExerciseControllerPatientAPI.md#createExercise) | **POST** /coach/patients/{patientId}/exercises | 
 *CoachExerciseControllerPatientAPI* | [**deleteExercise**](docs/CoachExerciseControllerPatientAPI.md#deleteExercise) | **DELETE** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachExerciseControllerPatientAPI* | [**getAllExercises**](docs/CoachExerciseControllerPatientAPI.md#getAllExercises) | **GET** /coach/patients/{patientId}/exercises | 
-*CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises{exerciseId} | 
+*CoachExerciseControllerPatientAPI* | [**getExerciseInformation**](docs/CoachExerciseControllerPatientAPI.md#getExerciseInformation) | **GET** /coach/patients/{patientId}/exercises/{exerciseId} | 
+*CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises/{exerciseId} | 
+*CoachJournalEntryControllerPatientAPI* | [**getOne1**](docs/CoachJournalEntryControllerPatientAPI.md#getOne1) | **GET** /coach/patients/{patientId}/journal-entries/{entryId} | 
+*CoachJournalEntryControllerPatientAPI* | [**listAll1**](docs/CoachJournalEntryControllerPatientAPI.md#listAll1) | **GET** /coach/patients/{patientId}/journal-entries | 
 *CoachMeetingControllerPatientAPI* | [**createMeeting**](docs/CoachMeetingControllerPatientAPI.md#createMeeting) | **POST** /coach/patients/{patientId}/meetings | 
 *CoachMeetingControllerPatientAPI* | [**deleteMeeting**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachMeetingControllerPatientAPI* | [**getMeeting**](docs/CoachMeetingControllerPatientAPI.md#getMeeting) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachMeetingControllerPatientAPI* | [**listMeetings**](docs/CoachMeetingControllerPatientAPI.md#listMeetings) | **GET** /coach/patients/{patientId}/meetings | 
 *CoachMeetingControllerPatientAPI* | [**updateMeeting**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
+*CoachPatientControllerPatientAPI* | [**deletePatient**](docs/CoachPatientControllerPatientAPI.md#deletePatient) | **DELETE** /coach/patients/{patientId} | 
 *CoachPatientControllerPatientAPI* | [**registerPatient1**](docs/CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
@@ -137,10 +141,10 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
 *ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
-*ExerciseControllerPatientAPI* | [**getExerciseOutputDTOMock**](docs/ExerciseControllerPatientAPI.md#getExerciseOutputDTOMock) | **GET** /patients/exercises/{exerciseId} | 
+*ExerciseControllerPatientAPI* | [**getExerciseOutputDTO**](docs/ExerciseControllerPatientAPI.md#getExerciseOutputDTO) | **GET** /patients/exercises/{exerciseId} | 
 *ExerciseControllerPatientAPI* | [**getExerciseOverview**](docs/ExerciseControllerPatientAPI.md#getExerciseOverview) | **GET** /patients/exercises | 
-*ExerciseControllerPatientAPI* | [**getPictureMock**](docs/ExerciseControllerPatientAPI.md#getPictureMock) | **GET** /patients/exercises/{exerciseId}/{mediaId} | 
-*ExerciseControllerCoachPatientAPI* | [**createExercise**](docs/ExerciseControllerCoachPatientAPI.md#createExercise) | **POST** /coach/{patientId}/exercises | 
+*ExerciseControllerPatientAPI* | [**getPicture**](docs/ExerciseControllerPatientAPI.md#getPicture) | **GET** /patients/exercises/{exerciseId}/{mediaId} | 
+*ExerciseControllerPatientAPI* | [**postExerciseFeedback**](docs/ExerciseControllerPatientAPI.md#postExerciseFeedback) | **POST** /patients/exercises/{exerciseId} | 
 *JournalEntryControllerPatientAPI* | [**create**](docs/JournalEntryControllerPatientAPI.md#create) | **POST** /patients/journal-entries | 
 *JournalEntryControllerPatientAPI* | [**deleteEntry**](docs/JournalEntryControllerPatientAPI.md#deleteEntry) | **DELETE** /patients/journal-entries/{entryId} | 
 *JournalEntryControllerPatientAPI* | [**getAllTags**](docs/JournalEntryControllerPatientAPI.md#getAllTags) | **GET** /patients/journal-entries/tags | 
@@ -164,6 +168,8 @@ Class | Method | HTTP request | Description
 ## Documentation for Models
 
  - [ChangePasswordDTOPatientAPI](docs/ChangePasswordDTOPatientAPI.md)
+ - [CoachGetAllJournalEntriesDTOPatientAPI](docs/CoachGetAllJournalEntriesDTOPatientAPI.md)
+ - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
@@ -175,6 +181,8 @@ Class | Method | HTTP request | Description
  - [ExerciseFileElementOutputDTOPatientAPI](docs/ExerciseFileElementOutputDTOPatientAPI.md)
  - [ExerciseImageElementInputDTOPatientAPI](docs/ExerciseImageElementInputDTOPatientAPI.md)
  - [ExerciseImageElementOutputDTOPatientAPI](docs/ExerciseImageElementOutputDTOPatientAPI.md)
+ - [ExerciseInformationInputDTOPatientAPI](docs/ExerciseInformationInputDTOPatientAPI.md)
+ - [ExerciseInformationOutputDTOPatientAPI](docs/ExerciseInformationOutputDTOPatientAPI.md)
  - [ExerciseInputDTOExerciseElementsInnerPatientAPI](docs/ExerciseInputDTOExerciseElementsInnerPatientAPI.md)
  - [ExerciseInputDTOPatientAPI](docs/ExerciseInputDTOPatientAPI.md)
  - [ExerciseMediaOutputDTOPatientAPI](docs/ExerciseMediaOutputDTOPatientAPI.md)

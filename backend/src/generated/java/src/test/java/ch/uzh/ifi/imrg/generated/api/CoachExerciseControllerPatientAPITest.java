@@ -13,6 +13,7 @@
 
 package ch.uzh.ifi.imrg.generated.api;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInformationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExercisesOverviewOutputDTOPatientAPI;
 import org.junit.Test;
@@ -39,10 +40,10 @@ public class CoachExerciseControllerPatientAPITest {
      * 
      */
     @Test
-    public void createExercise1Test()  {
+    public void createExerciseTest()  {
         String patientId = null;
         ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI = null;
-        api.createExercise1(patientId, exerciseInputDTOPatientAPI).block();
+        api.createExercise(patientId, exerciseInputDTOPatientAPI).block();
 
         // TODO: test validations
     }
@@ -70,6 +71,20 @@ public class CoachExerciseControllerPatientAPITest {
     public void getAllExercisesTest()  {
         String patientId = null;
         List<ExercisesOverviewOutputDTOPatientAPI> response = api.getAllExercises(patientId).collectList().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getExerciseInformationTest()  {
+        String patientId = null;
+        String exerciseId = null;
+        List<ExerciseInformationOutputDTOPatientAPI> response = api.getExerciseInformation(patientId, exerciseId).collectList().block();
 
         // TODO: test validations
     }

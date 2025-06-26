@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInformationInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseMediaOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExercisesOverviewOutputDTOPatientAPI;
@@ -56,11 +57,11 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getExerciseOutputDTOMockRequestCreation(String exerciseId) throws WebClientResponseException {
+    private ResponseSpec getExerciseOutputDTORequestCreation(String exerciseId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'exerciseId' is set
         if (exerciseId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getExerciseOutputDTOMock", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getExerciseOutputDTO", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -93,9 +94,9 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ExerciseOutputDTOPatientAPI> getExerciseOutputDTOMock(String exerciseId) throws WebClientResponseException {
+    public Mono<ExerciseOutputDTOPatientAPI> getExerciseOutputDTO(String exerciseId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseOutputDTOPatientAPI>() {};
-        return getExerciseOutputDTOMockRequestCreation(exerciseId).bodyToMono(localVarReturnType);
+        return getExerciseOutputDTORequestCreation(exerciseId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -106,9 +107,9 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseEntity&lt;ExerciseOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<ExerciseOutputDTOPatientAPI>> getExerciseOutputDTOMockWithHttpInfo(String exerciseId) throws WebClientResponseException {
+    public Mono<ResponseEntity<ExerciseOutputDTOPatientAPI>> getExerciseOutputDTOWithHttpInfo(String exerciseId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseOutputDTOPatientAPI>() {};
-        return getExerciseOutputDTOMockRequestCreation(exerciseId).toEntity(localVarReturnType);
+        return getExerciseOutputDTORequestCreation(exerciseId).toEntity(localVarReturnType);
     }
 
     /**
@@ -119,8 +120,8 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getExerciseOutputDTOMockWithResponseSpec(String exerciseId) throws WebClientResponseException {
-        return getExerciseOutputDTOMockRequestCreation(exerciseId);
+    public ResponseSpec getExerciseOutputDTOWithResponseSpec(String exerciseId) throws WebClientResponseException {
+        return getExerciseOutputDTORequestCreation(exerciseId);
     }
     /**
      * 
@@ -195,15 +196,15 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseMediaOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getPictureMockRequestCreation(String exerciseId, String mediaId) throws WebClientResponseException {
+    private ResponseSpec getPictureRequestCreation(String exerciseId, String mediaId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'exerciseId' is set
         if (exerciseId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getPictureMock", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getPicture", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // verify the required parameter 'mediaId' is set
         if (mediaId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'mediaId' when calling getPictureMock", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'mediaId' when calling getPicture", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -238,9 +239,9 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseMediaOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ExerciseMediaOutputDTOPatientAPI> getPictureMock(String exerciseId, String mediaId) throws WebClientResponseException {
+    public Mono<ExerciseMediaOutputDTOPatientAPI> getPicture(String exerciseId, String mediaId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseMediaOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseMediaOutputDTOPatientAPI>() {};
-        return getPictureMockRequestCreation(exerciseId, mediaId).bodyToMono(localVarReturnType);
+        return getPictureRequestCreation(exerciseId, mediaId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -252,9 +253,9 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseEntity&lt;ExerciseMediaOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<ExerciseMediaOutputDTOPatientAPI>> getPictureMockWithHttpInfo(String exerciseId, String mediaId) throws WebClientResponseException {
+    public Mono<ResponseEntity<ExerciseMediaOutputDTOPatientAPI>> getPictureWithHttpInfo(String exerciseId, String mediaId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseMediaOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseMediaOutputDTOPatientAPI>() {};
-        return getPictureMockRequestCreation(exerciseId, mediaId).toEntity(localVarReturnType);
+        return getPictureRequestCreation(exerciseId, mediaId).toEntity(localVarReturnType);
     }
 
     /**
@@ -266,7 +267,86 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getPictureMockWithResponseSpec(String exerciseId, String mediaId) throws WebClientResponseException {
-        return getPictureMockRequestCreation(exerciseId, mediaId);
+    public ResponseSpec getPictureWithResponseSpec(String exerciseId, String mediaId) throws WebClientResponseException {
+        return getPictureRequestCreation(exerciseId, mediaId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseInformationInputDTOPatientAPI The exerciseInformationInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec postExerciseFeedbackRequestCreation(String exerciseId, ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = exerciseInformationInputDTOPatientAPI;
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling postExerciseFeedback", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseInformationInputDTOPatientAPI' is set
+        if (exerciseInformationInputDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseInformationInputDTOPatientAPI' when calling postExerciseFeedback", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("exerciseId", exerciseId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/exercises/{exerciseId}", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseInformationInputDTOPatientAPI The exerciseInformationInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> postExerciseFeedback(String exerciseId, ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return postExerciseFeedbackRequestCreation(exerciseId, exerciseInformationInputDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseInformationInputDTOPatientAPI The exerciseInformationInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> postExerciseFeedbackWithHttpInfo(String exerciseId, ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return postExerciseFeedbackRequestCreation(exerciseId, exerciseInformationInputDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseInformationInputDTOPatientAPI The exerciseInformationInputDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec postExerciseFeedbackWithResponseSpec(String exerciseId, ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTOPatientAPI) throws WebClientResponseException {
+        return postExerciseFeedbackRequestCreation(exerciseId, exerciseInformationInputDTOPatientAPI);
     }
 }

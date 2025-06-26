@@ -39,6 +39,19 @@ public class CoachPatientControllerPatientAPITest {
      * 
      */
     @Test
+    public void deletePatientTest()  {
+        String patientId = null;
+        api.deletePatient(patientId).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
     public void registerPatient1Test()  {
         CreatePatientDTOPatientAPI createPatientDTOPatientAPI = null;
         PatientOutputDTOPatientAPI response = api.registerPatient1(createPatientDTOPatientAPI).block();

@@ -5,6 +5,9 @@ api.ts
 apis/application-api.ts
 apis/chat-controller-api.ts
 apis/chatbot-template-controller-api.ts
+apis/counseling-plan-controller-api.ts
+apis/counseling-plan-phase-controller-api.ts
+apis/counseling-plan-phase-goal-controller-api.ts
 apis/exercise-component-controller-api.ts
 apis/exercise-controller-api.ts
 apis/meeting-controller-api.ts
@@ -20,12 +23,18 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/add-exercise-to-counseling-plan-phase-dto.ts
 models/chat-completion-response-dto.ts
 models/chat-completion-with-config-request-dto.ts
 models/chat-message-dto.ts
 models/chatbot-config-dto.ts
 models/chatbot-template-output-dto.ts
+models/counseling-plan-output-dto.ts
+models/counseling-plan-phase-goal-output-dto.ts
+models/counseling-plan-phase-output-dto.ts
 models/create-chatbot-template-dto.ts
+models/create-counseling-plan-phase-dto.ts
+models/create-counseling-plan-phase-goal-dto.ts
 models/create-exercise-component-dto.ts
 models/create-exercise-dto.ts
 models/create-gad7-test-dto.ts
@@ -43,6 +52,7 @@ models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
+models/remove-exercise-from-counseling-plan-phase-dto.ts
 models/therapist-chatbot-input-dto.ts
 models/therapist-chatbot-output-dto.ts
 models/therapist-document-output-dto.ts
