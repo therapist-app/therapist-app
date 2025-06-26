@@ -16,7 +16,6 @@ docs/CreateConversationOutputDTOPatientAPI.md
 docs/CreateMeetingDTOPatientAPI.md
 docs/CreateMessageDTOPatientAPI.md
 docs/CreatePatientDTOPatientAPI.md
-docs/ExerciseControllerCoachPatientAPI.md
 docs/ExerciseControllerPatientAPI.md
 docs/ExerciseElementInputDTOPatientAPI.md
 docs/ExerciseElementOutputDTOPatientAPI.md
@@ -24,6 +23,8 @@ docs/ExerciseFileElementInputDTOPatientAPI.md
 docs/ExerciseFileElementOutputDTOPatientAPI.md
 docs/ExerciseImageElementInputDTOPatientAPI.md
 docs/ExerciseImageElementOutputDTOPatientAPI.md
+docs/ExerciseInformationInputDTOPatientAPI.md
+docs/ExerciseInformationOutputDTOPatientAPI.md
 docs/ExerciseInputDTOExerciseElementsInnerPatientAPI.md
 docs/ExerciseInputDTOPatientAPI.md
 docs/ExerciseMediaOutputDTOPatientAPI.md
@@ -64,7 +65,6 @@ src/main/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPI.ja
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
-src/main/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerCoachPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java
@@ -91,6 +91,8 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementInputDTOPatient
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseImageElementInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseImageElementOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationInputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOExerciseElementsInnerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseMediaOutputDTOPatientAPI.java
@@ -119,7 +121,6 @@ src/test/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPITes
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerCoachPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
@@ -136,6 +137,8 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementInputDTOPatient
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseImageElementInputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseImageElementOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationInputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOExerciseElementsInnerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseMediaOutputDTOPatientAPITest.java

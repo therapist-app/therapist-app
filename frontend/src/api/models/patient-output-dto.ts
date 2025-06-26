@@ -82,12 +82,6 @@ export interface PatientOutputDTO {
      * @type {string}
      * @memberof PatientOutputDTO
      */
-    'description'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatientOutputDTO
-     */
     'maritalStatus'?: string;
     /**
      * 
@@ -119,12 +113,6 @@ export interface PatientOutputDTO {
      * @memberof PatientOutputDTO
      */
     'dateOfAdmission'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatientOutputDTO
-     */
-    'personalHistory'?: string;
     /**
      * 
      * @type {Array<MeetingOutputDTO>}

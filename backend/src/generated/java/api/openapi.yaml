@@ -300,7 +300,63 @@ paths:
       - coach-meeting-controller
       x-content-type: application/json
       x-accepts: '*/*'
-  /coach/patients/{patientId}/exercises{exerciseId}:
+  /coach/patients/{patientId}/exercises/{exerciseId}:
+    delete:
+      operationId: deleteExercise
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-accepts: application/json
+    get:
+      operationId: getExerciseInformation
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExerciseInformationOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-accepts: '*/*'
     put:
       operationId: updateExercise
       parameters:
@@ -418,6 +474,50 @@ paths:
       - journal-entry-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/exercises/{exerciseId}:
+    get:
+      operationId: getExerciseOutputDTO
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
+    post:
+      operationId: postExerciseFeedback
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseInformationInputDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - exercise-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/conversations:
     post:
       operationId: createConversation
@@ -479,30 +579,6 @@ paths:
       - conversation-controller
       x-content-type: application/json
       x-accepts: '*/*'
-  /coach/{patientId}/exercises:
-    post:
-      operationId: createExercise
-      parameters:
-      - explode: false
-        in: path
-        name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExerciseInputDTO'
-        required: true
-      responses:
-        "201":
-          description: Created
-      tags:
-      - exercise-controller-coach
-      x-content-type: application/json
-      x-accepts: application/json
   /coach/patients/{patientId}/meetings:
     get:
       operationId: listMeetings
@@ -583,7 +659,7 @@ paths:
       - coach-exercise-controller
       x-accepts: '*/*'
     post:
-      operationId: createExercise_1
+      operationId: createExercise
       parameters:
       - explode: false
         in: path
@@ -673,30 +749,9 @@ paths:
       tags:
       - exercise-controller
       x-accepts: '*/*'
-  /patients/exercises/{exerciseId}:
-    get:
-      operationId: GetExerciseOutputDTOMock
-      parameters:
-      - explode: false
-        in: path
-        name: exerciseId
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ExerciseOutputDTO'
-          description: OK
-      tags:
-      - exercise-controller
-      x-accepts: '*/*'
   /patients/exercises/{exerciseId}/{mediaId}:
     get:
-      operationId: getPictureMock
+      operationId: getPicture
       parameters:
       - explode: false
         in: path
@@ -750,20 +805,13 @@ paths:
       tags:
       - patient-app-application
       x-accepts: text/plain
-  /coach/patients/{patientId}/exercises/{exerciseId}:
+  /coach/patients/{patientId}:
     delete:
-      operationId: deleteExercise
+      operationId: deletePatient
       parameters:
       - explode: false
         in: path
         name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: exerciseId
         required: true
         schema:
           type: string
@@ -774,7 +822,7 @@ paths:
       security:
       - X-Coach-Key: []
       tags:
-      - coach-exercise-controller
+      - coach-patient-controller
       x-accepts: application/json
 components:
   schemas:
@@ -1041,6 +1089,17 @@ components:
         password:
           type: string
       type: object
+    ExerciseInformationInputDTO:
+      properties:
+        startTime:
+          format: date-time
+          type: string
+        endTime:
+          format: date-time
+          type: string
+        feedback:
+          type: string
+      type: object
     CreateConversationOutputDTO:
       example:
         id: id
@@ -1252,6 +1311,21 @@ components:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
+      type: object
+    ExerciseInformationOutputDTO:
+      example:
+        feedback: feedback
+        startTime: 2000-01-23T04:56:07.000+00:00
+        endTime: 2000-01-23T04:56:07.000+00:00
+      properties:
+        startTime:
+          format: date-time
+          type: string
+        endTime:
+          format: date-time
+          type: string
+        feedback:
+          type: string
       type: object
     ExerciseInputDTO_exerciseElements_inner:
       oneOf:

@@ -50,6 +50,75 @@ public class CoachPatientControllerPatientAPI {
     /**
      * 
      * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec deletePatientRequestCreation(String patientId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling deletePatient", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> deletePatient(String patientId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deletePatientRequestCreation(patientId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> deletePatientWithHttpInfo(String patientId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deletePatientRequestCreation(patientId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec deletePatientWithResponseSpec(String patientId) throws WebClientResponseException {
+        return deletePatientRequestCreation(patientId);
+    }
+    /**
+     * 
+     * 
      * <p><b>201</b> - Created
      * @param createPatientDTOPatientAPI The createPatientDTOPatientAPI parameter
      * @return PatientOutputDTOPatientAPI
