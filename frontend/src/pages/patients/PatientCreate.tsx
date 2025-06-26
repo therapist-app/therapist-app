@@ -13,27 +13,21 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { registerPatient } from '../../store/patientSlice'
-import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import {useSelector} from "react-redux";
 
 const PatientCreate = (): ReactElement => {
-
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
-
-  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
-
 
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
