@@ -22,7 +22,7 @@ const CounselingPlanPhaseDetail = ({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
       <Typography variant='h6'>{phase.phaseName}</Typography>
       <Typography variant='body1'>Start Date: {formatDateNicely(phase.startDate)}</Typography>
       <Typography variant='body1'>End Date: {formatDateNicely(phase.endDate)}</Typography>

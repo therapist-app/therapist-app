@@ -23,7 +23,7 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
-models/add-exercise-to-counseling-plan-phase.ts
+models/add-exercise-to-counseling-plan-phase-dto.ts
 models/chat-completion-response-dto.ts
 models/chat-completion-with-config-request-dto.ts
 models/chat-message-dto.ts
@@ -52,7 +52,7 @@ models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
-models/remove-exercise-from-counseling-plan-phase.ts
+models/remove-exercise-from-counseling-plan-phase-dto.ts
 models/therapist-chatbot-input-dto.ts
 models/therapist-chatbot-output-dto.ts
 models/therapist-document-output-dto.ts

@@ -1,4 +1,4 @@
-export * from './add-exercise-to-counseling-plan-phase';
+export * from './add-exercise-to-counseling-plan-phase-dto';
 export * from './chat-completion-response-dto';
 export * from './chat-completion-with-config-request-dto';
 export * from './chat-message-dto';
@@ -26,7 +26,7 @@ export * from './meeting-note-output-dto';
 export * from './meeting-output-dto';
 export * from './patient-document-output-dto';
 export * from './patient-output-dto';
-export * from './remove-exercise-from-counseling-plan-phase';
+export * from './remove-exercise-from-counseling-plan-phase-dto';
 export * from './therapist-chatbot-input-dto';
 export * from './therapist-chatbot-output-dto';
 export * from './therapist-document-output-dto';

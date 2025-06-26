@@ -1,8 +1,8 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhase;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhase;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,14 +31,14 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/add-exercise")
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(
-      @RequestBody AddExerciseToCounselingPlanPhase addExerciseToCounselingPlanPhaseDTO) {
+      @RequestBody AddExerciseToCounselingPlanPhaseDTO addExerciseToCounselingPlanPhaseDTO) {
     return counselingPlanPhaseService.addExerciseToCounselingPlanPhase(
         addExerciseToCounselingPlanPhaseDTO);
   }
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody RemoveExerciseFromCounselingPlanPhase removeExerciseFromCounselingPlanPhaseDTO) {
+      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO);
   }

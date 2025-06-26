@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
+  AddExerciseToCounselingPlanPhaseDTO,
   CounselingPlanOutputDTO,
   CreateCounselingPlanPhaseDTO,
   CreateCounselingPlanPhaseGoalDTO,
+  RemoveExerciseFromCounselingPlanPhaseDTO,
 } from '../api'
 import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi } from '../utils/api'
 
@@ -71,6 +73,22 @@ export const getCounselingPlanPhaseGoalById = createAsyncThunk(
   'counselingPlan/getCounselingPlanPhaseGoalById',
   async (goalId: string) => {
     const response = await counselingPlanPhaseGoalApi.getCounselingPlanPhaseGoalById(goalId)
+    return response.data
+  }
+)
+
+export const addExerciseToCounselingPlanPhase = createAsyncThunk(
+  'counselingPlan/addExerciseToCounselingPlanPhase',
+  async (dto: AddExerciseToCounselingPlanPhaseDTO) => {
+    const response = await counselingPlanPhaseApi.addExerciseToCounselingPlanPhase(dto)
+    return response.data
+  }
+)
+
+export const removeExerciseFromCounselingPlanPhase = createAsyncThunk(
+  'counselingPlan/removeExerciseToCounselingPlanPhase',
+  async (dto: RemoveExerciseFromCounselingPlanPhaseDTO) => {
+    const response = await counselingPlanPhaseApi.removeExerciseFromCounselingPlanPhase(dto)
     return response.data
   }
 )

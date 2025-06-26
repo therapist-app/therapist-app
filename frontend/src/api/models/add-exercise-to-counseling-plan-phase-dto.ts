@@ -17,19 +17,19 @@
 /**
  * 
  * @export
- * @interface AddExerciseToCounselingPlanPhase
+ * @interface AddExerciseToCounselingPlanPhaseDTO
  */
-export interface AddExerciseToCounselingPlanPhase {
+export interface AddExerciseToCounselingPlanPhaseDTO {
     /**
      * 
      * @type {string}
-     * @memberof AddExerciseToCounselingPlanPhase
+     * @memberof AddExerciseToCounselingPlanPhaseDTO
      */
     'exerciseId'?: string;
     /**
      * 
      * @type {string}
-     * @memberof AddExerciseToCounselingPlanPhase
+     * @memberof AddExerciseToCounselingPlanPhaseDTO
      */
     'counselingPlanPhaseId'?: string;
 }

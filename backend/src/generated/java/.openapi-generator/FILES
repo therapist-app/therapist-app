@@ -8,6 +8,9 @@ build.gradle
 build.sbt
 docs/ChangePasswordDTOPatientAPI.md
 docs/CoachExerciseControllerPatientAPI.md
+docs/CoachGetAllJournalEntriesDTOPatientAPI.md
+docs/CoachJournalEntryControllerPatientAPI.md
+docs/CoachJournalEntryOutputDTOPatientAPI.md
 docs/CoachMeetingControllerPatientAPI.md
 docs/CoachPatientControllerPatientAPI.md
 docs/CompleteConversationOutputDTOPatientAPI.md
@@ -62,6 +65,7 @@ pom.xml
 settings.gradle
 src/main/AndroidManifest.xml
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
@@ -80,6 +84,8 @@ src/main/java/ch/uzh/ifi/imrg/generated/invoker/auth/Authentication.java
 src/main/java/ch/uzh/ifi/imrg/generated/invoker/auth/HttpBasicAuth.java
 src/main/java/ch/uzh/ifi/imrg/generated/invoker/auth/HttpBearerAuth.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/CoachGetAllJournalEntriesDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java
@@ -118,6 +124,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutSharingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/TextInputDataPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
@@ -126,6 +133,8 @@ src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ChangePasswordDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/CoachGetAllJournalEntriesDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java

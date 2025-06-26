@@ -22,13 +22,13 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
-import type { AddExerciseToCounselingPlanPhase } from '../models';
+import type { AddExerciseToCounselingPlanPhaseDTO } from '../models';
 // @ts-ignore
 import type { CounselingPlanPhaseOutputDTO } from '../models';
 // @ts-ignore
 import type { CreateCounselingPlanPhaseDTO } from '../models';
 // @ts-ignore
-import type { RemoveExerciseFromCounselingPlanPhase } from '../models';
+import type { RemoveExerciseFromCounselingPlanPhaseDTO } from '../models';
 /**
  * CounselingPlanPhaseControllerApi - axios parameter creator
  * @export
@@ -37,13 +37,13 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
     return {
         /**
          * 
-         * @param {AddExerciseToCounselingPlanPhase} addExerciseToCounselingPlanPhase 
+         * @param {AddExerciseToCounselingPlanPhaseDTO} addExerciseToCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addExerciseToCounselingPlanPhase: async (addExerciseToCounselingPlanPhase: AddExerciseToCounselingPlanPhase, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'addExerciseToCounselingPlanPhase' is not null or undefined
-            assertParamExists('addExerciseToCounselingPlanPhase', 'addExerciseToCounselingPlanPhase', addExerciseToCounselingPlanPhase)
+        addExerciseToCounselingPlanPhase: async (addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addExerciseToCounselingPlanPhaseDTO' is not null or undefined
+            assertParamExists('addExerciseToCounselingPlanPhase', 'addExerciseToCounselingPlanPhaseDTO', addExerciseToCounselingPlanPhaseDTO)
             const localVarPath = `/counseling-plan-phases/add-exercise`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -63,7 +63,7 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addExerciseToCounselingPlanPhase, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addExerciseToCounselingPlanPhaseDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -173,13 +173,13 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
         },
         /**
          * 
-         * @param {RemoveExerciseFromCounselingPlanPhase} removeExerciseFromCounselingPlanPhase 
+         * @param {RemoveExerciseFromCounselingPlanPhaseDTO} removeExerciseFromCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeExerciseFromCounselingPlanPhase: async (removeExerciseFromCounselingPlanPhase: RemoveExerciseFromCounselingPlanPhase, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'removeExerciseFromCounselingPlanPhase' is not null or undefined
-            assertParamExists('removeExerciseFromCounselingPlanPhase', 'removeExerciseFromCounselingPlanPhase', removeExerciseFromCounselingPlanPhase)
+        removeExerciseFromCounselingPlanPhase: async (removeExerciseFromCounselingPlanPhaseDTO: RemoveExerciseFromCounselingPlanPhaseDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'removeExerciseFromCounselingPlanPhaseDTO' is not null or undefined
+            assertParamExists('removeExerciseFromCounselingPlanPhase', 'removeExerciseFromCounselingPlanPhaseDTO', removeExerciseFromCounselingPlanPhaseDTO)
             const localVarPath = `/counseling-plan-phases/remove-exercise`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -199,7 +199,7 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(removeExerciseFromCounselingPlanPhase, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(removeExerciseFromCounselingPlanPhaseDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -218,12 +218,12 @@ export const CounselingPlanPhaseControllerApiFp = function(configuration?: Confi
     return {
         /**
          * 
-         * @param {AddExerciseToCounselingPlanPhase} addExerciseToCounselingPlanPhase 
+         * @param {AddExerciseToCounselingPlanPhaseDTO} addExerciseToCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase: AddExerciseToCounselingPlanPhase, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseOutputDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase, options);
+        async addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseControllerApi.addExerciseToCounselingPlanPhase']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -266,12 +266,12 @@ export const CounselingPlanPhaseControllerApiFp = function(configuration?: Confi
         },
         /**
          * 
-         * @param {RemoveExerciseFromCounselingPlanPhase} removeExerciseFromCounselingPlanPhase 
+         * @param {RemoveExerciseFromCounselingPlanPhaseDTO} removeExerciseFromCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase: RemoveExerciseFromCounselingPlanPhase, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseOutputDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase, options);
+        async removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO: RemoveExerciseFromCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseControllerApi.removeExerciseFromCounselingPlanPhase']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -288,12 +288,12 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
     return {
         /**
          * 
-         * @param {AddExerciseToCounselingPlanPhase} addExerciseToCounselingPlanPhase 
+         * @param {AddExerciseToCounselingPlanPhaseDTO} addExerciseToCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase: AddExerciseToCounselingPlanPhase, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO> {
-            return localVarFp.addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase, options).then((request) => request(axios, basePath));
+        addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO> {
+            return localVarFp.addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -324,12 +324,12 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
         },
         /**
          * 
-         * @param {RemoveExerciseFromCounselingPlanPhase} removeExerciseFromCounselingPlanPhase 
+         * @param {RemoveExerciseFromCounselingPlanPhaseDTO} removeExerciseFromCounselingPlanPhaseDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase: RemoveExerciseFromCounselingPlanPhase, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO> {
-            return localVarFp.removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase, options).then((request) => request(axios, basePath));
+        removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO: RemoveExerciseFromCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO> {
+            return localVarFp.removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -342,12 +342,12 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
 export interface CounselingPlanPhaseControllerApiInterface {
     /**
      * 
-     * @param {AddExerciseToCounselingPlanPhase} addExerciseToCounselingPlanPhase 
+     * @param {AddExerciseToCounselingPlanPhaseDTO} addExerciseToCounselingPlanPhaseDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApiInterface
      */
-    addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase: AddExerciseToCounselingPlanPhase, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO>;
+    addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO>;
 
     /**
      * 
@@ -378,12 +378,12 @@ export interface CounselingPlanPhaseControllerApiInterface {
 
     /**
      * 
-     * @param {RemoveExerciseFromCounselingPlanPhase} removeExerciseFromCounselingPlanPhase 
+     * @param {RemoveExerciseFromCounselingPlanPhaseDTO} removeExerciseFromCounselingPlanPhaseDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApiInterface
      */
-    removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase: RemoveExerciseFromCounselingPlanPhase, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO>;
+    removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO: RemoveExerciseFromCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseOutputDTO>;
 
 }
 
@@ -396,13 +396,13 @@ export interface CounselingPlanPhaseControllerApiInterface {
 export class CounselingPlanPhaseControllerApi extends BaseAPI implements CounselingPlanPhaseControllerApiInterface {
     /**
      * 
-     * @param {AddExerciseToCounselingPlanPhase} addExerciseToCounselingPlanPhase 
+     * @param {AddExerciseToCounselingPlanPhaseDTO} addExerciseToCounselingPlanPhaseDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApi
      */
-    public addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase: AddExerciseToCounselingPlanPhase, options?: RawAxiosRequestConfig) {
-        return CounselingPlanPhaseControllerApiFp(this.configuration).addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhase, options).then((request) => request(this.axios, this.basePath));
+    public addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanPhaseControllerApiFp(this.configuration).addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -440,13 +440,13 @@ export class CounselingPlanPhaseControllerApi extends BaseAPI implements Counsel
 
     /**
      * 
-     * @param {RemoveExerciseFromCounselingPlanPhase} removeExerciseFromCounselingPlanPhase 
+     * @param {RemoveExerciseFromCounselingPlanPhaseDTO} removeExerciseFromCounselingPlanPhaseDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApi
      */
-    public removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase: RemoveExerciseFromCounselingPlanPhase, options?: RawAxiosRequestConfig) {
-        return CounselingPlanPhaseControllerApiFp(this.configuration).removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhase, options).then((request) => request(this.axios, this.basePath));
+    public removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO: RemoveExerciseFromCounselingPlanPhaseDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanPhaseControllerApiFp(this.configuration).removeExerciseFromCounselingPlanPhase(removeExerciseFromCounselingPlanPhaseDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

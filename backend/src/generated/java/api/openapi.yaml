@@ -792,6 +792,61 @@ paths:
       tags:
       - conversation-controller
       x-accepts: '*/*'
+  /coach/patients/{patientId}/journal-entries:
+    get:
+      operationId: listAll_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/CoachGetAllJournalEntriesDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-journal-entry-controller
+      x-accepts: '*/*'
+  /coach/patients/{patientId}/journal-entries/{entryId}:
+    get:
+      operationId: getOne_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: entryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CoachJournalEntryOutputDTO'
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-journal-entry-controller
+      x-accepts: '*/*'
   /:
     get:
       operationId: helloWorld
@@ -1311,6 +1366,61 @@ components:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
+      type: object
+    CoachGetAllJournalEntriesDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        title: title
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+        tags:
+        - tags
+        - tags
+      properties:
+        id:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        title:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    CoachJournalEntryOutputDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        title: title
+        content: content
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+        tags:
+        - tags
+        - tags
+      properties:
+        id:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
       type: object
     ExerciseInformationOutputDTO:
       example:

@@ -126,6 +126,8 @@ Class | Method | HTTP request | Description
 *CoachExerciseControllerPatientAPI* | [**getAllExercises**](docs/CoachExerciseControllerPatientAPI.md#getAllExercises) | **GET** /coach/patients/{patientId}/exercises | 
 *CoachExerciseControllerPatientAPI* | [**getExerciseInformation**](docs/CoachExerciseControllerPatientAPI.md#getExerciseInformation) | **GET** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises/{exerciseId} | 
+*CoachJournalEntryControllerPatientAPI* | [**getOne1**](docs/CoachJournalEntryControllerPatientAPI.md#getOne1) | **GET** /coach/patients/{patientId}/journal-entries/{entryId} | 
+*CoachJournalEntryControllerPatientAPI* | [**listAll1**](docs/CoachJournalEntryControllerPatientAPI.md#listAll1) | **GET** /coach/patients/{patientId}/journal-entries | 
 *CoachMeetingControllerPatientAPI* | [**createMeeting**](docs/CoachMeetingControllerPatientAPI.md#createMeeting) | **POST** /coach/patients/{patientId}/meetings | 
 *CoachMeetingControllerPatientAPI* | [**deleteMeeting**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachMeetingControllerPatientAPI* | [**getMeeting**](docs/CoachMeetingControllerPatientAPI.md#getMeeting) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 
@@ -166,6 +168,8 @@ Class | Method | HTTP request | Description
 ## Documentation for Models
 
  - [ChangePasswordDTOPatientAPI](docs/ChangePasswordDTOPatientAPI.md)
+ - [CoachGetAllJournalEntriesDTOPatientAPI](docs/CoachGetAllJournalEntriesDTOPatientAPI.md)
+ - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
