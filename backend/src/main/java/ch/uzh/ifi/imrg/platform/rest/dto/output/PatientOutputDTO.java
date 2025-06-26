@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class PatientOutputDTO {
-
   private String id;
   private String name;
   private Instant createdAt;
@@ -14,9 +13,14 @@ public class PatientOutputDTO {
   private String phoneNumber;
   private String address;
   private String gender;
-  private String description;
   private int age;
   private String email;
+  private String maritalStatus;
+  private String religion;
+  private String education;
+  private String occupation;
+  private String income;
+  private String dateOfAdmission;
   private List<MeetingOutputDTO> meetingsOutputDTO;
 
   public PatientOutputDTO() {}

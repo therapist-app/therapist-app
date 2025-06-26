@@ -84,9 +84,9 @@ Please follow the [installation](#installation) instruction and execute the foll
 import ch.uzh.ifi.imrg.generated.invoker.*;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.model.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.CoachExerciseControllerPatientAPI;
 
-public class CoachMeetingControllerPatientAPIExample {
+public class CoachExerciseControllerPatientAPIExample {
 
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -98,14 +98,13 @@ public class CoachMeetingControllerPatientAPIExample {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
+        CoachExerciseControllerPatientAPI apiInstance = new CoachExerciseControllerPatientAPI(defaultClient);
         String patientId = "patientId_example"; // String | 
-        CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI = new CreateMeetingDTOPatientAPI(); // CreateMeetingDTOPatientAPI | 
+        ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI = new ExerciseInputDTOPatientAPI(); // ExerciseInputDTOPatientAPI | 
         try {
-            MeetingOutputDTOPatientAPI result = apiInstance.createMeeting(patientId, createMeetingDTOPatientAPI);
-            System.out.println(result);
+            apiInstance.createExercise1(patientId, exerciseInputDTOPatientAPI);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#createMeeting");
+            System.err.println("Exception when calling CoachExerciseControllerPatientAPI#createExercise1");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -122,6 +121,10 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*CoachExerciseControllerPatientAPI* | [**createExercise1**](docs/CoachExerciseControllerPatientAPI.md#createExercise1) | **POST** /coach/patients/{patientId}/exercises | 
+*CoachExerciseControllerPatientAPI* | [**deleteExercise**](docs/CoachExerciseControllerPatientAPI.md#deleteExercise) | **DELETE** /coach/patients/{patientId}/exercises/{exerciseId} | 
+*CoachExerciseControllerPatientAPI* | [**getAllExercises**](docs/CoachExerciseControllerPatientAPI.md#getAllExercises) | **GET** /coach/patients/{patientId}/exercises | 
+*CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises{exerciseId} | 
 *CoachMeetingControllerPatientAPI* | [**createMeeting**](docs/CoachMeetingControllerPatientAPI.md#createMeeting) | **POST** /coach/patients/{patientId}/meetings | 
 *CoachMeetingControllerPatientAPI* | [**deleteMeeting**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachMeetingControllerPatientAPI* | [**getMeeting**](docs/CoachMeetingControllerPatientAPI.md#getMeeting) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 

@@ -67,12 +67,6 @@ export interface PatientOutputDTO {
     'gender'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof PatientOutputDTO
-     */
-    'description'?: string;
-    /**
-     * 
      * @type {number}
      * @memberof PatientOutputDTO
      */
@@ -83,6 +77,54 @@ export interface PatientOutputDTO {
      * @memberof PatientOutputDTO
      */
     'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'maritalStatus'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'religion'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'education'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'occupation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'income'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'dateOfAdmission'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalHistory'?: string;
     /**
      * 
      * @type {Array<MeetingOutputDTO>}

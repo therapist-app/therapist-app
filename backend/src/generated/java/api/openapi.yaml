@@ -300,6 +300,39 @@ paths:
       - coach-meeting-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /coach/patients/{patientId}/exercises{exerciseId}:
+    put:
+      operationId: updateExercise
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseInputDTO'
+        required: true
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/register:
     post:
       description: "@Therapist app: pleas use /coach/patients/register as endpoint"
@@ -524,6 +557,56 @@ paths:
       - coach-meeting-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /coach/patients/{patientId}/exercises:
+    get:
+      operationId: getAllExercises
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExercisesOverviewOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createExercise_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExerciseInputDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/register:
     post:
       operationId: registerPatient_1
@@ -667,6 +750,32 @@ paths:
       tags:
       - patient-app-application
       x-accepts: text/plain
+  /coach/patients/{patientId}/exercises/{exerciseId}:
+    delete:
+      operationId: deleteExercise
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-exercise-controller
+      x-accepts: application/json
 components:
   schemas:
     ChangePasswordDTO:
@@ -816,6 +925,78 @@ components:
           - CANCELLED
           type: string
       type: object
+    ExerciseElementInputDTO:
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      type: object
+    ExerciseFileElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/FileData'
+        type: object
+      type: object
+    ExerciseImageElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/ImageData'
+        type: object
+      type: object
+    ExerciseInputDTO:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        pictureData:
+          type: string
+        exerciseElements:
+          items:
+            $ref: '#/components/schemas/ExerciseInputDTO_exerciseElements_inner'
+          type: array
+      type: object
+    ExerciseTextInputElementInputDTO:
+      allOf:
+      - $ref: '#/components/schemas/ExerciseElementInputDTO'
+      - properties:
+          data:
+            $ref: '#/components/schemas/TextInputData'
+        type: object
+      type: object
+    FileData:
+      example:
+        name: name
+        id: id
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+      type: object
+    ImageData:
+      properties:
+        id:
+          type: string
+        alt:
+          type: string
+      type: object
+    TextInputData:
+      properties:
+        label:
+          type: string
+        placeholder:
+          type: string
+        required:
+          type: boolean
+      type: object
     CreatePatientDTO:
       properties:
         email:
@@ -890,78 +1071,6 @@ components:
           type: string
         requestMessage:
           type: string
-      type: object
-    ExerciseElementInputDTO:
-      discriminator:
-        propertyName: type
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-      type: object
-    ExerciseFileElementInputDTO:
-      allOf:
-      - $ref: '#/components/schemas/ExerciseElementInputDTO'
-      - properties:
-          data:
-            $ref: '#/components/schemas/FileData'
-        type: object
-      type: object
-    ExerciseImageElementInputDTO:
-      allOf:
-      - $ref: '#/components/schemas/ExerciseElementInputDTO'
-      - properties:
-          data:
-            $ref: '#/components/schemas/ImageData'
-        type: object
-      type: object
-    ExerciseInputDTO:
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        pictureData:
-          type: string
-        exerciseElements:
-          items:
-            $ref: '#/components/schemas/ExerciseInputDTO_exerciseElements_inner'
-          type: array
-      type: object
-    ExerciseTextInputElementInputDTO:
-      allOf:
-      - $ref: '#/components/schemas/ExerciseElementInputDTO'
-      - properties:
-          data:
-            $ref: '#/components/schemas/TextInputData'
-        type: object
-      type: object
-    FileData:
-      example:
-        name: name
-        id: id
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-      type: object
-    ImageData:
-      properties:
-        id:
-          type: string
-        alt:
-          type: string
-      type: object
-    TextInputData:
-      properties:
-        label:
-          type: string
-        placeholder:
-          type: string
-        required:
-          type: boolean
       type: object
     CreateMeetingDTO:
       properties:

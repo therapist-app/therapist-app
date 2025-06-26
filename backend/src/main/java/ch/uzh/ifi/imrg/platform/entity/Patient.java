@@ -45,8 +45,46 @@ public class Patient implements Serializable {
   @Column(nullable = true)
   private String address;
 
-  @Column(nullable = true)
-  private String description;
+  @Column private String maritalStatus;
+  @Column private String religion;
+  @Column private String education;
+  @Column private String occupation;
+  @Column private String income;
+  @Column private String dateOfAdmission;
+
+  @Column private String mainComplaints;
+  @Column private String historyOfIllness;
+  @Column private String treatmentHistory;
+  @Column private String pastHistory;
+  @Column private String familyHistory;
+  @Column private String personalHistory;
+
+  @Column private String hpiGeneral;
+  @Column private String hpiDuration;
+  @Column private String hpiOnset;
+  @Column private String hpiCourse;
+  @Column private String hpiPrecipitatingFactors;
+  @Column private String hpiAggravatingRelieving;
+  @Column private String hpiTimeline;
+
+  @Column private String treatmentPast;
+  @Column private String treatmentCurrent;
+  @Column private String pastMedical;
+  @Column private String pastPsych;
+
+  @Column private String familyIllness;
+  @Column private String familySocial;
+
+  @Column private String personalPerinatal;
+  @Column private String personalChildhood;
+  @Column private String personalEducation;
+  @Column private String personalPlay;
+  @Column private String personalAdolescence;
+  @Column private String personalPuberty;
+  @Column private String personalObstetric;
+  @Column private String personalOccupational;
+  @Column private String personalMarital;
+  @Column private String personalPremorbid;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")

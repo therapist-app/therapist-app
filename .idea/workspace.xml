@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/dto/input/CreatePatientDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/dto/input/CreatePatientDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +21,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -43,6 +41,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -63,7 +64,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;11-patient-registration-frontend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;84-patient-create-page&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/therapist-app&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -91,11 +92,23 @@
       <workItem from="1740515439721" duration="223000" />
       <workItem from="1740515701915" duration="25853000" />
       <workItem from="1741013527678" duration="734000" />
+      <workItem from="1750856052585" duration="8469000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
