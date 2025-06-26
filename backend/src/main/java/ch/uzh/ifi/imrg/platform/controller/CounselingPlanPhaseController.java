@@ -38,7 +38,8 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
+      @RequestBody
+          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO);
   }
