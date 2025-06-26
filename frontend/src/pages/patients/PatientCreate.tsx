@@ -134,7 +134,7 @@ const PatientCreate = (): ReactElement => {
         setSnackbarSeverity('success')
         setSnackbarOpen(true)
         setRefreshTherapistCounter((prev) => prev + 1)
-        navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id }))
+        navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id! }))
       } else {
         throw new Error('Patient registration failed')
       }
@@ -660,7 +660,7 @@ const PatientCreate = (): ReactElement => {
             ].map(([label, value, setter, key]) => (
               <Box key={key as string} mt={3}>
                 <Typography variant='subtitle1'>
-                  {label}) {t(`patient_create.${key}`)}
+                  {`${label}) ${t(`patient_create.${key}`)}`}
                 </Typography>
                 <TextField
                   fullWidth
