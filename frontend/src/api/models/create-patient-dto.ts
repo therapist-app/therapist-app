@@ -61,6 +61,186 @@ export interface CreatePatientDTO {
      * @type {string}
      * @memberof CreatePatientDTO
      */
-    'description'?: string;
+    'maritalStatus'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'religion'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'education'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'occupation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'income'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'dateOfAdmission'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'mainComplaints'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'historyOfIllness'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiGeneral'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiDuration'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiOnset'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiCourse'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiPrecipitatingFactors'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiAggravatingRelieving'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'hpiTimeline'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'treatmentPast'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'treatmentCurrent'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'pastMedical'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'pastPsych'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'familyIllness'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'familySocial'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalPerinatal'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalChildhood'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalEducation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalPlay'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalAdolescence'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalPuberty'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalObstetric'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalOccupational'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalMarital'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePatientDTO
+     */
+    'personalPremorbid'?: string;
 }
 

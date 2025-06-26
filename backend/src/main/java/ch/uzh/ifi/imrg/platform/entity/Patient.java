@@ -45,9 +45,6 @@ public class Patient implements Serializable {
   @Column(nullable = true)
   private String address;
 
-  @Column(nullable = true)
-  private String description;
-
   @Column private String maritalStatus;
   @Column private String religion;
   @Column private String education;

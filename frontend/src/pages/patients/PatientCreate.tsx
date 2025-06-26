@@ -13,17 +13,28 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { useState } from 'react'
+import React, {ReactElement, useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { registerPatient } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
+import {useSelector} from "react-redux";
 
 const PatientCreate = (): ReactElement => {
+
+  const dispatch = useAppDispatch()
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+
+
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
   const [sex, setSex] = useState('')
@@ -64,15 +75,23 @@ const PatientCreate = (): ReactElement => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
 
-  const dispatch = useAppDispatch()
+  const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchTherapist = async (): Promise<void> => {
+      await dispatch(getCurrentlyLoggedInTherapist())
+    }
+
+    fetchTherapist()
+  }, [dispatch, refreshTherapistCounter])
+
   const handleSubmit = async (): Promise<void> => {
     try {
-      await dispatch(
+      const resultAction = await dispatch(
         registerPatient({
           name: name,
           gender: sex,
@@ -114,10 +133,17 @@ const PatientCreate = (): ReactElement => {
         })
       )
 
-      setSnackbarMessage(t('patient_create.patient_register_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
-      navigate('/patients')
+      if (registerPatient.fulfilled.match(resultAction)) {
+        const newPatient = resultAction.payload
+
+        setSnackbarMessage(t('patient_create.patient_register_success'))
+        setSnackbarSeverity('success')
+        setSnackbarOpen(true)
+        setRefreshTherapistCounter((prev) => prev + 1)
+        navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id }))
+      } else {
+        throw new Error('Patient registration failed')
+      }
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)

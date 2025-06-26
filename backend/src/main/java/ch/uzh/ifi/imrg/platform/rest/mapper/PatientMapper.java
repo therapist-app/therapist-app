@@ -2,11 +2,9 @@ package ch.uzh.ifi.imrg.platform.rest.mapper;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.TherapySession;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapySessionOutputDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -27,9 +25,13 @@ public interface PatientMapper {
   @Mapping(source = "gender", target = "gender")
   @Mapping(source = "age", target = "age")
   @Mapping(source = "email", target = "email")
-  @Mapping(source = "description", target = "description")
+  @Mapping(source = "maritalStatus", target = "maritalStatus")
+  @Mapping(source = "religion", target = "religion")
+  @Mapping(source = "education", target = "education")
+  @Mapping(source = "occupation", target = "occupation")
+  @Mapping(source = "income", target = "income")
+  @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   @Mapping(source = "meetings", target = "meetingsOutputDTO")
-  @Mapping(source = "therapySessions", target = "therapySessionsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
   @Mapping(source = "name", target = "name")
@@ -46,10 +48,6 @@ public interface PatientMapper {
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
   @Mapping(source = "mainComplaints", target = "mainComplaints")
   @Mapping(source = "historyOfIllness", target = "historyOfIllness")
-  @Mapping(source = "treatmentHistory", target = "treatmentHistory")
-  @Mapping(source = "pastHistory", target = "pastHistory")
-  @Mapping(source = "familyHistory", target = "familyHistory")
-  @Mapping(source = "personalHistory", target = "personalHistory")
   @Mapping(source = "hpiGeneral", target = "hpiGeneral")
   @Mapping(source = "hpiDuration", target = "hpiDuration")
   @Mapping(source = "hpiOnset", target = "hpiOnset")
@@ -76,16 +74,11 @@ public interface PatientMapper {
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 
   default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
-    if (meetings == null) return null;
+    if (meetings == null) {
+      return null;
+    }
     return meetings.stream()
         .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
-        .collect(Collectors.toList());
-  }
-
-  default List<TherapySessionOutputDTO> mapTherapySessions(List<TherapySession> therapySessions) {
-    if (therapySessions == null) return null;
-    return therapySessions.stream()
-        .map(TherapySessionMapper.INSTANCE::convertEntityToTherapySessionOutputDTO)
         .collect(Collectors.toList());
   }
 }

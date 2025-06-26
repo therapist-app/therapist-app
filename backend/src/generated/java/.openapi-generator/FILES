@@ -7,6 +7,7 @@ api/openapi.yaml
 build.gradle
 build.sbt
 docs/ChangePasswordDTOPatientAPI.md
+docs/CoachExerciseControllerPatientAPI.md
 docs/CoachMeetingControllerPatientAPI.md
 docs/CoachPatientControllerPatientAPI.md
 docs/CompleteConversationOutputDTOPatientAPI.md
@@ -59,6 +60,7 @@ gradlew.bat
 pom.xml
 settings.gradle
 src/main/AndroidManifest.xml
+src/main/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
@@ -113,6 +115,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutSharingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/TextInputDataPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
