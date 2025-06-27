@@ -46,15 +46,7 @@ public interface PatientMapper {
   @Mapping(source = "occupation", target = "occupation")
   @Mapping(source = "income", target = "income")
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
-  @Mapping(source = "mainComplaints", target = "mainComplaints")
-  @Mapping(source = "historyOfIllness", target = "historyOfIllness")
-  @Mapping(source = "hpiGeneral", target = "hpiGeneral")
-  @Mapping(source = "hpiDuration", target = "hpiDuration")
-  @Mapping(source = "hpiOnset", target = "hpiOnset")
-  @Mapping(source = "hpiCourse", target = "hpiCourse")
-  @Mapping(source = "hpiPrecipitatingFactors", target = "hpiPrecipitatingFactors")
-  @Mapping(source = "hpiAggravatingRelieving", target = "hpiAggravatingRelieving")
-  @Mapping(source = "hpiTimeline", target = "hpiTimeline")
+  @Mapping(source = "complaints", target = "complaints")
   @Mapping(source = "treatmentPast", target = "treatmentPast")
   @Mapping(source = "treatmentCurrent", target = "treatmentCurrent")
   @Mapping(source = "pastMedical", target = "pastMedical")
@@ -72,6 +64,10 @@ public interface PatientMapper {
   @Mapping(source = "personalMarital", target = "personalMarital")
   @Mapping(source = "personalPremorbid", target = "personalPremorbid")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
+
+  List<Complaint> complaintDtoListToComplaintList(List<ComplaintDTO> complaintDTOs);
+
+  Complaint complaintDtoToComplaint(ComplaintDTO complaintDTO);
 
   default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
     if (meetings == null) {

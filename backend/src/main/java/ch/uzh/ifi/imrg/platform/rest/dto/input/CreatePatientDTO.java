@@ -16,15 +16,7 @@ public class CreatePatientDTO {
   private String occupation;
   private String income;
   private String dateOfAdmission;
-  private String mainComplaints;
-  private String historyOfIllness;
-  private String hpiGeneral;
-  private String hpiDuration;
-  private String hpiOnset;
-  private String hpiCourse;
-  private String hpiPrecipitatingFactors;
-  private String hpiAggravatingRelieving;
-  private String hpiTimeline;
+  private List<ComplaintDTO> complaints;
   private String treatmentPast;
   private String treatmentCurrent;
   private String pastMedical;
