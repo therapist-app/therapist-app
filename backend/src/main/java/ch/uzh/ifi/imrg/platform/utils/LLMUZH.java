@@ -69,7 +69,9 @@ public class LLMUZH implements LLM {
         && response.getBody().getChoices() != null
         && !response.getBody().getChoices().isEmpty()) {
       RemoteResponse.Choice choice = response.getBody().getChoices().get(0);
-      return choice.getMessage().getContent();
+      String rawContent = choice.getMessage().getContent();
+      String filteredContent = rawContent.replaceAll("(?s)<think>.*?</think>", "").trim();
+      return filteredContent;
     }
 
     throw new Error("Did not find message");

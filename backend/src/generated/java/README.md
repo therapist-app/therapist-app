@@ -84,9 +84,9 @@ Please follow the [installation](#installation) instruction and execute the foll
 import ch.uzh.ifi.imrg.generated.invoker.*;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.model.*;
-import ch.uzh.ifi.imrg.generated.api.CoachExerciseControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.CoachChatbotControllerPatientAPI;
 
-public class CoachExerciseControllerPatientAPIExample {
+public class CoachChatbotControllerPatientAPIExample {
 
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -98,13 +98,13 @@ public class CoachExerciseControllerPatientAPIExample {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachExerciseControllerPatientAPI apiInstance = new CoachExerciseControllerPatientAPI(defaultClient);
+        CoachChatbotControllerPatientAPI apiInstance = new CoachChatbotControllerPatientAPI(defaultClient);
         String patientId = "patientId_example"; // String | 
-        ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI = new ExerciseInputDTOPatientAPI(); // ExerciseInputDTOPatientAPI | 
+        CreateChatbotDTOPatientAPI createChatbotDTOPatientAPI = new CreateChatbotDTOPatientAPI(); // CreateChatbotDTOPatientAPI | 
         try {
-            apiInstance.createExercise(patientId, exerciseInputDTOPatientAPI);
+            apiInstance.createChatbot(patientId, createChatbotDTOPatientAPI);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachExerciseControllerPatientAPI#createExercise");
+            System.err.println("Exception when calling CoachChatbotControllerPatientAPI#createChatbot");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -121,6 +121,9 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*CoachChatbotControllerPatientAPI* | [**createChatbot**](docs/CoachChatbotControllerPatientAPI.md#createChatbot) | **POST** /coach/patients/{patientId}/chatbot | 
+*CoachChatbotControllerPatientAPI* | [**getChatbotConfigurations**](docs/CoachChatbotControllerPatientAPI.md#getChatbotConfigurations) | **GET** /coach/patients/{patientId}/chatbot | 
+*CoachChatbotControllerPatientAPI* | [**updateChatbot**](docs/CoachChatbotControllerPatientAPI.md#updateChatbot) | **PUT** /coach/patients/{patientId}/chatbot | 
 *CoachExerciseControllerPatientAPI* | [**createExercise**](docs/CoachExerciseControllerPatientAPI.md#createExercise) | **POST** /coach/patients/{patientId}/exercises | 
 *CoachExerciseControllerPatientAPI* | [**deleteExercise**](docs/CoachExerciseControllerPatientAPI.md#deleteExercise) | **DELETE** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachExerciseControllerPatientAPI* | [**getAllExercises**](docs/CoachExerciseControllerPatientAPI.md#getAllExercises) | **GET** /coach/patients/{patientId}/exercises | 
@@ -168,9 +171,11 @@ Class | Method | HTTP request | Description
 ## Documentation for Models
 
  - [ChangePasswordDTOPatientAPI](docs/ChangePasswordDTOPatientAPI.md)
+ - [ChatbotConfigurationOutputDTOPatientAPI](docs/ChatbotConfigurationOutputDTOPatientAPI.md)
  - [CoachGetAllJournalEntriesDTOPatientAPI](docs/CoachGetAllJournalEntriesDTOPatientAPI.md)
  - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
+ - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
@@ -206,6 +211,7 @@ Class | Method | HTTP request | Description
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
  - [PutSharingDTOPatientAPI](docs/PutSharingDTOPatientAPI.md)
  - [TextInputDataPatientAPI](docs/TextInputDataPatientAPI.md)
+ - [UpdateChatbotDTOPatientAPI](docs/UpdateChatbotDTOPatientAPI.md)
  - [UpdateMeetingDTOPatientAPI](docs/UpdateMeetingDTOPatientAPI.md)
 
 
