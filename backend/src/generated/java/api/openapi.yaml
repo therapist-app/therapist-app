@@ -389,6 +389,99 @@ paths:
       - coach-exercise-controller
       x-content-type: application/json
       x-accepts: application/json
+  /coach/patients/{patientId}/chatbot:
+    get:
+      operationId: getChatbotConfigurations
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "409":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Conflict
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ChatbotConfigurationOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-chatbot-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createChatbot
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatbotDTO'
+        required: true
+      responses:
+        "409":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Conflict
+        "201":
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-chatbot-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
+    put:
+      operationId: updateChatbot
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateChatbotDTO'
+        required: true
+      responses:
+        "409":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Conflict
+        "200":
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-chatbot-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/register:
     post:
       description: "@Therapist app: pleas use /coach/patients/register as endpoint"
@@ -1100,6 +1193,19 @@ components:
         required:
           type: boolean
       type: object
+    UpdateChatbotDTO:
+      properties:
+        id:
+          type: string
+        chatbotRole:
+          type: string
+        chatbotTone:
+          type: string
+        welcomeMessage:
+          type: string
+        active:
+          type: boolean
+      type: object
     CreatePatientDTO:
       properties:
         email:
@@ -1198,6 +1304,17 @@ components:
           type: string
         location:
           type: string
+      type: object
+    CreateChatbotDTO:
+      properties:
+        chatbotRole:
+          type: string
+        chatbotTone:
+          type: string
+        welcomeMessage:
+          type: string
+        active:
+          type: boolean
       type: object
     GetAllJournalEntriesDTO:
       example:
@@ -1436,6 +1553,25 @@ components:
           type: string
         feedback:
           type: string
+      type: object
+    ChatbotConfigurationOutputDTO:
+      example:
+        chatbotTone: chatbotTone
+        chatbotRole: chatbotRole
+        welcomeMessage: welcomeMessage
+        active: true
+        id: id
+      properties:
+        id:
+          type: string
+        chatbotRole:
+          type: string
+        chatbotTone:
+          type: string
+        welcomeMessage:
+          type: string
+        active:
+          type: boolean
       type: object
     ExerciseInputDTO_exerciseElements_inner:
       oneOf:
