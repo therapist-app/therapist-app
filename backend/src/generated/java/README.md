@@ -191,6 +191,8 @@ Class | Method | HTTP request | Description
  - [ExerciseInputDTOExerciseElementsInnerPatientAPI](docs/ExerciseInputDTOExerciseElementsInnerPatientAPI.md)
  - [ExerciseInputDTOPatientAPI](docs/ExerciseInputDTOPatientAPI.md)
  - [ExerciseMediaOutputDTOPatientAPI](docs/ExerciseMediaOutputDTOPatientAPI.md)
+ - [ExerciseMoodInputDTOPatientAPI](docs/ExerciseMoodInputDTOPatientAPI.md)
+ - [ExerciseMoodOutputDTOPatientAPI](docs/ExerciseMoodOutputDTOPatientAPI.md)
  - [ExerciseOutputDTOExerciseElementsInnerPatientAPI](docs/ExerciseOutputDTOExerciseElementsInnerPatientAPI.md)
  - [ExerciseOutputDTOPatientAPI](docs/ExerciseOutputDTOPatientAPI.md)
  - [ExerciseTextInputElementInputDTOPatientAPI](docs/ExerciseTextInputElementInputDTOPatientAPI.md)

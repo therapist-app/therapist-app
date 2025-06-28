@@ -34,6 +34,8 @@ docs/ExerciseInformationOutputDTOPatientAPI.md
 docs/ExerciseInputDTOExerciseElementsInnerPatientAPI.md
 docs/ExerciseInputDTOPatientAPI.md
 docs/ExerciseMediaOutputDTOPatientAPI.md
+docs/ExerciseMoodInputDTOPatientAPI.md
+docs/ExerciseMoodOutputDTOPatientAPI.md
 docs/ExerciseOutputDTOExerciseElementsInnerPatientAPI.md
 docs/ExerciseOutputDTOPatientAPI.md
 docs/ExerciseTextInputElementInputDTOPatientAPI.md
@@ -109,6 +111,8 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationOutputDTOPatien
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOExerciseElementsInnerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseMediaOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseMoodInputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseMoodOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseOutputDTOExerciseElementsInnerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseTextInputElementInputDTOPatientAPI.java
@@ -162,6 +166,8 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInformationOutputDTOPatien
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOExerciseElementsInnerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseInputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseMediaOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseMoodInputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseMoodOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseOutputDTOExerciseElementsInnerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseTextInputElementInputDTOPatientAPITest.java
