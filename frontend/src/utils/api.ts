@@ -26,16 +26,6 @@ const api = axios.create({
   withCredentials: true,
 })
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      window.location.href = '/login'
-    }
-    return Promise.reject(error)
-  }
-)
-
 export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
@@ -58,4 +48,20 @@ export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFa
   undefined,
   baseURL,
   api
+)
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        await therapistApi.logoutTherapist()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        window.location.href = '/register'
+      }
+    }
+    return Promise.reject(error)
+  }
 )

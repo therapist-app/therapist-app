@@ -1260,6 +1260,22 @@ components:
           type: string
         feedback:
           type: string
+        moodsBefore:
+          items:
+            $ref: '#/components/schemas/ExerciseMoodInputDTO'
+          type: array
+        moodsAfter:
+          items:
+            $ref: '#/components/schemas/ExerciseMoodInputDTO'
+          type: array
+      type: object
+    ExerciseMoodInputDTO:
+      properties:
+        moodName:
+          type: string
+        moodScore:
+          format: int32
+          type: integer
       type: object
     CreateConversationOutputDTO:
       example:
@@ -1542,8 +1558,18 @@ components:
     ExerciseInformationOutputDTO:
       example:
         feedback: feedback
+        moodsAfter:
+        - moodName: moodName
+          moodScore: 0
+        - moodName: moodName
+          moodScore: 0
         startTime: 2000-01-23T04:56:07.000+00:00
         endTime: 2000-01-23T04:56:07.000+00:00
+        moodsBefore:
+        - moodName: moodName
+          moodScore: 0
+        - moodName: moodName
+          moodScore: 0
       properties:
         startTime:
           format: date-time
@@ -1553,6 +1579,25 @@ components:
           type: string
         feedback:
           type: string
+        moodsBefore:
+          items:
+            $ref: '#/components/schemas/ExerciseMoodOutputDTO'
+          type: array
+        moodsAfter:
+          items:
+            $ref: '#/components/schemas/ExerciseMoodOutputDTO'
+          type: array
+      type: object
+    ExerciseMoodOutputDTO:
+      example:
+        moodName: moodName
+        moodScore: 0
+      properties:
+        moodName:
+          type: string
+        moodScore:
+          format: int32
+          type: integer
       type: object
     ChatbotConfigurationOutputDTO:
       example:

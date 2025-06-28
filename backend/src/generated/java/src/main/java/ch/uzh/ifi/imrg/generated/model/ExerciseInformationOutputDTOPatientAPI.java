@@ -15,12 +15,16 @@ package ch.uzh.ifi.imrg.generated.model;
 
 import java.util.Objects;
 import java.util.Arrays;
+import ch.uzh.ifi.imrg.generated.model.ExerciseMoodOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -30,7 +34,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_START_TIME,
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_END_TIME,
-  ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_FEEDBACK
+  ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_FEEDBACK,
+  ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_MOODS_BEFORE,
+  ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_MOODS_AFTER
 })
 @JsonTypeName("ExerciseInformationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -43,6 +49,12 @@ public class ExerciseInformationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_FEEDBACK = "feedback";
   private String feedback;
+
+  public static final String JSON_PROPERTY_MOODS_BEFORE = "moodsBefore";
+  private List<ExerciseMoodOutputDTOPatientAPI> moodsBefore;
+
+  public static final String JSON_PROPERTY_MOODS_AFTER = "moodsAfter";
+  private List<ExerciseMoodOutputDTOPatientAPI> moodsAfter;
 
   public ExerciseInformationOutputDTOPatientAPI() {
   }
@@ -124,6 +136,74 @@ public class ExerciseInformationOutputDTOPatientAPI {
     this.feedback = feedback;
   }
 
+
+  public ExerciseInformationOutputDTOPatientAPI moodsBefore(List<ExerciseMoodOutputDTOPatientAPI> moodsBefore) {
+    
+    this.moodsBefore = moodsBefore;
+    return this;
+  }
+
+  public ExerciseInformationOutputDTOPatientAPI addMoodsBeforeItem(ExerciseMoodOutputDTOPatientAPI moodsBeforeItem) {
+    if (this.moodsBefore == null) {
+      this.moodsBefore = new ArrayList<>();
+    }
+    this.moodsBefore.add(moodsBeforeItem);
+    return this;
+  }
+
+   /**
+   * Get moodsBefore
+   * @return moodsBefore
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MOODS_BEFORE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<ExerciseMoodOutputDTOPatientAPI> getMoodsBefore() {
+    return moodsBefore;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_MOODS_BEFORE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMoodsBefore(List<ExerciseMoodOutputDTOPatientAPI> moodsBefore) {
+    this.moodsBefore = moodsBefore;
+  }
+
+
+  public ExerciseInformationOutputDTOPatientAPI moodsAfter(List<ExerciseMoodOutputDTOPatientAPI> moodsAfter) {
+    
+    this.moodsAfter = moodsAfter;
+    return this;
+  }
+
+  public ExerciseInformationOutputDTOPatientAPI addMoodsAfterItem(ExerciseMoodOutputDTOPatientAPI moodsAfterItem) {
+    if (this.moodsAfter == null) {
+      this.moodsAfter = new ArrayList<>();
+    }
+    this.moodsAfter.add(moodsAfterItem);
+    return this;
+  }
+
+   /**
+   * Get moodsAfter
+   * @return moodsAfter
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MOODS_AFTER)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<ExerciseMoodOutputDTOPatientAPI> getMoodsAfter() {
+    return moodsAfter;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_MOODS_AFTER)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMoodsAfter(List<ExerciseMoodOutputDTOPatientAPI> moodsAfter) {
+    this.moodsAfter = moodsAfter;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -135,12 +215,14 @@ public class ExerciseInformationOutputDTOPatientAPI {
     ExerciseInformationOutputDTOPatientAPI exerciseInformationOutputDTO = (ExerciseInformationOutputDTOPatientAPI) o;
     return Objects.equals(this.startTime, exerciseInformationOutputDTO.startTime) &&
         Objects.equals(this.endTime, exerciseInformationOutputDTO.endTime) &&
-        Objects.equals(this.feedback, exerciseInformationOutputDTO.feedback);
+        Objects.equals(this.feedback, exerciseInformationOutputDTO.feedback) &&
+        Objects.equals(this.moodsBefore, exerciseInformationOutputDTO.moodsBefore) &&
+        Objects.equals(this.moodsAfter, exerciseInformationOutputDTO.moodsAfter);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, feedback);
+    return Objects.hash(startTime, endTime, feedback, moodsBefore, moodsAfter);
   }
 
   @Override
@@ -150,6 +232,8 @@ public class ExerciseInformationOutputDTOPatientAPI {
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    feedback: ").append(toIndentedString(feedback)).append("\n");
+    sb.append("    moodsBefore: ").append(toIndentedString(moodsBefore)).append("\n");
+    sb.append("    moodsAfter: ").append(toIndentedString(moodsAfter)).append("\n");
     sb.append("}");
     return sb.toString();
   }

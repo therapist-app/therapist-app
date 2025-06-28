@@ -13,12 +13,16 @@
 
 package ch.uzh.ifi.imrg.generated.model;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseMoodInputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -59,6 +63,22 @@ public class ExerciseInformationInputDTOPatientAPITest {
     @Test
     public void feedbackTest() {
         // TODO: test feedback
+    }
+
+    /**
+     * Test the property 'moodsBefore'
+     */
+    @Test
+    public void moodsBeforeTest() {
+        // TODO: test moodsBefore
+    }
+
+    /**
+     * Test the property 'moodsAfter'
+     */
+    @Test
+    public void moodsAfterTest() {
+        // TODO: test moodsAfter
     }
 
 }
