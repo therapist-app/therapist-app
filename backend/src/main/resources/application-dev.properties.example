@@ -11,3 +11,5 @@ LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/v1/chat/completions
 LOCAL_LLM_API_KEY=ReplaceWithYourLocalLLMAPIKey
 
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
+
+APP_ENVIRONMENT=dev
