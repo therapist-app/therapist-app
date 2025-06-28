@@ -12,6 +12,7 @@ public class EnvironmentVariables {
   public static String LOCAL_LLM_URL;
   public static String LOCAL_LLM_API_KEY;
   public static String PATIENT_APP_URL;
+  public static Boolean IS_PRODUCTION;
 
   @Autowired
   public EnvironmentVariables(
@@ -25,5 +26,12 @@ public class EnvironmentVariables {
     EnvironmentVariables.LOCAL_LLM_URL = LOCAL_LLM_URL;
     EnvironmentVariables.LOCAL_LLM_API_KEY = LOCAL_LLM_API_KEY;
     EnvironmentVariables.PATIENT_APP_URL = PATIENT_APP_URL;
+    EnvironmentVariables.IS_PRODUCTION = isProductionEnvironment();
+  }
+
+  private boolean isProductionEnvironment() {
+    String environment = System.getProperty("env", "dev");
+    System.out.println("environment: " + environment);
+    return "prod".equalsIgnoreCase(environment);
   }
 }
