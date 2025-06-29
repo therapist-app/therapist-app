@@ -5,18 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Complaint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/ComplaintDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Complaint.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Complaint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/entity/Patient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/CreatePatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/locales/en.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/locales/ua.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/locales/ua.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/ComplaintDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/input/ComplaintDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/CounselingPlanDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/CounselingPlanDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/AddCounselingPlanExercise.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/AddCounselingPlanExercise.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanExerciseDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanExerciseDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanPhaseDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanPhaseDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanPhaseGoalDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CounselingPlanPhaseGoalDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CreateCounselingPlanPhaseGoal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CreateCounselingPlanPhaseGoal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CreateCounselingPlanePhase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/counselingPlan/components/CreateCounselingPlanePhase.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/dashboard/Dashboard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/store/counselingPlanSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/counselingPlanSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/routes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

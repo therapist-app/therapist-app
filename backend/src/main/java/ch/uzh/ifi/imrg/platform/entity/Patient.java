@@ -52,7 +52,11 @@ public class Patient implements Serializable {
   @Column private String income;
   @Column private String dateOfAdmission;
 
-  @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "patient",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
   private List<Complaint> complaints = new ArrayList<>();
 
   @Column private String treatmentPast;

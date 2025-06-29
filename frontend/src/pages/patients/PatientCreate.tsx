@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -12,12 +13,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 
 import Layout from '../../generalComponents/Layout'
 import { registerPatient } from '../../store/patientSlice'
@@ -25,7 +26,52 @@ import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import { v4 as uuidv4 } from 'uuid';
+
+type Complaint = {
+  id: string;
+  mainComplaint: string;
+  duration: string;
+  onset: string;
+  course: string;
+  precipitatingFactors: string;
+  aggravatingRelieving: string;
+  timeline: string;
+  disturbances: string;
+  suicidalIdeation: string;
+  negativeHistory: string;
+};
+
+type CreatePatientDTO = {
+  name: string;
+  gender: string;
+  age: number;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  maritalStatus: string;
+  religion: string;
+  education: string;
+  occupation: string;
+  income: string;
+  dateOfAdmission: string;
+  complaints: Complaint[]; // ✅ this fixes your error!
+  treatmentPast: string;
+  treatmentCurrent: string;
+  pastMedical: string;
+  pastPsych: string;
+  familyIllness: string;
+  familySocial: string;
+  personalPerinatal: string;
+  personalChildhood: string;
+  personalEducation: string;
+  personalPlay: string;
+  personalAdolescence: string;
+  personalPuberty: string;
+  personalObstetric: string;
+  personalOccupational: string;
+  personalMarital: string;
+  personalPremorbid: string;
+};
 
 const PatientCreate = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -45,7 +91,7 @@ const PatientCreate = (): ReactElement => {
   const [address, setAddress] = useState('')
   const [dateOfAdmission, setDateOfAdmission] = useState('')
 
-  const [complaints, setComplaints] = useState([
+  const [complaints, setComplaints] = useState<Complaint[]>([
     {
       id: uuidv4(),
       mainComplaint: '',
@@ -86,34 +132,41 @@ const PatientCreate = (): ReactElement => {
 
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
-  const handleChange = (index, field, value) => {
+  const handleChange = (
+    index: number,
+    field: keyof Complaint,
+    value: string
+  ): void => {
     const updated = [...complaints];
-    updated[index][field] = value;
+    updated[index] = {
+      ...updated[index],
+      [field]: value
+    };
     setComplaints(updated);
   };
 
-  const handleAddComplaint = () => {
-  setComplaints([
-    ...complaints,
-    {
-      id: uuidv4(),
-      mainComplaint: '',
-      duration: '',
-      onset: '',
-      course: '',
-      precipitatingFactors: '',
-      aggravatingRelieving: '',
-      timeline: '',
-      disturbances: '',
-      suicidalIdeation: '',
-      negativeHistory: '',
-    },
-  ]);
-};
+  const handleAddComplaint = ():void => {
+    setComplaints([
+      ...complaints,
+      {
+        id: uuidv4(),
+        mainComplaint: '',
+        duration: '',
+        onset: '',
+        course: '',
+        precipitatingFactors: '',
+        aggravatingRelieving: '',
+        timeline: '',
+        disturbances: '',
+        suicidalIdeation: '',
+        negativeHistory: '',
+      },
+    ])
+  }
 
-  const handleRemoveComplaint = (id: string) => {
-    setComplaints((prev) => prev.filter((c) => c.id !== id));
-  };
+  const handleRemoveComplaint = (id: string):void => {
+    setComplaints((prev) => prev.filter((c) => c.id !== id))
+  }
 
   useEffect(() => {
     const fetchTherapist = async (): Promise<void> => {
@@ -156,7 +209,7 @@ const PatientCreate = (): ReactElement => {
           personalOccupational: personalOccupational,
           personalMarital: personalMarital,
           personalPremorbid: personalPremorbid,
-        })
+        } as CreatePatientDTO)
       )
 
       if (registerPatient.fulfilled.match(resultAction)) {
@@ -194,33 +247,8 @@ const PatientCreate = (): ReactElement => {
       backgroundColor: '#7C4DFF',
     },
     margin: 1,
-  } as const
-  const disabledButtonStyles = {
-    ...commonButtonStyles,
-    backgroundImage: 'lightgrey',
-    '&:hover': {
-      disabled: 'true',
-    },
-  } as const
-  const cancelButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'white',
-    color: '#635BFF',
-    '&:hover': {
-      backgroundColor: '#f0f0f0',
-    },
-    margin: 1,
-  } as const
-  const dialogStyle = {
-    width: '500px',
-    height: '300px',
   }
+
 
   return (
     <Layout>
@@ -378,14 +406,14 @@ const PatientCreate = (): ReactElement => {
 
               {complaints.length > 1 && (
                 <IconButton
-                  edge="end"
-                  aria-label="delete"
+                  edge='end'
+                  aria-label='delete'
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent accordion toggle
-                    handleRemoveComplaint(complaint.id);
+                    e.stopPropagation() // Prevent accordion toggle
+                    handleRemoveComplaint(complaint.id)
                   }}
                 >
-                  <DeleteIcon color="error" />
+                  <DeleteIcon color='error' />
                 </IconButton>
               )}
             </AccordionSummary>
@@ -394,7 +422,9 @@ const PatientCreate = (): ReactElement => {
                 fullWidth
                 label={t('patient_create.main_complaints')}
                 value={complaint.mainComplaint}
-                onChange={(e) => handleChange(index, 'patient_create.main_complaints', e.target.value)}
+                onChange={(e) =>
+                  handleChange(index, 'mainComplaint', e.target.value)
+                }
                 sx={{ mb: 2 }}
               />
               <Grid container spacing={2}>
@@ -403,7 +433,9 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_duration')}
                     value={complaint.duration}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_duration', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, 'duration', e.target.value)
+                    }
                     placeholder='e.g 6 months'
                   />
                 </Grid>
@@ -413,7 +445,9 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_onset')}
                     value={complaint.onset}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_onset', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, 'onset', e.target.value)
+                    }
                   >
                     <MenuItem value='abrupt'>{t('patient_create.onset_abrupt')}</MenuItem>
                     <MenuItem value='acute'>{t('patient_create.onset_acute')}</MenuItem>
@@ -426,7 +460,9 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_course')}
                     value={complaint.course}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_course', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, 'course', e.target.value)
+                    }
                     placeholder='e.g., continuous, episodic'
                   />
                 </Grid>
@@ -435,7 +471,13 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_precipitating_factors')}
                     value={complaint.precipitatingFactors}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_precipitating_factors', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(
+                        index,
+                        'precipitatingFactors',
+                        e.target.value
+                      )
+                    }
                     multiline
                     rows={2}
                     placeholder='e.g., recent trauma, grief'
@@ -446,7 +488,13 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_aggravating_relieving')}
                     value={complaint.precipitatingFactors}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_aggravating_relieving', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(
+                        index,
+                        'aggravatingRelieving',
+                        e.target.value
+                      )
+                    }
                     multiline
                     rows={2}
                     placeholder={t('patient_create.hpi_aggravating_relieving_placeholder')}
@@ -457,7 +505,9 @@ const PatientCreate = (): ReactElement => {
                     fullWidth
                     label={t('patient_create.hpi_timeline')}
                     value={complaint.timeline}
-                    onChange={(e) => handleChange(index, 'patient_create.hpi_timeline', e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, 'timeline', e.target.value)
+                    }
                     multiline
                     rows={3}
                     placeholder={t('patient_create.hpi_timeline_placeholder')}
@@ -476,7 +526,9 @@ const PatientCreate = (): ReactElement => {
                       fullWidth
                       label={t('patient_create.hpi_disturbances')}
                       value={complaint.disturbances}
-                      onChange={(e) => handleChange(index, 'patient_create.hpi_disturbances', e.target.value)}
+                      onChange={(e) =>
+                        handleChange(index, 'disturbances', e.target.value)
+                      }
                       placeholder={t('patient_create.hpi_disturbances_placeholder')}
                       multiline
                       rows={2}
@@ -486,7 +538,9 @@ const PatientCreate = (): ReactElement => {
                       fullWidth
                       label={t('patient_create.hpi_suicidal_ideation')}
                       value={complaint.suicidalIdeation}
-                      onChange={(e) => handleChange(index, 'patient_create.hpi_suicidal_ideation', e.target.value)}
+                      onChange={(e) =>
+                        handleChange(index, 'suicidalIdeation', e.target.value)
+                      }
                       placeholder={t('patient_create.yes_no_explanation')}
                       multiline
                       rows={2}
@@ -496,7 +550,9 @@ const PatientCreate = (): ReactElement => {
                       fullWidth
                       label={t('patient_create.hpi_negative_history')}
                       value={complaint.negativeHistory}
-                      onChange={(e) => handleChange(index, 'patient_create.hpi_negative_history', e.target.value)}
+                      onChange={(e) =>
+                        handleChange(index, 'negativeHistory', e.target.value)
+                      }
                       placeholder={t('patient_create.hpi_negative_history_placeholder')}
                       multiline
                       rows={2}
@@ -508,14 +564,14 @@ const PatientCreate = (): ReactElement => {
           </Accordion>
         ))}
         <Button
-          vatiant='contained'
+          variant='contained'
           onClick={handleAddComplaint}
           sx={commonButtonStyles}
-          style={{ minWidth: '200px', maxWidth: '200px' }}>
+          style={{ minWidth: '200px', maxWidth: '200px' }}
+        >
           {t('patient_create.add_another_complaint')}
         </Button>
       </Box>
-
 
       {/* SECTION 3: Treatment History */}
       <Box mt={4}>

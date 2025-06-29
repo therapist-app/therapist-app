@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ComplaintDTO {
+  private String id;
   private String mainComplaint;
   private String duration;
   private String onset;

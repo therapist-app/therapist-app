@@ -1,8 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 @Entity
