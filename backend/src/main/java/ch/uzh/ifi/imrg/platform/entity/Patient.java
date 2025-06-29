@@ -52,20 +52,12 @@ public class Patient implements Serializable {
   @Column private String income;
   @Column private String dateOfAdmission;
 
-  @Column private String mainComplaints;
-  @Column private String historyOfIllness;
-  @Column private String treatmentHistory;
-  @Column private String pastHistory;
-  @Column private String familyHistory;
-  @Column private String personalHistory;
-
-  @Column private String hpiGeneral;
-  @Column private String hpiDuration;
-  @Column private String hpiOnset;
-  @Column private String hpiCourse;
-  @Column private String hpiPrecipitatingFactors;
-  @Column private String hpiAggravatingRelieving;
-  @Column private String hpiTimeline;
+  @OneToMany(
+      mappedBy = "patient",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
+  private List<Complaint> complaints = new ArrayList<>();
 
   @Column private String treatmentPast;
   @Column private String treatmentCurrent;
