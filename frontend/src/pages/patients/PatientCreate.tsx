@@ -468,7 +468,7 @@ const PatientCreate = (): ReactElement => {
                   <TextField
                     fullWidth
                     label={t('patient_create.hpi_aggravating_relieving')}
-                    value={complaint.precipitatingFactors}
+                    value={complaint.aggravatingRelieving}
                     onChange={(e) => handleChange(index, 'aggravatingRelieving', e.target.value)}
                     multiline
                     rows={2}

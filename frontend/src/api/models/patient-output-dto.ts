@@ -15,6 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import type { ComplaintDTO } from './complaint-dto';
+// May contain unused imports in some cases
+// @ts-ignore
 import type { MeetingOutputDTO } from './meeting-output-dto';
 
 /**
@@ -113,6 +116,108 @@ export interface PatientOutputDTO {
      * @memberof PatientOutputDTO
      */
     'dateOfAdmission'?: string;
+    /**
+     * 
+     * @type {Array<ComplaintDTO>}
+     * @memberof PatientOutputDTO
+     */
+    'complaints'?: Array<ComplaintDTO>;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'treatmentPast'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'treatmentCurrent'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'pastMedical'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'pastPsych'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'familyIllness'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'familySocial'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalPerinatal'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalChildhood'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalEducation'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalPlay'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalAdolescence'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalPuberty'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalObstetric'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalOccupational'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalMarital'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
+    'personalPremorbid'?: string;
     /**
      * 
      * @type {Array<MeetingOutputDTO>}

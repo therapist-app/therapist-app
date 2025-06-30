@@ -25,6 +25,11 @@ export const registerPatient = createAsyncThunk(
   }
 )
 
+export const getPatientById = createAsyncThunk('getPatientById', async (patientId: string) => {
+  const response = await patientApi.getPatientById(patientId)
+  return response.data
+})
+
 export const getAllPatientsOfTherapist = createAsyncThunk('getAllPatientsOfTherapist', async () => {
   const response = await patientApi.getPatientsOfTherapist()
   return response.data
@@ -62,7 +67,6 @@ const patientSlice = createSlice({
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
       })
-
       .addCase(getAllPatientsOfTherapist.pending, (state) => {
         state.status = 'loading'
         state.error = null
@@ -72,6 +76,18 @@ const patientSlice = createSlice({
         state.allPatientsOfTherapist = action.payload
       })
       .addCase(getAllPatientsOfTherapist.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+      })
+      .addCase(getPatientById.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getPatientById.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.selectedPatient = action.payload
+      })
+      .addCase(getPatientById.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
       })

@@ -29,6 +29,7 @@ models/chat-completion-with-config-request-dto.ts
 models/chat-message-dto.ts
 models/chatbot-config-dto.ts
 models/chatbot-template-output-dto.ts
+models/complaint-dto.ts
 models/counseling-plan-output-dto.ts
 models/counseling-plan-phase-goal-output-dto.ts
 models/counseling-plan-phase-output-dto.ts

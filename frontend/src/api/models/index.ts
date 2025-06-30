@@ -4,6 +4,7 @@ export * from './chat-completion-with-config-request-dto';
 export * from './chat-message-dto';
 export * from './chatbot-config-dto';
 export * from './chatbot-template-output-dto';
+export * from './complaint-dto';
 export * from './counseling-plan-output-dto';
 export * from './counseling-plan-phase-goal-output-dto';
 export * from './counseling-plan-phase-output-dto';

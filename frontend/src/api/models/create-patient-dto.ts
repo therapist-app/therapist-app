@@ -13,6 +13,9 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { ComplaintDTO } from './complaint-dto';
 
 /**
  * 
@@ -94,58 +97,10 @@ export interface CreatePatientDTO {
     'dateOfAdmission'?: string;
     /**
      * 
-     * @type {string}
+     * @type {Array<ComplaintDTO>}
      * @memberof CreatePatientDTO
      */
-    'mainComplaints'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'historyOfIllness'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiGeneral'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiDuration'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiOnset'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiCourse'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiPrecipitatingFactors'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiAggravatingRelieving'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePatientDTO
-     */
-    'hpiTimeline'?: string;
+    'complaints'?: Array<ComplaintDTO>;
     /**
      * 
      * @type {string}

@@ -1,12 +1,16 @@
 import {
   Button,
+  Card,
+  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
+  Grid,
   TextField,
+  Typography,
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -21,6 +25,7 @@ import {
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
+import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
@@ -37,12 +42,17 @@ const PatientDetail = (): ReactElement => {
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
   )
 
+  const patient = useSelector((state: RootState) =>
+    state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
+  )
+
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
 
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
 
   useEffect(() => {
+    dispatch(getAllPatientsOfTherapist())
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
     dispatch(getAllMeetingsOfPatient(patientId ?? ''))
     dispatch(getAllExercisesOfPatient(patientId ?? ''))
@@ -95,6 +105,63 @@ const PatientDetail = (): ReactElement => {
 
   return (
     <Layout>
+      {patient ? (
+        <Card sx={{ mb: 4, p: 2 }}>
+          <CardContent>
+            <Typography variant='h6' gutterBottom>
+              Patient Overview
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Name
+                </Typography>
+                <Typography>{patient.name}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Age
+                </Typography>
+                <Typography>{patient.age ?? 'N/A'}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Gender
+                </Typography>
+                <Typography>{patient.gender || 'N/A'}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Email
+                </Typography>
+                <Typography sx={{ wordBreak: 'break-word' }}> {patient.email || 'N/A'} </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Phone
+                </Typography>
+                <Typography>{patient.phoneNumber || 'N/A'}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Address
+                </Typography>
+                <Typography>{patient.address || 'N/A'}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant='body2' color='textSecondary'>
+                  Date of Admission
+                </Typography>
+                <Typography>{patient.dateOfAdmission || 'N/A'}</Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      ) : (
+        <Typography variant='h6' sx={{ mb: 3 }}>
+          Loading patient data...
+        </Typography>
+      )}
       <Button
         variant='contained'
         onClick={() =>
