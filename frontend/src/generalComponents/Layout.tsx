@@ -238,13 +238,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           bottom: 0,
           left: drawerWidth,
           right: 0,
-
           backgroundColor: '#b4b6b4',
           display: 'flex',
           gap: '10px',
           justifyContent: 'space-around',
           alignItems: 'center',
           padding: '20px',
+          zIndex: 1000,
         }}
       >
         <TextField
