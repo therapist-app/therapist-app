@@ -3,6 +3,8 @@ package ch.uzh.ifi.imrg.platform.entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,4 +54,11 @@ public class ChatbotTemplate implements Serializable {
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
+
+  @OneToMany(
+      mappedBy = "chatbotTemplate",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ChatbotTemplateDocument> chatbotTemplateDocuments = new ArrayList<>();
 }
