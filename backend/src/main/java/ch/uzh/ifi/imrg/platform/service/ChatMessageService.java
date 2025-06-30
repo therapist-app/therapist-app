@@ -32,33 +32,26 @@ public class ChatMessageService {
   public ChatCompletionResponseDTO chat(
       ChatCompletionWithConfigRequestDTO req, Therapist loggedInTherapist) {
 
-    /* 1 ── Fetch the template that the front-end sent in the request and
-    verify it belongs to the logged-in therapist.                          */
     ChatbotTemplate template =
         chatbotTemplateRepository
             .findByIdAndTherapistId(req.getTemplateId(), loggedInTherapist.getId())
             .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
-    /* 2 ── Build the system prompt from template data (NOT therapist docs).        */
     String systemPrompt = buildSystemPrompt(req.getConfig(), template);
 
-    /* 3 ── Assemble the full message list.                                         */
     List<ChatMessageDTO> msgs = new ArrayList<>();
     msgs.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
-    /* 4 ── Call the LLM and return the assistant’s reply.                          */
     String responseMessage = LLMUZH.callLLM(msgs);
     return new ChatCompletionResponseDTO(responseMessage);
   }
 
-  /** Builds the system prompt using only the documents attached to the template. */
   private String buildSystemPrompt(ChatbotConfigDTO c, ChatbotTemplate template) {
 
     StringBuilder sb = new StringBuilder("You are a helpful assistant.");
 
-    // ── conversational settings ─────────────────────────────────────────────
     if (nonEmpty(c.getChatbotRole()))
       sb.append("\nYour role is **").append(c.getChatbotRole()).append("**.");
     if (nonEmpty(c.getChatbotTone()))
@@ -82,7 +75,6 @@ public class ChatMessageService {
     if (nonEmpty(c.getWelcomeMessage()))
       sb.append("\nYour default welcome message is: “").append(c.getWelcomeMessage()).append("”.");
 
-    // ── general context (time & date) ───────────────────────────────────────
     DateTimeFormatter fmt =
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
     sb.append("\n---\n## General Context\n");
@@ -90,7 +82,6 @@ public class ChatMessageService {
         .append(fmt.format(java.time.Instant.now()))
         .append("\n\n");
 
-    // ── template-specific documents ─────────────────────────────────────────
     if (template.getChatbotTemplateDocuments() != null
         && !template.getChatbotTemplateDocuments().isEmpty()) {
 

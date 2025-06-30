@@ -96,9 +96,6 @@ public class ChatbotTemplateDocumentService {
         .collect(Collectors.toList());
   }
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // Download
-  // ────────────────────────────────────────────────────────────────────────────
   public ChatbotTemplateDocument downloadChatbotTemplateDocument(
       String templateDocumentId, Therapist loggedInTherapist) {
 
@@ -112,9 +109,6 @@ public class ChatbotTemplateDocumentService {
     return templateDocument;
   }
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // Delete
-  // ────────────────────────────────────────────────────────────────────────────
   public void deleteFile(String templateDocumentId, Therapist loggedInTherapist) {
 
     ChatbotTemplateDocument templateDocument =
@@ -131,9 +125,6 @@ public class ChatbotTemplateDocumentService {
         templateDocument.getChatbotTemplate().getId());
   }
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // Helpers
-  // ────────────────────────────────────────────────────────────────────────────
   private void verifyOwnership(ChatbotTemplate template, Therapist therapist) {
     if (!template.getTherapist().getId().equals(therapist.getId())) {
       throw new RuntimeException("Access denied: Template does not belong to therapist.");
