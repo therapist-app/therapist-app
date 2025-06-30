@@ -7,7 +7,6 @@ import {
   CircularProgress,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -38,15 +37,14 @@ import {
 } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
-import { getAllDocumentsOfTemplate } from '../../store/chatbotTemplateDocumentSlice'
 import {
+  getAllDocumentsOfTemplate,
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
-import { chatApi } from '../../utils/api'
-import { chatbotTemplateDocumentApi } from '../../utils/api'
+import { chatApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -91,7 +89,6 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [chatbotAnimation, setChatbotAnimation] = useState('')
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
-  const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
 
   type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
     templateId: string

@@ -3,7 +3,6 @@ import axios from 'axios'
 import {
   ChatbotTemplateControllerApiFactory,
   ChatbotTemplateDocumentControllerApiFactory,
-  ChatbotTemplateDocumentOutputDTO,
   ChatControllerApiFactory,
   CounselingPlanControllerApiFactory,
   CounselingPlanPhaseControllerApiFactory,
