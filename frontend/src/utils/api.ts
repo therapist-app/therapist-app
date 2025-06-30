@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {
   ChatbotTemplateControllerApiFactory,
+  ChatbotTemplateDocumentControllerApiFactory,
   ChatControllerApiFactory,
   CounselingPlanControllerApiFactory,
   CounselingPlanPhaseControllerApiFactory,
@@ -27,6 +28,7 @@ const api = axios.create({
 })
 
 export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
+export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFactory(undefined, baseURL, api)
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
 export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)

@@ -247,6 +247,7 @@ const Dashboard = (): ReactElement => {
     if (!selectedChatbot) {
       return
     }
+    sessionStorage.setItem('chatbotTemplateId', (chatbotTemplateId));
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
         chatbotTemplateId: chatbotTemplateId,
