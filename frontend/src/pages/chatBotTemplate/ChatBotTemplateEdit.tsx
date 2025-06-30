@@ -94,8 +94,8 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
 
   type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
-  templateId: string
-}
+    templateId: string
+  }
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -280,20 +280,20 @@ const ChatBotTemplateEdit: React.FC = () => {
       })
 
       const payload: ChatCompletionWithTemplate = {
-  templateId: chatbotConfig?.id ?? '',
-  config: {
-    chatbotRole,
-    chatbotTone,
-    chatbotLanguage,
-    chatbotVoice,
-    chatbotGender,
-    preConfiguredExercise,
-    additionalExercise,
-    welcomeMessage,
-  },
-  history,
-  message: userPrompt,
-}
+        templateId: chatbotConfig?.id ?? '',
+        config: {
+          chatbotRole: chatbotRole,
+          chatbotTone: chatbotTone,
+          chatbotLanguage: chatbotLanguage,
+          chatbotVoice: chatbotVoice,
+          chatbotGender: chatbotGender,
+          preConfiguredExercise: preConfiguredExercise,
+          additionalExercise: additionalExercise,
+          welcomeMessage: welcomeMessage,
+        },
+        history: history,
+        message: userPrompt,
+      }
 
       const fullText = (await chatApi.chatWithConfig(payload)).data.content ?? ''
 
