@@ -93,6 +93,15 @@ export const removeExerciseFromCounselingPlanPhase = createAsyncThunk(
   }
 )
 
+export const createCounselingPlanPhaseAIGenerated = createAsyncThunk(
+  'counselingPlan/createCounselingPlanPhaseAIGenerated',
+  async (counselingPlanPhaseId: string) => {
+    const response =
+      await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(counselingPlanPhaseId)
+    return response.data
+  }
+)
+
 const counselingPlanSlice = createSlice({
   name: 'counselingPlan',
   initialState: initialState,

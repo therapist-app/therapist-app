@@ -11,6 +11,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +51,17 @@ public class CounselingPlanPhaseService {
     ;
     return CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
         counselingPlanPhase);
+  }
+
+  public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
+      String counselingPlanId) {
+    CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO = new CreateCounselingPlanPhaseDTO();
+    createCounselingPlanPhaseDTO.setPhaseName("Phase 1");
+    createCounselingPlanPhaseDTO.setStartDate(Instant.now());
+    createCounselingPlanPhaseDTO.setEndDate(Instant.now().plus(1, ChronoUnit.DAYS));
+    createCounselingPlanPhaseDTO.setCounselingPlanId(counselingPlanId);
+
+    return createCounselingPlanPhaseDTO;
   }
 
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(

@@ -29,6 +29,12 @@ public class CounselingPlanPhaseController {
     return counselingPlanPhaseService.createCounselingPlanPhase(createCounselingPlanPhaseDTO);
   }
 
+  @PostMapping("/ai-generated/{counselingPlanId}")
+  public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
+      @PathVariable String counselingPlanId) {
+    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(counselingPlanId);
+  }
+
   @PostMapping("/add-exercise")
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(
       @RequestBody AddExerciseToCounselingPlanPhaseDTO addExerciseToCounselingPlanPhaseDTO) {
