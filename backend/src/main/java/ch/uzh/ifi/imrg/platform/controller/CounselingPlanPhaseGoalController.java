@@ -32,6 +32,14 @@ public class CounselingPlanPhaseGoalController {
         createCounselingPlanPhaseGoalDTO);
   }
 
+  @PostMapping("/{counselingPlanPhaseId}")
+  @ResponseStatus(HttpStatus.CREATED)
+  public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
+      @PathVariable String counselingPlanPhaseId) {
+    return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
+        counselingPlanPhaseId);
+  }
+
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(@PathVariable String id) {

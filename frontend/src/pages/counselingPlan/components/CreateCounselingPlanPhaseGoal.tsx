@@ -2,7 +2,11 @@ import { Button, TextField } from '@mui/material'
 import { ReactElement, useState } from 'react'
 
 import { CreateCounselingPlanPhaseGoalDTO } from '../../../api'
-import { createCounselingPlanPhaseGoal } from '../../../store/counselingPlanSlice'
+import {
+  createCounselingPlanPhaseAIGenerated,
+  createCounselingPlanPhaseGoal,
+  createCounselingPlanPhaseGoalAIGenerated,
+} from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateCounselingPlanPhaseGoalProps {
@@ -36,6 +40,18 @@ const CreateCounselingPlanPhaseGoal = ({
     })
   }
 
+  const handleGenrateAI = async (): Promise<void> => {
+    const aiGeneratedPhaseGoal: CreateCounselingPlanPhaseGoalDTO = await dispatch(
+      createCounselingPlanPhaseGoalAIGenerated(counselingPlanPhaseId)
+    ).unwrap()
+    const newFormValues: CreateCounselingPlanPhaseGoalDTO = {
+      ...aiGeneratedPhaseGoal,
+      counselingPlanPhaseId: counselingPlanPhaseId,
+    }
+    setFormValues(newFormValues)
+    setOpen(true)
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
@@ -52,9 +68,14 @@ const CreateCounselingPlanPhaseGoal = ({
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
-          Add a goal
-        </Button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant='contained' onClick={() => setOpen(true)}>
+            Add a goal
+          </Button>
+          <Button variant='contained' color='success' onClick={handleGenrateAI}>
+            Add a goal AI generated
+          </Button>
+        </div>
       ) : (
         <form
           style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}

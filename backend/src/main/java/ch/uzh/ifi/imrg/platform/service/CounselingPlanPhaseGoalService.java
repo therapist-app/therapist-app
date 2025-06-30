@@ -44,6 +44,15 @@ public class CounselingPlanPhaseGoalService {
         counselingPlanPhaseGoal);
   }
 
+  public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
+      String counselingPlanPhaseId) {
+    CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO =
+        new CreateCounselingPlanPhaseGoalDTO();
+    createCounselingPlanPhaseGoalDTO.setGoalName("AI Generated Goal");
+    createCounselingPlanPhaseGoalDTO.setGoalDescription("AI Generated Goal Description");
+    return createCounselingPlanPhaseGoalDTO;
+  }
+
   public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(String id) {
     CounselingPlanPhaseGoal counselingPlanPhaseGoal =
         counselingPlanPhaseGoalRepository.getReferenceById(id);

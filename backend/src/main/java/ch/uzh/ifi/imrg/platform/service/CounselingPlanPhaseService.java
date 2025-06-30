@@ -9,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanExerciseAIGeneratedOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import java.time.Instant;
@@ -62,6 +63,20 @@ public class CounselingPlanPhaseService {
     createCounselingPlanPhaseDTO.setCounselingPlanId(counselingPlanId);
 
     return createCounselingPlanPhaseDTO;
+  }
+
+  public CounselingPlanExerciseAIGeneratedOutputDTO createCounselingPlanExerciseAIGenerated(
+      String counselingPlanId) {
+    CounselingPlanExerciseAIGeneratedOutputDTO counselingPlanMeetingAIGeneratedOutputDTO =
+        new CounselingPlanExerciseAIGeneratedOutputDTO();
+    counselingPlanMeetingAIGeneratedOutputDTO.setSelectedMeetingId(
+        "aef87d40-925e-457d-a344-1599c16ff374");
+    // counselingPlanMeetingAIGeneratedOutputDTO.setTitle("AI Generated Plan Meeting");
+    // counselingPlanMeetingAIGeneratedOutputDTO.setExerciseType(ExerciseType.JOURNALING);
+    // counselingPlanMeetingAIGeneratedOutputDTO.setExerciseStart(Instant.now());
+    // counselingPlanMeetingAIGeneratedOutputDTO.setExerciseEnd(Instant.now());
+
+    return counselingPlanMeetingAIGeneratedOutputDTO;
   }
 
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(

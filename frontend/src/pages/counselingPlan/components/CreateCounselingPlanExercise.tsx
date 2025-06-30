@@ -3,7 +3,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -11,7 +12,13 @@ import {
   CreateExerciseDTOExerciseTypeEnum,
   ExerciseOutputDTOExerciseTypeEnum,
 } from '../../../api'
+import {
+  clearCreateCounselingPlanExerciseAIGenerated,
+  CounselingPlanExerciseStateEnum,
+  setCounselingPlanExerciseStateEnum,
+} from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
+import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
@@ -28,6 +35,8 @@ const CreateCounselingPlanExercise = ({
 }: CreateCounselingPlanExerciseProps): ReactElement => {
   const [open, setOpen] = useState(false)
   const { patientId } = useParams()
+  const { counselingPlanExerciseAIGeneratedOutputDTO, counselingPlanExerciseStateEnum } =
+    useSelector((state: RootState) => state.counselingPlan)
 
   const dispatch = useAppDispatch()
 
@@ -39,8 +48,36 @@ const CreateCounselingPlanExercise = ({
     patientId: patientId,
   })
 
+  useEffect(() => {
+    if (
+      counselingPlanExerciseAIGeneratedOutputDTO &&
+      !counselingPlanExerciseAIGeneratedOutputDTO.selectedMeetingId
+    ) {
+      const newFormData: ExerciseFormData = {
+        title: counselingPlanExerciseAIGeneratedOutputDTO.title,
+        exerciseType: counselingPlanExerciseAIGeneratedOutputDTO.exerciseType,
+        exerciseStart: new Date(counselingPlanExerciseAIGeneratedOutputDTO.exerciseStart ?? ''),
+        durationInWeeks: 2,
+      }
+      setFormData(newFormData)
+      setOpen(true)
+    }
+  }, [counselingPlanExerciseAIGeneratedOutputDTO])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleCancel = (): void => {
+    setOpen(false)
+    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
+    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
+  }
+
+  const handleCreateExercise = (): void => {
+    setOpen(true)
+    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
+    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.CREATING_EXERCISE))
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -57,16 +94,24 @@ const CreateCounselingPlanExercise = ({
       }
       await dispatch(createExercise(createExerciseDTO)).unwrap()
 
+      setOpen(false)
+      dispatch(clearCreateCounselingPlanExerciseAIGenerated())
+      dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
+
       onSuccess()
     } catch (err) {
       console.error('Registration error:', err)
     }
   }
 
+  if (counselingPlanExerciseStateEnum === CounselingPlanExerciseStateEnum.ADDING_EXERCISE) {
+    return <></>
+  }
+
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
+        <Button variant='contained' onClick={handleCreateExercise}>
           Create new Exercise
         </Button>
       ) : (
@@ -131,7 +176,7 @@ const CreateCounselingPlanExercise = ({
             <Button type='submit' variant='contained' color='success'>
               Create new Exercise
             </Button>
-            <Button variant='contained' onClick={() => setOpen(false)} color='error'>
+            <Button variant='contained' onClick={handleCancel} color='error'>
               Cancel
             </Button>
           </div>

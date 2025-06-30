@@ -1,8 +1,17 @@
-import { Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { ReactElement } from 'react'
+import { useSelector } from 'react-redux'
 
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
+import {
+  CounselingPlanExerciseStateEnum,
+  createCounselingPlanExerciseAIGenerated,
+  setCounselingPlan,
+  setCounselingPlanExerciseStateEnum,
+} from '../../../store/counselingPlanSlice'
+import { RootState } from '../../../store/store'
 import { formatDateNicely } from '../../../utils/dateUtil'
+import { useAppDispatch } from '../../../utils/hooks'
 import AddCounselingPlanExercise from './AddCounselingPlanExercise'
 import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
@@ -21,6 +30,25 @@ const CounselingPlanPhaseDetail = ({
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
   }
+
+  const dispatch = useAppDispatch()
+
+  const handleAIGenerateExercise = async (): Promise<void> => {
+    const response = await dispatch(
+      createCounselingPlanExerciseAIGenerated(phase.id ?? '')
+    ).unwrap()
+    if (response.selectedMeetingId) {
+      dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.ADDING_EXERCISE))
+    } else {
+      dispatch(
+        setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.CREATING_EXERCISE)
+      )
+    }
+  }
+
+  const { counselingPlanExerciseStateEnum } = useSelector(
+    (state: RootState) => state.counselingPlan
+  )
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
@@ -56,6 +84,11 @@ const CounselingPlanPhaseDetail = ({
         counselingPlanPhase={phase}
       />
       <CreateCounselingPlanExercise onSuccess={onSuccess} />
+      {counselingPlanExerciseStateEnum === CounselingPlanExerciseStateEnum.IDLE && (
+        <Button variant='contained' color='success' onClick={handleAIGenerateExercise}>
+          AI Generate Exercise
+        </Button>
+      )}
     </div>
   )
 }

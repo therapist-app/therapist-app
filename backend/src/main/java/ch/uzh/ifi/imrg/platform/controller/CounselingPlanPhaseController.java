@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanExerciseAIGeneratedOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,10 +30,17 @@ public class CounselingPlanPhaseController {
     return counselingPlanPhaseService.createCounselingPlanPhase(createCounselingPlanPhaseDTO);
   }
 
-  @PostMapping("/ai-generated/{counselingPlanId}")
+  @PostMapping("/ai-generated-phase/{counselingPlanId}")
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       @PathVariable String counselingPlanId) {
     return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(counselingPlanId);
+  }
+
+  @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
+  public CounselingPlanExerciseAIGeneratedOutputDTO createCounselingPlanExerciseAIGenerated(
+      @PathVariable String counselingPlanPhaseId) {
+    return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(
+        counselingPlanPhaseId);
   }
 
   @PostMapping("/add-exercise")
