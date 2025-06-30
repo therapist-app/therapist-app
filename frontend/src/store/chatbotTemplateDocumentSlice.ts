@@ -48,7 +48,7 @@ export const deleteDocumentOfTemplate = createAsyncThunk(
 /** Slice --------------------------------------------------------------------*/
 const chatbotTemplateDocumentSlice = createSlice({
   name: 'chatbotTemplateDocument',
-  initialState,
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     /* ───────── create ───────── */

@@ -35,6 +35,7 @@ import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import {
@@ -43,28 +44,27 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
+import FilesTable from '../../generalComponents/FilesTable'
 import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
+import { getAllDocumentsOfTemplate } from '../../store/chatbotTemplateDocumentSlice'
+import {
+  createDocumentForTemplate,
+  deleteDocumentOfTemplate,
+} from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
-import { chatApi } from '../../utils/api'
-import { handleError } from '../../utils/handleError'
-import { useAppDispatch } from '../../utils/hooks'
-import { useSelector } from 'react-redux'
-import FilesTable from '../../generalComponents/FilesTable'
-import { chatbotTemplateDocumentApi } from '../../utils/api'
+import { RootState } from '../../store/store'
 import {
   createDocumentForTherapist,
   deleteDocumentOfTherapist,
   getAllTherapistDocumentsOfTherapist,
 } from '../../store/therapistDocumentSlice'
-import {
-  getAllDocumentsOfTemplate
-} from '../../store/chatbotTemplateDocumentSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { RootState } from '../../store/store'
+import { chatApi } from '../../utils/api'
+import { chatbotTemplateDocumentApi } from '../../utils/api'
 import { therapistDocumentApi } from '../../utils/api'
-import { createDocumentForTemplate, deleteDocumentOfTemplate } from '../../store/chatbotTemplateDocumentSlice'
-
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -92,9 +92,9 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [threads, setThreads] = useState<Array<{ threadId: string }>>([])
   const [question, setQuestion] = useState('')
   const loggedInTherapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
-const templateDocuments = useSelector(
-  (s: RootState) => s.chatbotTemplateDocument.allDocumentsOfTemplate
-)
+  const templateDocuments = useSelector(
+    (s: RootState) => s.chatbotTemplateDocument.allDocumentsOfTemplate
+  )
 
   const [chatbotName, setChatbotName] = useState('')
   const [chatbotRole, setChatbotRole] = useState('')
@@ -153,10 +153,10 @@ const templateDocuments = useSelector(
   }, [chat])
 
   useEffect(() => {
-  if (chatbotConfig?.id && selectedTab === 'sources') {
-    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-  }
-}, [dispatch, chatbotConfig?.id, selectedTab])
+    if (chatbotConfig?.id && selectedTab === 'sources') {
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+    }
+  }, [dispatch, chatbotConfig?.id, selectedTab])
 
   const handleTabChange = (
     _event: React.SyntheticEvent,
@@ -499,31 +499,31 @@ const templateDocuments = useSelector(
   }
 
   const handleFileUpload = async (file: File): Promise<void> => {
-  if (!chatbotConfig?.id) return
+    if (!chatbotConfig?.id) {
+      return
+    }
 
-  await dispatch(
-    createDocumentForTemplate({ file, templateId: chatbotConfig.id })
-  )
+    await dispatch(createDocumentForTemplate({ file: file, templateId: chatbotConfig.id }))
 
-  dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-}
+    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+  }
 
-const handleDeleteFile = async (fileId: string): Promise<void> => {
-  if (!chatbotConfig?.id) return
+  const handleDeleteFile = async (fileId: string): Promise<void> => {
+    if (!chatbotConfig?.id) {
+      return
+    }
 
-  await dispatch(deleteDocumentOfTemplate(fileId))
+    await dispatch(deleteDocumentOfTemplate(fileId))
 
-  dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-}
+    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+  }
 
-
-const downloadFile = async (fileId: string): Promise<string> => {
-  const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
-    responseType: 'blob',
-  })
-  return URL.createObjectURL(data)
-}
-
+  const downloadFile = async (fileId: string): Promise<string> => {
+    const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
+      responseType: 'blob',
+    })
+    return URL.createObjectURL(data)
+  }
 
   return (
     <>
@@ -922,18 +922,16 @@ const downloadFile = async (fileId: string): Promise<string> => {
         )}
 
         {selectedTab === 'sources' && (
-  <Box sx={{ mt: 3 }}>
-    <FilesTable
-      title="Template Files"
-      allDocuments={templateDocuments}
-      handleFileUpload={handleFileUpload}
-      handleDeleteFile={handleDeleteFile}
-      downloadFile={downloadFile}
-    />
-  </Box>
-)}
-
-
+          <Box sx={{ mt: 3 }}>
+            <FilesTable
+              title='Template Files'
+              allDocuments={templateDocuments}
+              handleFileUpload={handleFileUpload}
+              handleDeleteFile={handleDeleteFile}
+              downloadFile={downloadFile}
+            />
+          </Box>
+        )}
 
         <Snackbar
           open={snackbarOpen}
