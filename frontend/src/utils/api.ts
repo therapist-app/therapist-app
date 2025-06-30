@@ -17,6 +17,7 @@ import {
   TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
+  ChatbotTemplateDocumentOutputDTO
 } from '../api'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL

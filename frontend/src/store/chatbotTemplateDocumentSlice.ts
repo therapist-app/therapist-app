@@ -18,16 +18,13 @@ const initialState: ChatbotTemplateDocumentState = {
 }
 
 /** Thunks -------------------------------------------------------------------*/
-export const createDocumentForTemplate = createAsyncThunk(
-  'chatbotTemplateDocument/create',
-  async (props: { file: File; templateId: string }) => {
-    const response = await chatbotTemplateDocumentApi.createChatbotTemplateDocument(
-      props.templateId,
-      props.file
-    )
-    return response.data as ChatbotTemplateDocumentOutputDTO
-  }
-)
+export const createDocumentForTemplate = createAsyncThunk<
+  void,                                            // ⬅️ no payload expected
+  { file: File; templateId: string }
+>('chatbotTemplateDocument/create', async ({ file, templateId }) => {
+  await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
+})
+
 
 export const getAllDocumentsOfTemplate = createAsyncThunk(
   'chatbotTemplateDocument/getAll',
@@ -51,19 +48,20 @@ const chatbotTemplateDocumentSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    /* ───────── create ───────── */
-    builder.addCase(createDocumentForTemplate.pending, (state) => {
-      state.status = 'loading'
-      state.error = null
-    })
-    builder.addCase(createDocumentForTemplate.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.allDocumentsOfTemplate.push(action.payload)
-    })
-    builder.addCase(createDocumentForTemplate.rejected, (state, action) => {
-      state.status = 'failed'
-      state.error = action.error.message ?? 'Something went wrong'
-    })
+  /* ───────── create ───────── */
+builder.addCase(createDocumentForTemplate.pending, (state) => {
+  state.status = 'loading'
+  state.error = null
+})
+builder.addCase(createDocumentForTemplate.fulfilled, (state) => {
+  state.status = 'succeeded'
+  // we don’t push a payload any more; the UI reloads list afterward
+})
+builder.addCase(createDocumentForTemplate.rejected, (state, action) => {
+  state.status = 'failed'
+  state.error = action.error.message ?? 'Something went wrong'
+})
+
 
     /* ───────── list ───────── */
     builder.addCase(getAllDocumentsOfTemplate.pending, (state) => {

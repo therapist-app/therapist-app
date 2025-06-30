@@ -1,5 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete'
-import DownloadIcon from '@mui/icons-material/Download'
 import SendIcon from '@mui/icons-material/Send'
 import {
   Alert,
@@ -18,12 +16,6 @@ import {
   Select,
   Snackbar,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   TextField,
   Typography,
@@ -45,7 +37,6 @@ import {
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
-import FileUpload from '../../generalComponents/FileUpload'
 import Layout from '../../generalComponents/Layout'
 import { getAllDocumentsOfTemplate } from '../../store/chatbotTemplateDocumentSlice'
 import {
@@ -54,15 +45,8 @@ import {
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
-import {
-  createDocumentForTherapist,
-  deleteDocumentOfTherapist,
-  getAllTherapistDocumentsOfTherapist,
-} from '../../store/therapistDocumentSlice'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { chatApi } from '../../utils/api'
 import { chatbotTemplateDocumentApi } from '../../utils/api'
-import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -91,7 +75,6 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const [threads, setThreads] = useState<Array<{ threadId: string }>>([])
   const [question, setQuestion] = useState('')
-  const loggedInTherapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
   const templateDocuments = useSelector(
     (s: RootState) => s.chatbotTemplateDocument.allDocumentsOfTemplate
   )
@@ -109,6 +92,10 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
   const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
+
+  type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
+  templateId: string
+}
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -292,21 +279,21 @@ const ChatBotTemplateEdit: React.FC = () => {
         return out
       })
 
-      const payload: ChatCompletionWithConfigRequestDTO = {
-        templateId: sessionStorage.getItem('chatbotTemplateId') || '',
-        config: {
-          chatbotRole: chatbotRole,
-          chatbotTone: chatbotTone,
-          chatbotLanguage: chatbotLanguage,
-          chatbotVoice: chatbotVoice,
-          chatbotGender: chatbotGender,
-          preConfiguredExercise: preConfiguredExercise,
-          additionalExercise: additionalExercise,
-          welcomeMessage: welcomeMessage,
-        },
-        history: history,
-        message: userPrompt,
-      }
+      const payload: ChatCompletionWithTemplate = {
+  templateId: chatbotConfig?.id ?? '',
+  config: {
+    chatbotRole,
+    chatbotTone,
+    chatbotLanguage,
+    chatbotVoice,
+    chatbotGender,
+    preConfiguredExercise,
+    additionalExercise,
+    welcomeMessage,
+  },
+  history,
+  message: userPrompt,
+}
 
       const fullText = (await chatApi.chatWithConfig(payload)).data.content ?? ''
 

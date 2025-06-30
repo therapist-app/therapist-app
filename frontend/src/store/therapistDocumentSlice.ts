@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { TherapistDocumentOutputDTO } from '../api'
-import { chatbotTemplateApi, therapistDocumentApi } from '../utils/api'
+import { therapistDocumentApi } from '../utils/api'
 
 interface TherapistDocumentState {
   allTherapistDocumentsOfTherapist: TherapistDocumentOutputDTO[]
