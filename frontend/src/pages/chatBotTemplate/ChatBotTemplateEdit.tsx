@@ -38,9 +38,9 @@ import {
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import {
-  getAllDocumentsOfTemplate,
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
+  getAllDocumentsOfTemplate,
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
