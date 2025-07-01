@@ -28,6 +28,12 @@ import type { ChatbotConfigDTO } from './chatbot-config-dto';
 export interface ChatCompletionWithConfigRequestDTO {
     /**
      * 
+     * @type {string}
+     * @memberof ChatCompletionWithConfigRequestDTO
+     */
+    'templateId'?: string;
+    /**
+     * 
      * @type {ChatbotConfigDTO}
      * @memberof ChatCompletionWithConfigRequestDTO
      */
