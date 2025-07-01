@@ -138,6 +138,8 @@ Class | Method | HTTP request | Description
 *CoachMeetingControllerPatientAPI* | [**updateMeeting**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachPatientControllerPatientAPI* | [**deletePatient**](docs/CoachPatientControllerPatientAPI.md#deletePatient) | **DELETE** /coach/patients/{patientId} | 
 *CoachPatientControllerPatientAPI* | [**registerPatient1**](docs/CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register | 
+*CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestNames**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestNames) | **GET** /coach/patients/{patientId}/psychological-tests | 
+*CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestResults**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestResults) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
@@ -166,6 +168,7 @@ Class | Method | HTTP request | Description
 *PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
 *PatientControllerPatientAPI* | [**setName**](docs/PatientControllerPatientAPI.md#setName) | **PUT** /patients/name | 
 *PatientControllerPatientAPI* | [**setOnboarded**](docs/PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded | 
+*PsychologicalTestControllerPatientAPI* | [**createPsychologicalTest**](docs/PsychologicalTestControllerPatientAPI.md#createPsychologicalTest) | **POST** /patients/tests | 
 
 
 ## Documentation for Models
@@ -208,6 +211,11 @@ Class | Method | HTTP request | Description
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
  - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
+ - [PsychologicalTestInputDTOPatientAPI](docs/PsychologicalTestInputDTOPatientAPI.md)
+ - [PsychologicalTestNameOutputDTOPatientAPI](docs/PsychologicalTestNameOutputDTOPatientAPI.md)
+ - [PsychologicalTestOutputDTOPatientAPI](docs/PsychologicalTestOutputDTOPatientAPI.md)
+ - [PsychologicalTestQuestionInputDTOPatientAPI](docs/PsychologicalTestQuestionInputDTOPatientAPI.md)
+ - [PsychologicalTestQuestionOutputDTOPatientAPI](docs/PsychologicalTestQuestionOutputDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)

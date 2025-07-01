@@ -482,6 +482,22 @@ paths:
       - coach-chatbot-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/tests:
+    post:
+      operationId: createPsychologicalTest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PsychologicalTestInputDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+      tags:
+      - psychological-test-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/register:
     post:
       description: "@Therapist app: pleas use /coach/patients/register as endpoint"
@@ -885,6 +901,63 @@ paths:
       tags:
       - conversation-controller
       x-accepts: '*/*'
+  /coach/patients/{patientId}/psychological-tests:
+    get:
+      operationId: getPsychologicalTestNames
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestNameOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-psychological-test-controller
+      x-accepts: '*/*'
+  /coach/patients/{patientId}/psychological-tests/{psychologicalTestName}:
+    get:
+      operationId: getPsychologicalTestResults
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-psychological-test-controller
+      x-accepts: '*/*'
   /coach/patients/{patientId}/journal-entries:
     get:
       operationId: listAll_1
@@ -1206,6 +1279,25 @@ components:
         active:
           type: boolean
       type: object
+    PsychologicalTestInputDTO:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/PsychologicalTestQuestionInputDTO'
+          type: array
+      type: object
+    PsychologicalTestQuestionInputDTO:
+      properties:
+        question:
+          type: string
+        score:
+          format: int32
+          type: integer
+      type: object
     CreatePatientDTO:
       properties:
         email:
@@ -1499,6 +1591,50 @@ components:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
+      type: object
+    PsychologicalTestNameOutputDTO:
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+      type: object
+    PsychologicalTestOutputDTO:
+      example:
+        completedAt: 2000-01-23T04:56:07.000+00:00
+        patientId: patientId
+        name: name
+        questions:
+        - score: 0
+          question: question
+        - score: 0
+          question: question
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        patientId:
+          type: string
+        completedAt:
+          format: date-time
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/PsychologicalTestQuestionOutputDTO'
+          type: array
+      type: object
+    PsychologicalTestQuestionOutputDTO:
+      example:
+        score: 0
+        question: question
+      properties:
+        question:
+          type: string
+        score:
+          format: int32
+          type: integer
       type: object
     CoachGetAllJournalEntriesDTO:
       example:

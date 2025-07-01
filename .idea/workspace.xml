@@ -6,28 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/controller/PatientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/controller/PatientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/output/PatientOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/dto/output/PatientOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ch/uzh/ifi/imrg/platform/rest/mapper/PatientMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/.openapi-generator/FILES" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-controller-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-controller-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-phase-controller-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-phase-controller-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-phase-goal-controller-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apis/counseling-plan-phase-goal-controller-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/apis/patient-controller-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apis/patient-controller-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/add-exercise-to-counseling-plan-phase-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/add-exercise-to-counseling-plan-phase-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-output-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-output-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-phase-goal-output-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-phase-goal-output-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-phase-output-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/counseling-plan-phase-output-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/create-counseling-plan-phase-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/create-counseling-plan-phase-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/create-counseling-plan-phase-goal-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/create-counseling-plan-phase-goal-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/create-patient-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/create-patient-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/patient-output-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/patient-output-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/models/remove-exercise-from-counseling-plan-phase-dto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/models/remove-exercise-from-counseling-plan-phase-dto.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/store/patientSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/store/patientSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,27 +60,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "android.gradle.sync.needed": "true",
-    "git-widget-placeholder": "patient-create-page",
-    "last_opened_file_path": "C:/Users/Administrator/therapist-app",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "C:\\Users\\Administrator\\therapist-app\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;patient-create-page&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/therapist-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Administrator\\therapist-app\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -114,6 +95,7 @@
       <workItem from="1740515701915" duration="25853000" />
       <workItem from="1741013527678" duration="734000" />
       <workItem from="1750856052585" duration="8469000" />
+      <workItem from="1751372491577" duration="1761000" />
     </task>
     <servers />
   </component>
