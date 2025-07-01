@@ -6,8 +6,10 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 JWT_SECRET_KEY=ThisIsTheDevelopmentJWTSecretKeyItDoesNotHaveToBeSuperSecretButLongEnough
 
-LOCAL_LLM_MODEL=Qwen/Qwen2.5-1.5B-Instruct
-LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch
+LOCAL_LLM_MODEL=Qwen/Qwen3-1.7B
+LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/v1/chat/completions
 LOCAL_LLM_API_KEY=ReplaceWithYourLocalLLMAPIKey
 
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
+
+APP_ENVIRONMENT=dev

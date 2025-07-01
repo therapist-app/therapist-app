@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import chatbotTemplateDocumentReducer from './chatbotTemplateDocumentSlice'
 import chatbotTemplateReducer from './chatbotTemplateSlice'
 import counselingPlanReducer from './counselingPlanSlice'
 import exerciseReducer from './exerciseSlice'
@@ -21,6 +22,7 @@ const store = configureStore({
     therapistDocument: therapistDocumentReducer,
     therapistChatbot: therapistChatbotReducer,
     counselingPlan: counselingPlanReducer,
+    chatbotTemplateDocument: chatbotTemplateDocumentReducer,
   },
 })
 

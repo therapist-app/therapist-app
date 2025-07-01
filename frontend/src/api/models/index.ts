@@ -3,6 +3,7 @@ export * from './chat-completion-response-dto';
 export * from './chat-completion-with-config-request-dto';
 export * from './chat-message-dto';
 export * from './chatbot-config-dto';
+export * from './chatbot-template-document-output-dto';
 export * from './chatbot-template-output-dto';
 export * from './complaint-dto';
 export * from './counseling-plan-output-dto';

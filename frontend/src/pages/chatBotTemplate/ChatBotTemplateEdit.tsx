@@ -1,5 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete'
-import DownloadIcon from '@mui/icons-material/Download'
 import SendIcon from '@mui/icons-material/Send'
 import {
   Alert,
@@ -9,7 +7,6 @@ import {
   CircularProgress,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -18,12 +15,6 @@ import {
   Select,
   Snackbar,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   TextField,
   Typography,
@@ -35,6 +26,7 @@ import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import {
@@ -43,10 +35,16 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
-import FileUpload from '../../generalComponents/FileUpload'
+import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import {
+  createDocumentForTemplate,
+  deleteDocumentOfTemplate,
+  getAllDocumentsOfTemplate,
+} from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
-import { chatApi } from '../../utils/api'
+import { RootState } from '../../store/store'
+import { chatApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -75,6 +73,9 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const [threads, setThreads] = useState<Array<{ threadId: string }>>([])
   const [question, setQuestion] = useState('')
+  const templateDocuments = useSelector(
+    (s: RootState) => s.chatbotTemplateDocument.allDocumentsOfTemplate
+  )
 
   const [chatbotName, setChatbotName] = useState('')
   const [chatbotRole, setChatbotRole] = useState('')
@@ -88,7 +89,10 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [chatbotAnimation, setChatbotAnimation] = useState('')
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
-  const [files, setFiles] = useState<Array<{ id: string; fileName: string }>>([])
+
+  type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
+    templateId: string
+  }
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -131,6 +135,12 @@ const ChatBotTemplateEdit: React.FC = () => {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight
     }
   }, [chat])
+
+  useEffect(() => {
+    if (chatbotConfig?.id && selectedTab === 'sources') {
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+    }
+  }, [dispatch, chatbotConfig?.id, selectedTab])
 
   const handleTabChange = (
     _event: React.SyntheticEvent,
@@ -266,7 +276,8 @@ const ChatBotTemplateEdit: React.FC = () => {
         return out
       })
 
-      const payload: ChatCompletionWithConfigRequestDTO = {
+      const payload: ChatCompletionWithTemplate = {
+        templateId: chatbotConfig?.id ?? '',
         config: {
           chatbotRole: chatbotRole,
           chatbotTone: chatbotTone,
@@ -471,25 +482,31 @@ const ChatBotTemplateEdit: React.FC = () => {
     margin: 1,
   }
 
-  const handleFileUpload = (file: File): void => {
-    const newFile = { id: Date.now().toString(), fileName: file.name }
-    setFiles((prev) => [...prev, newFile])
-    setSnackbarMessage(`File "${file.name}" uploaded successfully!`)
-    setSnackbarSeverity('success')
-    setSnackbarOpen(true)
+  const handleFileUpload = async (file: File): Promise<void> => {
+    if (!chatbotConfig?.id) {
+      return
+    }
+
+    await dispatch(createDocumentForTemplate({ file: file, templateId: chatbotConfig.id }))
+
+    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
   }
 
-  const handleDeleteFile = (fileId: string): void => {
-    setFiles((prev) => prev.filter((f) => f.id !== fileId))
-    setSnackbarMessage(`File with ID ${fileId} deleted successfully!`)
-    setSnackbarSeverity('success')
-    setSnackbarOpen(true)
+  const handleDeleteFile = async (fileId: string): Promise<void> => {
+    if (!chatbotConfig?.id) {
+      return
+    }
+
+    await dispatch(deleteDocumentOfTemplate(fileId))
+
+    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
   }
 
-  const handleDownloadFile = (fileId: string, fileName: string): void => {
-    setSnackbarMessage(`Downloading "${fileName}" (placeholder)`)
-    setSnackbarSeverity('info')
-    setSnackbarOpen(true)
+  const downloadFile = async (fileId: string): Promise<string> => {
+    const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
+      responseType: 'blob',
+    })
+    return URL.createObjectURL(data)
   }
 
   return (
@@ -890,51 +907,13 @@ const ChatBotTemplateEdit: React.FC = () => {
 
         {selectedTab === 'sources' && (
           <Box sx={{ mt: 3 }}>
-            <Typography variant='h6' gutterBottom>
-              Upload & Manage Documents
-            </Typography>
-            <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
-              <Table aria-label='files-table'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                        File name
-                        <FileUpload onUpload={handleFileUpload} />
-                      </Box>
-                    </TableCell>
-                    <TableCell align='right'>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {files.map((file) => (
-                    <TableRow key={file.id}>
-                      <TableCell
-                        sx={{
-                          maxWidth: 400,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {file.fileName}
-                      </TableCell>
-                      <TableCell align='right'>
-                        <IconButton
-                          aria-label='download'
-                          onClick={() => handleDownloadFile(file.id, file.fileName)}
-                        >
-                          <DownloadIcon />
-                        </IconButton>
-                        <IconButton aria-label='delete' onClick={() => handleDeleteFile(file.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <FilesTable
+              title='Template Files'
+              allDocuments={templateDocuments}
+              handleFileUpload={handleFileUpload}
+              handleDeleteFile={handleDeleteFile}
+              downloadFile={downloadFile}
+            />
           </Box>
         )}
 

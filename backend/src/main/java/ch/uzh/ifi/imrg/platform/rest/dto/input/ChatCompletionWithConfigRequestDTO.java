@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class ChatCompletionWithConfigRequestDTO {
+  private String templateId;
   private ChatbotConfigDTO config;
   private List<ChatMessageDTO> history;
   private String message;
