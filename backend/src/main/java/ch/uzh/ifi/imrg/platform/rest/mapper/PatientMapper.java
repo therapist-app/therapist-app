@@ -1,7 +1,9 @@
 package ch.uzh.ifi.imrg.platform.rest.mapper;
 
+import ch.uzh.ifi.imrg.platform.entity.Complaint;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.ComplaintDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
@@ -31,6 +33,23 @@ public interface PatientMapper {
   @Mapping(source = "occupation", target = "occupation")
   @Mapping(source = "income", target = "income")
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
+  @Mapping(source = "complaints", target = "complaints")
+  @Mapping(source = "treatmentPast", target = "treatmentPast")
+  @Mapping(source = "treatmentCurrent", target = "treatmentCurrent")
+  @Mapping(source = "pastMedical", target = "pastMedical")
+  @Mapping(source = "pastPsych", target = "pastPsych")
+  @Mapping(source = "familyIllness", target = "familyIllness")
+  @Mapping(source = "familySocial", target = "familySocial")
+  @Mapping(source = "personalPerinatal", target = "personalPerinatal")
+  @Mapping(source = "personalChildhood", target = "personalChildhood")
+  @Mapping(source = "personalEducation", target = "personalEducation")
+  @Mapping(source = "personalPlay", target = "personalPlay")
+  @Mapping(source = "personalAdolescence", target = "personalAdolescence")
+  @Mapping(source = "personalPuberty", target = "personalPuberty")
+  @Mapping(source = "personalObstetric", target = "personalObstetric")
+  @Mapping(source = "personalOccupational", target = "personalOccupational")
+  @Mapping(source = "personalMarital", target = "personalMarital")
+  @Mapping(source = "personalPremorbid", target = "personalPremorbid")
   @Mapping(source = "meetings", target = "meetingsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
@@ -46,15 +65,7 @@ public interface PatientMapper {
   @Mapping(source = "occupation", target = "occupation")
   @Mapping(source = "income", target = "income")
   @Mapping(source = "dateOfAdmission", target = "dateOfAdmission")
-  @Mapping(source = "mainComplaints", target = "mainComplaints")
-  @Mapping(source = "historyOfIllness", target = "historyOfIllness")
-  @Mapping(source = "hpiGeneral", target = "hpiGeneral")
-  @Mapping(source = "hpiDuration", target = "hpiDuration")
-  @Mapping(source = "hpiOnset", target = "hpiOnset")
-  @Mapping(source = "hpiCourse", target = "hpiCourse")
-  @Mapping(source = "hpiPrecipitatingFactors", target = "hpiPrecipitatingFactors")
-  @Mapping(source = "hpiAggravatingRelieving", target = "hpiAggravatingRelieving")
-  @Mapping(source = "hpiTimeline", target = "hpiTimeline")
+  @Mapping(source = "complaints", target = "complaints")
   @Mapping(source = "treatmentPast", target = "treatmentPast")
   @Mapping(source = "treatmentCurrent", target = "treatmentCurrent")
   @Mapping(source = "pastMedical", target = "pastMedical")
@@ -72,6 +83,14 @@ public interface PatientMapper {
   @Mapping(source = "personalMarital", target = "personalMarital")
   @Mapping(source = "personalPremorbid", target = "personalPremorbid")
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
+
+  ComplaintDTO complaintToComplaintDto(Complaint complaint);
+
+  Complaint complaintDtoToComplaint(ComplaintDTO complaintDTO);
+
+  List<ComplaintDTO> complaintListToComplaintDtoList(List<Complaint> complaints);
+
+  List<Complaint> complaintDtoListToComplaintList(List<ComplaintDTO> complaintDTOs);
 
   default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
     if (meetings == null) {

@@ -50,6 +50,16 @@ public class PatientController {
         .collect(Collectors.toList());
   }
 
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public PatientOutputDTO getPatientById(
+      @PathVariable String id, HttpServletRequest httpServletRequest) {
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Patient patient = patientService.getPatientById(id, loggedInTherapist);
+    return PatientMapper.INSTANCE.convertEntityToPatientOutputDTO(patient);
+  }
+
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePatient(@PathVariable String id) {
