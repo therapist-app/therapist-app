@@ -26,4 +26,10 @@ public class CounselingPlanService {
         patientRepository.getReferenceById(patientId).getCounselingPlan();
     return CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
   }
+
+  public static String buildSystemPrompt(CounselingPlan counselingPlan) {
+    StringBuilder promptBuilder = new StringBuilder();
+
+    return promptBuilder.toString();
+  }
 }
