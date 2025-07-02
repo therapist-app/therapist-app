@@ -35,7 +35,7 @@ public class JwtUtil {
 
   public static void addJwtCookie(
       HttpServletResponse response, HttpServletRequest request, String jwt) {
-    Cookie cookie = new Cookie("auth", jwt);
+    Cookie cookie = new Cookie("authTherapistApp", jwt);
     cookie.setHttpOnly(true);
     cookie.setMaxAge(30 * 24 * 60 * 60); // 30 days
     cookie.setPath("/");
@@ -45,7 +45,7 @@ public class JwtUtil {
   }
 
   public static void removeJwtCookie(HttpServletResponse response) {
-    Cookie cookie = new Cookie("auth", null);
+    Cookie cookie = new Cookie("authTherapistApp", null);
     cookie.setHttpOnly(true);
     cookie.setMaxAge(0);
     cookie.setPath("/");
@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     for (Cookie cookie : cookies) {
-      if ("auth".equals(cookie.getName())) {
+      if ("authTherapistApp".equals(cookie.getName())) {
         try {
           String jwt = cookie.getValue();
           SecretKey key = getSecretKey();
@@ -83,6 +83,7 @@ public class JwtUtil {
         }
       }
     }
-    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Cookie 'auth' could not be found");
+    throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED, "Cookie 'authTherapistApp' could not be found");
   }
 }
