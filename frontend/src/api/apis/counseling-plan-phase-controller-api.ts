@@ -24,11 +24,11 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { AddExerciseToCounselingPlanPhaseDTO } from '../models';
 // @ts-ignore
-import type { CounselingPlanExerciseAIGeneratedOutputDTO } from '../models';
-// @ts-ignore
 import type { CounselingPlanPhaseOutputDTO } from '../models';
 // @ts-ignore
 import type { CreateCounselingPlanPhaseDTO } from '../models';
+// @ts-ignore
+import type { CreateExerciseDTO } from '../models';
 // @ts-ignore
 import type { RemoveExerciseFromCounselingPlanPhaseDTO } from '../models';
 /**
@@ -302,7 +302,7 @@ export const CounselingPlanPhaseControllerApiFp = function(configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanExerciseAIGeneratedOutputDTO>> {
+        async createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateExerciseDTO>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseControllerApi.createCounselingPlanExerciseAIGenerated']?.[localVarOperationServerIndex]?.url;
@@ -393,7 +393,7 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanExerciseAIGeneratedOutputDTO> {
+        createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO> {
             return localVarFp.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -466,7 +466,7 @@ export interface CounselingPlanPhaseControllerApiInterface {
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApiInterface
      */
-    createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanExerciseAIGeneratedOutputDTO>;
+    createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO>;
 
     /**
      * 

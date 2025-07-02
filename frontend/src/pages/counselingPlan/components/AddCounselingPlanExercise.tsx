@@ -3,12 +3,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'
-import {
-  addExerciseToCounselingPlanPhase,
-  clearCreateCounselingPlanExerciseAIGenerated,
-  CounselingPlanExerciseStateEnum,
-  setCounselingPlanExerciseStateEnum,
-} from '../../../store/counselingPlanSlice'
+import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
 
@@ -26,9 +21,6 @@ const AddCounselingPlanExercise = ({
   const dispatch = useAppDispatch()
   const { allExercisesOfPatient } = useSelector((state: RootState) => state.exercise)
 
-  const { counselingPlanExerciseStateEnum, counselingPlanExerciseAIGeneratedOutputDTO } =
-    useSelector((state: RootState) => state.counselingPlan)
-
   const exercisesToSelect = allExercisesOfPatient.filter(
     (exercise) =>
       !counselingPlanPhase.phaseExercisesOutputDTO?.find((ex2) => ex2.id === exercise.id)
@@ -36,16 +28,6 @@ const AddCounselingPlanExercise = ({
 
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('')
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    if (
-      counselingPlanExerciseAIGeneratedOutputDTO &&
-      counselingPlanExerciseAIGeneratedOutputDTO.selectedMeetingId
-    ) {
-      setOpen(true)
-      setSelectedExerciseId(counselingPlanExerciseAIGeneratedOutputDTO.selectedMeetingId)
-    }
-  }, [counselingPlanExerciseAIGeneratedOutputDTO])
 
   const handleSelectExerciseChange = async (event: SelectChangeEvent): Promise<void> => {
     setSelectedExerciseId(event.target.value)
@@ -62,25 +44,16 @@ const AddCounselingPlanExercise = ({
     }
     await dispatch(addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO))
     setOpen(false)
-    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
+
     onSuccess()
   }
 
   const handleCancel = (): void => {
     setOpen(false)
-    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
   }
 
   const handleAddExerciseFirstClick = (): void => {
     setOpen(true)
-    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.ADDING_EXERCISE))
-  }
-
-  if (counselingPlanExerciseStateEnum === CounselingPlanExerciseStateEnum.CREATING_EXERCISE) {
-    return <></>
   }
 
   return (

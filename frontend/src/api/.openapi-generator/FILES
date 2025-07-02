@@ -32,7 +32,6 @@ models/chatbot-config-dto.ts
 models/chatbot-template-document-output-dto.ts
 models/chatbot-template-output-dto.ts
 models/complaint-dto.ts
-models/counseling-plan-exercise-aigenerated-output-dto.ts
 models/counseling-plan-output-dto.ts
 models/counseling-plan-phase-goal-output-dto.ts
 models/counseling-plan-phase-output-dto.ts

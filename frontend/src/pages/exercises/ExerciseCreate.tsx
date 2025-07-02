@@ -42,13 +42,10 @@ const ExerciseCreate = (): ReactElement => {
     e.preventDefault()
 
     try {
-      const exerciseStart = formData.exerciseStart ?? new Date()
       const createExerciseDTO: CreateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
-        exerciseEnd: new Date(
-          exerciseStart.getTime() + formData.durationInWeeks * 7 * 24 * 60 * 60 * 1000
-        ).toISOString(),
+        durationInWeeks: formData.durationInWeeks,
       }
       const createdExercise = await dispatch(createExercise(createExerciseDTO)).unwrap()
       navigate(

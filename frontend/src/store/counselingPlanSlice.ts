@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
   AddExerciseToCounselingPlanPhaseDTO,
-  CounselingPlanExerciseAIGeneratedOutputDTO,
   CounselingPlanOutputDTO,
   CreateCounselingPlanPhaseDTO,
   CreateCounselingPlanPhaseGoalDTO,
@@ -10,24 +9,16 @@ import {
 } from '../api'
 import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi } from '../utils/api'
 
-export enum CounselingPlanExerciseStateEnum {
-  ADDING_EXERCISE = 'ADDING_EXERCISE',
-  CREATING_EXERCISE = 'CREATING_EXERCISE',
-  IDLE = 'IDLE',
-}
-
 interface CounselingPlanState {
   counselingPlan: CounselingPlanOutputDTO | null
-  counselingPlanExerciseAIGeneratedOutputDTO: CounselingPlanExerciseAIGeneratedOutputDTO | null
-  counselingPlanExerciseStateEnum: CounselingPlanExerciseStateEnum
+
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
 
 const initialState: CounselingPlanState = {
   counselingPlan: null,
-  counselingPlanExerciseAIGeneratedOutputDTO: null,
-  counselingPlanExerciseStateEnum: CounselingPlanExerciseStateEnum.IDLE,
+
   status: 'idle',
   error: null,
 }
@@ -140,15 +131,6 @@ const counselingPlanSlice = createSlice({
     setCounselingPlan: (state, action: PayloadAction<CounselingPlanOutputDTO>) => {
       state.counselingPlan = action.payload
     },
-    clearCreateCounselingPlanExerciseAIGenerated: (state) => {
-      state.counselingPlanExerciseAIGeneratedOutputDTO = null
-    },
-    setCounselingPlanExerciseStateEnum: (
-      state,
-      action: PayloadAction<CounselingPlanExerciseStateEnum>
-    ) => {
-      state.counselingPlanExerciseStateEnum = action.payload
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -164,25 +146,8 @@ const counselingPlanSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
       })
-
-      .addCase(createCounselingPlanExerciseAIGenerated.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
-      })
-      .addCase(createCounselingPlanExerciseAIGenerated.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.counselingPlanExerciseAIGeneratedOutputDTO = action.payload
-      })
-      .addCase(createCounselingPlanExerciseAIGenerated.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-      })
   },
 })
 
-export const {
-  setCounselingPlan,
-  clearCreateCounselingPlanExerciseAIGenerated,
-  setCounselingPlanExerciseStateEnum,
-} = counselingPlanSlice.actions
+export const { setCounselingPlan } = counselingPlanSlice.actions
 export default counselingPlanSlice.reducer

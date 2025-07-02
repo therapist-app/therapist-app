@@ -3,6 +3,8 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
+import ch.uzh.ifi.imrg.platform.entity.Patient;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseGoalRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
@@ -10,6 +12,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +54,7 @@ public class CounselingPlanPhaseGoalService {
   }
 
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      String counselingPlanPhaseId) {
+      String counselingPlanPhaseId, Therapist loggedInTherapist) {
 
     CounselingPlanPhase phase =
         counselingPlanPhaseRepository
@@ -62,7 +65,12 @@ public class CounselingPlanPhaseGoalService {
 
     CounselingPlan counselingPlan = phase.getCounselingPlan();
 
-    String systemPrompt = CounselingPlanService.buildSystemPrompt(counselingPlan);
+    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+
+    List<Patient> patientList = new ArrayList<>();
+    patientList.add(counselingPlan.getPatient());
+
+    systemPrompt += LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patientList);
 
     String userPrompt =
         String.format(

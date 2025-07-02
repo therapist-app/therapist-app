@@ -1,8 +1,12 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
+import ch.uzh.ifi.imrg.platform.service.TherapistService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CounselingPlanPhaseGoalController {
 
   private final CounselingPlanPhaseGoalService counselingPlanPhaseGoalService;
+  private final TherapistService therapistService;
 
   public CounselingPlanPhaseGoalController(
-      CounselingPlanPhaseGoalService counselingPlanPhaseGoalService) {
+      CounselingPlanPhaseGoalService counselingPlanPhaseGoalService, TherapistService therapistService) {
     this.counselingPlanPhaseGoalService = counselingPlanPhaseGoalService;
+    this.therapistService = therapistService;
   }
 
   @PostMapping("/")
@@ -35,9 +41,11 @@ public class CounselingPlanPhaseGoalController {
   @PostMapping("/{counselingPlanPhaseId}")
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      @PathVariable String counselingPlanPhaseId) {
+      @PathVariable String counselingPlanPhaseId, HttpServletRequest httpServletRequest) {
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
-        counselingPlanPhaseId);
+        counselingPlanPhaseId, loggedInTherapist);
   }
 
   @GetMapping("/{id}")

@@ -46,9 +46,7 @@ const CreateCounselingPlanePhase = ({
       counselingPlanId: counselingPlanId,
       phaseName: formValues.phaseName,
       startDate: startDate.toISOString(),
-      endDate: new Date(
-        startDate.getTime() + formValues.durationInWeeks * 7 * 24 * 60 * 60 * 1000
-      ).toISOString(),
+      durationInWeeks: formValues.durationInWeeks,
     }
     await dispatch(createCounselingPlanPhase(createCounselingPlanPhaseDTO))
     onSuccess()
@@ -63,7 +61,7 @@ const CreateCounselingPlanePhase = ({
     const newFormValue: FormValues = {
       phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
       startDate: new Date(createCounselingPlanPhaseDTO.startDate ?? ''),
-      durationInWeeks: 2,
+      durationInWeeks: createCounselingPlanPhaseDTO.durationInWeeks ?? 2,
     }
 
     setFormValues(newFormValue)

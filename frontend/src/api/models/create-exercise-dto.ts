@@ -46,10 +46,10 @@ export interface CreateExerciseDTO {
     'exerciseStart'?: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CreateExerciseDTO
      */
-    'exerciseEnd'?: string;
+    'durationInWeeks'?: number;
 }
 
 export const CreateExerciseDTOExerciseTypeEnum = {

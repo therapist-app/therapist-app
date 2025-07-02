@@ -8,5 +8,5 @@ public class CreateCounselingPlanPhaseDTO {
   private String counselingPlanId;
   private String phaseName;
   private Instant startDate;
-  private Instant endDate;
+  private long durationInWeeks;
 }

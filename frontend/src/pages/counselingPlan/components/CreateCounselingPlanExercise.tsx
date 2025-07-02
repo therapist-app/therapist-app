@@ -8,17 +8,17 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import {
+  CounselingPlanOutputDTO,
+  CounselingPlanPhaseOutputDTO,
   CreateExerciseDTO,
   CreateExerciseDTOExerciseTypeEnum,
   ExerciseOutputDTOExerciseTypeEnum,
 } from '../../../api'
 import {
-  clearCreateCounselingPlanExerciseAIGenerated,
-  CounselingPlanExerciseStateEnum,
-  setCounselingPlanExerciseStateEnum,
+  addExerciseToCounselingPlanPhase,
+  createCounselingPlanExerciseAIGenerated,
 } from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
-import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
@@ -28,15 +28,15 @@ type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'>
 
 interface CreateCounselingPlanExerciseProps {
   onSuccess: () => void
+  counselingPlanPhase: CounselingPlanPhaseOutputDTO
 }
 
 const CreateCounselingPlanExercise = ({
   onSuccess,
+  counselingPlanPhase,
 }: CreateCounselingPlanExerciseProps): ReactElement => {
   const [open, setOpen] = useState(false)
   const { patientId } = useParams()
-  const { counselingPlanExerciseAIGeneratedOutputDTO, counselingPlanExerciseStateEnum } =
-    useSelector((state: RootState) => state.counselingPlan)
 
   const dispatch = useAppDispatch()
 
@@ -48,55 +48,53 @@ const CreateCounselingPlanExercise = ({
     patientId: patientId,
   })
 
-  useEffect(() => {
-    if (
-      counselingPlanExerciseAIGeneratedOutputDTO &&
-      !counselingPlanExerciseAIGeneratedOutputDTO.selectedMeetingId
-    ) {
-      const newFormData: ExerciseFormData = {
-        title: counselingPlanExerciseAIGeneratedOutputDTO.title,
-        exerciseType: counselingPlanExerciseAIGeneratedOutputDTO.exerciseType,
-        exerciseStart: new Date(counselingPlanExerciseAIGeneratedOutputDTO.exerciseStart ?? ''),
-        durationInWeeks: 2,
-      }
-      setFormData(newFormData)
-      setOpen(true)
-    }
-  }, [counselingPlanExerciseAIGeneratedOutputDTO])
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleCancel = (): void => {
     setOpen(false)
-    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
   }
 
   const handleCreateExercise = (): void => {
     setOpen(true)
-    dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-    dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.CREATING_EXERCISE))
+  }
+
+  const handleCreateExerciseWithAI = async (): Promise<void> => {
+    const createExerciseDTO = await dispatch(
+      createCounselingPlanExerciseAIGenerated(counselingPlanPhase.id ?? '')
+    ).unwrap()
+
+    const newExerciseFormData: ExerciseFormData = {
+      title: createExerciseDTO.title,
+      exerciseType: createExerciseDTO.exerciseType,
+      exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
+      durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
+      patientId: patientId,
+    }
+
+    setFormData(newExerciseFormData)
+    setOpen(true)
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     try {
-      const exerciseStart = formData.exerciseStart ?? new Date()
       const createExerciseDTO: CreateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
-        exerciseEnd: new Date(
-          exerciseStart.getTime() + formData.durationInWeeks * 7 * 24 * 60 * 60 * 1000
-        ).toISOString(),
+        durationInWeeks: formData.durationInWeeks,
       }
-      await dispatch(createExercise(createExerciseDTO)).unwrap()
+      const response = await dispatch(createExercise(createExerciseDTO)).unwrap()
+      await dispatch(
+        addExerciseToCounselingPlanPhase({
+          exerciseId: response.id ?? '',
+          counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+        })
+      )
 
       setOpen(false)
-      dispatch(clearCreateCounselingPlanExerciseAIGenerated())
-      dispatch(setCounselingPlanExerciseStateEnum(CounselingPlanExerciseStateEnum.IDLE))
 
       onSuccess()
     } catch (err) {
@@ -104,16 +102,17 @@ const CreateCounselingPlanExercise = ({
     }
   }
 
-  if (counselingPlanExerciseStateEnum === CounselingPlanExerciseStateEnum.ADDING_EXERCISE) {
-    return <></>
-  }
-
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={handleCreateExercise}>
-          Create new Exercise
-        </Button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant='contained' onClick={handleCreateExercise}>
+            Create new Exercise
+          </Button>
+          <Button variant='contained' color='success' onClick={handleCreateExerciseWithAI}>
+            Create new Exercise with AI
+          </Button>
+        </div>
       ) : (
         <form
           style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '10px' }}
