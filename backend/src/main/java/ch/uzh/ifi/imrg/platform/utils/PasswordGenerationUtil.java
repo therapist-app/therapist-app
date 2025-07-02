@@ -6,32 +6,34 @@ import java.util.List;
 
 public class PasswordGenerationUtil {
 
-  private static final List<String> ADJECTIVES = Arrays.asList(
-      "Bright", "Calm", "Eager", "Gentle", "Happy", "Jolly", "Kind", "Lively", "Merry", "Nice",
-      "Proud", "Silly", "Witty", "Zesty", "Sunny", "Cloudy", "Windy", "Quiet", "Brave",
-      "Clever");
+  private static final List<String> ADJECTIVES =
+      Arrays.asList(
+          "Bright", "Calm", "Eager", "Gentle", "Happy", "Jolly", "Kind", "Lively", "Merry", "Nice",
+          "Proud", "Silly", "Witty", "Zesty", "Sunny", "Cloudy", "Windy", "Quiet", "Brave",
+          "Clever");
 
-  private static final List<String> NOUNS = Arrays.asList(
-      "River",
-      "Mountain",
-      "Forest",
-      "Ocean",
-      "Planet",
-      "Star",
-      "Comet",
-      "Moon",
-      "Sun",
-      "Sky",
-      "Apple",
-      "Banana",
-      "Cherry",
-      "Grape",
-      "Lemon",
-      "Orange",
-      "Peach",
-      "Pear",
-      "Robot",
-      "Dragon");
+  private static final List<String> NOUNS =
+      Arrays.asList(
+          "River",
+          "Mountain",
+          "Forest",
+          "Ocean",
+          "Planet",
+          "Star",
+          "Comet",
+          "Moon",
+          "Sun",
+          "Sky",
+          "Apple",
+          "Banana",
+          "Cherry",
+          "Grape",
+          "Lemon",
+          "Orange",
+          "Peach",
+          "Pear",
+          "Robot",
+          "Dragon");
 
   private static final SecureRandom RANDOM = new SecureRandom();
 
@@ -51,5 +53,4 @@ public class PasswordGenerationUtil {
 
     return password;
   }
-
 }
