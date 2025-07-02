@@ -118,12 +118,11 @@ public class LLMUZH implements LLM {
           .append("--- ")
           .append(formattedRole)
           .append(" Message ---")
-          .append(ANSI_RESET) 
+          .append(ANSI_RESET)
           .append("\n")
           .append(msg.getContent());
     }
     logger.info(contextLog.toString());
-
 
     ResponseEntity<RemoteResponse> response =
         new RestTemplate()
