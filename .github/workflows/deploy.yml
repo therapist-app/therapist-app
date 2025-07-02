@@ -72,7 +72,7 @@ jobs:
             echo "JWT_SECRET_KEY=$JWT_SECRET_KEY_PRODUCTION" >> .kubernetes/overlays/production/backend/env.secrets
             echo "CHAT_GPT_API_KEY=$CHAT_GPT_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
             echo "LOCAL_LLM_API_KEY=$LOCAL_LLM_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "COACH_ACCESS_KEY=$COACH_ACCESS_KEY_PRODUCTION" >> .kubernetes/overlays/main/backend/env.secrets
+            echo "COACH_ACCESS_KEY=$COACH_ACCESS_KEY_PRODUCTION" >> .kubernetes/overlays/production/backend/env.secrets
             
             kubectl apply -k .kubernetes/overlays/production/backend
             kubectl apply -k .kubernetes/overlays/production/frontend
