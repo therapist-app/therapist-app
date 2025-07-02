@@ -78,11 +78,12 @@ public class JwtUtil {
           return jwtEmail;
 
         } catch (Exception e) {
-          //
+          throw new ResponseStatusException(
+              HttpStatus.UNAUTHORIZED, "There was a problem with the cookie");
         }
       }
     }
     throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED, "No valid 'authTherapistApp' cookie could not be found");
+        HttpStatus.UNAUTHORIZED, "Cookie 'authTherapistApp' could not be found");
   }
 }
