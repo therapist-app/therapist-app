@@ -266,6 +266,15 @@ const PatientCreate = (): ReactElement => {
             <TextField
               fullWidth
               required
+              label={t('patient_create.patient_email')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type='email'
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
               type='number'
               label={t('patient_create.patient_age')}
               value={age}
@@ -277,7 +286,6 @@ const PatientCreate = (): ReactElement => {
             <TextField
               select
               fullWidth
-              required
               label={t('patient_create.patient_gender')}
               value={sex}
               onChange={(e) => setSex(e.target.value)}
@@ -336,15 +344,7 @@ const PatientCreate = (): ReactElement => {
               type='tel'
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label={t('patient_create.patient_email')}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type='email'
-            />
-          </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -370,7 +370,7 @@ const PatientCreate = (): ReactElement => {
           <Button onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))} sx={{ mr: 2 }}>
             {t('patient_create.cancel')}
           </Button>
-          <Button variant='contained' onClick={handleSubmit} disabled={!name || !age}>
+          <Button variant='contained' onClick={handleSubmit} disabled={!name || !email}>
             {t('patient_create.register')}
           </Button>
         </Box>
