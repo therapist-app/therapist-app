@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
+import ch.uzh.ifi.imrg.platform.utils.PasswordGenerationUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 @Transactional
@@ -55,6 +55,10 @@ public class PatientService {
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
 
+    String initialPassword = PasswordGenerationUtil.generateUserFriendlyPassword();
+
+    patient.setInitialPassword(initialPassword);
+
     CounselingPlan counselingPlan = new CounselingPlan();
     counselingPlanRepository.save(counselingPlan);
     patient.setCounselingPlan(counselingPlan);
@@ -64,19 +68,17 @@ public class PatientService {
     entityManager.refresh(therapist);
 
     try {
+
       CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
       createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
-      createPatientDTOPatientAPI.password("password");
+      createPatientDTOPatientAPI.setPassword(initialPassword);
+      createPatientDTOPatientAPI.setCoachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
-      PatientAppAPIs.patientControllerPatientAPI
-          .registerPatient(createPatientDTOPatientAPI)
+      PatientAppAPIs.coachPatientControllerPatientAPI
+          .registerPatient1(createPatientDTOPatientAPI)
           .block();
-    } catch (WebClientResponseException e) {
-      System.out.println(e.toString());
+    } catch (Error e) {
       logger.error(e.toString());
-    } catch (Error e2) {
-      System.out.println(e2.toString());
-      logger.error(e2.toString());
     }
 
     return patient;

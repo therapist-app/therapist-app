@@ -39,8 +39,11 @@ public class Patient implements Serializable {
   @Column(nullable = true)
   private String phoneNumber;
 
-  @Column(nullable = true)
+  @Column(nullable = false, unique = true)
   private String email;
+
+  @Column(nullable = false)
+  private String initialPassword;
 
   @Column(nullable = true)
   private String address;

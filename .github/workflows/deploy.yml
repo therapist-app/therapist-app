@@ -48,6 +48,8 @@ jobs:
           JWT_SECRET_KEY_PRODUCTION: ${{ secrets.JWT_SECRET_KEY_PRODUCTION }}
           CHAT_GPT_API_KEY: ${{secrets.CHAT_GPT_API_KEY}}
           LOCAL_LLM_API_KEY: ${{ secrets.LOCAL_LLM_API_KEY }}
+          COACH_ACCESS_KEY_MAIN: ${{secrets.COACH_ACCESS_KEY_MAIN}}
+          COACH_ACCESS_KEY_PRODUCTION: ${{secrets.COACH_ACCESS_KEY_PRODUCTION}}
 
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
@@ -56,6 +58,7 @@ jobs:
             echo "JWT_SECRET_KEY=$JWT_SECRET_KEY_MAIN" >> .kubernetes/overlays/main/backend/env.secrets
             echo "CHAT_GPT_API_KEY=$CHAT_GPT_API_KEY" >> .kubernetes/overlays/main/backend/env.secrets
             echo "LOCAL_LLM_API_KEY=$LOCAL_LLM_API_KEY" >> .kubernetes/overlays/main/backend/env.secrets
+            echo "COACH_ACCESS_KEY=$COACH_ACCESS_KEY_MAIN" >> .kubernetes/overlays/main/backend/env.secrets
             
             kubectl apply -k .kubernetes/overlays/main/backend
             kubectl apply -k .kubernetes/overlays/main/frontend
@@ -69,6 +72,7 @@ jobs:
             echo "JWT_SECRET_KEY=$JWT_SECRET_KEY_PRODUCTION" >> .kubernetes/overlays/production/backend/env.secrets
             echo "CHAT_GPT_API_KEY=$CHAT_GPT_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
             echo "LOCAL_LLM_API_KEY=$LOCAL_LLM_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
+            echo "COACH_ACCESS_KEY=$COACH_ACCESS_KEY_PRODUCTION" >> .kubernetes/overlays/main/backend/env.secrets
             
             kubectl apply -k .kubernetes/overlays/production/backend
             kubectl apply -k .kubernetes/overlays/production/frontend

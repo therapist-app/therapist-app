@@ -16,6 +16,7 @@ public class PatientOutputDTO {
   private String gender;
   private int age;
   private String email;
+  private String initialPassword;
   private String maritalStatus;
   private String religion;
   private String education;

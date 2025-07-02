@@ -112,43 +112,55 @@ const PatientDetail = (): ReactElement => {
               Patient Overview
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Name
                 </Typography>
                 <Typography>{patient.name}</Typography>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
+                <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
+                  Email (for Login in Client App)
+                </Typography>
+                <Typography color='info' sx={{ wordBreak: 'break-word' }}>
+                  {' '}
+                  {patient.email || 'N/A'}{' '}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
+                  Initial Password (for Login in Client App)
+                </Typography>
+                <Typography color='info' sx={{ wordBreak: 'break-word' }}>
+                  {' '}
+                  {patient.initialPassword || 'N/A'}{' '}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Age
                 </Typography>
                 <Typography>{patient.age ?? 'N/A'}</Typography>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Gender
                 </Typography>
                 <Typography>{patient.gender || 'N/A'}</Typography>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Typography variant='body2' color='textSecondary'>
-                  Email
-                </Typography>
-                <Typography sx={{ wordBreak: 'break-word' }}> {patient.email || 'N/A'} </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Phone
                 </Typography>
                 <Typography>{patient.phoneNumber || 'N/A'}</Typography>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Address
                 </Typography>
                 <Typography>{patient.address || 'N/A'}</Typography>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
                   Date of Admission
                 </Typography>

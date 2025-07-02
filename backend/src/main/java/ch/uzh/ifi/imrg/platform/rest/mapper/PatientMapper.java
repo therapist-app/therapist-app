@@ -27,6 +27,7 @@ public interface PatientMapper {
   @Mapping(source = "gender", target = "gender")
   @Mapping(source = "age", target = "age")
   @Mapping(source = "email", target = "email")
+  @Mapping(source = "initialPassword", target = "initialPassword")
   @Mapping(source = "maritalStatus", target = "maritalStatus")
   @Mapping(source = "religion", target = "religion")
   @Mapping(source = "education", target = "education")
