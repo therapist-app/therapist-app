@@ -34,7 +34,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -47,18 +48,16 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
 
     String initialPassword = PasswordGenerationUtil.generateUserFriendlyPassword();
-    String coachAccessKey = PasswordGenerationUtil.generateAccessKey();
+
     patient.setInitialPassword(initialPassword);
-    patient.setCoachAccessKey(coachAccessKey);
 
     CounselingPlan counselingPlan = new CounselingPlan();
     counselingPlanRepository.save(counselingPlan);
@@ -73,7 +72,7 @@ public class PatientService {
       CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
       createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
       createPatientDTOPatientAPI.setPassword(initialPassword);
-      createPatientDTOPatientAPI.setCoachAccessKey(coachAccessKey);
+      createPatientDTOPatientAPI.setCoachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
       PatientAppAPIs.coachPatientControllerPatientAPI
           .registerPatient1(createPatientDTOPatientAPI)
@@ -86,11 +85,10 @@ public class PatientService {
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 

@@ -85,6 +85,12 @@ export interface PatientOutputDTO {
      * @type {string}
      * @memberof PatientOutputDTO
      */
+    'initialPassword'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatientOutputDTO
+     */
     'maritalStatus'?: string;
     /**
      * 

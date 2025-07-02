@@ -13,3 +13,5 @@ LOCAL_LLM_API_KEY=ReplaceWithYourLocalLLMAPIKey
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
 
 APP_ENVIRONMENT=dev
+
+COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough

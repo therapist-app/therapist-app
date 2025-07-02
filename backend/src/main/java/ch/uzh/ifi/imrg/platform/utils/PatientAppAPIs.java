@@ -21,14 +21,17 @@ public class PatientAppAPIs {
   public static CoachJournalEntryControllerPatientAPI coachJournalEntryControllerPatientAPI;
   public static CoachMeetingControllerPatientAPI coachMeetingControllerPatientAPI;
   public static CoachPatientControllerPatientAPI coachPatientControllerPatientAPI;
-  public static CoachPsychologicalTestControllerPatientAPI
-      coachPsychologicalTestControllerPatientAPI;
+  public static CoachPsychologicalTestControllerPatientAPI coachPsychologicalTestControllerPatientAPI;
+  public static String COACH_ACCESS_KEY;
 
   @Autowired
-  public PatientAppAPIs(@Value("${PATIENT_APP_URL}") String PATIENT_APP_URL) {
+  public PatientAppAPIs(@Value("${PATIENT_APP_URL}") String PATIENT_APP_URL,
+      @Value("${COACH_ACCESS_KEY}") String COACH_ACCESS_KEY) {
+    PatientAppAPIs.COACH_ACCESS_KEY = COACH_ACCESS_KEY;
 
     ApiClient apiClient = new ApiClient();
     apiClient.setBasePath(PATIENT_APP_URL);
+    apiClient.setApiKey(COACH_ACCESS_KEY);
 
     coachChatbotControllerPatientAPI = new CoachChatbotControllerPatientAPI(apiClient);
     coachDocumentControllerPatientAPI = new CoachDocumentControllerPatientAPI(apiClient);
@@ -36,7 +39,6 @@ public class PatientAppAPIs {
     coachJournalEntryControllerPatientAPI = new CoachJournalEntryControllerPatientAPI(apiClient);
     coachMeetingControllerPatientAPI = new CoachMeetingControllerPatientAPI(apiClient);
     coachPatientControllerPatientAPI = new CoachPatientControllerPatientAPI(apiClient);
-    coachPsychologicalTestControllerPatientAPI =
-        new CoachPsychologicalTestControllerPatientAPI(apiClient);
+    coachPsychologicalTestControllerPatientAPI = new CoachPsychologicalTestControllerPatientAPI(apiClient);
   }
 }
