@@ -7,16 +7,25 @@ import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanExerciseAIGeneratedOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
+import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @Transactional
@@ -25,15 +34,17 @@ public class CounselingPlanPhaseService {
   private final CounselingPlanRepository counselingPlanRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
   private final ExerciseRepository exerciseRepository;
+  private final ObjectMapper objectMapper;
 
   public CounselingPlanPhaseService(
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,ObjectMapper objectMapper) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
     this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
+    this.objectMapper = objectMapper;
   }
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
@@ -54,15 +65,31 @@ public class CounselingPlanPhaseService {
         counselingPlanPhase);
   }
 
-  public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
+ public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       String counselingPlanId) {
-    CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO = new CreateCounselingPlanPhaseDTO();
-    createCounselingPlanPhaseDTO.setPhaseName("Phase 1");
-    createCounselingPlanPhaseDTO.setStartDate(Instant.now());
-    createCounselingPlanPhaseDTO.setEndDate(Instant.now().plus(1, ChronoUnit.DAYS));
-    createCounselingPlanPhaseDTO.setCounselingPlanId(counselingPlanId);
+    CounselingPlan counselingPlan =
+        counselingPlanRepository
+            .findById(counselingPlanId)
+            .orElseThrow(
+                () -> new Error("Counseling plan not found with id: " + counselingPlanId));
 
-    return createCounselingPlanPhaseDTO;
+    String systemPrompt = CounselingPlanService.buildSystemPrompt(counselingPlan);
+
+    String userPrompt =
+        "Based on the counseling plan context provided, generate the *next* logical phase. "
+            + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
+            + "Determine a suitable phase name, a start date, and an end date. "
+            + "The start date should be today or immediately follow the end date of the previous phase. "
+            + "A typical phase duration is between 1 and 4 weeks. "
+            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
+            + "Format: {\"phaseName\":\"<name>\", \"startDate\":\"<YYYY-MM-DD'T'HH:MM:SS.sssZ>\", \"endDate\":\"<YYYY-MM-DD'T'HH:MM:SS.sssZ>\"}";
+
+    List<ChatMessageDTO> messages = new ArrayList<>();
+    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
+    CreateCounselingPlanPhaseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class);
+    generatedDto.setCounselingPlanId(counselingPlanId);
+    return generatedDto;
   }
 
   public CounselingPlanExerciseAIGeneratedOutputDTO createCounselingPlanExerciseAIGenerated(
