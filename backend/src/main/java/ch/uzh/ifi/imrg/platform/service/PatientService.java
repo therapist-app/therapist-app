@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
+import ch.uzh.ifi.imrg.platform.utils.PasswordGenerationUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 @Transactional
@@ -34,7 +34,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -44,16 +45,21 @@ public class PatientService {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
     this.counselingPlanRepository = counselingPlanRepository;
+
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
+
+    String initialPassword = PasswordGenerationUtil.generateUserFriendlyPassword();
+    String coachAccessKey = PasswordGenerationUtil.generateAccessKey();
+    patient.setInitialPassword(initialPassword);
+    patient.setCoachAccessKey(coachAccessKey);
 
     CounselingPlan counselingPlan = new CounselingPlan();
     counselingPlanRepository.save(counselingPlan);
@@ -64,30 +70,26 @@ public class PatientService {
     entityManager.refresh(therapist);
 
     try {
+
       CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
       createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
-      createPatientDTOPatientAPI.password("password");
+      createPatientDTOPatientAPI.setPassword(initialPassword);
+      createPatientDTOPatientAPI.setCoachAccessKey(coachAccessKey);
 
-      PatientAppAPIs.patientControllerPatientAPI
-          .registerPatient(createPatientDTOPatientAPI)
+      PatientAppAPIs.coachPatientControllerPatientAPI.registerPatient1(createPatientDTOPatientAPI)
           .block();
-    } catch (WebClientResponseException e) {
-      System.out.println(e.toString());
+    } catch (Error e) {
       logger.error(e.toString());
-    } catch (Error e2) {
-      System.out.println(e2.toString());
-      logger.error(e2.toString());
     }
 
     return patient;
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 

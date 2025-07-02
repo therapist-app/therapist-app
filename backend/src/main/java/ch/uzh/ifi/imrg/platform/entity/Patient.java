@@ -15,105 +15,113 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "patients")
 public class Patient implements Serializable {
 
-  @Id
-  @Column(unique = true)
-  private String id = UUID.randomUUID().toString();
+    @Id
+    @Column(unique = true)
+    private String id = UUID.randomUUID().toString();
 
-  @Column(name = "created_at", updatable = false)
-  @CreationTimestamp
-  private Instant createdAt;
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private Instant createdAt;
 
-  @Column(name = "updated_at")
-  @UpdateTimestamp
-  private Instant updatedAt;
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Instant updatedAt;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  @Column(nullable = true)
-  private String gender;
+    @Column(nullable = true)
+    private String gender;
 
-  @Column(nullable = true)
-  private int age;
+    @Column(nullable = true)
+    private int age;
 
-  @Column(nullable = true)
-  private String phoneNumber;
+    @Column(nullable = true)
+    private String phoneNumber;
 
-  @Column(nullable = true)
-  private String email;
+    @Column(nullable = false)
+    private String email;
 
-  @Column(nullable = true)
-  private String address;
+    @Column(nullable = false)
+    private String initialPassword;
 
-  @Column private String maritalStatus;
-  @Column private String religion;
-  @Column private String education;
-  @Column private String occupation;
-  @Column private String income;
-  @Column private String dateOfAdmission;
+    @Column(nullable = false)
+    private String coachAccessKey;
 
-  @OneToMany(
-      mappedBy = "patient",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.EAGER)
-  private List<Complaint> complaints = new ArrayList<>();
+    @Column(nullable = true)
+    private String address;
 
-  @Column private String treatmentPast;
-  @Column private String treatmentCurrent;
-  @Column private String pastMedical;
-  @Column private String pastPsych;
+    @Column
+    private String maritalStatus;
+    @Column
+    private String religion;
+    @Column
+    private String education;
+    @Column
+    private String occupation;
+    @Column
+    private String income;
+    @Column
+    private String dateOfAdmission;
 
-  @Column private String familyIllness;
-  @Column private String familySocial;
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Complaint> complaints = new ArrayList<>();
 
-  @Column private String personalPerinatal;
-  @Column private String personalChildhood;
-  @Column private String personalEducation;
-  @Column private String personalPlay;
-  @Column private String personalAdolescence;
-  @Column private String personalPuberty;
-  @Column private String personalObstetric;
-  @Column private String personalOccupational;
-  @Column private String personalMarital;
-  @Column private String personalPremorbid;
+    @Column
+    private String treatmentPast;
+    @Column
+    private String treatmentCurrent;
+    @Column
+    private String pastMedical;
+    @Column
+    private String pastPsych;
 
-  @ManyToOne
-  @JoinColumn(name = "therapist_id", referencedColumnName = "id")
-  private Therapist therapist;
+    @Column
+    private String familyIllness;
+    @Column
+    private String familySocial;
 
-  @Column(unique = true)
-  private String workspaceId = UUID.randomUUID().toString();
+    @Column
+    private String personalPerinatal;
+    @Column
+    private String personalChildhood;
+    @Column
+    private String personalEducation;
+    @Column
+    private String personalPlay;
+    @Column
+    private String personalAdolescence;
+    @Column
+    private String personalPuberty;
+    @Column
+    private String personalObstetric;
+    @Column
+    private String personalOccupational;
+    @Column
+    private String personalMarital;
+    @Column
+    private String personalPremorbid;
 
-  @OneToMany(
-      mappedBy = "patient",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Meeting> meetings = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "therapist_id", referencedColumnName = "id")
+    private Therapist therapist;
 
-  @OneToMany(
-      mappedBy = "patient",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<PatientDocument> patientDocuments = new ArrayList<>();
+    @Column(unique = true)
+    private String workspaceId = UUID.randomUUID().toString();
 
-  @OneToMany(
-      mappedBy = "patient",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Meeting> meetings = new ArrayList<>();
 
-  @OneToMany(
-      mappedBy = "patient",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Exercise> exercises = new ArrayList<>();
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PatientDocument> patientDocuments = new ArrayList<>();
 
-  @OneToOne(optional = false)
-  @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
-  private CounselingPlan counselingPlan;
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Exercise> exercises = new ArrayList<>();
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
+    private CounselingPlan counselingPlan;
 }

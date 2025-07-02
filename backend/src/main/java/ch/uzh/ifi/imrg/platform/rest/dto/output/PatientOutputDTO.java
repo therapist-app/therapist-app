@@ -16,6 +16,7 @@ public class PatientOutputDTO {
   private String gender;
   private int age;
   private String email;
+  private String initialPassword;
   private String maritalStatus;
   private String religion;
   private String education;
@@ -46,7 +47,8 @@ public class PatientOutputDTO {
 
   private List<MeetingOutputDTO> meetingsOutputDTO;
 
-  public PatientOutputDTO() {}
+  public PatientOutputDTO() {
+  }
 
   public PatientOutputDTO(String id, String name) {
     this.id = id;
