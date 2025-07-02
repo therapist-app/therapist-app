@@ -8,7 +8,6 @@ import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachPatientControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachPsychologicalTestControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,8 @@ public class PatientAppAPIs {
   public static CoachJournalEntryControllerPatientAPI coachJournalEntryControllerPatientAPI;
   public static CoachMeetingControllerPatientAPI coachMeetingControllerPatientAPI;
   public static CoachPatientControllerPatientAPI coachPatientControllerPatientAPI;
-  public static CoachPsychologicalTestControllerPatientAPI coachPsychologicalTestControllerPatientAPI;
+  public static CoachPsychologicalTestControllerPatientAPI
+      coachPsychologicalTestControllerPatientAPI;
 
   @Autowired
   public PatientAppAPIs(@Value("${PATIENT_APP_URL}") String PATIENT_APP_URL) {
@@ -36,6 +36,7 @@ public class PatientAppAPIs {
     coachJournalEntryControllerPatientAPI = new CoachJournalEntryControllerPatientAPI(apiClient);
     coachMeetingControllerPatientAPI = new CoachMeetingControllerPatientAPI(apiClient);
     coachPatientControllerPatientAPI = new CoachPatientControllerPatientAPI(apiClient);
-    coachPsychologicalTestControllerPatientAPI = new CoachPsychologicalTestControllerPatientAPI(apiClient);
+    coachPsychologicalTestControllerPatientAPI =
+        new CoachPsychologicalTestControllerPatientAPI(apiClient);
   }
 }

@@ -34,8 +34,7 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -45,13 +44,13 @@ public class PatientService {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
     this.counselingPlanRepository = counselingPlanRepository;
-
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -76,7 +75,8 @@ public class PatientService {
       createPatientDTOPatientAPI.setPassword(initialPassword);
       createPatientDTOPatientAPI.setCoachAccessKey(coachAccessKey);
 
-      PatientAppAPIs.coachPatientControllerPatientAPI.registerPatient1(createPatientDTOPatientAPI)
+      PatientAppAPIs.coachPatientControllerPatientAPI
+          .registerPatient1(createPatientDTOPatientAPI)
           .block();
     } catch (Error e) {
       logger.error(e.toString());
@@ -86,10 +86,11 @@ public class PatientService {
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient = loggedInTherapist.getPatients().stream()
-        .filter(p -> p.getId().equals(patientId))
-        .findFirst()
-        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient =
+        loggedInTherapist.getPatients().stream()
+            .filter(p -> p.getId().equals(patientId))
+            .findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 
