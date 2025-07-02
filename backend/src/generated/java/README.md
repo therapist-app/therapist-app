@@ -124,6 +124,10 @@ Class | Method | HTTP request | Description
 *CoachChatbotControllerPatientAPI* | [**createChatbot**](docs/CoachChatbotControllerPatientAPI.md#createChatbot) | **POST** /coach/patients/{patientId}/chatbot | 
 *CoachChatbotControllerPatientAPI* | [**getChatbotConfigurations**](docs/CoachChatbotControllerPatientAPI.md#getChatbotConfigurations) | **GET** /coach/patients/{patientId}/chatbot | 
 *CoachChatbotControllerPatientAPI* | [**updateChatbot**](docs/CoachChatbotControllerPatientAPI.md#updateChatbot) | **PUT** /coach/patients/{patientId}/chatbot | 
+*CoachDocumentControllerPatientAPI* | [**deleteDocument**](docs/CoachDocumentControllerPatientAPI.md#deleteDocument) | **DELETE** /coach/patients/{patientId}/documents/{documentId} | 
+*CoachDocumentControllerPatientAPI* | [**download1**](docs/CoachDocumentControllerPatientAPI.md#download1) | **GET** /coach/patients/{patientId}/documents/{documentId} | 
+*CoachDocumentControllerPatientAPI* | [**list1**](docs/CoachDocumentControllerPatientAPI.md#list1) | **GET** /coach/patients/{patientId}/documents | 
+*CoachDocumentControllerPatientAPI* | [**uploadAndShare**](docs/CoachDocumentControllerPatientAPI.md#uploadAndShare) | **POST** /coach/patients/{patientId}/documents | 
 *CoachExerciseControllerPatientAPI* | [**createExercise**](docs/CoachExerciseControllerPatientAPI.md#createExercise) | **POST** /coach/patients/{patientId}/exercises | 
 *CoachExerciseControllerPatientAPI* | [**deleteExercise**](docs/CoachExerciseControllerPatientAPI.md#deleteExercise) | **DELETE** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachExerciseControllerPatientAPI* | [**getAllExercises**](docs/CoachExerciseControllerPatientAPI.md#getAllExercises) | **GET** /coach/patients/{patientId}/exercises | 
@@ -131,11 +135,11 @@ Class | Method | HTTP request | Description
 *CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachJournalEntryControllerPatientAPI* | [**getOne1**](docs/CoachJournalEntryControllerPatientAPI.md#getOne1) | **GET** /coach/patients/{patientId}/journal-entries/{entryId} | 
 *CoachJournalEntryControllerPatientAPI* | [**listAll1**](docs/CoachJournalEntryControllerPatientAPI.md#listAll1) | **GET** /coach/patients/{patientId}/journal-entries | 
-*CoachMeetingControllerPatientAPI* | [**createMeeting**](docs/CoachMeetingControllerPatientAPI.md#createMeeting) | **POST** /coach/patients/{patientId}/meetings | 
-*CoachMeetingControllerPatientAPI* | [**deleteMeeting**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
-*CoachMeetingControllerPatientAPI* | [**getMeeting**](docs/CoachMeetingControllerPatientAPI.md#getMeeting) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 
-*CoachMeetingControllerPatientAPI* | [**listMeetings**](docs/CoachMeetingControllerPatientAPI.md#listMeetings) | **GET** /coach/patients/{patientId}/meetings | 
-*CoachMeetingControllerPatientAPI* | [**updateMeeting**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
+*CoachMeetingControllerPatientAPI* | [**createMeeting1**](docs/CoachMeetingControllerPatientAPI.md#createMeeting1) | **POST** /coach/patients/{patientId}/meetings | 
+*CoachMeetingControllerPatientAPI* | [**deleteMeeting1**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting1) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
+*CoachMeetingControllerPatientAPI* | [**getMeeting1**](docs/CoachMeetingControllerPatientAPI.md#getMeeting1) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 
+*CoachMeetingControllerPatientAPI* | [**listMeetings1**](docs/CoachMeetingControllerPatientAPI.md#listMeetings1) | **GET** /coach/patients/{patientId}/meetings | 
+*CoachMeetingControllerPatientAPI* | [**updateMeeting1**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting1) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachPatientControllerPatientAPI* | [**deletePatient**](docs/CoachPatientControllerPatientAPI.md#deletePatient) | **DELETE** /coach/patients/{patientId} | 
 *CoachPatientControllerPatientAPI* | [**registerPatient1**](docs/CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestNames**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestNames) | **GET** /coach/patients/{patientId}/psychological-tests | 
@@ -146,6 +150,8 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
 *ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
+*DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
+*DocumentControllerPatientAPI* | [**download**](docs/DocumentControllerPatientAPI.md#download) | **GET** /patients/documents/{documentId} | 
 *ExerciseControllerPatientAPI* | [**getExerciseOutputDTO**](docs/ExerciseControllerPatientAPI.md#getExerciseOutputDTO) | **GET** /patients/exercises/{exerciseId} | 
 *ExerciseControllerPatientAPI* | [**getExerciseOverview**](docs/ExerciseControllerPatientAPI.md#getExerciseOverview) | **GET** /patients/exercises | 
 *ExerciseControllerPatientAPI* | [**getPicture**](docs/ExerciseControllerPatientAPI.md#getPicture) | **GET** /patients/exercises/{exerciseId}/{mediaId} | 
@@ -156,6 +162,11 @@ Class | Method | HTTP request | Description
 *JournalEntryControllerPatientAPI* | [**getOne**](docs/JournalEntryControllerPatientAPI.md#getOne) | **GET** /patients/journal-entries/{entryId} | 
 *JournalEntryControllerPatientAPI* | [**listAll**](docs/JournalEntryControllerPatientAPI.md#listAll) | **GET** /patients/journal-entries | 
 *JournalEntryControllerPatientAPI* | [**updateJournalEntry**](docs/JournalEntryControllerPatientAPI.md#updateJournalEntry) | **PUT** /patients/journal-entries/{entryId} | 
+*MeetingControllerPatientAPI* | [**createMeeting**](docs/MeetingControllerPatientAPI.md#createMeeting) | **POST** /patients/meetings | 
+*MeetingControllerPatientAPI* | [**deleteMeeting**](docs/MeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /patients/meetings/{meetingId} | 
+*MeetingControllerPatientAPI* | [**getMeeting**](docs/MeetingControllerPatientAPI.md#getMeeting) | **GET** /patients/meetings/{meetingId} | 
+*MeetingControllerPatientAPI* | [**listMeetings**](docs/MeetingControllerPatientAPI.md#listMeetings) | **GET** /patients/meetings | 
+*MeetingControllerPatientAPI* | [**updateMeeting**](docs/MeetingControllerPatientAPI.md#updateMeeting) | **PUT** /patients/meetings/{meetingId} | 
 *PatientAppApplicationPatientAPI* | [**helloWorld**](docs/PatientAppApplicationPatientAPI.md#helloWorld) | **GET** / | 
 *PatientControllerPatientAPI* | [**changePassword**](docs/PatientControllerPatientAPI.md#changePassword) | **PUT** /patients/passwords | 
 *PatientControllerPatientAPI* | [**getCurrentlyLoggedInPatient**](docs/PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me | 
@@ -183,6 +194,7 @@ Class | Method | HTTP request | Description
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
+ - [DocumentOverviewDTOPatientAPI](docs/DocumentOverviewDTOPatientAPI.md)
  - [ExerciseElementInputDTOPatientAPI](docs/ExerciseElementInputDTOPatientAPI.md)
  - [ExerciseElementOutputDTOPatientAPI](docs/ExerciseElementOutputDTOPatientAPI.md)
  - [ExerciseFileElementInputDTOPatientAPI](docs/ExerciseFileElementInputDTOPatientAPI.md)

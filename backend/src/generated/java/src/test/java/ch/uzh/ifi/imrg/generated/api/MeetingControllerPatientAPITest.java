@@ -26,12 +26,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * API tests for CoachMeetingControllerPatientAPI
+ * API tests for MeetingControllerPatientAPI
  */
 @Ignore
-public class CoachMeetingControllerPatientAPITest {
+public class MeetingControllerPatientAPITest {
 
-    private final CoachMeetingControllerPatientAPI api = new CoachMeetingControllerPatientAPI();
+    private final MeetingControllerPatientAPI api = new MeetingControllerPatientAPI();
 
     
     /**
@@ -40,10 +40,9 @@ public class CoachMeetingControllerPatientAPITest {
      * 
      */
     @Test
-    public void createMeeting1Test()  {
-        String patientId = null;
+    public void createMeetingTest()  {
         CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI = null;
-        MeetingOutputDTOPatientAPI response = api.createMeeting1(patientId, createMeetingDTOPatientAPI).block();
+        MeetingOutputDTOPatientAPI response = api.createMeeting(createMeetingDTOPatientAPI).block();
 
         // TODO: test validations
     }
@@ -54,10 +53,9 @@ public class CoachMeetingControllerPatientAPITest {
      * 
      */
     @Test
-    public void deleteMeeting1Test()  {
-        String patientId = null;
+    public void deleteMeetingTest()  {
         String meetingId = null;
-        api.deleteMeeting1(patientId, meetingId).block();
+        api.deleteMeeting(meetingId).block();
 
         // TODO: test validations
     }
@@ -68,10 +66,9 @@ public class CoachMeetingControllerPatientAPITest {
      * 
      */
     @Test
-    public void getMeeting1Test()  {
-        String patientId = null;
+    public void getMeetingTest()  {
         String meetingId = null;
-        MeetingOutputDTOPatientAPI response = api.getMeeting1(patientId, meetingId).block();
+        MeetingOutputDTOPatientAPI response = api.getMeeting(meetingId).block();
 
         // TODO: test validations
     }
@@ -82,9 +79,8 @@ public class CoachMeetingControllerPatientAPITest {
      * 
      */
     @Test
-    public void listMeetings1Test()  {
-        String patientId = null;
-        List<MeetingOutputDTOPatientAPI> response = api.listMeetings1(patientId).collectList().block();
+    public void listMeetingsTest()  {
+        List<MeetingOutputDTOPatientAPI> response = api.listMeetings().collectList().block();
 
         // TODO: test validations
     }
@@ -95,11 +91,10 @@ public class CoachMeetingControllerPatientAPITest {
      * 
      */
     @Test
-    public void updateMeeting1Test()  {
-        String patientId = null;
+    public void updateMeetingTest()  {
         String meetingId = null;
         UpdateMeetingDTOPatientAPI updateMeetingDTOPatientAPI = null;
-        MeetingOutputDTOPatientAPI response = api.updateMeeting1(patientId, meetingId, updateMeetingDTOPatientAPI).block();
+        MeetingOutputDTOPatientAPI response = api.updateMeeting(meetingId, updateMeetingDTOPatientAPI).block();
 
         // TODO: test validations
     }

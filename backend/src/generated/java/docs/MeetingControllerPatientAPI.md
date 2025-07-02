@@ -1,20 +1,20 @@
-# CoachMeetingControllerPatientAPI
+# MeetingControllerPatientAPI
 
 All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**createMeeting1**](CoachMeetingControllerPatientAPI.md#createMeeting1) | **POST** /coach/patients/{patientId}/meetings |  |
-| [**deleteMeeting1**](CoachMeetingControllerPatientAPI.md#deleteMeeting1) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} |  |
-| [**getMeeting1**](CoachMeetingControllerPatientAPI.md#getMeeting1) | **GET** /coach/patients/{patientId}/meetings/{meetingId} |  |
-| [**listMeetings1**](CoachMeetingControllerPatientAPI.md#listMeetings1) | **GET** /coach/patients/{patientId}/meetings |  |
-| [**updateMeeting1**](CoachMeetingControllerPatientAPI.md#updateMeeting1) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} |  |
+| [**createMeeting**](MeetingControllerPatientAPI.md#createMeeting) | **POST** /patients/meetings |  |
+| [**deleteMeeting**](MeetingControllerPatientAPI.md#deleteMeeting) | **DELETE** /patients/meetings/{meetingId} |  |
+| [**getMeeting**](MeetingControllerPatientAPI.md#getMeeting) | **GET** /patients/meetings/{meetingId} |  |
+| [**listMeetings**](MeetingControllerPatientAPI.md#listMeetings) | **GET** /patients/meetings |  |
+| [**updateMeeting**](MeetingControllerPatientAPI.md#updateMeeting) | **PUT** /patients/meetings/{meetingId} |  |
 
 
 
-## createMeeting1
+## createMeeting
 
-> MeetingOutputDTOPatientAPI createMeeting1(patientId, createMeetingDTOPatientAPI)
+> MeetingOutputDTOPatientAPI createMeeting(createMeetingDTOPatientAPI)
 
 
 
@@ -27,7 +27,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.MeetingControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -40,14 +40,13 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
-        String patientId = "patientId_example"; // String | 
+        MeetingControllerPatientAPI apiInstance = new MeetingControllerPatientAPI(defaultClient);
         CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI = new CreateMeetingDTOPatientAPI(); // CreateMeetingDTOPatientAPI | 
         try {
-            MeetingOutputDTOPatientAPI result = apiInstance.createMeeting1(patientId, createMeetingDTOPatientAPI);
+            MeetingOutputDTOPatientAPI result = apiInstance.createMeeting(createMeetingDTOPatientAPI);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#createMeeting1");
+            System.err.println("Exception when calling MeetingControllerPatientAPI#createMeeting");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -62,7 +61,6 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **patientId** | **String**|  | |
 | **createMeetingDTOPatientAPI** | [**CreateMeetingDTOPatientAPI**](CreateMeetingDTOPatientAPI.md)|  | |
 
 ### Return type
@@ -85,9 +83,9 @@ public class Example {
 | **201** | Created |  -  |
 
 
-## deleteMeeting1
+## deleteMeeting
 
-> deleteMeeting1(patientId, meetingId)
+> deleteMeeting(meetingId)
 
 
 
@@ -100,7 +98,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.MeetingControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -113,13 +111,12 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
-        String patientId = "patientId_example"; // String | 
+        MeetingControllerPatientAPI apiInstance = new MeetingControllerPatientAPI(defaultClient);
         String meetingId = "meetingId_example"; // String | 
         try {
-            apiInstance.deleteMeeting1(patientId, meetingId);
+            apiInstance.deleteMeeting(meetingId);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#deleteMeeting1");
+            System.err.println("Exception when calling MeetingControllerPatientAPI#deleteMeeting");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -134,7 +131,6 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **patientId** | **String**|  | |
 | **meetingId** | **String**|  | |
 
 ### Return type
@@ -157,9 +153,9 @@ null (empty response body)
 | **204** | No Content |  -  |
 
 
-## getMeeting1
+## getMeeting
 
-> MeetingOutputDTOPatientAPI getMeeting1(patientId, meetingId)
+> MeetingOutputDTOPatientAPI getMeeting(meetingId)
 
 
 
@@ -172,7 +168,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.MeetingControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -185,14 +181,13 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
-        String patientId = "patientId_example"; // String | 
+        MeetingControllerPatientAPI apiInstance = new MeetingControllerPatientAPI(defaultClient);
         String meetingId = "meetingId_example"; // String | 
         try {
-            MeetingOutputDTOPatientAPI result = apiInstance.getMeeting1(patientId, meetingId);
+            MeetingOutputDTOPatientAPI result = apiInstance.getMeeting(meetingId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#getMeeting1");
+            System.err.println("Exception when calling MeetingControllerPatientAPI#getMeeting");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -207,7 +202,6 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **patientId** | **String**|  | |
 | **meetingId** | **String**|  | |
 
 ### Return type
@@ -230,9 +224,9 @@ public class Example {
 | **200** | OK |  -  |
 
 
-## listMeetings1
+## listMeetings
 
-> List&lt;MeetingOutputDTOPatientAPI&gt; listMeetings1(patientId)
+> List&lt;MeetingOutputDTOPatientAPI&gt; listMeetings()
 
 
 
@@ -245,7 +239,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.MeetingControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -258,13 +252,12 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
-        String patientId = "patientId_example"; // String | 
+        MeetingControllerPatientAPI apiInstance = new MeetingControllerPatientAPI(defaultClient);
         try {
-            List<MeetingOutputDTOPatientAPI> result = apiInstance.listMeetings1(patientId);
+            List<MeetingOutputDTOPatientAPI> result = apiInstance.listMeetings();
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#listMeetings1");
+            System.err.println("Exception when calling MeetingControllerPatientAPI#listMeetings");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -276,10 +269,7 @@ public class Example {
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **patientId** | **String**|  | |
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -301,9 +291,9 @@ public class Example {
 | **200** | OK |  -  |
 
 
-## updateMeeting1
+## updateMeeting
 
-> MeetingOutputDTOPatientAPI updateMeeting1(patientId, meetingId, updateMeetingDTOPatientAPI)
+> MeetingOutputDTOPatientAPI updateMeeting(meetingId, updateMeetingDTOPatientAPI)
 
 
 
@@ -316,7 +306,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiException;
 import ch.uzh.ifi.imrg.generated.invoker.Configuration;
 import ch.uzh.ifi.imrg.generated.invoker.auth.*;
 import ch.uzh.ifi.imrg.generated.invoker.models.*;
-import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.MeetingControllerPatientAPI;
 
 public class Example {
     public static void main(String[] args) {
@@ -329,15 +319,14 @@ public class Example {
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
         //X-Coach-Key.setApiKeyPrefix("Token");
 
-        CoachMeetingControllerPatientAPI apiInstance = new CoachMeetingControllerPatientAPI(defaultClient);
-        String patientId = "patientId_example"; // String | 
+        MeetingControllerPatientAPI apiInstance = new MeetingControllerPatientAPI(defaultClient);
         String meetingId = "meetingId_example"; // String | 
         UpdateMeetingDTOPatientAPI updateMeetingDTOPatientAPI = new UpdateMeetingDTOPatientAPI(); // UpdateMeetingDTOPatientAPI | 
         try {
-            MeetingOutputDTOPatientAPI result = apiInstance.updateMeeting1(patientId, meetingId, updateMeetingDTOPatientAPI);
+            MeetingOutputDTOPatientAPI result = apiInstance.updateMeeting(meetingId, updateMeetingDTOPatientAPI);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling CoachMeetingControllerPatientAPI#updateMeeting1");
+            System.err.println("Exception when calling MeetingControllerPatientAPI#updateMeeting");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -352,7 +341,6 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **patientId** | **String**|  | |
 | **meetingId** | **String**|  | |
 | **updateMeetingDTOPatientAPI** | [**UpdateMeetingDTOPatientAPI**](UpdateMeetingDTOPatientAPI.md)|  | |
 

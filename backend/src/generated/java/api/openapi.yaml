@@ -77,6 +77,70 @@ paths:
       - patient-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/meetings/{meetingId}:
+    delete:
+      operationId: deleteMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - meeting-controller
+      x-accepts: application/json
+    get:
+      operationId: getMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: OK
+      tags:
+      - meeting-controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateMeeting
+      parameters:
+      - explode: false
+        in: path
+        name: meetingId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMeetingDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: OK
+      tags:
+      - meeting-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/language:
     get:
       operationId: getLanguage
@@ -211,7 +275,7 @@ paths:
       x-accepts: application/json
   /coach/patients/{patientId}/meetings/{meetingId}:
     delete:
-      operationId: deleteMeeting
+      operationId: deleteMeeting_1
       parameters:
       - explode: false
         in: path
@@ -236,7 +300,7 @@ paths:
       - coach-meeting-controller
       x-accepts: application/json
     get:
-      operationId: getMeeting
+      operationId: getMeeting_1
       parameters:
       - explode: false
         in: path
@@ -265,7 +329,7 @@ paths:
       - coach-meeting-controller
       x-accepts: '*/*'
     put:
-      operationId: updateMeeting
+      operationId: updateMeeting_1
       parameters:
       - explode: false
         in: path
@@ -520,6 +584,40 @@ paths:
       - patient-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/meetings:
+    get:
+      operationId: listMeetings
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/MeetingOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - meeting-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createMeeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeetingDTO'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeetingOutputDTO'
+          description: Created
+      tags:
+      - meeting-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/logout:
     post:
       operationId: logoutTherapist
@@ -690,7 +788,7 @@ paths:
       x-accepts: '*/*'
   /coach/patients/{patientId}/meetings:
     get:
-      operationId: listMeetings
+      operationId: listMeetings_1
       parameters:
       - explode: false
         in: path
@@ -714,7 +812,7 @@ paths:
       - coach-meeting-controller
       x-accepts: '*/*'
     post:
-      operationId: createMeeting
+      operationId: createMeeting_1
       parameters:
       - explode: false
         in: path
@@ -791,6 +889,59 @@ paths:
       tags:
       - coach-exercise-controller
       x-content-type: application/json
+      x-accepts: application/json
+  /coach/patients/{patientId}/documents:
+    get:
+      operationId: list_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/DocumentOverviewDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-document-controller
+      x-accepts: '*/*'
+    post:
+      operationId: uploadAndShare
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/uploadAndShare_request'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentOverviewDTO'
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-document-controller
+      x-content-type: multipart/form-data
       x-accepts: application/json
   /coach/patients/register:
     post:
@@ -885,6 +1036,45 @@ paths:
           description: OK
       tags:
       - exercise-controller
+      x-accepts: '*/*'
+  /patients/documents:
+    get:
+      operationId: list
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/DocumentOverviewDTO'
+                type: array
+          description: OK
+      tags:
+      - document-controller
+      x-accepts: '*/*'
+  /patients/documents/{documentId}:
+    get:
+      operationId: download
+      parameters:
+      - explode: false
+        in: path
+        name: documentId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  format: byte
+                  type: string
+                type: array
+          description: OK
+      tags:
+      - document-controller
       x-accepts: '*/*'
   /patients/conversations/{patientId}:
     get:
@@ -1013,6 +1203,64 @@ paths:
       tags:
       - coach-journal-entry-controller
       x-accepts: '*/*'
+  /coach/patients/{patientId}/documents/{documentId}:
+    delete:
+      operationId: deleteDocument
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: documentId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-document-controller
+      x-accepts: application/json
+    get:
+      operationId: download_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: documentId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  format: byte
+                  type: string
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-document-controller
+      x-accepts: '*/*'
   /:
     get:
       operationId: helloWorld
@@ -1068,6 +1316,62 @@ components:
     PutNameDTO:
       properties:
         name:
+          type: string
+      type: object
+    UpdateMeetingDTO:
+      properties:
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          type: string
+      type: object
+    MeetingOutputDTO:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        meetingStatus: PENDING
+        patientId: patientId
+        externalMeetingId: externalMeetingId
+        location: location
+        id: id
+        endAt: 2000-01-23T04:56:07.000+00:00
+        startAt: 2000-01-23T04:56:07.000+00:00
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        externalMeetingId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        patientId:
+          type: string
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
           type: string
       type: object
     PutLanguageDTO:
@@ -1137,62 +1441,6 @@ components:
           type: boolean
         shareWithAi:
           type: boolean
-      type: object
-    UpdateMeetingDTO:
-      properties:
-        startAt:
-          format: date-time
-          type: string
-        endAt:
-          format: date-time
-          type: string
-        location:
-          type: string
-        meetingStatus:
-          enum:
-          - PENDING
-          - CONFIRMED
-          - CANCELLED
-          type: string
-      type: object
-    MeetingOutputDTO:
-      example:
-        createdAt: 2000-01-23T04:56:07.000+00:00
-        meetingStatus: PENDING
-        patientId: patientId
-        externalMeetingId: externalMeetingId
-        location: location
-        id: id
-        endAt: 2000-01-23T04:56:07.000+00:00
-        startAt: 2000-01-23T04:56:07.000+00:00
-        updatedAt: 2000-01-23T04:56:07.000+00:00
-      properties:
-        id:
-          type: string
-        externalMeetingId:
-          type: string
-        createdAt:
-          format: date-time
-          type: string
-        updatedAt:
-          format: date-time
-          type: string
-        patientId:
-          type: string
-        startAt:
-          format: date-time
-          type: string
-        endAt:
-          format: date-time
-          type: string
-        location:
-          type: string
-        meetingStatus:
-          enum:
-          - PENDING
-          - CONFIRMED
-          - CANCELLED
-          type: string
       type: object
     ExerciseElementInputDTO:
       discriminator:
@@ -1335,6 +1583,19 @@ components:
         onboarded:
           type: boolean
       type: object
+    CreateMeetingDTO:
+      properties:
+        externalMeetingId:
+          type: string
+        startAt:
+          format: date-time
+          type: string
+        endAt:
+          format: date-time
+          type: string
+        location:
+          type: string
+      type: object
     LoginPatientDTO:
       properties:
         email:
@@ -1400,17 +1661,21 @@ components:
         requestMessage:
           type: string
       type: object
-    CreateMeetingDTO:
+    DocumentOverviewDTO:
+      example:
+        filename: filename
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        contentType: contentType
       properties:
-        externalMeetingId:
+        id:
           type: string
-        startAt:
+        filename:
+          type: string
+        contentType:
+          type: string
+        uploadedAt:
           format: date-time
-          type: string
-        endAt:
-          format: date-time
-          type: string
-        location:
           type: string
       type: object
     CreateChatbotDTO:
@@ -1753,6 +2018,14 @@ components:
           type: string
         active:
           type: boolean
+      type: object
+    uploadAndShare_request:
+      properties:
+        file:
+          format: binary
+          type: string
+      required:
+      - file
       type: object
     ExerciseInputDTO_exerciseElements_inner:
       oneOf:
