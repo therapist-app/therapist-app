@@ -8,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseMapper;
+import ch.uzh.ifi.imrg.platform.utils.DateUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +43,9 @@ public class ExerciseService {
     exercise.setTitle(createExerciseDTO.getTitle());
     exercise.setExerciseType(createExerciseDTO.getExerciseType());
     exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
-    exercise.setExerciseEnd(createExerciseDTO.getExerciseEnd());
+    exercise.setExerciseEnd(
+        DateUtil.addAmountOfWeeks(
+            createExerciseDTO.getExerciseStart(), createExerciseDTO.getDurationInWeeks()));
     exercise.setIsPaused(false);
 
     Exercise savedExercise = exerciseRepository.save(exercise);

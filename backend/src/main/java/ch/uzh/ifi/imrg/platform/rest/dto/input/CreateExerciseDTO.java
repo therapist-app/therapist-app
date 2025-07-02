@@ -10,5 +10,5 @@ public class CreateExerciseDTO {
   private String title;
   private ExerciseType exerciseType;
   private Instant exerciseStart;
-  private Instant exerciseEnd;
+  private long durationInWeeks;
 }

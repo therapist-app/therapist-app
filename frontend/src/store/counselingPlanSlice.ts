@@ -11,12 +11,14 @@ import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi }
 
 interface CounselingPlanState {
   counselingPlan: CounselingPlanOutputDTO | null
+
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
 
 const initialState: CounselingPlanState = {
   counselingPlan: null,
+
   status: 'idle',
   error: null,
 }
@@ -89,6 +91,35 @@ export const removeExerciseFromCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/removeExerciseToCounselingPlanPhase',
   async (dto: RemoveExerciseFromCounselingPlanPhaseDTO) => {
     const response = await counselingPlanPhaseApi.removeExerciseFromCounselingPlanPhase(dto)
+    return response.data
+  }
+)
+
+export const createCounselingPlanPhaseAIGenerated = createAsyncThunk(
+  'counselingPlan/createCounselingPlanPhaseAIGenerated',
+  async (counselingPlanId: string) => {
+    const response =
+      await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(counselingPlanId)
+    return response.data
+  }
+)
+
+export const createCounselingPlanPhaseGoalAIGenerated = createAsyncThunk(
+  'counselingPlan/createCounselingPlanPhaseGoalAIGenerated',
+  async (counselingPlanPhaseId: string) => {
+    const response =
+      await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoalAIGenerated(
+        counselingPlanPhaseId
+      )
+    return response.data
+  }
+)
+
+export const createCounselingPlanExerciseAIGenerated = createAsyncThunk(
+  'counselingPlan/createCounselingPlanExerciseAIGenerated',
+  async (counselingPlanPhaseId: string) => {
+    const response =
+      await counselingPlanPhaseApi.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId)
     return response.data
   }
 )

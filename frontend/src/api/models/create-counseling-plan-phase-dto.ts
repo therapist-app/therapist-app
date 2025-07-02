@@ -40,9 +40,9 @@ export interface CreateCounselingPlanPhaseDTO {
     'startDate'?: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CreateCounselingPlanPhaseDTO
      */
-    'endDate'?: string;
+    'durationInWeeks'?: number;
 }
 

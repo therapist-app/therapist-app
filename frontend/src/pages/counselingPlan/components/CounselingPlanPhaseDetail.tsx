@@ -6,6 +6,7 @@ import { formatDateNicely } from '../../../utils/dateUtil'
 import AddCounselingPlanExercise from './AddCounselingPlanExercise'
 import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
+import CreateCounselingPlanExercise from './CreateCounselingPlanExercise'
 import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
 
 interface CounselingPlanPhaseDetailProps {
@@ -54,6 +55,7 @@ const CounselingPlanPhaseDetail = ({
         onSuccess={handleCreateCounselingPlanPhaseGoal}
         counselingPlanPhase={phase}
       />
+      <CreateCounselingPlanExercise onSuccess={onSuccess} counselingPlanPhase={phase} />
     </div>
   )
 }

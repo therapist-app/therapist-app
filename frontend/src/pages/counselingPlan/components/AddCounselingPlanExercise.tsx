@@ -20,7 +20,6 @@ const AddCounselingPlanExercise = ({
 }: AddCounselingPlanExerciseProps): ReactElement => {
   const dispatch = useAppDispatch()
   const { allExercisesOfPatient } = useSelector((state: RootState) => state.exercise)
-  console.log(allExercisesOfPatient)
 
   const exercisesToSelect = allExercisesOfPatient.filter(
     (exercise) =>
@@ -44,41 +43,53 @@ const AddCounselingPlanExercise = ({
       counselingPlanPhaseId: counselingPlanPhaseId,
     }
     await dispatch(addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO))
+    setOpen(false)
+
     onSuccess()
   }
 
-  if (exercisesToSelect.length === 0) {
-    return (
-      <Button sx={{ maxWidth: '250px' }} variant='contained' disabled>
-        Create a new exercise first
-      </Button>
-    )
+  const handleCancel = (): void => {
+    setOpen(false)
+  }
+
+  const handleAddExerciseFirstClick = (): void => {
+    setOpen(true)
   }
 
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
-          Add an Exercise
+        <Button variant='contained' onClick={handleAddExerciseFirstClick}>
+          Add existing Exercise
         </Button>
       ) : (
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <FormControl sx={{ minWidth: '200px' }}>
-            <InputLabel>Exercise</InputLabel>
-            <Select
-              id='demo-simple-select'
-              value={selectedExerciseId}
-              label='Exercise'
-              onChange={handleSelectExerciseChange}
+        <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <FormControl sx={{ minWidth: '200px' }}>
+              <InputLabel>Exercise</InputLabel>
+              <Select
+                id='demo-simple-select'
+                value={selectedExerciseId}
+                label='Exercise'
+                onChange={handleSelectExerciseChange}
+              >
+                {exercisesToSelect.map((exercise) => (
+                  <MenuItem value={exercise.id}>{exercise.title}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button variant='contained' color='success' onClick={handleAddExercise}>
+              Add existing Exercise
+            </Button>
+            <Button
+              sx={{ maxWidth: '100px' }}
+              variant='outlined'
+              color='error'
+              onClick={handleCancel}
             >
-              {exercisesToSelect.map((exercise) => (
-                <MenuItem value={exercise.id}>{exercise.title}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button variant='contained' color='success' onClick={handleAddExercise}>
-            Add Exercise
-          </Button>
+              Cancel
+            </Button>
+          </div>
         </div>
       )}
     </div>

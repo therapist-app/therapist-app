@@ -2,7 +2,10 @@ import { Button, TextField } from '@mui/material'
 import { ReactElement, useState } from 'react'
 
 import { CreateCounselingPlanPhaseGoalDTO } from '../../../api'
-import { createCounselingPlanPhaseGoal } from '../../../store/counselingPlanSlice'
+import {
+  createCounselingPlanPhaseGoal,
+  createCounselingPlanPhaseGoalAIGenerated,
+} from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateCounselingPlanPhaseGoalProps {
@@ -34,6 +37,18 @@ const CreateCounselingPlanPhaseGoal = ({
       goalName: '',
       goalDescription: '',
     })
+  }
+
+  const handleGenrateAI = async (): Promise<void> => {
+    const aiGeneratedPhaseGoal: CreateCounselingPlanPhaseGoalDTO = await dispatch(
+      createCounselingPlanPhaseGoalAIGenerated(counselingPlanPhaseId)
+    ).unwrap()
+    const newFormValues: CreateCounselingPlanPhaseGoalDTO = {
+      ...aiGeneratedPhaseGoal,
+      counselingPlanPhaseId: counselingPlanPhaseId,
+    }
+    setFormValues(newFormValues)
+    setOpen(true)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -75,6 +90,9 @@ const CreateCounselingPlanPhaseGoal = ({
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button type='submit' variant='contained'>
               Create goal
+            </Button>
+            <Button variant='contained' color='success' onClick={handleGenrateAI}>
+              Make AI generated suggestion
             </Button>
             <Button variant='outlined' color='error' onClick={handleCancel}>
               Cancel

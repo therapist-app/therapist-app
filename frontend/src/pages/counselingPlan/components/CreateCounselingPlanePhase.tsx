@@ -6,7 +6,10 @@ import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 
 import { CreateCounselingPlanPhaseDTO } from '../../../api'
-import { createCounselingPlanPhase } from '../../../store/counselingPlanSlice'
+import {
+  createCounselingPlanPhase,
+  createCounselingPlanPhaseAIGenerated,
+} from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateCounselingPlanePhaseProps {
@@ -43,9 +46,7 @@ const CreateCounselingPlanePhase = ({
       counselingPlanId: counselingPlanId,
       phaseName: formValues.phaseName,
       startDate: startDate.toISOString(),
-      endDate: new Date(
-        startDate.getTime() + formValues.durationInWeeks * 7 * 24 * 60 * 60 * 1000
-      ).toISOString(),
+      durationInWeeks: formValues.durationInWeeks,
     }
     await dispatch(createCounselingPlanPhase(createCounselingPlanPhaseDTO))
     onSuccess()
@@ -53,10 +54,29 @@ const CreateCounselingPlanePhase = ({
     setFormValues(initialFormValues)
   }
 
+  const handleAIGeneration = async (): Promise<void> => {
+    const createCounselingPlanPhaseDTO = await dispatch(
+      createCounselingPlanPhaseAIGenerated(counselingPlanId)
+    ).unwrap()
+    const newFormValue: FormValues = {
+      phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
+      startDate: new Date(createCounselingPlanPhaseDTO.startDate ?? ''),
+      durationInWeeks: createCounselingPlanPhaseDTO.durationInWeeks ?? 2,
+    }
+
+    setFormValues(newFormValue)
+    setOpen(true)
+  }
+
+  const handleCancel = (): void => {
+    setOpen(false)
+    setFormValues(initialFormValues)
+  }
+
   return (
     <>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)} sx={{ marginTop: '20px' }}>
+        <Button variant='contained' onClick={() => setOpen(true)}>
           Add a phase
         </Button>
       ) : (
@@ -95,7 +115,10 @@ const CreateCounselingPlanePhase = ({
             <Button variant='contained' type='submit'>
               Create phase
             </Button>
-            <Button variant='outlined' color='error' onClick={() => setOpen(false)}>
+            <Button variant='contained' color='success' onClick={handleAIGeneration}>
+              Make AI generated suggestion
+            </Button>
+            <Button variant='outlined' color='error' onClick={handleCancel}>
               Cancel
             </Button>
           </div>
