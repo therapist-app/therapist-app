@@ -1,5 +1,5 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'

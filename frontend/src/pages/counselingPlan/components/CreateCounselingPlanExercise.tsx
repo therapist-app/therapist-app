@@ -3,12 +3,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
-import { ReactElement, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { ReactElement, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import {
-  CounselingPlanOutputDTO,
   CounselingPlanPhaseOutputDTO,
   CreateExerciseDTO,
   CreateExerciseDTOExerciseTypeEnum,

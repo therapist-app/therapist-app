@@ -3,7 +3,6 @@ import { ReactElement, useState } from 'react'
 
 import { CreateCounselingPlanPhaseGoalDTO } from '../../../api'
 import {
-  createCounselingPlanPhaseAIGenerated,
   createCounselingPlanPhaseGoal,
   createCounselingPlanPhaseGoalAIGenerated,
 } from '../../../store/counselingPlanSlice'
