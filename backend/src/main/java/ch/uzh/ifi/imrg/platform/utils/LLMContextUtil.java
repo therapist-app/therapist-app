@@ -1,26 +1,29 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
-import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
-import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
-import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
-import ch.uzh.ifi.imrg.platform.entity.Exercise;
-import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
-import ch.uzh.ifi.imrg.platform.entity.Meeting;
-import ch.uzh.ifi.imrg.platform.entity.MeetingNote;
-import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
+import ch.uzh.ifi.imrg.platform.entity.*;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class LLMContextUtil {
 
   private static final DateTimeFormatter FORMATTER =
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+
+  // Helper method to avoid boilerplate null-checks
+  private static void appendDetail(
+      StringBuilder sb, String label, Object value) {
+    if (value != null
+        && !(value instanceof String && ((String) value).isBlank())
+        && !(value instanceof Integer && (Integer) value == 0)) {
+      sb.append("- **").append(label).append(":** ").append(value).append("\n");
+    }
+  }
+
+
 
   public static String getCounselingPlanContext(CounselingPlan counselingPlan) {
     StringBuilder promptBuilder = new StringBuilder();
@@ -160,7 +163,62 @@ public class LLMContextUtil {
     } else {
       for (Patient patient : patients) {
         promptBuilder.append("\n---\n\n");
-        promptBuilder.append("## Client: ").append(patient.getName()).append("\n\n");
+        promptBuilder
+            .append("## Client: ")
+            .append(patient.getName())
+            .append(" (ID: ")
+            .append(patient.getId())
+            .append(")\n\n");
+
+        // --- Patient Details ---
+        promptBuilder.append("### Patient Details\n");
+        appendDetail(promptBuilder, "Gender", patient.getGender());
+        appendDetail(promptBuilder, "Age", patient.getAge());
+        appendDetail(promptBuilder, "Email", patient.getEmail());
+        appendDetail(promptBuilder, "Phone Number", patient.getPhoneNumber());
+        appendDetail(promptBuilder, "Address", patient.getAddress());
+        appendDetail(promptBuilder, "Marital Status", patient.getMaritalStatus());
+        appendDetail(promptBuilder, "Occupation", patient.getOccupation());
+        appendDetail(promptBuilder, "Education", patient.getEducation());
+        appendDetail(promptBuilder, "Religion", patient.getReligion());
+        appendDetail(promptBuilder, "Date of Admission", patient.getDateOfAdmission());
+        promptBuilder.append("\n");
+
+        // --- Clinical History ---
+        promptBuilder.append("### Clinical History & Context\n");
+        appendDetail(promptBuilder, "Current Treatment", patient.getTreatmentCurrent());
+        appendDetail(promptBuilder, "Past Treatment", patient.getTreatmentPast());
+        appendDetail(promptBuilder, "Past Medical History", patient.getPastMedical());
+        appendDetail(promptBuilder, "Past Psychiatric History", patient.getPastPsych());
+        appendDetail(promptBuilder, "Family Illness History", patient.getFamilyIllness());
+        appendDetail(promptBuilder, "Family Social History", patient.getFamilySocial());
+        promptBuilder.append("\n");
+
+        // --- Personal History ---
+        promptBuilder.append("### Personal History\n");
+        appendDetail(promptBuilder, "Perinatal", patient.getPersonalPerinatal());
+        appendDetail(promptBuilder, "Childhood", patient.getPersonalChildhood());
+        appendDetail(promptBuilder, "Adolescence", patient.getPersonalAdolescence());
+        appendDetail(promptBuilder, "Puberty", patient.getPersonalPuberty());
+        appendDetail(promptBuilder, "Occupational History", patient.getPersonalOccupational());
+        appendDetail(promptBuilder, "Marital History", patient.getPersonalMarital());
+        appendDetail(promptBuilder, "Premorbid Personality", patient.getPersonalPremorbid());
+        promptBuilder.append("\n");
+
+        // --- Complaints ---
+        if (patient.getComplaints() != null && !patient.getComplaints().isEmpty()) {
+          promptBuilder.append("### Chief Complaints\n");
+          for (Complaint complaint : patient.getComplaints()) {
+            appendDetail(promptBuilder, "Main Complaint", complaint.getMainComplaint());
+            appendDetail(promptBuilder, "Duration", complaint.getDuration());
+            appendDetail(promptBuilder, "Onset", complaint.getOnset());
+            appendDetail(promptBuilder, "Course", complaint.getCourse());
+            appendDetail(promptBuilder, "Precipitating Factors", complaint.getPrecipitatingFactors());
+            appendDetail(promptBuilder, "Suicidal Ideation", complaint.getSuicidalIdeation());
+            appendDetail(promptBuilder, "Associated Disturbances", complaint.getDisturbances());
+          }
+          promptBuilder.append("\n");
+        }
 
         if (patient.getPatientDocuments() != null && !patient.getPatientDocuments().isEmpty()) {
           promptBuilder.append("### Client Documents\n");
@@ -178,31 +236,88 @@ public class LLMContextUtil {
 
         if (patient.getMeetings() != null && !patient.getMeetings().isEmpty()) {
           promptBuilder.append("### Meetings\n");
-          for (Meeting meeting : patient.getMeetings()) {
-            String startTime =
-                meeting.getMeetingStart() != null
-                    ? FORMATTER.format(meeting.getMeetingStart())
-                    : "N/A";
-            String endTime =
-                meeting.getMeetingEnd() != null ? FORMATTER.format(meeting.getMeetingEnd()) : "N/A";
-            promptBuilder
-                .append("- **Meeting Time:** From ")
-                .append(startTime)
-                .append(" to ")
-                .append(endTime)
-                .append("\n");
-
-            if (meeting.getMeetingNotes() != null && !meeting.getMeetingNotes().isEmpty()) {
-              promptBuilder.append("  **Meeting Notes:**\n");
-              for (MeetingNote note : meeting.getMeetingNotes()) {
-                promptBuilder.append("    - **Title:** ").append(note.getTitle()).append("\n");
+          patient.getMeetings().stream()
+              .sorted(Comparator.comparing(Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
+              .forEach(meeting -> {
+                String startTime =
+                    meeting.getMeetingStart() != null
+                        ? FORMATTER.format(meeting.getMeetingStart())
+                        : "N/A";
+                String endTime =
+                    meeting.getMeetingEnd() != null
+                        ? FORMATTER.format(meeting.getMeetingEnd())
+                        : "N/A";
                 promptBuilder
-                    .append("      **Content:** ")
-                    .append(note.getContent().trim())
+                    .append("- **Meeting Time:** From ")
+                    .append(startTime)
+                    .append(" to ")
+                    .append(endTime)
                     .append("\n");
-              }
-            }
-          }
+
+                if (meeting.getMeetingNotes() != null && !meeting.getMeetingNotes().isEmpty()) {
+                  promptBuilder.append("  **Meeting Notes:**\n");
+                  for (MeetingNote note : meeting.getMeetingNotes()) {
+                    promptBuilder.append("    - **Title:** ").append(note.getTitle()).append("\n");
+                    promptBuilder
+                        .append("      **Content:** ")
+                        .append(note.getContent().trim())
+                        .append("\n");
+                  }
+                }
+
+                // --- GAD-7 Tests ---
+                if (meeting.getGAD7Tests() != null && !meeting.getGAD7Tests().isEmpty()) {
+                  promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
+                  for (GAD7Test test : meeting.getGAD7Tests()) {
+                    int totalScore =
+                        test.getQuestion1()
+                            + test.getQuestion2()
+                            + test.getQuestion3()
+                            + test.getQuestion4()
+                            + test.getQuestion5()
+                            + test.getQuestion6()
+                            + test.getQuestion7();
+
+                    String severity;
+                    if (totalScore <= 4) {
+                      severity = "Minimal anxiety";
+                    } else if (totalScore <= 9) {
+                      severity = "Mild anxiety";
+                    } else if (totalScore <= 14) {
+                      severity = "Moderate anxiety";
+                    } else {
+                      severity = "Severe anxiety";
+                    }
+
+                    promptBuilder
+                        .append("    - **Test Date:** ")
+                        .append(FORMATTER.format(test.getCreationDate()))
+                        .append("\n");
+                    promptBuilder
+                        .append("      - **Total Score:** ")
+                        .append(totalScore)
+                        .append(" (")
+                        .append(severity)
+                        .append(")\n");
+                    promptBuilder
+                        .append("      - **Scores (Q1-Q7):** [")
+                        .append(test.getQuestion1())
+                        .append(", ")
+                        .append(test.getQuestion2())
+                        .append(", ")
+                        .append(test.getQuestion3())
+                        .append(", ")
+                        .append(test.getQuestion4())
+                        .append(", ")
+                        .append(test.getQuestion5())
+                        .append(", ")
+                        .append(test.getQuestion6())
+                        .append(", ")
+                        .append(test.getQuestion7())
+                        .append("]\n");
+                  }
+                }
+              });
           promptBuilder.append("\n");
         }
 

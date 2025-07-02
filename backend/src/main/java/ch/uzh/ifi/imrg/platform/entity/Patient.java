@@ -113,6 +113,8 @@ public class Patient implements Serializable {
       orphanRemoval = true)
   private List<Exercise> exercises = new ArrayList<>();
 
+
+
   @OneToOne(optional = false)
   @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
   private CounselingPlan counselingPlan;
