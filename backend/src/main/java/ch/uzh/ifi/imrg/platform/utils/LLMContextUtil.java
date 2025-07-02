@@ -1,11 +1,5 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
@@ -17,13 +11,18 @@ import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LLMContextUtil {
 
-    private static final DateTimeFormatter FORMATTER =
+  private static final DateTimeFormatter FORMATTER =
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
 
-    public static String getCounselingPlanContext(CounselingPlan counselingPlan) {
+  public static String getCounselingPlanContext(CounselingPlan counselingPlan) {
     StringBuilder promptBuilder = new StringBuilder();
 
     promptBuilder.append("\n\n");
@@ -126,7 +125,8 @@ public class LLMContextUtil {
     return promptBuilder.toString();
   }
 
-  public static String getCoachAndClientContext(Therapist loggedInTherapist, List<Patient> patients) {
+  public static String getCoachAndClientContext(
+      Therapist loggedInTherapist, List<Patient> patients) {
     StringBuilder promptBuilder = new StringBuilder();
 
     promptBuilder.append("\n\n");
@@ -135,7 +135,6 @@ public class LLMContextUtil {
         .append("- **Current Date and Time:** ")
         .append(FORMATTER.format(java.time.Instant.now()))
         .append("\n\n");
-
 
     if (loggedInTherapist.getTherapistDocuments() != null
         && !loggedInTherapist.getTherapistDocuments().isEmpty()) {
@@ -155,13 +154,12 @@ public class LLMContextUtil {
       }
     }
 
-
     promptBuilder.append("---\n# Client Information\n");
     if (patients == null || patients.isEmpty()) {
       promptBuilder.append("No client data has been provided.\n");
     } else {
       for (Patient patient : patients) {
-        promptBuilder.append("\n---\n\n"); 
+        promptBuilder.append("\n---\n\n");
         promptBuilder.append("## Client: ").append(patient.getName()).append("\n\n");
 
         if (patient.getPatientDocuments() != null && !patient.getPatientDocuments().isEmpty()) {
@@ -177,7 +175,6 @@ public class LLMContextUtil {
           }
           promptBuilder.append("\n");
         }
-
 
         if (patient.getMeetings() != null && !patient.getMeetings().isEmpty()) {
           promptBuilder.append("### Meetings\n");
@@ -208,7 +205,6 @@ public class LLMContextUtil {
           }
           promptBuilder.append("\n");
         }
-
 
         if (patient.getExercises() != null && !patient.getExercises().isEmpty()) {
           promptBuilder.append("### Exercises\n");
@@ -256,5 +252,4 @@ public class LLMContextUtil {
 
     return promptBuilder.toString();
   }
-    
 }

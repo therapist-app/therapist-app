@@ -1,17 +1,13 @@
 package ch.uzh.ifi.imrg.platform.service;
 
-
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,8 +35,6 @@ public class TherapistChatbotService {
       patients = loggedInTherapist.getPatients();
     }
 
-
- 
     String systemPrompt = getSystemPrompt(loggedInTherapist, patients);
     List<ChatMessageDTO> chatMessages = new ArrayList<>();
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
@@ -54,10 +48,10 @@ public class TherapistChatbotService {
     return therapistChatbotOutputDTO;
   }
 
-     private String getSystemPrompt(Therapist loggedInTherapist, List<Patient> patients) {
-      StringBuilder promptBuilder = new StringBuilder();
+  private String getSystemPrompt(Therapist loggedInTherapist, List<Patient> patients) {
+    StringBuilder promptBuilder = new StringBuilder();
 
-   promptBuilder.append("# AI Assistant Directives\n\n");
+    promptBuilder.append("# AI Assistant Directives\n\n");
     promptBuilder.append(
         "You are a specialized AI assistant for a coach. Your primary goal is to help the coach by providing precise and context-aware answers to their questions.\n\n");
     promptBuilder.append("## Core Rules:\n");
@@ -69,12 +63,8 @@ public class TherapistChatbotService {
     promptBuilder.append(
         "4.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
 
-        promptBuilder.append(LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patients));
-        
-        return promptBuilder.toString();
-        }
+    promptBuilder.append(LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patients));
 
-        
-
-
+    return promptBuilder.toString();
+  }
 }

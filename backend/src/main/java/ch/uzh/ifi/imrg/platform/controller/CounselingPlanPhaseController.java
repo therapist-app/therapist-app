@@ -9,7 +9,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +24,8 @@ public class CounselingPlanPhaseController {
   private final CounselingPlanPhaseService counselingPlanPhaseService;
   private final TherapistService therapistService;
 
-  public CounselingPlanPhaseController(CounselingPlanPhaseService counselingPlanPhaseService, TherapistService therapistService) {
+  public CounselingPlanPhaseController(
+      CounselingPlanPhaseService counselingPlanPhaseService, TherapistService therapistService) {
     this.counselingPlanPhaseService = counselingPlanPhaseService;
     this.therapistService = therapistService;
   }
@@ -41,7 +41,8 @@ public class CounselingPlanPhaseController {
       @PathVariable String counselingPlanId, HttpServletRequest httpServletRequest) {
     Therapist loggedInTherapist =
         therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(counselingPlanId, loggedInTherapist);
+    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(
+        counselingPlanId, loggedInTherapist);
   }
 
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")

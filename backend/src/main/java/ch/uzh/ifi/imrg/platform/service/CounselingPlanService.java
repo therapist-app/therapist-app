@@ -5,7 +5,6 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanMapper;
 import jakarta.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +13,7 @@ public class CounselingPlanService {
 
   private final PatientRepository patientRepository;
 
-  public CounselingPlanService(
-       PatientRepository patientRepository) {
+  public CounselingPlanService(PatientRepository patientRepository) {
     this.patientRepository = patientRepository;
   }
 
@@ -24,6 +22,4 @@ public class CounselingPlanService {
         patientRepository.getReferenceById(patientId).getCounselingPlan();
     return CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
   }
-
- 
 }

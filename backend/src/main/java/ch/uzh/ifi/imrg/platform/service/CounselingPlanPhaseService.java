@@ -20,7 +20,6 @@ import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,9 +55,11 @@ public class CounselingPlanPhaseService {
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
     counselingPlanPhase.setPhaseName(createCounselingPlanPhaseDTO.getPhaseName());
     counselingPlanPhase.setStartDate(createCounselingPlanPhaseDTO.getStartDate());
-    counselingPlanPhase.setEndDate(DateUtil.addAmountOfWeeks(createCounselingPlanPhaseDTO
-            .getStartDate(), createCounselingPlanPhaseDTO.getDurationInWeeks()));
-        
+    counselingPlanPhase.setEndDate(
+        DateUtil.addAmountOfWeeks(
+            createCounselingPlanPhaseDTO.getStartDate(),
+            createCounselingPlanPhaseDTO.getDurationInWeeks()));
+
     counselingPlanPhase.setCounselingPlan(counselingPlan);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
 
@@ -74,8 +75,8 @@ public class CounselingPlanPhaseService {
             .orElseThrow(() -> new Error("Counseling plan not found with id: " + counselingPlanId));
 
     String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
-    
-      List<Patient> patientList = new ArrayList<>();
+
+    List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
 
     systemPrompt += LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patientList);
@@ -98,16 +99,18 @@ public class CounselingPlanPhaseService {
     return generatedDto;
   }
 
-  public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(String counselingPlanPhaseId, Therapist loggedInTherapist) {
+  public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
+      String counselingPlanPhaseId, Therapist loggedInTherapist) {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
             .findById(counselingPlanPhaseId)
             .orElseThrow(
-                () -> new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                () ->
+                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
-        String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());

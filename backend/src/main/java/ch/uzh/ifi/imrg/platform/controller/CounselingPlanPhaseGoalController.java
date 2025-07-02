@@ -6,7 +6,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,8 @@ public class CounselingPlanPhaseGoalController {
   private final TherapistService therapistService;
 
   public CounselingPlanPhaseGoalController(
-      CounselingPlanPhaseGoalService counselingPlanPhaseGoalService, TherapistService therapistService) {
+      CounselingPlanPhaseGoalService counselingPlanPhaseGoalService,
+      TherapistService therapistService) {
     this.counselingPlanPhaseGoalService = counselingPlanPhaseGoalService;
     this.therapistService = therapistService;
   }
