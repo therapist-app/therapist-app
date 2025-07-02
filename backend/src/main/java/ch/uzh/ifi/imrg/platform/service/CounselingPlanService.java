@@ -24,7 +24,6 @@ public class CounselingPlanService {
   private final CounselingPlanRepository counselingPlanRepository;
   private final PatientRepository patientRepository;
 
-
   private static final DateTimeFormatter FORMATTER =
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
 
@@ -40,7 +39,6 @@ public class CounselingPlanService {
     return CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
   }
 
-  
   public static String buildSystemPrompt(CounselingPlan counselingPlan) {
     StringBuilder promptBuilder = new StringBuilder();
 
@@ -62,7 +60,10 @@ public class CounselingPlanService {
     // --- Phases ---
     List<CounselingPlanPhase> sortedPhases =
         counselingPlan.getCounselingPlanPhases().stream()
-            .sorted(Comparator.comparing(CounselingPlanPhase::getStartDate, Comparator.nullsLast(Comparator.naturalOrder())))
+            .sorted(
+                Comparator.comparing(
+                    CounselingPlanPhase::getStartDate,
+                    Comparator.nullsLast(Comparator.naturalOrder())))
             .collect(Collectors.toList());
 
     if (!sortedPhases.isEmpty()) {
@@ -111,7 +112,8 @@ public class CounselingPlanService {
                 .append(exercise.getExerciseType())
                 .append("\n")
                 .append("  - **Scheduled Start:** ")
-                .append(exercise.getExerciseStart() != null ? exercise.getExerciseStart() : "Not set")
+                .append(
+                    exercise.getExerciseStart() != null ? exercise.getExerciseStart() : "Not set")
                 .append("\n")
                 .append("  - **Scheduled End:** ")
                 .append(exercise.getExerciseEnd() != null ? exercise.getExerciseEnd() : "Not set")
@@ -124,10 +126,7 @@ public class CounselingPlanService {
             if (!components.isEmpty()) {
               promptBuilder.append("  - **Components:**\n");
               for (ExerciseComponent component : components) {
-                promptBuilder
-                    .append("    - ")
-                    .append(component.getDescription())
-                    .append("\n");
+                promptBuilder.append("    - ").append(component.getDescription()).append("\n");
               }
             }
           }

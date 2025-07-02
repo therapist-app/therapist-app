@@ -35,7 +35,6 @@ class RequestPayload {
   private String model = EnvironmentVariables.LOCAL_LLM_MODEL;
   private List<Message> messages;
 
-
   @Data
   static class Message {
     private String role;
@@ -45,24 +44,26 @@ class RequestPayload {
 
 public class LLMUZH implements LLM {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper()
-      .registerModule(new JavaTimeModule());
-
+  private static final ObjectMapper objectMapper =
+      new ObjectMapper().registerModule(new JavaTimeModule());
 
   public static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType) {
     String rawContent = getLLMResponseContent(messages);
     try {
       return objectMapper.readValue(rawContent, responseType);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to parse LLM JSON response for type " + responseType.getSimpleName() + ". Raw content: " + rawContent, e);
+      throw new RuntimeException(
+          "Failed to parse LLM JSON response for type "
+              + responseType.getSimpleName()
+              + ". Raw content: "
+              + rawContent,
+          e);
     }
   }
-
 
   public static String callLLM(List<ChatMessageDTO> messages) {
     return getLLMResponseContent(messages);
   }
-
 
   private static String getLLMResponseContent(List<ChatMessageDTO> messages) {
     HttpHeaders headers = new HttpHeaders();
@@ -79,7 +80,7 @@ public class LLMUZH implements LLM {
 
     RequestPayload payload = new RequestPayload();
     payload.setMessages(requestMessages);
-    
+
     ResponseEntity<RemoteResponse> response =
         new RestTemplate()
             .exchange(
@@ -94,11 +95,11 @@ public class LLMUZH implements LLM {
       RemoteResponse.Choice choice = response.getBody().getChoices().get(0);
       String rawContent = choice.getMessage().getContent();
       String filteredContent = rawContent.replaceAll("(?s)<think>.*?</think>", "").trim();
-      
+
       if (filteredContent.startsWith("```json")) {
         filteredContent = filteredContent.substring(7, filteredContent.length() - 3).trim();
       }
-      
+
       return filteredContent;
     }
 

@@ -15,17 +15,12 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @Transactional
@@ -40,7 +35,8 @@ public class CounselingPlanPhaseService {
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,ObjectMapper objectMapper) {
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,
+      ObjectMapper objectMapper) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
     this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
@@ -65,13 +61,12 @@ public class CounselingPlanPhaseService {
         counselingPlanPhase);
   }
 
- public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
+  public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       String counselingPlanId) {
     CounselingPlan counselingPlan =
         counselingPlanRepository
             .findById(counselingPlanId)
-            .orElseThrow(
-                () -> new Error("Counseling plan not found with id: " + counselingPlanId));
+            .orElseThrow(() -> new Error("Counseling plan not found with id: " + counselingPlanId));
 
     String systemPrompt = CounselingPlanService.buildSystemPrompt(counselingPlan);
 
@@ -87,7 +82,8 @@ public class CounselingPlanPhaseService {
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
-    CreateCounselingPlanPhaseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class);
+    CreateCounselingPlanPhaseDTO generatedDto =
+        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class);
     generatedDto.setCounselingPlanId(counselingPlanId);
     return generatedDto;
   }

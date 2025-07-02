@@ -11,10 +11,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,14 +50,15 @@ public class CounselingPlanPhaseGoalService {
         counselingPlanPhaseGoal);
   }
 
-public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
+  public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
       String counselingPlanPhaseId) {
 
     CounselingPlanPhase phase =
         counselingPlanPhaseRepository
             .findById(counselingPlanPhaseId)
             .orElseThrow(
-                () -> new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                () ->
+                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
 
     CounselingPlan counselingPlan = phase.getCounselingPlan();
 
@@ -76,11 +75,12 @@ public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated
             phase.getPhaseName(), counselingPlanPhaseId);
 
     List<ChatMessageDTO> messages = new ArrayList<>();
-    messages.add(new ChatMessageDTO( ChatRole.SYSTEM, systemPrompt));
-    messages.add(new ChatMessageDTO( ChatRole.USER, userPrompt));
-      CreateCounselingPlanPhaseGoalDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseGoalDTO.class);
-      generatedDto.setCounselingPlanPhaseId(counselingPlanPhaseId);
-      return generatedDto;
+    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
+    CreateCounselingPlanPhaseGoalDTO generatedDto =
+        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseGoalDTO.class);
+    generatedDto.setCounselingPlanPhaseId(counselingPlanPhaseId);
+    return generatedDto;
   }
 
   public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(String id) {
