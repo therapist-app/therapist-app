@@ -105,14 +105,9 @@ const CreateCounselingPlanExercise = ({
   return (
     <div>
       {!open ? (
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button variant='contained' onClick={handleCreateExercise}>
-            Create new Exercise
-          </Button>
-          <Button variant='contained' color='success' onClick={handleCreateExerciseWithAI}>
-            Create new Exercise with AI
-          </Button>
-        </div>
+        <Button variant='contained' onClick={handleCreateExercise}>
+          Create new Exercise
+        </Button>
       ) : (
         <form
           style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '10px' }}
@@ -172,10 +167,13 @@ const CreateCounselingPlanExercise = ({
             />
           </LocalizationProvider>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Button type='submit' variant='contained' color='success'>
+            <Button type='submit' variant='contained'>
               Create new Exercise
             </Button>
-            <Button variant='contained' onClick={handleCancel} color='error'>
+            <Button variant='contained' color='success' onClick={handleCreateExerciseWithAI}>
+              Make AI generated suggestion
+            </Button>
+            <Button variant='outlined' onClick={handleCancel} color='error'>
               Cancel
             </Button>
           </div>

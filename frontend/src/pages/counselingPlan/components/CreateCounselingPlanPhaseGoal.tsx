@@ -68,14 +68,9 @@ const CreateCounselingPlanPhaseGoal = ({
   return (
     <div>
       {!open ? (
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Button variant='contained' onClick={() => setOpen(true)}>
-            Add a goal
-          </Button>
-          <Button variant='contained' color='success' onClick={handleGenrateAI}>
-            Add a goal AI generated
-          </Button>
-        </div>
+        <Button variant='contained' onClick={() => setOpen(true)}>
+          Add a goal
+        </Button>
       ) : (
         <form
           style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
@@ -96,6 +91,9 @@ const CreateCounselingPlanPhaseGoal = ({
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button type='submit' variant='contained'>
               Create goal
+            </Button>
+            <Button variant='contained' color='success' onClick={handleGenrateAI}>
+              Make AI generated suggestion
             </Button>
             <Button variant='outlined' color='error' onClick={handleCancel}>
               Cancel

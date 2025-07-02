@@ -83,7 +83,7 @@ const AddCounselingPlanExercise = ({
             </Button>
             <Button
               sx={{ maxWidth: '100px' }}
-              variant='contained'
+              variant='outlined'
               color='error'
               onClick={handleCancel}
             >

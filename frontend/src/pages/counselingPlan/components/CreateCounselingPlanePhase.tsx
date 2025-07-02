@@ -76,14 +76,9 @@ const CreateCounselingPlanePhase = ({
   return (
     <>
       {!open ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Button variant='contained' onClick={() => setOpen(true)}>
-            Add a phase
-          </Button>
-          <Button variant='contained' color='success' onClick={handleAIGeneration}>
-            Add phase with AI
-          </Button>
-        </div>
+        <Button variant='contained' onClick={() => setOpen(true)}>
+          Add a phase
+        </Button>
       ) : (
         <form
           onSubmit={handleSubmit}
@@ -119,6 +114,9 @@ const CreateCounselingPlanePhase = ({
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button variant='contained' type='submit'>
               Create phase
+            </Button>
+            <Button variant='contained' color='success' onClick={handleAIGeneration}>
+              Make AI generated suggestion
             </Button>
             <Button variant='outlined' color='error' onClick={handleCancel}>
               Cancel
