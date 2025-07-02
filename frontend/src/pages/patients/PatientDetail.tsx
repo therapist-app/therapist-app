@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
@@ -109,15 +109,9 @@ const PatientDetail = (): ReactElement => {
         <Card sx={{ mb: 4, p: 2 }}>
           <CardContent>
             <Typography variant='h6' gutterBottom>
-              Patient Overview
+              Client: {patient.name}
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <Typography variant='body2' color='textSecondary'>
-                  Name
-                </Typography>
-                <Typography>{patient.name}</Typography>
-              </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
                   Email (for Login in Client App)
@@ -134,6 +128,20 @@ const PatientDetail = (): ReactElement => {
                 <Typography color='info' sx={{ wordBreak: 'break-word' }}>
                   {' '}
                   {patient.initialPassword || 'N/A'}{' '}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
+                  Client App Link
+                </Typography>
+                <Typography color='info' sx={{ wordBreak: 'break-word' }}>
+                  <a
+                    href={import.meta.env.VITE_PATIENT_APP_URL}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {import.meta.env.VITE_PATIENT_APP_URL}
+                  </a>
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
