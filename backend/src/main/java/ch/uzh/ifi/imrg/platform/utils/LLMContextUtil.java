@@ -5,7 +5,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class LLMContextUtil {
@@ -14,16 +13,13 @@ public class LLMContextUtil {
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
 
   // Helper method to avoid boilerplate null-checks
-  private static void appendDetail(
-      StringBuilder sb, String label, Object value) {
+  private static void appendDetail(StringBuilder sb, String label, Object value) {
     if (value != null
         && !(value instanceof String && ((String) value).isBlank())
         && !(value instanceof Integer && (Integer) value == 0)) {
       sb.append("- **").append(label).append(":** ").append(value).append("\n");
     }
   }
-
-
 
   public static String getCounselingPlanContext(CounselingPlan counselingPlan) {
     StringBuilder promptBuilder = new StringBuilder();
@@ -213,7 +209,8 @@ public class LLMContextUtil {
             appendDetail(promptBuilder, "Duration", complaint.getDuration());
             appendDetail(promptBuilder, "Onset", complaint.getOnset());
             appendDetail(promptBuilder, "Course", complaint.getCourse());
-            appendDetail(promptBuilder, "Precipitating Factors", complaint.getPrecipitatingFactors());
+            appendDetail(
+                promptBuilder, "Precipitating Factors", complaint.getPrecipitatingFactors());
             appendDetail(promptBuilder, "Suicidal Ideation", complaint.getSuicidalIdeation());
             appendDetail(promptBuilder, "Associated Disturbances", complaint.getDisturbances());
           }
@@ -237,87 +234,93 @@ public class LLMContextUtil {
         if (patient.getMeetings() != null && !patient.getMeetings().isEmpty()) {
           promptBuilder.append("### Meetings\n");
           patient.getMeetings().stream()
-              .sorted(Comparator.comparing(Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
-              .forEach(meeting -> {
-                String startTime =
-                    meeting.getMeetingStart() != null
-                        ? FORMATTER.format(meeting.getMeetingStart())
-                        : "N/A";
-                String endTime =
-                    meeting.getMeetingEnd() != null
-                        ? FORMATTER.format(meeting.getMeetingEnd())
-                        : "N/A";
-                promptBuilder
-                    .append("- **Meeting Time:** From ")
-                    .append(startTime)
-                    .append(" to ")
-                    .append(endTime)
-                    .append("\n");
-
-                if (meeting.getMeetingNotes() != null && !meeting.getMeetingNotes().isEmpty()) {
-                  promptBuilder.append("  **Meeting Notes:**\n");
-                  for (MeetingNote note : meeting.getMeetingNotes()) {
-                    promptBuilder.append("    - **Title:** ").append(note.getTitle()).append("\n");
+              .sorted(
+                  Comparator.comparing(
+                      Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
+              .forEach(
+                  meeting -> {
+                    String startTime =
+                        meeting.getMeetingStart() != null
+                            ? FORMATTER.format(meeting.getMeetingStart())
+                            : "N/A";
+                    String endTime =
+                        meeting.getMeetingEnd() != null
+                            ? FORMATTER.format(meeting.getMeetingEnd())
+                            : "N/A";
                     promptBuilder
-                        .append("      **Content:** ")
-                        .append(note.getContent().trim())
+                        .append("- **Meeting Time:** From ")
+                        .append(startTime)
+                        .append(" to ")
+                        .append(endTime)
                         .append("\n");
-                  }
-                }
 
-                // --- GAD-7 Tests ---
-                if (meeting.getGAD7Tests() != null && !meeting.getGAD7Tests().isEmpty()) {
-                  promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
-                  for (GAD7Test test : meeting.getGAD7Tests()) {
-                    int totalScore =
-                        test.getQuestion1()
-                            + test.getQuestion2()
-                            + test.getQuestion3()
-                            + test.getQuestion4()
-                            + test.getQuestion5()
-                            + test.getQuestion6()
-                            + test.getQuestion7();
-
-                    String severity;
-                    if (totalScore <= 4) {
-                      severity = "Minimal anxiety";
-                    } else if (totalScore <= 9) {
-                      severity = "Mild anxiety";
-                    } else if (totalScore <= 14) {
-                      severity = "Moderate anxiety";
-                    } else {
-                      severity = "Severe anxiety";
+                    if (meeting.getMeetingNotes() != null && !meeting.getMeetingNotes().isEmpty()) {
+                      promptBuilder.append("  **Meeting Notes:**\n");
+                      for (MeetingNote note : meeting.getMeetingNotes()) {
+                        promptBuilder
+                            .append("    - **Title:** ")
+                            .append(note.getTitle())
+                            .append("\n");
+                        promptBuilder
+                            .append("      **Content:** ")
+                            .append(note.getContent().trim())
+                            .append("\n");
+                      }
                     }
 
-                    promptBuilder
-                        .append("    - **Test Date:** ")
-                        .append(FORMATTER.format(test.getCreationDate()))
-                        .append("\n");
-                    promptBuilder
-                        .append("      - **Total Score:** ")
-                        .append(totalScore)
-                        .append(" (")
-                        .append(severity)
-                        .append(")\n");
-                    promptBuilder
-                        .append("      - **Scores (Q1-Q7):** [")
-                        .append(test.getQuestion1())
-                        .append(", ")
-                        .append(test.getQuestion2())
-                        .append(", ")
-                        .append(test.getQuestion3())
-                        .append(", ")
-                        .append(test.getQuestion4())
-                        .append(", ")
-                        .append(test.getQuestion5())
-                        .append(", ")
-                        .append(test.getQuestion6())
-                        .append(", ")
-                        .append(test.getQuestion7())
-                        .append("]\n");
-                  }
-                }
-              });
+                    // --- GAD-7 Tests ---
+                    if (meeting.getGAD7Tests() != null && !meeting.getGAD7Tests().isEmpty()) {
+                      promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
+                      for (GAD7Test test : meeting.getGAD7Tests()) {
+                        int totalScore =
+                            test.getQuestion1()
+                                + test.getQuestion2()
+                                + test.getQuestion3()
+                                + test.getQuestion4()
+                                + test.getQuestion5()
+                                + test.getQuestion6()
+                                + test.getQuestion7();
+
+                        String severity;
+                        if (totalScore <= 4) {
+                          severity = "Minimal anxiety";
+                        } else if (totalScore <= 9) {
+                          severity = "Mild anxiety";
+                        } else if (totalScore <= 14) {
+                          severity = "Moderate anxiety";
+                        } else {
+                          severity = "Severe anxiety";
+                        }
+
+                        promptBuilder
+                            .append("    - **Test Date:** ")
+                            .append(FORMATTER.format(test.getCreationDate()))
+                            .append("\n");
+                        promptBuilder
+                            .append("      - **Total Score:** ")
+                            .append(totalScore)
+                            .append(" (")
+                            .append(severity)
+                            .append(")\n");
+                        promptBuilder
+                            .append("      - **Scores (Q1-Q7):** [")
+                            .append(test.getQuestion1())
+                            .append(", ")
+                            .append(test.getQuestion2())
+                            .append(", ")
+                            .append(test.getQuestion3())
+                            .append(", ")
+                            .append(test.getQuestion4())
+                            .append(", ")
+                            .append(test.getQuestion5())
+                            .append(", ")
+                            .append(test.getQuestion6())
+                            .append(", ")
+                            .append(test.getQuestion7())
+                            .append("]\n");
+                      }
+                    }
+                  });
           promptBuilder.append("\n");
         }
 
