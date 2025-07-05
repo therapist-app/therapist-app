@@ -25,7 +25,8 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
@@ -42,6 +43,7 @@ public class MeetingService {
     Meeting meeting = new Meeting();
     meeting.setMeetingStart(createMeetingDTO.getMeetingStart());
     meeting.setMeetingEnd(createMeetingDTO.getMeetingEnd());
+    meeting.setLocation(createMeetingDTO.getLocation());
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
     meetingRepository.flush();
