@@ -9,11 +9,11 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **String** |  |  [optional] |
 |**externalMeetingId** | **String** |  |  [optional] |
-|**createdAt** | **OffsetDateTime** |  |  [optional] |
-|**updatedAt** | **OffsetDateTime** |  |  [optional] |
+|**createdAt** | **Instant** |  |  [optional] |
+|**updatedAt** | **Instant** |  |  [optional] |
 |**patientId** | **String** |  |  [optional] |
-|**startAt** | **OffsetDateTime** |  |  [optional] |
-|**endAt** | **OffsetDateTime** |  |  [optional] |
+|**startAt** | **Instant** |  |  [optional] |
+|**endAt** | **Instant** |  |  [optional] |
 |**location** | **String** |  |  [optional] |
 |**meetingStatus** | [**MeetingStatusEnum**](#MeetingStatusEnum) |  |  [optional] |
 

@@ -10,7 +10,7 @@
 |**id** | **String** |  |  [optional] |
 |**filename** | **String** |  |  [optional] |
 |**contentType** | **String** |  |  [optional] |
-|**uploadedAt** | **OffsetDateTime** |  |  [optional] |
+|**uploadedAt** | **Instant** |  |  [optional] |
 
 
 

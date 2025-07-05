@@ -170,7 +170,7 @@ tasks.named('openApiGenerate') {
 	apiNameSuffix = "PatientAPI"
 
 	// Type mappings for Java 8+ dates
-	typeMappings = ["time": "Instant"]
+	typeMappings = ["time": "Instant", "DateTime": "Instant"]
 	importMappings = ["Instant": "java.time.Instant"]
 
 	// Generator configuration options

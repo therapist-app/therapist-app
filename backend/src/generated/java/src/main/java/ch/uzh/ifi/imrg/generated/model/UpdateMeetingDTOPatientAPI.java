@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,10 +37,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class UpdateMeetingDTOPatientAPI {
   public static final String JSON_PROPERTY_START_AT = "startAt";
-  private OffsetDateTime startAt;
+  private Instant startAt;
 
   public static final String JSON_PROPERTY_END_AT = "endAt";
-  private OffsetDateTime endAt;
+  private Instant endAt;
 
   public static final String JSON_PROPERTY_LOCATION = "location";
   private String location;
@@ -88,7 +88,7 @@ public class UpdateMeetingDTOPatientAPI {
   public UpdateMeetingDTOPatientAPI() {
   }
 
-  public UpdateMeetingDTOPatientAPI startAt(OffsetDateTime startAt) {
+  public UpdateMeetingDTOPatientAPI startAt(Instant startAt) {
     
     this.startAt = startAt;
     return this;
@@ -102,19 +102,19 @@ public class UpdateMeetingDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_START_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getStartAt() {
+  public Instant getStartAt() {
     return startAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_START_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStartAt(OffsetDateTime startAt) {
+  public void setStartAt(Instant startAt) {
     this.startAt = startAt;
   }
 
 
-  public UpdateMeetingDTOPatientAPI endAt(OffsetDateTime endAt) {
+  public UpdateMeetingDTOPatientAPI endAt(Instant endAt) {
     
     this.endAt = endAt;
     return this;
@@ -128,14 +128,14 @@ public class UpdateMeetingDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_END_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getEndAt() {
+  public Instant getEndAt() {
     return endAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEndAt(OffsetDateTime endAt) {
+  public void setEndAt(Instant endAt) {
     this.endAt = endAt;
   }
 
