@@ -92,6 +92,9 @@ const MeetingDetail = (): ReactElement => {
               : 0}{' '}
             minutes
           </Typography>
+          <Typography>
+            <strong>Location:</strong> {selectedMeeting?.location}
+          </Typography>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

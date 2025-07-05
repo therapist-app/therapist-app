@@ -37,6 +37,12 @@ export interface CreateMeetingDTO {
      * @type {string}
      * @memberof CreateMeetingDTO
      */
+    'location'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMeetingDTO
+     */
     'patientId'?: string;
 }
 

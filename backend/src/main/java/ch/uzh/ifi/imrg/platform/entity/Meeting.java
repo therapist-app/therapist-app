@@ -33,6 +33,9 @@ public class Meeting implements Serializable {
   @Column(name = "meeting_end")
   private Instant meetingEnd;
 
+  @Column(nullable = true)
+  private String location;
+
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;

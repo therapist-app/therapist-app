@@ -42,6 +42,7 @@ public class MeetingService {
     Meeting meeting = new Meeting();
     meeting.setMeetingStart(createMeetingDTO.getMeetingStart());
     meeting.setMeetingEnd(createMeetingDTO.getMeetingEnd());
+    meeting.setLocation(createMeetingDTO.getLocation());
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
     meetingRepository.flush();
