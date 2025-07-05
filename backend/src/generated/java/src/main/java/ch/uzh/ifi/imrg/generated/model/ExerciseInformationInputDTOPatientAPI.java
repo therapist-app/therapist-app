@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,10 +42,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class ExerciseInformationInputDTOPatientAPI {
   public static final String JSON_PROPERTY_START_TIME = "startTime";
-  private OffsetDateTime startTime;
+  private Instant startTime;
 
   public static final String JSON_PROPERTY_END_TIME = "endTime";
-  private OffsetDateTime endTime;
+  private Instant endTime;
 
   public static final String JSON_PROPERTY_FEEDBACK = "feedback";
   private String feedback;
@@ -59,7 +59,7 @@ public class ExerciseInformationInputDTOPatientAPI {
   public ExerciseInformationInputDTOPatientAPI() {
   }
 
-  public ExerciseInformationInputDTOPatientAPI startTime(OffsetDateTime startTime) {
+  public ExerciseInformationInputDTOPatientAPI startTime(Instant startTime) {
     
     this.startTime = startTime;
     return this;
@@ -73,19 +73,19 @@ public class ExerciseInformationInputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_START_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getStartTime() {
+  public Instant getStartTime() {
     return startTime;
   }
 
 
   @JsonProperty(JSON_PROPERTY_START_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStartTime(OffsetDateTime startTime) {
+  public void setStartTime(Instant startTime) {
     this.startTime = startTime;
   }
 
 
-  public ExerciseInformationInputDTOPatientAPI endTime(OffsetDateTime endTime) {
+  public ExerciseInformationInputDTOPatientAPI endTime(Instant endTime) {
     
     this.endTime = endTime;
     return this;
@@ -99,14 +99,14 @@ public class ExerciseInformationInputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_END_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getEndTime() {
+  public Instant getEndTime() {
     return endTime;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEndTime(OffsetDateTime endTime) {
+  public void setEndTime(Instant endTime) {
     this.endTime = endTime;
   }
 

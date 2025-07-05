@@ -1548,6 +1548,8 @@ components:
       type: object
     CreatePatientDTO:
       properties:
+        id:
+          type: string
         email:
           type: string
         password:

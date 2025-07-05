@@ -8,8 +8,8 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**externalMeetingId** | **String** |  |  [optional] |
-|**startAt** | **OffsetDateTime** |  |  [optional] |
-|**endAt** | **OffsetDateTime** |  |  [optional] |
+|**startAt** | **Instant** |  |  [optional] |
+|**endAt** | **Instant** |  |  [optional] |
 |**location** | **String** |  |  [optional] |
 
 

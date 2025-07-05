@@ -63,23 +63,20 @@ public class PatientService {
     counselingPlanRepository.save(counselingPlan);
     patient.setCounselingPlan(counselingPlan);
 
-    patientRepository.save(patient);
+    Patient createdPatient = patientRepository.save(patient);
     patientRepository.flush();
     entityManager.refresh(therapist);
 
-    try {
+    CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
+        new CreatePatientDTOPatientAPI()
+            .id(createdPatient.getId())
+            .email(createdPatient.getEmail())
+            .password(createdPatient.getInitialPassword())
+            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
-      CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI();
-      createPatientDTOPatientAPI.setEmail(inputDTO.getEmail());
-      createPatientDTOPatientAPI.setPassword(initialPassword);
-      createPatientDTOPatientAPI.setCoachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
-
-      PatientAppAPIs.coachPatientControllerPatientAPI
-          .registerPatient1(createPatientDTOPatientAPI)
-          .block();
-    } catch (Error e) {
-      logger.error(e.toString());
-    }
+    PatientAppAPIs.coachPatientControllerPatientAPI
+        .registerPatient1(createPatientDTOPatientAPI)
+        .block();
 
     return patient;
   }

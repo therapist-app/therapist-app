@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -46,10 +46,10 @@ public class GetAllJournalEntriesDTOPatientAPI {
   private String id;
 
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private OffsetDateTime updatedAt;
+  private Instant updatedAt;
 
   public static final String JSON_PROPERTY_TITLE = "title";
   private String title;
@@ -92,7 +92,7 @@ public class GetAllJournalEntriesDTOPatientAPI {
   }
 
 
-  public GetAllJournalEntriesDTOPatientAPI createdAt(OffsetDateTime createdAt) {
+  public GetAllJournalEntriesDTOPatientAPI createdAt(Instant createdAt) {
     
     this.createdAt = createdAt;
     return this;
@@ -106,19 +106,19 @@ public class GetAllJournalEntriesDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 
 
-  public GetAllJournalEntriesDTOPatientAPI updatedAt(OffsetDateTime updatedAt) {
+  public GetAllJournalEntriesDTOPatientAPI updatedAt(Instant updatedAt) {
     
     this.updatedAt = updatedAt;
     return this;
@@ -132,14 +132,14 @@ public class GetAllJournalEntriesDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUpdatedAt(OffsetDateTime updatedAt) {
+  public void setUpdatedAt(Instant updatedAt) {
     this.updatedAt = updatedAt;
   }
 

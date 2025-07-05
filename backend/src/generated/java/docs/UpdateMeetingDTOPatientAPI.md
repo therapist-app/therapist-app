@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**startAt** | **OffsetDateTime** |  |  [optional] |
-|**endAt** | **OffsetDateTime** |  |  [optional] |
+|**startAt** | **Instant** |  |  [optional] |
+|**endAt** | **Instant** |  |  [optional] |
 |**location** | **String** |  |  [optional] |
 |**meetingStatus** | [**MeetingStatusEnum**](#MeetingStatusEnum) |  |  [optional] |
 

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -48,19 +48,19 @@ public class MeetingOutputDTOPatientAPI {
   private String externalMeetingId;
 
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private OffsetDateTime createdAt;
+  private Instant createdAt;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private OffsetDateTime updatedAt;
+  private Instant updatedAt;
 
   public static final String JSON_PROPERTY_PATIENT_ID = "patientId";
   private String patientId;
 
   public static final String JSON_PROPERTY_START_AT = "startAt";
-  private OffsetDateTime startAt;
+  private Instant startAt;
 
   public static final String JSON_PROPERTY_END_AT = "endAt";
-  private OffsetDateTime endAt;
+  private Instant endAt;
 
   public static final String JSON_PROPERTY_LOCATION = "location";
   private String location;
@@ -160,7 +160,7 @@ public class MeetingOutputDTOPatientAPI {
   }
 
 
-  public MeetingOutputDTOPatientAPI createdAt(OffsetDateTime createdAt) {
+  public MeetingOutputDTOPatientAPI createdAt(Instant createdAt) {
     
     this.createdAt = createdAt;
     return this;
@@ -174,19 +174,19 @@ public class MeetingOutputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getCreatedAt() {
+  public Instant getCreatedAt() {
     return createdAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
   }
 
 
-  public MeetingOutputDTOPatientAPI updatedAt(OffsetDateTime updatedAt) {
+  public MeetingOutputDTOPatientAPI updatedAt(Instant updatedAt) {
     
     this.updatedAt = updatedAt;
     return this;
@@ -200,14 +200,14 @@ public class MeetingOutputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUpdatedAt(OffsetDateTime updatedAt) {
+  public void setUpdatedAt(Instant updatedAt) {
     this.updatedAt = updatedAt;
   }
 
@@ -238,7 +238,7 @@ public class MeetingOutputDTOPatientAPI {
   }
 
 
-  public MeetingOutputDTOPatientAPI startAt(OffsetDateTime startAt) {
+  public MeetingOutputDTOPatientAPI startAt(Instant startAt) {
     
     this.startAt = startAt;
     return this;
@@ -252,19 +252,19 @@ public class MeetingOutputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_START_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getStartAt() {
+  public Instant getStartAt() {
     return startAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_START_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStartAt(OffsetDateTime startAt) {
+  public void setStartAt(Instant startAt) {
     this.startAt = startAt;
   }
 
 
-  public MeetingOutputDTOPatientAPI endAt(OffsetDateTime endAt) {
+  public MeetingOutputDTOPatientAPI endAt(Instant endAt) {
     
     this.endAt = endAt;
     return this;
@@ -278,14 +278,14 @@ public class MeetingOutputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_END_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getEndAt() {
+  public Instant getEndAt() {
     return endAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEndAt(OffsetDateTime endAt) {
+  public void setEndAt(Instant endAt) {
     this.endAt = endAt;
   }
 

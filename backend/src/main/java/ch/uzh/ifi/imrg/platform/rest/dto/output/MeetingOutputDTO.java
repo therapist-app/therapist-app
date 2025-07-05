@@ -12,5 +12,6 @@ public class MeetingOutputDTO {
   private Instant updatedAt;
   private Instant meetingStart;
   private Instant meetingEnd;
+  private String location;
   private List<MeetingNoteOutputDTO> meetingNotesOutputDTO;
 }

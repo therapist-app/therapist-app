@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PsychologicalTestOutputDTOPatientAPI {
   private String patientId;
 
   public static final String JSON_PROPERTY_COMPLETED_AT = "completedAt";
-  private OffsetDateTime completedAt;
+  private Instant completedAt;
 
   public static final String JSON_PROPERTY_QUESTIONS = "questions";
   private List<PsychologicalTestQuestionOutputDTOPatientAPI> questions;
@@ -137,7 +137,7 @@ public class PsychologicalTestOutputDTOPatientAPI {
   }
 
 
-  public PsychologicalTestOutputDTOPatientAPI completedAt(OffsetDateTime completedAt) {
+  public PsychologicalTestOutputDTOPatientAPI completedAt(Instant completedAt) {
     
     this.completedAt = completedAt;
     return this;
@@ -151,14 +151,14 @@ public class PsychologicalTestOutputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_COMPLETED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getCompletedAt() {
+  public Instant getCompletedAt() {
     return completedAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_COMPLETED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCompletedAt(OffsetDateTime completedAt) {
+  public void setCompletedAt(Instant completedAt) {
     this.completedAt = completedAt;
   }
 

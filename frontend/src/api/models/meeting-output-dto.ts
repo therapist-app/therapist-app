@@ -55,6 +55,12 @@ export interface MeetingOutputDTO {
     'meetingEnd'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof MeetingOutputDTO
+     */
+    'location'?: string;
+    /**
+     * 
      * @type {Array<MeetingNoteOutputDTO>}
      * @memberof MeetingOutputDTO
      */

@@ -10,7 +10,7 @@
 |**name** | **String** |  |  [optional] |
 |**description** | **String** |  |  [optional] |
 |**patientId** | **String** |  |  [optional] |
-|**completedAt** | **OffsetDateTime** |  |  [optional] |
+|**completedAt** | **Instant** |  |  [optional] |
 |**questions** | [**List&lt;PsychologicalTestQuestionOutputDTOPatientAPI&gt;**](PsychologicalTestQuestionOutputDTOPatientAPI.md) |  |  [optional] |
 
 

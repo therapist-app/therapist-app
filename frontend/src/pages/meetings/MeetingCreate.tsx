@@ -15,6 +15,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null
   durationInMinutes: number
+  location: string
 }
 
 const MeetingCreate = (): ReactElement => {
@@ -26,6 +27,7 @@ const MeetingCreate = (): ReactElement => {
     meetingStart: new Date(),
     durationInMinutes: 60,
     patientId: patientId ?? '',
+    location: '',
   })
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -43,6 +45,7 @@ const MeetingCreate = (): ReactElement => {
         meetingEnd: new Date(
           meetingFormData.meetingStart.getTime() + meetingFormData.durationInMinutes * 60000
         ).toISOString(),
+        location: meetingFormData.location,
       }
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
       navigate(
@@ -80,6 +83,19 @@ const MeetingCreate = (): ReactElement => {
               setMeetingFormData({
                 ...meetingFormData,
                 durationInMinutes: Number(e.target.value),
+              })
+            }
+            sx={{ mt: 2, width: '100%' }}
+          />
+
+          <TextField
+            label='Location'
+            name='location'
+            value={meetingFormData.location}
+            onChange={(e) =>
+              setMeetingFormData({
+                ...meetingFormData,
+                location: e.target.value,
               })
             }
             sx={{ mt: 2, width: '100%' }}

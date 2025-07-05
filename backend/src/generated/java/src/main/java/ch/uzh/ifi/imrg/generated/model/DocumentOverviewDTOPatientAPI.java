@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +46,7 @@ public class DocumentOverviewDTOPatientAPI {
   private String contentType;
 
   public static final String JSON_PROPERTY_UPLOADED_AT = "uploadedAt";
-  private OffsetDateTime uploadedAt;
+  private Instant uploadedAt;
 
   public DocumentOverviewDTOPatientAPI() {
   }
@@ -129,7 +129,7 @@ public class DocumentOverviewDTOPatientAPI {
   }
 
 
-  public DocumentOverviewDTOPatientAPI uploadedAt(OffsetDateTime uploadedAt) {
+  public DocumentOverviewDTOPatientAPI uploadedAt(Instant uploadedAt) {
     
     this.uploadedAt = uploadedAt;
     return this;
@@ -143,14 +143,14 @@ public class DocumentOverviewDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_UPLOADED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public OffsetDateTime getUploadedAt() {
+  public Instant getUploadedAt() {
     return uploadedAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_UPLOADED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUploadedAt(OffsetDateTime uploadedAt) {
+  public void setUploadedAt(Instant uploadedAt) {
     this.uploadedAt = uploadedAt;
   }
 
