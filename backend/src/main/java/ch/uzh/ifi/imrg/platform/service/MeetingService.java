@@ -25,8 +25,7 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
