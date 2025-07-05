@@ -27,9 +27,10 @@ public interface MeetingsMapper {
     if (meetingNotes == null) {
       return null;
     }
-    List<MeetingNoteOutputDTO> meetingNotesOutputDTO = meetingNotes.stream()
-        .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
-        .collect(Collectors.toList());
+    List<MeetingNoteOutputDTO> meetingNotesOutputDTO =
+        meetingNotes.stream()
+            .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
+            .collect(Collectors.toList());
 
     meetingNotesOutputDTO.sort(
         Comparator.comparing(
