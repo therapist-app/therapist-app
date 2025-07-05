@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.CreateMeetingDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
@@ -7,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
@@ -25,7 +27,8 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
@@ -45,6 +48,11 @@ public class MeetingService {
     meeting.setLocation(createMeetingDTO.getLocation());
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
+    CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI = new CreateMeetingDTOPatientAPI()
+        .externalMeetingId(createdMeeting.getId()).startAt(meeting.getMeetingStart()).endAt(meeting.getMeetingEnd())
+        .location(meeting.getLocation());
+    PatientAppAPIs.coachMeetingControllerPatientAPI
+        .createMeeting1(createMeetingDTO.getPatientId(), createMeetingDTOPatientAPI).block();
     meetingRepository.flush();
     entityManager.refresh(createdMeeting);
 
@@ -68,5 +76,6 @@ public class MeetingService {
   public void deleteMeetingById(String meetingId) {
     Meeting meeting = meetingRepository.getReferenceById(meetingId);
     meeting.getPatient().getMeetings().remove(meeting);
+    PatientAppAPIs.coachMeetingControllerPatientAPI.deleteMeeting1(meeting.getPatient().getId(), meetingId);
   }
 }
