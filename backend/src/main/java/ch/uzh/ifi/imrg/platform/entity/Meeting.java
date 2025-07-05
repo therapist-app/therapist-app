@@ -33,21 +33,16 @@ public class Meeting implements Serializable {
   @Column(name = "meeting_end")
   private Instant meetingEnd;
 
+  @Column(nullable = true)
+  private String location;
+
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
-  @OneToMany(
-      mappedBy = "meeting",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "meeting", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MeetingNote> meetingNotes = new ArrayList<>();
 
-  @OneToMany(
-      mappedBy = "meeting",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "meeting", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<GAD7Test> GAD7Tests = new ArrayList<>();
 }

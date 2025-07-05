@@ -20,16 +20,16 @@ public interface MeetingsMapper {
   @Mapping(source = "meetingStart", target = "meetingStart")
   @Mapping(source = "meetingEnd", target = "meetingEnd")
   @Mapping(source = "meetingNotes", target = "meetingNotesOutputDTO")
+  @Mapping(source = "location", target = "location")
   MeetingOutputDTO convertEntityToMeetingOutputDTO(Meeting meeting);
 
   default List<MeetingNoteOutputDTO> mapMeetingNotes(List<MeetingNote> meetingNotes) {
     if (meetingNotes == null) {
       return null;
     }
-    List<MeetingNoteOutputDTO> meetingNotesOutputDTO =
-        meetingNotes.stream()
-            .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
-            .collect(Collectors.toList());
+    List<MeetingNoteOutputDTO> meetingNotesOutputDTO = meetingNotes.stream()
+        .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
+        .collect(Collectors.toList());
 
     meetingNotesOutputDTO.sort(
         Comparator.comparing(

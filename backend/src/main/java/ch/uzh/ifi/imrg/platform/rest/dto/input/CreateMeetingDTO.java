@@ -10,5 +10,7 @@ public class CreateMeetingDTO {
 
   private Instant meetingEnd;
 
+  private String location;
+
   private String patientId;
 }
