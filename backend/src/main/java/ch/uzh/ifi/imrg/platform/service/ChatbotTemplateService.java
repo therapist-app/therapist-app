@@ -22,8 +22,7 @@ public class ChatbotTemplateService {
   private final ChatbotTemplateRepository chatbotTemplateRepository;
   private final TherapistRepository therapistRepository;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired
   public ChatbotTemplateService(
@@ -34,9 +33,10 @@ public class ChatbotTemplateService {
   }
 
   public Therapist createTemplate(String therapistId, ChatbotTemplate template) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new Error("Therapist not found with id: " + therapistId));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new Error("Therapist not found with id: " + therapistId));
     template.setTherapist(therapist);
     chatbotTemplateRepository.save(template);
     chatbotTemplateRepository.flush();
@@ -47,9 +47,10 @@ public class ChatbotTemplateService {
 
   public Therapist updateTemplate(String therapistId, String templateId, ChatbotTemplate template) {
 
-    ChatbotTemplate existingTemplate = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate existingTemplate =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
 
     existingTemplate.setChatbotName(template.getChatbotName());
     existingTemplate.setDescription(template.getDescription());
@@ -76,9 +77,10 @@ public class ChatbotTemplateService {
 
   public Therapist deleteTemplate(String therapistId, String templateId) {
 
-    ChatbotTemplate template = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate template =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
     template.getTherapist().getChatbotTemplates().remove(template);
 
     chatbotTemplateRepository.delete(template);
@@ -91,9 +93,10 @@ public class ChatbotTemplateService {
 
   public Therapist cloneTemplate(String therapistId, String templateId) {
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
-    ChatbotTemplate original = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate original =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");

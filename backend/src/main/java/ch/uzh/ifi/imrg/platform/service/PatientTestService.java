@@ -1,7 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.GAD7Test;
-import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.GAD7Repository;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
@@ -85,10 +84,11 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId) {
-    GAD7Test test = gad7Repository
-        .findById(testId)
-        .orElseThrow(
-            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test =
+        gad7Repository
+            .findById(testId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
     outputDTO.setTestId(test.getTestId());
@@ -103,5 +103,4 @@ public class PatientTestService {
     outputDTO.setQuestion7(test.getQuestion7());
     return outputDTO;
   }
-
 }

@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class LLMContextUtil {
 
-  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
-      .withZone(ZoneId.systemDefault());
+  private static final DateTimeFormatter FORMATTER =
+      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
 
   // Helper method to avoid boilerplate null-checks
   private static void appendDetail(StringBuilder sb, String label, Object value) {
@@ -42,12 +42,13 @@ public class LLMContextUtil {
         .append("\n\n");
 
     // --- Phases ---
-    List<CounselingPlanPhase> sortedPhases = counselingPlan.getCounselingPlanPhases().stream()
-        .sorted(
-            Comparator.comparing(
-                CounselingPlanPhase::getStartDate,
-                Comparator.nullsLast(Comparator.naturalOrder())))
-        .collect(Collectors.toList());
+    List<CounselingPlanPhase> sortedPhases =
+        counselingPlan.getCounselingPlanPhases().stream()
+            .sorted(
+                Comparator.comparing(
+                    CounselingPlanPhase::getStartDate,
+                    Comparator.nullsLast(Comparator.naturalOrder())))
+            .collect(Collectors.toList());
 
     if (!sortedPhases.isEmpty()) {
       promptBuilder.append("## Counseling Plan Phases\n");
@@ -238,12 +239,14 @@ public class LLMContextUtil {
                       Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
               .forEach(
                   meeting -> {
-                    String startTime = meeting.getMeetingStart() != null
-                        ? FORMATTER.format(meeting.getMeetingStart())
-                        : "N/A";
-                    String endTime = meeting.getMeetingEnd() != null
-                        ? FORMATTER.format(meeting.getMeetingEnd())
-                        : "N/A";
+                    String startTime =
+                        meeting.getMeetingStart() != null
+                            ? FORMATTER.format(meeting.getMeetingStart())
+                            : "N/A";
+                    String endTime =
+                        meeting.getMeetingEnd() != null
+                            ? FORMATTER.format(meeting.getMeetingEnd())
+                            : "N/A";
                     promptBuilder
                         .append("- **Meeting Time:** From ")
                         .append(startTime)
@@ -264,7 +267,6 @@ public class LLMContextUtil {
                             .append("\n");
                       }
                     }
-
                   });
           promptBuilder.append("\n");
         }
@@ -273,13 +275,14 @@ public class LLMContextUtil {
         if (patient.getGAD7Tests() != null && !patient.getGAD7Tests().isEmpty()) {
           promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
           for (GAD7Test test : patient.getGAD7Tests()) {
-            int totalScore = test.getQuestion1()
-                + test.getQuestion2()
-                + test.getQuestion3()
-                + test.getQuestion4()
-                + test.getQuestion5()
-                + test.getQuestion6()
-                + test.getQuestion7();
+            int totalScore =
+                test.getQuestion1()
+                    + test.getQuestion2()
+                    + test.getQuestion3()
+                    + test.getQuestion4()
+                    + test.getQuestion5()
+                    + test.getQuestion6()
+                    + test.getQuestion7();
 
             String severity;
             if (totalScore <= 4) {
@@ -326,12 +329,14 @@ public class LLMContextUtil {
           for (Exercise exercise : patient.getExercises()) {
             promptBuilder.append("- **Exercise:** ").append(exercise.getTitle()).append("\n");
             promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
-            String exerciseStart = exercise.getExerciseStart() != null
-                ? FORMATTER.format(exercise.getExerciseStart())
-                : "N/A";
-            String exerciseEnd = exercise.getExerciseEnd() != null
-                ? FORMATTER.format(exercise.getExerciseEnd())
-                : "Ongoing";
+            String exerciseStart =
+                exercise.getExerciseStart() != null
+                    ? FORMATTER.format(exercise.getExerciseStart())
+                    : "N/A";
+            String exerciseEnd =
+                exercise.getExerciseEnd() != null
+                    ? FORMATTER.format(exercise.getExerciseEnd())
+                    : "Ongoing";
             promptBuilder
                 .append("  - **Duration:** ")
                 .append(exerciseStart)

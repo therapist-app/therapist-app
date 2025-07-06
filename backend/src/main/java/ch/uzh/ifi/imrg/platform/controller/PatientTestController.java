@@ -36,5 +36,4 @@ public class PatientTestController {
   public GAD7TestOutputDTO getTestById(@PathVariable String testId) {
     return patientTestService.getTest(testId);
   }
-
 }

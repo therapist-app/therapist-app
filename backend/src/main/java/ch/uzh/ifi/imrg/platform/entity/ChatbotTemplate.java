@@ -52,6 +52,10 @@ public class ChatbotTemplate implements Serializable {
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
-  @OneToMany(mappedBy = "chatbotTemplate", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "chatbotTemplate",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<ChatbotTemplateDocument> chatbotTemplateDocuments = new ArrayList<>();
 }
