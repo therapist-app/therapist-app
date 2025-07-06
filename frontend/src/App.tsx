@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
+import ScrollToTop from './generalComponents/ScrollToTop.tsx'
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import CounselingPlanDetails from './pages/counselingPlan/CounselingPlanDetails.tsx'
 import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
@@ -33,6 +34,7 @@ const App = (): ReactElement => {
   return (
     <Router>
       <div style={appContainerStyle}>
+        <ScrollToTop />
         <main style={contentStyle}>
           <Routes>
             <Route path={ROUTES[PAGES.HOME_PAGE]} element={<Home />} />
