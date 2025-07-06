@@ -104,7 +104,7 @@ export const PAGE_NAMES: Record<PAGES, string> = {
   [PAGES.REGISTRATION_PAGE]: 'Registration',
   [PAGES.SETTINGS_PAGE]: 'Settings',
 
-  [PAGES.PATIENTS_CREATE_PAGE]: 'Create new Client',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'Register new Client',
   [PAGES.PATIENTS_DETAILS_PAGE]: 'Client Details',
 
   [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',

@@ -11,11 +11,13 @@ import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
 
 interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO
+  phaseNumber: number
   onSuccess: () => void
 }
 
 const CounselingPlanPhaseDetail = ({
   phase,
+  phaseNumber,
   onSuccess,
 }: CounselingPlanPhaseDetailProps): ReactElement => {
   const handleCreateCounselingPlanPhaseGoal = (): void => {
@@ -24,38 +26,48 @@ const CounselingPlanPhaseDetail = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
-      <Typography variant='h6'>{phase.phaseName}</Typography>
-      <Typography variant='body1'>Start Date: {formatDateNicely(phase.startDate)}</Typography>
-      <Typography variant='body1'>End Date: {formatDateNicely(phase.endDate)}</Typography>
-      <div></div>
-      <Typography variant='h6'>Goals:</Typography>
-      <ul style={{ margin: 0 }}>
-        {phase.phaseGoalsOutputDTO?.map((goal) => (
-          <li key={goal.id}>
-            <CounselingPlanPhaseGoalDetail goal={goal} />
-          </li>
-        ))}
-      </ul>
-      <div style={{ paddingLeft: phase.phaseGoalsOutputDTO?.length ? '40px' : '0px' }}>
-        <CreateCounselingPlanPhaseGoal
-          counselingPlanPhaseId={phase.id || ''}
-          onSuccess={handleCreateCounselingPlanPhaseGoal}
-        />
+      <Typography variant='h3'>
+        {phaseNumber}. {phase.phaseName}
+      </Typography>
+      <div style={{ paddingLeft: '20px' }}>
+        <Typography>Start Date: {formatDateNicely(phase.startDate)}</Typography>
+        <Typography>End Date: {formatDateNicely(phase.endDate)}</Typography>
+        <div></div>
+        <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
+          Goals:
+        </Typography>
+        <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {phase.phaseGoalsOutputDTO?.map((goal) => (
+            <li key={goal.id}>
+              <CounselingPlanPhaseGoalDetail goal={goal} />
+            </li>
+          ))}
+        </ul>
+        <div>
+          <CreateCounselingPlanPhaseGoal
+            counselingPlanPhaseId={phase.id || ''}
+            onSuccess={handleCreateCounselingPlanPhaseGoal}
+          />
+        </div>
+        <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
+          Exercises:
+        </Typography>
+        <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {phase.phaseExercisesOutputDTO?.map((exercise) => (
+            <li key={exercise.id}>
+              <CounselingPlanExerciseDetail exercise={exercise} />
+            </li>
+          ))}
+        </ul>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <AddCounselingPlanExercise
+            counselingPlanPhaseId={phase.id || ''}
+            onSuccess={handleCreateCounselingPlanPhaseGoal}
+            counselingPlanPhase={phase}
+          />
+          <CreateCounselingPlanExercise onSuccess={onSuccess} counselingPlanPhase={phase} />
+        </div>
       </div>
-      <Typography variant='h6'>Exercises:</Typography>
-      <ul style={{ margin: 0 }}>
-        {phase.phaseExercisesOutputDTO?.map((exercise) => (
-          <li key={exercise.id}>
-            <CounselingPlanExerciseDetail exercise={exercise} />
-          </li>
-        ))}
-      </ul>
-      <AddCounselingPlanExercise
-        counselingPlanPhaseId={phase.id || ''}
-        onSuccess={handleCreateCounselingPlanPhaseGoal}
-        counselingPlanPhase={phase}
-      />
-      <CreateCounselingPlanExercise onSuccess={onSuccess} counselingPlanPhase={phase} />
     </div>
   )
 }

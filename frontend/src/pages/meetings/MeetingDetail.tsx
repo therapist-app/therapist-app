@@ -5,6 +5,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
@@ -70,7 +71,7 @@ const MeetingDetail = (): ReactElement => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
-            <Typography variant='h5'>Your Notes:</Typography>
+            <Typography variant='h2'>Your Notes:</Typography>
             <Button
               variant='contained'
               color='primary'
@@ -103,7 +104,7 @@ const MeetingDetail = (): ReactElement => {
           )}
         </div>
 
-        <Divider style={{ margin: '20px 0' }} />
+        <CustomizedDivider />
 
         <Button
           variant='contained'

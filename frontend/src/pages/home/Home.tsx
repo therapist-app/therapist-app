@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
   Alert,
@@ -38,7 +37,6 @@ import {
   cloneChatbotTemplate,
   createChatbotTemplate,
   deleteChatbotTemplate,
-  updateChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
 import {
@@ -120,9 +118,7 @@ const Home = (): ReactElement => {
   const handlePatientClick = (patientId: string): void => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
-  const handleOpenBotDialog = (): void => {
-    setOpenBotDialog(true)
-  }
+
   const handleCloseBotDialog = (): void => {
     setOpenBotDialog(false)
     setChatbotName('')
@@ -334,9 +330,7 @@ const Home = (): ReactElement => {
           ))}
         </Box>
       ) : (
-        <Typography variant='subtitle1' sx={{ textAlign: 'center' }}>
-          {t('dashboard.no_patients_found')}
-        </Typography>
+        <Typography>{t('dashboard.no_patients_found')}</Typography>
       )}
 
       <CustomizedDivider />

@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
@@ -36,34 +37,30 @@ const CounselingPlanDetails = (): ReactElement => {
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          marginBottom: '20px',
           alignItems: 'start',
-          width: '600px',
         }}
       >
-        <Typography variant='h5'>Counseling Plan Phases:</Typography>
-        <ul>
-          {counselingPlan?.counselingPlanPhasesOutputDTO?.map((phase, idx) => (
-            <li key={phase.id}>
-              <CounselingPlanPhaseDetail
-                phase={phase}
-                onSuccess={handleCreateCounselingPlanPhase}
-              />
-
-              {idx !== amountOfPhases - 1 && (
-                <Divider
-                  style={{
-                    margin: '20px 0',
-                    width: '500px',
-                    height: '2px',
-                    color: 'black',
-                    backgroundColor: 'black',
-                  }}
+        <Typography variant='h2'>Counseling Plan Phases:</Typography>
+        {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (
+          <ul
+            style={{
+              listStyleType: 'none',
+              paddingLeft: '30px',
+            }}
+          >
+            {counselingPlan?.counselingPlanPhasesOutputDTO?.map((phase, idx) => (
+              <li key={phase.id}>
+                <CounselingPlanPhaseDetail
+                  phase={phase}
+                  phaseNumber={idx + 1}
+                  onSuccess={handleCreateCounselingPlanPhase}
                 />
-              )}
-            </li>
-          ))}
-        </ul>
+
+                {idx !== amountOfPhases - 1 && <CustomizedDivider />}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <CreateCounselingPlanePhase
           counselingPlanId={counselingPlan?.id || ''}

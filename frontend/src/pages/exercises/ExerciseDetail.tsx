@@ -22,6 +22,7 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   UpdateExerciseDTO,
 } from '../../api'
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
@@ -253,7 +254,7 @@ const ExerciseDetail = (): ReactElement => {
           </>
         )}
 
-        <Divider style={{ margin: '40px 0' }} />
+        <CustomizedDivider />
 
         <div
           style={{
@@ -364,7 +365,9 @@ const ExerciseDetail = (): ReactElement => {
           />
         </div>
       </div>
-      <Divider style={{ margin: '50px 0' }} />
+
+      <CustomizedDivider />
+
       <Button sx={{ alignSelf: 'start' }} onClick={handleDeleteExercise}>
         <Typography color='error'>Delete Exercise</Typography>
         <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />

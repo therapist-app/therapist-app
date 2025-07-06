@@ -16,6 +16,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
@@ -83,10 +84,9 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  const handleOpenChatbotDialog = (): void => {
-    setOpenChatbotDialog(true)
-  }
-
+  // const handleOpenChatbotDialog = (): void => {
+  //   setOpenChatbotDialog(true)
+  // }
   const handleCloseChatbotDialog = (): void => {
     setOpenChatbotDialog(false)
     setChatbotName('')
@@ -109,7 +109,7 @@ const PatientDetail = (): ReactElement => {
       {patient ? (
         <Card sx={{ mb: 4, p: 2 }}>
           <CardContent>
-            <Typography variant='h6' gutterBottom>
+            <Typography variant='h3' gutterBottom>
               Client: {patient.name}
             </Typography>
             <Grid container spacing={2}>
@@ -184,11 +184,12 @@ const PatientDetail = (): ReactElement => {
         </Typography>
       )}
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <Typography variant='h4'>Counseling Plan</Typography>
+      <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+        <Typography variant='h2'>Counseling Plan</Typography>
         <Button
+          sx={{ height: 'fit-content' }}
           variant='contained'
           onClick={() =>
             navigate(
@@ -202,7 +203,7 @@ const PatientDetail = (): ReactElement => {
         </Button>
       </div>
 
-      {/* <Divider style={{ margin: '20px 0' }} />
+      {/* <CustomizedDivider /> />
 
        <Typography variant='h4'>Chatbot</Typography>
       <Button
@@ -211,7 +212,8 @@ const PatientDetail = (): ReactElement => {
         sx={{ marginTop: '20px', marginBottom: '20px' }}
       >
         Create Chatbot
-      </Button> */}
+      </Button> 
+      */}
 
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
@@ -240,7 +242,7 @@ const PatientDetail = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <FilesTable
         title='Files'
@@ -250,15 +252,15 @@ const PatientDetail = (): ReactElement => {
         downloadFile={downloadFile}
       />
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <MeetingOverviewComponent />
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <ExerciseOverviewComponent />
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <GAD7TestDetail />
     </Layout>

@@ -44,11 +44,11 @@ export const GAD7TestDetail = (): ReactElement => {
         <div
           style={{
             display: 'flex',
-            gap: '50px',
+            gap: '30px',
             alignItems: 'center',
           }}
         >
-          <Typography variant='h4'>GAD7 Tests </Typography>
+          <Typography variant='h2'>GAD7 Tests </Typography>
           <Button
             variant='contained'
             color='primary'
