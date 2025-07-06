@@ -1,4 +1,4 @@
-import { Button, Divider, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
@@ -20,6 +20,7 @@ const MeetingDetail = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const [showCreateMeetingNote, setShowCreateMeetingNote] = useState(false)
+  const [isTranscription, setIsTranscription] = useState(false)
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
@@ -41,6 +42,11 @@ const MeetingDetail = (): ReactElement => {
         patientId: patientId ?? '',
       })
     )
+  }
+
+  const handleCreateNewNote = (withTranscription: boolean): void => {
+    setIsTranscription(withTranscription)
+    setShowCreateMeetingNote(true)
   }
 
   return (
@@ -70,19 +76,32 @@ const MeetingDetail = (): ReactElement => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <Typography variant='h2'>Your Notes:</Typography>
             <Button
               variant='contained'
               color='primary'
-              onClick={() => setShowCreateMeetingNote(true)}
+              onClick={() => handleCreateNewNote(false)}
               disabled={showCreateMeetingNote}
             >
               Create new Note
             </Button>
+
+            <Button
+              variant='contained'
+              color='success'
+              onClick={() => handleCreateNewNote(true)}
+              disabled={showCreateMeetingNote}
+            >
+              Transcribe the Meeting
+            </Button>
           </div>
           {showCreateMeetingNote === true ? (
-            <CreateMeetingNoteComponent cancel={cancelCreateMeetingNote} save={refreshMeeting} />
+            <CreateMeetingNoteComponent
+              cancel={cancelCreateMeetingNote}
+              save={refreshMeeting}
+              isTranscription={isTranscription}
+            />
           ) : (
             <></>
           )}

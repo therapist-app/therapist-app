@@ -72,6 +72,7 @@ const defaultLanguages: LanguageOption[] = [
 interface SpeechToTextProps {
   value: string
   onChange: (newValue: string) => void
+  startDirectly?: boolean
   language?: string
   availableLanguages?: LanguageOption[]
   placeholder?: string
@@ -205,6 +206,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   value,
   onChange,
+  startDirectly = false,
   language = 'en-US',
   availableLanguages = defaultLanguages,
   placeholder = 'Speak or type here...',
@@ -328,18 +330,38 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
   }, [selectedLanguage])
 
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedLanguage(event.target.value)
-  }
+  useEffect(() => {
+    if (startDirectly && !value && recognitionRef.current && !isListening) {
+      try {
+        let textToStartWith = valueRef.current
 
-  const handleStartListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.preventDefault()
+        if (!initialStartRef.current && textToStartWith.trim() !== '') {
+          textToStartWith += '\n'
+          onChangeRef.current(textToStartWith)
+        }
+        finalizedTranscriptUpToLastEventRef.current = textToStartWith
+
+        setError(null)
+        recognitionRef.current.start()
+        initialStartRef.current = false
+      } catch (e: unknown) {
+        const typedError = e as { message?: string }
+        setError(`Could not start recognition: ${typedError.message || 'Unknown error'}`)
+        setIsListening(false)
+      }
+    }
+  }, [isListening, startDirectly, value])
+
+  const handleStartListening = (event?: React.MouseEvent<HTMLButtonElement>): void => {
+    if (event) {
+      event.preventDefault()
+    }
     if (recognitionRef.current && !isListening) {
       try {
         let textToStartWith = valueRef.current
 
         if (!initialStartRef.current && textToStartWith.trim() !== '') {
-          textToStartWith += '\n\n'
+          textToStartWith += '\n'
           onChangeRef.current(textToStartWith)
         }
         finalizedTranscriptUpToLastEventRef.current = textToStartWith
@@ -355,12 +377,16 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
   }
 
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    setSelectedLanguage(event.target.value)
+  }
+
   const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault()
     if (recognitionRef.current && isListening) {
       const currentText = valueRef.current
       if (currentText.trim() !== '') {
-        const textWithNewlines = currentText + '\n\n'
+        const textWithNewlines = currentText + '\n'
         onChangeRef.current(textWithNewlines)
         finalizedTranscriptUpToLastEventRef.current = textWithNewlines
       }

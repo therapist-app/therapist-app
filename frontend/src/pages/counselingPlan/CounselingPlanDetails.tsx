@@ -1,5 +1,5 @@
-import { Divider, Typography } from '@mui/material'
-import React, { ReactElement, useEffect } from 'react'
+import { Typography } from '@mui/material'
+import { ReactElement, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 

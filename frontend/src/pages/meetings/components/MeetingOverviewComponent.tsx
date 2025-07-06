@@ -1,7 +1,5 @@
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
-  IconButton,
   Paper,
   Table,
   TableBody,

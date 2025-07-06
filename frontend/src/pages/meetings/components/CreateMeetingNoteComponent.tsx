@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../../utils/hooks'
 interface CreateMeetingNoteComponentProps {
   save(): void
   cancel(): void
+  isTranscription: boolean
 }
 
 const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
@@ -22,7 +23,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
 
   const [formData, setFormData] = useState<CreateMeetingNoteDTO>({
     meetingId: selectedMeeting?.id ?? '',
-    title: '',
+    title: props.isTranscription ? 'Meeting Transcription' : '',
     content: '',
   })
 
@@ -69,6 +70,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
           placeholder='Content (Type or Speak)'
           value={formData.content ?? ''}
           onChange={handleContentChange}
+          startDirectly={props.isTranscription}
         />
 
         <div
