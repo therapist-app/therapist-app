@@ -61,7 +61,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
           marginBottom: '20px',
         }}
       >
-        <Typography variant='h4'> All Exercises</Typography>
+        <Typography variant='h4'> Exercises</Typography>
         <Button variant='contained' onClick={handleCreateNewExercise}>
           Create new Exercise
         </Button>

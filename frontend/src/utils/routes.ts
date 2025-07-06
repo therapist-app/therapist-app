@@ -15,7 +15,7 @@ export enum PAGES {
   MEETINGS_CREATE_PAGE = 'MEETINGS_CREATE_PAGE',
   MEETINGS_DETAILS_PAGE = 'MEETINGS_DETAILS_PAGE',
 
-  GAD7_TEST_PAGE = 'GAD7_TEST_PAGE',
+  GAD7_TEST_CREATE_PAGE = 'GAD7_TEST_CREATE_PAGE',
 
   EXERCISES_CREATE_PAGE = 'EXERCISES_CREATE_PAGE',
   EXERCISES_DETAILS_PAGE = 'EXERCISES_DETAILS_PAGE',
@@ -48,15 +48,16 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
     PAGES.EXERCISES_CREATE_PAGE,
     PAGES.EXERCISES_DETAILS_PAGE,
     PAGES.COUNSELING_PLAN_DETAILS_PAGE,
+    PAGES.GAD7_TEST_CREATE_PAGE,
   ],
 
   [PAGES.CHATBOT_CREATE_PAGE]: [],
   [PAGES.CHATBOT_DETAILS_PAGE]: [],
 
   [PAGES.MEETINGS_CREATE_PAGE]: [],
-  [PAGES.MEETINGS_DETAILS_PAGE]: [PAGES.GAD7_TEST_PAGE],
+  [PAGES.MEETINGS_DETAILS_PAGE]: [],
 
-  [PAGES.GAD7_TEST_PAGE]: [],
+  [PAGES.GAD7_TEST_CREATE_PAGE]: [],
 
   [PAGES.EXERCISES_CREATE_PAGE]: [],
   [PAGES.EXERCISES_DETAILS_PAGE]: [],
@@ -84,7 +85,7 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.MEETINGS_CREATE_PAGE]: '/patients/:patientId/meetings/create',
   [PAGES.MEETINGS_DETAILS_PAGE]: '/patients/:patientId/meetings/:meetingId',
 
-  [PAGES.GAD7_TEST_PAGE]: '/patients/:patientId/meetings/:meetingId/gad7',
+  [PAGES.GAD7_TEST_CREATE_PAGE]: '/patients/:patientId/gad7',
 
   [PAGES.EXERCISES_CREATE_PAGE]: '/patients/:patientId/exercises/create',
   [PAGES.EXERCISES_DETAILS_PAGE]: '/patients/:patientId/exercises/:exerciseId',
@@ -103,8 +104,8 @@ export const PAGE_NAMES: Record<PAGES, string> = {
   [PAGES.REGISTRATION_PAGE]: 'Registration',
   [PAGES.SETTINGS_PAGE]: 'Settings',
 
-  [PAGES.PATIENTS_CREATE_PAGE]: 'Create new Patient',
-  [PAGES.PATIENTS_DETAILS_PAGE]: 'Patient Details',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'Create new Client',
+  [PAGES.PATIENTS_DETAILS_PAGE]: 'Client Details',
 
   [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
   [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
@@ -112,7 +113,7 @@ export const PAGE_NAMES: Record<PAGES, string> = {
   [PAGES.MEETINGS_CREATE_PAGE]: 'Create new Meeting',
   [PAGES.MEETINGS_DETAILS_PAGE]: 'Meeting Details',
 
-  [PAGES.GAD7_TEST_PAGE]: 'GAD-7 Assessment',
+  [PAGES.GAD7_TEST_CREATE_PAGE]: 'GAD-7 Assessment',
 
   [PAGES.EXERCISES_CREATE_PAGE]: 'Create Exercise',
   [PAGES.EXERCISES_DETAILS_PAGE]: 'Exercise Details',

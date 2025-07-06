@@ -60,7 +60,7 @@ interface Resources {
       "cancel": "Cancel",
       "register": "Register",
       "create_new_chatbot_template": "Create new chatbot template",
-      "create_bot": "Create Bot",
+      "create_bot": "Create Chatbot Template",
       "your_chatbot_templates": "Your Chatbot Templates",
       "unnamed_bot": "Unnamed Bot",
       "no_welcome_message_set": "No welcome message set",

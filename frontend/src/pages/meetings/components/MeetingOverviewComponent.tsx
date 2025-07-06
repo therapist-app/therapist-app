@@ -60,7 +60,7 @@ const MeetingOverviewComponent = (): ReactElement => {
           marginBottom: '10px',
         }}
       >
-        <Typography variant='h4'>All Meetings</Typography>
+        <Typography variant='h4'> Meetings</Typography>
         <Button variant='contained' onClick={handleCreateNewMeeting}>
           Create new Meeting
         </Button>

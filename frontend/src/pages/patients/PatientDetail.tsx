@@ -31,6 +31,7 @@ import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
+import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
@@ -182,27 +183,35 @@ const PatientDetail = (): ReactElement => {
           Loading patient data...
         </Typography>
       )}
-      <Button
-        variant='contained'
-        onClick={() =>
-          navigate(
-            getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
-              patientId: patientId ?? '',
-            })
-          )
-        }
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Go to Counseling Plan
-      </Button>
-      <Divider style={{ margin: '20px 0' }} />
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <Typography variant='h4'>Counseling Plan</Typography>
+        <Button
+          variant='contained'
+          onClick={() =>
+            navigate(
+              getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
+                patientId: patientId ?? '',
+              })
+            )
+          }
+        >
+          Go to Counseling Plan
+        </Button>
+      </div>
+
+      {/* <Divider style={{ margin: '20px 0' }} />
+
+       <Typography variant='h4'>Chatbot</Typography>
       <Button
         variant='contained'
         onClick={handleOpenChatbotDialog}
         sx={{ marginTop: '20px', marginBottom: '20px' }}
       >
-        Create new Chatbot
-      </Button>
+        Create Chatbot
+      </Button> */}
 
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
@@ -234,7 +243,7 @@ const PatientDetail = (): ReactElement => {
       <Divider style={{ margin: '50px 0' }} />
 
       <FilesTable
-        title='Files of Patient'
+        title='Files'
         allDocuments={allPatientDocuments}
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
@@ -248,6 +257,10 @@ const PatientDetail = (): ReactElement => {
       <Divider style={{ margin: '50px 0' }} />
 
       <ExerciseOverviewComponent />
+
+      <Divider style={{ margin: '50px 0' }} />
+
+      <GAD7TestDetail />
     </Layout>
   )
 }

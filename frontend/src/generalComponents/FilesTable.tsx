@@ -36,7 +36,7 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
           marginBottom: '10px',
         }}
       >
-        <Typography variant='h4'>{title}</Typography>
+        <Typography variant='h2'>{title}</Typography>
         <FileUpload onUpload={handleFileUpload} />
       </div>
 

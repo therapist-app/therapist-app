@@ -121,9 +121,8 @@ const chatbotTemplateSlice = createSlice({
         state.status = 'loading'
         state.error = null
       })
-      .addCase(deleteChatbotTemplate.fulfilled, (state, action) => {
+      .addCase(deleteChatbotTemplate.fulfilled, (state) => {
         state.status = 'succeeded'
-        state.selectedChatbotTemplate = action.payload
       })
       .addCase(deleteChatbotTemplate.rejected, (state, action) => {
         state.status = 'failed'

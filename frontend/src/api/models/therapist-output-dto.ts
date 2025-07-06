@@ -40,12 +40,6 @@ export interface TherapistOutputDTO {
     'email'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof TherapistOutputDTO
-     */
-    'workspaceId'?: string;
-    /**
-     * 
      * @type {Array<ChatbotTemplateOutputDTO>}
      * @memberof TherapistOutputDTO
      */

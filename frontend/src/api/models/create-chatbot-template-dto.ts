@@ -104,11 +104,5 @@ export interface CreateChatbotTemplateDTO {
      * @memberof CreateChatbotTemplateDTO
      */
     'chatbotInputPlaceholder'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChatbotTemplateDTO
-     */
-    'workspaceId'?: string;
 }
 

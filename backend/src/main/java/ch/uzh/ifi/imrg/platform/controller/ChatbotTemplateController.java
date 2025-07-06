@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateChatbotTemplateDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
@@ -18,69 +19,57 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/chatbot-templates")
 public class ChatbotTemplateController {
 
-  private final Logger logger = LoggerFactory.getLogger(ChatbotTemplateController.class);
+    private final Logger logger = LoggerFactory.getLogger(ChatbotTemplateController.class);
 
-  private final ChatbotTemplateService chatbotTemplateService;
-  private final TherapistService therapistService;
+    private final ChatbotTemplateService chatbotTemplateService;
+    private final TherapistService therapistService;
 
-  ChatbotTemplateController(
-      ChatbotTemplateService chatbotTemplateService, TherapistService therapistService) {
-    this.chatbotTemplateService = chatbotTemplateService;
-    this.therapistService = therapistService;
-  }
+    ChatbotTemplateController(
+            ChatbotTemplateService chatbotTemplateService, TherapistService therapistService) {
+        this.chatbotTemplateService = chatbotTemplateService;
+        this.therapistService = therapistService;
+    }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public TherapistOutputDTO createTemplate(
-      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
-      HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ChatbotTemplateOutputDTO createTemplate(
+            @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+            HttpServletRequest httpServletRequest) {
+        Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    ChatbotTemplate template =
-        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
-    Therapist updatedTherapist =
-        chatbotTemplateService.createTemplate(loggedInTherapist.getId(), template);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
-  }
+        ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE
+                .convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+        return chatbotTemplateService.createTemplate(loggedInTherapist.getId(), template);
+    }
 
-  @PutMapping("/{templateId}")
-  @ResponseStatus(HttpStatus.OK)
-  public TherapistOutputDTO updateTemplate(
-      @PathVariable String templateId,
-      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
-      HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    @PutMapping("/{templateId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ChatbotTemplateOutputDTO updateTemplate(
+            @PathVariable String templateId,
+            @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+            HttpServletRequest httpServletRequest) {
+        Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    ChatbotTemplate template =
-        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
-    Therapist updatedTherapist =
-        chatbotTemplateService.updateTemplate(loggedInTherapist.getId(), templateId, template);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
-  }
+        ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE
+                .convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+        return chatbotTemplateService.updateTemplate(loggedInTherapist.getId(), templateId, template);
+    }
 
-  @DeleteMapping("/{templateId}")
-  @ResponseStatus(HttpStatus.OK)
-  public TherapistOutputDTO deleteTemplate(
-      @PathVariable String templateId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    @DeleteMapping("/{templateId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTemplate(
+            @PathVariable String templateId, HttpServletRequest httpServletRequest) {
+        Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    Therapist updatedTherapist =
         chatbotTemplateService.deleteTemplate(loggedInTherapist.getId(), templateId);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
-  }
+    }
 
-  @PostMapping("/{templateId}/clone")
-  @ResponseStatus(HttpStatus.CREATED)
-  public TherapistOutputDTO cloneTemplate(
-      @PathVariable String templateId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    @PostMapping("/{templateId}/clone")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ChatbotTemplateOutputDTO cloneTemplate(
+            @PathVariable String templateId, HttpServletRequest httpServletRequest) {
+        Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
-    Therapist updatedTherapist =
-        chatbotTemplateService.cloneTemplate(loggedInTherapist.getId(), templateId);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(updatedTherapist).sortDTO();
-  }
+        return chatbotTemplateService.cloneTemplate(loggedInTherapist.getId(), templateId);
+    }
 }

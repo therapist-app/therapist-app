@@ -35,9 +35,9 @@ const answers = [
   { value: 3, label: 'Nearly every day' },
 ]
 
-export const GAD7test = (): ReactElement => {
+export const GAD7TestCreate = (): ReactElement => {
   const navigate = useNavigate()
-  const { patientId, meetingId } = useParams()
+  const { patientId } = useParams()
   const [responses, setResponses] = useState<{ [key: number]: number }>({})
   const [error, setError] = useState<string | null>(null)
 
@@ -61,7 +61,6 @@ export const GAD7test = (): ReactElement => {
     try {
       const testData: CreateGAD7TestDTO = {
         patientId: patientId,
-        meetingId: meetingId,
         question1: responses[1],
         question2: responses[2],
         question3: responses[3],
@@ -74,9 +73,8 @@ export const GAD7test = (): ReactElement => {
       await patientTestApi.createTest(testData)
 
       navigate(
-        getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
+        getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
           patientId: patientId ?? '',
-          meetingId: meetingId ?? '',
         })
       )
     } catch (err) {
@@ -87,9 +85,8 @@ export const GAD7test = (): ReactElement => {
 
   const handleCancel = (): void => {
     navigate(
-      getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
+      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        meetingId: meetingId ?? '',
       })
     )
   }
@@ -196,4 +193,4 @@ export const GAD7test = (): ReactElement => {
   )
 }
 
-export default GAD7test
+export default GAD7TestCreate
