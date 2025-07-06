@@ -369,8 +369,6 @@ const ChatBotTemplateEdit: React.FC = () => {
         additionalExercise: additionalExercise,
         animation: chatbotAnimation,
         chatbotInputPlaceholder: chatbotInputPlaceholder,
-
-        workspaceId: chatbotConfig.workspaceId || '',
       }
 
       await dispatch(

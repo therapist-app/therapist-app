@@ -37,12 +37,6 @@ export interface GAD7TestOutputDTO {
      * @type {string}
      * @memberof GAD7TestOutputDTO
      */
-    'meetingId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GAD7TestOutputDTO
-     */
     'creationDate'?: string;
     /**
      * 

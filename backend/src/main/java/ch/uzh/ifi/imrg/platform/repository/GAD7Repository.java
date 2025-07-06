@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GAD7Repository extends JpaRepository<GAD7Test, String> {
   List<GAD7Test> findByPatient_Id(String patientId);
-
-  List<GAD7Test> findByMeeting_Id(String meetingId);
 }

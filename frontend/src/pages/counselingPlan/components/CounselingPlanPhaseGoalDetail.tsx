@@ -13,7 +13,7 @@ const CounselingPlanPhaseGoalDetail = ({
   return (
     <div>
       <Typography style={{ fontWeight: 'bold' }}>{goal.goalName}</Typography>
-      <Typography variant='body1'>{goal.goalDescription}</Typography>
+      <Typography>{goal.goalDescription}</Typography>
     </div>
   )
 }

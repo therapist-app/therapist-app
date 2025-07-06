@@ -28,12 +28,6 @@ export interface CreateGAD7TestDTO {
     'patientId'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof CreateGAD7TestDTO
-     */
-    'meetingId'?: string;
-    /**
-     * 
      * @type {number}
      * @memberof CreateGAD7TestDTO
      */

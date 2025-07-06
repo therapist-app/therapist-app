@@ -103,12 +103,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar>
-          <Typography
-            variant='h4'
-            noWrap
-            component='div'
-            sx={{ flexGrow: 1, color: 'text.primary', fontWeight: 500 }}
-          >
+          <Typography variant='h1' noWrap sx={{ flexGrow: 1 }}>
             {currentPageName}
           </Typography>
           <IconButton sx={{ marginRight: 1 }} onClick={handleSettingsClicked} color='inherit'>

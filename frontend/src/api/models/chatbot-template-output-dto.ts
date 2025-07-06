@@ -115,12 +115,6 @@ export interface ChatbotTemplateOutputDTO {
      * @type {string}
      * @memberof ChatbotTemplateOutputDTO
      */
-    'workspaceId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
     'createdAt'?: string;
     /**
      * 

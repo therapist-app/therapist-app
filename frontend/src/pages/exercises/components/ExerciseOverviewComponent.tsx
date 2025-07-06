@@ -61,13 +61,13 @@ const ExerciseOverviewComponent = (): ReactElement => {
           marginBottom: '20px',
         }}
       >
-        <Typography variant='h4'> All Exercises</Typography>
+        <Typography variant='h2'> Exercises</Typography>
         <Button variant='contained' onClick={handleCreateNewExercise}>
           Create new Exercise
         </Button>
       </div>
       {allExercisesOfPatient.length > 0 ? (
-        <TableContainer sx={{ marginTop: '10px', maxWidth: '600px' }} component={Paper}>
+        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
           <Table aria-label='simple table'>
             <TableHead>
               <TableRow>

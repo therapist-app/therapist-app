@@ -9,7 +9,6 @@ import lombok.Data;
 public class TherapistOutputDTO {
   private String id;
   private String email;
-  private String workspaceId;
   private List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO;
   private List<PatientOutputDTO> patientsOutputDTO;
   private Instant createdAt;

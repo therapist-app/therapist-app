@@ -1,7 +1,5 @@
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Button,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -60,18 +58,18 @@ const MeetingOverviewComponent = (): ReactElement => {
           marginBottom: '10px',
         }}
       >
-        <Typography variant='h4'>All Meetings</Typography>
+        <Typography variant='h2'> Meetings</Typography>
         <Button variant='contained' onClick={handleCreateNewMeeting}>
           Create new Meeting
         </Button>
       </div>
-      <TableContainer sx={{ width: '600px' }} component={Paper}>
+      <TableContainer component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               <TableCell>Meeting Start</TableCell>
               <TableCell>Meeting End</TableCell>
-              <TableCell align='right'>View</TableCell>
+              <TableCell>Meeting Location</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,14 +93,7 @@ const MeetingOverviewComponent = (): ReactElement => {
                       })
                     : '-'}
                 </TableCell>
-                <TableCell align='right'>
-                  <IconButton
-                    aria-label='download'
-                    onClick={() => handleClickOnMeeting(meeting.id ?? '')}
-                  >
-                    <VisibilityIcon />
-                  </IconButton>
-                </TableCell>
+                <TableCell>{meeting.location}</TableCell>
               </TableRow>
             ))}
           </TableBody>

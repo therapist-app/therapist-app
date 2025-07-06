@@ -44,9 +44,6 @@ public class ChatbotTemplate implements Serializable {
   private String animation;
   private String chatbotInputPlaceholder;
 
-  @Column(nullable = false)
-  private String workspaceId;
-
   @ManyToOne
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")
   private Therapist therapist;

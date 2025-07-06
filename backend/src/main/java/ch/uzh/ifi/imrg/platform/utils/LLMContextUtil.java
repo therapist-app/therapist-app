@@ -267,61 +267,61 @@ public class LLMContextUtil {
                             .append("\n");
                       }
                     }
-
-                    // --- GAD-7 Tests ---
-                    if (meeting.getGAD7Tests() != null && !meeting.getGAD7Tests().isEmpty()) {
-                      promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
-                      for (GAD7Test test : meeting.getGAD7Tests()) {
-                        int totalScore =
-                            test.getQuestion1()
-                                + test.getQuestion2()
-                                + test.getQuestion3()
-                                + test.getQuestion4()
-                                + test.getQuestion5()
-                                + test.getQuestion6()
-                                + test.getQuestion7();
-
-                        String severity;
-                        if (totalScore <= 4) {
-                          severity = "Minimal anxiety";
-                        } else if (totalScore <= 9) {
-                          severity = "Mild anxiety";
-                        } else if (totalScore <= 14) {
-                          severity = "Moderate anxiety";
-                        } else {
-                          severity = "Severe anxiety";
-                        }
-
-                        promptBuilder
-                            .append("    - **Test Date:** ")
-                            .append(FORMATTER.format(test.getCreationDate()))
-                            .append("\n");
-                        promptBuilder
-                            .append("      - **Total Score:** ")
-                            .append(totalScore)
-                            .append(" (")
-                            .append(severity)
-                            .append(")\n");
-                        promptBuilder
-                            .append("      - **Scores (Q1-Q7):** [")
-                            .append(test.getQuestion1())
-                            .append(", ")
-                            .append(test.getQuestion2())
-                            .append(", ")
-                            .append(test.getQuestion3())
-                            .append(", ")
-                            .append(test.getQuestion4())
-                            .append(", ")
-                            .append(test.getQuestion5())
-                            .append(", ")
-                            .append(test.getQuestion6())
-                            .append(", ")
-                            .append(test.getQuestion7())
-                            .append("]\n");
-                      }
-                    }
                   });
           promptBuilder.append("\n");
+        }
+
+        // --- GAD-7 Tests ---
+        if (patient.getGAD7Tests() != null && !patient.getGAD7Tests().isEmpty()) {
+          promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
+          for (GAD7Test test : patient.getGAD7Tests()) {
+            int totalScore =
+                test.getQuestion1()
+                    + test.getQuestion2()
+                    + test.getQuestion3()
+                    + test.getQuestion4()
+                    + test.getQuestion5()
+                    + test.getQuestion6()
+                    + test.getQuestion7();
+
+            String severity;
+            if (totalScore <= 4) {
+              severity = "Minimal anxiety";
+            } else if (totalScore <= 9) {
+              severity = "Mild anxiety";
+            } else if (totalScore <= 14) {
+              severity = "Moderate anxiety";
+            } else {
+              severity = "Severe anxiety";
+            }
+
+            promptBuilder
+                .append("    - **Test Date:** ")
+                .append(FORMATTER.format(test.getCreationDate()))
+                .append("\n");
+            promptBuilder
+                .append("      - **Total Score:** ")
+                .append(totalScore)
+                .append(" (")
+                .append(severity)
+                .append(")\n");
+            promptBuilder
+                .append("      - **Scores (Q1-Q7):** [")
+                .append(test.getQuestion1())
+                .append(", ")
+                .append(test.getQuestion2())
+                .append(", ")
+                .append(test.getQuestion3())
+                .append(", ")
+                .append(test.getQuestion4())
+                .append(", ")
+                .append(test.getQuestion5())
+                .append(", ")
+                .append(test.getQuestion6())
+                .append(", ")
+                .append(test.getQuestion7())
+                .append("]\n");
+          }
         }
 
         if (patient.getExercises() != null && !patient.getExercises().isEmpty()) {

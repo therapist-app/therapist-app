@@ -83,10 +83,22 @@ public interface PatientMapper {
   @Mapping(source = "personalOccupational", target = "personalOccupational")
   @Mapping(source = "personalMarital", target = "personalMarital")
   @Mapping(source = "personalPremorbid", target = "personalPremorbid")
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "initialPassword", ignore = true)
+  @Mapping(target = "therapist", ignore = true)
+  @Mapping(target = "meetings", ignore = true)
+  @Mapping(target = "patientDocuments", ignore = true)
+  @Mapping(target = "chatbotTemplates", ignore = true)
+  @Mapping(target = "exercises", ignore = true)
+  @Mapping(target = "GAD7Tests", ignore = true)
+  @Mapping(target = "counselingPlan", ignore = true)
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 
   ComplaintDTO complaintToComplaintDto(Complaint complaint);
 
+  @Mapping(target = "patient", ignore = true)
   Complaint complaintDtoToComplaint(ComplaintDTO complaintDTO);
 
   List<ComplaintDTO> complaintListToComplaintDtoList(List<Complaint> complaints);

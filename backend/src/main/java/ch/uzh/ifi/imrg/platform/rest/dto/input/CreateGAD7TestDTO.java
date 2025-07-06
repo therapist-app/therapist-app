@@ -8,7 +8,6 @@ import lombok.Data;
 public class CreateGAD7TestDTO {
 
   private String patientId;
-  private String meetingId;
 
   @Min(0)
   @Max(3)

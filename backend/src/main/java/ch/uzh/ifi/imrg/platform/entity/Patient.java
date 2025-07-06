@@ -85,9 +85,6 @@ public class Patient implements Serializable {
   @JoinColumn(name = "therapist_id", referencedColumnName = "id")
   private Therapist therapist;
 
-  @Column(unique = true)
-  private String workspaceId = UUID.randomUUID().toString();
-
   @OneToMany(
       mappedBy = "patient",
       fetch = FetchType.EAGER,
@@ -115,6 +112,13 @@ public class Patient implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<Exercise> exercises = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<GAD7Test> GAD7Tests = new ArrayList<>();
 
   @OneToOne(optional = false)
   @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")

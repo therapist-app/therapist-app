@@ -1,11 +1,13 @@
 import { ReactElement } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
+import ScrollToTop from './generalComponents/ScrollToTop.tsx'
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import CounselingPlanDetails from './pages/counselingPlan/CounselingPlanDetails.tsx'
-import Dashboard from './pages/dashboard/Dashboard'
 import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
 import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
+import GAD7TestCreate from './pages/gad7Test/GAD7TestCreate.tsx'
+import Home from './pages/home/Home.tsx'
 import Login from './pages/login/Login'
 import MeetingCreate from './pages/meetings/MeetingCreate.tsx'
 import MeetingDetail from './pages/meetings/MeetingDetail.tsx'
@@ -14,7 +16,6 @@ import PatientCreate from './pages/patients/PatientCreate.tsx'
 import PatientDetail from './pages/patients/PatientDetail'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
-import GAD7test from './pages/tests/GAD7test'
 import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = (): ReactElement => {
@@ -30,16 +31,13 @@ const App = (): ReactElement => {
     padding: '20px',
   }
 
-  const RootComponent = (): ReactElement => {
-    return <Dashboard />
-  }
-
   return (
     <Router>
       <div style={appContainerStyle}>
+        <ScrollToTop />
         <main style={contentStyle}>
           <Routes>
-            <Route path={ROUTES[PAGES.HOME_PAGE]} element={<RootComponent />} />
+            <Route path={ROUTES[PAGES.HOME_PAGE]} element={<Home />} />
             <Route path={ROUTES[PAGES.REGISTRATION_PAGE]} element={<Register />} />
             <Route path={ROUTES[PAGES.LOGIN_PAGE]} element={<Login />} />
 
@@ -52,7 +50,7 @@ const App = (): ReactElement => {
             <Route path={ROUTES[PAGES.MEETINGS_CREATE_PAGE]} element={<MeetingCreate />} />
             <Route path={ROUTES[PAGES.MEETINGS_DETAILS_PAGE]} element={<MeetingDetail />} />
 
-            <Route path={ROUTES[PAGES.GAD7_TEST_PAGE]} element={<GAD7test />} />
+            <Route path={ROUTES[PAGES.GAD7_TEST_CREATE_PAGE]} element={<GAD7TestCreate />} />
 
             <Route path={ROUTES[PAGES.EXERCISES_CREATE_PAGE]} element={<ExerciseCreate />} />
             <Route path={ROUTES[PAGES.EXERCISES_DETAILS_PAGE]} element={<ExerciseDetail />} />

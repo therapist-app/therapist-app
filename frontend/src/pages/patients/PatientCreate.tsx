@@ -54,7 +54,7 @@ type CreatePatientDTO = {
   occupation: string
   income: string
   dateOfAdmission: string
-  complaints: Complaint[] // ✅ this fixes your error!
+  complaints: Complaint[]
   treatmentPast: string
   treatmentCurrent: string
   pastMedical: string
@@ -247,10 +247,7 @@ const PatientCreate = (): ReactElement => {
 
   return (
     <Layout>
-      <Box sx={{ p: 4, maxWidth: 800, mx: 'auto' }}>
-        <Typography variant='h6' gutterBottom>
-          {t('patient_create.create_patient')}
-        </Typography>
+      <Box sx={{ maxWidth: 800, mx: 'auto' }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField

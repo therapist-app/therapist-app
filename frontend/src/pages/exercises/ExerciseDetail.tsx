@@ -1,14 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import {
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, Checkbox, FormControlLabel, MenuItem, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -22,6 +14,7 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
   UpdateExerciseDTO,
 } from '../../api'
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
@@ -253,7 +246,7 @@ const ExerciseDetail = (): ReactElement => {
           </>
         )}
 
-        <Divider style={{ margin: '40px 0' }} />
+        <CustomizedDivider />
 
         <div
           style={{
@@ -364,7 +357,9 @@ const ExerciseDetail = (): ReactElement => {
           />
         </div>
       </div>
-      <Divider style={{ margin: '50px 0' }} />
+
+      <CustomizedDivider />
+
       <Button sx={{ alignSelf: 'start' }} onClick={handleDeleteExercise}>
         <Typography color='error'>Delete Exercise</Typography>
         <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />

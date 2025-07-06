@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   Grid,
   TextField,
   Typography,
@@ -16,6 +15,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
@@ -31,6 +31,7 @@ import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
+import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
@@ -82,10 +83,9 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  const handleOpenChatbotDialog = (): void => {
-    setOpenChatbotDialog(true)
-  }
-
+  // const handleOpenChatbotDialog = (): void => {
+  //   setOpenChatbotDialog(true)
+  // }
   const handleCloseChatbotDialog = (): void => {
     setOpenChatbotDialog(false)
     setChatbotName('')
@@ -108,7 +108,7 @@ const PatientDetail = (): ReactElement => {
       {patient ? (
         <Card sx={{ mb: 4, p: 2 }}>
           <CardContent>
-            <Typography variant='h6' gutterBottom>
+            <Typography variant='h3' gutterBottom>
               Client: {patient.name}
             </Typography>
             <Grid container spacing={2}>
@@ -182,27 +182,37 @@ const PatientDetail = (): ReactElement => {
           Loading patient data...
         </Typography>
       )}
-      <Button
-        variant='contained'
-        onClick={() =>
-          navigate(
-            getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
-              patientId: patientId ?? '',
-            })
-          )
-        }
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Go to Counseling Plan
-      </Button>
-      <Divider style={{ margin: '20px 0' }} />
+
+      <CustomizedDivider />
+
+      <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+        <Typography variant='h2'>Counseling Plan</Typography>
+        <Button
+          sx={{ height: 'fit-content' }}
+          variant='contained'
+          onClick={() =>
+            navigate(
+              getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
+                patientId: patientId ?? '',
+              })
+            )
+          }
+        >
+          Go to Counseling Plan
+        </Button>
+      </div>
+
+      {/* <CustomizedDivider /> />
+
+       <Typography variant='h4'>Chatbot</Typography>
       <Button
         variant='contained'
         onClick={handleOpenChatbotDialog}
         sx={{ marginTop: '20px', marginBottom: '20px' }}
       >
-        Create new Chatbot
-      </Button>
+        Create Chatbot
+      </Button> 
+      */}
 
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
@@ -231,23 +241,27 @@ const PatientDetail = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <FilesTable
-        title='Files of Patient'
+        title='Files'
         allDocuments={allPatientDocuments}
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
       />
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <MeetingOverviewComponent />
 
-      <Divider style={{ margin: '50px 0' }} />
+      <CustomizedDivider />
 
       <ExerciseOverviewComponent />
+
+      <CustomizedDivider />
+
+      <GAD7TestDetail />
     </Layout>
   )
 }
