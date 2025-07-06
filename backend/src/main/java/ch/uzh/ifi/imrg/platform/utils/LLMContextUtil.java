@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class LLMContextUtil {
 
-  private static final DateTimeFormatter FORMATTER =
-      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
+      .withZone(ZoneId.systemDefault());
 
   // Helper method to avoid boilerplate null-checks
   private static void appendDetail(StringBuilder sb, String label, Object value) {
@@ -42,13 +42,12 @@ public class LLMContextUtil {
         .append("\n\n");
 
     // --- Phases ---
-    List<CounselingPlanPhase> sortedPhases =
-        counselingPlan.getCounselingPlanPhases().stream()
-            .sorted(
-                Comparator.comparing(
-                    CounselingPlanPhase::getStartDate,
-                    Comparator.nullsLast(Comparator.naturalOrder())))
-            .collect(Collectors.toList());
+    List<CounselingPlanPhase> sortedPhases = counselingPlan.getCounselingPlanPhases().stream()
+        .sorted(
+            Comparator.comparing(
+                CounselingPlanPhase::getStartDate,
+                Comparator.nullsLast(Comparator.naturalOrder())))
+        .collect(Collectors.toList());
 
     if (!sortedPhases.isEmpty()) {
       promptBuilder.append("## Counseling Plan Phases\n");
@@ -239,14 +238,12 @@ public class LLMContextUtil {
                       Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
               .forEach(
                   meeting -> {
-                    String startTime =
-                        meeting.getMeetingStart() != null
-                            ? FORMATTER.format(meeting.getMeetingStart())
-                            : "N/A";
-                    String endTime =
-                        meeting.getMeetingEnd() != null
-                            ? FORMATTER.format(meeting.getMeetingEnd())
-                            : "N/A";
+                    String startTime = meeting.getMeetingStart() != null
+                        ? FORMATTER.format(meeting.getMeetingStart())
+                        : "N/A";
+                    String endTime = meeting.getMeetingEnd() != null
+                        ? FORMATTER.format(meeting.getMeetingEnd())
+                        : "N/A";
                     promptBuilder
                         .append("- **Meeting Time:** From ")
                         .append(startTime)
@@ -268,60 +265,60 @@ public class LLMContextUtil {
                       }
                     }
 
-                    // --- GAD-7 Tests ---
-                    if (meeting.getGAD7Tests() != null && !meeting.getGAD7Tests().isEmpty()) {
-                      promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
-                      for (GAD7Test test : meeting.getGAD7Tests()) {
-                        int totalScore =
-                            test.getQuestion1()
-                                + test.getQuestion2()
-                                + test.getQuestion3()
-                                + test.getQuestion4()
-                                + test.getQuestion5()
-                                + test.getQuestion6()
-                                + test.getQuestion7();
-
-                        String severity;
-                        if (totalScore <= 4) {
-                          severity = "Minimal anxiety";
-                        } else if (totalScore <= 9) {
-                          severity = "Mild anxiety";
-                        } else if (totalScore <= 14) {
-                          severity = "Moderate anxiety";
-                        } else {
-                          severity = "Severe anxiety";
-                        }
-
-                        promptBuilder
-                            .append("    - **Test Date:** ")
-                            .append(FORMATTER.format(test.getCreationDate()))
-                            .append("\n");
-                        promptBuilder
-                            .append("      - **Total Score:** ")
-                            .append(totalScore)
-                            .append(" (")
-                            .append(severity)
-                            .append(")\n");
-                        promptBuilder
-                            .append("      - **Scores (Q1-Q7):** [")
-                            .append(test.getQuestion1())
-                            .append(", ")
-                            .append(test.getQuestion2())
-                            .append(", ")
-                            .append(test.getQuestion3())
-                            .append(", ")
-                            .append(test.getQuestion4())
-                            .append(", ")
-                            .append(test.getQuestion5())
-                            .append(", ")
-                            .append(test.getQuestion6())
-                            .append(", ")
-                            .append(test.getQuestion7())
-                            .append("]\n");
-                      }
-                    }
                   });
           promptBuilder.append("\n");
+        }
+
+        // --- GAD-7 Tests ---
+        if (patient.getGAD7Tests() != null && !patient.getGAD7Tests().isEmpty()) {
+          promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
+          for (GAD7Test test : patient.getGAD7Tests()) {
+            int totalScore = test.getQuestion1()
+                + test.getQuestion2()
+                + test.getQuestion3()
+                + test.getQuestion4()
+                + test.getQuestion5()
+                + test.getQuestion6()
+                + test.getQuestion7();
+
+            String severity;
+            if (totalScore <= 4) {
+              severity = "Minimal anxiety";
+            } else if (totalScore <= 9) {
+              severity = "Mild anxiety";
+            } else if (totalScore <= 14) {
+              severity = "Moderate anxiety";
+            } else {
+              severity = "Severe anxiety";
+            }
+
+            promptBuilder
+                .append("    - **Test Date:** ")
+                .append(FORMATTER.format(test.getCreationDate()))
+                .append("\n");
+            promptBuilder
+                .append("      - **Total Score:** ")
+                .append(totalScore)
+                .append(" (")
+                .append(severity)
+                .append(")\n");
+            promptBuilder
+                .append("      - **Scores (Q1-Q7):** [")
+                .append(test.getQuestion1())
+                .append(", ")
+                .append(test.getQuestion2())
+                .append(", ")
+                .append(test.getQuestion3())
+                .append(", ")
+                .append(test.getQuestion4())
+                .append(", ")
+                .append(test.getQuestion5())
+                .append(", ")
+                .append(test.getQuestion6())
+                .append(", ")
+                .append(test.getQuestion7())
+                .append("]\n");
+          }
         }
 
         if (patient.getExercises() != null && !patient.getExercises().isEmpty()) {
@@ -329,14 +326,12 @@ public class LLMContextUtil {
           for (Exercise exercise : patient.getExercises()) {
             promptBuilder.append("- **Exercise:** ").append(exercise.getTitle()).append("\n");
             promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
-            String exerciseStart =
-                exercise.getExerciseStart() != null
-                    ? FORMATTER.format(exercise.getExerciseStart())
-                    : "N/A";
-            String exerciseEnd =
-                exercise.getExerciseEnd() != null
-                    ? FORMATTER.format(exercise.getExerciseEnd())
-                    : "Ongoing";
+            String exerciseStart = exercise.getExerciseStart() != null
+                ? FORMATTER.format(exercise.getExerciseStart())
+                : "N/A";
+            String exerciseEnd = exercise.getExerciseEnd() != null
+                ? FORMATTER.format(exercise.getExerciseEnd())
+                : "Ongoing";
             promptBuilder
                 .append("  - **Duration:** ")
                 .append(exerciseStart)

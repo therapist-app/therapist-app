@@ -20,7 +20,6 @@ public class ChatbotTemplateOutputDTO {
   private String additionalExercise;
   private String animation;
   private String chatbotInputPlaceholder;
-  private String workspaceId;
   private Instant createdAt;
   private Instant updatedAt;
 }

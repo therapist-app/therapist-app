@@ -146,7 +146,6 @@ const Dashboard = (): ReactElement => {
         animation: 'Simple',
         chatbotInputPlaceholder: 'Type your question...',
         description: '',
-        workspaceId: loggedInTherapist.workspaceId,
       }
       await dispatch(createChatbotTemplate(chatbotConfigurations))
       setRefreshTherapistCounter((prev) => prev + 1)

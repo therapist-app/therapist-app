@@ -27,7 +27,6 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "additionalExercise", target = "additionalExercise")
   @Mapping(source = "animation", target = "animation")
   @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
-  @Mapping(source = "workspaceId", target = "workspaceId")
   ChatbotTemplateOutputDTO convertEntityToChatbotTemplateOutputDTO(ChatbotTemplate template);
 
   @Mapping(source = "chatbotName", target = "chatbotName")
@@ -44,6 +43,11 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "additionalExercise", target = "additionalExercise")
   @Mapping(source = "animation", target = "animation")
   @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
-  @Mapping(source = "workspaceId", target = "workspaceId")
+  @Mapping(target = "chatbotTemplateDocuments", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "patient", ignore = true)
+  @Mapping(target = "therapist", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   ChatbotTemplate convertCreateChatbotTemplateDTOtoEntity(CreateChatbotTemplateDTO templateDTO);
 }

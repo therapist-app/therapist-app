@@ -20,17 +20,24 @@ public interface TherapistMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "email", target = "email")
-  @Mapping(source = "workspaceId", target = "workspaceId")
   @Mapping(source = "chatbotTemplates", target = "chatbotTemplatesOutputDTO")
   @Mapping(source = "patients", target = "patientsOutputDTO")
   TherapistOutputDTO convertEntityToTherapistOutputDTO(Therapist therapist);
 
-  @Mapping(source = "email", target = "email")
-  @Mapping(source = "password", target = "password")
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "patients", ignore = true)
+  @Mapping(target = "chatbotTemplates", ignore = true)
+  @Mapping(target = "therapistDocuments", ignore = true)
   Therapist convertCreateTherapistDTOtoEntity(CreateTherapistDTO therapistDTO);
 
-  @Mapping(source = "email", target = "email")
-  @Mapping(source = "password", target = "password")
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "patients", ignore = true)
+  @Mapping(target = "chatbotTemplates", ignore = true)
+  @Mapping(target = "therapistDocuments", ignore = true)
   Therapist convertLoginTherapistDTOtoEntity(LoginTherapistDTO therapistDTO);
 
   default List<ChatbotTemplateOutputDTO> mapChatbotTemplates(

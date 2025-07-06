@@ -18,5 +18,4 @@ public class CreateChatbotTemplateDTO {
   private String additionalExercise;
   private String animation;
   private String chatbotInputPlaceholder;
-  private String workspaceId;
 }

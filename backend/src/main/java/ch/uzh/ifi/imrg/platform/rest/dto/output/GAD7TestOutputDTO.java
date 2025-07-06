@@ -8,7 +8,6 @@ public class GAD7TestOutputDTO {
 
   private String testId;
   private String patientId;
-  private String meetingId;
   private Instant creationDate;
   private int question1;
   private int question2;
