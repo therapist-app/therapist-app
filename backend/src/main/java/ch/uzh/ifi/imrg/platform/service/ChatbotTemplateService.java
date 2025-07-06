@@ -5,10 +5,7 @@ import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateDocumentMapper;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +33,10 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO createTemplate(String therapistId, ChatbotTemplate template) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new Error("Therapist not found with id: " + therapistId));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new Error("Therapist not found with id: " + therapistId));
     template.setTherapist(therapist);
     ChatbotTemplate createdChatbotTemplate = chatbotTemplateRepository.save(template);
     chatbotTemplateRepository.flush();
@@ -46,11 +44,13 @@ public class ChatbotTemplateService {
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(createdChatbotTemplate);
   }
 
-  public ChatbotTemplateOutputDTO updateTemplate(String therapistId, String templateId, ChatbotTemplate template) {
+  public ChatbotTemplateOutputDTO updateTemplate(
+      String therapistId, String templateId, ChatbotTemplate template) {
 
-    ChatbotTemplate existingTemplate = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate existingTemplate =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
 
     existingTemplate.setChatbotName(template.getChatbotName());
     existingTemplate.setDescription(template.getDescription());
@@ -75,9 +75,10 @@ public class ChatbotTemplateService {
 
   public void deleteTemplate(String therapistId, String templateId) {
 
-    ChatbotTemplate template = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate template =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
     template.getTherapist().getChatbotTemplates().remove(template);
 
     chatbotTemplateRepository.delete(template);
@@ -85,9 +86,10 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO cloneTemplate(String therapistId, String templateId) {
-    ChatbotTemplate original = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    ChatbotTemplate original =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");
@@ -110,9 +112,11 @@ public class ChatbotTemplateService {
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(clonedTemplate);
   }
 
-  public ChatbotTemplateOutputDTO findTemplateByIdAndTherapistId(String therapistId, String templateId) {
-    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new Error("Template not found with id: " + templateId)));
+  public ChatbotTemplateOutputDTO findTemplateByIdAndTherapistId(
+      String therapistId, String templateId) {
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId)));
   }
 }
