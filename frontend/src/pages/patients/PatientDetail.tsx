@@ -203,45 +203,6 @@ const PatientDetail = (): ReactElement => {
         </Typography>
       )}
 
-      <CustomizedDivider />
-      <div>
-        <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
-          <Typography variant='h2'>Counseling Plan</Typography>
-          <Button
-            sx={{ height: 'fit-content' }}
-            variant='contained'
-            onClick={() =>
-              navigate(
-                getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
-                  patientId: patientId ?? '',
-                })
-              )
-            }
-          >
-            Go to Counseling Plan
-          </Button>
-        </div>
-        {currentCounselingPlanPhase ? (
-          <Typography>
-            Current Phase: <strong>{currentCounselingPlanPhase.phaseName}</strong>
-          </Typography>
-        ) : (
-          <Typography>Currently no phase is active</Typography>
-        )}
-      </div>
-
-      {/* <CustomizedDivider /> />
-
-       <Typography variant='h4'>Chatbot</Typography>
-      <Button
-        variant='contained'
-        onClick={handleOpenChatbotDialog}
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Create Chatbot
-      </Button> 
-      */}
-
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
         <DialogContent>
@@ -271,13 +232,31 @@ const PatientDetail = (): ReactElement => {
 
       <CustomizedDivider />
 
-      <FilesTable
-        title='Files'
-        allDocuments={allPatientDocuments}
-        handleFileUpload={handleFileUpload}
-        handleDeleteFile={handleDeleteFile}
-        downloadFile={downloadFile}
-      />
+      <div>
+        <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
+          <Typography variant='h2'>Counseling Plan</Typography>
+          <Button
+            sx={{ height: 'fit-content' }}
+            variant='contained'
+            onClick={() =>
+              navigate(
+                getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
+                  patientId: patientId ?? '',
+                })
+              )
+            }
+          >
+            Go to Counseling Plan
+          </Button>
+        </div>
+        {currentCounselingPlanPhase ? (
+          <Typography>
+            Current Phase: <strong>{currentCounselingPlanPhase.phaseName}</strong>
+          </Typography>
+        ) : (
+          <Typography>Currently no phase is active</Typography>
+        )}
+      </div>
 
       <CustomizedDivider />
 
@@ -290,6 +269,28 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <GAD7TestDetail />
+
+      <CustomizedDivider />
+
+      {/* <CustomizedDivider /> />
+
+       <Typography variant='h4'>Chatbot</Typography>
+      <Button
+        variant='contained'
+        onClick={handleOpenChatbotDialog}
+        sx={{ marginTop: '20px', marginBottom: '20px' }}
+      >
+        Create Chatbot
+      </Button> 
+      */}
+
+      <FilesTable
+        title='Files'
+        allDocuments={allPatientDocuments}
+        handleFileUpload={handleFileUpload}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+      />
     </Layout>
   )
 }
