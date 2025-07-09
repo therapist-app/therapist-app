@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,8 +40,7 @@ public class CounselingPlanPhaseController {
   @PostMapping("/ai-generated-phase/{counselingPlanId}")
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       @PathVariable String counselingPlanId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(
         counselingPlanId, loggedInTherapist);
   }
@@ -48,8 +48,7 @@ public class CounselingPlanPhaseController {
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
       @PathVariable String counselingPlanPhaseId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(
         counselingPlanPhaseId, loggedInTherapist);
   }
@@ -63,8 +62,7 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody
-          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
+      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO);
   }
@@ -72,6 +70,12 @@ public class CounselingPlanPhaseController {
   @GetMapping("/{id}")
   public CounselingPlanPhaseOutputDTO getCounselingPlanPhaseById(@PathVariable String id) {
     return counselingPlanPhaseService.getCounselingPlanPhaseById(id);
+  }
+
+  @PutMapping("/{id}")
+  public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(@PathVariable String id,
+      @RequestBody CreateCounselingPlanPhaseDTO updateDto) {
+    return counselingPlanPhaseService.updateCounselingPlanPhase(id, updateDto);
   }
 
   @DeleteMapping("/{id}")

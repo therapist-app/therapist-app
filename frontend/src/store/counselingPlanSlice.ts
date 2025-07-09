@@ -6,6 +6,7 @@ import {
   CreateCounselingPlanPhaseDTO,
   CreateCounselingPlanPhaseGoalDTO,
   RemoveExerciseFromCounselingPlanPhaseDTO,
+  UpdateCounselingPlanDTO,
 } from '../api'
 import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi } from '../utils/api'
 
@@ -27,6 +28,14 @@ export const getCounselingPlanByPatientId = createAsyncThunk(
   'counselingPlan/getCounselingPlanByPatientId',
   async (patientId: string) => {
     const response = await counselingPlanApi.getCounselingPlanByPatientId(patientId)
+    return response.data
+  }
+)
+
+export const updateCounselingPlan = createAsyncThunk(
+  'counselingPlan/updateCounselingPlan',
+  async (updateDto: UpdateCounselingPlanDTO) => {
+    const response = await counselingPlanApi.updateCounselingPlan(updateDto)
     return response.data
   }
 )
@@ -143,6 +152,19 @@ const counselingPlanSlice = createSlice({
         state.counselingPlan = action.payload
       })
       .addCase(getCounselingPlanByPatientId.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+      })
+
+      .addCase(updateCounselingPlan.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateCounselingPlan.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.counselingPlan = action.payload
+      })
+      .addCase(updateCounselingPlan.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
       })
