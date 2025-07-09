@@ -15,9 +15,11 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
@@ -47,16 +49,34 @@ const PatientDetail = (): ReactElement => {
     state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
   )
 
+  const counselingPlan = useSelector((state: RootState) => state.counselingPlan).counselingPlan
+
+  const [currentCounselingPlanPhase, setCurrentCounselingPlanPhase] = useState<
+    CounselingPlanPhaseOutputDTO | undefined
+  >(undefined)
+
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
 
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
 
   useEffect(() => {
+    console.log(counselingPlan)
+    setCurrentCounselingPlanPhase(
+      counselingPlan?.counselingPlanPhasesOutputDTO?.find(
+        (phase) =>
+          new Date(phase.startDate ?? '').getTime() < new Date().getTime() &&
+          new Date(phase.endDate ?? '').getTime() > new Date().getTime()
+      )
+    )
+  }, [counselingPlan?.counselingPlanPhasesOutputDTO, counselingPlan])
+
+  useEffect(() => {
     dispatch(getAllPatientsOfTherapist())
     dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
     dispatch(getAllMeetingsOfPatient(patientId ?? ''))
     dispatch(getAllExercisesOfPatient(patientId ?? ''))
+    dispatch(getCounselingPlanByPatientId(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUpload = async (file: File): Promise<void> => {
@@ -184,22 +204,30 @@ const PatientDetail = (): ReactElement => {
       )}
 
       <CustomizedDivider />
-
-      <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
-        <Typography variant='h2'>Counseling Plan</Typography>
-        <Button
-          sx={{ height: 'fit-content' }}
-          variant='contained'
-          onClick={() =>
-            navigate(
-              getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
-                patientId: patientId ?? '',
-              })
-            )
-          }
-        >
-          Go to Counseling Plan
-        </Button>
+      <div>
+        <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
+          <Typography variant='h2'>Counseling Plan</Typography>
+          <Button
+            sx={{ height: 'fit-content' }}
+            variant='contained'
+            onClick={() =>
+              navigate(
+                getPathFromPage(PAGES.COUNSELING_PLAN_DETAILS_PAGE, {
+                  patientId: patientId ?? '',
+                })
+              )
+            }
+          >
+            Go to Counseling Plan
+          </Button>
+        </div>
+        {currentCounselingPlanPhase ? (
+          <Typography>
+            Current Phase: <strong>{currentCounselingPlanPhase.phaseName}</strong>
+          </Typography>
+        ) : (
+          <Typography>Currently no phase is active</Typography>
+        )}
       </div>
 
       {/* <CustomizedDivider /> />
