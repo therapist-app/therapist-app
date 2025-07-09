@@ -683,7 +683,7 @@ paths:
       x-accepts: '*/*'
   /patients/exercises/{exerciseId}:
     get:
-      operationId: getExerciseOutputDTO
+      operationId: getExercise
       parameters:
       - explode: false
         in: path
@@ -725,6 +725,54 @@ paths:
       - exercise-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/exercise-conversation/{conversationId}/messages:
+    get:
+      operationId: getAllMessages
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CompleteExerciseConversationOutputDTO'
+          description: OK
+      tags:
+      - exercise-conversation-controller
+      x-accepts: '*/*'
+    post:
+      operationId: sendMessage
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageOutputDTO'
+          description: OK
+      tags:
+      - exercise-conversation-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/conversations:
     post:
       operationId: createConversation
@@ -740,7 +788,7 @@ paths:
       x-accepts: '*/*'
   /patients/conversations/messages/{conversationId}:
     get:
-      operationId: getAllMessages
+      operationId: getAllMessages_1
       parameters:
       - explode: false
         in: path
@@ -760,7 +808,7 @@ paths:
       - conversation-controller
       x-accepts: '*/*'
     post:
-      operationId: sendMessage
+      operationId: sendMessage_1
       parameters:
       - explode: false
         in: path
@@ -1037,6 +1085,27 @@ paths:
       tags:
       - exercise-controller
       x-accepts: '*/*'
+  /patients/exercises/{exerciseId}/chatbot:
+    get:
+      operationId: getExerciseChatbot
+      parameters:
+      - explode: false
+        in: path
+        name: exerciseId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ExerciseChatbotOutputDTO'
+          description: OK
+      tags:
+      - exercise-controller
+      x-accepts: '*/*'
   /patients/documents:
     get:
       operationId: list
@@ -1078,7 +1147,7 @@ paths:
       x-accepts: '*/*'
   /patients/conversations/{patientId}:
     get:
-      operationId: nameConversationDTO
+      operationId: getConversationNames
       responses:
         "200":
           content:
@@ -1274,6 +1343,23 @@ paths:
       tags:
       - patient-app-application
       x-accepts: text/plain
+  /patients/exercise-conversation/{conversationId}:
+    delete:
+      operationId: deleteExerciseChat
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - exercise-conversation-controller
+      x-accepts: application/json
   /coach/patients/{patientId}:
     delete:
       operationId: deletePatient
@@ -1471,6 +1557,10 @@ components:
       properties:
         name:
           type: string
+        exerciseDescription:
+          type: string
+        exerciseExplanation:
+          type: string
         description:
           type: string
         pictureData:
@@ -1632,13 +1722,6 @@ components:
           format: int32
           type: integer
       type: object
-    CreateConversationOutputDTO:
-      example:
-        id: id
-      properties:
-        id:
-          type: string
-      type: object
     CreateMessageDTO:
       properties:
         message:
@@ -1661,6 +1744,16 @@ components:
         responseMessage:
           type: string
         requestMessage:
+          type: string
+      type: object
+    CreateConversationOutputDTO:
+      example:
+        welcomeMessage: welcomeMessage
+        id: id
+      properties:
+        id:
+          type: string
+        welcomeMessage:
           type: string
       type: object
     DocumentOverviewDTO:
@@ -1818,14 +1911,55 @@ components:
             type: string
           type: array
       type: object
+    ExerciseChatbotOutputDTO:
+      example:
+        chatbotIcon: chatbotIcon
+        name: name
+        id: id
+      properties:
+        name:
+          type: string
+        chatbotIcon:
+          type: string
+        id:
+          type: string
+      type: object
+    CompleteExerciseConversationOutputDTO:
+      example:
+        name: name
+        messages:
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        messages:
+          items:
+            $ref: '#/components/schemas/MessageOutputDTO'
+          type: array
+      type: object
     NameConversationOutputDTO:
       example:
+        chatbotIcon: chatbotIcon
         name: name
         id: id
       properties:
         id:
           type: string
         name:
+          type: string
+        chatbotIcon:
           type: string
       type: object
     CompleteConversationOutputDTO:

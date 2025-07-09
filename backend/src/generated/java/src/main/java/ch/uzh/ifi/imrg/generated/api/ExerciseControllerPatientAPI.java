@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseChatbotOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInformationInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseMediaOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOPatientAPI;
@@ -57,11 +58,11 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getExerciseOutputDTORequestCreation(String exerciseId) throws WebClientResponseException {
+    private ResponseSpec getExerciseRequestCreation(String exerciseId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'exerciseId' is set
         if (exerciseId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getExerciseOutputDTO", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getExercise", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -94,9 +95,9 @@ public class ExerciseControllerPatientAPI {
      * @return ExerciseOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ExerciseOutputDTOPatientAPI> getExerciseOutputDTO(String exerciseId) throws WebClientResponseException {
+    public Mono<ExerciseOutputDTOPatientAPI> getExercise(String exerciseId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseOutputDTOPatientAPI>() {};
-        return getExerciseOutputDTORequestCreation(exerciseId).bodyToMono(localVarReturnType);
+        return getExerciseRequestCreation(exerciseId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -107,9 +108,9 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseEntity&lt;ExerciseOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<ExerciseOutputDTOPatientAPI>> getExerciseOutputDTOWithHttpInfo(String exerciseId) throws WebClientResponseException {
+    public Mono<ResponseEntity<ExerciseOutputDTOPatientAPI>> getExerciseWithHttpInfo(String exerciseId) throws WebClientResponseException {
         ParameterizedTypeReference<ExerciseOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseOutputDTOPatientAPI>() {};
-        return getExerciseOutputDTORequestCreation(exerciseId).toEntity(localVarReturnType);
+        return getExerciseRequestCreation(exerciseId).toEntity(localVarReturnType);
     }
 
     /**
@@ -120,8 +121,82 @@ public class ExerciseControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getExerciseOutputDTOWithResponseSpec(String exerciseId) throws WebClientResponseException {
-        return getExerciseOutputDTORequestCreation(exerciseId);
+    public ResponseSpec getExerciseWithResponseSpec(String exerciseId) throws WebClientResponseException {
+        return getExerciseRequestCreation(exerciseId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @return ExerciseChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getExerciseChatbotRequestCreation(String exerciseId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getExerciseChatbot", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("exerciseId", exerciseId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/exercises/{exerciseId}/chatbot", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @return ExerciseChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ExerciseChatbotOutputDTOPatientAPI> getExerciseChatbot(String exerciseId) throws WebClientResponseException {
+        ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI>() {};
+        return getExerciseChatbotRequestCreation(exerciseId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @return ResponseEntity&lt;ExerciseChatbotOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<ExerciseChatbotOutputDTOPatientAPI>> getExerciseChatbotWithHttpInfo(String exerciseId) throws WebClientResponseException {
+        ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseChatbotOutputDTOPatientAPI>() {};
+        return getExerciseChatbotRequestCreation(exerciseId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param exerciseId The exerciseId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getExerciseChatbotWithResponseSpec(String exerciseId) throws WebClientResponseException {
+        return getExerciseChatbotRequestCreation(exerciseId);
     }
     /**
      * 

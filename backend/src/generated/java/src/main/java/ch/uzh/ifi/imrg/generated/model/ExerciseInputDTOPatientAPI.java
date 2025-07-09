@@ -32,6 +32,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_NAME,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_DESCRIPTION,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXPLANATION,
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_DESCRIPTION,
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_PICTURE_DATA,
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_ELEMENTS
@@ -41,6 +43,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ExerciseInputDTOPatientAPI {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
+
+  public static final String JSON_PROPERTY_EXERCISE_DESCRIPTION = "exerciseDescription";
+  private String exerciseDescription;
+
+  public static final String JSON_PROPERTY_EXERCISE_EXPLANATION = "exerciseExplanation";
+  private String exerciseExplanation;
 
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private String description;
@@ -77,6 +85,58 @@ public class ExerciseInputDTOPatientAPI {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
     this.name = name;
+  }
+
+
+  public ExerciseInputDTOPatientAPI exerciseDescription(String exerciseDescription) {
+    
+    this.exerciseDescription = exerciseDescription;
+    return this;
+  }
+
+   /**
+   * Get exerciseDescription
+   * @return exerciseDescription
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_EXERCISE_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getExerciseDescription() {
+    return exerciseDescription;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_EXERCISE_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExerciseDescription(String exerciseDescription) {
+    this.exerciseDescription = exerciseDescription;
+  }
+
+
+  public ExerciseInputDTOPatientAPI exerciseExplanation(String exerciseExplanation) {
+    
+    this.exerciseExplanation = exerciseExplanation;
+    return this;
+  }
+
+   /**
+   * Get exerciseExplanation
+   * @return exerciseExplanation
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXPLANATION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getExerciseExplanation() {
+    return exerciseExplanation;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXPLANATION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExerciseExplanation(String exerciseExplanation) {
+    this.exerciseExplanation = exerciseExplanation;
   }
 
 
@@ -175,6 +235,8 @@ public class ExerciseInputDTOPatientAPI {
     }
     ExerciseInputDTOPatientAPI exerciseInputDTO = (ExerciseInputDTOPatientAPI) o;
     return Objects.equals(this.name, exerciseInputDTO.name) &&
+        Objects.equals(this.exerciseDescription, exerciseInputDTO.exerciseDescription) &&
+        Objects.equals(this.exerciseExplanation, exerciseInputDTO.exerciseExplanation) &&
         Objects.equals(this.description, exerciseInputDTO.description) &&
         Objects.equals(this.pictureData, exerciseInputDTO.pictureData) &&
         Objects.equals(this.exerciseElements, exerciseInputDTO.exerciseElements);
@@ -182,7 +244,7 @@ public class ExerciseInputDTOPatientAPI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, pictureData, exerciseElements);
+    return Objects.hash(name, exerciseDescription, exerciseExplanation, description, pictureData, exerciseElements);
   }
 
   @Override
@@ -190,6 +252,8 @@ public class ExerciseInputDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExerciseInputDTOPatientAPI {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    exerciseDescription: ").append(toIndentedString(exerciseDescription)).append("\n");
+    sb.append("    exerciseExplanation: ").append(toIndentedString(exerciseExplanation)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    pictureData: ").append(toIndentedString(pictureData)).append("\n");
     sb.append("    exerciseElements: ").append(toIndentedString(exerciseElements)).append("\n");

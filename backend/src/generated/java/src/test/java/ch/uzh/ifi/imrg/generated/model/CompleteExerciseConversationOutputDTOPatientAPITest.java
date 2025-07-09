@@ -13,27 +13,31 @@
 
 package ch.uzh.ifi.imrg.generated.model;
 
+import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Model tests for NameConversationOutputDTOPatientAPI
+ * Model tests for CompleteExerciseConversationOutputDTOPatientAPI
  */
-public class NameConversationOutputDTOPatientAPITest {
-    private final NameConversationOutputDTOPatientAPI model = new NameConversationOutputDTOPatientAPI();
+public class CompleteExerciseConversationOutputDTOPatientAPITest {
+    private final CompleteExerciseConversationOutputDTOPatientAPI model = new CompleteExerciseConversationOutputDTOPatientAPI();
 
     /**
-     * Model tests for NameConversationOutputDTOPatientAPI
+     * Model tests for CompleteExerciseConversationOutputDTOPatientAPI
      */
     @Test
-    public void testNameConversationOutputDTOPatientAPI() {
-        // TODO: test NameConversationOutputDTOPatientAPI
+    public void testCompleteExerciseConversationOutputDTOPatientAPI() {
+        // TODO: test CompleteExerciseConversationOutputDTOPatientAPI
     }
 
     /**
@@ -53,11 +57,11 @@ public class NameConversationOutputDTOPatientAPITest {
     }
 
     /**
-     * Test the property 'chatbotIcon'
+     * Test the property 'messages'
      */
     @Test
-    public void chatbotIconTest() {
-        // TODO: test chatbotIcon
+    public void messagesTest() {
+        // TODO: test messages
     }
 
 }

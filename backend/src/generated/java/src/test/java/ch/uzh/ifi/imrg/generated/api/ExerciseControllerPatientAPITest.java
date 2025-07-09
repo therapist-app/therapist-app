@@ -13,6 +13,7 @@
 
 package ch.uzh.ifi.imrg.generated.api;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseChatbotOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInformationInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseMediaOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOPatientAPI;
@@ -41,9 +42,22 @@ public class ExerciseControllerPatientAPITest {
      * 
      */
     @Test
-    public void getExerciseOutputDTOTest()  {
+    public void getExerciseTest()  {
         String exerciseId = null;
-        ExerciseOutputDTOPatientAPI response = api.getExerciseOutputDTO(exerciseId).block();
+        ExerciseOutputDTOPatientAPI response = api.getExercise(exerciseId).block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getExerciseChatbotTest()  {
+        String exerciseId = null;
+        ExerciseChatbotOutputDTOPatientAPI response = api.getExerciseChatbot(exerciseId).block();
 
         // TODO: test validations
     }

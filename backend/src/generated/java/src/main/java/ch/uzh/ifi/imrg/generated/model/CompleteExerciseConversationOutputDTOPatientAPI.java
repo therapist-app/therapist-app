@@ -15,38 +15,42 @@ package ch.uzh.ifi.imrg.generated.model;
 
 import java.util.Objects;
 import java.util.Arrays;
+import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * NameConversationOutputDTOPatientAPI
+ * CompleteExerciseConversationOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_CHATBOT_ICON
+  CompleteExerciseConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
+  CompleteExerciseConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  CompleteExerciseConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES
 })
-@JsonTypeName("NameConversationOutputDTO")
+@JsonTypeName("CompleteExerciseConversationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class NameConversationOutputDTOPatientAPI {
+public class CompleteExerciseConversationOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
-  public static final String JSON_PROPERTY_CHATBOT_ICON = "chatbotIcon";
-  private String chatbotIcon;
+  public static final String JSON_PROPERTY_MESSAGES = "messages";
+  private List<MessageOutputDTOPatientAPI> messages;
 
-  public NameConversationOutputDTOPatientAPI() {
+  public CompleteExerciseConversationOutputDTOPatientAPI() {
   }
 
-  public NameConversationOutputDTOPatientAPI id(String id) {
+  public CompleteExerciseConversationOutputDTOPatientAPI id(String id) {
     
     this.id = id;
     return this;
@@ -72,7 +76,7 @@ public class NameConversationOutputDTOPatientAPI {
   }
 
 
-  public NameConversationOutputDTOPatientAPI name(String name) {
+  public CompleteExerciseConversationOutputDTOPatientAPI name(String name) {
     
     this.name = name;
     return this;
@@ -98,29 +102,37 @@ public class NameConversationOutputDTOPatientAPI {
   }
 
 
-  public NameConversationOutputDTOPatientAPI chatbotIcon(String chatbotIcon) {
+  public CompleteExerciseConversationOutputDTOPatientAPI messages(List<MessageOutputDTOPatientAPI> messages) {
     
-    this.chatbotIcon = chatbotIcon;
+    this.messages = messages;
+    return this;
+  }
+
+  public CompleteExerciseConversationOutputDTOPatientAPI addMessagesItem(MessageOutputDTOPatientAPI messagesItem) {
+    if (this.messages == null) {
+      this.messages = new ArrayList<>();
+    }
+    this.messages.add(messagesItem);
     return this;
   }
 
    /**
-   * Get chatbotIcon
-   * @return chatbotIcon
+   * Get messages
+   * @return messages
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CHATBOT_ICON)
+  @JsonProperty(JSON_PROPERTY_MESSAGES)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getChatbotIcon() {
-    return chatbotIcon;
+  public List<MessageOutputDTOPatientAPI> getMessages() {
+    return messages;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_CHATBOT_ICON)
+  @JsonProperty(JSON_PROPERTY_MESSAGES)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setChatbotIcon(String chatbotIcon) {
-    this.chatbotIcon = chatbotIcon;
+  public void setMessages(List<MessageOutputDTOPatientAPI> messages) {
+    this.messages = messages;
   }
 
   @Override
@@ -131,24 +143,24 @@ public class NameConversationOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    NameConversationOutputDTOPatientAPI nameConversationOutputDTO = (NameConversationOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, nameConversationOutputDTO.id) &&
-        Objects.equals(this.name, nameConversationOutputDTO.name) &&
-        Objects.equals(this.chatbotIcon, nameConversationOutputDTO.chatbotIcon);
+    CompleteExerciseConversationOutputDTOPatientAPI completeExerciseConversationOutputDTO = (CompleteExerciseConversationOutputDTOPatientAPI) o;
+    return Objects.equals(this.id, completeExerciseConversationOutputDTO.id) &&
+        Objects.equals(this.name, completeExerciseConversationOutputDTO.name) &&
+        Objects.equals(this.messages, completeExerciseConversationOutputDTO.messages);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, chatbotIcon);
+    return Objects.hash(id, name, messages);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class NameConversationOutputDTOPatientAPI {\n");
+    sb.append("class CompleteExerciseConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    chatbotIcon: ").append(toIndentedString(chatbotIcon)).append("\n");
+    sb.append("    messages: ").append(toIndentedString(messages)).append("\n");
     sb.append("}");
     return sb.toString();
   }
