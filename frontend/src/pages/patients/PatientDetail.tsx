@@ -203,33 +203,6 @@ const PatientDetail = (): ReactElement => {
         </Typography>
       )}
 
-      <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
-        <DialogTitle>Create a new Chatbot</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Please enter a name for your new chatbot:</DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            label='Chatbot Name'
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={chatbotName}
-            onChange={(e) => setChatbotName(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseChatbotDialog}>Cancel</Button>
-          <Button
-            onClick={handleCreateNewChatbot}
-            variant='contained'
-            disabled={!chatbotName.trim()}
-          >
-            Create Bot
-          </Button>
-        </DialogActions>
-      </Dialog>
-
       <CustomizedDivider />
 
       <div>
@@ -268,11 +241,34 @@ const PatientDetail = (): ReactElement => {
 
       <CustomizedDivider />
 
-      <GAD7TestDetail />
+      <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
+        <DialogTitle>Create a new Chatbot</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please enter a name for your new chatbot:</DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            label='Chatbot Name'
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={chatbotName}
+            onChange={(e) => setChatbotName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseChatbotDialog}>Cancel</Button>
+          <Button
+            onClick={handleCreateNewChatbot}
+            variant='contained'
+            disabled={!chatbotName.trim()}
+          >
+            Create Bot
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-      <CustomizedDivider />
-
-      {/* <CustomizedDivider /> />
+      {/* 
 
        <Typography variant='h4'>Chatbot</Typography>
       <Button
@@ -282,7 +278,13 @@ const PatientDetail = (): ReactElement => {
       >
         Create Chatbot
       </Button> 
+
+      <CustomizedDivider /> />
       */}
+
+      <GAD7TestDetail />
+
+      <CustomizedDivider />
 
       <FilesTable
         title='Files'
