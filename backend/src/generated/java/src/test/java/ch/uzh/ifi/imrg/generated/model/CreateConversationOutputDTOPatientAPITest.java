@@ -44,4 +44,12 @@ public class CreateConversationOutputDTOPatientAPITest {
         // TODO: test id
     }
 
+    /**
+     * Test the property 'welcomeMessage'
+     */
+    @Test
+    public void welcomeMessageTest() {
+        // TODO: test welcomeMessage
+    }
+
 }

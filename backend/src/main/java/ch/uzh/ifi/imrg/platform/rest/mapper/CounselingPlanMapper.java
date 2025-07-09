@@ -17,6 +17,7 @@ public interface CounselingPlanMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "createdAt", target = "createdAt")
   @Mapping(source = "updatedAt", target = "updatedAt")
+  @Mapping(source = "startOfTherapy", target = "startOfTherapy")
   @Mapping(source = "counselingPlanPhases", target = "counselingPlanPhasesOutputDTO")
   CounselingPlanOutputDTO convertEntityToCounselingPlanOutputDTO(CounselingPlan counselingPlan);
 

@@ -146,16 +146,20 @@ Class | Method | HTTP request | Description
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestResults**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestResults) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
-*ConversationControllerPatientAPI* | [**getAllMessages**](docs/ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} | 
-*ConversationControllerPatientAPI* | [**nameConversationDTO**](docs/ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} | 
-*ConversationControllerPatientAPI* | [**sendMessage**](docs/ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**getAllMessages1**](docs/ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**getConversationNames**](docs/ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations/{patientId} | 
+*ConversationControllerPatientAPI* | [**sendMessage1**](docs/ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
 *DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
 *DocumentControllerPatientAPI* | [**download**](docs/DocumentControllerPatientAPI.md#download) | **GET** /patients/documents/{documentId} | 
-*ExerciseControllerPatientAPI* | [**getExerciseOutputDTO**](docs/ExerciseControllerPatientAPI.md#getExerciseOutputDTO) | **GET** /patients/exercises/{exerciseId} | 
+*ExerciseControllerPatientAPI* | [**getExercise**](docs/ExerciseControllerPatientAPI.md#getExercise) | **GET** /patients/exercises/{exerciseId} | 
+*ExerciseControllerPatientAPI* | [**getExerciseChatbot**](docs/ExerciseControllerPatientAPI.md#getExerciseChatbot) | **GET** /patients/exercises/{exerciseId}/chatbot | 
 *ExerciseControllerPatientAPI* | [**getExerciseOverview**](docs/ExerciseControllerPatientAPI.md#getExerciseOverview) | **GET** /patients/exercises | 
 *ExerciseControllerPatientAPI* | [**getPicture**](docs/ExerciseControllerPatientAPI.md#getPicture) | **GET** /patients/exercises/{exerciseId}/{mediaId} | 
 *ExerciseControllerPatientAPI* | [**postExerciseFeedback**](docs/ExerciseControllerPatientAPI.md#postExerciseFeedback) | **POST** /patients/exercises/{exerciseId} | 
+*ExerciseConversationControllerPatientAPI* | [**deleteExerciseChat**](docs/ExerciseConversationControllerPatientAPI.md#deleteExerciseChat) | **DELETE** /patients/exercise-conversation/{conversationId} | 
+*ExerciseConversationControllerPatientAPI* | [**getAllMessages**](docs/ExerciseConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/exercise-conversation/{conversationId}/messages | 
+*ExerciseConversationControllerPatientAPI* | [**sendMessage**](docs/ExerciseConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/exercise-conversation/{conversationId}/messages | 
 *JournalEntryControllerPatientAPI* | [**create**](docs/JournalEntryControllerPatientAPI.md#create) | **POST** /patients/journal-entries | 
 *JournalEntryControllerPatientAPI* | [**deleteEntry**](docs/JournalEntryControllerPatientAPI.md#deleteEntry) | **DELETE** /patients/journal-entries/{entryId} | 
 *JournalEntryControllerPatientAPI* | [**getAllTags**](docs/JournalEntryControllerPatientAPI.md#getAllTags) | **GET** /patients/journal-entries/tags | 
@@ -189,12 +193,14 @@ Class | Method | HTTP request | Description
  - [CoachGetAllJournalEntriesDTOPatientAPI](docs/CoachGetAllJournalEntriesDTOPatientAPI.md)
  - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
+ - [CompleteExerciseConversationOutputDTOPatientAPI](docs/CompleteExerciseConversationOutputDTOPatientAPI.md)
  - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
  - [DocumentOverviewDTOPatientAPI](docs/DocumentOverviewDTOPatientAPI.md)
+ - [ExerciseChatbotOutputDTOPatientAPI](docs/ExerciseChatbotOutputDTOPatientAPI.md)
  - [ExerciseElementInputDTOPatientAPI](docs/ExerciseElementInputDTOPatientAPI.md)
  - [ExerciseElementOutputDTOPatientAPI](docs/ExerciseElementOutputDTOPatientAPI.md)
  - [ExerciseFileElementInputDTOPatientAPI](docs/ExerciseFileElementInputDTOPatientAPI.md)

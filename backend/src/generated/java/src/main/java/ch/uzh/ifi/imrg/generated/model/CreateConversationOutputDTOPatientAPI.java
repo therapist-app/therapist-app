@@ -27,13 +27,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * CreateConversationOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_ID
+  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
+  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
 })
 @JsonTypeName("CreateConversationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class CreateConversationOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
+
+  public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
+  private String welcomeMessage;
 
   public CreateConversationOutputDTOPatientAPI() {
   }
@@ -63,6 +67,32 @@ public class CreateConversationOutputDTOPatientAPI {
     this.id = id;
   }
 
+
+  public CreateConversationOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
+    
+    this.welcomeMessage = welcomeMessage;
+    return this;
+  }
+
+   /**
+   * Get welcomeMessage
+   * @return welcomeMessage
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getWelcomeMessage() {
+    return welcomeMessage;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWelcomeMessage(String welcomeMessage) {
+    this.welcomeMessage = welcomeMessage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -72,12 +102,13 @@ public class CreateConversationOutputDTOPatientAPI {
       return false;
     }
     CreateConversationOutputDTOPatientAPI createConversationOutputDTO = (CreateConversationOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, createConversationOutputDTO.id);
+    return Objects.equals(this.id, createConversationOutputDTO.id) &&
+        Objects.equals(this.welcomeMessage, createConversationOutputDTO.welcomeMessage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(id, welcomeMessage);
   }
 
   @Override
@@ -85,6 +116,7 @@ public class CreateConversationOutputDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
     sb.append("}");
     return sb.toString();
   }

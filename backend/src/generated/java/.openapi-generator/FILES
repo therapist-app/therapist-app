@@ -18,6 +18,7 @@ docs/CoachMeetingControllerPatientAPI.md
 docs/CoachPatientControllerPatientAPI.md
 docs/CoachPsychologicalTestControllerPatientAPI.md
 docs/CompleteConversationOutputDTOPatientAPI.md
+docs/CompleteExerciseConversationOutputDTOPatientAPI.md
 docs/ConversationControllerPatientAPI.md
 docs/CreateChatbotDTOPatientAPI.md
 docs/CreateConversationOutputDTOPatientAPI.md
@@ -26,7 +27,9 @@ docs/CreateMessageDTOPatientAPI.md
 docs/CreatePatientDTOPatientAPI.md
 docs/DocumentControllerPatientAPI.md
 docs/DocumentOverviewDTOPatientAPI.md
+docs/ExerciseChatbotOutputDTOPatientAPI.md
 docs/ExerciseControllerPatientAPI.md
+docs/ExerciseConversationControllerPatientAPI.md
 docs/ExerciseElementInputDTOPatientAPI.md
 docs/ExerciseElementOutputDTOPatientAPI.md
 docs/ExerciseFileElementInputDTOPatientAPI.md
@@ -91,6 +94,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPati
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/DocumentControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/ExerciseConversationControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPI.java
@@ -111,12 +115,14 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/ChatbotConfigurationOutputDTOPatie
 src/main/java/ch/uzh/ifi/imrg/generated/model/CoachGetAllJournalEntriesDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteExerciseConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateChatbotDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/DocumentOverviewDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseChatbotOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseElementInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseElementOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementInputDTOPatientAPI.java
@@ -167,6 +173,7 @@ src/test/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPati
 src/test/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/DocumentControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/api/ExerciseConversationControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/JournalEntryControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/MeetingControllerPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/api/PatientAppApplicationPatientAPITest.java
@@ -177,12 +184,14 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/ChatbotConfigurationOutputDTOPatie
 src/test/java/ch/uzh/ifi/imrg/generated/model/CoachGetAllJournalEntriesDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteExerciseConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateChatbotDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/DocumentOverviewDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseChatbotOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseElementInputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseElementOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/ExerciseFileElementInputDTOPatientAPITest.java

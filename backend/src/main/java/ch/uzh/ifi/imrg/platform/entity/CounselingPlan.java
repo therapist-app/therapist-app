@@ -26,6 +26,8 @@ public class CounselingPlan {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  private Instant startOfTherapy;
+
   @OneToMany(
       mappedBy = "counselingPlan",
       fetch = FetchType.LAZY,

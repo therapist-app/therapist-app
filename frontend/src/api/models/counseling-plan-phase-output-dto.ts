@@ -40,6 +40,18 @@ export interface CounselingPlanPhaseOutputDTO {
     'phaseName'?: string;
     /**
      * 
+     * @type {number}
+     * @memberof CounselingPlanPhaseOutputDTO
+     */
+    'durationInWeeks'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CounselingPlanPhaseOutputDTO
+     */
+    'phaseNumber'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof CounselingPlanPhaseOutputDTO
      */

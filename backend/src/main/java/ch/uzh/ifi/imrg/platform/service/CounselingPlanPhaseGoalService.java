@@ -98,6 +98,24 @@ public class CounselingPlanPhaseGoalService {
         counselingPlanPhaseGoal);
   }
 
+  public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhaseGoal(
+      String phaseGoalId, CreateCounselingPlanPhaseGoalDTO updateDto) {
+    CounselingPlanPhaseGoal counselingPlanPhaseGoal =
+        counselingPlanPhaseGoalRepository.getReferenceById(phaseGoalId);
+    if (updateDto.getGoalName() != null) {
+      counselingPlanPhaseGoal.setGoalName(updateDto.getGoalName());
+    }
+
+    if (updateDto.getGoalDescription() != null) {
+      counselingPlanPhaseGoal.setGoalName(updateDto.getGoalDescription());
+    }
+
+    counselingPlanPhaseGoalRepository.save(counselingPlanPhaseGoal);
+
+    return CounselingPlanPhaseGoalMapper.INSTANCE.convertEntityToCounselingPlanPhaseGoalOutputDTO(
+        counselingPlanPhaseGoal);
+  }
+
   public void deleteCounselingPlanPhaseGoal(String id) {
     counselingPlanPhaseGoalRepository.deleteById(id);
   }

@@ -1,8 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 
 import { CreateCounselingPlanPhaseDTO } from '../../../api'
@@ -17,15 +13,9 @@ interface CreateCounselingPlanePhaseProps {
   onSuccess: () => void
 }
 
-interface FormValues {
-  phaseName: string
-  startDate: Date | null
-  durationInWeeks: number
-}
-
-const initialFormValues: FormValues = {
+const initialFormValues: CreateCounselingPlanPhaseDTO = {
   phaseName: '',
-  startDate: new Date(),
+
   durationInWeeks: 3,
 }
 
@@ -33,7 +23,7 @@ const CreateCounselingPlanePhase = ({
   counselingPlanId,
   onSuccess,
 }: CreateCounselingPlanePhaseProps): ReactElement => {
-  const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
+  const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseDTO>(initialFormValues)
 
   const [open, setOpen] = useState(false)
 
@@ -41,11 +31,10 @@ const CreateCounselingPlanePhase = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-    const startDate = formValues.startDate || new Date()
+
     const createCounselingPlanPhaseDTO: CreateCounselingPlanPhaseDTO = {
       counselingPlanId: counselingPlanId,
       phaseName: formValues.phaseName,
-      startDate: startDate.toISOString(),
       durationInWeeks: formValues.durationInWeeks,
     }
     await dispatch(createCounselingPlanPhase(createCounselingPlanPhaseDTO))
@@ -58,9 +47,8 @@ const CreateCounselingPlanePhase = ({
     const createCounselingPlanPhaseDTO = await dispatch(
       createCounselingPlanPhaseAIGenerated(counselingPlanId)
     ).unwrap()
-    const newFormValue: FormValues = {
+    const newFormValue: CreateCounselingPlanPhaseDTO = {
       phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
-      startDate: new Date(createCounselingPlanPhaseDTO.startDate ?? ''),
       durationInWeeks: createCounselingPlanPhaseDTO.durationInWeeks ?? 2,
     }
 
@@ -90,19 +78,6 @@ const CreateCounselingPlanePhase = ({
             value={formValues.phaseName}
             onChange={(e) => setFormValues({ ...formValues, phaseName: e.target.value })}
           />
-          <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
-            <DateTimePicker
-              label='Start Date'
-              value={formValues.startDate}
-              onChange={(newValue: Date | null) => {
-                setFormValues({
-                  ...formValues,
-                  startDate: newValue,
-                })
-              }}
-              sx={{ width: '100%' }}
-            />
-          </LocalizationProvider>
           <TextField
             label='Duration in Weeks'
             value={formValues.durationInWeeks}

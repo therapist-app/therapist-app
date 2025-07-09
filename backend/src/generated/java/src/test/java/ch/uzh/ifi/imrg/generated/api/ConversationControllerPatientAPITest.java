@@ -68,9 +68,9 @@ public class ConversationControllerPatientAPITest {
      * 
      */
     @Test
-    public void getAllMessagesTest()  {
+    public void getAllMessages1Test()  {
         String conversationId = null;
-        CompleteConversationOutputDTOPatientAPI response = api.getAllMessages(conversationId).block();
+        CompleteConversationOutputDTOPatientAPI response = api.getAllMessages1(conversationId).block();
 
         // TODO: test validations
     }
@@ -81,8 +81,8 @@ public class ConversationControllerPatientAPITest {
      * 
      */
     @Test
-    public void nameConversationDTOTest()  {
-        List<NameConversationOutputDTOPatientAPI> response = api.nameConversationDTO().collectList().block();
+    public void getConversationNamesTest()  {
+        List<NameConversationOutputDTOPatientAPI> response = api.getConversationNames().collectList().block();
 
         // TODO: test validations
     }
@@ -93,10 +93,10 @@ public class ConversationControllerPatientAPITest {
      * 
      */
     @Test
-    public void sendMessageTest()  {
+    public void sendMessage1Test()  {
         String conversationId = null;
         CreateMessageDTOPatientAPI createMessageDTOPatientAPI = null;
-        MessageOutputDTOPatientAPI response = api.sendMessage(conversationId, createMessageDTOPatientAPI).block();
+        MessageOutputDTOPatientAPI response = api.sendMessage1(conversationId, createMessageDTOPatientAPI).block();
 
         // TODO: test validations
     }

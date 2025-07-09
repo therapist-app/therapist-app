@@ -16,6 +16,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,7 @@ public class PatientService {
     patient.setInitialPassword(initialPassword);
 
     CounselingPlan counselingPlan = new CounselingPlan();
+    counselingPlan.setStartOfTherapy(Instant.now());
     counselingPlanRepository.save(counselingPlan);
     patient.setCounselingPlan(counselingPlan);
 

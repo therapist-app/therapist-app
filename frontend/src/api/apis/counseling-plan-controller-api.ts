@@ -23,6 +23,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
 import type { CounselingPlanOutputDTO } from '../models';
+// @ts-ignore
+import type { UpdateCounselingPlanDTO } from '../models';
 /**
  * CounselingPlanControllerApi - axios parameter creator
  * @export
@@ -38,7 +40,8 @@ export const CounselingPlanControllerApiAxiosParamCreator = function (configurat
         getCounselingPlanByPatientId: async (patientId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'patientId' is not null or undefined
             assertParamExists('getCounselingPlanByPatientId', 'patientId', patientId)
-            const localVarPath = `/counseling-plans/{patientId}`;
+            const localVarPath = `/counseling-plans/{patientId}`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -50,15 +53,46 @@ export const CounselingPlanControllerApiAxiosParamCreator = function (configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (patientId !== undefined) {
-                localVarQueryParameter['patientId'] = patientId;
-            }
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateCounselingPlanDTO} updateCounselingPlanDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCounselingPlan: async (updateCounselingPlanDTO: UpdateCounselingPlanDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateCounselingPlanDTO' is not null or undefined
+            assertParamExists('updateCounselingPlan', 'updateCounselingPlanDTO', updateCounselingPlanDTO)
+            const localVarPath = `/counseling-plans/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCounselingPlanDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -87,6 +121,18 @@ export const CounselingPlanControllerApiFp = function(configuration?: Configurat
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanControllerApi.getCounselingPlanByPatientId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {UpdateCounselingPlanDTO} updateCounselingPlanDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCounselingPlan(updateCounselingPlanDTO: UpdateCounselingPlanDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCounselingPlan(updateCounselingPlanDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CounselingPlanControllerApi.updateCounselingPlan']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -106,6 +152,15 @@ export const CounselingPlanControllerApiFactory = function (configuration?: Conf
         getCounselingPlanByPatientId(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanOutputDTO> {
             return localVarFp.getCounselingPlanByPatientId(patientId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {UpdateCounselingPlanDTO} updateCounselingPlanDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCounselingPlan(updateCounselingPlanDTO: UpdateCounselingPlanDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanOutputDTO> {
+            return localVarFp.updateCounselingPlan(updateCounselingPlanDTO, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -123,6 +178,15 @@ export interface CounselingPlanControllerApiInterface {
      * @memberof CounselingPlanControllerApiInterface
      */
     getCounselingPlanByPatientId(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanOutputDTO>;
+
+    /**
+     * 
+     * @param {UpdateCounselingPlanDTO} updateCounselingPlanDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CounselingPlanControllerApiInterface
+     */
+    updateCounselingPlan(updateCounselingPlanDTO: UpdateCounselingPlanDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanOutputDTO>;
 
 }
 
@@ -142,6 +206,17 @@ export class CounselingPlanControllerApi extends BaseAPI implements CounselingPl
      */
     public getCounselingPlanByPatientId(patientId: string, options?: RawAxiosRequestConfig) {
         return CounselingPlanControllerApiFp(this.configuration).getCounselingPlanByPatientId(patientId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateCounselingPlanDTO} updateCounselingPlanDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CounselingPlanControllerApi
+     */
+    public updateCounselingPlan(updateCounselingPlanDTO: UpdateCounselingPlanDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanControllerApiFp(this.configuration).updateCounselingPlan(updateCounselingPlanDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

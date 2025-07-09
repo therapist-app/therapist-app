@@ -49,6 +49,22 @@ public class ExerciseInputDTOPatientAPITest {
     }
 
     /**
+     * Test the property 'exerciseDescription'
+     */
+    @Test
+    public void exerciseDescriptionTest() {
+        // TODO: test exerciseDescription
+    }
+
+    /**
+     * Test the property 'exerciseExplanation'
+     */
+    @Test
+    public void exerciseExplanationTest() {
+        // TODO: test exerciseExplanation
+    }
+
+    /**
      * Test the property 'description'
      */
     @Test

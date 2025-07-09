@@ -43,6 +43,12 @@ export interface CounselingPlanOutputDTO {
     'updatedAt'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof CounselingPlanOutputDTO
+     */
+    'startOfTherapy'?: string;
+    /**
+     * 
      * @type {Array<CounselingPlanPhaseOutputDTO>}
      * @memberof CounselingPlanOutputDTO
      */

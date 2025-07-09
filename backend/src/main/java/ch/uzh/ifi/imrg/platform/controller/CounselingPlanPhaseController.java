@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,6 +73,12 @@ public class CounselingPlanPhaseController {
   @GetMapping("/{id}")
   public CounselingPlanPhaseOutputDTO getCounselingPlanPhaseById(@PathVariable String id) {
     return counselingPlanPhaseService.getCounselingPlanPhaseById(id);
+  }
+
+  @PutMapping("/{id}")
+  public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
+      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseDTO updateDto) {
+    return counselingPlanPhaseService.updateCounselingPlanPhase(id, updateDto);
   }
 
   @DeleteMapping("/{id}")

@@ -23,25 +23,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Model tests for NameConversationOutputDTOPatientAPI
+ * Model tests for ExerciseChatbotOutputDTOPatientAPI
  */
-public class NameConversationOutputDTOPatientAPITest {
-    private final NameConversationOutputDTOPatientAPI model = new NameConversationOutputDTOPatientAPI();
+public class ExerciseChatbotOutputDTOPatientAPITest {
+    private final ExerciseChatbotOutputDTOPatientAPI model = new ExerciseChatbotOutputDTOPatientAPI();
 
     /**
-     * Model tests for NameConversationOutputDTOPatientAPI
+     * Model tests for ExerciseChatbotOutputDTOPatientAPI
      */
     @Test
-    public void testNameConversationOutputDTOPatientAPI() {
-        // TODO: test NameConversationOutputDTOPatientAPI
-    }
-
-    /**
-     * Test the property 'id'
-     */
-    @Test
-    public void idTest() {
-        // TODO: test id
+    public void testExerciseChatbotOutputDTOPatientAPI() {
+        // TODO: test ExerciseChatbotOutputDTOPatientAPI
     }
 
     /**
@@ -58,6 +50,14 @@ public class NameConversationOutputDTOPatientAPITest {
     @Test
     public void chatbotIconTest() {
         // TODO: test chatbotIcon
+    }
+
+    /**
+     * Test the property 'id'
+     */
+    @Test
+    public void idTest() {
+        // TODO: test id
     }
 
 }

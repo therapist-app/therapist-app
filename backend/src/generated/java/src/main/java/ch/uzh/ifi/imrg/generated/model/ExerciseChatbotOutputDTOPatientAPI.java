@@ -24,55 +24,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * NameConversationOutputDTOPatientAPI
+ * ExerciseChatbotOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  NameConversationOutputDTOPatientAPI.JSON_PROPERTY_CHATBOT_ICON
+  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_CHATBOT_ICON,
+  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID
 })
-@JsonTypeName("NameConversationOutputDTO")
+@JsonTypeName("ExerciseChatbotOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class NameConversationOutputDTOPatientAPI {
-  public static final String JSON_PROPERTY_ID = "id";
-  private String id;
-
+public class ExerciseChatbotOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
   public static final String JSON_PROPERTY_CHATBOT_ICON = "chatbotIcon";
   private String chatbotIcon;
 
-  public NameConversationOutputDTOPatientAPI() {
+  public static final String JSON_PROPERTY_ID = "id";
+  private String id;
+
+  public ExerciseChatbotOutputDTOPatientAPI() {
   }
 
-  public NameConversationOutputDTOPatientAPI id(String id) {
-    
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getId() {
-    return id;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(String id) {
-    this.id = id;
-  }
-
-
-  public NameConversationOutputDTOPatientAPI name(String name) {
+  public ExerciseChatbotOutputDTOPatientAPI name(String name) {
     
     this.name = name;
     return this;
@@ -98,7 +72,7 @@ public class NameConversationOutputDTOPatientAPI {
   }
 
 
-  public NameConversationOutputDTOPatientAPI chatbotIcon(String chatbotIcon) {
+  public ExerciseChatbotOutputDTOPatientAPI chatbotIcon(String chatbotIcon) {
     
     this.chatbotIcon = chatbotIcon;
     return this;
@@ -123,6 +97,32 @@ public class NameConversationOutputDTOPatientAPI {
     this.chatbotIcon = chatbotIcon;
   }
 
+
+  public ExerciseChatbotOutputDTOPatientAPI id(String id) {
+    
+    this.id = id;
+    return this;
+  }
+
+   /**
+   * Get id
+   * @return id
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getId() {
+    return id;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(String id) {
+    this.id = id;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -131,24 +131,24 @@ public class NameConversationOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    NameConversationOutputDTOPatientAPI nameConversationOutputDTO = (NameConversationOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, nameConversationOutputDTO.id) &&
-        Objects.equals(this.name, nameConversationOutputDTO.name) &&
-        Objects.equals(this.chatbotIcon, nameConversationOutputDTO.chatbotIcon);
+    ExerciseChatbotOutputDTOPatientAPI exerciseChatbotOutputDTO = (ExerciseChatbotOutputDTOPatientAPI) o;
+    return Objects.equals(this.name, exerciseChatbotOutputDTO.name) &&
+        Objects.equals(this.chatbotIcon, exerciseChatbotOutputDTO.chatbotIcon) &&
+        Objects.equals(this.id, exerciseChatbotOutputDTO.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, chatbotIcon);
+    return Objects.hash(name, chatbotIcon, id);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class NameConversationOutputDTOPatientAPI {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class ExerciseChatbotOutputDTOPatientAPI {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    chatbotIcon: ").append(toIndentedString(chatbotIcon)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("}");
     return sb.toString();
   }

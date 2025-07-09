@@ -60,6 +60,7 @@ models/therapist-chatbot-input-dto.ts
 models/therapist-chatbot-output-dto.ts
 models/therapist-document-output-dto.ts
 models/therapist-output-dto.ts
+models/update-counseling-plan-dto.ts
 models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts
 models/update-meeting-note-dto.ts

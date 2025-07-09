@@ -48,23 +48,20 @@ public class CounselingPlanPhaseService {
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
       CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO) {
+    List<CounselingPlanPhase> allCounselingPlanPhases = counselingPlanPhaseRepository.findAll();
     CounselingPlan counselingPlan =
         counselingPlanRepository.getReferenceById(
             createCounselingPlanPhaseDTO.getCounselingPlanId());
 
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
     counselingPlanPhase.setPhaseName(createCounselingPlanPhaseDTO.getPhaseName());
-    counselingPlanPhase.setStartDate(createCounselingPlanPhaseDTO.getStartDate());
-    counselingPlanPhase.setEndDate(
-        DateUtil.addAmountOfWeeks(
-            createCounselingPlanPhaseDTO.getStartDate(),
-            createCounselingPlanPhaseDTO.getDurationInWeeks()));
+    counselingPlanPhase.setDurationInWeeks(createCounselingPlanPhaseDTO.getDurationInWeeks());
+    counselingPlanPhase.setPhaseNumber(allCounselingPlanPhases.size() + 1);
 
     counselingPlanPhase.setCounselingPlan(counselingPlan);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
 
-    return CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
-        counselingPlanPhase);
+    return getOutputDto(counselingPlanPhase, counselingPlan);
   }
 
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
@@ -82,13 +79,12 @@ public class CounselingPlanPhaseService {
     systemPrompt += LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patientList);
 
     String userPrompt =
-        "Based on the counseling plan context provided, generate the *next* logical phase. "
+        "Based on the counseling plan context provided, generate the *next* phase. "
             + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
-            + "Determine a suitable phase name, a start date, and a duration in weeks. "
-            + "The start date should be today or immediately follow the end date of the previous phase. "
+            + "Determine a suitable phase name, and a duration in weeks. "
             + "A typical phase duration is between 1 and 4 weeks. "
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + "Format: {\"phaseName\":\"<name>\", \"startDate\":\"<YYYY-MM-DD'T'HH:MM:SS.sssZ>\", \"durationInWeeks\":<numberOfWeeks>}";
+            + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
@@ -124,19 +120,22 @@ public class CounselingPlanPhaseService {
 
     String userPrompt =
         "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
-            + "The exercise should have a title, a type, a start time, and a duration. "
-            + "The start time should be today. The duration should be given in weeks, for how long the exercise should be done for. "
+            + "The exercise should have a title and a type. "
             + "The 'exerciseType' MUST be one of the following values: "
             + validExerciseTypes
             + ". "
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\", \"exerciseStart\":\"<YYYY-MM-DD'T'HH:MM:SS.sssZ>\", \"durationInWeeks\":<numberOfWeeks>}";
+            + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\"";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
     CreateExerciseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class);
+    CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
+        getOutputDto(counselingPlanPhase, counselingPlan);
+    generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());
+    generatedDto.setDurationInWeeks(counselingPlanPhaseOutputDTO.getDurationInWeeks());
 
     generatedDto.setPatientId(counselingPlan.getPatient().getId());
 
@@ -177,8 +176,27 @@ public class CounselingPlanPhaseService {
         counselingPlanPhaseRepository
             .findById(id)
             .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
-    return CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
-        counselingPlanPhase);
+
+    return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());
+  }
+
+  public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
+      String counselingPlanPhaseId, CreateCounselingPlanPhaseDTO updateDto) {
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(counselingPlanPhaseId)
+            .orElseThrow(
+                () ->
+                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+
+    if (updateDto.getPhaseName() != null) {
+      counselingPlanPhase.setPhaseName(updateDto.getPhaseName());
+    }
+
+    counselingPlanPhase.setDurationInWeeks(updateDto.getDurationInWeeks());
+    counselingPlanPhaseRepository.save(counselingPlanPhase);
+
+    return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());
   }
 
   public void deleteCounselingPlanPhase(String id) {
@@ -188,5 +206,26 @@ public class CounselingPlanPhaseService {
             .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
     counselingPlanPhase.getCounselingPlan().getCounselingPlanPhases().remove(counselingPlanPhase);
     counselingPlanRepository.save(counselingPlanPhase.getCounselingPlan());
+  }
+
+  public static CounselingPlanPhaseOutputDTO getOutputDto(
+      CounselingPlanPhase currentPhase, CounselingPlan counselingPlan) {
+    CounselingPlanPhaseOutputDTO outputDTO =
+        CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
+            currentPhase);
+    int totalAmountOfWeeksSinceStart = 0;
+    for (CounselingPlanPhase phase : counselingPlan.getCounselingPlanPhases()) {
+      if (phase.getPhaseNumber() < currentPhase.getPhaseNumber()) {
+        totalAmountOfWeeksSinceStart += phase.getDurationInWeeks();
+      }
+    }
+
+    outputDTO.setStartDate(
+        DateUtil.addAmountOfWeeks(
+            counselingPlan.getStartOfTherapy(), totalAmountOfWeeksSinceStart));
+    outputDTO.setEndDate(
+        DateUtil.addAmountOfWeeks(outputDTO.getStartDate(), currentPhase.getDurationInWeeks()));
+
+    return outputDTO;
   }
 }

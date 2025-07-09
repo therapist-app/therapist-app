@@ -1,6 +1,6 @@
 
 
-# NameConversationOutputDTOPatientAPI
+# CompleteExerciseConversationOutputDTOPatientAPI
 
 
 ## Properties
@@ -9,7 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **String** |  |  [optional] |
 |**name** | **String** |  |  [optional] |
-|**chatbotIcon** | **String** |  |  [optional] |
+|**messages** | [**List&lt;MessageOutputDTOPatientAPI&gt;**](MessageOutputDTOPatientAPI.md) |  |  [optional] |
 
 
 

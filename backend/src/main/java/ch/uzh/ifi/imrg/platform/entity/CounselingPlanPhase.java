@@ -28,8 +28,9 @@ public class CounselingPlanPhase {
 
   @Column() private String phaseName;
 
-  @Column() private Instant startDate;
-  @Column() private Instant endDate;
+  @Column() private int durationInWeeks;
+
+  @Column() private int phaseNumber;
 
   @OneToMany(
       mappedBy = "counselingPlanPhase",

@@ -6,9 +6,9 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 |------------- | ------------- | -------------|
 | [**createConversation**](ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations |  |
 | [**deleteChat**](ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} |  |
-| [**getAllMessages**](ConversationControllerPatientAPI.md#getAllMessages) | **GET** /patients/conversations/messages/{conversationId} |  |
-| [**nameConversationDTO**](ConversationControllerPatientAPI.md#nameConversationDTO) | **GET** /patients/conversations/{patientId} |  |
-| [**sendMessage**](ConversationControllerPatientAPI.md#sendMessage) | **POST** /patients/conversations/messages/{conversationId} |  |
+| [**getAllMessages1**](ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} |  |
+| [**getConversationNames**](ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations/{patientId} |  |
+| [**sendMessage1**](ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} |  |
 | [**updateSharing**](ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} |  |
 
 
@@ -150,9 +150,9 @@ null (empty response body)
 | **200** | OK |  -  |
 
 
-## getAllMessages
+## getAllMessages1
 
-> CompleteConversationOutputDTOPatientAPI getAllMessages(conversationId)
+> CompleteConversationOutputDTOPatientAPI getAllMessages1(conversationId)
 
 
 
@@ -181,10 +181,10 @@ public class Example {
         ConversationControllerPatientAPI apiInstance = new ConversationControllerPatientAPI(defaultClient);
         String conversationId = "conversationId_example"; // String | 
         try {
-            CompleteConversationOutputDTOPatientAPI result = apiInstance.getAllMessages(conversationId);
+            CompleteConversationOutputDTOPatientAPI result = apiInstance.getAllMessages1(conversationId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling ConversationControllerPatientAPI#getAllMessages");
+            System.err.println("Exception when calling ConversationControllerPatientAPI#getAllMessages1");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -221,9 +221,9 @@ public class Example {
 | **200** | OK |  -  |
 
 
-## nameConversationDTO
+## getConversationNames
 
-> List&lt;NameConversationOutputDTOPatientAPI&gt; nameConversationDTO()
+> List&lt;NameConversationOutputDTOPatientAPI&gt; getConversationNames()
 
 
 
@@ -251,10 +251,10 @@ public class Example {
 
         ConversationControllerPatientAPI apiInstance = new ConversationControllerPatientAPI(defaultClient);
         try {
-            List<NameConversationOutputDTOPatientAPI> result = apiInstance.nameConversationDTO();
+            List<NameConversationOutputDTOPatientAPI> result = apiInstance.getConversationNames();
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling ConversationControllerPatientAPI#nameConversationDTO");
+            System.err.println("Exception when calling ConversationControllerPatientAPI#getConversationNames");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -288,9 +288,9 @@ This endpoint does not need any parameter.
 | **200** | OK |  -  |
 
 
-## sendMessage
+## sendMessage1
 
-> MessageOutputDTOPatientAPI sendMessage(conversationId, createMessageDTOPatientAPI)
+> MessageOutputDTOPatientAPI sendMessage1(conversationId, createMessageDTOPatientAPI)
 
 
 
@@ -320,10 +320,10 @@ public class Example {
         String conversationId = "conversationId_example"; // String | 
         CreateMessageDTOPatientAPI createMessageDTOPatientAPI = new CreateMessageDTOPatientAPI(); // CreateMessageDTOPatientAPI | 
         try {
-            MessageOutputDTOPatientAPI result = apiInstance.sendMessage(conversationId, createMessageDTOPatientAPI);
+            MessageOutputDTOPatientAPI result = apiInstance.sendMessage1(conversationId, createMessageDTOPatientAPI);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling ConversationControllerPatientAPI#sendMessage");
+            System.err.println("Exception when calling ConversationControllerPatientAPI#sendMessage1");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());

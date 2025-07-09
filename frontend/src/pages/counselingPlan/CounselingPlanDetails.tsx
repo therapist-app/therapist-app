@@ -1,21 +1,38 @@
-import { Typography } from '@mui/material'
-import { ReactElement, useEffect } from 'react'
+import CheckIcon from '@mui/icons-material/Check'
+import ClearIcon from '@mui/icons-material/Clear'
+import EditIcon from '@mui/icons-material/Edit'
+import { IconButton, Typography } from '@mui/material'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { de } from 'date-fns/locale'
+import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
-import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
+import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
+import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
+
+interface FormValues {
+  startOfTherapy: Date | null
+}
 
 const CounselingPlanDetails = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
+  const [isEditing, setIsEditing] = useState(false)
+  const [formData, setFormData] = useState<FormValues>({
+    startOfTherapy: new Date(),
+  })
 
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
@@ -26,8 +43,17 @@ const CounselingPlanDetails = (): ReactElement => {
     }
   }, [patientId, dispatch])
 
-  const handleCreateCounselingPlanPhase = (): void => {
+  const refresh = (): void => {
     dispatch(getCounselingPlanByPatientId(patientId || ''))
+  }
+
+  const handleUpdate = (): void => {
+    const dto: UpdateCounselingPlanDTO = {
+      counselingPlanId: counselingPlan?.id ?? '',
+      startOfTherapy: formData.startOfTherapy?.toISOString(),
+    }
+    dispatch(updateCounselingPlan(dto))
+    setIsEditing(false)
   }
 
   return (
@@ -40,6 +66,39 @@ const CounselingPlanDetails = (): ReactElement => {
           alignItems: 'start',
         }}
       >
+        {!isEditing ? (
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <Typography>
+              Counseling Start Date:{' '}
+              <strong>{formatDateNicely(counselingPlan?.startOfTherapy)}</strong>
+            </Typography>
+            <IconButton onClick={() => setIsEditing(true)}>
+              <EditIcon sx={{ height: '25px' }}></EditIcon>
+            </IconButton>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                label='Counseling Start Date'
+                value={formData.startOfTherapy}
+                onChange={(newValue: Date | null) => {
+                  setFormData({
+                    ...formData,
+                    startOfTherapy: newValue,
+                  })
+                }}
+              />
+            </LocalizationProvider>
+            <IconButton onClick={handleUpdate}>
+              <CheckIcon sx={{ height: '25px', color: 'green' }}></CheckIcon>
+            </IconButton>
+            <IconButton onClick={() => setIsEditing(false)}>
+              <ClearIcon sx={{ height: '25px', color: 'red' }}></ClearIcon>
+            </IconButton>
+          </div>
+        )}
+
         <Typography variant='h2'>Counseling Plan Phases:</Typography>
         {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (
           <ul
@@ -53,7 +112,7 @@ const CounselingPlanDetails = (): ReactElement => {
                 <CounselingPlanPhaseDetail
                   phase={phase}
                   phaseNumber={idx + 1}
-                  onSuccess={handleCreateCounselingPlanPhase}
+                  onSuccess={refresh}
                 />
 
                 {idx !== amountOfPhases - 1 && <CustomizedDivider />}
@@ -64,7 +123,7 @@ const CounselingPlanDetails = (): ReactElement => {
 
         <CreateCounselingPlanePhase
           counselingPlanId={counselingPlan?.id || ''}
-          onSuccess={handleCreateCounselingPlanPhase}
+          onSuccess={refresh}
         />
       </div>
     </Layout>

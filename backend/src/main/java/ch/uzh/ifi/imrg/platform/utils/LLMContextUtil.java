@@ -1,6 +1,8 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
 import ch.uzh.ifi.imrg.platform.entity.*;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
+import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -46,7 +48,7 @@ public class LLMContextUtil {
         counselingPlan.getCounselingPlanPhases().stream()
             .sorted(
                 Comparator.comparing(
-                    CounselingPlanPhase::getStartDate,
+                    CounselingPlanPhase::getPhaseNumber,
                     Comparator.nullsLast(Comparator.naturalOrder())))
             .collect(Collectors.toList());
 
@@ -54,17 +56,23 @@ public class LLMContextUtil {
       promptBuilder.append("## Counseling Plan Phases\n");
       for (int i = 0; i < sortedPhases.size(); i++) {
         CounselingPlanPhase phase = sortedPhases.get(i);
+        CounselingPlanPhaseOutputDTO outputDTO =
+            CounselingPlanPhaseService.getOutputDto(phase, counselingPlan);
+
         promptBuilder
             .append("### Phase ")
-            .append(i + 1)
+            .append(outputDTO.getPhaseNumber())
             .append(": ")
-            .append(phase.getPhaseName())
+            .append(outputDTO.getPhaseName())
             .append("\n")
             .append("- **Start Date:** ")
-            .append(phase.getStartDate() != null ? phase.getStartDate() : "Not set")
+            .append(outputDTO.getStartDate() != null ? outputDTO.getStartDate() : "Not set")
             .append("\n")
             .append("- **End Date:** ")
-            .append(phase.getEndDate() != null ? phase.getEndDate() : "Not set")
+            .append(outputDTO.getEndDate() != null ? outputDTO.getEndDate() : "Not set")
+            .append("\n")
+            .append("- **Duration in Weeks:** ")
+            .append(outputDTO.getDurationInWeeks())
             .append("\n\n");
 
         // --- Goals ---
