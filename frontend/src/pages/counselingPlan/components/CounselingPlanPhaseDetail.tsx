@@ -32,6 +32,9 @@ const CounselingPlanPhaseDetail = ({
       <div style={{ paddingLeft: '20px' }}>
         <Typography>Start Date: {formatDateNicely(phase.startDate)}</Typography>
         <Typography>End Date: {formatDateNicely(phase.endDate)}</Typography>
+        <Typography>
+          Duration: <strong>{phase.durationInWeeks}</strong> weeks
+        </Typography>
         <div></div>
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
           Goals:

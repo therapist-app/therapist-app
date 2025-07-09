@@ -8,6 +8,7 @@ import Layout from '../../generalComponents/Layout'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
+import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
@@ -40,6 +41,9 @@ const CounselingPlanDetails = (): ReactElement => {
           alignItems: 'start',
         }}
       >
+        <Typography>
+          Counseling Start Date: <strong>{formatDateNicely(counselingPlan?.startOfTherapy)}</strong>
+        </Typography>
         <Typography variant='h2'>Counseling Plan Phases:</Typography>
         {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (
           <ul

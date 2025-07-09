@@ -41,8 +41,8 @@ const CreateCounselingPlanExercise = ({
   const [formData, setFormData] = useState<ExerciseFormData>({
     title: '',
     exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
-    exerciseStart: new Date(),
-    durationInWeeks: 3,
+    exerciseStart: new Date(counselingPlanPhase.startDate ?? ''),
+    durationInWeeks: counselingPlanPhase.durationInWeeks ?? 2,
     patientId: patientId,
   })
 
