@@ -204,6 +204,7 @@ const PatientDetail = (): ReactElement => {
       )}
 
       <CustomizedDivider />
+
       <div>
         <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
           <Typography variant='h2'>Counseling Plan</Typography>
@@ -230,17 +231,15 @@ const PatientDetail = (): ReactElement => {
         )}
       </div>
 
-      {/* <CustomizedDivider /> />
+      <CustomizedDivider />
 
-       <Typography variant='h4'>Chatbot</Typography>
-      <Button
-        variant='contained'
-        onClick={handleOpenChatbotDialog}
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Create Chatbot
-      </Button> 
-      */}
+      <MeetingOverviewComponent />
+
+      <CustomizedDivider />
+
+      <ExerciseOverviewComponent />
+
+      <CustomizedDivider />
 
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>Create a new Chatbot</DialogTitle>
@@ -269,6 +268,22 @@ const PatientDetail = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
+      {/* 
+
+       <Typography variant='h4'>Chatbot</Typography>
+      <Button
+        variant='contained'
+        onClick={handleOpenChatbotDialog}
+        sx={{ marginTop: '20px', marginBottom: '20px' }}
+      >
+        Create Chatbot
+      </Button> 
+
+      <CustomizedDivider /> />
+      */}
+
+      <GAD7TestDetail />
+
       <CustomizedDivider />
 
       <FilesTable
@@ -278,18 +293,6 @@ const PatientDetail = (): ReactElement => {
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
       />
-
-      <CustomizedDivider />
-
-      <MeetingOverviewComponent />
-
-      <CustomizedDivider />
-
-      <ExerciseOverviewComponent />
-
-      <CustomizedDivider />
-
-      <GAD7TestDetail />
     </Layout>
   )
 }
