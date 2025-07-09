@@ -1,10 +1,8 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +43,8 @@ public class CounselingPlanPhaseGoalController {
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
       @PathVariable String counselingPlanPhaseId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
         counselingPlanPhaseId, loggedInTherapist);
   }
@@ -57,8 +56,8 @@ public class CounselingPlanPhaseGoalController {
   }
 
   @PutMapping("/{id}")
-  public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhase(@PathVariable String id,
-      @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto) {
+  public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhase(
+      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto) {
     return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(id, updateDto);
   }
 

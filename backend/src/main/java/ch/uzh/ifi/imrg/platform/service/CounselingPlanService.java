@@ -20,19 +20,22 @@ public class CounselingPlanService {
   private final PatientRepository patientRepository;
   private final CounselingPlanRepository counselingPlanRepository;
 
-  public CounselingPlanService(PatientRepository patientRepository, CounselingPlanRepository counselingPlanRepository) {
+  public CounselingPlanService(
+      PatientRepository patientRepository, CounselingPlanRepository counselingPlanRepository) {
     this.patientRepository = patientRepository;
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
   public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId) {
-    CounselingPlan counselingPlan = patientRepository.getReferenceById(patientId).getCounselingPlan();
+    CounselingPlan counselingPlan =
+        patientRepository.getReferenceById(patientId).getCounselingPlan();
     return getOutputDto(counselingPlan);
   }
 
-  public CounselingPlanOutputDTO updateCounselingPlan(UpdateCounselingPlanDTO updateCounselingPlanDTO) {
-    CounselingPlan counselingPlan = counselingPlanRepository
-        .getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
+  public CounselingPlanOutputDTO updateCounselingPlan(
+      UpdateCounselingPlanDTO updateCounselingPlanDTO) {
+    CounselingPlan counselingPlan =
+        counselingPlanRepository.getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
     if (updateCounselingPlanDTO.getStartOfTherapy() != null) {
       counselingPlan.setStartOfTherapy(updateCounselingPlanDTO.getStartOfTherapy());
     }
@@ -41,8 +44,8 @@ public class CounselingPlanService {
   }
 
   private CounselingPlanOutputDTO getOutputDto(CounselingPlan counselingPlan) {
-    CounselingPlanOutputDTO outputDTO = CounselingPlanMapper.INSTANCE
-        .convertEntityToCounselingPlanOutputDTO(counselingPlan);
+    CounselingPlanOutputDTO outputDTO =
+        CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
     List<CounselingPlanPhaseOutputDTO> mappedOutputDtos = new ArrayList<>();
     for (CounselingPlanPhase phase : counselingPlan.getCounselingPlanPhases()) {
       mappedOutputDtos.add(CounselingPlanPhaseService.getOutputDto(phase, counselingPlan));

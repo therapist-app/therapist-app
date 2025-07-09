@@ -40,7 +40,8 @@ public class CounselingPlanPhaseController {
   @PostMapping("/ai-generated-phase/{counselingPlanId}")
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       @PathVariable String counselingPlanId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(
         counselingPlanId, loggedInTherapist);
   }
@@ -48,7 +49,8 @@ public class CounselingPlanPhaseController {
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
       @PathVariable String counselingPlanPhaseId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+    Therapist loggedInTherapist =
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(
         counselingPlanPhaseId, loggedInTherapist);
   }
@@ -62,7 +64,8 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
+      @RequestBody
+          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO);
   }
@@ -73,8 +76,8 @@ public class CounselingPlanPhaseController {
   }
 
   @PutMapping("/{id}")
-  public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(@PathVariable String id,
-      @RequestBody CreateCounselingPlanPhaseDTO updateDto) {
+  public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
+      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseDTO updateDto) {
     return counselingPlanPhaseService.updateCounselingPlanPhase(id, updateDto);
   }
 
