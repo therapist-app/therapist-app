@@ -16,6 +16,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
+import java.time.Instant;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -47,10 +50,9 @@ public class PatientService {
   }
 
   public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -60,6 +62,7 @@ public class PatientService {
     patient.setInitialPassword(initialPassword);
 
     CounselingPlan counselingPlan = new CounselingPlan();
+    counselingPlan.setStartOfTherapy(Instant.now());
     counselingPlanRepository.save(counselingPlan);
     patient.setCounselingPlan(counselingPlan);
 
@@ -67,12 +70,11 @@ public class PatientService {
     patientRepository.flush();
     entityManager.refresh(therapist);
 
-    CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
-        new CreatePatientDTOPatientAPI()
-            .id(createdPatient.getId())
-            .email(createdPatient.getEmail())
-            .password(createdPatient.getInitialPassword())
-            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
+    CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI()
+        .id(createdPatient.getId())
+        .email(createdPatient.getEmail())
+        .password(createdPatient.getInitialPassword())
+        .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
     PatientAppAPIs.coachPatientControllerPatientAPI
         .registerPatient1(createPatientDTOPatientAPI)
@@ -82,11 +84,10 @@ public class PatientService {
   }
 
   public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    Patient foundPatient = loggedInTherapist.getPatients().stream()
+        .filter(p -> p.getId().equals(patientId))
+        .findFirst()
+        .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     return foundPatient;
   }
 

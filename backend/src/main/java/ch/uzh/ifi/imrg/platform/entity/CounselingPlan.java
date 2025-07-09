@@ -26,11 +26,9 @@ public class CounselingPlan {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @OneToMany(
-      mappedBy = "counselingPlan",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  private Instant startOfTherapy;
+
+  @OneToMany(mappedBy = "counselingPlan", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CounselingPlanPhase> counselingPlanPhases = new ArrayList<>();
 
   @OneToOne(fetch = FetchType.EAGER, mappedBy = "counselingPlan")

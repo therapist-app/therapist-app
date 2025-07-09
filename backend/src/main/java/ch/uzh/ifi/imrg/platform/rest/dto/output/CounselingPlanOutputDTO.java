@@ -9,5 +9,6 @@ public class CounselingPlanOutputDTO {
   private String id;
   private Instant createdAt;
   private Instant updatedAt;
+  private Instant startOfTherapy;
   private List<CounselingPlanPhaseOutputDTO> counselingPlanPhasesOutputDTO;
 }

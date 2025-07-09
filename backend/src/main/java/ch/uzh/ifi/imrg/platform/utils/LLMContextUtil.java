@@ -1,6 +1,9 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
 import ch.uzh.ifi.imrg.platform.entity.*;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
+import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -9,8 +12,8 @@ import java.util.stream.Collectors;
 
 public class LLMContextUtil {
 
-  private static final DateTimeFormatter FORMATTER =
-      DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
+      .withZone(ZoneId.systemDefault());
 
   // Helper method to avoid boilerplate null-checks
   private static void appendDetail(StringBuilder sb, String label, Object value) {
@@ -42,29 +45,34 @@ public class LLMContextUtil {
         .append("\n\n");
 
     // --- Phases ---
-    List<CounselingPlanPhase> sortedPhases =
-        counselingPlan.getCounselingPlanPhases().stream()
-            .sorted(
-                Comparator.comparing(
-                    CounselingPlanPhase::getStartDate,
-                    Comparator.nullsLast(Comparator.naturalOrder())))
-            .collect(Collectors.toList());
+    List<CounselingPlanPhase> sortedPhases = counselingPlan.getCounselingPlanPhases().stream()
+        .sorted(
+            Comparator.comparing(
+                CounselingPlanPhase::getPhaseNumber,
+                Comparator.nullsLast(Comparator.naturalOrder())))
+        .collect(Collectors.toList());
 
     if (!sortedPhases.isEmpty()) {
       promptBuilder.append("## Counseling Plan Phases\n");
       for (int i = 0; i < sortedPhases.size(); i++) {
         CounselingPlanPhase phase = sortedPhases.get(i);
+        CounselingPlanPhaseOutputDTO outputDTO = CounselingPlanPhaseService.getOutputDto(phase, sortedPhases,
+            counselingPlan.getStartOfTherapy());
+
         promptBuilder
             .append("### Phase ")
-            .append(i + 1)
+            .append(outputDTO.getPhaseNumber())
             .append(": ")
-            .append(phase.getPhaseName())
+            .append(outputDTO.getPhaseName())
             .append("\n")
             .append("- **Start Date:** ")
-            .append(phase.getStartDate() != null ? phase.getStartDate() : "Not set")
+            .append(outputDTO.getStartDate() != null ? outputDTO.getStartDate() : "Not set")
             .append("\n")
             .append("- **End Date:** ")
-            .append(phase.getEndDate() != null ? phase.getEndDate() : "Not set")
+            .append(outputDTO.getEndDate() != null ? outputDTO.getEndDate() : "Not set")
+            .append("\n")
+            .append("- **Duration in Weeks:** ")
+            .append(outputDTO.getDurationInWeeks())
             .append("\n\n");
 
         // --- Goals ---
@@ -239,14 +247,12 @@ public class LLMContextUtil {
                       Meeting::getMeetingStart, Comparator.nullsLast(Comparator.reverseOrder())))
               .forEach(
                   meeting -> {
-                    String startTime =
-                        meeting.getMeetingStart() != null
-                            ? FORMATTER.format(meeting.getMeetingStart())
-                            : "N/A";
-                    String endTime =
-                        meeting.getMeetingEnd() != null
-                            ? FORMATTER.format(meeting.getMeetingEnd())
-                            : "N/A";
+                    String startTime = meeting.getMeetingStart() != null
+                        ? FORMATTER.format(meeting.getMeetingStart())
+                        : "N/A";
+                    String endTime = meeting.getMeetingEnd() != null
+                        ? FORMATTER.format(meeting.getMeetingEnd())
+                        : "N/A";
                     promptBuilder
                         .append("- **Meeting Time:** From ")
                         .append(startTime)
@@ -275,14 +281,13 @@ public class LLMContextUtil {
         if (patient.getGAD7Tests() != null && !patient.getGAD7Tests().isEmpty()) {
           promptBuilder.append("  **GAD-7 Anxiety Tests:**\n");
           for (GAD7Test test : patient.getGAD7Tests()) {
-            int totalScore =
-                test.getQuestion1()
-                    + test.getQuestion2()
-                    + test.getQuestion3()
-                    + test.getQuestion4()
-                    + test.getQuestion5()
-                    + test.getQuestion6()
-                    + test.getQuestion7();
+            int totalScore = test.getQuestion1()
+                + test.getQuestion2()
+                + test.getQuestion3()
+                + test.getQuestion4()
+                + test.getQuestion5()
+                + test.getQuestion6()
+                + test.getQuestion7();
 
             String severity;
             if (totalScore <= 4) {
@@ -329,14 +334,12 @@ public class LLMContextUtil {
           for (Exercise exercise : patient.getExercises()) {
             promptBuilder.append("- **Exercise:** ").append(exercise.getTitle()).append("\n");
             promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
-            String exerciseStart =
-                exercise.getExerciseStart() != null
-                    ? FORMATTER.format(exercise.getExerciseStart())
-                    : "N/A";
-            String exerciseEnd =
-                exercise.getExerciseEnd() != null
-                    ? FORMATTER.format(exercise.getExerciseEnd())
-                    : "Ongoing";
+            String exerciseStart = exercise.getExerciseStart() != null
+                ? FORMATTER.format(exercise.getExerciseStart())
+                : "N/A";
+            String exerciseEnd = exercise.getExerciseEnd() != null
+                ? FORMATTER.format(exercise.getExerciseEnd())
+                : "Ongoing";
             promptBuilder
                 .append("  - **Duration:** ")
                 .append(exerciseStart)

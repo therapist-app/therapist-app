@@ -18,8 +18,10 @@ public interface CounselingPlanPhaseMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "phaseName", target = "phaseName")
-  @Mapping(source = "startDate", target = "startDate")
-  @Mapping(source = "endDate", target = "endDate")
+  @Mapping(source = "durationInWeeks", target = "durationInWeeks")
+  @Mapping(source = "phaseNumber", target = "phaseNumber")
+  @Mapping(target = "startDate", ignore = true)
+  @Mapping(target = "endDate", ignore = true)
   @Mapping(source = "phaseExercises", target = "phaseExercisesOutputDTO")
   @Mapping(source = "phaseGoals", target = "phaseGoalsOutputDTO")
   CounselingPlanPhaseOutputDTO convertEntityToCounselingPlanPhaseOutputDTO(

@@ -26,16 +26,16 @@ public class CounselingPlanPhase {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String phaseName;
+  @Column()
+  private String phaseName;
 
-  @Column() private Instant startDate;
-  @Column() private Instant endDate;
+  @Column()
+  private int durationInWeeks;
 
-  @OneToMany(
-      mappedBy = "counselingPlanPhase",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @Column()
+  private int phaseNumber;
+
+  @OneToMany(mappedBy = "counselingPlanPhase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CounselingPlanPhaseGoal> phaseGoals = new ArrayList<>();
 
   @ManyToOne
@@ -43,11 +43,7 @@ public class CounselingPlanPhase {
   private CounselingPlan counselingPlan;
 
   @ManyToMany()
-  @JoinTable(
-      name = "exercises_to_counseling_plan_phases",
-      joinColumns = @JoinColumn(name = "counseling_plan_phase_id"),
-      inverseJoinColumns = @JoinColumn(name = "exercise_id"),
-      uniqueConstraints =
-          @UniqueConstraint(columnNames = {"counseling_plan_phase_id", "exercise_id"}))
+  @JoinTable(name = "exercises_to_counseling_plan_phases", joinColumns = @JoinColumn(name = "counseling_plan_phase_id"), inverseJoinColumns = @JoinColumn(name = "exercise_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+      "counseling_plan_phase_id", "exercise_id" }))
   private List<Exercise> phaseExercises = new ArrayList<>();
 }

@@ -34,12 +34,6 @@ export interface CreateCounselingPlanPhaseDTO {
     'phaseName'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof CreateCounselingPlanPhaseDTO
-     */
-    'startDate'?: string;
-    /**
-     * 
      * @type {number}
      * @memberof CreateCounselingPlanPhaseDTO
      */
