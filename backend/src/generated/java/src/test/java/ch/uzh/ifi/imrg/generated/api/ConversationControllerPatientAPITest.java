@@ -14,6 +14,7 @@
 package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.model.CompleteConversationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.CreateConversationDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
@@ -44,7 +45,8 @@ public class ConversationControllerPatientAPITest {
      */
     @Test
     public void createConversationTest()  {
-        CreateConversationOutputDTOPatientAPI response = api.createConversation().block();
+        CreateConversationDTOPatientAPI createConversationDTOPatientAPI = null;
+        CreateConversationOutputDTOPatientAPI response = api.createConversation(createConversationDTOPatientAPI).block();
 
         // TODO: test validations
     }

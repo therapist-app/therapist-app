@@ -774,8 +774,28 @@ paths:
       x-content-type: application/json
       x-accepts: '*/*'
   /patients/conversations:
+    get:
+      operationId: getConversationNames
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/NameConversationOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - conversation-controller
+      x-accepts: '*/*'
     post:
       operationId: createConversation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationDTO'
+        required: true
       responses:
         "201":
           content:
@@ -785,6 +805,7 @@ paths:
           description: Created
       tags:
       - conversation-controller
+      x-content-type: application/json
       x-accepts: '*/*'
   /patients/conversations/messages/{conversationId}:
     get:
@@ -1144,21 +1165,6 @@ paths:
           description: OK
       tags:
       - document-controller
-      x-accepts: '*/*'
-  /patients/conversations/{patientId}:
-    get:
-      operationId: getConversationNames
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                items:
-                  $ref: '#/components/schemas/NameConversationOutputDTO'
-                type: array
-          description: OK
-      tags:
-      - conversation-controller
       x-accepts: '*/*'
   /coach/patients/{patientId}/psychological-tests:
     get:
@@ -1746,6 +1752,11 @@ components:
         requestMessage:
           type: string
       type: object
+    CreateConversationDTO:
+      properties:
+        conversationName:
+          type: string
+      type: object
     CreateConversationOutputDTO:
       example:
         welcomeMessage: welcomeMessage
@@ -1965,6 +1976,7 @@ components:
     CompleteConversationOutputDTO:
       example:
         shareWithAi: true
+        welcomeMessage: welcomeMessage
         name: name
         messages:
         - requestMessage: requestMessage
@@ -1983,6 +1995,8 @@ components:
         id:
           type: string
         name:
+          type: string
+        welcomeMessage:
           type: string
         shareWithCoach:
           type: boolean
