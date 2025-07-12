@@ -27,13 +27,7 @@ export const createChatbotTemplate = createAsyncThunk(
 
 export const createPatientChatbotTemplate = createAsyncThunk(
   'chatbotTemplate/createPatientChatbotTemplate',
-  async (
-    {
-      patientId,
-      dto,
-    }: { patientId: string; dto: CreateChatbotTemplateDTO },
-    thunkAPI
-  ) => {
+  async ({ patientId, dto }: { patientId: string; dto: CreateChatbotTemplateDTO }, thunkAPI) => {
     try {
       const { data } = await chatbotTemplateApi.createTemplateForPatient(patientId, dto)
       return data

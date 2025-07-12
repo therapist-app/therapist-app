@@ -29,7 +29,6 @@ import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { chatbotTemplateApi } from '../../utils/api'
 
 import {
   ChatbotTemplateOutputDTO,
@@ -46,6 +45,7 @@ import {
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
+import { chatbotTemplateApi } from '../../utils/api'
 import { chatApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -98,20 +98,24 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   useEffect(() => {
-  if (chatbotConfig) return
-
-  const id = chatbotTemplateId || sessionStorage.getItem('chatbotTemplateId')
-  if (!id) return
-
-  (async () => {
-    try {
-      const { data } = await chatbotTemplateApi.getTemplate(id)
-      setChatbotConfig(data)
-    } catch (e) {
-      console.error('Failed to load template', e)
+    if (chatbotConfig) {
+      return
     }
-  })()
-}, [chatbotConfig, chatbotTemplateId])
+
+    const id = chatbotTemplateId || sessionStorage.getItem('chatbotTemplateId')
+    if (!id) {
+      return
+    }
+
+    ;(async () => {
+      try {
+        const { data } = await chatbotTemplateApi.getTemplate(id)
+        setChatbotConfig(data)
+      } catch (e) {
+        console.error('Failed to load template', e)
+      }
+    })()
+  }, [chatbotConfig, chatbotTemplateId])
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -273,11 +277,11 @@ const ChatBotTemplateEdit: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     if (!chatbotConfig?.id) {
-    setSnackbarMessage('Template not loaded yet.')
-    setSnackbarSeverity('warning')
-    setSnackbarOpen(true)
-    return
-  }
+      setSnackbarMessage('Template not loaded yet.')
+      setSnackbarSeverity('warning')
+      setSnackbarOpen(true)
+      return
+    }
     const userPrompt = question.trim()
     if (!userPrompt) {
       return

@@ -16,51 +16,42 @@ import {
 import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  IoBulbOutline,
-  IoPersonOutline,
-} from 'react-icons/io5'
+import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  ChatbotTemplateOutputDTO,
-  CreateChatbotTemplateDTO,
-} from '../../api'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
   cloneChatbotTemplate,
   createChatbotTemplate,
   createPatientChatbotTemplate,
   deleteChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
-import { RootState } from '../../store/store'
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
 const ChatbotOverview = (): ReactElement => {
-  const { t }           = useTranslation()
-  const { patientId }   = useParams<{ patientId: string }>()
-  const navigate        = useNavigate()
-  const dispatch        = useAppDispatch()
+  const { t } = useTranslation()
+  const { patientId } = useParams<{ patientId: string }>()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const therapist = useSelector(
-    (state: RootState) => state.therapist.loggedInTherapist
-  )
+  const therapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
 
   const patient = useSelector((state: RootState) =>
-    patientId
-      ? state.patient.allPatientsOfTherapist.find((p) => p.id === patientId)
-      : undefined
+    patientId ? state.patient.allPatientsOfTherapist.find((p) => p.id === patientId) : undefined
   )
 
-  const templates: ChatbotTemplateOutputDTO[] =
-    patientId ? patient?.chatbotTemplatesOutputDTO ?? [] : therapist?.chatbotTemplatesOutputDTO ?? []
+  const templates: ChatbotTemplateOutputDTO[] = patientId
+    ? (patient?.chatbotTemplatesOutputDTO ?? [])
+    : (therapist?.chatbotTemplatesOutputDTO ?? [])
 
   const [snackbar, setSnackbar] = useState<{
     open: boolean
@@ -69,8 +60,7 @@ const ChatbotOverview = (): ReactElement => {
   }>({ open: false, message: '', severity: 'info' })
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [currentChatbot, setCurrentChatbot] =
-    useState<ChatbotTemplateOutputDTO | null>(null)
+  const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
 
   useEffect(() => {
     if (patientId) {
@@ -83,16 +73,22 @@ const ChatbotOverview = (): ReactElement => {
   const openSnackbar = (
     message: string,
     severity: 'info' | 'success' | 'error' | 'warning' = 'info'
-  ) => setSnackbar({ open: true, message, severity })
+  ) => setSnackbar({ open: true, message: message, severity: severity })
 
   const iconFor = (iconName: string): ReactElement | null => {
     switch (iconName) {
-      case 'Chatbot': return <TbMessageChatbot />
-      case 'Robot':   return <RiRobot2Line />
-      case 'Person':  return <IoPersonOutline />
-      case 'Bulb':    return <IoBulbOutline />
-      case 'Book':    return <PiBookOpenTextLight />
-      default:        return null
+      case 'Chatbot':
+        return <TbMessageChatbot />
+      case 'Robot':
+        return <RiRobot2Line />
+      case 'Person':
+        return <IoPersonOutline />
+      case 'Bulb':
+        return <IoBulbOutline />
+      case 'Book':
+        return <PiBookOpenTextLight />
+      default:
+        return null
     }
   }
 
@@ -115,17 +111,13 @@ const ChatbotOverview = (): ReactElement => {
         description: '',
       }
 
-      console.log(patientId);
+      console.log(patientId)
 
       const created = patientId
-        ? await dispatch(
-            createPatientChatbotTemplate({ patientId, dto: cfg })
-          ).unwrap()
+        ? await dispatch(createPatientChatbotTemplate({ patientId: patientId, dto: cfg })).unwrap()
         : await dispatch(createChatbotTemplate(cfg)).unwrap()
 
-      patientId
-        ? dispatch(getAllPatientsOfTherapist())
-        : dispatch(getCurrentlyLoggedInTherapist())
+      patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -137,10 +129,7 @@ const ChatbotOverview = (): ReactElement => {
     }
   }
 
-  const handleMenu = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    bot: ChatbotTemplateOutputDTO
-  ) => {
+  const handleMenu = (e: React.MouseEvent<HTMLButtonElement>, bot: ChatbotTemplateOutputDTO) => {
     setAnchorEl(e.currentTarget)
     setCurrentChatbot(bot)
   }
@@ -148,7 +137,9 @@ const ChatbotOverview = (): ReactElement => {
   const closeMenu = () => setAnchorEl(null)
 
   const handleClone = async () => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id!)).unwrap()
       dispatch(getCurrentlyLoggedInTherapist())
@@ -161,7 +152,9 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleDelete = async () => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(deleteChatbotTemplate(currentChatbot.id!)).unwrap()
       dispatch(getCurrentlyLoggedInTherapist())
@@ -176,8 +169,8 @@ const ChatbotOverview = (): ReactElement => {
   return (
     <>
       <div style={{ display: 'flex', gap: 20, alignItems: 'center', marginBottom: 20 }}>
-        <Typography variant="h2">{t('Chatbots')}</Typography>
-        <Button variant="contained" onClick={handleCreateChatbot}>
+        <Typography variant='h2'>{t('Chatbots')}</Typography>
+        <Button variant='contained' onClick={handleCreateChatbot}>
           {t('Create Chatbot')}
         </Button>
       </div>
@@ -201,49 +194,43 @@ const ChatbotOverview = (): ReactElement => {
                 borderRadius: 2,
               }}
             >
-              <CardActionArea onClick={() =>
-                navigate(
-                  getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-                    chatbotTemplateId: bot.id!,
-                  }),
-                  { state: { chatbotConfig: bot } }
-                )
-              }>
+              <CardActionArea
+                onClick={() =>
+                  navigate(
+                    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+                      chatbotTemplateId: bot.id!,
+                    }),
+                    { state: { chatbotConfig: bot } }
+                  )
+                }
+              >
                 <CardContent>
-                  <Typography variant="h6">
+                  <Typography variant='h6'>
                     {bot.chatbotName || t('dashboard.unnamed_bot')}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant='body2' color='textSecondary'>
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
 
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.role')}: {bot.chatbotRole}
                   </Typography>
-                  <Typography variant="body1">
-                    {`Tone: ${bot.chatbotTone}`}
-                  </Typography>
+                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
 
-                  <Typography
-                    variant="body1"
-                    sx={{ fontSize: 48, textAlign: 'center' }}
-                  >
+                  <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
                     {iconFor(bot.chatbotIcon ?? '')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
 
-              <CardActions
-                disableSpacing
-                sx={{ position: 'absolute', top: 0, right: 0 }}
-              >
+              <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
                 <IconButton
-                  aria-label="more"
-                  aria-controls="chatbot-menu"
-                  aria-haspopup="true"
+                  aria-label='more'
+                  aria-controls='chatbot-menu'
+                  aria-haspopup='true'
                   onClick={(e) => handleMenu(e, bot)}
                 >
                   <MoreVertIcon />
@@ -256,12 +243,7 @@ const ChatbotOverview = (): ReactElement => {
         <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
       )}
 
-      <Menu
-        id="chatbot-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={closeMenu}
-      >
+      <Menu id='chatbot-menu' anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
         <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
       </Menu>
