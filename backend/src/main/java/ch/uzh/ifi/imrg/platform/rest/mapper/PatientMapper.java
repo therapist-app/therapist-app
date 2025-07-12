@@ -117,12 +117,11 @@ public interface PatientMapper {
         .collect(Collectors.toList());
   }
 
-  default List<ChatbotTemplateOutputDTO> mapChatbotTemplates(
-          List<ChatbotTemplate> templates) {
+  default List<ChatbotTemplateOutputDTO> mapChatbotTemplates(List<ChatbotTemplate> templates) {
 
     if (templates == null) return null;
     return templates.stream()
-            .map(ChatbotTemplateMapper.INSTANCE::convertEntityToChatbotTemplateOutputDTO)
-            .collect(Collectors.toList());
+        .map(ChatbotTemplateMapper.INSTANCE::convertEntityToChatbotTemplateOutputDTO)
+        .collect(Collectors.toList());
   }
 }

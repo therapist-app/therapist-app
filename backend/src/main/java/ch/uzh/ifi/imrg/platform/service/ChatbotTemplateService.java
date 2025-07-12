@@ -38,16 +38,17 @@ public class ChatbotTemplateService {
     this.patientRepository = patientRepository;
   }
 
-  public ChatbotTemplateOutputDTO getTemplateForTherapist(
-          String therapistId, String templateId) {
+  public ChatbotTemplateOutputDTO getTemplateForTherapist(String therapistId, String templateId) {
 
-    ChatbotTemplate tpl = chatbotTemplateRepository.findById(templateId)
+    ChatbotTemplate tpl =
+        chatbotTemplateRepository
+            .findById(templateId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
 
     boolean allowed =
-            (tpl.getTherapist() != null && tpl.getTherapist().getId().equals(therapistId)) ||
-                    (tpl.getPatient()   != null &&
-                            tpl.getPatient().getTherapist().getId().equals(therapistId));
+        (tpl.getTherapist() != null && tpl.getTherapist().getId().equals(therapistId))
+            || (tpl.getPatient() != null
+                && tpl.getPatient().getTherapist().getId().equals(therapistId));
 
     if (!allowed) {
       throw new EntityNotFoundException("Template not found");
@@ -68,14 +69,12 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO createTemplateForPatient(
-          String therapistId,
-          String patientId,
-          ChatbotTemplate template) {
+      String therapistId, String patientId, ChatbotTemplate template) {
 
     // 1) make sure the patient really belongs to this therapist
     if (!patientRepository.existsByIdAndTherapistId(patientId, therapistId)) {
       throw new IllegalArgumentException(
-              "Patient " + patientId + " does not belong to therapist " + therapistId);
+          "Patient " + patientId + " does not belong to therapist " + therapistId);
     }
 
     Patient patient = patientRepository.getPatientById(patientId);

@@ -31,13 +31,10 @@ public class ChatbotTemplateController {
   @GetMapping("/{templateId}")
   @ResponseStatus(HttpStatus.OK)
   public ChatbotTemplateOutputDTO getTemplate(
-          @PathVariable String templateId,
-          HttpServletRequest request) {
+      @PathVariable String templateId, HttpServletRequest request) {
 
     Therapist therapist = therapistService.getCurrentlyLoggedInTherapist(request);
-    return chatbotTemplateService.getTemplateForTherapist(
-            therapist.getId(),
-            templateId);
+    return chatbotTemplateService.getTemplateForTherapist(therapist.getId(), templateId);
   }
 
   @PostMapping
@@ -56,20 +53,18 @@ public class ChatbotTemplateController {
   @PostMapping("/patients/{patientId}")
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO createTemplateForPatient(
-          @PathVariable String patientId,
-          @RequestBody CreateChatbotTemplateDTO templateInputDTO,
-          HttpServletRequest httpServletRequest) {
+      @PathVariable String patientId,
+      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+      HttpServletRequest httpServletRequest) {
 
     Therapist loggedInTherapist =
-            therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
 
     ChatbotTemplate template =
-            ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
 
     return chatbotTemplateService.createTemplateForPatient(
-            loggedInTherapist.getId(),
-            patientId,
-            template);
+        loggedInTherapist.getId(), patientId, template);
   }
 
   @PutMapping("/{templateId}")
