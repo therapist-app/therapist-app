@@ -66,19 +66,8 @@ const ChatbotOverview = (): ReactElement => {
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
 
   useEffect(() => {
-    if (patientId) {
-      dispatch(getAllPatientsOfTherapist())
-    } else {
-      dispatch(getCurrentlyLoggedInTherapist())
-    }
+    patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, patientId])
-
-  /* inside handleCreateChatbot(), just before navigate() */
-  if (patientId) {
-    dispatch(getAllPatientsOfTherapist())
-  } else {
-    dispatch(getCurrentlyLoggedInTherapist())
-  }
 
   const iconFor = (icon: string) =>
     (
