@@ -790,6 +790,12 @@ paths:
       x-accepts: '*/*'
     post:
       operationId: createConversation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationDTO'
+        required: true
       responses:
         "201":
           content:
@@ -799,6 +805,7 @@ paths:
           description: Created
       tags:
       - conversation-controller
+      x-content-type: application/json
       x-accepts: '*/*'
   /patients/conversations/messages/{conversationId}:
     get:
@@ -1743,6 +1750,11 @@ components:
         responseMessage:
           type: string
         requestMessage:
+          type: string
+      type: object
+    CreateConversationDTO:
+      properties:
+        conversationName:
           type: string
       type: object
     CreateConversationOutputDTO:

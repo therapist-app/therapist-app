@@ -15,7 +15,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 ## createConversation
 
-> CreateConversationOutputDTOPatientAPI createConversation()
+> CreateConversationOutputDTOPatientAPI createConversation(createConversationDTOPatientAPI)
 
 
 
@@ -42,8 +42,9 @@ public class Example {
         //X-Coach-Key.setApiKeyPrefix("Token");
 
         ConversationControllerPatientAPI apiInstance = new ConversationControllerPatientAPI(defaultClient);
+        CreateConversationDTOPatientAPI createConversationDTOPatientAPI = new CreateConversationDTOPatientAPI(); // CreateConversationDTOPatientAPI | 
         try {
-            CreateConversationOutputDTOPatientAPI result = apiInstance.createConversation();
+            CreateConversationOutputDTOPatientAPI result = apiInstance.createConversation(createConversationDTOPatientAPI);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ConversationControllerPatientAPI#createConversation");
@@ -58,7 +59,10 @@ public class Example {
 
 ### Parameters
 
-This endpoint does not need any parameter.
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **createConversationDTOPatientAPI** | [**CreateConversationDTOPatientAPI**](CreateConversationDTOPatientAPI.md)|  | |
 
 ### Return type
 
@@ -70,7 +74,7 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: */*
 
 

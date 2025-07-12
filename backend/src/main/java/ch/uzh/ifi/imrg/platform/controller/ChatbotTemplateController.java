@@ -91,6 +91,22 @@ public class ChatbotTemplateController {
     chatbotTemplateService.deleteTemplate(loggedInTherapist.getId(), templateId);
   }
 
+  @DeleteMapping("/patients/{patientId}/{templateId}")
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteTemplateForPatient(
+          @PathVariable String patientId,
+          @PathVariable String templateId,
+          HttpServletRequest request) {
+
+    Therapist therapist =
+            therapistService.getCurrentlyLoggedInTherapist(request);
+
+    chatbotTemplateService.deleteTemplateForPatient(
+            therapist.getId(), patientId, templateId);
+  }
+
+
+
   @PostMapping("/{templateId}/clone")
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO cloneTemplate(
@@ -100,4 +116,19 @@ public class ChatbotTemplateController {
 
     return chatbotTemplateService.cloneTemplate(loggedInTherapist.getId(), templateId);
   }
+
+  @PostMapping("/patients/{patientId}/{templateId}/clone")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ChatbotTemplateOutputDTO cloneTemplateForPatient(
+          @PathVariable String patientId,
+          @PathVariable String templateId,
+          HttpServletRequest request) {
+
+    Therapist therapist =
+            therapistService.getCurrentlyLoggedInTherapist(request);
+
+    return chatbotTemplateService.cloneTemplateForPatient(
+            therapist.getId(), patientId, templateId);
+  }
+
 }
