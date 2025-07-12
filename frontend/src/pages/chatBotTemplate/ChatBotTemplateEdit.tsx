@@ -102,7 +102,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
     const id = chatbotTemplateId ?? sessionStorage.getItem('chatbotTemplateId')
     if (!id) {
-      return /* explicitly typed async IIFE to satisfy eslint */
+      return
     }
     ;(async (): Promise<void> => {
       try {

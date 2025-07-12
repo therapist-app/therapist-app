@@ -107,7 +107,6 @@ const ChatbotOverview = (): ReactElement => {
         ? await dispatch(createPatientChatbotTemplate({ patientId: patientId, dto: dto })).unwrap()
         : await dispatch(createChatbotTemplate(dto)).unwrap()
 
-      /* refresh data */
       if (patientId) {
         dispatch(getAllPatientsOfTherapist())
       } else {
