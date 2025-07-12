@@ -96,18 +96,19 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   useEffect(() => {
-    if (chatbotConfig) return
+    if (chatbotConfig) {
+      return
+    }
 
     const id = chatbotTemplateId ?? sessionStorage.getItem('chatbotTemplateId')
-    if (!id) return
-
-    /* explicitly typed async IIFE to satisfy eslint */
+    if (!id) {
+      return /* explicitly typed async IIFE to satisfy eslint */
+    }
     ;(async (): Promise<void> => {
       try {
         const { data } = await chatbotTemplateApi.getTemplate(id)
         setChatbotConfig(data)
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error('Failed to load template', e)
       }
     })()

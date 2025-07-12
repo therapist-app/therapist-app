@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import {
   ChatbotTemplateControllerApiFactory,
   ChatbotTemplateDocumentControllerApiFactory,
+  ChatbotTemplateOutputDTO,
   ChatControllerApiFactory,
   CounselingPlanControllerApiFactory,
   CounselingPlanPhaseControllerApiFactory,
@@ -17,7 +18,6 @@ import {
   TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
-  ChatbotTemplateOutputDTO
 } from '../api'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
