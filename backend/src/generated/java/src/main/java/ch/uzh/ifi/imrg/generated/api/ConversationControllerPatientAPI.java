@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.generated.api;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.CompleteConversationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.CreateConversationDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
@@ -55,11 +56,16 @@ public class ConversationControllerPatientAPI {
      * 
      * 
      * <p><b>201</b> - Created
+     * @param createConversationDTOPatientAPI The createConversationDTOPatientAPI parameter
      * @return CreateConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec createConversationRequestCreation() throws WebClientResponseException {
-        Object postBody = null;
+    private ResponseSpec createConversationRequestCreation(CreateConversationDTOPatientAPI createConversationDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = createConversationDTOPatientAPI;
+        // verify the required parameter 'createConversationDTOPatientAPI' is set
+        if (createConversationDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'createConversationDTOPatientAPI' when calling createConversation", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
 
@@ -72,7 +78,9 @@ public class ConversationControllerPatientAPI {
             "*/*"
         };
         final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = { };
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
         final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
@@ -85,35 +93,38 @@ public class ConversationControllerPatientAPI {
      * 
      * 
      * <p><b>201</b> - Created
+     * @param createConversationDTOPatientAPI The createConversationDTOPatientAPI parameter
      * @return CreateConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<CreateConversationOutputDTOPatientAPI> createConversation() throws WebClientResponseException {
+    public Mono<CreateConversationOutputDTOPatientAPI> createConversation(CreateConversationDTOPatientAPI createConversationDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI>() {};
-        return createConversationRequestCreation().bodyToMono(localVarReturnType);
+        return createConversationRequestCreation(createConversationDTOPatientAPI).bodyToMono(localVarReturnType);
     }
 
     /**
      * 
      * 
      * <p><b>201</b> - Created
+     * @param createConversationDTOPatientAPI The createConversationDTOPatientAPI parameter
      * @return ResponseEntity&lt;CreateConversationOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<CreateConversationOutputDTOPatientAPI>> createConversationWithHttpInfo() throws WebClientResponseException {
+    public Mono<ResponseEntity<CreateConversationOutputDTOPatientAPI>> createConversationWithHttpInfo(CreateConversationDTOPatientAPI createConversationDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CreateConversationOutputDTOPatientAPI>() {};
-        return createConversationRequestCreation().toEntity(localVarReturnType);
+        return createConversationRequestCreation(createConversationDTOPatientAPI).toEntity(localVarReturnType);
     }
 
     /**
      * 
      * 
      * <p><b>201</b> - Created
+     * @param createConversationDTOPatientAPI The createConversationDTOPatientAPI parameter
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec createConversationWithResponseSpec() throws WebClientResponseException {
-        return createConversationRequestCreation();
+    public ResponseSpec createConversationWithResponseSpec(CreateConversationDTOPatientAPI createConversationDTOPatientAPI) throws WebClientResponseException {
+        return createConversationRequestCreation(createConversationDTOPatientAPI);
     }
     /**
      * 
@@ -285,7 +296,7 @@ public class ConversationControllerPatientAPI {
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<NameConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NameConversationOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/conversations/{patientId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/patients/conversations", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**

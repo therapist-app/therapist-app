@@ -16,4 +16,6 @@ public interface ChatbotTemplateRepository extends JpaRepository<ChatbotTemplate
       "SELECT t FROM ChatbotTemplate t WHERE t.id = :templateId AND t.therapist.id = :therapistId")
   Optional<ChatbotTemplate> findByIdAndTherapistId(
       @Param("templateId") String templateId, @Param("therapistId") String therapistId);
+
+  Optional<ChatbotTemplate> findByIdAndPatientId(String id, String patientId);
 }

@@ -147,7 +147,7 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getAllMessages1**](docs/ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} | 
-*ConversationControllerPatientAPI* | [**getConversationNames**](docs/ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations/{patientId} | 
+*ConversationControllerPatientAPI* | [**getConversationNames**](docs/ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**sendMessage1**](docs/ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
 *DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
@@ -195,6 +195,7 @@ Class | Method | HTTP request | Description
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CompleteExerciseConversationOutputDTOPatientAPI](docs/CompleteExerciseConversationOutputDTOPatientAPI.md)
  - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
+ - [CreateConversationDTOPatientAPI](docs/CreateConversationDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
