@@ -20,7 +20,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
@@ -29,12 +29,12 @@ import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
-import type {
+import {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
   ChatMessageDTO,
+  ChatMessageDTOChatRoleEnum
 } from '../../api'
-import { ChatMessageDTOChatRoleEnum } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import {
@@ -112,6 +112,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       } catch (e) {
         console.error('Failed to load template', e)
       }
+      return;
     })()
   }, [chatbotConfig, chatbotTemplateId])
 
