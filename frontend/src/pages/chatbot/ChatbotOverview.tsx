@@ -23,10 +23,7 @@ import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  ChatbotTemplateOutputDTO,
-  CreateChatbotTemplateDTO,
-} from '../../api'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
   cloneChatbotTemplate,
   clonePatientChatbotTemplate,
@@ -42,36 +39,31 @@ import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
-
 const ChatbotOverview = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams<{ patientId: string }>()
-  const navigate  = useNavigate()
-  const dispatch  = useAppDispatch()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  /* --------------- data from store --------------- */
   const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
-  const patient   = useSelector((s: RootState) =>
-    patientId ? s.patient.allPatientsOfTherapist.find(p => p.id === patientId) : undefined,
+  const patient = useSelector((s: RootState) =>
+    patientId ? s.patient.allPatientsOfTherapist.find((p) => p.id === patientId) : undefined
   )
 
   const templates: ChatbotTemplateOutputDTO[] = patientId
-    ? patient?.chatbotTemplatesOutputDTO ?? []
-    : therapist?.chatbotTemplatesOutputDTO ?? []
+    ? (patient?.chatbotTemplatesOutputDTO ?? [])
+    : (therapist?.chatbotTemplatesOutputDTO ?? [])
 
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
     severity: 'info' as 'info' | 'success' | 'error' | 'warning',
   })
-  const openSnackbar = (
-    msg: string,
-    sev: typeof snackbar.severity = 'info',
-  ): void => setSnackbar({ open: true, message: msg, severity: sev })
+  const openSnackbar = (msg: string, sev: typeof snackbar.severity = 'info'): void =>
+    setSnackbar({ open: true, message: msg, severity: sev })
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [currentChatbot, setCurrentChatbot] =
-    useState<ChatbotTemplateOutputDTO | null>(null)
+  const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
 
   useEffect(() => {
     if (patientId) {
@@ -83,36 +75,36 @@ const ChatbotOverview = (): ReactElement => {
 
   const iconFor = (icon: string): ReactElement | null =>
     (
-      {
+      ({
         Chatbot: <TbMessageChatbot />,
-        Robot:   <RiRobot2Line />,
-        Person:  <IoPersonOutline />,
-        Bulb:    <IoBulbOutline />,
-        Book:    <PiBookOpenTextLight />,
-      } as Record<string, ReactElement | null>
+        Robot: <RiRobot2Line />,
+        Person: <IoPersonOutline />,
+        Bulb: <IoBulbOutline />,
+        Book: <PiBookOpenTextLight />,
+      }) as Record<string, ReactElement | null>
     )[icon] ?? null
 
   const handleCreateChatbot = async (): Promise<void> => {
     try {
       const dto: CreateChatbotTemplateDTO = {
-        chatbotName:              '',
-        chatbotModel:             'gpt-3.5-turbo',
-        chatbotIcon:              'Chatbot',
-        chatbotLanguage:          'English',
-        chatbotRole:              'FAQ',
-        chatbotTone:              'friendly',
-        welcomeMessage:           'Hello! How can I assist you today?',
-        chatbotVoice:             'None',
-        chatbotGender:            'Neutral',
-        preConfiguredExercise:    'Breathing exercise',
-        additionalExercise:       'Meditation practice',
-        animation:                'Simple',
-        chatbotInputPlaceholder:  'Type your question…',
-        description:              '',
+        chatbotName: '',
+        chatbotModel: 'gpt-3.5-turbo',
+        chatbotIcon: 'Chatbot',
+        chatbotLanguage: 'English',
+        chatbotRole: 'FAQ',
+        chatbotTone: 'friendly',
+        welcomeMessage: 'Hello! How can I assist you today?',
+        chatbotVoice: 'None',
+        chatbotGender: 'Neutral',
+        preConfiguredExercise: 'Breathing exercise',
+        additionalExercise: 'Meditation practice',
+        animation: 'Simple',
+        chatbotInputPlaceholder: 'Type your question…',
+        description: '',
       }
 
       const created = patientId
-        ? await dispatch(createPatientChatbotTemplate({ patientId, dto })).unwrap()
+        ? await dispatch(createPatientChatbotTemplate({ patientId: patientId, dto: dto })).unwrap()
         : await dispatch(createChatbotTemplate(dto)).unwrap()
 
       /* refresh data */
@@ -125,7 +117,7 @@ const ChatbotOverview = (): ReactElement => {
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
           chatbotTemplateId: created.id!,
-        }),
+        })
       )
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
@@ -134,7 +126,7 @@ const ChatbotOverview = (): ReactElement => {
 
   const handleMenu = (
     e: React.MouseEvent<HTMLButtonElement>,
-    bot: ChatbotTemplateOutputDTO,
+    bot: ChatbotTemplateOutputDTO
   ): void => {
     setAnchorEl(e.currentTarget)
     setCurrentChatbot(bot)
@@ -143,14 +135,16 @@ const ChatbotOverview = (): ReactElement => {
   const closeMenu = (): void => setAnchorEl(null)
 
   const handleClone = async (): Promise<void> => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       if (patientId) {
         await dispatch(
           clonePatientChatbotTemplate({
-            patientId,
+            patientId: patientId,
             templateId: currentChatbot.id!,
-          }),
+          })
         ).unwrap()
         dispatch(getAllPatientsOfTherapist())
       } else {
@@ -166,14 +160,16 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleDelete = async (): Promise<void> => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       if (patientId) {
         await dispatch(
           deletePatientChatbotTemplate({
-            patientId,
+            patientId: patientId,
             templateId: currentChatbot.id!,
-          }),
+          })
         ).unwrap()
         dispatch(getAllPatientsOfTherapist())
       } else {
@@ -191,15 +187,15 @@ const ChatbotOverview = (): ReactElement => {
   return (
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-        <Typography variant="h2">{t('Chatbots')}</Typography>
-        <Button variant="contained" onClick={handleCreateChatbot}>
+        <Typography variant='h2'>{t('Chatbots')}</Typography>
+        <Button variant='contained' onClick={handleCreateChatbot}>
           {t('Create Chatbot')}
         </Button>
       </Box>
 
       {templates.length ? (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {templates.map(bot => (
+          {templates.map((bot) => (
             <Card
               key={bot.id}
               sx={{
@@ -222,32 +218,32 @@ const ChatbotOverview = (): ReactElement => {
                     getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
                       chatbotTemplateId: bot.id!,
                     }),
-                    { state: { chatbotConfig: bot } },
+                    { state: { chatbotConfig: bot } }
                   )
                 }
               >
                 <CardContent>
-                  <Typography variant="h6">
+                  <Typography variant='h6'>
                     {bot.chatbotName || t('dashboard.unnamed_bot')}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant='body2' color='textSecondary'>
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
+                  <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.role')}: {bot.chatbotRole}
                   </Typography>
-                  <Typography variant="body1">{`Tone: ${bot.chatbotTone}`}</Typography>
-                  <Typography variant="body1" sx={{ fontSize: 48, textAlign: 'center' }}>
+                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+                  <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
                     {iconFor(bot.chatbotIcon ?? '')}
                   </Typography>
                 </CardContent>
               </CardActionArea>
 
               <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
-                <IconButton onClick={e => handleMenu(e, bot)}>
+                <IconButton onClick={(e) => handleMenu(e, bot)}>
                   <MoreVertIcon />
                 </IconButton>
               </CardActions>

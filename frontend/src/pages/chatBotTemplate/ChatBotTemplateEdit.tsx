@@ -33,7 +33,7 @@ import {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
   ChatMessageDTO,
-  ChatMessageDTOChatRoleEnum
+  ChatMessageDTOChatRoleEnum,
 } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
@@ -112,7 +112,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       } catch (e) {
         console.error('Failed to load template', e)
       }
-      return;
+      return
     })()
   }, [chatbotConfig, chatbotTemplateId])
 
