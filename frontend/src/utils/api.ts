@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 import {
   ChatbotTemplateControllerApiFactory,
   ChatbotTemplateDocumentControllerApiFactory,
+  ChatbotTemplateOutputDTO,
   ChatControllerApiFactory,
   CounselingPlanControllerApiFactory,
   CounselingPlanPhaseControllerApiFactory,
@@ -27,7 +28,30 @@ const api = axios.create({
   withCredentials: true,
 })
 
-export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
+export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(
+  undefined,
+  baseURL,
+  api
+) as ReturnType<typeof ChatbotTemplateControllerApiFactory> & {
+  cloneTemplateForPatient: (
+    pId: string,
+    tId: string
+  ) => Promise<AxiosResponse<ChatbotTemplateOutputDTO>>
+  deleteTemplateForPatient: (pId: string, tId: string) => Promise<AxiosResponse<void>>
+}
+
+chatbotTemplateApi.cloneTemplateForPatient = (
+  patientId: string,
+  templateId: string
+): Promise<AxiosResponse<ChatbotTemplateOutputDTO>> =>
+  api.post(`/chatbot-templates/patients/${patientId}/${templateId}/clone`)
+
+chatbotTemplateApi.deleteTemplateForPatient = (
+  patientId: string,
+  templateId: string
+): Promise<AxiosResponse<void>> =>
+  api.delete(`/chatbot-templates/patients/${patientId}/${templateId}`)
+
 export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFactory(
   undefined,
   baseURL,
@@ -62,8 +86,8 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       try {
         await therapistApi.logoutTherapist()
-      } catch (error) {
-        console.error(error)
+      } catch (err) {
+        console.error(err)
       } finally {
         window.location.href = '/register'
       }

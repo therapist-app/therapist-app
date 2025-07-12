@@ -56,6 +56,9 @@ const Home = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+  const ownTemplates: ChatbotTemplateOutputDTO[] = (
+    loggedInTherapist?.chatbotTemplatesOutputDTO ?? []
+  ).filter((tpl) => tpl.patientId == null)
   const allTherapistDocuments = useSelector(
     (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
   )
@@ -342,8 +345,7 @@ const Home = (): ReactElement => {
         </Button>
       </div>
 
-      {loggedInTherapist?.chatbotTemplatesOutputDTO &&
-      loggedInTherapist.chatbotTemplatesOutputDTO.length > 0 ? (
+      {ownTemplates.length > 0 ? (
         <Box
           sx={{
             display: 'flex',
@@ -352,7 +354,7 @@ const Home = (): ReactElement => {
             justifyContent: 'flex-start',
           }}
         >
-          {loggedInTherapist.chatbotTemplatesOutputDTO.map((bot, index) => (
+          {ownTemplates.map((bot, index) => (
             <Card
               key={bot.id || index}
               variant='outlined'

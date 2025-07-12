@@ -66,6 +66,43 @@ export const ChatbotTemplateControllerApiAxiosParamCreator = function (configura
         },
         /**
          * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneTemplateForPatient: async (patientId: string, templateId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'patientId' is not null or undefined
+            assertParamExists('cloneTemplateForPatient', 'patientId', patientId)
+            // verify required parameter 'templateId' is not null or undefined
+            assertParamExists('cloneTemplateForPatient', 'templateId', templateId)
+            const localVarPath = `/chatbot-templates/patients/{patientId}/{templateId}/clone`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
+                .replace(`{${"templateId"}}`, encodeURIComponent(String(templateId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -74,6 +111,45 @@ export const ChatbotTemplateControllerApiAxiosParamCreator = function (configura
             // verify required parameter 'createChatbotTemplateDTO' is not null or undefined
             assertParamExists('createTemplate', 'createChatbotTemplateDTO', createChatbotTemplateDTO)
             const localVarPath = `/chatbot-templates`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createChatbotTemplateDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createTemplateForPatient: async (patientId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'patientId' is not null or undefined
+            assertParamExists('createTemplateForPatient', 'patientId', patientId)
+            // verify required parameter 'createChatbotTemplateDTO' is not null or undefined
+            assertParamExists('createTemplateForPatient', 'createChatbotTemplateDTO', createChatbotTemplateDTO)
+            const localVarPath = `/chatbot-templates/patients/{patientId}`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -118,6 +194,76 @@ export const ChatbotTemplateControllerApiAxiosParamCreator = function (configura
             }
 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteTemplateForPatient: async (patientId: string, templateId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'patientId' is not null or undefined
+            assertParamExists('deleteTemplateForPatient', 'patientId', patientId)
+            // verify required parameter 'templateId' is not null or undefined
+            assertParamExists('deleteTemplateForPatient', 'templateId', templateId)
+            const localVarPath = `/chatbot-templates/patients/{patientId}/{templateId}`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
+                .replace(`{${"templateId"}}`, encodeURIComponent(String(templateId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTemplate: async (templateId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'templateId' is not null or undefined
+            assertParamExists('getTemplate', 'templateId', templateId)
+            const localVarPath = `/chatbot-templates/{templateId}`
+                .replace(`{${"templateId"}}`, encodeURIComponent(String(templateId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -195,6 +341,19 @@ export const ChatbotTemplateControllerApiFp = function(configuration?: Configura
         },
         /**
          * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cloneTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatbotTemplateOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cloneTemplateForPatient(patientId, templateId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.cloneTemplateForPatient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -207,6 +366,19 @@ export const ChatbotTemplateControllerApiFp = function(configuration?: Configura
         },
         /**
          * 
+         * @param {string} patientId 
+         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createTemplateForPatient(patientId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatbotTemplateOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createTemplateForPatient(patientId, createChatbotTemplateDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.createTemplateForPatient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} templateId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -215,6 +387,31 @@ export const ChatbotTemplateControllerApiFp = function(configuration?: Configura
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTemplate(templateId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.deleteTemplate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTemplateForPatient(patientId, templateId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.deleteTemplateForPatient']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTemplate(templateId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatbotTemplateOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTemplate(templateId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.getTemplate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -251,6 +448,16 @@ export const ChatbotTemplateControllerApiFactory = function (configuration?: Con
         },
         /**
          * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO> {
+            return localVarFp.cloneTemplateForPatient(patientId, templateId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -260,12 +467,41 @@ export const ChatbotTemplateControllerApiFactory = function (configuration?: Con
         },
         /**
          * 
+         * @param {string} patientId 
+         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createTemplateForPatient(patientId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO> {
+            return localVarFp.createTemplateForPatient(patientId, createChatbotTemplateDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} templateId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         deleteTemplate(templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deleteTemplate(templateId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} patientId 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteTemplateForPatient(patientId, templateId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} templateId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTemplate(templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO> {
+            return localVarFp.getTemplate(templateId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -297,6 +533,16 @@ export interface ChatbotTemplateControllerApiInterface {
 
     /**
      * 
+     * @param {string} patientId 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApiInterface
+     */
+    cloneTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO>;
+
+    /**
+     * 
      * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -306,12 +552,41 @@ export interface ChatbotTemplateControllerApiInterface {
 
     /**
      * 
+     * @param {string} patientId 
+     * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApiInterface
+     */
+    createTemplateForPatient(patientId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO>;
+
+    /**
+     * 
      * @param {string} templateId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatbotTemplateControllerApiInterface
      */
     deleteTemplate(templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} patientId 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApiInterface
+     */
+    deleteTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApiInterface
+     */
+    getTemplate(templateId: string, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO>;
 
     /**
      * 
@@ -345,6 +620,18 @@ export class ChatbotTemplateControllerApi extends BaseAPI implements ChatbotTemp
 
     /**
      * 
+     * @param {string} patientId 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApi
+     */
+    public cloneTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig) {
+        return ChatbotTemplateControllerApiFp(this.configuration).cloneTemplateForPatient(patientId, templateId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -356,6 +643,18 @@ export class ChatbotTemplateControllerApi extends BaseAPI implements ChatbotTemp
 
     /**
      * 
+     * @param {string} patientId 
+     * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApi
+     */
+    public createTemplateForPatient(patientId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig) {
+        return ChatbotTemplateControllerApiFp(this.configuration).createTemplateForPatient(patientId, createChatbotTemplateDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} templateId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -363,6 +662,29 @@ export class ChatbotTemplateControllerApi extends BaseAPI implements ChatbotTemp
      */
     public deleteTemplate(templateId: string, options?: RawAxiosRequestConfig) {
         return ChatbotTemplateControllerApiFp(this.configuration).deleteTemplate(templateId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} patientId 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApi
+     */
+    public deleteTemplateForPatient(patientId: string, templateId: string, options?: RawAxiosRequestConfig) {
+        return ChatbotTemplateControllerApiFp(this.configuration).deleteTemplateForPatient(patientId, templateId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} templateId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatbotTemplateControllerApi
+     */
+    public getTemplate(templateId: string, options?: RawAxiosRequestConfig) {
+        return ChatbotTemplateControllerApiFp(this.configuration).getTemplate(templateId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

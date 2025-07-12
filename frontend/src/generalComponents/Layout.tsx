@@ -18,7 +18,7 @@ import {
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
 import { ChatMessageDTOChatRoleEnum } from '../api'
@@ -32,22 +32,43 @@ interface LayoutProps {
   children: ReactNode
 }
 
+interface LayoutLocationState {
+  patientId?: string
+}
+
 const drawerWidth = 280
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
   const navigate = useNavigate()
-  const location = useLocation()
+  const location = useLocation() as Location & { state: LayoutLocationState | null }
   const dispatch = useAppDispatch()
-
-  const { patientId } = useParams()
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
 
+  const routeParams = useParams()
+  const [searchParams] = useSearchParams()
+  const patientIdFromRoute = routeParams.patientId
+  const patientIdFromQuery = searchParams.get('patientId') ?? undefined
+  const patientIdFromState = location.state?.patientId
+  const patientIdStored = sessionStorage.getItem('activePatientId') ?? undefined
+  const patientId =
+    patientIdFromRoute || patientIdFromQuery || patientIdFromState || patientIdStored
+
+  useEffect(() => {
+    if (patientId) {
+      sessionStorage.setItem('activePatientId', patientId)
+    }
+  }, [patientId])
+
   const currentPage = getPageFromPath(location.pathname)
   const currentPageName = PAGE_NAMES[currentPage]
-  const currentPageTrace = findPageTrace(currentPage)
+  let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
+
+  if (currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE && patientId) {
+    pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
+  }
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [therapistChatbotInput, setTherapistChatbotInput] = useState('')
@@ -73,11 +94,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsExpanded(true)
 
     await dispatch(
-      chatWithTherapistChatbot({ newMessage: therapistChatbotInput, patientId: patientId })
+      chatWithTherapistChatbot({
+        newMessage: therapistChatbotInput,
+        patientId: patientId,
+      })
     )
   }
-
-  const params = useParams() as Record<string, string>
 
   const handleLogout = (): void => {
     dispatch(logoutTherapist())
@@ -106,10 +128,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Typography variant='h1' noWrap sx={{ flexGrow: 1 }}>
             {currentPageName}
           </Typography>
-          <IconButton sx={{ marginRight: 1 }} onClick={handleSettingsClicked} color='inherit'>
+
+          <IconButton sx={{ mr: 1 }} onClick={handleSettingsClicked} color='inherit'>
             <SettingsIcon />
           </IconButton>
-
           <IconButton onClick={handleLogout} color='inherit'>
             <LogoutIcon fontSize='small' />
           </IconButton>
@@ -133,12 +155,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <img
           src={logo}
           alt='UZH Chatbot'
-          style={{
-            width: '100%',
-            marginTop: '-95px',
-
-            marginLeft: '-20px',
-          }}
+          style={{ width: '100%', marginTop: '-95px', marginLeft: '-20px' }}
         />
 
         <div
@@ -148,13 +165,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             gap: '2px',
             alignItems: 'start',
             paddingLeft: '20px',
-
             width: '100%',
           }}
         >
-          {[PAGES.HOME_PAGE, ...(currentPageTrace?.slice(1) || [])].map((page, index) => {
-            const path = getPathFromPage(page, params)
+          {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, index) => {
+            const pathParams =
+              page === PAGES.PATIENTS_DETAILS_PAGE && patientId
+                ? { patientId: patientId }
+                : (routeParams as Record<string, string>)
+
+            const path = getPathFromPage(page, pathParams)
             const isActive = currentPage === page
+
             return (
               <React.Fragment key={page}>
                 {index !== 0 && <KeyboardArrowDownIcon sx={{ ml: '15px' }} />}
@@ -190,22 +212,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar />
-        <div
-          style={{
-            display: isExpanded ? 'none' : 'block',
-          }}
-        >
-          {children}
-        </div>
+        <div style={{ display: isExpanded ? 'none' : 'block' }}>{children}</div>
       </Box>
+
       <div
         style={{
           position: 'fixed',
           top: 64,
           left: drawerWidth,
-          height: `calc(100vh - 164px)`,
+          height: 'calc(100vh - 164px)',
           backgroundColor: '#b4b6b4',
-          boxSizing: 'border-box',
           padding: '20px 40px 20px 30px',
           visibility: isExpanded ? 'visible' : 'hidden',
           overflowY: 'auto',
@@ -248,7 +264,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
-              handleChatWithTherapistChatbot()
+              handleChatWithTherapistChatbot().catch(console.error)
             }
           }}
           placeholder='Ask your personal assistant...'
@@ -257,24 +273,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             height: '60px',
             backgroundColor: 'white',
             borderRadius: '10px',
-            '& .MuiOutlinedInput-root': {
-              height: '100%',
-            },
+            '& .MuiOutlinedInput-root': { height: '100%' },
           }}
-        ></TextField>
+        />
+
         <IconButton
-          onClick={handleChatWithTherapistChatbot}
+          onClick={() => handleChatWithTherapistChatbot().catch(console.error)}
           sx={{ position: 'absolute', right: isExpanded ? 30 : 70, bottom: 30 }}
         >
           <SendIcon sx={{ color: 'black' }} />
         </IconButton>
+
         {!isExpanded && (
           <IconButton
-            style={{
-              color: 'black',
-              height: '30px',
-              width: '30px',
-            }}
+            style={{ color: 'black', height: '30px', width: '30px' }}
             onClick={handleExpandClicked}
           >
             <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
