@@ -35,6 +35,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
+import ChatbotOverview from '../chatbot/ChatbotOverview'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -293,6 +294,10 @@ const PatientDetail = (): ReactElement => {
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
       />
+
+      <CustomizedDivider />
+
+      <ChatbotOverview />
     </Layout>
   )
 }
