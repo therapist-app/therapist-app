@@ -20,14 +20,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, {
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-  SyntheticEvent,
-} from 'react'
+import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'

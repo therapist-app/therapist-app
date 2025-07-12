@@ -32,8 +32,8 @@ export const createPatientChatbotTemplate = createAsyncThunk(
       const { data } = await chatbotTemplateApi.createTemplateForPatient(patientId, dto)
       return data
     } catch (err: unknown) {
-  return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
-}
+      return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
+    }
   }
 )
 
@@ -91,8 +91,8 @@ export const deletePatientChatbotTemplate = createAsyncThunk<
     await chatbotTemplateApi.deleteTemplateForPatient(patientId, templateId)
     return templateId
   } catch (err: unknown) {
-  return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
-}
+    return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
+  }
 })
 
 const chatbotTemplateSlice = createSlice({

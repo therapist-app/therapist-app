@@ -18,13 +18,7 @@ import {
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-  Location,
-} from 'react-router-dom'
+import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
 import { ChatMessageDTOChatRoleEnum } from '../api'
@@ -45,21 +39,21 @@ interface LayoutLocationState {
 const drawerWidth = 280
 
 const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
-  const navigate  = useNavigate()
-  const location  = useLocation() as Location & { state: LayoutLocationState | null }
-  const dispatch  = useAppDispatch()
+  const navigate = useNavigate()
+  const location = useLocation() as Location & { state: LayoutLocationState | null }
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
 
-  const routeParams           = useParams()
-  const [searchParams]        = useSearchParams()
-  const patientIdFromRoute    = routeParams.patientId
-  const patientIdFromQuery    = searchParams.get('patientId') ?? undefined
-  const patientIdFromState    = location.state?.patientId
-  const patientIdStored       = sessionStorage.getItem('activePatientId') ?? undefined
-  const patientId             =
+  const routeParams = useParams()
+  const [searchParams] = useSearchParams()
+  const patientIdFromRoute = routeParams.patientId
+  const patientIdFromQuery = searchParams.get('patientId') ?? undefined
+  const patientIdFromState = location.state?.patientId
+  const patientIdStored = sessionStorage.getItem('activePatientId') ?? undefined
+  const patientId =
     patientIdFromRoute || patientIdFromQuery || patientIdFromState || patientIdStored
 
   useEffect(() => {
@@ -68,19 +62,19 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
     }
   }, [patientId])
 
-  const currentPage      = getPageFromPath(location.pathname)
-  const currentPageName  = PAGE_NAMES[currentPage]
-  let   pageTrace        = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
+  const currentPage = getPageFromPath(location.pathname)
+  const currentPageName = PAGE_NAMES[currentPage]
+  let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
 
   if (currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE && patientId) {
     pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
   }
 
-  const [isExpanded, setIsExpanded]                       = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [therapistChatbotInput, setTherapistChatbotInput] = useState('')
 
   const therapistChatbotMessages = useSelector(
-    (state: RootState) => state.therapistChatbot.therapistChatbotMessages,
+    (state: RootState) => state.therapistChatbot.therapistChatbotMessages
   )
 
   const handleExpandClicked = (): void => {
@@ -102,8 +96,8 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
     await dispatch(
       chatWithTherapistChatbot({
         newMessage: therapistChatbotInput,
-        patientId,
-      }),
+        patientId: patientId,
+      })
     )
   }
 
@@ -119,68 +113,68 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar
-        position="fixed"
+        position='fixed'
         sx={{
-          zIndex:        theme => theme.zIndex.drawer + 1,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
           backgroundColor: 'white',
-          color:           'black',
-          boxShadow:       'none',
-          borderBottom:    '1px solid #e0e0e0',
-          width:           `calc(100% - ${drawerWidth}px)`,
-          ml:              `${drawerWidth}px`,
+          color: 'black',
+          boxShadow: 'none',
+          borderBottom: '1px solid #e0e0e0',
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
         }}
       >
         <Toolbar>
-          <Typography variant="h1" noWrap sx={{ flexGrow: 1 }}>
+          <Typography variant='h1' noWrap sx={{ flexGrow: 1 }}>
             {currentPageName}
           </Typography>
 
-          <IconButton sx={{ mr: 1 }} onClick={handleSettingsClicked} color="inherit">
+          <IconButton sx={{ mr: 1 }} onClick={handleSettingsClicked} color='inherit'>
             <SettingsIcon />
           </IconButton>
-          <IconButton onClick={handleLogout} color="inherit">
-            <LogoutIcon fontSize="small" />
+          <IconButton onClick={handleLogout} color='inherit'>
+            <LogoutIcon fontSize='small' />
           </IconButton>
         </Toolbar>
       </AppBar>
 
       <Drawer
-        variant="permanent"
+        variant='permanent'
         sx={{
           width: drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            bgcolor:   '#121621',
-            color:     '#9EA2A8',
-            overflow:  'hidden',
+            bgcolor: '#121621',
+            color: '#9EA2A8',
+            overflow: 'hidden',
           },
         }}
       >
         <img
           src={logo}
-          alt="UZH Chatbot"
+          alt='UZH Chatbot'
           style={{ width: '100%', marginTop: '-95px', marginLeft: '-20px' }}
         />
 
         <div
           style={{
-            display:       'flex',
+            display: 'flex',
             flexDirection: 'column',
-            gap:           '2px',
-            alignItems:    'start',
-            paddingLeft:   '20px',
-            width:         '100%',
+            gap: '2px',
+            alignItems: 'start',
+            paddingLeft: '20px',
+            width: '100%',
           }}
         >
           {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, index) => {
             const pathParams =
               page === PAGES.PATIENTS_DETAILS_PAGE && patientId
-                ? { patientId }
+                ? { patientId: patientId }
                 : (routeParams as Record<string, string>)
 
-            const path    = getPathFromPage(page, pathParams)
+            const path = getPathFromPage(page, pathParams)
             const isActive = currentPage === page
 
             return (
@@ -190,14 +184,14 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
                   variant={isActive ? 'contained' : 'text'}
                   onClick={() => navigate(path)}
                   sx={{
-                    color:          'white',
+                    color: 'white',
                     backgroundColor: isActive ? '#1F2937' : 'transparent',
-                    textTransform:   'none',
-                    fontWeight:      isActive ? 600 : 400,
-                    fontSize:        '18px',
-                    justifyContent:  'flex-start',
-                    width:           '200px',
-                    px:              1.5,
+                    textTransform: 'none',
+                    fontWeight: isActive ? 600 : 400,
+                    fontSize: '18px',
+                    justifyContent: 'flex-start',
+                    width: '200px',
+                    px: 1.5,
                   }}
                 >
                   {PAGE_NAMES[page]}
@@ -209,12 +203,12 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
       </Drawer>
 
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          p:        3,
+          p: 3,
           backgroundColor: 'white',
-          pb:             '120px',
+          pb: '120px',
         }}
       >
         <Toolbar />
@@ -223,18 +217,18 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
 
       <div
         style={{
-          position:      'fixed',
-          top:           64,
-          left:          drawerWidth,
-          height:        'calc(100vh - 164px)',
+          position: 'fixed',
+          top: 64,
+          left: drawerWidth,
+          height: 'calc(100vh - 164px)',
           backgroundColor: '#b4b6b4',
-          padding:       '20px 40px 20px 30px',
-          visibility:    isExpanded ? 'visible' : 'hidden',
-          overflowY:     'auto',
-          width:         `calc(100vw - ${drawerWidth}px)`,
-          display:       'flex',
+          padding: '20px 40px 20px 30px',
+          visibility: isExpanded ? 'visible' : 'hidden',
+          overflowY: 'auto',
+          width: `calc(100vw - ${drawerWidth}px)`,
+          display: 'flex',
           flexDirection: 'column',
-          gap:           '15px',
+          gap: '15px',
         }}
       >
         {therapistChatbotMessages.map((message, idx) => (
@@ -251,34 +245,34 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
 
       <div
         style={{
-          position:       'fixed',
-          bottom:         0,
-          left:           drawerWidth,
-          right:          0,
+          position: 'fixed',
+          bottom: 0,
+          left: drawerWidth,
+          right: 0,
           backgroundColor: '#b4b6b4',
-          display:         'flex',
-          gap:             '10px',
-          justifyContent:  'space-around',
-          alignItems:      'center',
-          padding:         '20px',
-          zIndex:          1000,
+          display: 'flex',
+          gap: '10px',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          padding: '20px',
+          zIndex: 1000,
         }}
       >
         <TextField
           value={therapistChatbotInput}
           onChange={handleAssistantInputChange}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
               handleChatWithTherapistChatbot().catch(console.error)
             }
           }}
-          placeholder="Ask your personal assistant..."
+          placeholder='Ask your personal assistant...'
           sx={{
-            width:            '100%',
-            height:           '60px',
-            backgroundColor:  'white',
-            borderRadius:     '10px',
+            width: '100%',
+            height: '60px',
+            backgroundColor: 'white',
+            borderRadius: '10px',
             '& .MuiOutlinedInput-root': { height: '100%' },
           }}
         />
@@ -303,12 +297,12 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
       {isExpanded && (
         <IconButton
           style={{
-            color:    'black',
-            height:   '30px',
-            width:    '30px',
+            color: 'black',
+            height: '30px',
+            width: '30px',
             position: 'fixed',
-            top:      80,
-            right:    20,
+            top: 80,
+            right: 20,
           }}
           onClick={handleExpandClicked}
         >
