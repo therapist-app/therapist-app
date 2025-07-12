@@ -22,7 +22,7 @@ export const createChatbotTemplate = createAsyncThunk(
   async (createChatbotTemplateDTO: CreateChatbotTemplateDTO) => {
     const response = await chatbotTemplateApi.createTemplate(createChatbotTemplateDTO)
     return response.data
-  },
+  }
 )
 
 export const createPatientChatbotTemplate = createAsyncThunk(
@@ -34,7 +34,7 @@ export const createPatientChatbotTemplate = createAsyncThunk(
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message)
     }
-  },
+  }
 )
 
 export const updateChatbotTemplate = createAsyncThunk(
@@ -45,10 +45,10 @@ export const updateChatbotTemplate = createAsyncThunk(
   }) => {
     const response = await chatbotTemplateApi.updateTemplate(
       payload.chatbotTemplateId,
-      payload.updateChatbotTemplateDTO,
+      payload.updateChatbotTemplateDTO
     )
     return response.data
-  },
+  }
 )
 
 export const cloneChatbotTemplate = createAsyncThunk(
@@ -56,14 +56,14 @@ export const cloneChatbotTemplate = createAsyncThunk(
   async (chatbotTemplateId: string) => {
     const response = await chatbotTemplateApi.cloneTemplate(chatbotTemplateId)
     return response.data
-  },
+  }
 )
 
 export const clonePatientChatbotTemplate = createAsyncThunk(
   'chatbotTemplate/clonePatient',
   async (
     { patientId, templateId }: { patientId: string; templateId: string },
-    { rejectWithValue },
+    { rejectWithValue }
   ) => {
     try {
       const { data } = await chatbotTemplateApi.cloneTemplateForPatient(patientId, templateId)
@@ -71,7 +71,7 @@ export const clonePatientChatbotTemplate = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err)
     }
-  },
+  }
 )
 
 export const deleteChatbotTemplate = createAsyncThunk(
@@ -79,7 +79,7 @@ export const deleteChatbotTemplate = createAsyncThunk(
   async (chatbotTemplateId: string) => {
     const response = await chatbotTemplateApi.deleteTemplate(chatbotTemplateId)
     return response.data
-  },
+  }
 )
 
 export const deletePatientChatbotTemplate = createAsyncThunk<
@@ -97,7 +97,7 @@ export const deletePatientChatbotTemplate = createAsyncThunk<
 
 const chatbotTemplateSlice = createSlice({
   name: 'chatbotTemplate',
-  initialState,
+  initialState: initialState,
   reducers: {
     setSelectedChatbotTemplate: (state, action: PayloadAction<ChatbotTemplateOutputDTO>) => {
       state.selectedChatbotTemplate = action.payload
@@ -105,16 +105,16 @@ const chatbotTemplateSlice = createSlice({
     setAllChatbotTemplates: (state, action: PayloadAction<ChatbotTemplateOutputDTO[]>) => {
       state.allChatbotTemplates = action.payload
     },
-    clearSelectedChatbotTemplate: state => {
+    clearSelectedChatbotTemplate: (state) => {
       state.selectedChatbotTemplate = null
     },
-    clearAllChatbotTemplates: state => {
+    clearAllChatbotTemplates: (state) => {
       state.allChatbotTemplates = []
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(createChatbotTemplate.pending, state => {
+      .addCase(createChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
@@ -127,7 +127,7 @@ const chatbotTemplateSlice = createSlice({
         state.error = action.error.message || 'Something went wrong'
       })
 
-      .addCase(createPatientChatbotTemplate.pending, state => {
+      .addCase(createPatientChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
@@ -143,7 +143,7 @@ const chatbotTemplateSlice = createSlice({
             : action.error.message || 'Something went wrong'
       })
 
-      .addCase(cloneChatbotTemplate.pending, state => {
+      .addCase(cloneChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
@@ -156,7 +156,7 @@ const chatbotTemplateSlice = createSlice({
         state.error = action.error.message || 'Something went wrong'
       })
 
-      .addCase(updateChatbotTemplate.pending, state => {
+      .addCase(updateChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
@@ -169,11 +169,11 @@ const chatbotTemplateSlice = createSlice({
         state.error = action.error.message || 'Something went wrong'
       })
 
-      .addCase(deleteChatbotTemplate.pending, state => {
+      .addCase(deleteChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(deleteChatbotTemplate.fulfilled, state => {
+      .addCase(deleteChatbotTemplate.fulfilled, (state) => {
         state.status = 'succeeded'
       })
       .addCase(deleteChatbotTemplate.rejected, (state, action) => {
@@ -181,14 +181,14 @@ const chatbotTemplateSlice = createSlice({
         state.error = action.error.message || 'Something went wrong'
       })
 
-      .addCase(deletePatientChatbotTemplate.pending, state => {
+      .addCase(deletePatientChatbotTemplate.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
       .addCase(deletePatientChatbotTemplate.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.allChatbotTemplates = state.allChatbotTemplates.filter(
-          tpl => tpl.id !== action.payload,
+          (tpl) => tpl.id !== action.payload
         )
         if (state.selectedChatbotTemplate?.id === action.payload) {
           state.selectedChatbotTemplate = null

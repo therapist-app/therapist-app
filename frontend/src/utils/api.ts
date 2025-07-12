@@ -22,7 +22,7 @@ import {
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
 
 const api = axios.create({
-  baseURL,
+  baseURL: baseURL,
   timeout: 60000,
   withCredentials: true,
 })
@@ -30,7 +30,7 @@ const api = axios.create({
 export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(
   undefined,
   baseURL,
-  api,
+  api
 ) as ReturnType<typeof ChatbotTemplateControllerApiFactory> & {
   cloneTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
   deleteTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
@@ -45,7 +45,7 @@ chatbotTemplateApi.deleteTemplateForPatient = (patientId, templateId) =>
 export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFactory(
   undefined,
   baseURL,
-  api,
+  api
 )
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
@@ -59,11 +59,15 @@ export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
 export const counselingPlanApi = CounselingPlanControllerApiFactory(undefined, baseURL, api)
-export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(undefined, baseURL, api)
+export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(
+  undefined,
+  baseURL,
+  api
+)
 export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFactory(
   undefined,
   baseURL,
-  api,
+  api
 )
 
 api.interceptors.response.use(
@@ -79,5 +83,5 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error)
-  },
+  }
 )
