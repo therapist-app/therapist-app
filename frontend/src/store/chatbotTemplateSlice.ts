@@ -85,7 +85,7 @@ export const deleteChatbotTemplate = createAsyncThunk(
 export const deletePatientChatbotTemplate = createAsyncThunk<
   string,
   { patientId: string; templateId: string },
-  { rejectValue: any }
+  { rejectValue: string }
 >('chatbotTemplate/deletePatientChatbotTemplate', async ({ patientId, templateId }, thunkAPI) => {
   try {
     await chatbotTemplateApi.deleteTemplateForPatient(patientId, templateId)
