@@ -94,18 +94,12 @@ public class ChatbotTemplateController {
   @DeleteMapping("/patients/{patientId}/{templateId}")
   @ResponseStatus(HttpStatus.OK)
   public void deleteTemplateForPatient(
-          @PathVariable String patientId,
-          @PathVariable String templateId,
-          HttpServletRequest request) {
+      @PathVariable String patientId, @PathVariable String templateId, HttpServletRequest request) {
 
-    Therapist therapist =
-            therapistService.getCurrentlyLoggedInTherapist(request);
+    Therapist therapist = therapistService.getCurrentlyLoggedInTherapist(request);
 
-    chatbotTemplateService.deleteTemplateForPatient(
-            therapist.getId(), patientId, templateId);
+    chatbotTemplateService.deleteTemplateForPatient(therapist.getId(), patientId, templateId);
   }
-
-
 
   @PostMapping("/{templateId}/clone")
   @ResponseStatus(HttpStatus.CREATED)
@@ -120,15 +114,10 @@ public class ChatbotTemplateController {
   @PostMapping("/patients/{patientId}/{templateId}/clone")
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO cloneTemplateForPatient(
-          @PathVariable String patientId,
-          @PathVariable String templateId,
-          HttpServletRequest request) {
+      @PathVariable String patientId, @PathVariable String templateId, HttpServletRequest request) {
 
-    Therapist therapist =
-            therapistService.getCurrentlyLoggedInTherapist(request);
+    Therapist therapist = therapistService.getCurrentlyLoggedInTherapist(request);
 
-    return chatbotTemplateService.cloneTemplateForPatient(
-            therapist.getId(), patientId, templateId);
+    return chatbotTemplateService.cloneTemplateForPatient(therapist.getId(), patientId, templateId);
   }
-
 }
