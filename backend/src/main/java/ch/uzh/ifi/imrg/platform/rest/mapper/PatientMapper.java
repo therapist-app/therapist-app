@@ -1,10 +1,12 @@
 package ch.uzh.ifi.imrg.platform.rest.mapper;
 
+import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.Complaint;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ComplaintDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import java.util.List;
@@ -51,6 +53,7 @@ public interface PatientMapper {
   @Mapping(source = "personalOccupational", target = "personalOccupational")
   @Mapping(source = "personalMarital", target = "personalMarital")
   @Mapping(source = "personalPremorbid", target = "personalPremorbid")
+  @Mapping(source = "chatbotTemplates", target = "chatbotTemplatesOutputDTO")
   @Mapping(source = "meetings", target = "meetingsOutputDTO")
   PatientOutputDTO convertEntityToPatientOutputDTO(Patient patient);
 
@@ -112,5 +115,14 @@ public interface PatientMapper {
     return meetings.stream()
         .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
+  }
+
+  default List<ChatbotTemplateOutputDTO> mapChatbotTemplates(
+          List<ChatbotTemplate> templates) {
+
+    if (templates == null) return null;
+    return templates.stream()
+            .map(ChatbotTemplateMapper.INSTANCE::convertEntityToChatbotTemplateOutputDTO)
+            .collect(Collectors.toList());
   }
 }

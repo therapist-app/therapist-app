@@ -7,7 +7,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 | [**createConversation**](ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations |  |
 | [**deleteChat**](ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} |  |
 | [**getAllMessages1**](ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} |  |
-| [**getConversationNames**](ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations/{patientId} |  |
+| [**getConversationNames**](ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations |  |
 | [**sendMessage1**](ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} |  |
 | [**updateSharing**](ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} |  |
 

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_COACH,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_AI,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES
@@ -45,6 +46,9 @@ public class CompleteConversationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
+
+  public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
+  private String welcomeMessage;
 
   public static final String JSON_PROPERTY_SHARE_WITH_COACH = "shareWithCoach";
   private Boolean shareWithCoach;
@@ -107,6 +111,32 @@ public class CompleteConversationOutputDTOPatientAPI {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
     this.name = name;
+  }
+
+
+  public CompleteConversationOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
+    
+    this.welcomeMessage = welcomeMessage;
+    return this;
+  }
+
+   /**
+   * Get welcomeMessage
+   * @return welcomeMessage
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getWelcomeMessage() {
+    return welcomeMessage;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWelcomeMessage(String welcomeMessage) {
+    this.welcomeMessage = welcomeMessage;
   }
 
 
@@ -206,6 +236,7 @@ public class CompleteConversationOutputDTOPatientAPI {
     CompleteConversationOutputDTOPatientAPI completeConversationOutputDTO = (CompleteConversationOutputDTOPatientAPI) o;
     return Objects.equals(this.id, completeConversationOutputDTO.id) &&
         Objects.equals(this.name, completeConversationOutputDTO.name) &&
+        Objects.equals(this.welcomeMessage, completeConversationOutputDTO.welcomeMessage) &&
         Objects.equals(this.shareWithCoach, completeConversationOutputDTO.shareWithCoach) &&
         Objects.equals(this.shareWithAi, completeConversationOutputDTO.shareWithAi) &&
         Objects.equals(this.messages, completeConversationOutputDTO.messages);
@@ -213,7 +244,7 @@ public class CompleteConversationOutputDTOPatientAPI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, shareWithCoach, shareWithAi, messages);
+    return Objects.hash(id, name, welcomeMessage, shareWithCoach, shareWithAi, messages);
   }
 
   @Override
@@ -222,6 +253,7 @@ public class CompleteConversationOutputDTOPatientAPI {
     sb.append("class CompleteConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
     sb.append("    shareWithCoach: ").append(toIndentedString(shareWithCoach)).append("\n");
     sb.append("    shareWithAi: ").append(toIndentedString(shareWithAi)).append("\n");
     sb.append("    messages: ").append(toIndentedString(messages)).append("\n");

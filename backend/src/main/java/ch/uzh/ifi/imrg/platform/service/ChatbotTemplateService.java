@@ -1,11 +1,14 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
+import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
+import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +24,35 @@ public class ChatbotTemplateService {
 
   private final ChatbotTemplateRepository chatbotTemplateRepository;
   private final TherapistRepository therapistRepository;
+  private final PatientRepository patientRepository;
 
   private final ChatbotTemplateMapper chatbotTemplateMapper = ChatbotTemplateMapper.INSTANCE;
 
   @Autowired
   public ChatbotTemplateService(
       @Qualifier("chatbotTemplateRepository") ChatbotTemplateRepository chatbotTemplateRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
+      @Qualifier("patientRepository") PatientRepository patientRepository) {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
     this.therapistRepository = therapistRepository;
+    this.patientRepository = patientRepository;
+  }
+
+  public ChatbotTemplateOutputDTO getTemplateForTherapist(
+          String therapistId, String templateId) {
+
+    ChatbotTemplate tpl = chatbotTemplateRepository.findById(templateId)
+            .orElseThrow(() -> new EntityNotFoundException("Template not found"));
+
+    boolean allowed =
+            (tpl.getTherapist() != null && tpl.getTherapist().getId().equals(therapistId)) ||
+                    (tpl.getPatient()   != null &&
+                            tpl.getPatient().getTherapist().getId().equals(therapistId));
+
+    if (!allowed) {
+      throw new EntityNotFoundException("Template not found");
+    }
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(tpl);
   }
 
   public ChatbotTemplateOutputDTO createTemplate(String therapistId, ChatbotTemplate template) {
@@ -42,6 +65,28 @@ public class ChatbotTemplateService {
     chatbotTemplateRepository.flush();
 
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(createdChatbotTemplate);
+  }
+
+  public ChatbotTemplateOutputDTO createTemplateForPatient(
+          String therapistId,
+          String patientId,
+          ChatbotTemplate template) {
+
+    // 1) make sure the patient really belongs to this therapist
+    if (!patientRepository.existsByIdAndTherapistId(patientId, therapistId)) {
+      throw new IllegalArgumentException(
+              "Patient " + patientId + " does not belong to therapist " + therapistId);
+    }
+
+    Patient patient = patientRepository.getPatientById(patientId);
+
+    template.setPatient(patient);
+    template.setTherapist(patient.getTherapist());
+
+    ChatbotTemplate saved = chatbotTemplateRepository.save(template);
+    chatbotTemplateRepository.flush();
+
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
   }
 
   public ChatbotTemplateOutputDTO updateTemplate(

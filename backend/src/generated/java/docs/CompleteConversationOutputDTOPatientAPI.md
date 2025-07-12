@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **String** |  |  [optional] |
 |**name** | **String** |  |  [optional] |
+|**welcomeMessage** | **String** |  |  [optional] |
 |**shareWithCoach** | **Boolean** |  |  [optional] |
 |**shareWithAi** | **Boolean** |  |  [optional] |
 |**messages** | [**List&lt;MessageOutputDTOPatientAPI&gt;**](MessageOutputDTOPatientAPI.md) |  |  [optional] |

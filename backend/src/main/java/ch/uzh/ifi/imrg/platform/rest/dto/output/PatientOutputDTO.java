@@ -47,6 +47,8 @@ public class PatientOutputDTO {
 
   private List<MeetingOutputDTO> meetingsOutputDTO;
 
+  private List<ChatbotTemplateOutputDTO> chatbotTemplatesOutputDTO;
+
   public PatientOutputDTO() {}
 
   public PatientOutputDTO(String id, String name) {

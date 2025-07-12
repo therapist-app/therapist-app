@@ -57,6 +57,14 @@ public class CompleteConversationOutputDTOPatientAPITest {
     }
 
     /**
+     * Test the property 'welcomeMessage'
+     */
+    @Test
+    public void welcomeMessageTest() {
+        // TODO: test welcomeMessage
+    }
+
+    /**
      * Test the property 'shareWithCoach'
      */
     @Test

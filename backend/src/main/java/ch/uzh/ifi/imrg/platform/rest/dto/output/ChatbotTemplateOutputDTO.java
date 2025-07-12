@@ -22,4 +22,6 @@ public class ChatbotTemplateOutputDTO {
   private String chatbotInputPlaceholder;
   private Instant createdAt;
   private Instant updatedAt;
+  private String patientId;
+  private String therapistId;
 }

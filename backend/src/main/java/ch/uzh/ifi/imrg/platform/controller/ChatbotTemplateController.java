@@ -28,6 +28,18 @@ public class ChatbotTemplateController {
     this.therapistService = therapistService;
   }
 
+  @GetMapping("/{templateId}")
+  @ResponseStatus(HttpStatus.OK)
+  public ChatbotTemplateOutputDTO getTemplate(
+          @PathVariable String templateId,
+          HttpServletRequest request) {
+
+    Therapist therapist = therapistService.getCurrentlyLoggedInTherapist(request);
+    return chatbotTemplateService.getTemplateForTherapist(
+            therapist.getId(),
+            templateId);
+  }
+
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO createTemplate(
@@ -39,6 +51,25 @@ public class ChatbotTemplateController {
     ChatbotTemplate template =
         ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
     return chatbotTemplateService.createTemplate(loggedInTherapist.getId(), template);
+  }
+
+  @PostMapping("/patients/{patientId}")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ChatbotTemplateOutputDTO createTemplateForPatient(
+          @PathVariable String patientId,
+          @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+          HttpServletRequest httpServletRequest) {
+
+    Therapist loggedInTherapist =
+            therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+
+    ChatbotTemplate template =
+            ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+
+    return chatbotTemplateService.createTemplateForPatient(
+            loggedInTherapist.getId(),
+            patientId,
+            template);
   }
 
   @PutMapping("/{templateId}")
