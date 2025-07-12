@@ -56,6 +56,10 @@ const Home = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+  const ownTemplates: ChatbotTemplateOutputDTO[] =
+  (loggedInTherapist?.chatbotTemplatesOutputDTO ?? []).filter(
+    (tpl) => tpl.patientId == null
+  )
   const allTherapistDocuments = useSelector(
     (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
   )
@@ -342,79 +346,82 @@ const Home = (): ReactElement => {
         </Button>
       </div>
 
-      {loggedInTherapist?.chatbotTemplatesOutputDTO &&
-      loggedInTherapist.chatbotTemplatesOutputDTO.length > 0 ? (
-        <Box
+      {ownTemplates.length > 0 ? (
+  <Box
+    sx={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 2,
+      justifyContent: 'flex-start',
+    }}
+  >
+    {ownTemplates.map((bot, index) => (
+      <Card
+        key={bot.id || index}
+        variant="outlined"
+        sx={{
+          mb: 2,
+          maxWidth: '300px',
+          minWidth: '300px',
+          maxHeight: '250px',
+          minHeight: '250px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          position: 'relative',
+          boxShadow: 'none',
+          border: '1px solid #e0e0e0',
+          borderRadius: '8px',
+        }}
+      >
+        <CardActionArea onClick={() => handleChatbotTemplateClick(bot.id ?? '')}>
+          <CardContent>
+            <Typography variant="h6">
+              {bot.chatbotName || t('dashboard.unnamed_bot')}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              {t('dashboard.language')}: {bot.chatbotLanguage}
+            </Typography>
+            <Typography variant="body1" sx={{ mt: 1 }}>
+              {t('dashboard.role')}: {bot.chatbotRole}
+            </Typography>
+            <Typography variant="body1">{`Tone: ${bot.chatbotTone}`}</Typography>
+            <Typography
+              variant="body1"
+              sx={{ fontSize: '48px', textAlign: 'center' }}
+            >
+              {getIconComponent(bot.chatbotIcon ?? '')}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+
+        <CardActions
+          disableSpacing
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            justifyContent: 'flex-start',
+            position: 'absolute',
+            top: 0,
+            right: 0,
           }}
         >
-          {loggedInTherapist.chatbotTemplatesOutputDTO.map((bot, index) => (
-            <Card
-              key={bot.id || index}
-              variant='outlined'
-              sx={{
-                mb: 2,
-                maxWidth: '300px',
-                minWidth: '300px',
-                maxHeight: '250px',
-                minHeight: '250px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                position: 'relative',
-                boxShadow: 'none',
-                border: '1px solid #e0e0e0',
-                borderRadius: '8px',
-              }}
-            >
-              <CardActionArea onClick={() => handleChatbotTemplateClick(bot.id ?? '')}>
-                <CardContent>
-                  <Typography variant='h6'>
-                    {bot.chatbotName || t('dashboard.unnamed_bot')}
-                  </Typography>
-                  <Typography variant='body2' color='textSecondary'>
-                    {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
-                  </Typography>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.language')}: {bot.chatbotLanguage}
-                  </Typography>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.role')}: {bot.chatbotRole}
-                  </Typography>
-                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-                  <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
-                    {getIconComponent(bot.chatbotIcon ?? '')}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+          <IconButton
+            aria-label="more"
+            aria-controls="chatbot-menu"
+            aria-haspopup="true"
+            onClick={(event) => handleMenuClick(event, bot)}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    ))}
+  </Box>
+) : (
+  <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
+)}
 
-              <CardActions
-                disableSpacing
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-              >
-                <IconButton
-                  aria-label='more'
-                  aria-controls='chatbot-menu'
-                  aria-haspopup='true'
-                  onClick={(event) => handleMenuClick(event, bot)}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </CardActions>
-            </Card>
-          ))}
-        </Box>
-      ) : (
-        <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
-      )}
 
       <CustomizedDivider />
 

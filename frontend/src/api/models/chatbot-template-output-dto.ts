@@ -122,5 +122,17 @@ export interface ChatbotTemplateOutputDTO {
      * @memberof ChatbotTemplateOutputDTO
      */
     'updatedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotTemplateOutputDTO
+     */
+    'patientId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatbotTemplateOutputDTO
+     */
+    'therapistId'?: string;
 }
 

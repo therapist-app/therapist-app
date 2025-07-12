@@ -25,6 +25,24 @@ export const createChatbotTemplate = createAsyncThunk(
   }
 )
 
+export const createPatientChatbotTemplate = createAsyncThunk(
+  'chatbotTemplate/createPatientChatbotTemplate',
+  async (
+    {
+      patientId,
+      dto,
+    }: { patientId: string; dto: CreateChatbotTemplateDTO },
+    thunkAPI
+  ) => {
+    try {
+      const { data } = await chatbotTemplateApi.createTemplateForPatient(patientId, dto)
+      return data
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data || err.message)
+    }
+  }
+)
+
 export const updateChatbotTemplate = createAsyncThunk(
   'updateChatbotTemplate',
   async (payload: {
@@ -87,6 +105,22 @@ const chatbotTemplateSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
+      })
+
+      .addCase(createPatientChatbotTemplate.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(createPatientChatbotTemplate.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.selectedChatbotTemplate = action.payload
+      })
+      .addCase(createPatientChatbotTemplate.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error =
+          typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
 
       .addCase(cloneChatbotTemplate.pending, (state) => {

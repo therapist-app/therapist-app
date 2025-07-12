@@ -15,6 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import type { ChatbotTemplateOutputDTO } from './chatbot-template-output-dto';
+// May contain unused imports in some cases
+// @ts-ignore
 import type { ComplaintDTO } from './complaint-dto';
 // May contain unused imports in some cases
 // @ts-ignore
@@ -230,5 +233,11 @@ export interface PatientOutputDTO {
      * @memberof PatientOutputDTO
      */
     'meetingsOutputDTO'?: Array<MeetingOutputDTO>;
+    /**
+     * 
+     * @type {Array<ChatbotTemplateOutputDTO>}
+     * @memberof PatientOutputDTO
+     */
+    'chatbotTemplatesOutputDTO'?: Array<ChatbotTemplateOutputDTO>;
 }
 
