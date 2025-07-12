@@ -20,22 +20,28 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import React, {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  SyntheticEvent,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
 import { PiBookOpenTextLight } from 'react-icons/pi'
 import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
-import {
+import type {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
   ChatMessageDTO,
-  ChatMessageDTOChatRoleEnum,
 } from '../../api'
+import { ChatMessageDTOChatRoleEnum } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import {
@@ -45,8 +51,7 @@ import {
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
-import { chatbotTemplateApi } from '../../utils/api'
-import { chatApi, chatbotTemplateDocumentApi } from '../../utils/api'
+import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 

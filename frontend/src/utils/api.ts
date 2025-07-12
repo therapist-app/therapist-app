@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
 import {
   ChatbotTemplateControllerApiFactory,
@@ -19,6 +19,10 @@ import {
   TherapistDocumentControllerApiFactory,
 } from '../api'
 
+import {
+  ChatbotTemplateOutputDTO,
+} from '../api'
+
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
 
 const api = axios.create({
@@ -30,16 +34,22 @@ const api = axios.create({
 export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(
   undefined,
   baseURL,
-  api
+  api,
 ) as ReturnType<typeof ChatbotTemplateControllerApiFactory> & {
-  cloneTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
-  deleteTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
+  cloneTemplateForPatient:  (pId: string, tId: string) => Promise<AxiosResponse<ChatbotTemplateOutputDTO>>
+  deleteTemplateForPatient: (pId: string, tId: string) => Promise<AxiosResponse<void>>
 }
 
-chatbotTemplateApi.cloneTemplateForPatient = (patientId, templateId) =>
+chatbotTemplateApi.cloneTemplateForPatient = (
+  patientId: string,
+  templateId: string,
+): Promise<AxiosResponse<ChatbotTemplateOutputDTO>> =>
   api.post(`/chatbot-templates/patients/${patientId}/${templateId}/clone`)
 
-chatbotTemplateApi.deleteTemplateForPatient = (patientId, templateId) =>
+chatbotTemplateApi.deleteTemplateForPatient = (
+  patientId: string,
+  templateId: string,
+): Promise<AxiosResponse<void>> =>
   api.delete(`/chatbot-templates/patients/${patientId}/${templateId}`)
 
 export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFactory(
