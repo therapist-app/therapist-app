@@ -29,8 +29,8 @@ import {
   createChatbotTemplate,
   deleteChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -57,7 +57,9 @@ const ChatbotOverview = (): ReactElement => {
   }, [dispatch, refreshTherapistCounter])
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
@@ -80,7 +82,9 @@ const ChatbotOverview = (): ReactElement => {
 
   const handleCreateChatbot = async (): Promise<void> => {
     try {
-      if (!loggedInTherapist) return
+      if (!loggedInTherapist) {
+        return
+      }
 
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
         chatbotName: '',
@@ -126,7 +130,9 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleClone = async (): Promise<void> => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
@@ -143,7 +149,9 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleDelete = async (): Promise<void> => {
-    if (!currentChatbot) return
+    if (!currentChatbot) {
+      return
+    }
     try {
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
@@ -160,17 +168,21 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {
-    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) return
+    if (!loggedInTherapist?.chatbotTemplatesOutputDTO) {
+      return
+    }
 
     const selectedChatbot = loggedInTherapist.chatbotTemplatesOutputDTO.find(
       (bot) => bot.id === chatbotTemplateId
     )
-    if (!selectedChatbot) return
+    if (!selectedChatbot) {
+      return
+    }
 
     sessionStorage.setItem('chatbotTemplateId', chatbotTemplateId)
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-        chatbotTemplateId,
+        chatbotTemplateId: chatbotTemplateId,
       }),
       {
         state: { chatbotConfig: selectedChatbot },

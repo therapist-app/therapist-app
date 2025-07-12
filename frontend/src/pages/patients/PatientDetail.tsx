@@ -32,10 +32,10 @@ import { RootState } from '../../store/store'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
-import ChatbotOverview from '../chatbot/ChatbotOverview'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
