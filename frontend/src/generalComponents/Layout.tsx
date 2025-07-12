@@ -18,15 +18,32 @@ import {
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
 import { ChatMessageDTOChatRoleEnum } from '../api'
 import { RootState } from '../store/store'
-import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
-import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
+import {
+  chatWithTherapistChatbot,
+  clearMessages,
+} from '../store/therapistChatbotSlice'
+import {
+  getCurrentlyLoggedInTherapist,
+  logoutTherapist,
+} from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
-import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
+import {
+  findPageTrace,
+  getPageFromPath,
+  getPathFromPage,
+  PAGE_NAMES,
+  PAGES,
+} from '../utils/routes'
 
 interface LayoutProps {
   children: ReactNode
@@ -39,15 +56,42 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
   const dispatch = useAppDispatch()
 
-  const { patientId } = useParams()
-
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
 
-  const currentPage = getPageFromPath(location.pathname)
-  const currentPageName = PAGE_NAMES[currentPage]
-  const currentPageTrace = findPageTrace(currentPage)
+  const routeParams            = useParams()            
+  const [searchParams]         = useSearchParams()      
+  const patientIdFromRoute     = routeParams.patientId
+  const patientIdFromQuery     = searchParams.get('patientId') || undefined
+  const patientIdFromState     = (location.state as any)?.patientId
+  const patientIdStored        = sessionStorage.getItem('activePatientId') || undefined
+
+  const patientId =
+    patientIdFromRoute ||
+    patientIdFromQuery ||
+    patientIdFromState ||
+    patientIdStored
+
+  useEffect(() => {
+    if (patientId) sessionStorage.setItem('activePatientId', patientId)
+  }, [patientId])
+
+  const currentPage       = getPageFromPath(location.pathname)
+  const currentPageName   = PAGE_NAMES[currentPage]
+
+  let pageTrace = findPageTrace(currentPage) || [PAGES.HOME_PAGE]
+
+  if (
+    currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE &&
+    patientId
+  ) {
+    pageTrace = [
+      PAGES.HOME_PAGE,
+      PAGES.PATIENTS_DETAILS_PAGE,
+      PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE,
+    ]
+  }
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [therapistChatbotInput, setTherapistChatbotInput] = useState('')
@@ -64,7 +108,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsExpanded(!isExpanded)
   }
 
-  const handleAssistantInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleAssistantInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setTherapistChatbotInput(event.target.value)
   }
 
@@ -73,11 +119,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setIsExpanded(true)
 
     await dispatch(
-      chatWithTherapistChatbot({ newMessage: therapistChatbotInput, patientId: patientId })
+      chatWithTherapistChatbot({
+        newMessage: therapistChatbotInput,
+        patientId: patientId,
+      })
     )
   }
-
-  const params = useParams() as Record<string, string>
 
   const handleLogout = (): void => {
     dispatch(logoutTherapist())
@@ -91,7 +138,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar
-        position='fixed'
+        position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backgroundColor: 'white',
@@ -103,21 +150,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar>
-          <Typography variant='h1' noWrap sx={{ flexGrow: 1 }}>
+          <Typography variant="h1" noWrap sx={{ flexGrow: 1 }}>
             {currentPageName}
           </Typography>
-          <IconButton sx={{ marginRight: 1 }} onClick={handleSettingsClicked} color='inherit'>
+          <IconButton
+            sx={{ marginRight: 1 }}
+            onClick={handleSettingsClicked}
+            color="inherit"
+          >
             <SettingsIcon />
           </IconButton>
 
-          <IconButton onClick={handleLogout} color='inherit'>
-            <LogoutIcon fontSize='small' />
+          <IconButton onClick={handleLogout} color="inherit">
+            <LogoutIcon fontSize="small" />
           </IconButton>
         </Toolbar>
       </AppBar>
 
       <Drawer
-        variant='permanent'
+        variant="permanent"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -132,11 +183,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <img
           src={logo}
-          alt='UZH Chatbot'
+          alt="UZH Chatbot"
           style={{
             width: '100%',
             marginTop: '-95px',
-
             marginLeft: '-20px',
           }}
         />
@@ -148,13 +198,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             gap: '2px',
             alignItems: 'start',
             paddingLeft: '20px',
-
             width: '100%',
           }}
         >
-          {[PAGES.HOME_PAGE, ...(currentPageTrace?.slice(1) || [])].map((page, index) => {
-            const path = getPathFromPage(page, params)
+          {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, index) => {
+            const pathParams =
+              page === PAGES.PATIENTS_DETAILS_PAGE && patientId
+                ? { patientId }
+                : (routeParams as Record<string, string>)
+
+            const path = getPathFromPage(page, pathParams)
             const isActive = currentPage === page
+
             return (
               <React.Fragment key={page}>
                 {index !== 0 && <KeyboardArrowDownIcon sx={{ ml: '15px' }} />}
@@ -181,7 +236,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Drawer>
 
       <Box
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           p: 3,
@@ -190,14 +245,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar />
-        <div
-          style={{
-            display: isExpanded ? 'none' : 'block',
-          }}
-        >
-          {children}
-        </div>
+        <div style={{ display: isExpanded ? 'none' : 'block' }}>{children}</div>
       </Box>
+
       <div
         style={{
           position: 'fixed',
@@ -251,7 +301,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               handleChatWithTherapistChatbot()
             }
           }}
-          placeholder='Ask your personal assistant...'
+          placeholder="Ask your personal assistant..."
           sx={{
             width: '100%',
             height: '60px',
@@ -261,7 +311,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               height: '100%',
             },
           }}
-        ></TextField>
+        />
         <IconButton
           onClick={handleChatWithTherapistChatbot}
           sx={{ position: 'absolute', right: isExpanded ? 30 : 70, bottom: 30 }}
@@ -270,11 +320,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </IconButton>
         {!isExpanded && (
           <IconButton
-            style={{
-              color: 'black',
-              height: '30px',
-              width: '30px',
-            }}
+            style={{ color: 'black', height: '30px', width: '30px' }}
             onClick={handleExpandClicked}
           >
             <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />

@@ -22,16 +22,30 @@ import {
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
 
 const api = axios.create({
-  baseURL: baseURL,
+  baseURL,
   timeout: 60000,
   withCredentials: true,
 })
 
-export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(undefined, baseURL, api)
+export const chatbotTemplateApi = ChatbotTemplateControllerApiFactory(
+  undefined,
+  baseURL,
+  api,
+) as ReturnType<typeof ChatbotTemplateControllerApiFactory> & {
+  cloneTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
+  deleteTemplateForPatient: (patientId: string, templateId: string) => Promise<any>
+}
+
+chatbotTemplateApi.cloneTemplateForPatient = (patientId, templateId) =>
+  api.post(`/chatbot-templates/patients/${patientId}/${templateId}/clone`)
+
+chatbotTemplateApi.deleteTemplateForPatient = (patientId, templateId) =>
+  api.delete(`/chatbot-templates/patients/${patientId}/${templateId}`)
+
 export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFactory(
   undefined,
   baseURL,
-  api
+  api,
 )
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
@@ -45,15 +59,11 @@ export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
 export const counselingPlanApi = CounselingPlanControllerApiFactory(undefined, baseURL, api)
-export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(
-  undefined,
-  baseURL,
-  api
-)
+export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(undefined, baseURL, api)
 export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFactory(
   undefined,
   baseURL,
-  api
+  api,
 )
 
 api.interceptors.response.use(
@@ -62,12 +72,12 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       try {
         await therapistApi.logoutTherapist()
-      } catch (error) {
-        console.error(error)
+      } catch (err) {
+        console.error(err)
       } finally {
         window.location.href = '/register'
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
