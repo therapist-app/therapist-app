@@ -15,8 +15,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { CounselingPlanPhaseOutputDTO } from '../../api'
-import { ChatbotTemplateOutputDTO } from '../../api'
+import { CounselingPlanPhaseOutputDTO, ChatbotTemplateOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
@@ -62,18 +61,6 @@ const PatientDetail = (): ReactElement => {
 
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
-
-  const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
-  const therapistTemplates = (therapist?.chatbotTemplatesOutputDTO ?? []).filter(
-    (tpl) => tpl.patientId == null
-  )
-
-  const handleSelectChatbot = (bot: ChatbotTemplateOutputDTO): void => {
-    navigate(
-      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId: bot.id ?? '' }),
-      { state: { chatbotConfig: bot } }
-    )
-  }
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())

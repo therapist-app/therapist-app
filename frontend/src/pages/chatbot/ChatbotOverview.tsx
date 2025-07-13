@@ -220,51 +220,62 @@ const ChatbotOverview = (): ReactElement => {
     }
   }
 
-  const renderCard = (bot: ChatbotTemplateOutputDTO, showMenu = true) => (
-    <Card
-      key={bot.id}
-      sx={{
-        maxWidth: 300,
-        minWidth: 300,
-        maxHeight: 250,
-        minHeight: 250,
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        border: '1px solid #e0e0e0',
-        boxShadow: 'none',
-        borderRadius: 2,
-      }}
-    >
-      <CardActionArea onClick={() => openTemplate(bot)}>
-        <CardContent>
-          <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
-          <Typography variant='body2' color='textSecondary'>
-            {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
-          </Typography>
-          <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('dashboard.language')}: {bot.chatbotLanguage}
-          </Typography>
-          <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('dashboard.role')}: {bot.chatbotRole}
-          </Typography>
-          <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-          <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
-            {iconFor(bot.chatbotIcon ?? '')}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+const renderCard = (
+  bot: ChatbotTemplateOutputDTO,
+  showMenu = true
+): ReactElement => (
+  <Card
+    key={bot.id}
+    sx={{
+      maxWidth: 300,
+      minWidth: 300,
+      maxHeight: 250,
+      minHeight: 250,
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      border: '1px solid #e0e0e0',
+      boxShadow: 'none',
+      borderRadius: 2,
+    }}
+  >
+    <CardActionArea onClick={() => openTemplate(bot)}>
+      <CardContent>
+        <Typography variant="h6">
+          {bot.chatbotName || t('dashboard.unnamed_bot')}
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 1 }}>
+          {t('dashboard.language')}: {bot.chatbotLanguage}
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 1 }}>
+          {t('dashboard.role')}: {bot.chatbotRole}
+        </Typography>
+        <Typography variant="body1">
+          {`Tone: ${bot.chatbotTone}`}
+        </Typography>
+        <Typography variant="body1" sx={{ fontSize: 48, textAlign: 'center' }}>
+          {iconFor(bot.chatbotIcon ?? '')}
+        </Typography>
+      </CardContent>
+    </CardActionArea>
 
-      {showMenu && (
-        <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
-          <IconButton onClick={(e) => handleMenu(e, bot)}>
-            <MoreVertIcon />
-          </IconButton>
-        </CardActions>
-      )}
-    </Card>
-  )
+    {showMenu && (
+      <CardActions
+        disableSpacing
+        sx={{ position: 'absolute', top: 0, right: 0 }}
+      >
+        <IconButton onClick={(e) => handleMenu(e, bot)}>
+          <MoreVertIcon />
+        </IconButton>
+      </CardActions>
+    )}
+  </Card>
+)
+
 
   return (
     <>
