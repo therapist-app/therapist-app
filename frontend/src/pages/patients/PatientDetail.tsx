@@ -15,7 +15,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ChatbotTemplateOutputDTO, CounselingPlanPhaseOutputDTO } from '../../api'
+import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
