@@ -209,7 +209,7 @@ public class ChatbotTemplateService {
     }
 
     ChatbotTemplate clone = new ChatbotTemplate();
-    clone.setChatbotName(original.getChatbotName());
+    clone.setChatbotName(original.getChatbotName() + " Clone");
     clone.setDescription(original.getDescription());
     clone.setChatbotModel(original.getChatbotModel());
     clone.setChatbotIcon(original.getChatbotIcon());
@@ -230,15 +230,14 @@ public class ChatbotTemplateService {
     original
         .getChatbotTemplateDocuments()
         .forEach(
-            src -> {
-              ChatbotTemplateDocument dst = new ChatbotTemplateDocument();
-              dst.setFileName(src.getFileName());
-              dst.setFileType(src.getFileType());
-              dst.setFileData(src.getFileData());
-              dst.setExtractedText(src.getExtractedText());
-
-              dst.setChatbotTemplate(clone);
-              clone.getChatbotTemplateDocuments().add(dst);
+            doc -> {
+              ChatbotTemplateDocument copy = new ChatbotTemplateDocument();
+              copy.setFileName(doc.getFileName());
+              copy.setFileType(doc.getFileType());
+              copy.setFileData(doc.getFileData());
+              copy.setExtractedText(doc.getExtractedText());
+              copy.setChatbotTemplate(clone);
+              clone.getChatbotTemplateDocuments().add(copy);
             });
 
     ChatbotTemplate saved = chatbotTemplateRepository.save(clone);
