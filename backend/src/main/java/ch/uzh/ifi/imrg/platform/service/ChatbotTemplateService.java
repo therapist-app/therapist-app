@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
+import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
@@ -186,6 +187,7 @@ public class ChatbotTemplateService {
             .orElseThrow(() -> new Error("Template not found with id: " + templateId)));
   }
 
+  @Transactional
   public ChatbotTemplateOutputDTO cloneTemplateForPatient(
       String therapistId, String patientId, String templateId) {
 
@@ -199,8 +201,12 @@ public class ChatbotTemplateService {
 
     ChatbotTemplate original =
         chatbotTemplateRepository
-            .findByIdAndPatientId(templateId, patientId)
+            .findById(templateId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
+
+    if (!original.getTherapist().getId().equals(therapistId)) {
+      throw new EntityNotFoundException("Template not found for therapist");
+    }
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");
@@ -218,8 +224,21 @@ public class ChatbotTemplateService {
     clone.setAnimation(original.getAnimation());
     clone.setChatbotInputPlaceholder(original.getChatbotInputPlaceholder());
 
-    clone.setPatient(patient);
     clone.setTherapist(patient.getTherapist());
+    clone.setPatient(patient);
+
+    original
+        .getChatbotTemplateDocuments()
+        .forEach(
+            doc -> {
+              ChatbotTemplateDocument copy = new ChatbotTemplateDocument();
+              copy.setFileName(doc.getFileName());
+              copy.setFileType(doc.getFileType());
+              copy.setFileData(doc.getFileData());
+              copy.setExtractedText(doc.getExtractedText());
+              copy.setChatbotTemplate(clone);
+              clone.getChatbotTemplateDocuments().add(copy);
+            });
 
     ChatbotTemplate saved = chatbotTemplateRepository.save(clone);
     chatbotTemplateRepository.flush();
