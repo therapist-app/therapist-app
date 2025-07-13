@@ -121,10 +121,10 @@ const ChatbotOverview = (): ReactElement => {
         : await dispatch(createChatbotTemplate(dto)).unwrap()
 
       if (patientId) {
-  dispatch(getAllPatientsOfTherapist())
-} else {
-  dispatch(getCurrentlyLoggedInTherapist())
-}
+        dispatch(getAllPatientsOfTherapist())
+      } else {
+        dispatch(getCurrentlyLoggedInTherapist())
+      }
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -284,28 +284,29 @@ const ChatbotOverview = (): ReactElement => {
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
                 {therapistTemplates.map(
-  (bot: ChatbotTemplateOutputDTO): ReactElement => (
-    <Card
-      key={bot.id}
-                    sx={{
-                      maxWidth: 300,
-                      minWidth: 300,
-                      maxHeight: 250,
-                      minHeight: 250,
-                      position: 'relative',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      border: '1px solid #e0e0e0',
-                      boxShadow: 'none',
-                      borderRadius: 2,
-                    }}
-                  >
-                    <CardActionArea onClick={() => handleCreateFromTherapistTemplate(bot)}>
-                      {renderCard(bot, false)}
-                    </CardActionArea>
-                  </Card>
-                ))}
+                  (bot: ChatbotTemplateOutputDTO): ReactElement => (
+                    <Card
+                      key={bot.id}
+                      sx={{
+                        maxWidth: 300,
+                        minWidth: 300,
+                        maxHeight: 250,
+                        minHeight: 250,
+                        position: 'relative',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        border: '1px solid #e0e0e0',
+                        boxShadow: 'none',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <CardActionArea onClick={() => handleCreateFromTherapistTemplate(bot)}>
+                        {renderCard(bot, false)}
+                      </CardActionArea>
+                    </Card>
+                  )
+                )}
               </Box>
             </>
           )}
