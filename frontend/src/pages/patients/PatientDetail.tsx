@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { CounselingPlanPhaseOutputDTO } from '../../api'
+import { ChatbotTemplateOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
@@ -29,6 +30,7 @@ import {
 } from '../../store/patientDocumentSlice'
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -36,9 +38,6 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
-import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { ChatbotTemplateOutputDTO } from '../../api'
-
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -65,20 +64,20 @@ const PatientDetail = (): ReactElement => {
   const [chatbotName, setChatbotName] = useState('')
 
   const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
-const therapistTemplates = (therapist?.chatbotTemplatesOutputDTO ?? []).filter(
-  (tpl) => tpl.patientId == null
-)
-
-const handleSelectChatbot = (bot: ChatbotTemplateOutputDTO): void => {
-  navigate(
-    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId: bot.id ?? '' }),
-    { state: { chatbotConfig: bot } }
+  const therapistTemplates = (therapist?.chatbotTemplatesOutputDTO ?? []).filter(
+    (tpl) => tpl.patientId == null
   )
-}
 
-useEffect(() => {
-  dispatch(getCurrentlyLoggedInTherapist())
-}, [dispatch])
+  const handleSelectChatbot = (bot: ChatbotTemplateOutputDTO): void => {
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId: bot.id ?? '' }),
+      { state: { chatbotConfig: bot } }
+    )
+  }
+
+  useEffect(() => {
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch])
 
   useEffect(() => {
     console.log(counselingPlan)
