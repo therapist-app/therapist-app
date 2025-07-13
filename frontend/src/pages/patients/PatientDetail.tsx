@@ -29,6 +29,7 @@ import {
 } from '../../store/patientDocumentSlice'
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -60,6 +61,10 @@ const PatientDetail = (): ReactElement => {
 
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
+
+  useEffect(() => {
+    dispatch(getCurrentlyLoggedInTherapist())
+  }, [dispatch])
 
   useEffect(() => {
     console.log(counselingPlan)
@@ -104,9 +109,6 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  // const handleOpenChatbotDialog = (): void => {
-  //   setOpenChatbotDialog(true)
-  // }
   const handleCloseChatbotDialog = (): void => {
     setOpenChatbotDialog(false)
     setChatbotName('')
@@ -268,20 +270,6 @@ const PatientDetail = (): ReactElement => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* 
-
-       <Typography variant='h4'>Chatbot</Typography>
-      <Button
-        variant='contained'
-        onClick={handleOpenChatbotDialog}
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Create Chatbot
-      </Button> 
-
-      <CustomizedDivider /> />
-      */}
 
       <GAD7TestDetail />
 

@@ -1,3 +1,4 @@
+// src/generalComponents/Layout.tsx
 import AssistantIcon from '@mui/icons-material/Assistant'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -31,83 +32,68 @@ import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } fr
 interface LayoutProps {
   children: ReactNode
 }
-
 interface LayoutLocationState {
   patientId?: string
 }
 
 const drawerWidth = 280
 
-const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location = useLocation() as Location & { state: LayoutLocationState | null }
-  const dispatch = useAppDispatch()
+  const routeParams = useParams()
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch])
 
-  const routeParams = useParams()
-  const [searchParams] = useSearchParams()
   const patientIdFromRoute = routeParams.patientId
   const patientIdFromQuery = searchParams.get('patientId') ?? undefined
   const patientIdFromState = location.state?.patientId
-  const patientIdStored = sessionStorage.getItem('activePatientId') ?? undefined
-  const patientId =
-    patientIdFromRoute || patientIdFromQuery || patientIdFromState || patientIdStored
+
+  const explicitPatientId = patientIdFromRoute || patientIdFromQuery || patientIdFromState
+  const isExplicitContext = Boolean(explicitPatientId)
 
   useEffect(() => {
-    if (patientId) {
-      sessionStorage.setItem('activePatientId', patientId)
+    if (isExplicitContext) {
+      sessionStorage.setItem('activePatientId', explicitPatientId!)
     }
-  }, [patientId])
+  }, [isExplicitContext, explicitPatientId])
+
+  const forwardPatientId = isExplicitContext ? explicitPatientId : undefined
 
   const currentPage = getPageFromPath(location.pathname)
-  const currentPageName = PAGE_NAMES[currentPage]
+  const currentPageName =
+    currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE
+      ? 'Chatbot Details'
+      : PAGE_NAMES[currentPage]
+
   let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
 
-  if (currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE && patientId) {
+  if (isExplicitContext && currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE) {
     pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
   }
 
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [therapistChatbotInput, setTherapistChatbotInput] = useState('')
+  const labelForPage = (p: PAGES): string =>
+    p === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE ? 'Chatbot Details' : PAGE_NAMES[p]
 
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [assistantInput, setAssistantInput] = useState('')
   const therapistChatbotMessages = useSelector(
-    (state: RootState) => state.therapistChatbot.therapistChatbotMessages
+    (s: RootState) => s.therapistChatbot.therapistChatbotMessages
   )
 
-  const handleExpandClicked = (): void => {
-    if (isExpanded) {
-      dispatch(clearMessages())
-      setTherapistChatbotInput('')
-    }
-    setIsExpanded(!isExpanded)
-  }
-
-  const handleAssistantInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setTherapistChatbotInput(event.target.value)
-  }
-
-  const handleChatWithTherapistChatbot = async (): Promise<void> => {
-    setTherapistChatbotInput('')
+  const sendAssistantMessage = async (): Promise<void> => {
+    setAssistantInput('')
     setIsExpanded(true)
-
     await dispatch(
       chatWithTherapistChatbot({
-        newMessage: therapistChatbotInput,
-        patientId: patientId,
+        newMessage: assistantInput,
+        patientId: forwardPatientId,
       })
     )
-  }
-
-  const handleLogout = (): void => {
-    dispatch(logoutTherapist())
-    navigate(getPathFromPage(PAGES.LOGIN_PAGE))
-  }
-
-  const handleSettingsClicked = (): void => {
-    navigate(getPathFromPage(PAGES.SETTINGS_PAGE))
   }
 
   return (
@@ -115,8 +101,8 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
       <AppBar
         position='fixed'
         sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          backgroundColor: 'white',
+          zIndex: (t) => t.zIndex.drawer + 1,
+          bgcolor: 'white',
           color: 'black',
           boxShadow: 'none',
           borderBottom: '1px solid #e0e0e0',
@@ -125,14 +111,19 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
         }}
       >
         <Toolbar>
-          <Typography variant='h1' noWrap sx={{ flexGrow: 1 }}>
+          <Typography variant='h1' sx={{ flexGrow: 1 }}>
             {currentPageName}
           </Typography>
 
-          <IconButton sx={{ mr: 1 }} onClick={handleSettingsClicked} color='inherit'>
+          <IconButton sx={{ mr: 1 }} onClick={() => navigate(getPathFromPage(PAGES.SETTINGS_PAGE))}>
             <SettingsIcon />
           </IconButton>
-          <IconButton onClick={handleLogout} color='inherit'>
+          <IconButton
+            onClick={() => {
+              dispatch(logoutTherapist())
+              navigate(getPathFromPage(PAGES.LOGIN_PAGE))
+            }}
+          >
             <LogoutIcon fontSize='small' />
           </IconButton>
         </Toolbar>
@@ -142,10 +133,8 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
         variant='permanent'
         sx={{
           width: drawerWidth,
-          flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: 'border-box',
             bgcolor: '#121621',
             color: '#9EA2A8',
             overflow: 'hidden',
@@ -158,34 +147,32 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
           style={{ width: '100%', marginTop: '-95px', marginLeft: '-20px' }}
         />
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2px',
-            alignItems: 'start',
-            paddingLeft: '20px',
-            width: '100%',
-          }}
-        >
-          {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, index) => {
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, pl: 2 }}>
+          {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, idx) => {
             const pathParams =
-              page === PAGES.PATIENTS_DETAILS_PAGE && patientId
-                ? { patientId: patientId }
+              page === PAGES.PATIENTS_DETAILS_PAGE && forwardPatientId
+                ? { patientId: forwardPatientId }
                 : (routeParams as Record<string, string>)
-
             const path = getPathFromPage(page, pathParams)
             const isActive = currentPage === page
 
+            const go = (): void => {
+              if (forwardPatientId && page !== PAGES.HOME_PAGE) {
+                navigate(path, { state: { patientId: forwardPatientId } })
+              } else {
+                navigate(path)
+              }
+            }
+
             return (
               <React.Fragment key={page}>
-                {index !== 0 && <KeyboardArrowDownIcon sx={{ ml: '15px' }} />}
+                {idx !== 0 && <KeyboardArrowDownIcon sx={{ ml: 1 }} />}
                 <Button
                   variant={isActive ? 'contained' : 'text'}
-                  onClick={() => navigate(path)}
+                  onClick={go}
                   sx={{
                     color: 'white',
-                    backgroundColor: isActive ? '#1F2937' : 'transparent',
+                    bgcolor: isActive ? '#1F2937' : 'transparent',
                     textTransform: 'none',
                     fontWeight: isActive ? 600 : 400,
                     fontSize: '18px',
@@ -194,119 +181,107 @@ const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
                     px: 1.5,
                   }}
                 >
-                  {PAGE_NAMES[page]}
+                  {labelForPage(page)}
                 </Button>
               </React.Fragment>
             )
           })}
-        </div>
+        </Box>
       </Drawer>
 
-      <Box
-        component='main'
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          backgroundColor: 'white',
-          pb: '120px',
-        }}
-      >
+      <Box component='main' sx={{ flexGrow: 1, p: 3, bgcolor: 'white', pb: '120px' }}>
         <Toolbar />
-        <div style={{ display: isExpanded ? 'none' : 'block' }}>{children}</div>
+        {!isExpanded && children}
       </Box>
 
-      <div
-        style={{
+      <Box
+        sx={{
           position: 'fixed',
           top: 64,
           left: drawerWidth,
           height: 'calc(100vh - 164px)',
-          backgroundColor: '#b4b6b4',
-          padding: '20px 40px 20px 30px',
+          bgcolor: '#b4b6b4',
+          p: '20px 40px 20px 30px',
           visibility: isExpanded ? 'visible' : 'hidden',
           overflowY: 'auto',
           width: `calc(100vw - ${drawerWidth}px)`,
           display: 'flex',
           flexDirection: 'column',
-          gap: '15px',
+          gap: 2,
         }}
       >
-        {therapistChatbotMessages.map((message, idx) => (
-          <div key={idx} style={{ display: 'flex', gap: '10px' }}>
-            {message.chatRole === ChatMessageDTOChatRoleEnum.User ? (
-              <PersonIcon />
-            ) : (
-              <AssistantIcon />
-            )}
-            <Typography sx={{ color: 'black' }}>{message.content}</Typography>
-          </div>
+        {therapistChatbotMessages.map((m, i) => (
+          <Box key={i} sx={{ display: 'flex', gap: 1 }}>
+            {m.chatRole === ChatMessageDTOChatRoleEnum.User ? <PersonIcon /> : <AssistantIcon />}
+            <Typography sx={{ color: 'black' }}>{m.content}</Typography>
+          </Box>
         ))}
-      </div>
+      </Box>
 
-      <div
-        style={{
+      <Box
+        sx={{
           position: 'fixed',
           bottom: 0,
           left: drawerWidth,
           right: 0,
-          backgroundColor: '#b4b6b4',
+          bgcolor: '#b4b6b4',
           display: 'flex',
-          gap: '10px',
-          justifyContent: 'space-around',
+          gap: 2,
           alignItems: 'center',
-          padding: '20px',
+          p: 2,
           zIndex: 1000,
         }}
       >
         <TextField
-          value={therapistChatbotInput}
-          onChange={handleAssistantInputChange}
+          fullWidth
+          value={assistantInput}
+          onChange={(e) => setAssistantInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
-              handleChatWithTherapistChatbot().catch(console.error)
+              sendAssistantMessage().catch(console.error)
             }
           }}
           placeholder='Ask your personal assistant...'
           sx={{
-            width: '100%',
-            height: '60px',
-            backgroundColor: 'white',
-            borderRadius: '10px',
-            '& .MuiOutlinedInput-root': { height: '100%' },
+            bgcolor: 'white',
+            borderRadius: 1,
+            '& .MuiOutlinedInput-root': { height: '60px' },
           }}
         />
-
         <IconButton
-          onClick={() => handleChatWithTherapistChatbot().catch(console.error)}
+          onClick={() => sendAssistantMessage().catch(console.error)}
           sx={{ position: 'absolute', right: isExpanded ? 30 : 70, bottom: 30 }}
         >
           <SendIcon sx={{ color: 'black' }} />
         </IconButton>
-
         {!isExpanded && (
           <IconButton
-            style={{ color: 'black', height: '30px', width: '30px' }}
-            onClick={handleExpandClicked}
+            sx={{ color: 'black', height: 30, width: 30 }}
+            onClick={() => setIsExpanded(true)}
           >
-            <ExpandLessIcon sx={{ height: '30px', width: '30px' }} />
+            <ExpandLessIcon />
           </IconButton>
         )}
-      </div>
+      </Box>
 
       {isExpanded && (
         <IconButton
-          style={{
+          sx={{
             color: 'black',
-            height: '30px',
-            width: '30px',
+            height: 30,
+            width: 30,
             position: 'fixed',
             top: 80,
             right: 20,
           }}
-          onClick={handleExpandClicked}
+          onClick={() => {
+            dispatch(clearMessages())
+            setAssistantInput('')
+            setIsExpanded(false)
+          }}
         >
-          <ExpandMoreIcon sx={{ height: '30px', width: '30px' }} />
+          <ExpandMoreIcon />
         </IconButton>
       )}
     </Box>
