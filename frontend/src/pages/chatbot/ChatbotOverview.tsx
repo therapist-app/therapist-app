@@ -83,6 +83,20 @@ const ChatbotOverview = (): ReactElement => {
       }) as Record<string, ReactElement | null>
     )[icon] ?? null
 
+const openTemplate = (bot: ChatbotTemplateOutputDTO): void => {
+  navigate(
+    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+      chatbotTemplateId: bot.id!,
+    }),
+    {
+      state: {
+        chatbotConfig: bot,
+        ...(patientId && { patientId }),
+      },
+    }
+  )
+}
+
   const handleCreateChatbot = async (): Promise<void> => {
     try {
       const dto: CreateChatbotTemplateDTO = {
@@ -109,10 +123,13 @@ const ChatbotOverview = (): ReactElement => {
       patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
 
       navigate(
-        getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-          chatbotTemplateId: created.id!,
-        })
-      )
+  getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+    chatbotTemplateId: created.id!,
+  }),
+  {
+    state: { patientId, chatbotConfig: created },
+  }
+)
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     }
@@ -150,10 +167,13 @@ const ChatbotOverview = (): ReactElement => {
       dispatch(getAllPatientsOfTherapist())
 
       navigate(
-        getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-          chatbotTemplateId: created.id!,
-        })
-      )
+  getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+    chatbotTemplateId: created.id!,
+  }),
+  {
+    state: { patientId, chatbotConfig: created },
+  }
+)
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     }
@@ -229,16 +249,7 @@ const ChatbotOverview = (): ReactElement => {
         borderRadius: 2,
       }}
     >
-      <CardActionArea
-        onClick={() =>
-          navigate(
-            getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-              chatbotTemplateId: bot.id!,
-            }),
-            { state: { chatbotConfig: bot } }
-          )
-        }
-      >
+      <CardActionArea onClick={() => openTemplate(bot)}>
         <CardContent>
           <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
           <Typography variant='body2' color='textSecondary'>
