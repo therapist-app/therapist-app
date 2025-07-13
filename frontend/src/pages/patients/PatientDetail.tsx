@@ -36,6 +36,9 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
+import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { ChatbotTemplateOutputDTO } from '../../api'
+
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -60,6 +63,22 @@ const PatientDetail = (): ReactElement => {
 
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
+
+  const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
+const therapistTemplates = (therapist?.chatbotTemplatesOutputDTO ?? []).filter(
+  (tpl) => tpl.patientId == null
+)
+
+const handleSelectChatbot = (bot: ChatbotTemplateOutputDTO): void => {
+  navigate(
+    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, { chatbotTemplateId: bot.id ?? '' }),
+    { state: { chatbotConfig: bot } }
+  )
+}
+
+useEffect(() => {
+  dispatch(getCurrentlyLoggedInTherapist())
+}, [dispatch])
 
   useEffect(() => {
     console.log(counselingPlan)
@@ -104,9 +123,6 @@ const PatientDetail = (): ReactElement => {
     return url
   }
 
-  // const handleOpenChatbotDialog = (): void => {
-  //   setOpenChatbotDialog(true)
-  // }
   const handleCloseChatbotDialog = (): void => {
     setOpenChatbotDialog(false)
     setChatbotName('')
@@ -268,20 +284,6 @@ const PatientDetail = (): ReactElement => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* 
-
-       <Typography variant='h4'>Chatbot</Typography>
-      <Button
-        variant='contained'
-        onClick={handleOpenChatbotDialog}
-        sx={{ marginTop: '20px', marginBottom: '20px' }}
-      >
-        Create Chatbot
-      </Button> 
-
-      <CustomizedDivider /> />
-      */}
 
       <GAD7TestDetail />
 

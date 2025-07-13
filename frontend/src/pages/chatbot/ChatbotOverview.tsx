@@ -50,10 +50,11 @@ const ChatbotOverview = (): ReactElement => {
     patientId ? s.patient.allPatientsOfTherapist.find((p) => p.id === patientId) : undefined
   )
 
-  const templates: ChatbotTemplateOutputDTO[] = patientId
-    ? (patient?.chatbotTemplatesOutputDTO ?? [])
-    : (therapist?.chatbotTemplatesOutputDTO ?? [])
-
+  const patientTemplates: ChatbotTemplateOutputDTO[] = patient?.chatbotTemplatesOutputDTO ?? []
+  const therapistTemplates: ChatbotTemplateOutputDTO[] =
+  (therapist?.chatbotTemplatesOutputDTO ?? []).filter(
+    (tpl) => tpl.patientId == null
+  )
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -68,20 +69,19 @@ const ChatbotOverview = (): ReactElement => {
   useEffect(() => {
     if (patientId) {
       dispatch(getAllPatientsOfTherapist())
-    } else {
-      dispatch(getCurrentlyLoggedInTherapist())
     }
+    dispatch(getCurrentlyLoggedInTherapist())
   }, [dispatch, patientId])
 
   const iconFor = (icon: string): ReactElement | null =>
     (
-      ({
+      {
         Chatbot: <TbMessageChatbot />,
         Robot: <RiRobot2Line />,
         Person: <IoPersonOutline />,
         Bulb: <IoBulbOutline />,
         Book: <PiBookOpenTextLight />,
-      }) as Record<string, ReactElement | null>
+      } as Record<string, ReactElement | null>
     )[icon] ?? null
 
   const handleCreateChatbot = async (): Promise<void> => {
@@ -104,14 +104,10 @@ const ChatbotOverview = (): ReactElement => {
       }
 
       const created = patientId
-        ? await dispatch(createPatientChatbotTemplate({ patientId: patientId, dto: dto })).unwrap()
+        ? await dispatch(createPatientChatbotTemplate({ patientId, dto })).unwrap()
         : await dispatch(createChatbotTemplate(dto)).unwrap()
 
-      if (patientId) {
-        dispatch(getAllPatientsOfTherapist())
-      } else {
-        dispatch(getCurrentlyLoggedInTherapist())
-      }
+      patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -130,20 +126,14 @@ const ChatbotOverview = (): ReactElement => {
     setAnchorEl(e.currentTarget)
     setCurrentChatbot(bot)
   }
-
   const closeMenu = (): void => setAnchorEl(null)
 
   const handleClone = async (): Promise<void> => {
-    if (!currentChatbot) {
-      return
-    }
+    if (!currentChatbot) return
     try {
       if (patientId) {
         await dispatch(
-          clonePatientChatbotTemplate({
-            patientId: patientId,
-            templateId: currentChatbot.id!,
-          })
+          clonePatientChatbotTemplate({ patientId, templateId: currentChatbot.id! })
         ).unwrap()
         dispatch(getAllPatientsOfTherapist())
       } else {
@@ -159,16 +149,11 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const handleDelete = async (): Promise<void> => {
-    if (!currentChatbot) {
-      return
-    }
+    if (!currentChatbot) return
     try {
       if (patientId) {
         await dispatch(
-          deletePatientChatbotTemplate({
-            patientId: patientId,
-            templateId: currentChatbot.id!,
-          })
+          deletePatientChatbotTemplate({ patientId, templateId: currentChatbot.id! })
         ).unwrap()
         dispatch(getAllPatientsOfTherapist())
       } else {
@@ -183,6 +168,64 @@ const ChatbotOverview = (): ReactElement => {
     }
   }
 
+  const renderCard = (
+    bot: ChatbotTemplateOutputDTO,
+    showMenu = true
+  ) => (
+    <Card
+      key={bot.id}
+      sx={{
+        maxWidth: 300,
+        minWidth: 300,
+        maxHeight: 250,
+        minHeight: 250,
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        border: '1px solid #e0e0e0',
+        boxShadow: 'none',
+        borderRadius: 2,
+      }}
+    >
+      <CardActionArea
+        onClick={() =>
+          navigate(
+            getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+              chatbotTemplateId: bot.id!,
+            }),
+            { state: { chatbotConfig: bot } }
+          )
+        }
+      >
+        <CardContent>
+          <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
+          <Typography variant='body2' color='textSecondary'>
+            {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
+          </Typography>
+          <Typography variant='body1' sx={{ mt: 1 }}>
+            {t('dashboard.language')}: {bot.chatbotLanguage}
+          </Typography>
+          <Typography variant='body1' sx={{ mt: 1 }}>
+            {t('dashboard.role')}: {bot.chatbotRole}
+          </Typography>
+          <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+          <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
+            {iconFor(bot.chatbotIcon ?? '')}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+
+      {showMenu && (
+        <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
+          <IconButton onClick={(e) => handleMenu(e, bot)}>
+            <MoreVertIcon />
+          </IconButton>
+        </CardActions>
+      )}
+    </Card>
+  )
+
   return (
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
@@ -192,65 +235,51 @@ const ChatbotOverview = (): ReactElement => {
         </Button>
       </Box>
 
-      {templates.length ? (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {templates.map((bot) => (
-            <Card
-              key={bot.id}
-              sx={{
-                maxWidth: 300,
-                minWidth: 300,
-                maxHeight: 250,
-                minHeight: 250,
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                border: '1px solid #e0e0e0',
-                boxShadow: 'none',
-                borderRadius: 2,
-              }}
-            >
-              <CardActionArea
-                onClick={() =>
-                  navigate(
-                    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-                      chatbotTemplateId: bot.id!,
-                    }),
-                    { state: { chatbotConfig: bot } }
-                  )
-                }
-              >
-                <CardContent>
-                  <Typography variant='h6'>
-                    {bot.chatbotName || t('dashboard.unnamed_bot')}
-                  </Typography>
-                  <Typography variant='body2' color='textSecondary'>
-                    {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
-                  </Typography>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.language')}: {bot.chatbotLanguage}
-                  </Typography>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.role')}: {bot.chatbotRole}
-                  </Typography>
-                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-                  <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
-                    {iconFor(bot.chatbotIcon ?? '')}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-
-              <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
-                <IconButton onClick={(e) => handleMenu(e, bot)}>
-                  <MoreVertIcon />
-                </IconButton>
-              </CardActions>
-            </Card>
-          ))}
+     {patientId ? (
+  <>
+    {therapistTemplates.length > 0 && (
+      <>
+        <Typography variant='h4' sx={{ mb: 1 }}>
+          {t('Create Chatbot from Template')}
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
+          {therapistTemplates.map((bot) => renderCard(bot, false))}
         </Box>
-      ) : (
-        <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
+      </>
+    )}
+
+{patientTemplates.length ? (
+  <>
+    <Typography variant='h4' sx={{ mb: 1 }}>
+      Patient Chatbots
+    </Typography>
+
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+      {patientTemplates.map((bot) => renderCard(bot, true))}
+    </Box>
+  </>
+) : (
+  <Box>
+    <Typography variant='h4' sx={{ mb: 1 }}>
+      Patient Chatbots
+    </Typography>
+    <Typography sx={{ mt: 2 }}>
+      {t('dashboard.no_chatbots_created_yet')}
+    </Typography>
+  </Box>
+)}
+
+  </>
+) : (
+        <>
+          {therapistTemplates.length ? (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              {therapistTemplates.map((bot) => renderCard(bot, true))}
+            </Box>
+          ) : (
+            <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
+          )}
+        </>
       )}
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
