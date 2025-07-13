@@ -118,6 +118,46 @@ const ChatbotOverview = (): ReactElement => {
     }
   }
 
+const handleCreateFromTherapistTemplate = async (
+  tpl: ChatbotTemplateOutputDTO
+): Promise<void> => {
+  if (!patientId) return
+
+  const dto: CreateChatbotTemplateDTO = {
+    chatbotName: tpl.chatbotName,
+    chatbotModel: tpl.chatbotModel,
+    chatbotIcon: tpl.chatbotIcon,
+    chatbotLanguage: tpl.chatbotLanguage,
+    chatbotRole: tpl.chatbotRole,
+    chatbotTone: tpl.chatbotTone,
+    welcomeMessage: tpl.welcomeMessage,
+    chatbotVoice: tpl.chatbotVoice,
+    chatbotGender: tpl.chatbotGender,
+    preConfiguredExercise: tpl.preConfiguredExercise,
+    additionalExercise: tpl.additionalExercise,
+    animation: tpl.animation,
+    chatbotInputPlaceholder: tpl.chatbotInputPlaceholder,
+    description: tpl.description,
+  }
+
+  try {
+    const created = await dispatch(
+      createPatientChatbotTemplate({ patientId, dto })
+    ).unwrap()
+
+    dispatch(getAllPatientsOfTherapist())
+
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+        chatbotTemplateId: created.id!,
+      })
+    )
+  } catch (err) {
+    openSnackbar(handleError(err as AxiosError), 'error')
+  }
+}
+
+
   const handleMenu = (
     e: React.MouseEvent<HTMLButtonElement>,
     bot: ChatbotTemplateOutputDTO
@@ -243,15 +283,37 @@ const ChatbotOverview = (): ReactElement => {
                 {t('Create Chatbot from Template')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-                {therapistTemplates.map((bot) => renderCard(bot, false))}
-              </Box>
+  {therapistTemplates.map((bot) => (
+    <Card
+      key={bot.id}
+      sx={{
+        maxWidth: 300,
+        minWidth: 300,
+        maxHeight: 250,
+        minHeight: 250,
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        border: '1px solid #e0e0e0',
+        boxShadow: 'none',
+        borderRadius: 2,
+      }}
+    >
+      <CardActionArea onClick={() => handleCreateFromTherapistTemplate(bot)}>
+        {renderCard(bot, false)}
+      </CardActionArea>
+    </Card>
+  ))}
+</Box>
+
             </>
           )}
 
           {patientTemplates.length ? (
             <>
               <Typography variant='h4' sx={{ mb: 1 }}>
-                Patient Chatbots
+                Client Chatbots
               </Typography>
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
@@ -261,7 +323,7 @@ const ChatbotOverview = (): ReactElement => {
           ) : (
             <Box>
               <Typography variant='h4' sx={{ mb: 1 }}>
-                Patient Chatbots
+                Client Chatbots
               </Typography>
               <Typography sx={{ mt: 2 }}>{t('dashboard.no_chatbots_created_yet')}</Typography>
             </Box>
