@@ -120,7 +120,11 @@ const ChatbotOverview = (): ReactElement => {
         ? await dispatch(createPatientChatbotTemplate({ patientId: patientId, dto: dto })).unwrap()
         : await dispatch(createChatbotTemplate(dto)).unwrap()
 
-      patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
+      if (patientId) {
+  dispatch(getAllPatientsOfTherapist())
+} else {
+  dispatch(getCurrentlyLoggedInTherapist())
+}
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -140,23 +144,6 @@ const ChatbotOverview = (): ReactElement => {
   ): Promise<void> => {
     if (!patientId) {
       return
-    }
-
-    const dto: CreateChatbotTemplateDTO = {
-      chatbotName: tpl.chatbotName,
-      chatbotModel: tpl.chatbotModel,
-      chatbotIcon: tpl.chatbotIcon,
-      chatbotLanguage: tpl.chatbotLanguage,
-      chatbotRole: tpl.chatbotRole,
-      chatbotTone: tpl.chatbotTone,
-      welcomeMessage: tpl.welcomeMessage,
-      chatbotVoice: tpl.chatbotVoice,
-      chatbotGender: tpl.chatbotGender,
-      preConfiguredExercise: tpl.preConfiguredExercise,
-      additionalExercise: tpl.additionalExercise,
-      animation: tpl.animation,
-      chatbotInputPlaceholder: tpl.chatbotInputPlaceholder,
-      description: tpl.description,
     }
 
     try {
@@ -296,9 +283,10 @@ const ChatbotOverview = (): ReactElement => {
                 {t('Create Chatbot from Template')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-                {therapistTemplates.map((bot) => (
-                  <Card
-                    key={bot.id}
+                {therapistTemplates.map(
+  (bot: ChatbotTemplateOutputDTO): ReactElement => (
+    <Card
+      key={bot.id}
                     sx={{
                       maxWidth: 300,
                       minWidth: 300,
