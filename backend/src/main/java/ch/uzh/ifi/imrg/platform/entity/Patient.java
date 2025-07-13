@@ -7,16 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
 @Table(name = "patients")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class Patient implements Serializable {
 
   @Id
   @Column(unique = true)
+  @EqualsAndHashCode.Include
   private String id = UUID.randomUUID().toString();
 
   @Column(name = "created_at", updatable = false)
