@@ -83,19 +83,19 @@ const ChatbotOverview = (): ReactElement => {
       }) as Record<string, ReactElement | null>
     )[icon] ?? null
 
-const openTemplate = (bot: ChatbotTemplateOutputDTO): void => {
-  navigate(
-    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-      chatbotTemplateId: bot.id!,
-    }),
-    {
-      state: {
-        chatbotConfig: bot,
-        ...(patientId && { patientId }),
-      },
-    }
-  )
-}
+  const openTemplate = (bot: ChatbotTemplateOutputDTO): void => {
+    navigate(
+      getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+        chatbotTemplateId: bot.id!,
+      }),
+      {
+        state: {
+          chatbotConfig: bot,
+          ...(patientId && { patientId: patientId }),
+        },
+      }
+    )
+  }
 
   const handleCreateChatbot = async (): Promise<void> => {
     try {
@@ -123,13 +123,13 @@ const openTemplate = (bot: ChatbotTemplateOutputDTO): void => {
       patientId ? dispatch(getAllPatientsOfTherapist()) : dispatch(getCurrentlyLoggedInTherapist())
 
       navigate(
-  getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-    chatbotTemplateId: created.id!,
-  }),
-  {
-    state: { patientId, chatbotConfig: created },
-  }
-)
+        getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+          chatbotTemplateId: created.id!,
+        }),
+        {
+          state: { patientId: patientId, chatbotConfig: created },
+        }
+      )
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     }
@@ -167,13 +167,13 @@ const openTemplate = (bot: ChatbotTemplateOutputDTO): void => {
       dispatch(getAllPatientsOfTherapist())
 
       navigate(
-  getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-    chatbotTemplateId: created.id!,
-  }),
-  {
-    state: { patientId, chatbotConfig: created },
-  }
-)
+        getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+          chatbotTemplateId: created.id!,
+        }),
+        {
+          state: { patientId: patientId, chatbotConfig: created },
+        }
+      )
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     }
