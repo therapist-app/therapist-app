@@ -160,24 +160,24 @@ const ChatbotOverview = (): ReactElement => {
     }
 
     try {
-  const created = await dispatch(
-    clonePatientChatbotTemplate({
-      patientId,
-      templateId: tpl.id!,      // ←   use the therapist’s template id
-    })
-  ).unwrap();
+      const created = await dispatch(
+        clonePatientChatbotTemplate({
+          patientId: patientId,
+          templateId: tpl.id!,
+        })
+      ).unwrap()
 
-  dispatch(getAllPatientsOfTherapist());      // refresh lists
+      dispatch(getAllPatientsOfTherapist())
 
-  navigate(
-    getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
-      chatbotTemplateId: created.id!,
-    }),
-    { state: { patientId, chatbotConfig: created } }
-  );
-} catch (err) {
-  openSnackbar(handleError(err as AxiosError), 'error');
-}
+      navigate(
+        getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
+          chatbotTemplateId: created.id!,
+        }),
+        { state: { patientId: patientId, chatbotConfig: created } }
+      )
+    } catch (err) {
+      openSnackbar(handleError(err as AxiosError), 'error')
+    }
   }
 
   const handleMenu = (
