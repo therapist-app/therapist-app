@@ -13,7 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meetings")
-public class Meeting implements Serializable {
+public class Meeting implements Serializable, OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -46,4 +46,9 @@ public class Meeting implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<MeetingNote> meetingNotes = new ArrayList<>();
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

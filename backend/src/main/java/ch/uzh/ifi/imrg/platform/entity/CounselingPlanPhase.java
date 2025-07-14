@@ -12,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plan_phases")
-public class CounselingPlanPhase {
+public class CounselingPlanPhase implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -51,4 +51,9 @@ public class CounselingPlanPhase {
       uniqueConstraints =
           @UniqueConstraint(columnNames = {"counseling_plan_phase_id", "exercise_id"}))
   private List<Exercise> phaseExercises = new ArrayList<>();
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getCounselingPlan().getPatient().getTherapist().getId();
+  }
 }

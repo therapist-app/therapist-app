@@ -12,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plans")
-public class CounselingPlan {
+public class CounselingPlan implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -37,4 +37,9 @@ public class CounselingPlan {
 
   @OneToOne(fetch = FetchType.EAGER, mappedBy = "counselingPlan")
   private Patient patient;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

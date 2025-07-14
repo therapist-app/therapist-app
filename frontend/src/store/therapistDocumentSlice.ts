@@ -17,19 +17,16 @@ const initialState: TherapistDocumentState = {
 
 export const createDocumentForTherapist = createAsyncThunk(
   'createDocumentForTherapist',
-  async (props: { file: File; therapistId: string }) => {
-    const response = await therapistDocumentApi.createTherapistDocument(
-      props.therapistId,
-      props.file
-    )
+  async (file: File) => {
+    const response = await therapistDocumentApi.createTherapistDocument(file)
     return response.data
   }
 )
 
 export const getAllTherapistDocumentsOfTherapist = createAsyncThunk(
   'getAllTherapistDocumentsOfTherapist',
-  async (therapistId: string) => {
-    const response = await therapistDocumentApi.getDocumentsOfTherapist(therapistId)
+  async () => {
+    const response = await therapistDocumentApi.getDocumentsOfTherapist()
     return response.data
   }
 )

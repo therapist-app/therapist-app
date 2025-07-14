@@ -3,6 +3,8 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
 import ch.uzh.ifi.imrg.platform.utils.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,17 +31,22 @@ public class TherapistService {
     this.therapistRepository = therapistRepository;
   }
 
-  public Therapist getCurrentlyLoggedInTherapist(HttpServletRequest httpServletRequest) {
+  public TherapistOutputDTO getTherapistById(String therapistId) {
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist).sortDTO();
+  }
+
+  public String getTherapistIdBasedOnRequest(HttpServletRequest httpServletRequest) {
     String email = JwtUtil.validateJWTAndExtractEmail(httpServletRequest);
     Therapist foundTherapist = therapistRepository.getTherapistByEmail((email));
     if (foundTherapist != null) {
-      return foundTherapist;
+      return foundTherapist.getId();
     }
     throw new ResponseStatusException(
         HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
   }
 
-  public Therapist registerTherapist(
+  public TherapistOutputDTO registerTherapist(
       Therapist therapist,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
@@ -67,10 +74,10 @@ public class TherapistService {
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
-    return createdTherapist;
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist).sortDTO();
   }
 
-  public Therapist loginTherapist(
+  public TherapistOutputDTO loginTherapist(
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
@@ -87,7 +94,7 @@ public class TherapistService {
 
     String jwt = JwtUtil.createJWT(loginTherapistDTO.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
-    return foundTherapist;
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(foundTherapist).sortDTO();
   }
 
   public void logoutTherapist(HttpServletResponse httpServletResponse) {

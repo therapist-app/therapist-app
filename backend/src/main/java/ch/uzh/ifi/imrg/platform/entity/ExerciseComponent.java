@@ -11,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "exercise_components")
-public class ExerciseComponent {
+public class ExerciseComponent implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -42,4 +42,9 @@ public class ExerciseComponent {
   @ManyToOne
   @JoinColumn(name = "exercise_id", referencedColumnName = "id")
   private Exercise exercise;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getExercise().getPatient().getTherapist().getId();
+  }
 }

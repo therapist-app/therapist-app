@@ -219,6 +219,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const initialStartRef = useRef(true)
   const finalizedTranscriptUpToLastEventRef = useRef<string>('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [startDirectlyState, setStartDirectlyState] = useState(startDirectly)
 
   const valueRef = useRef(value)
   const onChangeRef = useRef(onChange)
@@ -331,7 +332,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   }, [selectedLanguage])
 
   useEffect(() => {
-    if (startDirectly && !value && recognitionRef.current && !isListening) {
+    if (startDirectlyState && !value && recognitionRef.current && !isListening) {
       try {
         let textToStartWith = valueRef.current
 
@@ -348,9 +349,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         const typedError = e as { message?: string }
         setError(`Could not start recognition: ${typedError.message || 'Unknown error'}`)
         setIsListening(false)
+      } finally {
+        setStartDirectlyState(false)
       }
     }
-  }, [isListening, startDirectly, value])
+  }, [isListening, startDirectlyState, value])
 
   const handleStartListening = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event) {
@@ -382,6 +385,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   }
 
   const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    setStartDirectlyState(false)
     event.preventDefault()
     if (recognitionRef.current && isListening) {
       const currentText = valueRef.current

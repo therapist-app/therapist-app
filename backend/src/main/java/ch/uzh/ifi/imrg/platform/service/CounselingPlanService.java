@@ -8,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanMapper;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +27,20 @@ public class CounselingPlanService {
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
-  public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId) {
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(
+      String patientId, String therapistId) {
     CounselingPlan counselingPlan =
         patientRepository.getReferenceById(patientId).getCounselingPlan();
+    SecurityUtil.checkOwnership(counselingPlan, therapistId);
     return getOutputDto(counselingPlan);
   }
 
   public CounselingPlanOutputDTO updateCounselingPlan(
-      UpdateCounselingPlanDTO updateCounselingPlanDTO) {
+      UpdateCounselingPlanDTO updateCounselingPlanDTO, String therapistId) {
     CounselingPlan counselingPlan =
         counselingPlanRepository.getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
+    SecurityUtil.checkOwnership(counselingPlan, therapistId);
+
     if (updateCounselingPlanDTO.getStartOfTherapy() != null) {
       counselingPlan.setStartOfTherapy(updateCounselingPlanDTO.getStartOfTherapy());
     }

@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingNoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,33 +33,37 @@ public class MeetingNoteController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public MeetingNoteOutputDTO createMeetingNote(
-      @RequestBody CreateMeetingNoteDTO createMeetingDTO) {
+      @RequestBody CreateMeetingNoteDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
 
     MeetingNoteOutputDTO meetingNoteOutputDTO =
-        meetingNoteService.createMeetingNote(createMeetingDTO);
+        meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @GetMapping("/{meetingNoteId}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingNoteOutputDTO getMeetingNoteById(@PathVariable String meetingNoteId) {
+  public MeetingNoteOutputDTO getMeetingNoteById(
+      @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.getMeetingNote(meetingNoteId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public MeetingNoteOutputDTO updateMeetingNote(
-      @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO) {
+      @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
+      @CurrentTherapistId String therapistId) {
 
     MeetingNoteOutputDTO meetingNoteOutputDTO =
-        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO);
+        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @DeleteMapping("/{meetingNoteId}")
-  public void deleteMeetingNoteById(@PathVariable String meetingNoteId) {
-    meetingNoteService.deleteMeetingNoteById(meetingNoteId);
+  public void deleteMeetingNoteById(
+      @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
+    meetingNoteService.deleteMeetingNoteById(meetingNoteId, therapistId);
   }
 }

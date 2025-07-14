@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientTestService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -21,19 +22,22 @@ public class PatientTestController {
   @Valid
   @PostMapping("/gad7")
   @ResponseStatus(HttpStatus.CREATED)
-  public GAD7TestOutputDTO createTest(@RequestBody CreateGAD7TestDTO createGAD7TestDTO) {
-    return patientTestService.createTest(createGAD7TestDTO);
+  public GAD7TestOutputDTO createTest(
+      @RequestBody CreateGAD7TestDTO createGAD7TestDTO, @CurrentTherapistId String therapistId) {
+    return patientTestService.createTest(createGAD7TestDTO, therapistId);
   }
 
   @GetMapping("/gad7/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<GAD7TestOutputDTO> getTestsForPatient(@PathVariable String patientId) {
-    return patientTestService.getTestsByPatient(patientId);
+  public List<GAD7TestOutputDTO> getTestsForPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
+    return patientTestService.getTestsByPatient(patientId, therapistId);
   }
 
   @GetMapping("/gad7/{testId}")
   @ResponseStatus(HttpStatus.OK)
-  public GAD7TestOutputDTO getTestById(@PathVariable String testId) {
-    return patientTestService.getTest(testId);
+  public GAD7TestOutputDTO getTestById(
+      @PathVariable String testId, @CurrentTherapistId String therapistId) {
+    return patientTestService.getTest(testId, therapistId);
   }
 }

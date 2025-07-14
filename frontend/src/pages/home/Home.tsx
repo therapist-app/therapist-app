@@ -81,20 +81,13 @@ const Home = (): ReactElement => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await dispatch(getCurrentlyLoggedInTherapist())
-      if (loggedInTherapist?.id) {
-        dispatch(getAllTherapistDocumentsOfTherapist(loggedInTherapist.id))
-      }
+      dispatch(getAllTherapistDocumentsOfTherapist())
     }
     fetchData()
-  }, [dispatch, refreshTherapistCounter, loggedInTherapist?.id])
+  }, [dispatch, refreshTherapistCounter])
 
   const handleFileUpload = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForTherapist({
-        file: file,
-        therapistId: loggedInTherapist?.id ?? '',
-      })
-    )
+    await dispatch(createDocumentForTherapist(file))
     setRefreshTherapistCounter((prev) => prev + 1)
   }
 

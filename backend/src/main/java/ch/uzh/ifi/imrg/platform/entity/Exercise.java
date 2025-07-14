@@ -13,7 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "exercises")
-public class Exercise {
+public class Exercise implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -52,4 +52,9 @@ public class Exercise {
 
   @ManyToMany(mappedBy = "phaseExercises")
   private List<CounselingPlanPhase> counselingPlanPhases;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

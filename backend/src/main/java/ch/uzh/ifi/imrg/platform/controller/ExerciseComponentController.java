@@ -3,8 +3,8 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -38,8 +38,9 @@ public class ExerciseComponentController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public void createExerciseComponent(
-      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO) {
-    exerciseComponentService.createExerciseComponent(createExerciseComponentDTO);
+      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO,
+      @CurrentTherapistId String therapistId) {
+    exerciseComponentService.createExerciseComponent(createExerciseComponentDTO, therapistId);
   }
 
   @PostMapping(path = "/with-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -47,15 +48,16 @@ public class ExerciseComponentController {
   public void createExerciseComponentWithFile(
       @RequestPart("metadata") CreateExerciseComponentDTO createExerciseComponentDTO,
       @RequestPart("file") MultipartFile file,
-      HttpServletRequest request) {
-    exerciseComponentService.createExerciseComponentWithFile(createExerciseComponentDTO, file);
+      @CurrentTherapistId String therapistId) {
+    exerciseComponentService.createExerciseComponentWithFile(
+        createExerciseComponentDTO, file, therapistId);
   }
 
   @GetMapping("/{exerciseComponentId}/download")
   public ResponseEntity<Resource> downloadExerciseComponentFile(
-      @PathVariable String exerciseComponentId) {
+      @PathVariable String exerciseComponentId, @CurrentTherapistId String therapistId) {
     ExerciseComponent exerciseComponent =
-        exerciseComponentService.downloadExerciseComponent(exerciseComponentId);
+        exerciseComponentService.downloadExerciseComponent(exerciseComponentId, therapistId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()
@@ -70,13 +72,15 @@ public class ExerciseComponentController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public void updateExerciseComponent(
-      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO) {
-    exerciseComponentService.updateExerciseComponent(updateExerciseComponentDTO);
+      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO,
+      @CurrentTherapistId String therapistId) {
+    exerciseComponentService.updateExerciseComponent(updateExerciseComponentDTO, therapistId);
   }
 
   @DeleteMapping("/{exerciseComponentId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExerciseComponent(@PathVariable String exerciseComponentId) {
-    exerciseComponentService.deleteExerciseComponent(exerciseComponentId);
+  public void deleteExerciseComponent(
+      @PathVariable String exerciseComponentId, @CurrentTherapistId String therapistId) {
+    exerciseComponentService.deleteExerciseComponent(exerciseComponentId, therapistId);
   }
 }

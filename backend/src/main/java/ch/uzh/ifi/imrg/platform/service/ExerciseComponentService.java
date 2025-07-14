@@ -8,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseComponentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -34,9 +35,11 @@ public class ExerciseComponentService {
     this.exerciseRepository = exerciseRepository;
   }
 
-  public void createExerciseComponent(CreateExerciseComponentDTO createExerciseComponentDTO) {
+  public void createExerciseComponent(
+      CreateExerciseComponentDTO createExerciseComponentDTO, String therapistId) {
     Exercise exercise =
         exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    SecurityUtil.checkOwnership(exercise, therapistId);
 
     ExerciseComponent exerciseComponent = new ExerciseComponent();
     exerciseComponent.setExercise(exercise);
@@ -49,9 +52,12 @@ public class ExerciseComponentService {
   }
 
   public void createExerciseComponentWithFile(
-      CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file) {
+      CreateExerciseComponentDTO createExerciseComponentDTO,
+      MultipartFile file,
+      String therapistId) {
     Exercise exercise =
         exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    SecurityUtil.checkOwnership(exercise, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);
 
@@ -74,20 +80,24 @@ public class ExerciseComponentService {
     exerciseComponentRepository.save(exerciseComponent);
   }
 
-  public ExerciseComponent getExerciseComponent(String id) {
+  public ExerciseComponent getExerciseComponent(String id, String therapistId) {
     ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
+    SecurityUtil.checkOwnership(exerciseComponent, therapistId);
     return exerciseComponent;
   }
 
-  public ExerciseComponent downloadExerciseComponent(String id) {
+  public ExerciseComponent downloadExerciseComponent(String id, String therapistId) {
     ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
+    SecurityUtil.checkOwnership(exerciseComponent, therapistId);
     exerciseComponent.getFileData();
     return exerciseComponent;
   }
 
-  public void updateExerciseComponent(UpdateExerciseComponentDTO dto) {
+  public void updateExerciseComponent(UpdateExerciseComponentDTO dto, String therapistId) {
     ExerciseComponent target = exerciseComponentRepository.getReferenceById(dto.getId());
+    SecurityUtil.checkOwnership(target, therapistId);
     Exercise exercise = target.getExercise();
+    SecurityUtil.checkOwnership(exercise, therapistId);
 
     // 1) Update the text if provided
     if (dto.getDescription() != null) {
@@ -140,8 +150,9 @@ public class ExerciseComponentService {
     exerciseComponentRepository.save(target);
   }
 
-  public void deleteExerciseComponent(String id) {
+  public void deleteExerciseComponent(String id, String therapistId) {
     ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
+    SecurityUtil.checkOwnership(exerciseComponent, therapistId);
     Exercise exercise = exerciseComponent.getExercise();
 
     for (ExerciseComponent exerciseComponent2 : exercise.getExerciseComponents()) {

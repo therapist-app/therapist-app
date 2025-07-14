@@ -17,7 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "patients")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-public class Patient implements Serializable {
+public class Patient implements Serializable, OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -87,7 +87,7 @@ public class Patient implements Serializable {
   @Column private String personalPremorbid;
 
   @ManyToOne
-  @JoinColumn(name = "therapist_id", referencedColumnName = "id")
+  @JoinColumn(name = "therapist_id")
   private Therapist therapist;
 
   @OneToMany(
@@ -128,4 +128,9 @@ public class Patient implements Serializable {
   @OneToOne(optional = false)
   @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
   private CounselingPlan counselingPlan;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getTherapist().getId();
+  }
 }

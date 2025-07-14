@@ -1,12 +1,11 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapistDocumentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
@@ -40,39 +39,36 @@ public class PatientDocumentController {
   public void createPatientDocument(
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
-      HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    patientDocumentService.uploadPatientDocument(patientId, file, loggedInTherapist);
+      @CurrentTherapistId String therapistId) {
+
+    patientDocumentService.uploadPatientDocument(patientId, file, therapistId);
   }
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
       @RequestBody
           CreatePatientDocumentFromTherapistDocumentDTO
-              createPatientDocumentFromTherapistDocumentDTO) {
+              createPatientDocumentFromTherapistDocumentDTO,
+      @CurrentTherapistId String therapistId) {
     patientDocumentService.createPatientDocumentFromTherapistDocument(
-        createPatientDocumentFromTherapistDocumentDTO);
+        createPatientDocumentFromTherapistDocumentDTO, therapistId);
   }
 
   @GetMapping("/{patientId}")
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
-      @PathVariable String patientId, HttpServletRequest httpServletReques) {
-    Therapist loggedInTherapist = therapistService.getCurrentlyLoggedInTherapist(httpServletReques);
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     List<PatientDocumentOutputDTO> patientDocuments =
-        patientDocumentService.getDocumentsOfPatient(patientId, loggedInTherapist);
+        patientDocumentService.getDocumentsOfPatient(patientId, therapistId);
 
     return patientDocuments;
   }
 
   @GetMapping("/{patientDocumentId}/download")
   public ResponseEntity<Resource> downloadPatientDocument(
-      @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest)
+      @PathVariable String patientDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
     PatientDocument fileDocument =
-        patientDocumentService.downloadPatientDocument(patientDocumentId, loggedInTherapist);
+        patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
@@ -87,9 +83,8 @@ public class PatientDocumentController {
 
   @DeleteMapping("/{patientDocumentId}")
   public void deletePatientDocument(
-      @PathVariable String patientDocumentId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    patientDocumentService.deleteFile(patientDocumentId, loggedInTherapist);
+      @PathVariable String patientDocumentId, @CurrentTherapistId String therapistId) {
+
+    patientDocumentService.deleteFile(patientDocumentId, therapistId);
   }
 }

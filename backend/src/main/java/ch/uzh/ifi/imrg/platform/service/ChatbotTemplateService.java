@@ -9,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,25 +40,19 @@ public class ChatbotTemplateService {
     this.patientRepository = patientRepository;
   }
 
-  public ChatbotTemplateOutputDTO getTemplateForTherapist(String therapistId, String templateId) {
+  public ChatbotTemplateOutputDTO getTemplateForTherapist(String templateId, String therapistId) {
 
     ChatbotTemplate tpl =
         chatbotTemplateRepository
             .findById(templateId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
 
-    boolean allowed =
-        (tpl.getTherapist() != null && tpl.getTherapist().getId().equals(therapistId))
-            || (tpl.getPatient() != null
-                && tpl.getPatient().getTherapist().getId().equals(therapistId));
+    SecurityUtil.checkOwnership(tpl, therapistId);
 
-    if (!allowed) {
-      throw new EntityNotFoundException("Template not found");
-    }
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(tpl);
   }
 
-  public ChatbotTemplateOutputDTO createTemplate(String therapistId, ChatbotTemplate template) {
+  public ChatbotTemplateOutputDTO createTemplate(ChatbotTemplate template, String therapistId) {
     Therapist therapist =
         therapistRepository
             .findById(therapistId)
@@ -70,7 +65,7 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO createTemplateForPatient(
-      String therapistId, String patientId, ChatbotTemplate template) {
+      String patientId, ChatbotTemplate template, String therapistId) {
 
     if (!patientRepository.existsByIdAndTherapistId(patientId, therapistId)) {
       throw new IllegalArgumentException(
@@ -78,6 +73,7 @@ public class ChatbotTemplateService {
     }
 
     Patient patient = patientRepository.getPatientById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     template.setPatient(patient);
     template.setTherapist(patient.getTherapist());
@@ -89,12 +85,13 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO updateTemplate(
-      String therapistId, String templateId, ChatbotTemplate template) {
+      String templateId, ChatbotTemplate template, String therapistId) {
 
     ChatbotTemplate existingTemplate =
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    SecurityUtil.checkOwnership(existingTemplate, therapistId);
 
     existingTemplate.setChatbotName(template.getChatbotName());
     existingTemplate.setDescription(template.getDescription());
@@ -117,28 +114,28 @@ public class ChatbotTemplateService {
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(updChatbotTemplate);
   }
 
-  public void deleteTemplate(String therapistId, String templateId) {
+  public void deleteTemplate(String templateId, String therapistId) {
 
     ChatbotTemplate template =
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    SecurityUtil.checkOwnership(template, therapistId);
+
     template.getTherapist().getChatbotTemplates().remove(template);
 
     chatbotTemplateRepository.delete(template);
     chatbotTemplateRepository.flush();
   }
 
-  public void deleteTemplateForPatient(String therapistId, String patientId, String templateId) {
+  public void deleteTemplateForPatient(String patientId, String templateId, String therapistId) {
 
     Patient patient =
         patientRepository
             .findById(patientId)
             .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
 
-    if (!patient.getTherapist().getId().equals(therapistId)) {
-      throw new EntityNotFoundException("Patient not found for therapist");
-    }
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     ChatbotTemplate template =
         chatbotTemplateRepository
@@ -152,11 +149,13 @@ public class ChatbotTemplateService {
     chatbotTemplateRepository.flush();
   }
 
-  public ChatbotTemplateOutputDTO cloneTemplate(String therapistId, String templateId) {
+  public ChatbotTemplateOutputDTO cloneTemplate(String templateId, String therapistId) {
     ChatbotTemplate original =
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+
+    SecurityUtil.checkOwnership(original, therapistId);
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");
@@ -180,33 +179,32 @@ public class ChatbotTemplateService {
   }
 
   public ChatbotTemplateOutputDTO findTemplateByIdAndTherapistId(
-      String therapistId, String templateId) {
-    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(
+      String templateId, String therapistId) {
+    ChatbotTemplate chatbotTemplate =
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
-            .orElseThrow(() -> new Error("Template not found with id: " + templateId)));
+            .orElseThrow(() -> new Error("Template not found with id: " + templateId));
+    SecurityUtil.checkOwnership(chatbotTemplate, therapistId);
+
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(chatbotTemplate);
   }
 
   @Transactional
   public ChatbotTemplateOutputDTO cloneTemplateForPatient(
-      String therapistId, String patientId, String templateId) {
+      String patientId, String templateId, String therapistId) {
 
     Patient patient =
         patientRepository
             .findById(patientId)
             .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
-    if (!patient.getTherapist().getId().equals(therapistId)) {
-      throw new EntityNotFoundException("Patient not found for therapist");
-    }
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     ChatbotTemplate original =
         chatbotTemplateRepository
             .findById(templateId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
 
-    if (!original.getTherapist().getId().equals(therapistId)) {
-      throw new EntityNotFoundException("Template not found for therapist");
-    }
+    SecurityUtil.checkOwnership(original, therapistId);
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");

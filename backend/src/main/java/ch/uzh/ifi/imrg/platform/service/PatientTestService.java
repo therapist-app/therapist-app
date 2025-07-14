@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,11 +30,9 @@ public class PatientTestService {
     this.meetingRepository = meetingRepository;
   }
 
-  public GAD7TestOutputDTO createTest(CreateGAD7TestDTO dto) {
+  public GAD7TestOutputDTO createTest(CreateGAD7TestDTO dto, String therapistId) {
     Patient patient = patientRepository.getPatientById(dto.getPatientId());
-    if (patient == null) {
-      throw new IllegalArgumentException("Patient not found with id: " + dto.getPatientId());
-    }
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     GAD7Test test = new GAD7Test();
     test.setPatient(patient);
@@ -62,9 +61,11 @@ public class PatientTestService {
     return outputDTO;
   }
 
-  public List<GAD7TestOutputDTO> getTestsByPatient(String patientId) {
-    List<GAD7Test> tests = gad7Repository.findByPatient_Id(patientId);
-    return tests.stream()
+  public List<GAD7TestOutputDTO> getTestsByPatient(String patientId, String therapistId) {
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    return patient.getGAD7Tests().stream()
         .map(
             test -> {
               GAD7TestOutputDTO dto = new GAD7TestOutputDTO();
@@ -83,12 +84,13 @@ public class PatientTestService {
         .collect(Collectors.toList());
   }
 
-  public GAD7TestOutputDTO getTest(String testId) {
+  public GAD7TestOutputDTO getTest(String testId, String therapistId) {
     GAD7Test test =
         gad7Repository
             .findById(testId)
             .orElseThrow(
                 () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    SecurityUtil.checkOwnership(test, therapistId);
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
     outputDTO.setTestId(test.getTestId());

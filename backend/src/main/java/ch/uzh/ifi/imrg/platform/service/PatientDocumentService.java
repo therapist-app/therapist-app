@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -11,7 +10,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapis
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
-import jakarta.persistence.EntityNotFoundException;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
@@ -42,13 +41,13 @@ public class PatientDocumentService {
     this.patientDocumentRepository = patientDocumentRepository;
   }
 
-  public void uploadPatientDocument(
-      String patientId, MultipartFile file, Therapist loggedInTherapist) {
+  public void uploadPatientDocument(String patientId, MultipartFile file, String therapistId) {
 
     Patient patient =
         patientRepository
             .findById(patientId)
             .orElseThrow(() -> new RuntimeException("Patient not found"));
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);
     PatientDocument patientDocument = new PatientDocument();
@@ -66,11 +65,14 @@ public class PatientDocumentService {
   }
 
   public void createPatientDocumentFromTherapistDocument(
-      CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO) {
+      CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
+      String therapistId) {
     TherapistDocument therapistDocument =
         therapistDocumentRepository
             .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
             .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+
+    SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
     PatientDocument patientDocument = new PatientDocument();
     patientDocument.setPatient(
@@ -86,35 +88,31 @@ public class PatientDocumentService {
   }
 
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
-      String patientId, Therapist loggedInTherapist) {
-    boolean exists =
-        patientRepository.existsByIdAndTherapistId(patientId, loggedInTherapist.getId());
-    if (!exists) {
-      throw new EntityNotFoundException("Patient not found or doesn't belong to therapist");
-    }
+      String patientId, String therapistId) {
 
     Patient patient = patientRepository.getPatientById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
     return patient.getPatientDocuments().stream()
         .map(PatientDocumentMapper.INSTANCE::convertEntityToPatientDocumentOutputDTO)
         .collect(Collectors.toList());
   }
 
-  public PatientDocument downloadPatientDocument(
-      String patientDocumentId, Therapist loggedInTherapist) {
+  public PatientDocument downloadPatientDocument(String patientDocumentId, String therapistId) {
 
     PatientDocument patientDocument =
         patientDocumentRepository
             .findById(patientDocumentId)
             .orElseThrow(() -> new RuntimeException("Patient document not found"));
+    SecurityUtil.checkOwnership(patientDocument, therapistId);
 
     return patientDocument;
   }
 
-  public void deleteFile(String patientDocumentId, Therapist loggedInTherapist) {
-    // Add check if patient document actually belongs to a patient that belongs to
-    // the loggedInTherapist
+  public void deleteFile(String patientDocumentId, String therapistId) {
 
     PatientDocument patientDocument = patientDocumentRepository.getReferenceById(patientDocumentId);
+    SecurityUtil.checkOwnership(patientDocument, therapistId);
     patientDocument.getPatient().getPatientDocuments().remove(patientDocument);
   }
 }

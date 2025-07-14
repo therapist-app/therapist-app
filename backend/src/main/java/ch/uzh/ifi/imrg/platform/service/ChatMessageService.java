@@ -2,7 +2,6 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatCompletionWithConfigRequestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
@@ -30,11 +29,11 @@ public class ChatMessageService {
 
   /** Main entry point called by the controller. */
   public ChatCompletionResponseDTO chat(
-      ChatCompletionWithConfigRequestDTO req, Therapist loggedInTherapist) {
+      ChatCompletionWithConfigRequestDTO req, String therapistId) {
 
     ChatbotTemplate template =
         chatbotTemplateRepository
-            .findByIdAndTherapistId(req.getTemplateId(), loggedInTherapist.getId())
+            .findByIdAndTherapistId(req.getTemplateId(), therapistId)
             .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
     String systemPrompt = buildSystemPrompt(req.getConfig(), template);

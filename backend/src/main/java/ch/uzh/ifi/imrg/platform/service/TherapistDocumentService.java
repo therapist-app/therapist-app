@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -35,8 +36,7 @@ public class TherapistDocumentService {
     this.therapistDocumentRepository = therapistDocumentRepository;
   }
 
-  public void uploadTherapistDocument(
-      String therapistId, MultipartFile file, Therapist loggedInTherapist) {
+  public void uploadTherapistDocument(MultipartFile file, String therapistId) {
 
     Therapist therapist =
         therapistRepository
@@ -58,8 +58,7 @@ public class TherapistDocumentService {
     therapistDocumentRepository.save(therapistDocument);
   }
 
-  public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
-      String therapistId, Therapist loggedInTherapist) {
+  public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(String therapistId) {
 
     Therapist therapist =
         therapistRepository
@@ -72,22 +71,23 @@ public class TherapistDocumentService {
   }
 
   public TherapistDocument downloadTherapistDocument(
-      String therapistDocumentId, Therapist loggedInTherapist) {
+      String therapistDocumentId, String therapistId) {
 
     TherapistDocument therapistDocument =
         therapistDocumentRepository
             .findById(therapistDocumentId)
             .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+    SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
     return therapistDocument;
   }
 
-  public void deleteFile(String therapistDocumentId, Therapist loggedInTherapist) {
-    // Add check if patient document actually belongs to a patient that belongs to
-    // the loggedInTherapist
+  public void deleteFile(String therapistDocumentId, String therapistId) {
 
     TherapistDocument therapistDocument =
         therapistDocumentRepository.getReferenceById(therapistDocumentId);
+    SecurityUtil.checkOwnership(therapistDocument, therapistId);
+
     therapistDocument.getTherapist().getTherapistDocuments().remove(therapistDocument);
   }
 }

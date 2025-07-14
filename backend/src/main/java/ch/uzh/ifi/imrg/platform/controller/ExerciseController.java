@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseService;
 import java.util.List;
 import org.slf4j.Logger;
@@ -32,31 +33,36 @@ public class ExerciseController {
 
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
-  public ExerciseOutputDTO createExercise(@RequestBody CreateExerciseDTO createExerciseDTO) {
-    return exerciseService.createExercise(createExerciseDTO);
+  public ExerciseOutputDTO createExercise(
+      @RequestBody CreateExerciseDTO createExerciseDTO, @CurrentTherapistId String therapistId) {
+    return exerciseService.createExercise(createExerciseDTO, therapistId);
   }
 
   @GetMapping("/{exerciseId}")
   @ResponseStatus(HttpStatus.OK)
-  public ExerciseOutputDTO getExerciseById(@PathVariable String exerciseId) {
-    return exerciseService.getExerciseById(exerciseId);
+  public ExerciseOutputDTO getExerciseById(
+      @PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
+    return exerciseService.getExerciseById(exerciseId, therapistId);
   }
 
   @GetMapping("/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<ExerciseOutputDTO> getAllExercisesOfPatient(@PathVariable String patientId) {
-    return exerciseService.getAllExercisesOfPatient(patientId);
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
+    return exerciseService.getAllExercisesOfPatient(patientId, therapistId);
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public ExerciseOutputDTO updateExercise(@RequestBody UpdateExerciseDTO updateExerciseDTO) {
-    return exerciseService.updateExercise(updateExerciseDTO);
+  public ExerciseOutputDTO updateExercise(
+      @RequestBody UpdateExerciseDTO updateExerciseDTO, @CurrentTherapistId String therapistId) {
+    return exerciseService.updateExercise(updateExerciseDTO, therapistId);
   }
 
   @DeleteMapping("/{exerciseId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExercise(@PathVariable String exerciseId) {
-    exerciseService.deleteExercise(exerciseId);
+  public void deleteExercise(
+      @PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
+    exerciseService.deleteExercise(exerciseId, therapistId);
   }
 }

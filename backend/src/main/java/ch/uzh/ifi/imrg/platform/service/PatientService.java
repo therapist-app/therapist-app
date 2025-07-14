@@ -9,15 +9,17 @@ import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
 import ch.uzh.ifi.imrg.platform.utils.PasswordGenerationUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,7 +49,7 @@ public class PatientService {
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
-  public Patient registerPatient(String therapistId, CreatePatientDTO inputDTO) {
+  public PatientOutputDTO registerPatient(CreatePatientDTO inputDTO, String therapistId) {
     Therapist therapist =
         therapistRepository
             .findById(therapistId)
@@ -67,7 +69,6 @@ public class PatientService {
 
     Patient createdPatient = patientRepository.save(patient);
     patientRepository.flush();
-    entityManager.refresh(therapist);
 
     CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
         new CreatePatientDTOPatientAPI()
@@ -80,25 +81,25 @@ public class PatientService {
         .registerPatient1(createPatientDTOPatientAPI)
         .block();
 
-    return patient;
+    return mapper.convertEntityToPatientOutputDTO(createdPatient);
   }
 
-  public Patient getPatientById(String patientId, Therapist loggedInTherapist) {
-    Patient foundPatient =
-        loggedInTherapist.getPatients().stream()
-            .filter(p -> p.getId().equals(patientId))
-            .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
-    return foundPatient;
+  public PatientOutputDTO getPatientById(String patientId, String therapistId) {
+    Patient foundPatient = patientRepository.getPatientById(patientId);
+    SecurityUtil.checkOwnership(foundPatient, therapistId);
+    return mapper.convertEntityToPatientOutputDTO(foundPatient);
   }
 
-  public List<Patient> getAllPatientsOfTherapist(Therapist loggedInTherapist) {
-
-    return loggedInTherapist.getPatients();
+  public List<PatientOutputDTO> getAllPatientsOfTherapist(String therapistId) {
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
+    return therapist.getPatients().stream()
+        .map(PatientMapper.INSTANCE::convertEntityToPatientOutputDTO)
+        .collect(Collectors.toList());
   }
 
-  public void deletePatient(String id) {
+  public void deletePatient(String id, String therapistId) {
     Patient patient = patientRepository.getPatientById(id);
+    SecurityUtil.checkOwnership(patient, therapistId);
     patient.getTherapist().getPatients().remove(patient);
   }
 }
