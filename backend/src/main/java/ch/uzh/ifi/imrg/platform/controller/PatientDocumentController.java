@@ -32,14 +32,17 @@ public class PatientDocumentController {
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
       @RequestParam Boolean isSharedWithPatient,
-      @CurrentTherapistId String therapistId) throws IOException {
+      @CurrentTherapistId String therapistId)
+      throws IOException {
 
     patientDocumentService.uploadPatientDocument(patientId, file, isSharedWithPatient, therapistId);
   }
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
-      @RequestBody CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
+      @RequestBody
+          CreatePatientDocumentFromTherapistDocumentDTO
+              createPatientDocumentFromTherapistDocumentDTO,
       @CurrentTherapistId String therapistId) {
     patientDocumentService.createPatientDocumentFromTherapistDocument(
         createPatientDocumentFromTherapistDocumentDTO, therapistId);
@@ -48,8 +51,8 @@ public class PatientDocumentController {
   @GetMapping("/{patientId}")
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
-    List<PatientDocumentOutputDTO> patientDocuments = patientDocumentService.getDocumentsOfPatient(patientId,
-        therapistId);
+    List<PatientDocumentOutputDTO> patientDocuments =
+        patientDocumentService.getDocumentsOfPatient(patientId, therapistId);
 
     return patientDocuments;
   }
@@ -58,7 +61,8 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadPatientDocument(
       @PathVariable String patientDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 
