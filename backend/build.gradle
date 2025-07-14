@@ -109,6 +109,10 @@ defaultTasks 'bootJar', 'build'
 spotless {
 	java {
 		target 'src/main/**/*.java'
+		importOrder 'java', 'javax', '', 'ch.uzh.ifi.imrg'
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
 		googleJavaFormat('1.27.0')
 	}
 }

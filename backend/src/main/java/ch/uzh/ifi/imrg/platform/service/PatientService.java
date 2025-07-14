@@ -20,16 +20,12 @@ import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class PatientService {
-
-  private final Logger logger = LoggerFactory.getLogger(PatientService.class);
 
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;

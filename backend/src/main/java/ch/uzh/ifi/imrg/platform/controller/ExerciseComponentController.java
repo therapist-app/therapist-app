@@ -5,8 +5,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/exercise-components")
 public class ExerciseComponentController {
-  private final Logger logger = LoggerFactory.getLogger(ExerciseComponentController.class);
   private final ExerciseComponentService exerciseComponentService;
 
   public ExerciseComponentController(ExerciseComponentService exerciseComponentService) {

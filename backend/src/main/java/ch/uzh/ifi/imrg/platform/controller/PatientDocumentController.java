@@ -5,11 +5,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapis
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import java.io.IOException;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,15 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/patient-documents")
 public class PatientDocumentController {
 
-  private final Logger logger = LoggerFactory.getLogger(PatientDocumentController.class);
-
   private final PatientDocumentService patientDocumentService;
-  private final TherapistService therapistService;
 
-  public PatientDocumentController(
-      PatientDocumentService patientDocumentService, TherapistService therapistService) {
+  public PatientDocumentController(PatientDocumentService patientDocumentService) {
     this.patientDocumentService = patientDocumentService;
-    this.therapistService = therapistService;
   }
 
   @PostMapping(path = "/{patientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

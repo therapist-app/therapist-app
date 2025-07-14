@@ -7,8 +7,6 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingService;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/meetings")
 public class MeetingController {
-
-  private final Logger logger = LoggerFactory.getLogger(MeetingController.class);
 
   private final MeetingService meetingService;
 

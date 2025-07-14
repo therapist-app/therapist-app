@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.GAD7Test;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.GAD7Repository;
-import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
@@ -19,15 +18,10 @@ public class PatientTestService {
 
   private final GAD7Repository gad7Repository;
   private final PatientRepository patientRepository;
-  private final MeetingRepository meetingRepository;
 
-  public PatientTestService(
-      GAD7Repository gad7Repository,
-      PatientRepository patientRepository,
-      MeetingRepository meetingRepository) {
+  public PatientTestService(GAD7Repository gad7Repository, PatientRepository patientRepository) {
     this.gad7Repository = gad7Repository;
     this.patientRepository = patientRepository;
-    this.meetingRepository = meetingRepository;
   }
 
   public GAD7TestOutputDTO createTest(CreateGAD7TestDTO dto, String therapistId) {
