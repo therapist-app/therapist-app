@@ -85,10 +85,11 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId, String therapistId) {
-    GAD7Test test = gad7Repository
-        .findById(testId)
-        .orElseThrow(
-            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test =
+        gad7Repository
+            .findById(testId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
     SecurityUtil.checkOwnership(test, therapistId);
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
