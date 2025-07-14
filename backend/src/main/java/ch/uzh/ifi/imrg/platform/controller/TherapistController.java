@@ -43,9 +43,9 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist therapist = TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist therapist =
+        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     return therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
-
   }
 
   @PostMapping("/login")
@@ -54,8 +54,8 @@ public class TherapistController {
       @RequestBody LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    return therapistService.loginTherapist(loginTherapistDTO, httpServletRequest,
-        httpServletResponse);
+    return therapistService.loginTherapist(
+        loginTherapistDTO, httpServletRequest, httpServletResponse);
   }
 
   @PostMapping("/logout")

@@ -38,9 +38,7 @@ public class TherapistDocument implements OwnedByTherapist {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob
-  @Column
-  private String extractedText;
+  @Lob @Column private String extractedText;
 
   @Override
   public String getOwningTherapistId() {

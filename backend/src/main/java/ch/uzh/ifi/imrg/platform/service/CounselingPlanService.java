@@ -27,16 +27,18 @@ public class CounselingPlanService {
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
-  public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId, String therapistId) {
-    CounselingPlan counselingPlan = patientRepository.getReferenceById(patientId).getCounselingPlan();
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(
+      String patientId, String therapistId) {
+    CounselingPlan counselingPlan =
+        patientRepository.getReferenceById(patientId).getCounselingPlan();
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
     return getOutputDto(counselingPlan);
   }
 
   public CounselingPlanOutputDTO updateCounselingPlan(
       UpdateCounselingPlanDTO updateCounselingPlanDTO, String therapistId) {
-    CounselingPlan counselingPlan = counselingPlanRepository
-        .getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
+    CounselingPlan counselingPlan =
+        counselingPlanRepository.getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
     if (updateCounselingPlanDTO.getStartOfTherapy() != null) {
@@ -47,8 +49,8 @@ public class CounselingPlanService {
   }
 
   private CounselingPlanOutputDTO getOutputDto(CounselingPlan counselingPlan) {
-    CounselingPlanOutputDTO outputDTO = CounselingPlanMapper.INSTANCE
-        .convertEntityToCounselingPlanOutputDTO(counselingPlan);
+    CounselingPlanOutputDTO outputDTO =
+        CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
     List<CounselingPlanPhaseOutputDTO> mappedOutputDtos = new ArrayList<>();
     for (CounselingPlanPhase phase : counselingPlan.getCounselingPlanPhases()) {
       mappedOutputDtos.add(CounselingPlanPhaseService.getOutputDto(phase, counselingPlan));

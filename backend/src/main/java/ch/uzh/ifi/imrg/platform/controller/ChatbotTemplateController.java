@@ -15,17 +15,14 @@ public class ChatbotTemplateController {
 
   private final ChatbotTemplateService chatbotTemplateService;
 
-  ChatbotTemplateController(
-      ChatbotTemplateService chatbotTemplateService) {
+  ChatbotTemplateController(ChatbotTemplateService chatbotTemplateService) {
     this.chatbotTemplateService = chatbotTemplateService;
-
   }
 
   @GetMapping("/{templateId}")
   @ResponseStatus(HttpStatus.OK)
   public ChatbotTemplateOutputDTO getTemplate(
-      @PathVariable String templateId,
-      @CurrentTherapistId String therapistId) {
+      @PathVariable String templateId, @CurrentTherapistId String therapistId) {
 
     return chatbotTemplateService.getTemplateForTherapist(templateId, therapistId);
   }
@@ -36,7 +33,8 @@ public class ChatbotTemplateController {
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
     return chatbotTemplateService.createTemplate(template, therapistId);
   }
 
@@ -47,10 +45,10 @@ public class ChatbotTemplateController {
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
 
-    return chatbotTemplateService.createTemplateForPatient(
-        patientId, template, therapistId);
+    return chatbotTemplateService.createTemplateForPatient(patientId, template, therapistId);
   }
 
   @PutMapping("/{templateId}")
@@ -60,7 +58,8 @@ public class ChatbotTemplateController {
       @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
-    ChatbotTemplate template = ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+    ChatbotTemplate template =
+        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
     return chatbotTemplateService.updateTemplate(templateId, template, therapistId);
   }
 
@@ -75,7 +74,9 @@ public class ChatbotTemplateController {
   @DeleteMapping("/patients/{patientId}/{templateId}")
   @ResponseStatus(HttpStatus.OK)
   public void deleteTemplateForPatient(
-      @PathVariable String patientId, @PathVariable String templateId, @CurrentTherapistId String therapistId) {
+      @PathVariable String patientId,
+      @PathVariable String templateId,
+      @CurrentTherapistId String therapistId) {
 
     chatbotTemplateService.deleteTemplateForPatient(patientId, templateId, therapistId);
   }
@@ -90,7 +91,9 @@ public class ChatbotTemplateController {
   @PostMapping("/patients/{patientId}/{templateId}/clone")
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO cloneTemplateForPatient(
-      @PathVariable String patientId, @PathVariable String templateId, @CurrentTherapistId String therapistId) {
+      @PathVariable String patientId,
+      @PathVariable String templateId,
+      @CurrentTherapistId String therapistId) {
 
     return chatbotTemplateService.cloneTemplateForPatient(patientId, templateId, therapistId);
   }

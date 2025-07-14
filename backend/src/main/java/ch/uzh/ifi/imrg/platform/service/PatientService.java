@@ -23,9 +23,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -39,8 +37,7 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -53,9 +50,10 @@ public class PatientService {
   }
 
   public PatientOutputDTO registerPatient(CreatePatientDTO inputDTO, String therapistId) {
-    Therapist therapist = therapistRepository
-        .findById(therapistId)
-        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+    Therapist therapist =
+        therapistRepository
+            .findById(therapistId)
+            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -72,11 +70,12 @@ public class PatientService {
     Patient createdPatient = patientRepository.save(patient);
     patientRepository.flush();
 
-    CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI()
-        .id(createdPatient.getId())
-        .email(createdPatient.getEmail())
-        .password(createdPatient.getInitialPassword())
-        .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
+    CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
+        new CreatePatientDTOPatientAPI()
+            .id(createdPatient.getId())
+            .email(createdPatient.getEmail())
+            .password(createdPatient.getInitialPassword())
+            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
     PatientAppAPIs.coachPatientControllerPatientAPI
         .registerPatient1(createPatientDTOPatientAPI)

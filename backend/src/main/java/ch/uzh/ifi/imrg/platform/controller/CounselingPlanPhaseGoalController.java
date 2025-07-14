@@ -1,12 +1,10 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,21 +50,23 @@ public class CounselingPlanPhaseGoalController {
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(@PathVariable String id,
-      @CurrentTherapistId String therapistId) {
+  public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(
+      @PathVariable String id, @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseGoalService.getCounselingPlanPhaseGoalById(id, therapistId);
   }
 
   @PutMapping("/{id}")
   public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhase(
-      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto,
+      @PathVariable String id,
+      @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(id, updateDto, therapistId);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteCounselingPlanPhaseGoal(@PathVariable String id, @CurrentTherapistId String therapistId) {
+  public void deleteCounselingPlanPhaseGoal(
+      @PathVariable String id, @CurrentTherapistId String therapistId) {
     counselingPlanPhaseGoalService.deleteCounselingPlanPhaseGoal(id, therapistId);
   }
 }

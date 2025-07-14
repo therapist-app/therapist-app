@@ -22,21 +22,22 @@ public class PatientTestController {
   @Valid
   @PostMapping("/gad7")
   @ResponseStatus(HttpStatus.CREATED)
-  public GAD7TestOutputDTO createTest(@RequestBody CreateGAD7TestDTO createGAD7TestDTO,
-      @CurrentTherapistId String therapistId) {
+  public GAD7TestOutputDTO createTest(
+      @RequestBody CreateGAD7TestDTO createGAD7TestDTO, @CurrentTherapistId String therapistId) {
     return patientTestService.createTest(createGAD7TestDTO, therapistId);
   }
 
   @GetMapping("/gad7/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<GAD7TestOutputDTO> getTestsForPatient(@PathVariable String patientId,
-      @CurrentTherapistId String therapistId) {
+  public List<GAD7TestOutputDTO> getTestsForPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     return patientTestService.getTestsByPatient(patientId, therapistId);
   }
 
   @GetMapping("/gad7/{testId}")
   @ResponseStatus(HttpStatus.OK)
-  public GAD7TestOutputDTO getTestById(@PathVariable String testId, @CurrentTherapistId String therapistId) {
+  public GAD7TestOutputDTO getTestById(
+      @PathVariable String testId, @CurrentTherapistId String therapistId) {
     return patientTestService.getTest(testId, therapistId);
   }
 }

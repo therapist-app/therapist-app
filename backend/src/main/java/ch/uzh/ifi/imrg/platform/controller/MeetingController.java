@@ -29,13 +29,12 @@ public class MeetingController {
 
   MeetingController(MeetingService meetingService) {
     this.meetingService = meetingService;
-
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public MeetingOutputDTO createMeeting(@RequestBody CreateMeetingDTO createMeetingDTO,
-      @CurrentTherapistId String therapistId) {
+  public MeetingOutputDTO createMeeting(
+      @RequestBody CreateMeetingDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
 
     Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO, therapistId);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdMeeting);
@@ -43,7 +42,8 @@ public class MeetingController {
 
   @GetMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingOutputDTO getMeetingById(@PathVariable String meetingId, @CurrentTherapistId String therapistId) {
+  public MeetingOutputDTO getMeetingById(
+      @PathVariable String meetingId, @CurrentTherapistId String therapistId) {
 
     MeetingOutputDTO meetingOutputDTO = meetingService.getMeeting(meetingId, therapistId);
     return meetingOutputDTO;
@@ -51,16 +51,18 @@ public class MeetingController {
 
   @GetMapping("/patients/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<MeetingOutputDTO> getMeetingsOfPatient(@PathVariable String patientId,
-      @CurrentTherapistId String therapistId) {
+  public List<MeetingOutputDTO> getMeetingsOfPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
 
-    List<MeetingOutputDTO> meetingOutputDTOs = meetingService.getAllMeetingsOfPatient(patientId, therapistId);
+    List<MeetingOutputDTO> meetingOutputDTOs =
+        meetingService.getAllMeetingsOfPatient(patientId, therapistId);
     return meetingOutputDTOs;
   }
 
   @DeleteMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteMeetingById(@PathVariable String meetingId, @CurrentTherapistId String therapistId) {
+  public void deleteMeetingById(
+      @PathVariable String meetingId, @CurrentTherapistId String therapistId) {
     meetingService.deleteMeetingById(meetingId, therapistId);
   }
 }

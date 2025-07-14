@@ -35,30 +35,35 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO createMeetingNote(
       @RequestBody CreateMeetingNoteDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @GetMapping("/{meetingNoteId}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingNoteOutputDTO getMeetingNoteById(@PathVariable String meetingNoteId,
-      @CurrentTherapistId String therapistId) {
+  public MeetingNoteOutputDTO getMeetingNoteById(
+      @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public MeetingNoteOutputDTO updateMeetingNote(
-      @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO, @CurrentTherapistId String therapistId) {
+      @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
+      @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
   @DeleteMapping("/{meetingNoteId}")
-  public void deleteMeetingNoteById(@PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
+  public void deleteMeetingNoteById(
+      @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
     meetingNoteService.deleteMeetingNoteById(meetingNoteId, therapistId);
   }
 }

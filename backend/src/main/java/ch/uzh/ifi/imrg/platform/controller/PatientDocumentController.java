@@ -1,13 +1,11 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapistDocumentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
@@ -48,7 +46,9 @@ public class PatientDocumentController {
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
-      @RequestBody CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
+      @RequestBody
+          CreatePatientDocumentFromTherapistDocumentDTO
+              createPatientDocumentFromTherapistDocumentDTO,
       @CurrentTherapistId String therapistId) {
     patientDocumentService.createPatientDocumentFromTherapistDocument(
         createPatientDocumentFromTherapistDocumentDTO, therapistId);
@@ -57,8 +57,8 @@ public class PatientDocumentController {
   @GetMapping("/{patientId}")
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
-    List<PatientDocumentOutputDTO> patientDocuments = patientDocumentService.getDocumentsOfPatient(patientId,
-        therapistId);
+    List<PatientDocumentOutputDTO> patientDocuments =
+        patientDocumentService.getDocumentsOfPatient(patientId, therapistId);
 
     return patientDocuments;
   }
@@ -67,7 +67,8 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadPatientDocument(
       @PathVariable String patientDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

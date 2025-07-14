@@ -28,14 +28,17 @@ public class ExerciseComponentService {
   private final ExerciseComponentMapper exerciseComponentMapper = ExerciseComponentMapper.INSTANCE;
 
   public ExerciseComponentService(
-      @Qualifier("exerciseComponentRepository") ExerciseComponentRepository exerciseComponentRepository,
+      @Qualifier("exerciseComponentRepository")
+          ExerciseComponentRepository exerciseComponentRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
     this.exerciseComponentRepository = exerciseComponentRepository;
     this.exerciseRepository = exerciseRepository;
   }
 
-  public void createExerciseComponent(CreateExerciseComponentDTO createExerciseComponentDTO, String therapistId) {
-    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+  public void createExerciseComponent(
+      CreateExerciseComponentDTO createExerciseComponentDTO, String therapistId) {
+    Exercise exercise =
+        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     ExerciseComponent exerciseComponent = new ExerciseComponent();
@@ -49,8 +52,11 @@ public class ExerciseComponentService {
   }
 
   public void createExerciseComponentWithFile(
-      CreateExerciseComponentDTO createExerciseComponentDTO, MultipartFile file, String therapistId) {
-    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+      CreateExerciseComponentDTO createExerciseComponentDTO,
+      MultipartFile file,
+      String therapistId) {
+    Exercise exercise =
+        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);

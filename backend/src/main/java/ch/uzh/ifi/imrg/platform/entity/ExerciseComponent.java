@@ -25,25 +25,19 @@ public class ExerciseComponent implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column
-  private ExerciseComponentType exerciseComponentType;
+  @Column private ExerciseComponentType exerciseComponentType;
 
-  @Column
-  private String description;
+  @Column private String description;
 
   private String fileName;
 
   private String fileType;
 
-  @Lob
-  private byte[] fileData;
+  @Lob private byte[] fileData;
 
-  @Lob
-  @Column
-  private String extractedText;
+  @Lob @Column private String extractedText;
 
-  @Column()
-  private Integer orderNumber;
+  @Column() private Integer orderNumber;
 
   @ManyToOne
   @JoinColumn(name = "exercise_id", referencedColumnName = "id")

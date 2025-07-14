@@ -24,11 +24,9 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column()
-  private String goalName;
+  @Column() private String goalName;
 
-  @Column()
-  private String goalDescription;
+  @Column() private String goalDescription;
 
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")

@@ -28,8 +28,7 @@ public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final PatientRepository patientRepository;
-  @PersistenceContext
-  private EntityManager entityManager;
+  @PersistenceContext private EntityManager entityManager;
 
   @Autowired
   public MeetingService(
@@ -50,11 +49,12 @@ public class MeetingService {
     meeting.setLocation(createMeetingDTO.getLocation());
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
-    CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI = new CreateMeetingDTOPatientAPI()
-        .externalMeetingId(createdMeeting.getId())
-        .startAt(meeting.getMeetingStart())
-        .endAt(meeting.getMeetingEnd())
-        .location(meeting.getLocation());
+    CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
+        new CreateMeetingDTOPatientAPI()
+            .externalMeetingId(createdMeeting.getId())
+            .startAt(meeting.getMeetingStart())
+            .endAt(meeting.getMeetingEnd())
+            .location(meeting.getLocation());
     PatientAppAPIs.coachMeetingControllerPatientAPI
         .createMeeting1(createMeetingDTO.getPatientId(), createMeetingDTOPatientAPI)
         .block();
@@ -86,7 +86,8 @@ public class MeetingService {
     SecurityUtil.checkOwnership(meeting, therapistId);
 
     meeting.getPatient().getMeetings().remove(meeting);
-    PatientAppAPIs.coachMeetingControllerPatientAPI.deleteMeeting1(
-        meeting.getPatient().getId(), meetingId).block();
+    PatientAppAPIs.coachMeetingControllerPatientAPI
+        .deleteMeeting1(meeting.getPatient().getId(), meetingId)
+        .block();
   }
 }

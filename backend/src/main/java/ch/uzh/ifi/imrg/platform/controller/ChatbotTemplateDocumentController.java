@@ -33,8 +33,7 @@ public class ChatbotTemplateDocumentController {
       @RequestParam("file") MultipartFile file,
       @CurrentTherapistId String therapistId) {
 
-    chatbotTemplateDocumentService.uploadChatbotTemplateDocument(
-        templateId, file, therapistId);
+    chatbotTemplateDocumentService.uploadChatbotTemplateDocument(templateId, file, therapistId);
   }
 
   @GetMapping("/{templateId}")
@@ -46,10 +45,12 @@ public class ChatbotTemplateDocumentController {
 
   @GetMapping("/{templateDocumentId}/download")
   public ResponseEntity<Resource> downloadChatbotTemplateDocument(
-      @PathVariable String templateDocumentId, @CurrentTherapistId String therapistId) throws IOException {
+      @PathVariable String templateDocumentId, @CurrentTherapistId String therapistId)
+      throws IOException {
 
-    ChatbotTemplateDocument fileDocument = chatbotTemplateDocumentService.downloadChatbotTemplateDocument(
-        templateDocumentId, therapistId);
+    ChatbotTemplateDocument fileDocument =
+        chatbotTemplateDocumentService.downloadChatbotTemplateDocument(
+            templateDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

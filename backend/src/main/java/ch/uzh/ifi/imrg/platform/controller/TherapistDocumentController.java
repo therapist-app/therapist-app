@@ -1,12 +1,10 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistDocumentService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
@@ -38,15 +36,15 @@ public class TherapistDocumentController {
   @PostMapping(path = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public void createTherapistDocument(
-      @RequestParam("file") MultipartFile file,
-      @CurrentTherapistId String therapistId) {
+      @RequestParam("file") MultipartFile file, @CurrentTherapistId String therapistId) {
     therapistDocumentService.uploadTherapistDocument(file, therapistId);
   }
 
   @GetMapping("/")
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
       @CurrentTherapistId String therapistId) {
-    List<TherapistDocumentOutputDTO> therapistDocuments = therapistDocumentService.getDocumentsOfTherapist(therapistId);
+    List<TherapistDocumentOutputDTO> therapistDocuments =
+        therapistDocumentService.getDocumentsOfTherapist(therapistId);
 
     return therapistDocuments;
   }
@@ -55,8 +53,8 @@ public class TherapistDocumentController {
   public ResponseEntity<Resource> downloadTherapistDocument(
       @PathVariable String therapistDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    TherapistDocument fileDocument = therapistDocumentService.downloadTherapistDocument(therapistDocumentId,
-        therapistId);
+    TherapistDocument fileDocument =
+        therapistDocumentService.downloadTherapistDocument(therapistDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

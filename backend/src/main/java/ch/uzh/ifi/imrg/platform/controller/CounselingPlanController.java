@@ -25,15 +25,16 @@ public class CounselingPlanController {
 
   @GetMapping("/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public CounselingPlanOutputDTO getCounselingPlanByPatientId(@PathVariable String patientId,
-      @CurrentTherapistId String therapistId) {
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     return counselingPlanService.getCounselingPlanByPatientId(patientId, therapistId);
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public CounselingPlanOutputDTO updateCounselingPlan(
-      @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO, @CurrentTherapistId String therapistId) {
+      @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO,
+      @CurrentTherapistId String therapistId) {
     return counselingPlanService.updateCounselingPlan(updateCounselingPlanDTO, therapistId);
   }
 }

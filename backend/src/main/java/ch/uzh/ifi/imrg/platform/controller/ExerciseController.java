@@ -33,34 +33,36 @@ public class ExerciseController {
 
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
-  public ExerciseOutputDTO createExercise(@RequestBody CreateExerciseDTO createExerciseDTO,
-      @CurrentTherapistId String therapistId) {
+  public ExerciseOutputDTO createExercise(
+      @RequestBody CreateExerciseDTO createExerciseDTO, @CurrentTherapistId String therapistId) {
     return exerciseService.createExercise(createExerciseDTO, therapistId);
   }
 
   @GetMapping("/{exerciseId}")
   @ResponseStatus(HttpStatus.OK)
-  public ExerciseOutputDTO getExerciseById(@PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
+  public ExerciseOutputDTO getExerciseById(
+      @PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
     return exerciseService.getExerciseById(exerciseId, therapistId);
   }
 
   @GetMapping("/patient/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<ExerciseOutputDTO> getAllExercisesOfPatient(@PathVariable String patientId,
-      @CurrentTherapistId String therapistId) {
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     return exerciseService.getAllExercisesOfPatient(patientId, therapistId);
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public ExerciseOutputDTO updateExercise(@RequestBody UpdateExerciseDTO updateExerciseDTO,
-      @CurrentTherapistId String therapistId) {
+  public ExerciseOutputDTO updateExercise(
+      @RequestBody UpdateExerciseDTO updateExerciseDTO, @CurrentTherapistId String therapistId) {
     return exerciseService.updateExercise(updateExerciseDTO, therapistId);
   }
 
   @DeleteMapping("/{exerciseId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExercise(@PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
+  public void deleteExercise(
+      @PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
     exerciseService.deleteExercise(exerciseId, therapistId);
   }
 }

@@ -5,7 +5,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -39,7 +38,8 @@ public class ExerciseComponentController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public void createExerciseComponent(
-      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO, @CurrentTherapistId String therapistId) {
+      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO,
+      @CurrentTherapistId String therapistId) {
     exerciseComponentService.createExerciseComponent(createExerciseComponentDTO, therapistId);
   }
 
@@ -49,14 +49,15 @@ public class ExerciseComponentController {
       @RequestPart("metadata") CreateExerciseComponentDTO createExerciseComponentDTO,
       @RequestPart("file") MultipartFile file,
       @CurrentTherapistId String therapistId) {
-    exerciseComponentService.createExerciseComponentWithFile(createExerciseComponentDTO, file, therapistId);
+    exerciseComponentService.createExerciseComponentWithFile(
+        createExerciseComponentDTO, file, therapistId);
   }
 
   @GetMapping("/{exerciseComponentId}/download")
   public ResponseEntity<Resource> downloadExerciseComponentFile(
       @PathVariable String exerciseComponentId, @CurrentTherapistId String therapistId) {
-    ExerciseComponent exerciseComponent = exerciseComponentService.downloadExerciseComponent(exerciseComponentId,
-        therapistId);
+    ExerciseComponent exerciseComponent =
+        exerciseComponentService.downloadExerciseComponent(exerciseComponentId, therapistId);
     ByteArrayResource resource = new ByteArrayResource(exerciseComponent.getFileData());
 
     return ResponseEntity.ok()
@@ -71,14 +72,15 @@ public class ExerciseComponentController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public void updateExerciseComponent(
-      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO, @CurrentTherapistId String therapistId) {
+      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO,
+      @CurrentTherapistId String therapistId) {
     exerciseComponentService.updateExerciseComponent(updateExerciseComponentDTO, therapistId);
   }
 
   @DeleteMapping("/{exerciseComponentId}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteExerciseComponent(@PathVariable String exerciseComponentId,
-      @CurrentTherapistId String therapistId) {
+  public void deleteExerciseComponent(
+      @PathVariable String exerciseComponentId, @CurrentTherapistId String therapistId) {
     exerciseComponentService.deleteExerciseComponent(exerciseComponentId, therapistId);
   }
 }

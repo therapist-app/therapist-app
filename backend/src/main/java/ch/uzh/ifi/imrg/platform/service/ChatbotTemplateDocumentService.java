@@ -21,22 +21,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Handles persistence and access control for documents that belong to a Chatbot
- * Template. All
+ * Handles persistence and access control for documents that belong to a Chatbot Template. All
  * operations are verified against the {@link Therapist} who owns the template.
  */
 @Service
 @Transactional
 public class ChatbotTemplateDocumentService {
 
-  private static final Logger logger = LoggerFactory.getLogger(ChatbotTemplateDocumentService.class);
+  private static final Logger logger =
+      LoggerFactory.getLogger(ChatbotTemplateDocumentService.class);
 
   private final ChatbotTemplateRepository chatbotTemplateRepository;
   private final ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository;
 
   public ChatbotTemplateDocumentService(
       @Qualifier("chatbotTemplateRepository") ChatbotTemplateRepository chatbotTemplateRepository,
-      @Qualifier("chatbotTemplateDocumentRepository") ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository) {
+      @Qualifier("chatbotTemplateDocumentRepository")
+          ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository) {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
     this.chatbotTemplateDocumentRepository = chatbotTemplateDocumentRepository;
   }
@@ -44,9 +45,10 @@ public class ChatbotTemplateDocumentService {
   public ChatbotTemplateDocument uploadChatbotTemplateDocument(
       String templateId, MultipartFile file, String therapistId) {
 
-    ChatbotTemplate template = chatbotTemplateRepository
-        .findByIdAndTherapistId(templateId, therapistId)
-        .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
+    ChatbotTemplate template =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(templateId, therapistId)
+            .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
 
@@ -75,9 +77,10 @@ public class ChatbotTemplateDocumentService {
   public List<ChatbotTemplateDocumentOutputDTO> getDocumentsOfTemplate(
       String templateId, String therapistId) {
 
-    ChatbotTemplate template = chatbotTemplateRepository
-        .findById(templateId)
-        .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
+    ChatbotTemplate template =
+        chatbotTemplateRepository
+            .findById(templateId)
+            .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
     SecurityUtil.checkOwnership(template, therapistId);
 
@@ -90,9 +93,10 @@ public class ChatbotTemplateDocumentService {
   public ChatbotTemplateDocument downloadChatbotTemplateDocument(
       String templateDocumentId, String therapistId) {
 
-    ChatbotTemplateDocument templateDocument = chatbotTemplateDocumentRepository
-        .findById(templateDocumentId)
-        .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
+    ChatbotTemplateDocument templateDocument =
+        chatbotTemplateDocumentRepository
+            .findById(templateDocumentId)
+            .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
 
     SecurityUtil.checkOwnership(templateDocument, therapistId);
 
@@ -101,9 +105,10 @@ public class ChatbotTemplateDocumentService {
 
   public void deleteFile(String templateDocumentId, String therapistId) {
 
-    ChatbotTemplateDocument templateDocument = chatbotTemplateDocumentRepository
-        .findById(templateDocumentId)
-        .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
+    ChatbotTemplateDocument templateDocument =
+        chatbotTemplateDocumentRepository
+            .findById(templateDocumentId)
+            .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
 
     SecurityUtil.checkOwnership(templateDocument, therapistId);
 
@@ -113,5 +118,4 @@ public class ChatbotTemplateDocumentService {
         templateDocumentId,
         templateDocument.getChatbotTemplate().getId());
   }
-
 }
