@@ -24,6 +24,9 @@ public class PatientDocument implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @Column(nullable = false, updatable = false)
+  private Boolean isSharedWithPatient;
+
   @ManyToOne
   @JoinColumn(name = "patient_id", nullable = false)
   private Patient patient;

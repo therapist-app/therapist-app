@@ -43,9 +43,13 @@ const PatientDetail = (): ReactElement => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const allPatientDocuments = useSelector(
+  const patientDocumentsVisibleToPatient = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
-  )
+  ).filter((doc) => doc.isSharedWithPatient)
+
+  const patientDocumentsNotVisibleToPatient = useSelector(
+    (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
+  ).filter((doc) => !doc.isSharedWithPatient)
 
   const patient = useSelector((state: RootState) =>
     state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
@@ -85,11 +89,23 @@ const PatientDetail = (): ReactElement => {
     dispatch(getCounselingPlanByPatientId(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
-  const handleFileUpload = async (file: File): Promise<void> => {
+  const handleFileUploadNotSharedWithPatient = async (file: File): Promise<void> => {
     await dispatch(
       createDocumentForPatient({
         file: file,
         patientId: patientId ?? '',
+        isSharedWithPatient: false,
+      })
+    )
+    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+  }
+
+  const handleFileUploadSharedWithPatient = async (file: File): Promise<void> => {
+    await dispatch(
+      createDocumentForPatient({
+        file: file,
+        patientId: patientId ?? '',
+        isSharedWithPatient: true,
       })
     )
     setRefreshPatientDocumentsCounter((prev) => prev + 1)
@@ -276,9 +292,19 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <FilesTable
-        title='Files'
-        allDocuments={allPatientDocuments}
-        handleFileUpload={handleFileUpload}
+        title='Files visible to Client'
+        allDocuments={patientDocumentsVisibleToPatient}
+        handleFileUpload={handleFileUploadSharedWithPatient}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+      />
+
+      <CustomizedDivider />
+
+      <FilesTable
+        title='Files visible only to Coach'
+        allDocuments={patientDocumentsNotVisibleToPatient}
+        handleFileUpload={handleFileUploadNotSharedWithPatient}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
       />

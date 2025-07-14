@@ -287,19 +287,15 @@ public class CoachDocumentControllerPatientAPI {
      * 
      * <p><b>201</b> - Created
      * @param patientId The patientId parameter
-     * @param _file The _file parameter
+     * @param patientFile The patientFile parameter
      * @return DocumentOverviewDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec uploadAndShareRequestCreation(String patientId, File _file) throws WebClientResponseException {
+    private ResponseSpec uploadAndShareRequestCreation(String patientId, File patientFile) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'patientId' is set
         if (patientId == null) {
             throw new WebClientResponseException("Missing the required parameter 'patientId' when calling uploadAndShare", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
-        }
-        // verify the required parameter '_file' is set
-        if (_file == null) {
-            throw new WebClientResponseException("Missing the required parameter '_file' when calling uploadAndShare", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -311,8 +307,8 @@ public class CoachDocumentControllerPatientAPI {
         final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
-        if (_file != null)
-            formParams.add("file", new FileSystemResource(_file));
+        if (patientFile != null)
+            formParams.add("patientFile", new FileSystemResource(patientFile));
 
         final String[] localVarAccepts = { 
             "application/json"
@@ -334,13 +330,13 @@ public class CoachDocumentControllerPatientAPI {
      * 
      * <p><b>201</b> - Created
      * @param patientId The patientId parameter
-     * @param _file The _file parameter
+     * @param patientFile The patientFile parameter
      * @return DocumentOverviewDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<DocumentOverviewDTOPatientAPI> uploadAndShare(String patientId, File _file) throws WebClientResponseException {
+    public Mono<DocumentOverviewDTOPatientAPI> uploadAndShare(String patientId, File patientFile) throws WebClientResponseException {
         ParameterizedTypeReference<DocumentOverviewDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentOverviewDTOPatientAPI>() {};
-        return uploadAndShareRequestCreation(patientId, _file).bodyToMono(localVarReturnType);
+        return uploadAndShareRequestCreation(patientId, patientFile).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -348,13 +344,13 @@ public class CoachDocumentControllerPatientAPI {
      * 
      * <p><b>201</b> - Created
      * @param patientId The patientId parameter
-     * @param _file The _file parameter
+     * @param patientFile The patientFile parameter
      * @return ResponseEntity&lt;DocumentOverviewDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<DocumentOverviewDTOPatientAPI>> uploadAndShareWithHttpInfo(String patientId, File _file) throws WebClientResponseException {
+    public Mono<ResponseEntity<DocumentOverviewDTOPatientAPI>> uploadAndShareWithHttpInfo(String patientId, File patientFile) throws WebClientResponseException {
         ParameterizedTypeReference<DocumentOverviewDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentOverviewDTOPatientAPI>() {};
-        return uploadAndShareRequestCreation(patientId, _file).toEntity(localVarReturnType);
+        return uploadAndShareRequestCreation(patientId, patientFile).toEntity(localVarReturnType);
     }
 
     /**
@@ -362,11 +358,11 @@ public class CoachDocumentControllerPatientAPI {
      * 
      * <p><b>201</b> - Created
      * @param patientId The patientId parameter
-     * @param _file The _file parameter
+     * @param patientFile The patientFile parameter
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec uploadAndShareWithResponseSpec(String patientId, File _file) throws WebClientResponseException {
-        return uploadAndShareRequestCreation(patientId, _file);
+    public ResponseSpec uploadAndShareWithResponseSpec(String patientId, File patientFile) throws WebClientResponseException {
+        return uploadAndShareRequestCreation(patientId, patientFile);
     }
 }

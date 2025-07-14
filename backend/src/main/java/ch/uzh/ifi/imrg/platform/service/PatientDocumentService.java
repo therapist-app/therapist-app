@@ -10,8 +10,11 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapis
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.FileUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +40,9 @@ public class PatientDocumentService {
     this.patientDocumentRepository = patientDocumentRepository;
   }
 
-  public void uploadPatientDocument(String patientId, MultipartFile file, String therapistId) {
+  public void uploadPatientDocument(
+      String patientId, MultipartFile file, Boolean isSharedWithPatient, String therapistId)
+      throws IOException {
 
     Patient patient =
         patientRepository
@@ -47,6 +52,7 @@ public class PatientDocumentService {
 
     String extractedText = DocumentParserUtil.extractText(file);
     PatientDocument patientDocument = new PatientDocument();
+    patientDocument.setIsSharedWithPatient(isSharedWithPatient);
     patientDocument.setPatient(patient);
     patientDocument.setFileName(file.getOriginalFilename());
     patientDocument.setFileType(file.getContentType());
@@ -56,6 +62,21 @@ public class PatientDocumentService {
       throw new RuntimeException("Failed to read file bytes", e);
     }
     patientDocument.setExtractedText(extractedText);
+
+    if (isSharedWithPatient) {
+      File convertedFile = null;
+      try {
+        convertedFile = FileUtil.convertMultiPartFileToFile(file);
+        PatientAppAPIs.coachDocumentControllerPatientAPI.uploadAndShare(patientId, convertedFile);
+        // TODO: Add .block() -> but currently the file upload doesnt work...
+      } catch (Exception e) {
+        throw e;
+      } finally {
+        if (convertedFile != null) {
+          convertedFile.delete();
+        }
+      }
+    }
 
     patientDocumentRepository.save(patientDocument);
   }

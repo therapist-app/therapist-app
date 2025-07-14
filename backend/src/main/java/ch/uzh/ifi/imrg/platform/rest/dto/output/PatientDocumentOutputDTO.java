@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class PatientDocumentOutputDTO {
   private String id;
+  private Boolean isSharedWithPatient;
   private String fileName;
   private String fileType;
 }

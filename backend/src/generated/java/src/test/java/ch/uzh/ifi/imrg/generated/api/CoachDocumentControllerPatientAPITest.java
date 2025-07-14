@@ -82,8 +82,8 @@ public class CoachDocumentControllerPatientAPITest {
     @Test
     public void uploadAndShareTest()  {
         String patientId = null;
-        File _file = null;
-        DocumentOverviewDTOPatientAPI response = api.uploadAndShare(patientId, _file).block();
+        File patientFile = null;
+        DocumentOverviewDTOPatientAPI response = api.uploadAndShare(patientId, patientFile).block();
 
         // TODO: test validations
     }

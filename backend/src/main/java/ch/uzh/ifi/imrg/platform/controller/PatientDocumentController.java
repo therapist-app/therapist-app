@@ -31,9 +31,11 @@ public class PatientDocumentController {
   public void createPatientDocument(
       @PathVariable String patientId,
       @RequestParam("file") MultipartFile file,
-      @CurrentTherapistId String therapistId) {
+      @RequestParam Boolean isSharedWithPatient,
+      @CurrentTherapistId String therapistId)
+      throws IOException {
 
-    patientDocumentService.uploadPatientDocument(patientId, file, therapistId);
+    patientDocumentService.uploadPatientDocument(patientId, file, isSharedWithPatient, therapistId);
   }
 
   @PostMapping("/from-therapist-document")
