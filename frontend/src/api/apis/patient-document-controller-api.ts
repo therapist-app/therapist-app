@@ -34,13 +34,16 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
         /**
          * 
          * @param {string} patientId 
+         * @param {boolean} isSharedWithPatient 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPatientDocument: async (patientId: string, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createPatientDocument: async (patientId: string, isSharedWithPatient: boolean, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'patientId' is not null or undefined
             assertParamExists('createPatientDocument', 'patientId', patientId)
+            // verify required parameter 'isSharedWithPatient' is not null or undefined
+            assertParamExists('createPatientDocument', 'isSharedWithPatient', isSharedWithPatient)
             // verify required parameter 'file' is not null or undefined
             assertParamExists('createPatientDocument', 'file', file)
             const localVarPath = `/patient-documents/{patientId}`
@@ -56,6 +59,10 @@ export const PatientDocumentControllerApiAxiosParamCreator = function (configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
             const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            if (isSharedWithPatient !== undefined) {
+                localVarQueryParameter['isSharedWithPatient'] = isSharedWithPatient;
+            }
 
 
             if (file !== undefined) { 
@@ -222,12 +229,13 @@ export const PatientDocumentControllerApiFp = function(configuration?: Configura
         /**
          * 
          * @param {string} patientId 
+         * @param {boolean} isSharedWithPatient 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createPatientDocument(patientId, file, options);
+        async createPatientDocument(patientId: string, isSharedWithPatient: boolean, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createPatientDocument(patientId, isSharedWithPatient, file, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PatientDocumentControllerApi.createPatientDocument']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -293,12 +301,13 @@ export const PatientDocumentControllerApiFactory = function (configuration?: Con
         /**
          * 
          * @param {string} patientId 
+         * @param {boolean} isSharedWithPatient 
          * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.createPatientDocument(patientId, file, options).then((request) => request(axios, basePath));
+        createPatientDocument(patientId: string, isSharedWithPatient: boolean, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.createPatientDocument(patientId, isSharedWithPatient, file, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -348,12 +357,13 @@ export interface PatientDocumentControllerApiInterface {
     /**
      * 
      * @param {string} patientId 
+     * @param {boolean} isSharedWithPatient 
      * @param {File} file 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientDocumentControllerApiInterface
      */
-    createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void>;
+    createPatientDocument(patientId: string, isSharedWithPatient: boolean, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
@@ -403,13 +413,14 @@ export class PatientDocumentControllerApi extends BaseAPI implements PatientDocu
     /**
      * 
      * @param {string} patientId 
+     * @param {boolean} isSharedWithPatient 
      * @param {File} file 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientDocumentControllerApi
      */
-    public createPatientDocument(patientId: string, file: File, options?: RawAxiosRequestConfig) {
-        return PatientDocumentControllerApiFp(this.configuration).createPatientDocument(patientId, file, options).then((request) => request(this.axios, this.basePath));
+    public createPatientDocument(patientId: string, isSharedWithPatient: boolean, file: File, options?: RawAxiosRequestConfig) {
+        return PatientDocumentControllerApiFp(this.configuration).createPatientDocument(patientId, isSharedWithPatient, file, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

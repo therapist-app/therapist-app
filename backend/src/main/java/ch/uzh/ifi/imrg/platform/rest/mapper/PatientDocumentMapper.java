@@ -12,6 +12,7 @@ public interface PatientDocumentMapper {
   PatientDocumentMapper INSTANCE = Mappers.getMapper(PatientDocumentMapper.class);
 
   @Mapping(source = "id", target = "id")
+  @Mapping(source = "isSharedWithPatient", target = "isSharedWithPatient")
   @Mapping(source = "fileName", target = "fileName")
   @Mapping(source = "fileType", target = "fileType")
   PatientDocumentOutputDTO convertEntityToPatientDocumentOutputDTO(PatientDocument patientDocument);

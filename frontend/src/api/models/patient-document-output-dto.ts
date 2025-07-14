@@ -28,6 +28,12 @@ export interface PatientDocumentOutputDTO {
     'id'?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof PatientDocumentOutputDTO
+     */
+    'isSharedWithPatient'?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof PatientDocumentOutputDTO
      */

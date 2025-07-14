@@ -17,8 +17,12 @@ const initialState: PatientDocumentState = {
 
 export const createDocumentForPatient = createAsyncThunk(
   'createDocumentForPatient',
-  async (props: { file: File; patientId: string }) => {
-    const response = await patientDocumentApi.createPatientDocument(props.patientId, props.file)
+  async (props: { file: File; patientId: string; isSharedWithPatient: boolean }) => {
+    const response = await patientDocumentApi.createPatientDocument(
+      props.patientId,
+      props.isSharedWithPatient,
+      props.file
+    )
     return response.data
   }
 )
