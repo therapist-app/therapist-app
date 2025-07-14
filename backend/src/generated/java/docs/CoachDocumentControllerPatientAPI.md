@@ -229,7 +229,7 @@ public class Example {
 
 ## uploadAndShare
 
-> DocumentOverviewDTOPatientAPI uploadAndShare(patientId, _file)
+> DocumentOverviewDTOPatientAPI uploadAndShare(patientId, patientFile)
 
 
 
@@ -257,9 +257,9 @@ public class Example {
 
         CoachDocumentControllerPatientAPI apiInstance = new CoachDocumentControllerPatientAPI(defaultClient);
         String patientId = "patientId_example"; // String | 
-        File _file = new File("/path/to/file"); // File | 
+        File patientFile = new File("/path/to/file"); // File | 
         try {
-            DocumentOverviewDTOPatientAPI result = apiInstance.uploadAndShare(patientId, _file);
+            DocumentOverviewDTOPatientAPI result = apiInstance.uploadAndShare(patientId, patientFile);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CoachDocumentControllerPatientAPI#uploadAndShare");
@@ -278,7 +278,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **patientId** | **String**|  | |
-| **_file** | **File**|  | |
+| **patientFile** | **File**|  | [optional] |
 
 ### Return type
 
