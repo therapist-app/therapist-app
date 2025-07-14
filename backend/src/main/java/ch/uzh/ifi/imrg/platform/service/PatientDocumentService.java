@@ -32,7 +32,8 @@ public class PatientDocumentService {
 
   public PatientDocumentService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
-      @Qualifier("therapistDocumentRepository") TherapistDocumentRepository therapistDocumentRepository,
+      @Qualifier("therapistDocumentRepository")
+          TherapistDocumentRepository therapistDocumentRepository,
       @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
     this.patientRepository = patientRepository;
     this.therapistDocumentRepository = therapistDocumentRepository;
@@ -43,9 +44,10 @@ public class PatientDocumentService {
       String patientId, MultipartFile file, Boolean isSharedWithPatient, String therapistId)
       throws IOException {
 
-    Patient patient = patientRepository
-        .findById(patientId)
-        .orElseThrow(() -> new RuntimeException("Patient not found"));
+    Patient patient =
+        patientRepository
+            .findById(patientId)
+            .orElseThrow(() -> new RuntimeException("Patient not found"));
     SecurityUtil.checkOwnership(patient, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);
@@ -65,8 +67,7 @@ public class PatientDocumentService {
       File convertedFile = null;
       try {
         convertedFile = FileUtil.convertMultiPartFileToFile(file);
-        PatientAppAPIs.coachDocumentControllerPatientAPI
-            .uploadAndShare(patientId, convertedFile);
+        PatientAppAPIs.coachDocumentControllerPatientAPI.uploadAndShare(patientId, convertedFile);
       } catch (Exception e) {
         throw e;
       } finally {
@@ -82,9 +83,10 @@ public class PatientDocumentService {
   public void createPatientDocumentFromTherapistDocument(
       CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
       String therapistId) {
-    TherapistDocument therapistDocument = therapistDocumentRepository
-        .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
-        .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+    TherapistDocument therapistDocument =
+        therapistDocumentRepository
+            .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
+            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
 
     SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
@@ -114,9 +116,10 @@ public class PatientDocumentService {
 
   public PatientDocument downloadPatientDocument(String patientDocumentId, String therapistId) {
 
-    PatientDocument patientDocument = patientDocumentRepository
-        .findById(patientDocumentId)
-        .orElseThrow(() -> new RuntimeException("Patient document not found"));
+    PatientDocument patientDocument =
+        patientDocumentRepository
+            .findById(patientDocumentId)
+            .orElseThrow(() -> new RuntimeException("Patient document not found"));
     SecurityUtil.checkOwnership(patientDocument, therapistId);
 
     return patientDocument;
