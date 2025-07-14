@@ -7,7 +7,6 @@ import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +22,8 @@ public class PatientDocumentController {
 
   private final PatientDocumentService patientDocumentService;
 
-  public PatientDocumentController(
-      PatientDocumentService patientDocumentService) {
+  public PatientDocumentController(PatientDocumentService patientDocumentService) {
     this.patientDocumentService = patientDocumentService;
-
   }
 
   @PostMapping(path = "/{patientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -41,7 +38,9 @@ public class PatientDocumentController {
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
-      @RequestBody CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
+      @RequestBody
+          CreatePatientDocumentFromTherapistDocumentDTO
+              createPatientDocumentFromTherapistDocumentDTO,
       @CurrentTherapistId String therapistId) {
     patientDocumentService.createPatientDocumentFromTherapistDocument(
         createPatientDocumentFromTherapistDocumentDTO, therapistId);
@@ -50,8 +49,8 @@ public class PatientDocumentController {
   @GetMapping("/{patientId}")
   public List<PatientDocumentOutputDTO> getDocumentsOfPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
-    List<PatientDocumentOutputDTO> patientDocuments = patientDocumentService.getDocumentsOfPatient(patientId,
-        therapistId);
+    List<PatientDocumentOutputDTO> patientDocuments =
+        patientDocumentService.getDocumentsOfPatient(patientId, therapistId);
 
     return patientDocuments;
   }
@@ -60,7 +59,8 @@ public class PatientDocumentController {
   public ResponseEntity<Resource> downloadPatientDocument(
       @PathVariable String patientDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    PatientDocument fileDocument = patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
+    PatientDocument fileDocument =
+        patientDocumentService.downloadPatientDocument(patientDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

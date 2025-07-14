@@ -4,10 +4,8 @@ import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistDocumentService;
-
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +21,8 @@ public class TherapistDocumentController {
 
   private final TherapistDocumentService therapistDocumentService;
 
-  public TherapistDocumentController(
-      TherapistDocumentService therapistDocumentService) {
+  public TherapistDocumentController(TherapistDocumentService therapistDocumentService) {
     this.therapistDocumentService = therapistDocumentService;
-
   }
 
   @PostMapping(path = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -39,7 +35,8 @@ public class TherapistDocumentController {
   @GetMapping("/")
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
       @CurrentTherapistId String therapistId) {
-    List<TherapistDocumentOutputDTO> therapistDocuments = therapistDocumentService.getDocumentsOfTherapist(therapistId);
+    List<TherapistDocumentOutputDTO> therapistDocuments =
+        therapistDocumentService.getDocumentsOfTherapist(therapistId);
 
     return therapistDocuments;
   }
@@ -48,8 +45,8 @@ public class TherapistDocumentController {
   public ResponseEntity<Resource> downloadTherapistDocument(
       @PathVariable String therapistDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    TherapistDocument fileDocument = therapistDocumentService.downloadTherapistDocument(therapistDocumentId,
-        therapistId);
+    TherapistDocument fileDocument =
+        therapistDocumentService.downloadTherapistDocument(therapistDocumentId, therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

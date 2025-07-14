@@ -4,7 +4,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.TherapistChatbotInputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistChatbotService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,7 @@ public class TherapistChatbotController {
 
   private final TherapistChatbotService therapistChatbotService;
 
-  public TherapistChatbotController(
-      TherapistChatbotService therapistChatbotService) {
+  public TherapistChatbotController(TherapistChatbotService therapistChatbotService) {
     this.therapistChatbotService = therapistChatbotService;
   }
 

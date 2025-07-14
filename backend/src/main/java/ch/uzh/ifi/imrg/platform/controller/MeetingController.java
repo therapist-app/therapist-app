@@ -50,7 +50,8 @@ public class MeetingController {
   public List<MeetingOutputDTO> getMeetingsOfPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
 
-    List<MeetingOutputDTO> meetingOutputDTOs = meetingService.getAllMeetingsOfPatient(patientId, therapistId);
+    List<MeetingOutputDTO> meetingOutputDTOs =
+        meetingService.getAllMeetingsOfPatient(patientId, therapistId);
     return meetingOutputDTOs;
   }
 

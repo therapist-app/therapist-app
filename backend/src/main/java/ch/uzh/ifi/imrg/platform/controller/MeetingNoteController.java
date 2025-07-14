@@ -31,7 +31,8 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO createMeetingNote(
       @RequestBody CreateMeetingNoteDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
@@ -40,7 +41,8 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO getMeetingNoteById(
       @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
     return meetingNoteOutputDTO;
   }
 
@@ -50,7 +52,8 @@ public class MeetingNoteController {
       @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
       @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO =
+        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 

@@ -9,7 +9,6 @@ import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
 import ch.uzh.ifi.imrg.platform.utils.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -79,7 +78,8 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist =
+        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }

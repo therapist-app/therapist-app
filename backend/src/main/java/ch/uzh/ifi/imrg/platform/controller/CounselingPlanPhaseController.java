@@ -22,10 +22,8 @@ public class CounselingPlanPhaseController {
 
   private final CounselingPlanPhaseService counselingPlanPhaseService;
 
-  public CounselingPlanPhaseController(
-      CounselingPlanPhaseService counselingPlanPhaseService) {
+  public CounselingPlanPhaseController(CounselingPlanPhaseService counselingPlanPhaseService) {
     this.counselingPlanPhaseService = counselingPlanPhaseService;
-
   }
 
   @PostMapping("/")
@@ -61,7 +59,8 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
+      @RequestBody
+          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO, therapistId);

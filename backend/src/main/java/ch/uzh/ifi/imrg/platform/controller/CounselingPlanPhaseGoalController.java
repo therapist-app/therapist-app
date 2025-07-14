@@ -24,7 +24,6 @@ public class CounselingPlanPhaseGoalController {
   public CounselingPlanPhaseGoalController(
       CounselingPlanPhaseGoalService counselingPlanPhaseGoalService) {
     this.counselingPlanPhaseGoalService = counselingPlanPhaseGoalService;
-
   }
 
   @PostMapping("/")

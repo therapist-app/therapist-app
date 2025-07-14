@@ -19,9 +19,7 @@ public class PatientTestService {
   private final GAD7Repository gad7Repository;
   private final PatientRepository patientRepository;
 
-  public PatientTestService(
-      GAD7Repository gad7Repository,
-      PatientRepository patientRepository) {
+  public PatientTestService(GAD7Repository gad7Repository, PatientRepository patientRepository) {
     this.gad7Repository = gad7Repository;
     this.patientRepository = patientRepository;
   }
@@ -81,10 +79,11 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId, String therapistId) {
-    GAD7Test test = gad7Repository
-        .findById(testId)
-        .orElseThrow(
-            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test =
+        gad7Repository
+            .findById(testId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
     SecurityUtil.checkOwnership(test, therapistId);
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
