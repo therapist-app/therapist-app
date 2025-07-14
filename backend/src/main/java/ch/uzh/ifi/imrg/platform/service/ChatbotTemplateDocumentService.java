@@ -8,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -20,41 +21,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Handles persistence and access control for documents that belong to a Chatbot Template. All
+ * Handles persistence and access control for documents that belong to a Chatbot
+ * Template. All
  * operations are verified against the {@link Therapist} who owns the template.
  */
 @Service
 @Transactional
 public class ChatbotTemplateDocumentService {
 
-  private static final Logger logger =
-      LoggerFactory.getLogger(ChatbotTemplateDocumentService.class);
+  private static final Logger logger = LoggerFactory.getLogger(ChatbotTemplateDocumentService.class);
 
   private final ChatbotTemplateRepository chatbotTemplateRepository;
   private final ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository;
 
   public ChatbotTemplateDocumentService(
       @Qualifier("chatbotTemplateRepository") ChatbotTemplateRepository chatbotTemplateRepository,
-      @Qualifier("chatbotTemplateDocumentRepository")
-          ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository) {
+      @Qualifier("chatbotTemplateDocumentRepository") ChatbotTemplateDocumentRepository chatbotTemplateDocumentRepository) {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
     this.chatbotTemplateDocumentRepository = chatbotTemplateDocumentRepository;
   }
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // Upload
-  // ────────────────────────────────────────────────────────────────────────────
+  public ChatbotTemplateDocument uploadChatbotTemplateDocument(
+      String templateId, MultipartFile file, String therapistId) {
 
-  // ────────────────────────────────────────────────────────────────────────────
-  // Upload
-  // ────────────────────────────────────────────────────────────────────────────
-  public ChatbotTemplateDocument uploadChatbotTemplateDocument( // ← return type changed
-      String templateId, MultipartFile file, Therapist loggedInTherapist) {
-
-    ChatbotTemplate template =
-        chatbotTemplateRepository
-            .findByIdAndTherapistId(templateId, loggedInTherapist.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
+    ChatbotTemplate template = chatbotTemplateRepository
+        .findByIdAndTherapistId(templateId, therapistId)
+        .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
 
@@ -81,14 +73,13 @@ public class ChatbotTemplateDocumentService {
   }
 
   public List<ChatbotTemplateDocumentOutputDTO> getDocumentsOfTemplate(
-      String templateId, Therapist loggedInTherapist) {
+      String templateId, String therapistId) {
 
-    ChatbotTemplate template =
-        chatbotTemplateRepository
-            .findById(templateId)
-            .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
+    ChatbotTemplate template = chatbotTemplateRepository
+        .findById(templateId)
+        .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
-    verifyOwnership(template, loggedInTherapist);
+    SecurityUtil.checkOwnership(template, therapistId);
 
     return template.getChatbotTemplateDocuments().stream()
         .map(
@@ -97,26 +88,24 @@ public class ChatbotTemplateDocumentService {
   }
 
   public ChatbotTemplateDocument downloadChatbotTemplateDocument(
-      String templateDocumentId, Therapist loggedInTherapist) {
+      String templateDocumentId, String therapistId) {
 
-    ChatbotTemplateDocument templateDocument =
-        chatbotTemplateDocumentRepository
-            .findById(templateDocumentId)
-            .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
+    ChatbotTemplateDocument templateDocument = chatbotTemplateDocumentRepository
+        .findById(templateDocumentId)
+        .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
 
-    verifyOwnership(templateDocument.getChatbotTemplate(), loggedInTherapist);
+    SecurityUtil.checkOwnership(templateDocument, therapistId);
 
     return templateDocument;
   }
 
-  public void deleteFile(String templateDocumentId, Therapist loggedInTherapist) {
+  public void deleteFile(String templateDocumentId, String therapistId) {
 
-    ChatbotTemplateDocument templateDocument =
-        chatbotTemplateDocumentRepository
-            .findById(templateDocumentId)
-            .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
+    ChatbotTemplateDocument templateDocument = chatbotTemplateDocumentRepository
+        .findById(templateDocumentId)
+        .orElseThrow(() -> new EntityNotFoundException("Chatbot template document not found"));
 
-    verifyOwnership(templateDocument.getChatbotTemplate(), loggedInTherapist);
+    SecurityUtil.checkOwnership(templateDocument, therapistId);
 
     templateDocument.getChatbotTemplate().getChatbotTemplateDocuments().remove(templateDocument);
     logger.info(
@@ -125,9 +114,4 @@ public class ChatbotTemplateDocumentService {
         templateDocument.getChatbotTemplate().getId());
   }
 
-  private void verifyOwnership(ChatbotTemplate template, Therapist therapist) {
-    if (!template.getTherapist().getId().equals(therapist.getId())) {
-      throw new RuntimeException("Access denied: Template does not belong to therapist.");
-    }
-  }
 }

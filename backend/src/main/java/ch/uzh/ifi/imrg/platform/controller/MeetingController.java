@@ -4,8 +4,8 @@ import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingService;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,40 +26,41 @@ public class MeetingController {
   private final Logger logger = LoggerFactory.getLogger(MeetingController.class);
 
   private final MeetingService meetingService;
-  private final TherapistService therapistService;
 
-  MeetingController(MeetingService meetingService, TherapistService therapistService) {
+  MeetingController(MeetingService meetingService) {
     this.meetingService = meetingService;
-    this.therapistService = therapistService;
+
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public MeetingOutputDTO createMeeting(@RequestBody CreateMeetingDTO createMeetingDTO) {
+  public MeetingOutputDTO createMeeting(@RequestBody CreateMeetingDTO createMeetingDTO,
+      @CurrentTherapistId String therapistId) {
 
-    Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO);
+    Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO, therapistId);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdMeeting);
   }
 
   @GetMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.OK)
-  public MeetingOutputDTO getMeetingById(@PathVariable String meetingId) {
+  public MeetingOutputDTO getMeetingById(@PathVariable String meetingId, @CurrentTherapistId String therapistId) {
 
-    MeetingOutputDTO meetingOutputDTO = meetingService.getMeeting(meetingId);
+    MeetingOutputDTO meetingOutputDTO = meetingService.getMeeting(meetingId, therapistId);
     return meetingOutputDTO;
   }
 
   @GetMapping("/patients/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public List<MeetingOutputDTO> getMeetingsOfPatient(@PathVariable String patientId) {
+  public List<MeetingOutputDTO> getMeetingsOfPatient(@PathVariable String patientId,
+      @CurrentTherapistId String therapistId) {
 
-    List<MeetingOutputDTO> meetingOutputDTOs = meetingService.getAllMeetingsOfPatient(patientId);
+    List<MeetingOutputDTO> meetingOutputDTOs = meetingService.getAllMeetingsOfPatient(patientId, therapistId);
     return meetingOutputDTOs;
   }
 
   @DeleteMapping("/{meetingId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteMeetingById(@PathVariable String meetingId) {
-    meetingService.deleteMeetingById(meetingId);
+  public void deleteMeetingById(@PathVariable String meetingId, @CurrentTherapistId String therapistId) {
+    meetingService.deleteMeetingById(meetingId, therapistId);
   }
 }

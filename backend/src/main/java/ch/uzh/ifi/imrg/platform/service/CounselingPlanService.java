@@ -8,6 +8,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanMapper;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +27,18 @@ public class CounselingPlanService {
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
-  public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId) {
-    CounselingPlan counselingPlan =
-        patientRepository.getReferenceById(patientId).getCounselingPlan();
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(String patientId, String therapistId) {
+    CounselingPlan counselingPlan = patientRepository.getReferenceById(patientId).getCounselingPlan();
+    SecurityUtil.checkOwnership(counselingPlan, therapistId);
     return getOutputDto(counselingPlan);
   }
 
   public CounselingPlanOutputDTO updateCounselingPlan(
-      UpdateCounselingPlanDTO updateCounselingPlanDTO) {
-    CounselingPlan counselingPlan =
-        counselingPlanRepository.getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
+      UpdateCounselingPlanDTO updateCounselingPlanDTO, String therapistId) {
+    CounselingPlan counselingPlan = counselingPlanRepository
+        .getReferenceById(updateCounselingPlanDTO.getCounselingPlanId());
+    SecurityUtil.checkOwnership(counselingPlan, therapistId);
+
     if (updateCounselingPlanDTO.getStartOfTherapy() != null) {
       counselingPlan.setStartOfTherapy(updateCounselingPlanDTO.getStartOfTherapy());
     }
@@ -44,8 +47,8 @@ public class CounselingPlanService {
   }
 
   private CounselingPlanOutputDTO getOutputDto(CounselingPlan counselingPlan) {
-    CounselingPlanOutputDTO outputDTO =
-        CounselingPlanMapper.INSTANCE.convertEntityToCounselingPlanOutputDTO(counselingPlan);
+    CounselingPlanOutputDTO outputDTO = CounselingPlanMapper.INSTANCE
+        .convertEntityToCounselingPlanOutputDTO(counselingPlan);
     List<CounselingPlanPhaseOutputDTO> mappedOutputDtos = new ArrayList<>();
     for (CounselingPlanPhase phase : counselingPlan.getCounselingPlanPhases()) {
       mappedOutputDtos.add(CounselingPlanPhaseService.getOutputDto(phase, counselingPlan));

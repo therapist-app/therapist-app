@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -29,19 +30,17 @@ public class TherapistDocumentService {
 
   public TherapistDocumentService(
       @Qualifier("therapistRepository") TherapistRepository therapistRepository,
-      @Qualifier("therapistDocumentRepository")
-          TherapistDocumentRepository therapistDocumentRepository) {
+      @Qualifier("therapistDocumentRepository") TherapistDocumentRepository therapistDocumentRepository) {
     this.therapistRepository = therapistRepository;
     this.therapistDocumentRepository = therapistDocumentRepository;
   }
 
   public void uploadTherapistDocument(
-      String therapistId, MultipartFile file, Therapist loggedInTherapist) {
+      MultipartFile file, String therapistId) {
 
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new RuntimeException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new RuntimeException("Therapist not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
     TherapistDocument therapistDocument = new TherapistDocument();
@@ -59,12 +58,11 @@ public class TherapistDocumentService {
   }
 
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
-      String therapistId, Therapist loggedInTherapist) {
+      String therapistId) {
 
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
 
     return therapist.getTherapistDocuments().stream()
         .map(TherapistDocumentMapper.INSTANCE::convertEntityToTherapistDocumentOutputDTO)
@@ -72,22 +70,21 @@ public class TherapistDocumentService {
   }
 
   public TherapistDocument downloadTherapistDocument(
-      String therapistDocumentId, Therapist loggedInTherapist) {
+      String therapistDocumentId, String therapistId) {
 
-    TherapistDocument therapistDocument =
-        therapistDocumentRepository
-            .findById(therapistDocumentId)
-            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+    TherapistDocument therapistDocument = therapistDocumentRepository
+        .findById(therapistDocumentId)
+        .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+    SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
     return therapistDocument;
   }
 
-  public void deleteFile(String therapistDocumentId, Therapist loggedInTherapist) {
-    // Add check if patient document actually belongs to a patient that belongs to
-    // the loggedInTherapist
+  public void deleteFile(String therapistDocumentId, String therapistId) {
 
-    TherapistDocument therapistDocument =
-        therapistDocumentRepository.getReferenceById(therapistDocumentId);
+    TherapistDocument therapistDocument = therapistDocumentRepository.getReferenceById(therapistDocumentId);
+    SecurityUtil.checkOwnership(therapistDocument, therapistId);
+
     therapistDocument.getTherapist().getTherapistDocuments().remove(therapistDocument);
   }
 }

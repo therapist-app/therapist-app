@@ -1,4 +1,4 @@
-package ch.uzh.ifi.imrg.platform.utils;
+package ch.uzh.ifi.imrg.platform.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -13,7 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "exercises")
-public class Exercise {
+public class Exercise implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -27,9 +27,11 @@ public class Exercise {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
+  @Column()
+  private String title;
 
-  @Column() private ExerciseType exerciseType;
+  @Column()
+  private ExerciseType exerciseType;
 
   @Column(name = "exercise_start")
   private Instant exerciseStart;
@@ -37,13 +39,10 @@ public class Exercise {
   @Column(name = "exercise_end")
   private Instant exerciseEnd;
 
-  @Column() private Boolean isPaused;
+  @Column()
+  private Boolean isPaused;
 
-  @OneToMany(
-      mappedBy = "exercise",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @ManyToOne(optional = false)
@@ -52,4 +51,9 @@ public class Exercise {
 
   @ManyToMany(mappedBy = "phaseExercises")
   private List<CounselingPlanPhase> counselingPlanPhases;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

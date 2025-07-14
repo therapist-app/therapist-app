@@ -27,14 +27,8 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "additionalExercise", target = "additionalExercise")
   @Mapping(source = "animation", target = "animation")
   @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
-  @Mapping(
-      target = "patientId",
-      expression =
-          "java( template.getPatient()   != null ? template.getPatient().getId()   : null )")
-  @Mapping(
-      target = "therapistId",
-      expression =
-          "java( template.getTherapist() != null ? template.getTherapist().getId() : null )")
+  @Mapping(target = "patientId", expression = "java( template.getPatient()   != null ? template.getPatient().getId()   : null )")
+  @Mapping(target = "therapistId", expression = "java( template.getTherapist() != null ? template.getTherapist().getId() : null )")
   ChatbotTemplateOutputDTO convertEntityToChatbotTemplateOutputDTO(ChatbotTemplate template);
 
   @Mapping(source = "chatbotName", target = "chatbotName")

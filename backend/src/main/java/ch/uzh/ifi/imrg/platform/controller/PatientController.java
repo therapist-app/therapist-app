@@ -26,7 +26,7 @@ public class PatientController {
   @ResponseStatus(HttpStatus.CREATED)
   public PatientOutputDTO createPatientForTherapist(
       @RequestBody CreatePatientDTO inputDTO, @CurrentTherapistId String therapistId) {
-    return patientService.registerPatient(therapistId, inputDTO);
+    return patientService.registerPatient(inputDTO, therapistId);
   }
 
   @GetMapping()

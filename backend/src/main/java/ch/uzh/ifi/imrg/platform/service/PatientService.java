@@ -13,6 +13,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
 import ch.uzh.ifi.imrg.platform.utils.PasswordGenerationUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -38,7 +39,8 @@ public class PatientService {
 
   private final PatientMapper mapper = PatientMapper.INSTANCE;
 
-  @PersistenceContext private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public PatientService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -50,11 +52,10 @@ public class PatientService {
     this.counselingPlanRepository = counselingPlanRepository;
   }
 
-  public PatientOutputDTO registerPatient(String therapistId, CreatePatientDTO inputDTO) {
-    Therapist therapist =
-        therapistRepository
-            .findById(therapistId)
-            .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
+  public PatientOutputDTO registerPatient(CreatePatientDTO inputDTO, String therapistId) {
+    Therapist therapist = therapistRepository
+        .findById(therapistId)
+        .orElseThrow(() -> new IllegalArgumentException("Therapist not found"));
 
     Patient patient = mapper.convertCreatePatientDtoToEntity(inputDTO);
     patient.setTherapist(therapist);
@@ -71,12 +72,11 @@ public class PatientService {
     Patient createdPatient = patientRepository.save(patient);
     patientRepository.flush();
 
-    CreatePatientDTOPatientAPI createPatientDTOPatientAPI =
-        new CreatePatientDTOPatientAPI()
-            .id(createdPatient.getId())
-            .email(createdPatient.getEmail())
-            .password(createdPatient.getInitialPassword())
-            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
+    CreatePatientDTOPatientAPI createPatientDTOPatientAPI = new CreatePatientDTOPatientAPI()
+        .id(createdPatient.getId())
+        .email(createdPatient.getEmail())
+        .password(createdPatient.getInitialPassword())
+        .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
 
     PatientAppAPIs.coachPatientControllerPatientAPI
         .registerPatient1(createPatientDTOPatientAPI)
@@ -87,10 +87,7 @@ public class PatientService {
 
   public PatientOutputDTO getPatientById(String patientId, String therapistId) {
     Patient foundPatient = patientRepository.getPatientById(patientId);
-    if (!foundPatient.getTherapist().getId().equals(therapistId)) {
-      throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED, "This patient does not belong to the therapist");
-    }
+    SecurityUtil.checkOwnership(foundPatient, therapistId);
     return mapper.convertEntityToPatientOutputDTO(foundPatient);
   }
 
@@ -103,10 +100,7 @@ public class PatientService {
 
   public void deletePatient(String id, String therapistId) {
     Patient patient = patientRepository.getPatientById(id);
-    if (!patient.getTherapist().getId().equals(therapistId)) {
-      throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED, "This patient does not belong to the therapist");
-    }
+    SecurityUtil.checkOwnership(patient, therapistId);
     patient.getTherapist().getPatients().remove(patient);
   }
 }

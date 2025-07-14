@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Data
 @Table(name = "therapist_documents")
-public class TherapistDocument {
+public class TherapistDocument implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -25,7 +25,7 @@ public class TherapistDocument {
   private Instant updatedAt;
 
   @ManyToOne
-  @JoinColumn(name = "therapist_id", nullable = false)
+  @JoinColumn(name = "therapist_id")
   private Therapist therapist;
 
   @Column(nullable = false)
@@ -38,5 +38,12 @@ public class TherapistDocument {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob @Column private String extractedText;
+  @Lob
+  @Column
+  private String extractedText;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getTherapist().getId();
+  }
 }

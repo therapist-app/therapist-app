@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -18,24 +19,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TherapistChatbotService {
   private final PatientRepository patientRepository;
+  private final TherapistRepository therapistRepository;
 
   public TherapistChatbotService(
-      @Qualifier("patientRepository") PatientRepository patientRepository) {
+      @Qualifier("patientRepository") PatientRepository patientRepository,
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
     this.patientRepository = patientRepository;
+    this.therapistRepository = therapistRepository;
   }
 
   public TherapistChatbotOutputDTO chat(
-      TherapistChatbotInputDTO therapistChatbotInputDTO, Therapist loggedInTherapist) {
+      TherapistChatbotInputDTO therapistChatbotInputDTO, String therapistId) {
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
     List<Patient> patients;
 
     if (therapistChatbotInputDTO.getPatientId() != null) {
       patients = new ArrayList<>();
       patients.add(patientRepository.getReferenceById(therapistChatbotInputDTO.getPatientId()));
     } else {
-      patients = loggedInTherapist.getPatients();
+      patients = therapist.getPatients();
     }
 
-    String systemPrompt = getSystemPrompt(loggedInTherapist, patients);
+    String systemPrompt = getSystemPrompt(therapist, patients);
     List<ChatMessageDTO> chatMessages = new ArrayList<>();
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());

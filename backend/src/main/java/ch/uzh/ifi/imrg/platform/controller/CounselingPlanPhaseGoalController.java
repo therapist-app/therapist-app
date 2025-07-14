@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,36 +35,38 @@ public class CounselingPlanPhaseGoalController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public CounselingPlanPhaseGoalOutputDTO createCounselingPlanPhaseGoal(
-      @RequestBody CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO) {
+      @RequestBody CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO,
+      @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoal(
-        createCounselingPlanPhaseGoalDTO);
+        createCounselingPlanPhaseGoalDTO, therapistId);
   }
 
   @PostMapping("/{counselingPlanPhaseId}")
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      @PathVariable String counselingPlanPhaseId, HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
+      @PathVariable String counselingPlanPhaseId, @CurrentTherapistId String therapistId) {
+
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
-        counselingPlanPhaseId, loggedInTherapist);
+        counselingPlanPhaseId, therapistId);
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(@PathVariable String id) {
-    return counselingPlanPhaseGoalService.getCounselingPlanPhaseGoalById(id);
+  public CounselingPlanPhaseGoalOutputDTO getCounselingPlanPhaseGoalById(@PathVariable String id,
+      @CurrentTherapistId String therapistId) {
+    return counselingPlanPhaseGoalService.getCounselingPlanPhaseGoalById(id, therapistId);
   }
 
   @PutMapping("/{id}")
   public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhase(
-      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto) {
-    return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(id, updateDto);
+      @PathVariable String id, @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto,
+      @CurrentTherapistId String therapistId) {
+    return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(id, updateDto, therapistId);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteCounselingPlanPhaseGoal(@PathVariable String id) {
-    counselingPlanPhaseGoalService.deleteCounselingPlanPhaseGoal(id);
+  public void deleteCounselingPlanPhaseGoal(@PathVariable String id, @CurrentTherapistId String therapistId) {
+    counselingPlanPhaseGoalService.deleteCounselingPlanPhaseGoal(id, therapistId);
   }
 }

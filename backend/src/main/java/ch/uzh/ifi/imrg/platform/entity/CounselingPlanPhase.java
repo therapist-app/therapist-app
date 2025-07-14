@@ -12,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plan_phases")
-public class CounselingPlanPhase {
+public class CounselingPlanPhase implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -26,17 +26,16 @@ public class CounselingPlanPhase {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String phaseName;
+  @Column()
+  private String phaseName;
 
-  @Column() private int durationInWeeks;
+  @Column()
+  private int durationInWeeks;
 
-  @Column() private int phaseNumber;
+  @Column()
+  private int phaseNumber;
 
-  @OneToMany(
-      mappedBy = "counselingPlanPhase",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "counselingPlanPhase", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CounselingPlanPhaseGoal> phaseGoals = new ArrayList<>();
 
   @ManyToOne
@@ -44,11 +43,12 @@ public class CounselingPlanPhase {
   private CounselingPlan counselingPlan;
 
   @ManyToMany()
-  @JoinTable(
-      name = "exercises_to_counseling_plan_phases",
-      joinColumns = @JoinColumn(name = "counseling_plan_phase_id"),
-      inverseJoinColumns = @JoinColumn(name = "exercise_id"),
-      uniqueConstraints =
-          @UniqueConstraint(columnNames = {"counseling_plan_phase_id", "exercise_id"}))
+  @JoinTable(name = "exercises_to_counseling_plan_phases", joinColumns = @JoinColumn(name = "counseling_plan_phase_id"), inverseJoinColumns = @JoinColumn(name = "exercise_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+      "counseling_plan_phase_id", "exercise_id" }))
   private List<Exercise> phaseExercises = new ArrayList<>();
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getCounselingPlan().getPatient().getTherapist().getId();
+  }
 }

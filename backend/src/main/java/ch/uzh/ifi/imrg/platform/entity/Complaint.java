@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "complaints")
-public class Complaint {
+public class Complaint implements OwnedByTherapist {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +27,9 @@ public class Complaint {
   @ManyToOne
   @JoinColumn(name = "patient_id")
   private Patient patient;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

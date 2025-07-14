@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plan_phase_goals")
-public class CounselingPlanPhaseGoal {
+public class CounselingPlanPhaseGoal implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -24,11 +24,18 @@ public class CounselingPlanPhaseGoal {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String goalName;
+  @Column()
+  private String goalName;
 
-  @Column() private String goalDescription;
+  @Column()
+  private String goalDescription;
 
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")
   private CounselingPlanPhase counselingPlanPhase;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getCounselingPlanPhase().getCounselingPlan().getPatient().getTherapist().getId();
+  }
 }

@@ -9,7 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Data
 @Entity
 @Table(name = "gad7_tests")
-public class GAD7Test {
+public class GAD7Test implements OwnedByTherapist {
 
   @Id
   @Column(name = "test_id", unique = true)
@@ -43,4 +43,9 @@ public class GAD7Test {
 
   @Column(nullable = false)
   private int question7;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getPatient().getTherapist().getId();
+  }
 }

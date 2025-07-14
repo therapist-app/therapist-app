@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.TherapistChatbotInputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistChatbotService;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +27,7 @@ public class TherapistChatbotController {
   @ResponseStatus(HttpStatus.OK)
   public TherapistChatbotOutputDTO chatWithTherapistChatbot(
       @RequestBody TherapistChatbotInputDTO therapistChatbotInputDTO,
-      HttpServletRequest httpServletRequest) {
-    Therapist loggedInTherapist =
-        therapistService.getCurrentlyLoggedInTherapist(httpServletRequest);
-    return therapistChatbotService.chat(therapistChatbotInputDTO, loggedInTherapist);
+      @CurrentTherapistId String therapistId) {
+    return therapistChatbotService.chat(therapistChatbotInputDTO, therapistId);
   }
 }

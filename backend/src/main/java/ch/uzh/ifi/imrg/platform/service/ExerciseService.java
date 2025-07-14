@@ -9,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseMapper;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
+import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +35,10 @@ public class ExerciseService {
     this.patientRepository = patientRepository;
   }
 
-  public ExerciseOutputDTO createExercise(CreateExerciseDTO createExerciseDTO) {
+  public ExerciseOutputDTO createExercise(CreateExerciseDTO createExerciseDTO, String therapistId) {
 
     Patient patient = patientRepository.getReferenceById(createExerciseDTO.getPatientId());
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     Exercise exercise = new Exercise();
     exercise.setPatient(patient);
@@ -53,13 +55,15 @@ public class ExerciseService {
     return exerciseMapper.convertEntityToExerciseOutputDTO(savedExercise);
   }
 
-  public ExerciseOutputDTO getExerciseById(String id) {
+  public ExerciseOutputDTO getExerciseById(String id, String therapistId) {
     Exercise exercise = exerciseRepository.getReferenceById(id);
+    SecurityUtil.checkOwnership(exercise, therapistId);
     return exerciseMapper.convertEntityToExerciseOutputDTO(exercise);
   }
 
-  public List<ExerciseOutputDTO> getAllExercisesOfPatient(String patientId) {
+  public List<ExerciseOutputDTO> getAllExercisesOfPatient(String patientId, String therapistId) {
     Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     List<Exercise> exercises = patient.getExercises();
 
@@ -68,8 +72,10 @@ public class ExerciseService {
         .collect(Collectors.toList());
   }
 
-  public ExerciseOutputDTO updateExercise(UpdateExerciseDTO updateExerciseDTO) {
+  public ExerciseOutputDTO updateExercise(UpdateExerciseDTO updateExerciseDTO, String therapistId) {
     Exercise exercise = exerciseRepository.getReferenceById(updateExerciseDTO.getId());
+    SecurityUtil.checkOwnership(exercise, therapistId);
+
     if (updateExerciseDTO.getTitle() != null) {
       exercise.setTitle(updateExerciseDTO.getTitle());
     }
@@ -93,8 +99,9 @@ public class ExerciseService {
     return exerciseMapper.convertEntityToExerciseOutputDTO(updatedExercise);
   }
 
-  public void deleteExercise(String id) {
+  public void deleteExercise(String id, String therapistId) {
     Exercise exercise = exerciseRepository.getReferenceById(id);
+    SecurityUtil.checkOwnership(exercise, therapistId);
     exercise.getPatient().getExercises().remove(exercise);
   }
 }

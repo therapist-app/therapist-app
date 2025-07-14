@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
+import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,14 +25,15 @@ public class CounselingPlanController {
 
   @GetMapping("/{patientId}")
   @ResponseStatus(HttpStatus.OK)
-  public CounselingPlanOutputDTO getCounselingPlanByPatientId(@PathVariable String patientId) {
-    return counselingPlanService.getCounselingPlanByPatientId(patientId);
+  public CounselingPlanOutputDTO getCounselingPlanByPatientId(@PathVariable String patientId,
+      @CurrentTherapistId String therapistId) {
+    return counselingPlanService.getCounselingPlanByPatientId(patientId, therapistId);
   }
 
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public CounselingPlanOutputDTO updateCounselingPlan(
-      @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO) {
-    return counselingPlanService.updateCounselingPlan(updateCounselingPlanDTO);
+      @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO, @CurrentTherapistId String therapistId) {
+    return counselingPlanService.updateCounselingPlan(updateCounselingPlanDTO, therapistId);
   }
 }

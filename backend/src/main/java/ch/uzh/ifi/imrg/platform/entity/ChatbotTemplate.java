@@ -13,7 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "chatbot_templates")
-public class ChatbotTemplate implements Serializable {
+public class ChatbotTemplate implements Serializable, OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -45,17 +45,18 @@ public class ChatbotTemplate implements Serializable {
   private String chatbotInputPlaceholder;
 
   @ManyToOne
-  @JoinColumn(name = "therapist_id", referencedColumnName = "id")
+  @JoinColumn(name = "therapist_id")
   private Therapist therapist;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
-  @OneToMany(
-      mappedBy = "chatbotTemplate",
-      fetch = FetchType.EAGER,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "chatbotTemplate", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ChatbotTemplateDocument> chatbotTemplateDocuments = new ArrayList<>();
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getTherapist().getId();
+  }
 }

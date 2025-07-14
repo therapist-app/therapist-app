@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Data
 @Table(name = "chatbot_template_documents")
-public class ChatbotTemplateDocument {
+public class ChatbotTemplateDocument implements OwnedByTherapist {
 
   @Id
   @Column(unique = true)
@@ -38,5 +38,12 @@ public class ChatbotTemplateDocument {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob @Column private String extractedText;
+  @Lob
+  @Column
+  private String extractedText;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getChatbotTemplate().getTherapist().getId();
+  }
 }

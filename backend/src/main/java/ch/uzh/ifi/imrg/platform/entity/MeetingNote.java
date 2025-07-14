@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meeting_notes")
-public class MeetingNote {
+public class MeetingNote implements OwnedByTherapist {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -23,11 +23,18 @@ public class MeetingNote {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
+  @Column()
+  private String title;
 
-  @Column() private String content;
+  @Column()
+  private String content;
 
   @ManyToOne
   @JoinColumn(name = "meeting_id", referencedColumnName = "id")
   private Meeting meeting;
+
+  @Override
+  public String getOwningTherapistId() {
+    return this.getMeeting().getPatient().getTherapist().getId();
+  }
 }
