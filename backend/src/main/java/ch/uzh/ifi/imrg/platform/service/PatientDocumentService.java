@@ -10,11 +10,8 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapis
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
-import ch.uzh.ifi.imrg.platform.utils.FileUtil;
-import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -23,17 +20,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 @Service
 @Transactional
@@ -45,7 +35,8 @@ public class PatientDocumentService {
 
   public PatientDocumentService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
-      @Qualifier("therapistDocumentRepository") TherapistDocumentRepository therapistDocumentRepository,
+      @Qualifier("therapistDocumentRepository")
+          TherapistDocumentRepository therapistDocumentRepository,
       @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
     this.patientRepository = patientRepository;
     this.therapistDocumentRepository = therapistDocumentRepository;
@@ -56,9 +47,10 @@ public class PatientDocumentService {
       String patientId, MultipartFile file, Boolean isSharedWithPatient, String therapistId)
       throws IOException {
 
-    Patient patient = patientRepository
-        .findById(patientId)
-        .orElseThrow(() -> new RuntimeException("Patient not found"));
+    Patient patient =
+        patientRepository
+            .findById(patientId)
+            .orElseThrow(() -> new RuntimeException("Patient not found"));
     SecurityUtil.checkOwnership(patient, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);
@@ -77,16 +69,21 @@ public class PatientDocumentService {
     if (isSharedWithPatient) {
       File convertedFile = null;
       try {
-        String boundary = "--------------------------" + UUID.randomUUID().toString().replace("-", "");
+        String boundary =
+            "--------------------------" + UUID.randomUUID().toString().replace("-", "");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         String lineEnd = "\r\n";
 
         // --- Manually construct the multipart body ---
         bos.write(("--" + boundary + lineEnd).getBytes(StandardCharsets.UTF_8));
         bos.write(
-            ("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getOriginalFilename() + "\"" + lineEnd)
+            ("Content-Disposition: form-data; name=\"file\"; filename=\""
+                    + file.getOriginalFilename()
+                    + "\""
+                    + lineEnd)
                 .getBytes(StandardCharsets.UTF_8));
-        bos.write(("Content-Type: " + file.getContentType() + lineEnd).getBytes(StandardCharsets.UTF_8));
+        bos.write(
+            ("Content-Type: " + file.getContentType() + lineEnd).getBytes(StandardCharsets.UTF_8));
         bos.write(lineEnd.getBytes(StandardCharsets.UTF_8));
         bos.write(file.getBytes());
         bos.write(lineEnd.getBytes(StandardCharsets.UTF_8));
@@ -94,18 +91,26 @@ public class PatientDocumentService {
 
         byte[] multipartBody = bos.toByteArray();
 
-        WebClient webClient = WebClient.builder()
-            .baseUrl("https://backend-patient-app-main.jonas-blum.ch") // Remember to use the correct URL
-            .build();
+        WebClient webClient =
+            WebClient.builder()
+                .baseUrl(
+                    "https://backend-patient-app-main.jonas-blum.ch") // Remember to use the correct
+                // URL
+                .build();
 
         // 🚀 THE FIX IS HERE 🚀
         // We use .header() to send the Content-Type string "as-is", with the space.
         String contentTypeHeader = "multipart/form-data; boundary=" + boundary;
 
-        webClient.post()
+        webClient
+            .post()
             .uri("/coach/patients/{patientId}/documents", patientId)
-            .header(HttpHeaders.CONTENT_TYPE, contentTypeHeader) // Use .header() instead of .contentType()
-            .header("X-Coach-Key", "ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough")
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                contentTypeHeader) // Use .header() instead of .contentType()
+            .header(
+                "X-Coach-Key",
+                "ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough")
             .contentLength(multipartBody.length)
             .bodyValue(multipartBody)
             .retrieve()
@@ -126,9 +131,10 @@ public class PatientDocumentService {
   public void createPatientDocumentFromTherapistDocument(
       CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
       String therapistId) {
-    TherapistDocument therapistDocument = therapistDocumentRepository
-        .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
-        .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+    TherapistDocument therapistDocument =
+        therapistDocumentRepository
+            .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
+            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
 
     SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
@@ -158,9 +164,10 @@ public class PatientDocumentService {
 
   public PatientDocument downloadPatientDocument(String patientDocumentId, String therapistId) {
 
-    PatientDocument patientDocument = patientDocumentRepository
-        .findById(patientDocumentId)
-        .orElseThrow(() -> new RuntimeException("Patient document not found"));
+    PatientDocument patientDocument =
+        patientDocumentRepository
+            .findById(patientDocumentId)
+            .orElseThrow(() -> new RuntimeException("Patient document not found"));
     SecurityUtil.checkOwnership(patientDocument, therapistId);
 
     return patientDocument;
