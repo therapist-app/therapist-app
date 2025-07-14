@@ -3,7 +3,6 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.GAD7Test;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.GAD7Repository;
-import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
@@ -19,15 +18,12 @@ public class PatientTestService {
 
   private final GAD7Repository gad7Repository;
   private final PatientRepository patientRepository;
-  private final MeetingRepository meetingRepository;
 
   public PatientTestService(
       GAD7Repository gad7Repository,
-      PatientRepository patientRepository,
-      MeetingRepository meetingRepository) {
+      PatientRepository patientRepository) {
     this.gad7Repository = gad7Repository;
     this.patientRepository = patientRepository;
-    this.meetingRepository = meetingRepository;
   }
 
   public GAD7TestOutputDTO createTest(CreateGAD7TestDTO dto, String therapistId) {
@@ -85,11 +81,10 @@ public class PatientTestService {
   }
 
   public GAD7TestOutputDTO getTest(String testId, String therapistId) {
-    GAD7Test test =
-        gad7Repository
-            .findById(testId)
-            .orElseThrow(
-                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+    GAD7Test test = gad7Repository
+        .findById(testId)
+        .orElseThrow(
+            () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
     SecurityUtil.checkOwnership(test, therapistId);
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();

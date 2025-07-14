@@ -4,7 +4,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.TherapistChatbotInputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistChatbotService;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class TherapistChatbotController {
 
   private final TherapistChatbotService therapistChatbotService;
-  private final TherapistService therapistService;
 
   public TherapistChatbotController(
-      TherapistChatbotService therapistChatbotService, TherapistService therapistService) {
+      TherapistChatbotService therapistChatbotService) {
     this.therapistChatbotService = therapistChatbotService;
-    this.therapistService = therapistService;
   }
 
   @PostMapping("/chat")

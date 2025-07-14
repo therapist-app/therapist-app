@@ -5,8 +5,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingNoteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/meeting-notes")
 public class MeetingNoteController {
 
-  private final Logger logger = LoggerFactory.getLogger(MeetingController.class);
-
   private final MeetingNoteService meetingNoteService;
 
   MeetingNoteController(MeetingNoteService meetingNoteService) {
@@ -35,8 +31,7 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO createMeetingNote(
       @RequestBody CreateMeetingNoteDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 
@@ -45,8 +40,7 @@ public class MeetingNoteController {
   public MeetingNoteOutputDTO getMeetingNoteById(
       @PathVariable String meetingNoteId, @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.getMeetingNote(meetingNoteId, therapistId);
     return meetingNoteOutputDTO;
   }
 
@@ -56,8 +50,7 @@ public class MeetingNoteController {
       @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
       @CurrentTherapistId String therapistId) {
 
-    MeetingNoteOutputDTO meetingNoteOutputDTO =
-        meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
+    MeetingNoteOutputDTO meetingNoteOutputDTO = meetingNoteService.updatemeetingNote(updateMeetingNoteDTO, therapistId);
     return meetingNoteOutputDTO;
   }
 

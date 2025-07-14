@@ -6,13 +6,12 @@ import ch.uzh.ifi.imrg.platform.repository.ExerciseComponentRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
-import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseComponentMapper;
+
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,16 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Transactional
 public class ExerciseComponentService {
-  private final Logger logger = LoggerFactory.getLogger(ExerciseComponentService.class);
 
   private final ExerciseComponentRepository exerciseComponentRepository;
   private final ExerciseRepository exerciseRepository;
 
-  private final ExerciseComponentMapper exerciseComponentMapper = ExerciseComponentMapper.INSTANCE;
-
   public ExerciseComponentService(
-      @Qualifier("exerciseComponentRepository")
-          ExerciseComponentRepository exerciseComponentRepository,
+      @Qualifier("exerciseComponentRepository") ExerciseComponentRepository exerciseComponentRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository) {
     this.exerciseComponentRepository = exerciseComponentRepository;
     this.exerciseRepository = exerciseRepository;
@@ -37,8 +32,7 @@ public class ExerciseComponentService {
 
   public void createExerciseComponent(
       CreateExerciseComponentDTO createExerciseComponentDTO, String therapistId) {
-    Exercise exercise =
-        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     ExerciseComponent exerciseComponent = new ExerciseComponent();
@@ -55,8 +49,7 @@ public class ExerciseComponentService {
       CreateExerciseComponentDTO createExerciseComponentDTO,
       MultipartFile file,
       String therapistId) {
-    Exercise exercise =
-        exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
+    Exercise exercise = exerciseRepository.getReferenceById(createExerciseComponentDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);

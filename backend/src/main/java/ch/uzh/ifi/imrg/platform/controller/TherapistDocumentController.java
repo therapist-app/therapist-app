@@ -4,11 +4,10 @@ import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistDocumentService;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
+
 import java.io.IOException;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,15 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/therapist-documents")
 public class TherapistDocumentController {
 
-  private final Logger logger = LoggerFactory.getLogger(TherapistDocumentController.class);
-
   private final TherapistDocumentService therapistDocumentService;
-  private final TherapistService therapistService;
 
   public TherapistDocumentController(
-      TherapistDocumentService therapistDocumentService, TherapistService therapistService) {
+      TherapistDocumentService therapistDocumentService) {
     this.therapistDocumentService = therapistDocumentService;
-    this.therapistService = therapistService;
+
   }
 
   @PostMapping(path = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -43,8 +39,7 @@ public class TherapistDocumentController {
   @GetMapping("/")
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(
       @CurrentTherapistId String therapistId) {
-    List<TherapistDocumentOutputDTO> therapistDocuments =
-        therapistDocumentService.getDocumentsOfTherapist(therapistId);
+    List<TherapistDocumentOutputDTO> therapistDocuments = therapistDocumentService.getDocumentsOfTherapist(therapistId);
 
     return therapistDocuments;
   }
@@ -53,8 +48,8 @@ public class TherapistDocumentController {
   public ResponseEntity<Resource> downloadTherapistDocument(
       @PathVariable String therapistDocumentId, @CurrentTherapistId String therapistId)
       throws IOException {
-    TherapistDocument fileDocument =
-        therapistDocumentService.downloadTherapistDocument(therapistDocumentId, therapistId);
+    TherapistDocument fileDocument = therapistDocumentService.downloadTherapistDocument(therapistDocumentId,
+        therapistId);
 
     ByteArrayResource resource = new ByteArrayResource(fileDocument.getFileData());
 

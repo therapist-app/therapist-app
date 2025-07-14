@@ -7,7 +7,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanP
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
-import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CounselingPlanPhaseController {
 
   private final CounselingPlanPhaseService counselingPlanPhaseService;
-  private final TherapistService therapistService;
 
   public CounselingPlanPhaseController(
-      CounselingPlanPhaseService counselingPlanPhaseService, TherapistService therapistService) {
+      CounselingPlanPhaseService counselingPlanPhaseService) {
     this.counselingPlanPhaseService = counselingPlanPhaseService;
-    this.therapistService = therapistService;
+
   }
 
   @PostMapping("/")
@@ -63,8 +61,7 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody
-          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
+      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO, therapistId);

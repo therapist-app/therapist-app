@@ -13,15 +13,13 @@ import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class ExerciseService {
-  private final Logger logger = LoggerFactory.getLogger(PatientService.class);
 
   private final ExerciseRepository exerciseRepository;
   private final PatientRepository patientRepository;
