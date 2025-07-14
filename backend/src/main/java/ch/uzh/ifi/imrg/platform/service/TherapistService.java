@@ -39,6 +39,16 @@ public class TherapistService {
         HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
   }
 
+  public String getTherapistIdBasedOnRequest(HttpServletRequest httpServletRequest) {
+    String email = JwtUtil.validateJWTAndExtractEmail(httpServletRequest);
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail((email));
+    if (foundTherapist != null) {
+      return foundTherapist.getId();
+    }
+    throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED, "Therapist could not be found for the provided JWT");
+  }
+
   public Therapist registerTherapist(
       Therapist therapist,
       HttpServletRequest httpServletRequest,
@@ -74,8 +84,7 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
