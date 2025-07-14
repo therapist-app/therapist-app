@@ -14,7 +14,6 @@ import ch.uzh.ifi.imrg.platform.utils.FileUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -40,8 +39,8 @@ public class PatientDocumentService {
     this.patientDocumentRepository = patientDocumentRepository;
   }
 
-  public void uploadPatientDocument(String patientId, MultipartFile file, Boolean isSharedWithPatient,
-      String therapistId) {
+  public void uploadPatientDocument(
+      String patientId, MultipartFile file, Boolean isSharedWithPatient, String therapistId) {
 
     Patient patient = patientRepository
         .findById(patientId)
@@ -65,7 +64,10 @@ public class PatientDocumentService {
       File convertedFile = null;
       try {
         convertedFile = FileUtil.convertMultiPartFileToFile(file);
-        PatientAppAPIs.coachDocumentControllerPatientAPI.uploadAndShare(patientId, convertedFile).block();
+        System.out.println(convertedFile.getAbsolutePath());
+        PatientAppAPIs.coachDocumentControllerPatientAPI
+            .uploadAndShare(patientId, convertedFile)
+            .block();
       } catch (Error e) {
         throw e;
       } finally {
@@ -73,11 +75,9 @@ public class PatientDocumentService {
           convertedFile.delete();
         }
       }
-
     }
 
     patientDocumentRepository.save(patientDocument);
-
   }
 
   public void createPatientDocumentFromTherapistDocument(
