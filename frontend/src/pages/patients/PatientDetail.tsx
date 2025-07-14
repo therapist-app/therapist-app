@@ -43,9 +43,13 @@ const PatientDetail = (): ReactElement => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const allPatientDocuments = useSelector(
+  const patientDocumentsVisibleToPatient = useSelector(
     (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
-  )
+  ).filter((doc) => doc.isSharedWithPatient)
+
+  const patientDocumentsNotVisibleToPatient = useSelector(
+    (state: RootState) => state.patientDocument.allPatientDocumentsOfPatient
+  ).filter((doc) => !doc.isSharedWithPatient)
 
   const patient = useSelector((state: RootState) =>
     state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
@@ -289,7 +293,7 @@ const PatientDetail = (): ReactElement => {
 
       <FilesTable
         title='Files visible to Client'
-        allDocuments={allPatientDocuments}
+        allDocuments={patientDocumentsVisibleToPatient}
         handleFileUpload={handleFileUploadSharedWithPatient}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
@@ -299,7 +303,7 @@ const PatientDetail = (): ReactElement => {
 
       <FilesTable
         title='Files visible only to Coach'
-        allDocuments={allPatientDocuments}
+        allDocuments={patientDocumentsNotVisibleToPatient}
         handleFileUpload={handleFileUploadNotSharedWithPatient}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
