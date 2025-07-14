@@ -12,17 +12,21 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -32,6 +36,7 @@ public class PatientDocumentService {
   private final PatientRepository patientRepository;
   private final TherapistDocumentRepository therapistDocumentRepository;
   private final PatientDocumentRepository patientDocumentRepository;
+  private static final Logger log = LoggerFactory.getLogger(PatientDocumentService.class);
 
   public PatientDocumentService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
@@ -67,61 +72,37 @@ public class PatientDocumentService {
     patientDocument.setExtractedText(extractedText);
 
     if (isSharedWithPatient) {
-      File convertedFile = null;
       try {
-        String boundary =
-            "--------------------------" + UUID.randomUUID().toString().replace("-", "");
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        String lineEnd = "\r\n";
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-        // --- Manually construct the multipart body ---
-        bos.write(("--" + boundary + lineEnd).getBytes(StandardCharsets.UTF_8));
-        bos.write(
-            ("Content-Disposition: form-data; name=\"file\"; filename=\""
-                    + file.getOriginalFilename()
-                    + "\""
-                    + lineEnd)
-                .getBytes(StandardCharsets.UTF_8));
-        bos.write(
-            ("Content-Type: " + file.getContentType() + lineEnd).getBytes(StandardCharsets.UTF_8));
-        bos.write(lineEnd.getBytes(StandardCharsets.UTF_8));
-        bos.write(file.getBytes());
-        bos.write(lineEnd.getBytes(StandardCharsets.UTF_8));
-        bos.write(("--" + boundary + "--" + lineEnd).getBytes(StandardCharsets.UTF_8));
+        // 2. Create an HttpEntity for the file part.
+        // This lets Spring know about the file's name and content type.
+        HttpHeaders fileHeaders = new HttpHeaders();
+        fileHeaders.setContentDispositionFormData("file", file.getOriginalFilename());
+        fileHeaders.setContentType(MediaType.parseMediaType(file.getContentType()));
+        HttpEntity<Resource> fileEntity = new HttpEntity<>(file.getResource(), fileHeaders);
 
-        byte[] multipartBody = bos.toByteArray();
+        // 3. Add the file entity to the body map.
+        body.add("file", fileEntity);
 
         WebClient webClient =
-            WebClient.builder()
-                .baseUrl(
-                    "https://backend-patient-app-main.jonas-blum.ch") // Remember to use the correct
-                // URL
-                .build();
+            WebClient.builder().baseUrl("https://backend-patient-app-main.jonas-blum.ch").build();
 
-        // 🚀 THE FIX IS HERE 🚀
-        // We use .header() to send the Content-Type string "as-is", with the space.
-        String contentTypeHeader = "multipart/form-data; boundary=" + boundary;
-
+        // 4. Send the request using the BodyInserter.
+        // The inserter will create the boundary and set the Content-Type header
+        // automatically.
         webClient
             .post()
             .uri("/coach/patients/{patientId}/documents", patientId)
             .header(
-                HttpHeaders.CONTENT_TYPE,
-                contentTypeHeader) // Use .header() instead of .contentType()
-            .header(
                 "X-Coach-Key",
                 "ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough")
-            .contentLength(multipartBody.length)
-            .bodyValue(multipartBody)
+            .body(BodyInserters.fromMultipartData(body))
             .retrieve()
             .toBodilessEntity()
             .block();
       } catch (Exception e) {
         throw e;
-      } finally {
-        if (convertedFile != null) {
-          convertedFile.delete();
-        }
       }
     }
 
