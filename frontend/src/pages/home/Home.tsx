@@ -126,19 +126,10 @@ const Home = (): ReactElement => {
       }
       const chatbotConfigurations: CreateChatbotTemplateDTO = {
         chatbotName: '',
-        chatbotModel: 'gpt-3.5-turbo',
         chatbotIcon: 'Chatbot',
-        chatbotLanguage: 'English',
         chatbotRole: 'FAQ',
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
-        chatbotVoice: 'None',
-        chatbotGender: 'Neutral',
-        preConfiguredExercise: 'Breathing exercise',
-        additionalExercise: 'Meditation practice',
-        animation: 'Simple',
-        chatbotInputPlaceholder: 'Type your question...',
-        description: '',
       }
       const createdChatbot = await dispatch(createChatbotTemplate(chatbotConfigurations)).unwrap()
       navigate(
@@ -373,9 +364,6 @@ const Home = (): ReactElement => {
                   </Typography>
                   <Typography variant='body2' color='textSecondary'>
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
-                  </Typography>
-                  <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.language')}: {bot.chatbotLanguage}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
                     {t('dashboard.role')}: {bot.chatbotRole}

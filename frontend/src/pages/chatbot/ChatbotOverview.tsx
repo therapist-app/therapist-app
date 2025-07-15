@@ -101,19 +101,10 @@ const ChatbotOverview = (): ReactElement => {
     try {
       const dto: CreateChatbotTemplateDTO = {
         chatbotName: '',
-        chatbotModel: 'gpt-3.5-turbo',
         chatbotIcon: 'Chatbot',
-        chatbotLanguage: 'English',
         chatbotRole: 'FAQ',
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
-        chatbotVoice: 'None',
-        chatbotGender: 'Neutral',
-        preConfiguredExercise: 'Breathing exercise',
-        additionalExercise: 'Meditation practice',
-        animation: 'Simple',
-        chatbotInputPlaceholder: 'Type your question…',
-        description: '',
       }
 
       const created = patientId
@@ -239,15 +230,12 @@ const ChatbotOverview = (): ReactElement => {
     >
       <CardActionArea onClick={() => openTemplate(bot)}>
         <CardContent>
-          <Typography variant='h6'>{bot.chatbotName || t('chatbot.unnamed_bot')}</Typography>
+          <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
           <Typography variant='body2' color='textSecondary'>
-            {bot.welcomeMessage || t('chatbot.no_welcome_message_set')}
+            {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
           </Typography>
           <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('chatbot.language')}: {bot.chatbotLanguage}
-          </Typography>
-          <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('chatbot.role')}: {bot.chatbotRole}
+            {t('dashboard.role')}: {bot.chatbotRole}
           </Typography>
           <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
           <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
@@ -313,9 +301,22 @@ const ChatbotOverview = (): ReactElement => {
 
           {patientTemplates.length ? (
             <>
-              <Typography variant='h4' sx={{ mb: 1 }}>
-                Client Chatbots
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                <Typography variant='h4'>Client Chatbots</Typography>
+
+                <Button
+                  size='small'
+                  variant='outlined'
+                  onClick={() =>
+                    navigate(
+                      getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
+                      { state: { patientId: patientId } }
+                    )
+                  }
+                >
+                  Conversation Summary
+                </Button>
+              </Box>
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {patientTemplates.map((bot) => renderCard(bot, true))}

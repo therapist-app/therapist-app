@@ -17,26 +17,14 @@
 /**
  * 
  * @export
- * @interface ChatbotConfigDTO
+ * @interface ConversationSummaryOutputDTOPatientAPI
  */
-export interface ChatbotConfigDTO {
+export interface ConversationSummaryOutputDTOPatientAPI {
     /**
      * 
      * @type {string}
-     * @memberof ChatbotConfigDTO
+     * @memberof ConversationSummaryOutputDTOPatientAPI
      */
-    'chatbotRole'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'chatbotTone'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'welcomeMessage'?: string;
+    'conversationSummary'?: string;
 }
 
