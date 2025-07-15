@@ -13,12 +13,12 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO

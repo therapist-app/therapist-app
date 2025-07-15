@@ -449,7 +449,9 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           value={value}
           onChange={handleTextChange}
           readOnly={isListening}
-          placeholder={isListening ? t("meetings.listening") : (placeholder || t('meetings.speak_or_type_here'))}
+          placeholder={
+            isListening ? t('meetings.listening') : placeholder || t('meetings.speak_or_type_here')
+          }
           style={textareaStyle}
           rows={6}
         />
@@ -528,9 +530,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
       {!BrowserSpeechRecognition && !error && (
         <div role='alert' style={styles.compatibilityMessage}>
           <strong style={styles.errorTitle}>{t('meetings.browser_compatibility')}</strong>
-          <p>
-            {t('meetings.web_search_api_not_supported')}
-          </p>
+          <p>{t('meetings.web_search_api_not_supported')}</p>
         </div>
       )}
     </div>

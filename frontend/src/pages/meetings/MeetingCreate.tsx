@@ -4,6 +4,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateMeetingDTO } from '../../api'
@@ -11,7 +12,6 @@ import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useTranslation } from 'react-i18next'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null

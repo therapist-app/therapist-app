@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
@@ -9,7 +10,6 @@ import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionC
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface CreateMeetingNoteComponentProps {
   save(): void

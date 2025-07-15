@@ -2,10 +2,11 @@ import { Button, Typography } from '@mui/material'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 
+import { MeetingControllerApiAxiosParamCreator } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
@@ -14,7 +15,6 @@ import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
-import { MeetingControllerApiAxiosParamCreator } from '../../api'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()

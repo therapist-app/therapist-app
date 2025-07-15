@@ -4,11 +4,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO

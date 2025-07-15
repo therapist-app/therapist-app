@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -10,7 +11,6 @@ import {
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void

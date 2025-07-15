@@ -696,15 +696,21 @@ const ChatBotTemplateEdit: React.FC = () => {
                     label='Pre-configured Exercise'
                     onChange={(e) => setPreconfiguredExercise(e.target.value)}
                   >
-                    <MenuItem value='Breathing exercise'>{t('chatbot.breathing_exercise')}</MenuItem>
+                    <MenuItem value='Breathing exercise'>
+                      {t('chatbot.breathing_exercise')}
+                    </MenuItem>
                     <MenuItem value='Journaling'>{t('chatbot.journaling')}</MenuItem>
-                    <MenuItem value='Relaxation technique'>{t('chatbot.relaxation_technique')}</MenuItem>
+                    <MenuItem value='Relaxation technique'>
+                      {t('chatbot.relaxation_technique')}
+                    </MenuItem>
                     <MenuItem value='Undefined'>{t('chatbot.undefined')}</MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='additional-exercises-label'>{t('chatbot.additional_exercise')}</InputLabel>
+                  <InputLabel id='additional-exercises-label'>
+                    {t('chatbot.additional_exercise')}
+                  </InputLabel>
                   <Select
                     labelId='additional-exercises-label'
                     id='additional-exercises-select'
@@ -712,7 +718,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                     label='Additional Exercise'
                     onChange={(e) => setAdditionalExercise(e.target.value)}
                   >
-                    <MenuItem value='Meditation practice'>{t('chatbot.meditation_practise')}</MenuItem>
+                    <MenuItem value='Meditation practice'>
+                      {t('chatbot.meditation_practise')}
+                    </MenuItem>
                     <MenuItem value='CBT example'>{t('chatbot.cbt_example')}</MenuItem>
                     <MenuItem value='Undefined'>{t('chatbot.undefined')}</MenuItem>
                   </Select>
@@ -799,7 +807,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                       {getIconComponent(chatbotIcon)}
                     </Avatar>
                   )}
-                  <Typography variant='h4'>{chatbotName || 'Chatbot'} {t('chatbot.simulation')}</Typography>
+                  <Typography variant='h4'>
+                    {chatbotName || 'Chatbot'} {t('chatbot.simulation')}
+                  </Typography>
                 </Box>
 
                 <List ref={chatListRef} sx={{ overflow: 'auto', flexGrow: 1 }}>
@@ -920,7 +930,9 @@ const ChatBotTemplateEdit: React.FC = () => {
               </Typography>
               {threads.length > 0 ? (
                 threads.map((thread) => (
-                  <Typography key={thread.threadId}>{t('chatbot.thread_id')}: {thread.threadId}</Typography>
+                  <Typography key={thread.threadId}>
+                    {t('chatbot.thread_id')}: {thread.threadId}
+                  </Typography>
                 ))
               ) : (
                 <Typography>{t('chatbot.no_threads_found')}</Typography>

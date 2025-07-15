@@ -12,6 +12,7 @@ import {
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -19,7 +20,6 @@ import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
-import { useTranslation } from 'react-i18next'
 
 const MeetingOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()

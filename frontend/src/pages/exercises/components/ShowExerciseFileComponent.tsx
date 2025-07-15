@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import FileDownload from '../../../generalComponents/FileDownload'
@@ -13,7 +14,6 @@ import {
   updateExerciseComponent,
 } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface ShowExerciseFileComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
@@ -101,7 +101,9 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>{isImageComponent ? t('exercise.image') : t('exercise.file')}</Typography>
+            <Typography variant='h6'>
+              {isImageComponent ? t('exercise.image') : t('exercise.file')}
+            </Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />

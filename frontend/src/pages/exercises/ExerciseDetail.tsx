@@ -6,6 +6,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -28,7 +29,6 @@ import CreateExerciseTextComponent from './components/CreateExerciseTextComponen
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
-import { useTranslation } from 'react-i18next'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -144,10 +144,12 @@ const ExerciseDetail = (): ReactElement => {
               {t('exercise.exercise_type')}: <strong>{selectedExercise?.exerciseType}</strong>
             </Typography>
             <Typography>
-              {t('exercise.exercise_start')}: <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
+              {t('exercise.exercise_start')}:{' '}
+              <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
             </Typography>
             <Typography>
-              {t('exercise.exercise_end')}: <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
+              {t('exercise.exercise_end')}:{' '}
+              <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
             </Typography>
             <Typography>
               {t('exercise.is_currently_paused')}: {selectedExercise?.isPaused ? 'Yes' : 'No'}
@@ -157,7 +159,8 @@ const ExerciseDetail = (): ReactElement => {
               variant='outlined'
               sx={{ width: 'fit-content', marginTop: '10px' }}
             >
-              <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} /> {t('exercise.edit_exercise')}
+              <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
+              {t('exercise.edit_exercise')}
             </Button>
           </>
         ) : (

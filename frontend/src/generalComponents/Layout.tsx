@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
@@ -28,7 +29,6 @@ import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatb
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
-import { useTranslation } from 'react-i18next'
 
 interface LayoutProps {
   children: ReactNode

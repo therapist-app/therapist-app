@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material'
 import { ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -19,7 +20,6 @@ import { RootState } from '../../../store/store'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
-import { useTranslation } from 'react-i18next'
 
 const ExerciseOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
@@ -73,7 +73,9 @@ const ExerciseOverviewComponent = (): ReactElement => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>{t('exercise.exercise')}</div>
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    {t('exercise.exercise')}
+                  </div>
                 </TableCell>
                 <TableCell>{t('exercise.exercise_type')}</TableCell>
                 <TableCell>{t('exercise.exercise_start')}</TableCell>

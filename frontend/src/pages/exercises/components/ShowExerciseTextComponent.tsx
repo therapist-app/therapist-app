@@ -4,11 +4,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useTranslation } from 'react-i18next'
 
 interface ShowExerciseTextComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
@@ -22,7 +22,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  
+
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
     description: exerciseComponent.description,
