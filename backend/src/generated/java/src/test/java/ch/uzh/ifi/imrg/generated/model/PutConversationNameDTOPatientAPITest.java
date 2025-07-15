@@ -23,17 +23,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Model tests for CreateConversationDTOPatientAPI
+ * Model tests for PutConversationNameDTOPatientAPI
  */
-public class CreateConversationDTOPatientAPITest {
-    private final CreateConversationDTOPatientAPI model = new CreateConversationDTOPatientAPI();
+public class PutConversationNameDTOPatientAPITest {
+    private final PutConversationNameDTOPatientAPI model = new PutConversationNameDTOPatientAPI();
 
     /**
-     * Model tests for CreateConversationDTOPatientAPI
+     * Model tests for PutConversationNameDTOPatientAPI
      */
     @Test
-    public void testCreateConversationDTOPatientAPI() {
-        // TODO: test CreateConversationDTOPatientAPI
+    public void testPutConversationNameDTOPatientAPI() {
+        // TODO: test PutConversationNameDTOPatientAPI
     }
 
     /**

@@ -14,11 +14,11 @@
 package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.model.CompleteConversationOutputDTOPatientAPI;
-import ch.uzh.ifi.imrg.generated.model.CreateConversationDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.NameConversationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutConversationNameDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutSharingDTOPatientAPI;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -45,8 +45,7 @@ public class ConversationControllerPatientAPITest {
      */
     @Test
     public void createConversationTest()  {
-        CreateConversationDTOPatientAPI createConversationDTOPatientAPI = null;
-        CreateConversationOutputDTOPatientAPI response = api.createConversation(createConversationDTOPatientAPI).block();
+        CreateConversationOutputDTOPatientAPI response = api.createConversation().block();
 
         // TODO: test validations
     }
@@ -85,6 +84,20 @@ public class ConversationControllerPatientAPITest {
     @Test
     public void getConversationNamesTest()  {
         List<NameConversationOutputDTOPatientAPI> response = api.getConversationNames().collectList().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void postConversationNameTest()  {
+        String conversationId = null;
+        PutConversationNameDTOPatientAPI putConversationNameDTOPatientAPI = null;
+        api.postConversationName(conversationId, putConversationNameDTOPatientAPI).block();
 
         // TODO: test validations
     }

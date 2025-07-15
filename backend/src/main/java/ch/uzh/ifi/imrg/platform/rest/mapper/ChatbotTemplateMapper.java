@@ -14,19 +14,10 @@ public interface ChatbotTemplateMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "chatbotName", target = "chatbotName")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "chatbotModel", target = "chatbotModel")
   @Mapping(source = "chatbotIcon", target = "chatbotIcon")
-  @Mapping(source = "chatbotLanguage", target = "chatbotLanguage")
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
-  @Mapping(source = "chatbotVoice", target = "chatbotVoice")
-  @Mapping(source = "chatbotGender", target = "chatbotGender")
-  @Mapping(source = "preConfiguredExercise", target = "preConfiguredExercise")
-  @Mapping(source = "additionalExercise", target = "additionalExercise")
-  @Mapping(source = "animation", target = "animation")
-  @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
   @Mapping(
       target = "patientId",
       expression =
@@ -38,19 +29,10 @@ public interface ChatbotTemplateMapper {
   ChatbotTemplateOutputDTO convertEntityToChatbotTemplateOutputDTO(ChatbotTemplate template);
 
   @Mapping(source = "chatbotName", target = "chatbotName")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "chatbotModel", target = "chatbotModel")
   @Mapping(source = "chatbotIcon", target = "chatbotIcon")
-  @Mapping(source = "chatbotLanguage", target = "chatbotLanguage")
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
-  @Mapping(source = "chatbotVoice", target = "chatbotVoice")
-  @Mapping(source = "chatbotGender", target = "chatbotGender")
-  @Mapping(source = "preConfiguredExercise", target = "preConfiguredExercise")
-  @Mapping(source = "additionalExercise", target = "additionalExercise")
-  @Mapping(source = "animation", target = "animation")
-  @Mapping(source = "chatbotInputPlaceholder", target = "chatbotInputPlaceholder")
   @Mapping(target = "chatbotTemplateDocuments", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "id", ignore = true)

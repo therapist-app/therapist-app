@@ -148,6 +148,7 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getAllMessages1**](docs/ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getConversationNames**](docs/ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations | 
+*ConversationControllerPatientAPI* | [**postConversationName**](docs/ConversationControllerPatientAPI.md#postConversationName) | **PUT** /patients/conversations/{conversationId}/conversation-name | 
 *ConversationControllerPatientAPI* | [**sendMessage1**](docs/ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
 *DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
@@ -195,7 +196,6 @@ Class | Method | HTTP request | Description
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CompleteExerciseConversationOutputDTOPatientAPI](docs/CompleteExerciseConversationOutputDTOPatientAPI.md)
  - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
- - [CreateConversationDTOPatientAPI](docs/CreateConversationDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
@@ -235,6 +235,7 @@ Class | Method | HTTP request | Description
  - [PsychologicalTestOutputDTOPatientAPI](docs/PsychologicalTestOutputDTOPatientAPI.md)
  - [PsychologicalTestQuestionInputDTOPatientAPI](docs/PsychologicalTestQuestionInputDTOPatientAPI.md)
  - [PsychologicalTestQuestionOutputDTOPatientAPI](docs/PsychologicalTestQuestionOutputDTOPatientAPI.md)
+ - [PutConversationNameDTOPatientAPI](docs/PutConversationNameDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
