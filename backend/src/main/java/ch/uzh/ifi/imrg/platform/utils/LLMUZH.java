@@ -55,8 +55,7 @@ public class LLMUZH implements LLM {
   public static final String ANSI_CYAN = "\u001B[36m"; // Assistant
   public static final String ANSI_GREEN = "\u001B[32m"; // LLM Response
 
-  private static final ObjectMapper objectMapper =
-      new ObjectMapper().registerModule(new JavaTimeModule());
+  private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
   public static <T> T callLLMForObject(
       List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
@@ -87,29 +86,31 @@ public class LLMUZH implements LLM {
 
     List<RequestPayload.Message> requestMessages = new ArrayList<>();
     for (ChatMessageDTO message : messages) {
-      if (message.getChatRole() == ChatRole.SYSTEM) {
-        String newContent =
-            "CRITICAL: The user is writing in "
-                + language
-                + ". Your entire response MUST be in "
-                + language
-                + " (even if you cannot answer).\n"
-                + message.getContent()
-                + "CRITICAL: The user is writing in "
-                + language
-                + ". Your entire response MUST be in "
-                + language
-                + " (even if you cannot answer).\n";
-        message.setContent(newContent);
-      }
       RequestPayload.Message requestMessage = new RequestPayload.Message();
       requestMessage.setRole(mapChatRolesToRequestRoles(message.getChatRole()));
       requestMessage.setContent(message.getContent());
       requestMessages.add(requestMessage);
     }
 
+    List<RequestPayload.Message> finalMessages = truncateMessages(requestMessages);
+
+    RequestPayload.Message systemMessage = finalMessages.stream()
+        .filter(m -> "system".equals(m.getRole()))
+        .findFirst()
+        .orElse(null);
+    String newContent = "CRITICAL: Your entire response MUST be in "
+        + language
+        + " (even if you cannot answer).\n\n"
+        + systemMessage.getContent()
+        + "\n\nCRITICAL: Your entire response MUST be in "
+        + language
+        + " (even if you cannot answer).";
+    if (systemMessage != null) {
+      systemMessage.setContent(newContent);
+    }
+
     RequestPayload payload = new RequestPayload();
-    payload.setMessages(requestMessages);
+    payload.setMessages(finalMessages);
 
     StringBuilder contextLog = new StringBuilder("\n--- LLM Request Context ---");
     for (RequestPayload.Message msg : payload.getMessages()) {
@@ -144,13 +145,12 @@ public class LLMUZH implements LLM {
     }
     logger.info(contextLog.toString());
 
-    ResponseEntity<RemoteResponse> response =
-        new RestTemplate()
-            .exchange(
-                EnvironmentVariables.LOCAL_LLM_URL,
-                HttpMethod.POST,
-                new HttpEntity<>(payload, headers),
-                RemoteResponse.class);
+    ResponseEntity<RemoteResponse> response = new RestTemplate()
+        .exchange(
+            EnvironmentVariables.LOCAL_LLM_URL,
+            HttpMethod.POST,
+            new HttpEntity<>(payload, headers),
+            RemoteResponse.class);
 
     if (response.getBody() != null
         && response.getBody().getChoices() != null
@@ -182,4 +182,61 @@ public class LLMUZH implements LLM {
         throw new IllegalArgumentException("Invalid chat role: " + chatRole);
     }
   }
+
+  private static List<RequestPayload.Message> truncateMessages(List<RequestPayload.Message> allMessages) {
+
+    final int MAX_CHARACTERS = 150000;
+    final double LAST_MESSAGE_PERCENTAGE = 0.4;
+    final double FIRST_MESSAGE_PERCENTAGE = 0.8;
+
+    int allCharacters = 0;
+    for (RequestPayload.Message message : allMessages) {
+      allCharacters += message.getContent().length();
+    }
+
+    if (allCharacters < MAX_CHARACTERS) {
+      return allMessages;
+    }
+
+    int remainingCharacters = MAX_CHARACTERS;
+
+    RequestPayload.Message lastMessage = allMessages.getLast();
+    allMessages.remove(lastMessage);
+
+    lastMessage.setContent(truncateMessage(lastMessage.getContent(), remainingCharacters * LAST_MESSAGE_PERCENTAGE));
+    remainingCharacters -= lastMessage.getContent().length();
+
+    RequestPayload.Message firstMessage = allMessages.get(0);
+    allMessages.remove(firstMessage);
+
+    firstMessage.setContent(truncateMessage(firstMessage.getContent(), remainingCharacters * FIRST_MESSAGE_PERCENTAGE));
+    remainingCharacters -= firstMessage.getContent().length();
+
+    List<RequestPayload.Message> finalMessages = new ArrayList<>();
+    finalMessages.add(firstMessage);
+
+    for (RequestPayload.Message currentMessage : allMessages) {
+      if (remainingCharacters <= 100) {
+        break;
+      }
+      currentMessage.setContent(truncateMessage(currentMessage.getContent(), remainingCharacters));
+      remainingCharacters -= currentMessage.getContent().length();
+      finalMessages.add(currentMessage);
+    }
+
+    finalMessages.add(lastMessage);
+
+    return finalMessages;
+  }
+
+  private static String truncateMessage(String message, double length) {
+    if (length <= 0) {
+      return "";
+    }
+    if (length >= message.length()) {
+      return message;
+    }
+    return message.substring(0, (int) length);
+  }
+
 }
