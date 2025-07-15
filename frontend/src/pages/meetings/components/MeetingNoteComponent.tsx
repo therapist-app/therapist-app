@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
@@ -26,7 +27,7 @@ interface MeetingNoteComponentProps {
 
 const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false)
-
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({
@@ -142,7 +143,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
             <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
             <SpeechToTextComponent
-              placeholder='Content (Type or Speak)'
+              placeholder={t('meetings.content')}
               value={formData.content ?? ''}
               onChange={handleContentChange}
             />

@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
@@ -44,6 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation() as Location & { state: LayoutLocationState | null }
   const routeParams = useParams()
   const [searchParams] = useSearchParams()
+  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
@@ -242,7 +244,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               sendAssistantMessage().catch(console.error)
             }
           }}
-          placeholder='Ask your personal assistant...'
+          placeholder={t('footer.note')}
           sx={{
             bgcolor: 'white',
             borderRadius: 1,
