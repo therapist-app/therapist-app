@@ -37,25 +37,7 @@ export interface ChatbotTemplateOutputDTO {
      * @type {string}
      * @memberof ChatbotTemplateOutputDTO
      */
-    'description'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
-    'chatbotModel'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
     'chatbotIcon'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
-    'chatbotLanguage'?: string;
     /**
      * 
      * @type {string}
@@ -74,18 +56,6 @@ export interface ChatbotTemplateOutputDTO {
      * @memberof ChatbotTemplateOutputDTO
      */
     'welcomeMessage'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
-    'preConfiguredExercise'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotTemplateOutputDTO
-     */
-    'additionalExercise'?: string;
     /**
      * 
      * @type {string}

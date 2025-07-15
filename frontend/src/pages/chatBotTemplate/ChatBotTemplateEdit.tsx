@@ -79,11 +79,8 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const [chatbotName, setChatbotName] = useState('')
   const [chatbotRole, setChatbotRole] = useState('')
-  const [chatbotLanguage, setChatbotLanguage] = useState('')
   const [chatbotIcon, setChatbotIcon] = useState('')
   const [chatbotTone, setChatbotTone] = useState('')
-  const [preConfiguredExercise, setPreconfiguredExercise] = useState('')
-  const [additionalExercise, setAdditionalExercise] = useState('')
   const [welcomeMessage, setWelcomeMessage] = useState('')
 
   type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
@@ -121,12 +118,8 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       setChatbotName(chatbotConfig.chatbotName || '')
       setChatbotRole(chatbotConfig.chatbotRole || '')
-      setChatbotLanguage(chatbotConfig.chatbotLanguage || '')
       setChatbotIcon(chatbotConfig.chatbotIcon || '')
       setChatbotTone(chatbotConfig.chatbotTone || '')
-
-      setPreconfiguredExercise(chatbotConfig.preConfiguredExercise || '')
-      setAdditionalExercise(chatbotConfig.additionalExercise || '')
       setWelcomeMessage(chatbotConfig.welcomeMessage || '')
 
       if (chatbotConfig.welcomeMessage) {
@@ -289,9 +282,6 @@ const ChatBotTemplateEdit: React.FC = () => {
         config: {
           chatbotRole: chatbotRole,
           chatbotTone: chatbotTone,
-          chatbotLanguage: chatbotLanguage,
-          preConfiguredExercise: preConfiguredExercise,
-          additionalExercise: additionalExercise,
           welcomeMessage: welcomeMessage,
         },
         history: history,
@@ -361,15 +351,10 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       const updateChatbotTemplateDTO = {
         chatbotName: chatbotName,
-        chatbotModel: chatbotConfig.chatbotModel || 'gpt-3.5-turbo',
-        description: chatbotConfig.description || '',
         chatbotIcon: chatbotIcon,
-        chatbotLanguage: chatbotLanguage,
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
-        preConfiguredExercise: preConfiguredExercise,
-        additionalExercise: additionalExercise,
       }
 
       await dispatch(
@@ -579,22 +564,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-language-label'>Language</InputLabel>
-                  <Select
-                    labelId='chatbot-language-label'
-                    id='chatbot-language-select'
-                    value={chatbotLanguage}
-                    label='Language'
-                    onChange={(e) => setChatbotLanguage(e.target.value)}
-                  >
-                    <MenuItem value='English'>English</MenuItem>
-                    <MenuItem value='German'>German</MenuItem>
-                    <MenuItem value='Spanish'>Spanish</MenuItem>
-                    <MenuItem value='French'>French</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
                   <InputLabel id='chatbot-icon-label'>Chatbot Icon</InputLabel>
                   <Select
                     labelId='chatbot-icon-label'
@@ -625,39 +594,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                     <MenuItem value='informal'>Informal</MenuItem>
                     <MenuItem value='professional'>Professional</MenuItem>
                     <MenuItem value='supportive'>Supportive</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
-                  <InputLabel id='preconfigured-exercises-label'>
-                    Pre-configured Exercise
-                  </InputLabel>
-                  <Select
-                    labelId='preconfigured-exercises-label'
-                    id='preconfigured-exercises-select'
-                    value={preConfiguredExercise}
-                    label='Pre-configured Exercise'
-                    onChange={(e) => setPreconfiguredExercise(e.target.value)}
-                  >
-                    <MenuItem value='Breathing exercise'>Breathing exercise</MenuItem>
-                    <MenuItem value='Journaling'>Journaling</MenuItem>
-                    <MenuItem value='Relaxation technique'>Relaxation technique</MenuItem>
-                    <MenuItem value='Undefined'>Undefined</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
-                  <InputLabel id='additional-exercises-label'>Additional Exercise</InputLabel>
-                  <Select
-                    labelId='additional-exercises-label'
-                    id='additional-exercises-select'
-                    value={additionalExercise}
-                    label='Additional Exercise'
-                    onChange={(e) => setAdditionalExercise(e.target.value)}
-                  >
-                    <MenuItem value='Meditation practice'>Meditation practice</MenuItem>
-                    <MenuItem value='CBT example'>CBT example</MenuItem>
-                    <MenuItem value='Undefined'>Undefined</MenuItem>
                   </Select>
                 </FormControl>
 
