@@ -190,7 +190,7 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(cloneChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('dashboard.chatbot_cloned_success'), 'success')
+      openSnackbar(t('chatbot.chatbot_cloned_success'), 'success')
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     } finally {
@@ -212,7 +212,7 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(deleteChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('dashboard.chatbot_deleted_success'), 'success')
+      openSnackbar(t('chatbot.chatbot_deleted_success'), 'success')
     } catch (err) {
       openSnackbar(handleError(err as AxiosError), 'error')
     } finally {
@@ -239,15 +239,15 @@ const ChatbotOverview = (): ReactElement => {
     >
       <CardActionArea onClick={() => openTemplate(bot)}>
         <CardContent>
-          <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
+          <Typography variant='h6'>{bot.chatbotName || t('chatbot.unnamed_bot')}</Typography>
           <Typography variant='body2' color='textSecondary'>
-            {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
+            {bot.welcomeMessage || t('chatbot.no_welcome_message_set')}
           </Typography>
           <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('dashboard.language')}: {bot.chatbotLanguage}
+            {t('chatbot.language')}: {bot.chatbotLanguage}
           </Typography>
           <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('dashboard.role')}: {bot.chatbotRole}
+            {t('chatbot.role')}: {bot.chatbotRole}
           </Typography>
           <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
           <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
@@ -326,7 +326,7 @@ const ChatbotOverview = (): ReactElement => {
               <Typography variant='h4' sx={{ mb: 1 }}>
                 Client Chatbots
               </Typography>
-              <Typography sx={{ mt: 2 }}>{t('dashboard.no_chatbots_created_yet')}</Typography>
+              <Typography sx={{ mt: 2 }}>{t('chatbot.no_chatbots_created_yet')}</Typography>
             </Box>
           )}
         </>
@@ -337,7 +337,7 @@ const ChatbotOverview = (): ReactElement => {
               {therapistTemplates.map((bot) => renderCard(bot, true))}
             </Box>
           ) : (
-            <Typography>{t('dashboard.no_chatbots_created_yet')}</Typography>
+            <Typography>{t('chatbot.no_chatbots_created_yet')}</Typography>
           )}
         </>
       )}

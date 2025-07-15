@@ -12,6 +12,7 @@ import {
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -24,6 +25,7 @@ const MeetingOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(getAllMeetingsOfPatient(patientId ?? ''))
@@ -58,18 +60,18 @@ const MeetingOverviewComponent = (): ReactElement => {
           marginBottom: '10px',
         }}
       >
-        <Typography variant='h2'> Meetings</Typography>
+        <Typography variant='h2'>{t('meetings.meetings')}</Typography>
         <Button variant='contained' onClick={handleCreateNewMeeting}>
-          Create new Meeting
+          {t('meetings.create_meeting')}
         </Button>
       </div>
       <TableContainer component={Paper}>
         <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Meeting Start</TableCell>
-              <TableCell>Meeting End</TableCell>
-              <TableCell>Meeting Location</TableCell>
+              <TableCell>{t('meetings.meeting_start')}</TableCell>
+              <TableCell>{t('meetings.meeting_end')}</TableCell>
+              <TableCell>{t('meetings.meeting_location')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material'
 import { ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -23,7 +24,7 @@ import { getPathFromPage, PAGES } from '../../../utils/routes'
 const ExerciseOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
-
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const handleCreateNewExercise = (): void => {
@@ -63,7 +64,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
       >
         <Typography variant='h2'> Exercises</Typography>
         <Button variant='contained' onClick={handleCreateNewExercise}>
-          Create new Exercise
+          {t('exercise.create_new_exercise')}
         </Button>
       </div>
       {allExercisesOfPatient.length > 0 ? (
@@ -72,12 +73,14 @@ const ExerciseOverviewComponent = (): ReactElement => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>Exercise</div>
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    {t('exercise.exercise')}
+                  </div>
                 </TableCell>
-                <TableCell>Exercise Type</TableCell>
-                <TableCell>Exercise Start</TableCell>
-                <TableCell>Exercise End</TableCell>
-                <TableCell>Is Paused</TableCell>
+                <TableCell>{t('exercise.exercise_type')}</TableCell>
+                <TableCell>{t('exercise.exercise_start')}</TableCell>
+                <TableCell>{t('exercise.exercise_end')}</TableCell>
+                <TableCell>{t('exercise.is_paused')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -113,7 +116,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
           </Table>
         </TableContainer>
       ) : (
-        <Typography>You haven't added any exercises yet...</Typography>
+        <Typography>{t('exercise.no_exercises_yet')}</Typography>
       )}
     </>
   )
