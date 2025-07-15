@@ -10,7 +10,6 @@
 |**chatbotRole** | **String** |  |  [optional] |
 |**chatbotTone** | **String** |  |  [optional] |
 |**welcomeMessage** | **String** |  |  [optional] |
-|**active** | **Boolean** |  |  [optional] |
 
 
 

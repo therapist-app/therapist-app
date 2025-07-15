@@ -40,6 +40,12 @@ export interface TherapistOutputDTO {
     'email'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof TherapistOutputDTO
+     */
+    'language'?: TherapistOutputDTOLanguageEnum;
+    /**
+     * 
      * @type {Array<ChatbotTemplateOutputDTO>}
      * @memberof TherapistOutputDTO
      */
@@ -63,4 +69,12 @@ export interface TherapistOutputDTO {
      */
     'updatedAt'?: string;
 }
+
+export const TherapistOutputDTOLanguageEnum = {
+    English: 'English',
+    Ukrainian: 'Ukrainian'
+} as const;
+
+export type TherapistOutputDTOLanguageEnum = typeof TherapistOutputDTOLanguageEnum[keyof typeof TherapistOutputDTOLanguageEnum];
+
 

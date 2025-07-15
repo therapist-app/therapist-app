@@ -54,8 +54,7 @@ public class LLMUZH implements LLM {
   public static final String ANSI_CYAN = "\u001B[36m"; // Assistant
   public static final String ANSI_GREEN = "\u001B[32m"; // LLM Response
 
-  private static final ObjectMapper objectMapper =
-      new ObjectMapper().registerModule(new JavaTimeModule());
+  private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
   public static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType) {
     String rawContent = getLLMResponseContent(messages);
@@ -82,6 +81,12 @@ public class LLMUZH implements LLM {
 
     List<RequestPayload.Message> requestMessages = new ArrayList<>();
     for (ChatMessageDTO message : messages) {
+      if (message.getChatRole() == ChatRole.SYSTEM) {
+        String newContent = "CRITICAL: The user is writing in Ukrainian. Your entire response MUST be in Ukrainian (even if you cannot answer).\n"
+            + message.getContent()
+            + "CRITICAL: The user is writing in Ukrainian. Your entire response MUST be in Ukrainian (even if you cannot answer).\n";
+        message.setContent(newContent);
+      }
       RequestPayload.Message requestMessage = new RequestPayload.Message();
       requestMessage.setRole(mapChatRolesToRequestRoles(message.getChatRole()));
       requestMessage.setContent(message.getContent());
@@ -124,13 +129,12 @@ public class LLMUZH implements LLM {
     }
     logger.info(contextLog.toString());
 
-    ResponseEntity<RemoteResponse> response =
-        new RestTemplate()
-            .exchange(
-                EnvironmentVariables.LOCAL_LLM_URL,
-                HttpMethod.POST,
-                new HttpEntity<>(payload, headers),
-                RemoteResponse.class);
+    ResponseEntity<RemoteResponse> response = new RestTemplate()
+        .exchange(
+            EnvironmentVariables.LOCAL_LLM_URL,
+            HttpMethod.POST,
+            new HttpEntity<>(payload, headers),
+            RemoteResponse.class);
 
     if (response.getBody() != null
         && response.getBody().getChoices() != null

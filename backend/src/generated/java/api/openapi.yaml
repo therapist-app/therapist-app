@@ -1353,6 +1353,42 @@ paths:
       tags:
       - coach-document-controller
       x-accepts: '*/*'
+  /coach/patients/{patientId}/chatbot-summary:
+    get:
+      operationId: getConversationSummary
+      parameters:
+      - explode: true
+        in: query
+        name: getConversationSummaryInputDTO
+        required: true
+        schema:
+          $ref: '#/components/schemas/GetConversationSummaryInputDTO'
+        style: form
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "409":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Conflict
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ConversationSummaryOutputDTO'
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-chatbot-controller
+      x-accepts: '*/*'
   /:
     get:
       operationId: helloWorld
@@ -1809,8 +1845,6 @@ components:
           type: string
         welcomeMessage:
           type: string
-        active:
-          type: boolean
       type: object
     GetAllJournalEntriesDTO:
       example:
@@ -2185,6 +2219,25 @@ components:
           type: string
         active:
           type: boolean
+      type: object
+    GetConversationSummaryInputDTO:
+      properties:
+        start:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+      type: object
+    ConversationSummaryOutputDTO:
+      example:
+        conversationSummary: conversationSummary
+      properties:
+        conversationSummary:
+          type: string
       type: object
     uploadAndShare_request:
       properties:

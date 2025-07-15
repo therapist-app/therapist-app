@@ -14,7 +14,9 @@
 package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.model.ChatbotConfigurationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ConversationSummaryOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateChatbotDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.GetConversationSummaryInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -57,6 +59,20 @@ public class CoachChatbotControllerPatientAPITest {
     public void getChatbotConfigurationsTest()  {
         String patientId = null;
         List<ChatbotConfigurationOutputDTOPatientAPI> response = api.getChatbotConfigurations(patientId).collectList().block();
+
+        // TODO: test validations
+    }
+    
+    /**
+     * 
+     *
+     * 
+     */
+    @Test
+    public void getConversationSummaryTest()  {
+        GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO = null;
+        String patientId = null;
+        ConversationSummaryOutputDTOPatientAPI response = api.getConversationSummary(getConversationSummaryInputDTO, patientId).block();
 
         // TODO: test validations
     }

@@ -64,7 +64,7 @@ public class TherapistChatbotService {
     promptBuilder.append(
         "2.  **Base all answers strictly on the information provided below.** Do not invent or infer information that isn't present in the context.\n");
     promptBuilder.append(
-        "3.  **If the answer is not in the provided documents or client data, explicitly state that.** For example, say 'The answer could not be found in the provided context.'\n");
+        "3.  **If the answer is not in the provided documents or client data, explicitly state that.'\n");
     promptBuilder.append(
         "4.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
 

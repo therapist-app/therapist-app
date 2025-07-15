@@ -3,7 +3,9 @@ package ch.uzh.ifi.imrg.generated.api;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.ChatbotConfigurationOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ConversationSummaryOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreateChatbotDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.GetConversationSummaryInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
 
 import java.util.HashMap;
@@ -210,6 +212,95 @@ public class CoachChatbotControllerPatientAPI {
      */
     public ResponseSpec getChatbotConfigurationsWithResponseSpec(String patientId) throws WebClientResponseException {
         return getChatbotConfigurationsRequestCreation(patientId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>409</b> - Conflict
+     * <p><b>200</b> - OK
+     * @param getConversationSummaryInputDTO The getConversationSummaryInputDTO parameter
+     * @param patientId The patientId parameter
+     * @return ConversationSummaryOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getConversationSummaryRequestCreation(GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO, String patientId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'getConversationSummaryInputDTO' is set
+        if (getConversationSummaryInputDTO == null) {
+            throw new WebClientResponseException("Missing the required parameter 'getConversationSummaryInputDTO' when calling getConversationSummary", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getConversationSummary", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        queryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", getConversationSummaryInputDTO.getStart()));
+        queryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", getConversationSummaryInputDTO.getEnd()));
+        
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/chatbot-summary", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>409</b> - Conflict
+     * <p><b>200</b> - OK
+     * @param getConversationSummaryInputDTO The getConversationSummaryInputDTO parameter
+     * @param patientId The patientId parameter
+     * @return ConversationSummaryOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ConversationSummaryOutputDTOPatientAPI> getConversationSummary(GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO, String patientId) throws WebClientResponseException {
+        ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI>() {};
+        return getConversationSummaryRequestCreation(getConversationSummaryInputDTO, patientId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>409</b> - Conflict
+     * <p><b>200</b> - OK
+     * @param getConversationSummaryInputDTO The getConversationSummaryInputDTO parameter
+     * @param patientId The patientId parameter
+     * @return ResponseEntity&lt;ConversationSummaryOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<ConversationSummaryOutputDTOPatientAPI>> getConversationSummaryWithHttpInfo(GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO, String patientId) throws WebClientResponseException {
+        ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ConversationSummaryOutputDTOPatientAPI>() {};
+        return getConversationSummaryRequestCreation(getConversationSummaryInputDTO, patientId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>409</b> - Conflict
+     * <p><b>200</b> - OK
+     * @param getConversationSummaryInputDTO The getConversationSummaryInputDTO parameter
+     * @param patientId The patientId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getConversationSummaryWithResponseSpec(GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO, String patientId) throws WebClientResponseException {
+        return getConversationSummaryRequestCreation(getConversationSummaryInputDTO, patientId);
     }
     /**
      * 

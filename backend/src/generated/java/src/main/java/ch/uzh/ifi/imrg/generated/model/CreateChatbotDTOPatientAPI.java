@@ -29,8 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   CreateChatbotDTOPatientAPI.JSON_PROPERTY_CHATBOT_ROLE,
   CreateChatbotDTOPatientAPI.JSON_PROPERTY_CHATBOT_TONE,
-  CreateChatbotDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
-  CreateChatbotDTOPatientAPI.JSON_PROPERTY_ACTIVE
+  CreateChatbotDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
 })
 @JsonTypeName("CreateChatbotDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -43,9 +42,6 @@ public class CreateChatbotDTOPatientAPI {
 
   public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
   private String welcomeMessage;
-
-  public static final String JSON_PROPERTY_ACTIVE = "active";
-  private Boolean active;
 
   public CreateChatbotDTOPatientAPI() {
   }
@@ -127,32 +123,6 @@ public class CreateChatbotDTOPatientAPI {
     this.welcomeMessage = welcomeMessage;
   }
 
-
-  public CreateChatbotDTOPatientAPI active(Boolean active) {
-    
-    this.active = active;
-    return this;
-  }
-
-   /**
-   * Get active
-   * @return active
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ACTIVE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public Boolean getActive() {
-    return active;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ACTIVE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -164,13 +134,12 @@ public class CreateChatbotDTOPatientAPI {
     CreateChatbotDTOPatientAPI createChatbotDTO = (CreateChatbotDTOPatientAPI) o;
     return Objects.equals(this.chatbotRole, createChatbotDTO.chatbotRole) &&
         Objects.equals(this.chatbotTone, createChatbotDTO.chatbotTone) &&
-        Objects.equals(this.welcomeMessage, createChatbotDTO.welcomeMessage) &&
-        Objects.equals(this.active, createChatbotDTO.active);
+        Objects.equals(this.welcomeMessage, createChatbotDTO.welcomeMessage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chatbotRole, chatbotTone, welcomeMessage, active);
+    return Objects.hash(chatbotRole, chatbotTone, welcomeMessage);
   }
 
   @Override
@@ -180,7 +149,6 @@ public class CreateChatbotDTOPatientAPI {
     sb.append("    chatbotRole: ").append(toIndentedString(chatbotRole)).append("\n");
     sb.append("    chatbotTone: ").append(toIndentedString(chatbotTone)).append("\n");
     sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
-    sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -123,6 +123,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CoachChatbotControllerPatientAPI* | [**createChatbot**](docs/CoachChatbotControllerPatientAPI.md#createChatbot) | **POST** /coach/patients/{patientId}/chatbot | 
 *CoachChatbotControllerPatientAPI* | [**getChatbotConfigurations**](docs/CoachChatbotControllerPatientAPI.md#getChatbotConfigurations) | **GET** /coach/patients/{patientId}/chatbot | 
+*CoachChatbotControllerPatientAPI* | [**getConversationSummary**](docs/CoachChatbotControllerPatientAPI.md#getConversationSummary) | **GET** /coach/patients/{patientId}/chatbot-summary | 
 *CoachChatbotControllerPatientAPI* | [**updateChatbot**](docs/CoachChatbotControllerPatientAPI.md#updateChatbot) | **PUT** /coach/patients/{patientId}/chatbot | 
 *CoachDocumentControllerPatientAPI* | [**deleteDocument**](docs/CoachDocumentControllerPatientAPI.md#deleteDocument) | **DELETE** /coach/patients/{patientId}/documents/{documentId} | 
 *CoachDocumentControllerPatientAPI* | [**download1**](docs/CoachDocumentControllerPatientAPI.md#download1) | **GET** /coach/patients/{patientId}/documents/{documentId} | 
@@ -195,6 +196,7 @@ Class | Method | HTTP request | Description
  - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CompleteExerciseConversationOutputDTOPatientAPI](docs/CompleteExerciseConversationOutputDTOPatientAPI.md)
+ - [ConversationSummaryOutputDTOPatientAPI](docs/ConversationSummaryOutputDTOPatientAPI.md)
  - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
@@ -222,6 +224,7 @@ Class | Method | HTTP request | Description
  - [ExercisesOverviewOutputDTOPatientAPI](docs/ExercisesOverviewOutputDTOPatientAPI.md)
  - [FileDataPatientAPI](docs/FileDataPatientAPI.md)
  - [GetAllJournalEntriesDTOPatientAPI](docs/GetAllJournalEntriesDTOPatientAPI.md)
+ - [GetConversationSummaryInputDTOPatientAPI](docs/GetConversationSummaryInputDTOPatientAPI.md)
  - [ImageDataPatientAPI](docs/ImageDataPatientAPI.md)
  - [JournalEntryOutputDTOPatientAPI](docs/JournalEntryOutputDTOPatientAPI.md)
  - [JournalEntryRequestDTOPatientAPI](docs/JournalEntryRequestDTOPatientAPI.md)

@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -39,9 +40,13 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist therapist =
-        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist therapist = TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     return therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
+  }
+
+  public TherapistOutputDTO updateTherapist(@RequestBody UpdateTherapistDTO dto,
+      @CurrentTherapistId String therapistId) {
+    return therapistService.updateTherapist(dto, therapistId);
   }
 
   @PostMapping("/login")

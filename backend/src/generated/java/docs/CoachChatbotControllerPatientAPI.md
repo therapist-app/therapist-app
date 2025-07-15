@@ -6,6 +6,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 |------------- | ------------- | -------------|
 | [**createChatbot**](CoachChatbotControllerPatientAPI.md#createChatbot) | **POST** /coach/patients/{patientId}/chatbot |  |
 | [**getChatbotConfigurations**](CoachChatbotControllerPatientAPI.md#getChatbotConfigurations) | **GET** /coach/patients/{patientId}/chatbot |  |
+| [**getConversationSummary**](CoachChatbotControllerPatientAPI.md#getConversationSummary) | **GET** /coach/patients/{patientId}/chatbot-summary |  |
 | [**updateChatbot**](CoachChatbotControllerPatientAPI.md#updateChatbot) | **PUT** /coach/patients/{patientId}/chatbot |  |
 
 
@@ -137,6 +138,80 @@ public class Example {
 ### Return type
 
 [**List&lt;ChatbotConfigurationOutputDTOPatientAPI&gt;**](ChatbotConfigurationOutputDTOPatientAPI.md)
+
+### Authorization
+
+[X-Coach-Key](../README.md#X-Coach-Key)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **409** | Conflict |  -  |
+| **200** | OK |  -  |
+
+
+## getConversationSummary
+
+> ConversationSummaryOutputDTOPatientAPI getConversationSummary(getConversationSummaryInputDTO, patientId)
+
+
+
+### Example
+
+```java
+// Import classes:
+import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
+import ch.uzh.ifi.imrg.generated.invoker.ApiException;
+import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
+import ch.uzh.ifi.imrg.generated.invoker.models.*;
+import ch.uzh.ifi.imrg.generated.api.CoachChatbotControllerPatientAPI;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
+
+        CoachChatbotControllerPatientAPI apiInstance = new CoachChatbotControllerPatientAPI(defaultClient);
+        GetConversationSummaryInputDTOPatientAPI getConversationSummaryInputDTO = new GetConversationSummaryInputDTOPatientAPI(); // GetConversationSummaryInputDTOPatientAPI | 
+        String patientId = "patientId_example"; // String | 
+        try {
+            ConversationSummaryOutputDTOPatientAPI result = apiInstance.getConversationSummary(getConversationSummaryInputDTO, patientId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling CoachChatbotControllerPatientAPI#getConversationSummary");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **getConversationSummaryInputDTO** | [**GetConversationSummaryInputDTOPatientAPI**](.md)|  | |
+| **patientId** | **String**|  | |
+
+### Return type
+
+[**ConversationSummaryOutputDTOPatientAPI**](ConversationSummaryOutputDTOPatientAPI.md)
 
 ### Authorization
 
