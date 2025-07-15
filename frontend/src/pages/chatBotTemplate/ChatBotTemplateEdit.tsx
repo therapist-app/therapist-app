@@ -815,7 +815,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 >
                   <TextField
                     fullWidth
-                    label={'Type a message...'}
+                    label='Type a message...'
                     variant='outlined'
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
