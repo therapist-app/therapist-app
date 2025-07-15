@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
 import React, { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface FileUploadProps {
   onUpload: (file: File) => void
@@ -8,6 +9,7 @@ interface FileUploadProps {
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text }) => {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -27,7 +29,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text }) => {
         style={{ display: 'none' }}
       />
       <Button variant='contained' onClick={() => fileInputRef.current?.click()}>
-        {text ?? 'Upload File'}
+        {text ?? t('dashboard.upload_file')}
       </Button>
     </div>
   )

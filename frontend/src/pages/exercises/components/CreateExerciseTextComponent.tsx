@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -22,6 +23,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
+  const { t } = useTranslation()
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -71,7 +73,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
     <div>
       {isCreatingExerciseText === false ? (
         <Button variant='contained' color='primary' onClick={showExerciseTextField}>
-          Add Text
+          {t('exercise.add_text')}
         </Button>
       ) : (
         <form
@@ -80,7 +82,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
         >
           <TextField
             multiline
-            label='Text'
+            label={t('exercise.text')}
             value={exerciseText}
             onChange={handleChange}
           ></TextField>

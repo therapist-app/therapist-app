@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -25,6 +26,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
 ) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const [isCreatingFile, setIsCreatingFile] = useState(false)
   const [description, setDescription] = useState('')
@@ -87,7 +89,11 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     <div>
       {!isCreatingFile ? (
         props.isImageComponent ? (
-          <FileUpload onUpload={saveSelectedFile} text='Upload Image' accept='image/*' />
+          <FileUpload
+            onUpload={saveSelectedFile}
+            text={t('exercise.upload_image')}
+            accept='image/*'
+          />
         ) : (
           <FileUpload onUpload={saveSelectedFile} />
         )
@@ -109,7 +115,11 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             <Typography>{selectedFile?.name}</Typography>
           )}
 
-          <TextField label='Description' value={description} onChange={handleChangeDescription} />
+          <TextField
+            label={t('exercise.description')}
+            value={description}
+            onChange={handleChangeDescription}
+          />
           <div
             style={{
               display: 'flex',
