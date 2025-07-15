@@ -6,7 +6,6 @@ import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
-import ch.uzh.ifi.imrg.platform.enums.Language;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
@@ -43,7 +42,8 @@ public class CounselingPlanPhaseService {
   private final TherapistRepository therapistRepository;
 
   public CounselingPlanPhaseService(
-      @Qualifier("counselingPlanPhaseRepository") CounselingPlanPhaseRepository counselingPlanPhaseRepository,
+      @Qualifier("counselingPlanPhaseRepository")
+          CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
       @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,
       @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
@@ -56,8 +56,9 @@ public class CounselingPlanPhaseService {
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
       CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO, String therapistId) {
     List<CounselingPlanPhase> allCounselingPlanPhases = counselingPlanPhaseRepository.findAll();
-    CounselingPlan counselingPlan = counselingPlanRepository.getReferenceById(
-        createCounselingPlanPhaseDTO.getCounselingPlanId());
+    CounselingPlan counselingPlan =
+        counselingPlanRepository.getReferenceById(
+            createCounselingPlanPhaseDTO.getCounselingPlanId());
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
@@ -73,9 +74,11 @@ public class CounselingPlanPhaseService {
 
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       CreateCounselingPlanPhaseAIGeneratedDTO dto, String therapistId) {
-    CounselingPlan counselingPlan = counselingPlanRepository
-        .findById(dto.getCounselingPlanId())
-        .orElseThrow(() -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
+    CounselingPlan counselingPlan =
+        counselingPlanRepository
+            .findById(dto.getCounselingPlanId())
+            .orElseThrow(
+                () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
@@ -87,28 +90,33 @@ public class CounselingPlanPhaseService {
 
     systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
-    String userPrompt = "Based on the counseling plan context provided, generate the *next* phase. "
-        + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
-        + "Determine a suitable phase name, and a duration in weeks. "
-        + "A typical phase duration is between 1 and 4 weeks. "
-        + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-        + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
+    String userPrompt =
+        "Based on the counseling plan context provided, generate the *next* phase. "
+            + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
+            + "Determine a suitable phase name, and a duration in weeks. "
+            + "A typical phase duration is between 1 and 4 weeks. "
+            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
+            + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
-    CreateCounselingPlanPhaseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class,
-        dto.getLanguage());
+    CreateCounselingPlanPhaseDTO generatedDto =
+        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
     return generatedDto;
   }
 
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
       CreateCounselingPlanExerciseAIGeneratedDTO dto, String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository
-        .findById(dto.getCounselingPlanPhaseId())
-        .orElseThrow(
-            () -> new Error("Counseling plan phase not found with id: " + dto.getCounselingPlanPhaseId()));
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(dto.getCounselingPlanPhaseId())
+            .orElseThrow(
+                () ->
+                    new Error(
+                        "Counseling plan phase not found with id: "
+                            + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
@@ -121,24 +129,28 @@ public class CounselingPlanPhaseService {
 
     systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
-    String validExerciseTypes = Arrays.stream(ExerciseType.values())
-        .map(Enum::name)
-        .collect(Collectors.joining("', '", "'", "'"));
+    String validExerciseTypes =
+        Arrays.stream(ExerciseType.values())
+            .map(Enum::name)
+            .collect(Collectors.joining("', '", "'", "'"));
 
-    String userPrompt = "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
-        + "The exercise should have a title and a type. "
-        + "The 'exerciseType' MUST be one of the following values: "
-        + validExerciseTypes
-        + ". "
-        + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-        + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\"";
+    String userPrompt =
+        "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
+            + "The exercise should have a title and a type. "
+            + "The 'exerciseType' MUST be one of the following values: "
+            + validExerciseTypes
+            + ". "
+            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
+            + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\"";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
-    CreateExerciseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
-    CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO = getOutputDto(counselingPlanPhase, counselingPlan);
+    CreateExerciseDTO generatedDto =
+        LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
+    CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
+        getOutputDto(counselingPlanPhase, counselingPlan);
     generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());
     generatedDto.setDurationInWeeks(counselingPlanPhaseOutputDTO.getDurationInWeeks());
 
@@ -149,10 +161,12 @@ public class CounselingPlanPhaseService {
 
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(
       AddExerciseToCounselingPlanPhaseDTO addExerciseToCounselingPlanPhaseDTO, String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository.getReferenceById(
-        addExerciseToCounselingPlanPhaseDTO.getCounselingPlanPhaseId());
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository.getReferenceById(
+            addExerciseToCounselingPlanPhaseDTO.getCounselingPlanPhaseId());
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    Exercise exercise = exerciseRepository.getReferenceById(addExerciseToCounselingPlanPhaseDTO.getExerciseId());
+    Exercise exercise =
+        exerciseRepository.getReferenceById(addExerciseToCounselingPlanPhaseDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     counselingPlanPhase.getPhaseExercises().add(exercise);
@@ -165,11 +179,13 @@ public class CounselingPlanPhaseService {
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
       RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
       String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository.getReferenceById(
-        removeExerciseFromCounselingPlanPhaseDTO.getCounselingPlanPhaseId());
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository.getReferenceById(
+            removeExerciseFromCounselingPlanPhaseDTO.getCounselingPlanPhaseId());
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    Exercise exercise = exerciseRepository.getReferenceById(
-        removeExerciseFromCounselingPlanPhaseDTO.getExerciseId());
+    Exercise exercise =
+        exerciseRepository.getReferenceById(
+            removeExerciseFromCounselingPlanPhaseDTO.getExerciseId());
     SecurityUtil.checkOwnership(exercise, therapistId);
     counselingPlanPhase.getPhaseExercises().remove(exercise);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
@@ -179,9 +195,10 @@ public class CounselingPlanPhaseService {
   }
 
   public CounselingPlanPhaseOutputDTO getCounselingPlanPhaseById(String id, String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository
-        .findById(id)
-        .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(id)
+            .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
 
     return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());
@@ -189,10 +206,12 @@ public class CounselingPlanPhaseService {
 
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
       String counselingPlanPhaseId, CreateCounselingPlanPhaseDTO updateDto, String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository
-        .findById(counselingPlanPhaseId)
-        .orElseThrow(
-            () -> new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(counselingPlanPhaseId)
+            .orElseThrow(
+                () ->
+                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
 
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     if (updateDto.getPhaseName() != null) {
@@ -206,9 +225,10 @@ public class CounselingPlanPhaseService {
   }
 
   public void deleteCounselingPlanPhase(String id, String therapistId) {
-    CounselingPlanPhase counselingPlanPhase = counselingPlanPhaseRepository
-        .findById(id)
-        .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
+    CounselingPlanPhase counselingPlanPhase =
+        counselingPlanPhaseRepository
+            .findById(id)
+            .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     counselingPlanPhase.getCounselingPlan().getCounselingPlanPhases().remove(counselingPlanPhase);
     counselingPlanRepository.save(counselingPlanPhase.getCounselingPlan());
@@ -216,8 +236,8 @@ public class CounselingPlanPhaseService {
 
   public static CounselingPlanPhaseOutputDTO getOutputDto(
       CounselingPlanPhase currentPhase, CounselingPlan counselingPlan) {
-    CounselingPlanPhaseOutputDTO outputDTO = CounselingPlanPhaseMapper.INSTANCE
-        .convertEntityToCounselingPlanPhaseOutputDTO(
+    CounselingPlanPhaseOutputDTO outputDTO =
+        CounselingPlanPhaseMapper.INSTANCE.convertEntityToCounselingPlanPhaseOutputDTO(
             currentPhase);
 
     int totalAmountOfWeeksSinceStart = 0;

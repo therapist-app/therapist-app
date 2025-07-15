@@ -40,8 +40,7 @@ public class CounselingPlanPhaseController {
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       @RequestBody CreateCounselingPlanPhaseAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {
-    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(
-        dto, therapistId);
+    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(dto, therapistId);
   }
 
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
@@ -49,8 +48,7 @@ public class CounselingPlanPhaseController {
       @RequestBody CreateCounselingPlanExerciseAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {
 
-    return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(
-        dto, therapistId);
+    return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(dto, therapistId);
   }
 
   @PostMapping("/add-exercise")
@@ -63,7 +61,8 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
+      @RequestBody
+          RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
         removeExerciseFromCounselingPlanPhaseDTO, therapistId);

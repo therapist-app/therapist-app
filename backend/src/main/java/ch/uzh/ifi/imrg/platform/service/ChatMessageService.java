@@ -31,16 +31,16 @@ public class ChatMessageService {
   public ChatCompletionResponseDTO chat(
       ChatCompletionWithConfigRequestDTO req, String therapistId) {
 
-    ChatbotTemplate template = chatbotTemplateRepository
-        .findByIdAndTherapistId(req.getTemplateId(), therapistId)
-        .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
+    ChatbotTemplate template =
+        chatbotTemplateRepository
+            .findByIdAndTherapistId(req.getTemplateId(), therapistId)
+            .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
 
     String systemPrompt = buildSystemPrompt(req.getConfig(), template);
 
     List<ChatMessageDTO> msgs = new ArrayList<>();
     msgs.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
-    if (req.getHistory() != null && !req.getHistory().isEmpty())
-      msgs.addAll(req.getHistory());
+    if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
     String responseMessage = LLMUZH.callLLM(msgs, req.getLanguage());
@@ -58,7 +58,8 @@ public class ChatMessageService {
     if (nonEmpty(c.getWelcomeMessage()))
       sb.append("\nYour default welcome message is: “").append(c.getWelcomeMessage()).append("”.");
 
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+    DateTimeFormatter fmt =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
     sb.append("\n---\n## General Context\n");
     sb.append("- **Current Date and Time:** ")
         .append(fmt.format(java.time.Instant.now()))

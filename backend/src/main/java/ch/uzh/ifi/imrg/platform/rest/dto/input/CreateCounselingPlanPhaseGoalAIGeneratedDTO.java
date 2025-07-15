@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class CreateCounselingPlanPhaseGoalAIGeneratedDTO {
-    private String counselingPlanPhaseId;
-    private Language language;
+  private String counselingPlanPhaseId;
+  private Language language;
 }

@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface LLM {
 
-  static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
+  static <T> T callLLMForObject(
+      List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
     return null;
   }
 

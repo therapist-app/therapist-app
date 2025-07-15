@@ -41,7 +41,8 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist therapist = TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist therapist =
+        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     return therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
   }
 

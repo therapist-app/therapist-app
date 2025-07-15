@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UpdateTherapistDTO {
-    private String password;
+  private String password;
 }
