@@ -55,7 +55,8 @@ public class LLMUZH implements LLM {
   public static final String ANSI_CYAN = "\u001B[36m"; // Assistant
   public static final String ANSI_GREEN = "\u001B[32m"; // LLM Response
 
-  private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+  private static final ObjectMapper objectMapper =
+      new ObjectMapper().registerModule(new JavaTimeModule());
 
   public static <T> T callLLMForObject(
       List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
@@ -94,17 +95,16 @@ public class LLMUZH implements LLM {
 
     List<RequestPayload.Message> finalMessages = truncateMessages(requestMessages);
 
-    RequestPayload.Message systemMessage = finalMessages.stream()
-        .filter(m -> "system".equals(m.getRole()))
-        .findFirst()
-        .orElse(null);
-    String newContent = "CRITICAL: Your entire response MUST be in "
-        + language
-        + " (even if you cannot answer).\n\n"
-        + systemMessage.getContent()
-        + "\n\nCRITICAL: Your entire response MUST be in "
-        + language
-        + " (even if you cannot answer).";
+    RequestPayload.Message systemMessage =
+        finalMessages.stream().filter(m -> "system".equals(m.getRole())).findFirst().orElse(null);
+    String newContent =
+        "CRITICAL: Your entire response MUST be in "
+            + language
+            + " (even if you cannot answer).\n\n"
+            + systemMessage.getContent()
+            + "\n\nCRITICAL: Your entire response MUST be in "
+            + language
+            + " (even if you cannot answer).";
     if (systemMessage != null) {
       systemMessage.setContent(newContent);
     }
@@ -145,12 +145,13 @@ public class LLMUZH implements LLM {
     }
     logger.info(contextLog.toString());
 
-    ResponseEntity<RemoteResponse> response = new RestTemplate()
-        .exchange(
-            EnvironmentVariables.LOCAL_LLM_URL,
-            HttpMethod.POST,
-            new HttpEntity<>(payload, headers),
-            RemoteResponse.class);
+    ResponseEntity<RemoteResponse> response =
+        new RestTemplate()
+            .exchange(
+                EnvironmentVariables.LOCAL_LLM_URL,
+                HttpMethod.POST,
+                new HttpEntity<>(payload, headers),
+                RemoteResponse.class);
 
     if (response.getBody() != null
         && response.getBody().getChoices() != null
@@ -183,7 +184,8 @@ public class LLMUZH implements LLM {
     }
   }
 
-  private static List<RequestPayload.Message> truncateMessages(List<RequestPayload.Message> allMessages) {
+  private static List<RequestPayload.Message> truncateMessages(
+      List<RequestPayload.Message> allMessages) {
 
     final int MAX_CHARACTERS = 150000;
     final double LAST_MESSAGE_PERCENTAGE = 0.4;
@@ -203,13 +205,15 @@ public class LLMUZH implements LLM {
     RequestPayload.Message lastMessage = allMessages.getLast();
     allMessages.remove(lastMessage);
 
-    lastMessage.setContent(truncateMessage(lastMessage.getContent(), remainingCharacters * LAST_MESSAGE_PERCENTAGE));
+    lastMessage.setContent(
+        truncateMessage(lastMessage.getContent(), remainingCharacters * LAST_MESSAGE_PERCENTAGE));
     remainingCharacters -= lastMessage.getContent().length();
 
     RequestPayload.Message firstMessage = allMessages.get(0);
     allMessages.remove(firstMessage);
 
-    firstMessage.setContent(truncateMessage(firstMessage.getContent(), remainingCharacters * FIRST_MESSAGE_PERCENTAGE));
+    firstMessage.setContent(
+        truncateMessage(firstMessage.getContent(), remainingCharacters * FIRST_MESSAGE_PERCENTAGE));
     remainingCharacters -= firstMessage.getContent().length();
 
     List<RequestPayload.Message> finalMessages = new ArrayList<>();
@@ -238,5 +242,4 @@ public class LLMUZH implements LLM {
     }
     return message.substring(0, (int) length);
   }
-
 }
