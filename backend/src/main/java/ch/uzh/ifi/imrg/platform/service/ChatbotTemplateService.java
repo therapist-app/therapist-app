@@ -97,12 +97,8 @@ public class ChatbotTemplateService {
     existingTemplate.setChatbotRole(template.getChatbotRole());
     existingTemplate.setChatbotTone(template.getChatbotTone());
     existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
-    existingTemplate.setChatbotVoice(template.getChatbotVoice());
-    existingTemplate.setChatbotGender(template.getChatbotGender());
     existingTemplate.setPreConfiguredExercise(template.getPreConfiguredExercise());
     existingTemplate.setAdditionalExercise(template.getAdditionalExercise());
-    existingTemplate.setAnimation(template.getAnimation());
-    existingTemplate.setChatbotInputPlaceholder(template.getChatbotInputPlaceholder());
 
     ChatbotTemplate updChatbotTemplate = chatbotTemplateRepository.save(existingTemplate);
     chatbotTemplateRepository.flush();
@@ -162,12 +158,8 @@ public class ChatbotTemplateService {
     clone.setChatbotRole(original.getChatbotRole());
     clone.setChatbotTone(original.getChatbotTone());
     clone.setWelcomeMessage(original.getWelcomeMessage());
-    clone.setChatbotVoice(original.getChatbotVoice());
-    clone.setChatbotGender(original.getChatbotGender());
     clone.setPreConfiguredExercise(original.getPreConfiguredExercise());
     clone.setAdditionalExercise(original.getAdditionalExercise());
-    clone.setAnimation(original.getAnimation());
-    clone.setChatbotInputPlaceholder(original.getChatbotInputPlaceholder());
     clone.setTherapist(original.getTherapist());
 
     ChatbotTemplate clonedTemplate = chatbotTemplateRepository.save(clone);
@@ -211,12 +203,8 @@ public class ChatbotTemplateService {
     clone.setChatbotRole(original.getChatbotRole());
     clone.setChatbotTone(original.getChatbotTone());
     clone.setWelcomeMessage(original.getWelcomeMessage());
-    clone.setChatbotVoice(original.getChatbotVoice());
-    clone.setChatbotGender(original.getChatbotGender());
     clone.setPreConfiguredExercise(original.getPreConfiguredExercise());
     clone.setAdditionalExercise(original.getAdditionalExercise());
-    clone.setAnimation(original.getAnimation());
-    clone.setChatbotInputPlaceholder(original.getChatbotInputPlaceholder());
 
     clone.setTherapist(patient.getTherapist());
     clone.setPatient(patient);

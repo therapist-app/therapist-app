@@ -57,12 +57,6 @@ public class ChatMessageService {
       sb.append("\nSpeak with a **").append(c.getChatbotTone()).append("** tone.");
     if (nonEmpty(c.getChatbotLanguage()))
       sb.append("\nReply in **").append(c.getChatbotLanguage()).append("**.");
-    if (nonEmpty(c.getChatbotVoice()) && !"None".equalsIgnoreCase(c.getChatbotVoice()))
-      sb.append("\nWhen TTS is requested, use a **")
-          .append(c.getChatbotVoice())
-          .append("** voice.");
-    if (nonEmpty(c.getChatbotGender()))
-      sb.append("\nYour persona is **").append(c.getChatbotGender()).append("**.");
     if (nonEmpty(c.getPreConfiguredExercise()))
       sb.append("\nGuide the user through the pre-configured exercise: “")
           .append(c.getPreConfiguredExercise())

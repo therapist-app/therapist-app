@@ -14,12 +14,8 @@ public class ChatbotTemplateOutputDTO {
   private String chatbotRole;
   private String chatbotTone;
   private String welcomeMessage;
-  private String chatbotVoice;
-  private String chatbotGender;
   private String preConfiguredExercise;
   private String additionalExercise;
-  private String animation;
-  private String chatbotInputPlaceholder;
   private Instant createdAt;
   private Instant updatedAt;
   private String patientId;
