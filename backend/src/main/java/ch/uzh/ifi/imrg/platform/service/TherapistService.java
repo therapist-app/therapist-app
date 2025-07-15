@@ -79,7 +79,7 @@ public class TherapistService {
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     if (dto.getPassword() != null) {
-      therapist.setPassword(dto.getPassword());
+      therapist.setPassword(PasswordUtil.encryptPassword(dto.getPassword()));
     }
 
     therapistRepository.save(therapist);
@@ -91,8 +91,7 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }
