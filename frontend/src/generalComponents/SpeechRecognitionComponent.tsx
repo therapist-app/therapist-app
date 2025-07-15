@@ -329,7 +329,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         recognitionRef.current = null
       }
     }
-  }, [selectedLanguage])
+  }, [selectedLanguage, t])
 
   useEffect(() => {
     if (startDirectlyState && !value && recognitionRef.current && !isListening) {

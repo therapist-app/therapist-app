@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { MeetingControllerApiAxiosParamCreator } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
