@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
@@ -18,12 +19,13 @@ interface CreateMeetingNoteComponentProps {
 
 const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
   const [formData, setFormData] = useState<CreateMeetingNoteDTO>({
     meetingId: selectedMeeting?.id ?? '',
-    title: props.isTranscription ? 'Meeting Transcription' : '',
+    title: props.isTranscription ? t('meetings.meeting_transcription') : '',
     content: '',
   })
 
@@ -59,7 +61,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
         maxWidth: '700px',
       }}
     >
-      <Typography variant='h5'>New Note:</Typography>
+      <Typography variant='h5'>{t('meetings.new_note')}</Typography>
       <form
         style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}
         onSubmit={handleSubmit}
@@ -67,7 +69,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
         <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
         <SpeechToTextComponent
-          placeholder='Content (Type or Speak)'
+          placeholder={t('meetings.content')}
           value={formData.content ?? ''}
           onChange={handleContentChange}
           startDirectly={props.isTranscription}

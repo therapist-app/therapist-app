@@ -6,6 +6,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -37,7 +38,7 @@ type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'>
 const ExerciseDetail = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, exerciseId } = useParams()
-
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
@@ -137,26 +138,29 @@ const ExerciseDetail = (): ReactElement => {
           <>
             {' '}
             <Typography variant='h4'>
-              Title: <strong>{selectedExercise?.title}</strong>
+              {t('exercise.title')}: <strong>{selectedExercise?.title}</strong>
             </Typography>
             <Typography variant='h5'>
-              Exercise Type: <strong>{selectedExercise?.exerciseType}</strong>
+              {t('exercise.exercise_type')}: <strong>{selectedExercise?.exerciseType}</strong>
             </Typography>
             <Typography>
-              Exercise Start: <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
+              {t('exercise.exercise_start')}:{' '}
+              <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
             </Typography>
             <Typography>
-              Exercise End: <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
+              {t('exercise.exercise_end')}:{' '}
+              <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
             </Typography>
             <Typography>
-              Is currently paused: {selectedExercise?.isPaused ? 'Yes' : 'No'}
+              {t('exercise.is_currently_paused')}: {selectedExercise?.isPaused ? 'Yes' : 'No'}
             </Typography>
             <Button
               onClick={() => toggleIsEditingExercise(true)}
               variant='outlined'
               sx={{ width: 'fit-content', marginTop: '10px' }}
             >
-              <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} /> Edit Exercise
+              <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
+              {t('exercise.edit_exercise')}
             </Button>
           </>
         ) : (
@@ -167,7 +171,7 @@ const ExerciseDetail = (): ReactElement => {
               style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
             >
               <TextField
-                label='Title'
+                label={t('exercise.title')}
                 name='title'
                 value={formData.title}
                 onChange={handleChange}
@@ -178,7 +182,7 @@ const ExerciseDetail = (): ReactElement => {
               <TextField
                 select
                 sx={{ fontWeight: 'bold' }}
-                label='Exercise Type'
+                label={t('exercise.exercise_type')}
                 name='exerciseType'
                 value={formData.exerciseType}
                 onChange={handleChange}
@@ -194,7 +198,7 @@ const ExerciseDetail = (): ReactElement => {
 
               <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
                 <DateTimePicker
-                  label='Exercise Start'
+                  label={t('exercise.exercise_start')}
                   value={formData.exerciseStart}
                   onChange={(newValue: Date | null) => {
                     setFormData({
@@ -206,7 +210,7 @@ const ExerciseDetail = (): ReactElement => {
                 />
 
                 <DateTimePicker
-                  label='Exercise End'
+                  label={t('exercise.exercise_end')}
                   value={formData.exerciseEnd}
                   onChange={(newValue: Date | null) => {
                     setFormData({
@@ -226,7 +230,7 @@ const ExerciseDetail = (): ReactElement => {
                     onChange={() => setFormData({ ...formData, isPaused: !formData.isPaused })}
                   />
                 }
-                label='Is Exercise Paused'
+                label={t('exercise.is_exercise_paused')}
               ></FormControlLabel>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
@@ -236,10 +240,10 @@ const ExerciseDetail = (): ReactElement => {
                   sx={{ mt: 2 }}
                   onClick={() => toggleIsEditingExercise(false)}
                 >
-                  Cancel
+                  {t('exercise.cancel')}
                 </Button>
                 <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-                  Submit
+                  {t('exercise.submit')}
                 </Button>
               </div>
             </form>
@@ -259,10 +263,10 @@ const ExerciseDetail = (): ReactElement => {
         >
           {selectedExercise?.exerciseComponentsOutputDTO &&
           selectedExercise.exerciseComponentsOutputDTO.length > 0 ? (
-            <Typography variant='h5'>Exercise Components: </Typography>
+            <Typography variant='h5'>{t('exercise.exercise_components')}: </Typography>
           ) : (
             <Typography sx={{ marginBottom: '20px' }} variant='h5'>
-              You haven't added any exercise components yet...{' '}
+              {t('exercise.no_exercise_components_yet')}{' '}
             </Typography>
           )}
 
@@ -361,7 +365,7 @@ const ExerciseDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <Button sx={{ alignSelf: 'start' }} onClick={handleDeleteExercise}>
-        <Typography color='error'>Delete Exercise</Typography>
+        <Typography color='error'>{t('exercise.delete_exercise')}</Typography>
         <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />
       </Button>
     </Layout>

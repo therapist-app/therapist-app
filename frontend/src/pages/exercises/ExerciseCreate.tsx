@@ -4,6 +4,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -25,6 +26,7 @@ const ExerciseCreate = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     title: '',
@@ -67,7 +69,7 @@ const ExerciseCreate = (): ReactElement => {
         onSubmit={handleSubmit}
       >
         <TextField
-          label='Title'
+          label={t('exercise.title')}
           name='title'
           value={formData.title}
           onChange={handleChange}
@@ -79,7 +81,7 @@ const ExerciseCreate = (): ReactElement => {
         <TextField
           select
           sx={{ fontWeight: 'bold' }}
-          label='Exercise Type'
+          label={t('exercise.exercise_type')}
           name='exerciseType'
           value={formData.exerciseType}
           onChange={handleChange}
@@ -95,7 +97,7 @@ const ExerciseCreate = (): ReactElement => {
 
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
-            label='Exercise Start'
+            label={t('exercise.exercise_start')}
             value={formData.exerciseStart}
             onChange={(newValue: Date | null) => {
               setFormData({
@@ -107,7 +109,7 @@ const ExerciseCreate = (): ReactElement => {
           />
 
           <TextField
-            label='Duration in Weeks'
+            label={t('exercise.duration_in_weeks')}
             type='number'
             value={formData.durationInWeeks}
             onChange={(e) => {
@@ -121,7 +123,7 @@ const ExerciseCreate = (): ReactElement => {
         </LocalizationProvider>
 
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          Submit
+          {t('exercise.submit')}
         </Button>
       </form>
     </Layout>
