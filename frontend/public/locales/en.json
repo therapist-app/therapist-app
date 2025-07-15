@@ -14,7 +14,8 @@
     "settings": "Settings Page"
   },
   "footer": {
-    "title": "This is the footer"
+    "title": "This is the footer",
+    "note": "Ask your personal assistant..."
   },
   "settings": {
     "title": "Settings",
@@ -31,9 +32,7 @@
     "patient_details": "Client Details",
     "logout": "Log Out",
     "overview": "Overview",
-    "account": "Account",
-    "settings": "Settings",
-    "patients": "Clients"
+    "account": "Account"
   },
   "dashboard": {
     "patient_register_success": "Client registered successfully.",
@@ -78,7 +77,8 @@
     "rename_bot": "Rename Bot",
     "enter_new_name_for_bot": "Enter the new name for your bot.",
     "enter_new_bot_name": "Enter new bot name",
-    "welcome_message": "You are logged in as: "
+    "welcome_message": "You are logged in as: ",
+    "upload_file": "Upload File"
   },
   "not_found": {
     "title": "404 - Page Not Found",
@@ -182,5 +182,28 @@
     "password": "Password",
     "login": "Login",
     "go_registration": "Go to Registration instead"
+  },
+  "meeting": {
+    "new_note": "New Note",
+    "title": "Title",
+    "language": "Language",
+    "content": "Content",
+    "speak_or_type_here": "Speak or type here...",
+    "start_listening": "Start Listening",
+    "listening": "Listening...",
+    "listening_speak_into_microphone": "Listening... Speak into your microphone.",
+    "stop_listening": "Stop Listening",
+    "no_notes_yet": "You don't have any notes yet.",
+    "delete_meeting": "Delete Meeting",
+    "browser_compatibility": "Browser Compatibility",
+    "web_search_api_not_supported": "Web Speech API is not supported in your browser. Please try Chrome or Edge for the best experience.",
+    "error": {
+      "error": "Error",
+      "no_speech_detected": "No speech detected. Please try speaking a bit louder or clearer.",
+      "microphone_not_available": "Microphone not available or permission denied. Please check your microphone settings and browser permissions.",
+      "not_allowed": "Permission to use the microphone was denied or has not been granted. Please allow microphone access in your browser settings."
+      
+    }
+
   }
 }
