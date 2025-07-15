@@ -1,17 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  Typography,
-  Box,
-} from '@mui/material'
+import { Box, Card, CardContent, CircularProgress, Typography } from '@mui/material'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+
 import Layout from '../../generalComponents/Layout'
 import { conversationApi } from '../../utils/api'
 
-// ────────────────────────────────────────────────────────────────────────────────
-// DTO that the platform backend returns (adjust fields if your OpenAPI differs)
 interface ConversationSummaryOutputDTO {
   name: string | null
   start: string
@@ -22,28 +15,26 @@ interface ConversationSummaryOutputDTO {
     time: string
   }[]
 }
-// ────────────────────────────────────────────────────────────────────────────────
 
 const ConversationSummary = (): ReactElement => {
   const { patientId = '' } = useParams<{ patientId: string }>()
-  const [summary, setSummary] = useState<ConversationSummaryOutputDTO | null>(
-    null
-  )
+  const [summary, setSummary] = useState<ConversationSummaryOutputDTO | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
 
     const now = new Date()
     const start = new Date(now)
-    start.setDate(start.getDate() - 30) // last 30 days
-
+    start.setDate(start.getDate() - 30)
     ;(async () => {
       try {
         const res = await conversationApi.getConversationSummary(
           patientId,
-            start.toISOString(),
-            now.toISOString()
+          start.toISOString(),
+          now.toISOString()
         )
         setSummary(res.data as ConversationSummaryOutputDTO)
       } catch (err) {
@@ -81,9 +72,7 @@ const ConversationSummary = (): ReactElement => {
             </Card>
           ))}
 
-          {!summary.messages.length && (
-            <Typography>No messages in the selected period.</Typography>
-          )}
+          {!summary.messages.length && <Typography>No messages in the selected period.</Typography>}
         </Box>
       )}
     </Layout>
