@@ -72,7 +72,6 @@ const ChatBotTemplateEdit: React.FC = () => {
     'info' | 'success' | 'error' | 'warning'
   >('info')
 
-  const [threads, setThreads] = useState<Array<{ threadId: string }>>([])
   const [question, setQuestion] = useState('')
   const templateDocuments = useSelector(
     (s: RootState) => s.chatbotTemplateDocument.allDocumentsOfTemplate
