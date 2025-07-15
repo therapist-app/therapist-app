@@ -47,7 +47,7 @@ public class TherapistChatbotService {
 
     System.out.println(chatMessages);
 
-    String responseMessage = LLMUZH.callLLM(chatMessages);
+    String responseMessage = LLMUZH.callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
     TherapistChatbotOutputDTO therapistChatbotOutputDTO = new TherapistChatbotOutputDTO();
     therapistChatbotOutputDTO.setContent(responseMessage);
     return therapistChatbotOutputDTO;

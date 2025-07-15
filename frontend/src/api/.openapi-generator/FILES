@@ -38,7 +38,10 @@ models/counseling-plan-output-dto.ts
 models/counseling-plan-phase-goal-output-dto.ts
 models/counseling-plan-phase-output-dto.ts
 models/create-chatbot-template-dto.ts
+models/create-counseling-plan-exercise-aigenerated-dto.ts
+models/create-counseling-plan-phase-aigenerated-dto.ts
 models/create-counseling-plan-phase-dto.ts
+models/create-counseling-plan-phase-goal-aigenerated-dto.ts
 models/create-counseling-plan-phase-goal-dto.ts
 models/create-exercise-component-dto.ts
 models/create-exercise-dto.ts
@@ -66,3 +69,4 @@ models/update-counseling-plan-dto.ts
 models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts
 models/update-meeting-note-dto.ts
+models/update-therapist-dto.ts

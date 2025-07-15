@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
+import ch.uzh.ifi.imrg.platform.enums.Language;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,11 +55,10 @@ public class LLMUZH implements LLM {
   public static final String ANSI_CYAN = "\u001B[36m"; // Assistant
   public static final String ANSI_GREEN = "\u001B[32m"; // LLM Response
 
-  private static final ObjectMapper objectMapper =
-      new ObjectMapper().registerModule(new JavaTimeModule());
+  private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  public static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType) {
-    String rawContent = getLLMResponseContent(messages);
+  public static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
+    String rawContent = getLLMResponseContent(messages, language);
     try {
       return objectMapper.readValue(rawContent, responseType);
     } catch (JsonProcessingException e) {
@@ -71,11 +71,14 @@ public class LLMUZH implements LLM {
     }
   }
 
-  public static String callLLM(List<ChatMessageDTO> messages) {
-    return getLLMResponseContent(messages);
+  public static String callLLM(List<ChatMessageDTO> messages, Language language) {
+    return getLLMResponseContent(messages, language);
   }
 
-  private static String getLLMResponseContent(List<ChatMessageDTO> messages) {
+  private static String getLLMResponseContent(List<ChatMessageDTO> messages, Language language) {
+    if (language == null) {
+      language = Language.English;
+    }
     HttpHeaders headers = new HttpHeaders();
     headers.setBearerAuth(EnvironmentVariables.LOCAL_LLM_API_KEY);
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -83,10 +86,12 @@ public class LLMUZH implements LLM {
     List<RequestPayload.Message> requestMessages = new ArrayList<>();
     for (ChatMessageDTO message : messages) {
       if (message.getChatRole() == ChatRole.SYSTEM) {
-        String newContent =
-            "CRITICAL: The user is writing in Ukrainian. Your entire response MUST be in Ukrainian (even if you cannot answer).\n"
-                + message.getContent()
-                + "CRITICAL: The user is writing in Ukrainian. Your entire response MUST be in Ukrainian (even if you cannot answer).\n";
+        String newContent = "CRITICAL: The user is writing in " + language + ". Your entire response MUST be in "
+            + language
+            + " (even if you cannot answer).\n"
+            + message.getContent()
+            + "CRITICAL: The user is writing in " + language + ". Your entire response MUST be in " + language
+            + " (even if you cannot answer).\n";
         message.setContent(newContent);
       }
       RequestPayload.Message requestMessage = new RequestPayload.Message();
@@ -131,13 +136,12 @@ public class LLMUZH implements LLM {
     }
     logger.info(contextLog.toString());
 
-    ResponseEntity<RemoteResponse> response =
-        new RestTemplate()
-            .exchange(
-                EnvironmentVariables.LOCAL_LLM_URL,
-                HttpMethod.POST,
-                new HttpEntity<>(payload, headers),
-                RemoteResponse.class);
+    ResponseEntity<RemoteResponse> response = new RestTemplate()
+        .exchange(
+            EnvironmentVariables.LOCAL_LLM_URL,
+            HttpMethod.POST,
+            new HttpEntity<>(payload, headers),
+            RemoteResponse.class);
 
     if (response.getBody() != null
         && response.getBody().getChoices() != null

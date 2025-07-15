@@ -18,6 +18,7 @@ import {
 } from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { getCurrentLanguage } from '../../../utils/languageUtil'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -60,7 +61,10 @@ const CreateCounselingPlanExercise = ({
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
     const createExerciseDTO = await dispatch(
-      createCounselingPlanExerciseAIGenerated(counselingPlanPhase.id ?? '')
+      createCounselingPlanExerciseAIGenerated({
+        counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+        language: getCurrentLanguage(),
+      })
     ).unwrap()
 
     const newExerciseFormData: ExerciseFormData = {

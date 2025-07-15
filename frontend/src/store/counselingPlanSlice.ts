@@ -3,7 +3,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   AddExerciseToCounselingPlanPhaseDTO,
   CounselingPlanOutputDTO,
+  CreateCounselingPlanExerciseAIGeneratedDTO,
+  CreateCounselingPlanPhaseAIGeneratedDTO,
   CreateCounselingPlanPhaseDTO,
+  CreateCounselingPlanPhaseGoalAIGeneratedDTO,
   CreateCounselingPlanPhaseGoalDTO,
   RemoveExerciseFromCounselingPlanPhaseDTO,
   UpdateCounselingPlanDTO,
@@ -106,29 +109,24 @@ export const removeExerciseFromCounselingPlanPhase = createAsyncThunk(
 
 export const createCounselingPlanPhaseAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhaseAIGenerated',
-  async (counselingPlanId: string) => {
-    const response =
-      await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(counselingPlanId)
+  async (dto: CreateCounselingPlanPhaseAIGeneratedDTO) => {
+    const response = await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(dto)
     return response.data
   }
 )
 
 export const createCounselingPlanPhaseGoalAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhaseGoalAIGenerated',
-  async (counselingPlanPhaseId: string) => {
-    const response =
-      await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoalAIGenerated(
-        counselingPlanPhaseId
-      )
+  async (dto: CreateCounselingPlanPhaseGoalAIGeneratedDTO) => {
+    const response = await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoalAIGenerated(dto)
     return response.data
   }
 )
 
 export const createCounselingPlanExerciseAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanExerciseAIGenerated',
-  async (counselingPlanPhaseId: string) => {
-    const response =
-      await counselingPlanPhaseApi.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId)
+  async (dto: CreateCounselingPlanExerciseAIGeneratedDTO) => {
+    const response = await counselingPlanPhaseApi.createCounselingPlanExerciseAIGenerated(dto)
     return response.data
   }
 )

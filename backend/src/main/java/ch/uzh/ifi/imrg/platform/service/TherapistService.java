@@ -69,7 +69,6 @@ public class TherapistService {
     }
 
     therapist.setPassword(PasswordUtil.encryptPassword(therapist.getPassword()));
-    therapist.setLanguage(Language.English);
 
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
@@ -84,10 +83,6 @@ public class TherapistService {
       therapist.setPassword(dto.getPassword());
     }
 
-    if (dto.getLanguage() != null) {
-      therapist.setLanguage(dto.getLanguage());
-    }
-
     therapistRepository.save(therapist);
 
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist);
@@ -97,8 +92,7 @@ public class TherapistService {
       LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist foundTherapist =
-        therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
+    Therapist foundTherapist = therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
       throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
     }

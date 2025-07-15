@@ -7,6 +7,7 @@ import {
   createCounselingPlanPhaseAIGenerated,
 } from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { getCurrentLanguage } from '../../../utils/languageUtil'
 
 interface CreateCounselingPlanePhaseProps {
   counselingPlanId: string
@@ -45,7 +46,10 @@ const CreateCounselingPlanePhase = ({
 
   const handleAIGeneration = async (): Promise<void> => {
     const createCounselingPlanPhaseDTO = await dispatch(
-      createCounselingPlanPhaseAIGenerated(counselingPlanId)
+      createCounselingPlanPhaseAIGenerated({
+        counselingPlanId: counselingPlanId,
+        language: getCurrentLanguage(),
+      })
     ).unwrap()
     const newFormValue: CreateCounselingPlanPhaseDTO = {
       phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
