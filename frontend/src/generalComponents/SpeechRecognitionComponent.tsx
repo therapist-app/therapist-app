@@ -303,11 +303,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     recognition.onerror = (event: SpeechRecognitionErrorEvent): void => {
       let errorMessage = `Error: ${event.error}`
       if (event.error === 'no-speech') {
-        errorMessage = t('meeting.error.no_speech_detected')
+        errorMessage = t('meetings.error.no_speech_detected')
       } else if (event.error === 'audio-capture') {
-        errorMessage = t('meeting.error.microphone_not_available')
+        errorMessage = t('meetings.error.microphone_not_available')
       } else if (event.error === 'not-allowed') {
-        errorMessage = t('meeting.error.not_allowed')
+        errorMessage = t('meetings.error.not_allowed')
       } else if (event.message) {
         errorMessage = `${errorMessage} (${event.message})`
       }
@@ -426,7 +426,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     <div style={styles.container}>
       <div style={styles.languageSelectContainer}>
         <label htmlFor='language-select' style={styles.languageSelectLabel}>
-          {t('meeting.language')}
+          {t('meetings.language')}
         </label>
         <select
           id='language-select'
@@ -449,7 +449,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           value={value}
           onChange={handleTextChange}
           readOnly={isListening}
-          placeholder={isListening ? t("meeting.listening") : (placeholder || t('meeting.speak_or_type_here'))}
+          placeholder={isListening ? t("meetings.listening") : (placeholder || t('meetings.speak_or_type_here'))}
           style={textareaStyle}
           rows={6}
         />
@@ -478,7 +478,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
               <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
               <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
             </svg>
-            {t('meeting.start_listening')}
+            {t('meetings.start_listening')}
           </button>
           <button
             onClick={handleStopListening}
@@ -507,7 +507,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
                 clipRule='evenodd'
               />
             </svg>
-            {t('meeting.stop_listening')}
+            {t('meetings.stop_listening')}
           </button>
         </div>
       </div>
@@ -521,15 +521,15 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
       {isListening && !error && (
         <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
-          {t('meeting.listening_speak_into_microphone')}
+          {t('meetings.listening_speak_into_microphone')}
         </p>
       )}
 
       {!BrowserSpeechRecognition && !error && (
         <div role='alert' style={styles.compatibilityMessage}>
-          <strong style={styles.errorTitle}>{t('meeting.browser_compatibility')}</strong>
+          <strong style={styles.errorTitle}>{t('meetings.browser_compatibility')}</strong>
           <p>
-            {t('meeting.web_search_api_not_supported')}
+            {t('meetings.web_search_api_not_supported')}
           </p>
         </div>
       )}

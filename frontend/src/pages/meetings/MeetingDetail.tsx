@@ -4,6 +4,7 @@ import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
@@ -13,11 +14,13 @@ import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
+import { MeetingControllerApiAxiosParamCreator } from '../../api'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const [showCreateMeetingNote, setShowCreateMeetingNote] = useState(false)
   const [isTranscription, setIsTranscription] = useState(false)
@@ -54,13 +57,13 @@ const MeetingDetail = (): ReactElement => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
         <div>
           <Typography>
-            <strong>Meeting start:</strong>{' '}
+            <strong>{t('meetings.meeting_start')}:</strong>{' '}
             {selectedMeeting?.meetingStart
               ? format(new Date(selectedMeeting.meetingStart), 'dd.MM.yyyy HH:mm', { locale: de })
               : ''}
           </Typography>
           <Typography>
-            <strong>Duration:</strong>{' '}
+            <strong>{t('meetings.duration')}:</strong>{' '}
             {selectedMeeting?.meetingEnd && selectedMeeting?.meetingStart
               ? Math.floor(
                   (new Date(selectedMeeting.meetingEnd).getTime() -
@@ -68,10 +71,10 @@ const MeetingDetail = (): ReactElement => {
                     60000
                 )
               : 0}{' '}
-            minutes
+            {t('meetings.minutes')}
           </Typography>
           <Typography>
-            <strong>Location:</strong> {selectedMeeting?.location}
+            <strong>{t('meetings.location')}:</strong> {selectedMeeting?.location}
           </Typography>
         </div>
 
@@ -84,7 +87,7 @@ const MeetingDetail = (): ReactElement => {
               onClick={() => handleCreateNewNote(false)}
               disabled={showCreateMeetingNote}
             >
-              Create new Note
+              {t('meetings.create_new_note')}
             </Button>
 
             <Button
@@ -93,7 +96,7 @@ const MeetingDetail = (): ReactElement => {
               onClick={() => handleCreateNewNote(true)}
               disabled={showCreateMeetingNote}
             >
-              Transcribe the Meeting
+              {t('meetings.transcribe_meeting')}
             </Button>
           </div>
           {showCreateMeetingNote === true ? (
@@ -118,7 +121,7 @@ const MeetingDetail = (): ReactElement => {
             </>
           ) : (
             <>
-              <Typography>You don't have any notes yet...</Typography>
+              <Typography>{t('meetings.no_notes_yet')}</Typography>
             </>
           )}
         </div>
@@ -131,7 +134,7 @@ const MeetingDetail = (): ReactElement => {
           color='error'
           sx={{ width: 'fit-content' }}
         >
-          Delete Meeting
+          {t('meetings.delete_meeting')}
         </Button>
       </div>
     </Layout>

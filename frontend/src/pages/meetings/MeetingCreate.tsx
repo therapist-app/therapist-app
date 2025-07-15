@@ -11,6 +11,7 @@ import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useTranslation } from 'react-i18next'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null
@@ -19,6 +20,7 @@ type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
 }
 
 const MeetingCreate = (): ReactElement => {
+  const { t } = useTranslation()
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -64,7 +66,7 @@ const MeetingCreate = (): ReactElement => {
       <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
-            label='Meeting Start'
+            label={t('meetings.meeting_start')}
             value={meetingFormData.meetingStart}
             onChange={(newValue: Date | null) => {
               setMeetingFormData({
@@ -76,7 +78,7 @@ const MeetingCreate = (): ReactElement => {
           />
 
           <TextField
-            label='Duration in Minutes'
+            label={t('meetings.duration_in_minutes')}
             type='number'
             value={meetingFormData.durationInMinutes}
             onChange={(e) =>
@@ -89,7 +91,7 @@ const MeetingCreate = (): ReactElement => {
           />
 
           <TextField
-            label='Location'
+            label={t('meetings.location')}
             name='location'
             value={meetingFormData.location}
             onChange={(e) =>
@@ -103,7 +105,7 @@ const MeetingCreate = (): ReactElement => {
         </LocalizationProvider>
 
         <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-          Create Meeting
+          {t('meetings.create_meeting')}
         </Button>
       </form>
     </Layout>
