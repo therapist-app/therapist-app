@@ -24,21 +24,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * CreateConversationDTOPatientAPI
+ * PutConversationNameDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CreateConversationDTOPatientAPI.JSON_PROPERTY_CONVERSATION_NAME
+  PutConversationNameDTOPatientAPI.JSON_PROPERTY_CONVERSATION_NAME
 })
-@JsonTypeName("CreateConversationDTO")
+@JsonTypeName("PutConversationNameDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class CreateConversationDTOPatientAPI {
+public class PutConversationNameDTOPatientAPI {
   public static final String JSON_PROPERTY_CONVERSATION_NAME = "conversationName";
   private String conversationName;
 
-  public CreateConversationDTOPatientAPI() {
+  public PutConversationNameDTOPatientAPI() {
   }
 
-  public CreateConversationDTOPatientAPI conversationName(String conversationName) {
+  public PutConversationNameDTOPatientAPI conversationName(String conversationName) {
     
     this.conversationName = conversationName;
     return this;
@@ -71,8 +71,8 @@ public class CreateConversationDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateConversationDTOPatientAPI createConversationDTO = (CreateConversationDTOPatientAPI) o;
-    return Objects.equals(this.conversationName, createConversationDTO.conversationName);
+    PutConversationNameDTOPatientAPI putConversationNameDTO = (PutConversationNameDTOPatientAPI) o;
+    return Objects.equals(this.conversationName, putConversationNameDTO.conversationName);
   }
 
   @Override
@@ -83,7 +83,7 @@ public class CreateConversationDTOPatientAPI {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateConversationDTOPatientAPI {\n");
+    sb.append("class PutConversationNameDTOPatientAPI {\n");
     sb.append("    conversationName: ").append(toIndentedString(conversationName)).append("\n");
     sb.append("}");
     return sb.toString();
