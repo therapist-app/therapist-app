@@ -3,7 +3,6 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
-import { conversationApi } from '../../utils/api'
 
 interface ConversationSummaryOutputDTO {
   name: string | null
@@ -31,12 +30,13 @@ const ConversationSummary = (): ReactElement => {
     start.setDate(start.getDate() - 30)
     ;(async (): Promise<void> => {
       try {
-        const res = await conversationApi.getConversationSummary(
-          patientId,
-          start.toISOString(),
-          now.toISOString()
-        )
-        setSummary(res.data as ConversationSummaryOutputDTO)
+        // const res = await conversationApi.getConversationSummary(
+        //   patientId,
+        //   start.toISOString(),
+        //   now.toISOString()
+        // )
+        // setSummary(res.data as ConversationSummaryOutputDTO)
+        setSummary(null)
       } catch (err) {
         console.error('Failed to load conversation summary', err)
       } finally {
