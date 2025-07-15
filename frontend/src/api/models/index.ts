@@ -6,6 +6,7 @@ export * from './chatbot-config-dto';
 export * from './chatbot-template-document-output-dto';
 export * from './chatbot-template-output-dto';
 export * from './complaint-dto';
+export * from './conversation-summary-output-dtopatient-api';
 export * from './counseling-plan-output-dto';
 export * from './counseling-plan-phase-goal-output-dto';
 export * from './counseling-plan-phase-output-dto';

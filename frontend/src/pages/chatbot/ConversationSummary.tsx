@@ -1,28 +1,53 @@
-import { Card, CardContent, CircularProgress, Typography } from '@mui/material'
-import { ReactElement, useEffect, useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+  Typography,
+  Box,
+} from '@mui/material'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
 import Layout from '../../generalComponents/Layout'
-import { getConversationSummaries } from '../../utils/api'
+import { conversationApi } from '../../utils/api'
 
-interface ConversationNameDTO {
-  id: string
+// ────────────────────────────────────────────────────────────────────────────────
+// DTO that the platform backend returns (adjust fields if your OpenAPI differs)
+interface ConversationSummaryOutputDTO {
   name: string | null
-  createdAt: string
+  start: string
+  end: string
+  messages: {
+    id: string
+    excerpt: string
+    time: string
+  }[]
 }
+// ────────────────────────────────────────────────────────────────────────────────
 
 const ConversationSummary = (): ReactElement => {
   const { patientId = '' } = useParams<{ patientId: string }>()
-  const [data, setData] = useState<ConversationNameDTO[]>([])
+  const [summary, setSummary] = useState<ConversationSummaryOutputDTO | null>(
+    null
+  )
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!patientId) return
+
+    const now = new Date()
+    const start = new Date(now)
+    start.setDate(start.getDate() - 30) // last 30 days
+
     ;(async () => {
       try {
-        const res = await getConversationSummaries(patientId)
-        setData(res.data as ConversationNameDTO[])
+        const res = await conversationApi.getConversationSummary(
+          patientId,
+            start.toISOString(),
+            now.toISOString()
+        )
+        setSummary(res.data as ConversationSummaryOutputDTO)
       } catch (err) {
-        console.error('Failed to load conversations', err)
+        console.error('Failed to load conversation summary', err)
       } finally {
         setLoading(false)
       }
@@ -35,19 +60,31 @@ const ConversationSummary = (): ReactElement => {
         Conversation Summary
       </Typography>
 
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        data.map((c) => (
-          <Card key={c.id} sx={{ mb: 2, maxWidth: 600 }}>
-            <CardContent>
-              <Typography variant='h6'>{c.name || 'Unnamed chat'}</Typography>
-              <Typography variant='caption' color='textSecondary'>
-                {new Date(c.createdAt).toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        ))
+      {loading && <CircularProgress />}
+
+      {!loading && summary && (
+        <Box sx={{ maxWidth: 700 }}>
+          <Typography variant='h5' sx={{ mb: 2 }}>
+            {summary.name || 'Unnamed chatbot'}
+          </Typography>
+
+          {summary.messages.map((m) => (
+            <Card key={m.id} sx={{ mb: 2 }}>
+              <CardContent>
+                <Typography variant='caption' color='textSecondary'>
+                  {new Date(m.time).toLocaleString()}
+                </Typography>
+                <Typography variant='body1' sx={{ mt: 1 }}>
+                  {m.excerpt}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+
+          {!summary.messages.length && (
+            <Typography>No messages in the selected period.</Typography>
+          )}
+        </Box>
       )}
     </Layout>
   )
