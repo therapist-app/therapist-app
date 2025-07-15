@@ -1,6 +1,6 @@
 
 
-# CreateConversationDTOPatientAPI
+# PutConversationNameDTOPatientAPI
 
 
 ## Properties

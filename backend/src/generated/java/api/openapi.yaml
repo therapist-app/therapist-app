@@ -273,6 +273,30 @@ paths:
       - conversation-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/conversations/{conversationId}/conversation-name:
+    put:
+      operationId: postConversationName
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutConversationNameDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - conversation-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/meetings/{meetingId}:
     delete:
       operationId: deleteMeeting_1
@@ -790,12 +814,6 @@ paths:
       x-accepts: '*/*'
     post:
       operationId: createConversation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateConversationDTO'
-        required: true
       responses:
         "201":
           content:
@@ -805,7 +823,6 @@ paths:
           description: Created
       tags:
       - conversation-controller
-      x-content-type: application/json
       x-accepts: '*/*'
   /patients/conversations/messages/{conversationId}:
     get:
@@ -1534,6 +1551,11 @@ components:
         shareWithAi:
           type: boolean
       type: object
+    PutConversationNameDTO:
+      properties:
+        conversationName:
+          type: string
+      type: object
     ExerciseElementInputDTO:
       discriminator:
         propertyName: type
@@ -1750,11 +1772,6 @@ components:
         responseMessage:
           type: string
         requestMessage:
-          type: string
-      type: object
-    CreateConversationDTO:
-      properties:
-        conversationName:
           type: string
       type: object
     CreateConversationOutputDTO:

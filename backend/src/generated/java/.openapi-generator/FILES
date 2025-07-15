@@ -21,7 +21,6 @@ docs/CompleteConversationOutputDTOPatientAPI.md
 docs/CompleteExerciseConversationOutputDTOPatientAPI.md
 docs/ConversationControllerPatientAPI.md
 docs/CreateChatbotDTOPatientAPI.md
-docs/CreateConversationDTOPatientAPI.md
 docs/CreateConversationOutputDTOPatientAPI.md
 docs/CreateMeetingDTOPatientAPI.md
 docs/CreateMessageDTOPatientAPI.md
@@ -69,6 +68,7 @@ docs/PsychologicalTestNameOutputDTOPatientAPI.md
 docs/PsychologicalTestOutputDTOPatientAPI.md
 docs/PsychologicalTestQuestionInputDTOPatientAPI.md
 docs/PsychologicalTestQuestionOutputDTOPatientAPI.md
+docs/PutConversationNameDTOPatientAPI.md
 docs/PutLanguageDTOPatientAPI.md
 docs/PutNameDTOPatientAPI.md
 docs/PutOnboardedDTOPatientAPI.md
@@ -118,7 +118,6 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientA
 src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CompleteExerciseConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateChatbotDTOPatientAPI.java
-src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPI.java
@@ -158,6 +157,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameOutputDTOPati
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PutConversationNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
@@ -188,7 +188,6 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/CoachJournalEntryOutputDTOPatientA
 src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CompleteExerciseConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateChatbotDTOPatientAPITest.java
-src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateConversationOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMeetingDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/CreateMessageDTOPatientAPITest.java
@@ -228,6 +227,7 @@ src/test/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameOutputDTOPati
 src/test/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestOutputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionInputDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionOutputDTOPatientAPITest.java
+src/test/java/ch/uzh/ifi/imrg/generated/model/PutConversationNameDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPITest.java
 src/test/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPITest.java
