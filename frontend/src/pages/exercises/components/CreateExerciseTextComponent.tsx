@@ -10,6 +10,7 @@ import {
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void
@@ -22,6 +23,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
+  const { t } = useTranslation()
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -71,7 +73,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
     <div>
       {isCreatingExerciseText === false ? (
         <Button variant='contained' color='primary' onClick={showExerciseTextField}>
-          Add Text
+          {t('exercise.add_text')}
         </Button>
       ) : (
         <form
@@ -80,7 +82,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
         >
           <TextField
             multiline
-            label='Text'
+            label={t('exercise.text')}
             value={exerciseText}
             onChange={handleChange}
           ></TextField>

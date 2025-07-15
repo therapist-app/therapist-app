@@ -13,6 +13,7 @@ import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 interface CreateExerciseFileComponentProps {
   createdExerciseFile(): void
@@ -25,6 +26,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
 ) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const [isCreatingFile, setIsCreatingFile] = useState(false)
   const [description, setDescription] = useState('')
@@ -87,7 +89,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     <div>
       {!isCreatingFile ? (
         props.isImageComponent ? (
-          <FileUpload onUpload={saveSelectedFile} text='Upload Image' accept='image/*' />
+          <FileUpload onUpload={saveSelectedFile} text={t('exercise.upload_image')} accept='image/*' />
         ) : (
           <FileUpload onUpload={saveSelectedFile} />
         )
@@ -109,7 +111,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             <Typography>{selectedFile?.name}</Typography>
           )}
 
-          <TextField label='Description' value={description} onChange={handleChangeDescription} />
+          <TextField label={t('exercise.description')} value={description} onChange={handleChangeDescription} />
           <div
             style={{
               display: 'flex',

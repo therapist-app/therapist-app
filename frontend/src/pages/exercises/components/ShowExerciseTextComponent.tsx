@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 interface ShowExerciseTextComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
@@ -20,7 +21,8 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
 ) => {
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
-
+  const { t } = useTranslation()
+  
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
     description: exerciseComponent.description,
@@ -82,7 +84,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>Text</Typography>
+            <Typography variant='h6'>{t('exercise.text')}</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
@@ -107,7 +109,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
-              label='Order'
+              label={t('exercise.order')}
               name='orderNumber'
               value={formData.orderNumber}
               onChange={handleChange}
@@ -133,7 +135,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
             name='description'
             value={formData.description}
             onChange={handleChange}
-            label='Text'
+            label={t('exercise.text')}
           />
         </>
       )}

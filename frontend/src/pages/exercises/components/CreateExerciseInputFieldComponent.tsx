@@ -10,6 +10,7 @@ import {
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 interface CreateExerciseInputFieldComponentProps {
   createdInputField(): void
@@ -21,6 +22,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 ) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const [description, setDescription] = useState('')
 
   const [isCreatingExerciseInputField, setIsCreatingExerciseInputField] = useState(false)
@@ -73,7 +75,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     <div>
       {isCreatingExerciseInputField === false ? (
         <Button variant='contained' color='primary' onClick={showExerciseInputField}>
-          Add Input Field
+          {t('exercise.add_input_field')}
         </Button>
       ) : (
         <form
@@ -82,7 +84,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
         >
           <TextField
             multiline
-            label='Description of Input'
+            label={t('exercise.description_of_input')}
             value={description}
             onChange={handleChange}
           ></TextField>
