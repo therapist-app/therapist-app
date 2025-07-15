@@ -59,7 +59,6 @@
     "clone": "Clone",
     "delete": "Delete",
     "save": "Save",
-    
     "welcome_message": "You are logged in as: ",
     "upload_file": "Upload File"
   },
@@ -135,6 +134,32 @@
     "thread_id": "Thread ID",
     "no_threads_found": "No threads found.",
     "template_files": "Template Files"
+  },
+  "counseling_plan": {
+    "add_existing_exercise": "Add Existing Exercise",
+    "create_new_exercise": "Create New Exercise",
+    "exercise": "Exercise",
+    "exercises": "Exercises",
+    "cancel": "Cancel",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "duration": "Duration",
+    "weeks": "Weeks",
+    "goals": "Goals",
+    "add_a_phase": "Add a Phase",
+    "phase_name": "Phase Name",
+    "duration_in_weeks": "Duration in Weeks",
+    "create_phase": "Create Phase",
+    "make_ai_generated_suggestion": "Make AI generated suggestion",
+    "exercise_title": "Exercise Title",
+    "exercise_type": "Exercise Type",
+    "exercise_start": "Exercise Start",
+    "add_a_goal": "Add a Goal",
+    "goal_name": "Goal Name",
+    "goal_description": "Goal Description",
+    "create_goal": "Create Goal",
+    "counseling_start_date": "Counseling Start Date",
+    "counseling_plan_phases": "Counseling Plan Phases"
   },
   "not_found": {
     "title": "404 - Page Not Found",
