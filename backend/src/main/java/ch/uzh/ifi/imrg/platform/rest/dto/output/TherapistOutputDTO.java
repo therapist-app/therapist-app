@@ -1,10 +1,9 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
+import ch.uzh.ifi.imrg.platform.enums.Language;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
-
-import ch.uzh.ifi.imrg.platform.enums.Language;
 import lombok.Data;
 
 @Data

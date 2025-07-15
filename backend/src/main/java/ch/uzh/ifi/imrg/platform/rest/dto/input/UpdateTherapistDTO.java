@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class UpdateTherapistDTO {
-    private String password;
-    private Language language;
+  private String password;
+  private Language language;
 }

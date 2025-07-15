@@ -40,12 +40,13 @@ public class TherapistController {
       @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
-    Therapist therapist = TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
+    Therapist therapist =
+        TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     return therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
   }
 
-  public TherapistOutputDTO updateTherapist(@RequestBody UpdateTherapistDTO dto,
-      @CurrentTherapistId String therapistId) {
+  public TherapistOutputDTO updateTherapist(
+      @RequestBody UpdateTherapistDTO dto, @CurrentTherapistId String therapistId) {
     return therapistService.updateTherapist(dto, therapistId);
   }
 
