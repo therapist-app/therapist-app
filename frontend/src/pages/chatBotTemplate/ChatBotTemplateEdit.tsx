@@ -148,10 +148,7 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }, [dispatch, chatbotConfig?.id, selectedTab])
 
-  const handleTabChange = (
-    _event: React.SyntheticEvent,
-    newValue: 'config' | 'sources'
-  ): void => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'sources'): void => {
     setSelectedTab(newValue)
   }
 
