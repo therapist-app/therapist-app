@@ -22,28 +22,30 @@ const ConversationSummary = (): ReactElement => {
   const [loading, setLoading] = useState(true)
 
   useEffect((): void => {
-    if (!patientId) {
-      return
-    }
+  if (!patientId) {
+    return
+  }
 
-    const now = new Date()
-    const start = new Date(now)
-    start.setDate(start.getDate() - 30)
-    ;(async () => {
-      try {
-        const res = await conversationApi.getConversationSummary(
-          patientId,
-          start.toISOString(),
-          now.toISOString()
-        )
-        setSummary(res.data as ConversationSummaryOutputDTO)
-      } catch (err) {
-        console.error('Failed to load conversation summary', err)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [patientId])
+  const now   = new Date()
+  const start = new Date(now)
+  start.setDate(start.getDate() - 30)
+
+  ;(async (): Promise<void> => {   
+    try {
+      const res = await conversationApi.getConversationSummary(
+        patientId,
+        start.toISOString(),
+        now.toISOString()
+      )
+      setSummary(res.data as ConversationSummaryOutputDTO)
+    } catch (err) {
+      console.error('Failed to load conversation summary', err)
+    } finally {
+      setLoading(false)
+    }
+  })()
+}, [patientId])
+
 
   return (
     <Layout>
