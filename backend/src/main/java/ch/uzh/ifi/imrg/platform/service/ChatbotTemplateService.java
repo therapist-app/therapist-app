@@ -90,15 +90,10 @@ public class ChatbotTemplateService {
     SecurityUtil.checkOwnership(existingTemplate, therapistId);
 
     existingTemplate.setChatbotName(template.getChatbotName());
-    existingTemplate.setDescription(template.getDescription());
-    existingTemplate.setChatbotModel(template.getChatbotModel());
     existingTemplate.setChatbotIcon(template.getChatbotIcon());
-    existingTemplate.setChatbotLanguage(template.getChatbotLanguage());
     existingTemplate.setChatbotRole(template.getChatbotRole());
     existingTemplate.setChatbotTone(template.getChatbotTone());
     existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
-    existingTemplate.setPreConfiguredExercise(template.getPreConfiguredExercise());
-    existingTemplate.setAdditionalExercise(template.getAdditionalExercise());
 
     ChatbotTemplate updChatbotTemplate = chatbotTemplateRepository.save(existingTemplate);
     chatbotTemplateRepository.flush();
@@ -151,15 +146,10 @@ public class ChatbotTemplateService {
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");
-    clone.setDescription(original.getDescription());
-    clone.setChatbotModel(original.getChatbotModel());
     clone.setChatbotIcon(original.getChatbotIcon());
-    clone.setChatbotLanguage(original.getChatbotLanguage());
     clone.setChatbotRole(original.getChatbotRole());
     clone.setChatbotTone(original.getChatbotTone());
     clone.setWelcomeMessage(original.getWelcomeMessage());
-    clone.setPreConfiguredExercise(original.getPreConfiguredExercise());
-    clone.setAdditionalExercise(original.getAdditionalExercise());
     clone.setTherapist(original.getTherapist());
 
     ChatbotTemplate clonedTemplate = chatbotTemplateRepository.save(clone);
@@ -196,15 +186,10 @@ public class ChatbotTemplateService {
 
     ChatbotTemplate clone = new ChatbotTemplate();
     clone.setChatbotName(original.getChatbotName() + " Clone");
-    clone.setDescription(original.getDescription());
-    clone.setChatbotModel(original.getChatbotModel());
     clone.setChatbotIcon(original.getChatbotIcon());
-    clone.setChatbotLanguage(original.getChatbotLanguage());
     clone.setChatbotRole(original.getChatbotRole());
     clone.setChatbotTone(original.getChatbotTone());
     clone.setWelcomeMessage(original.getWelcomeMessage());
-    clone.setPreConfiguredExercise(original.getPreConfiguredExercise());
-    clone.setAdditionalExercise(original.getAdditionalExercise());
 
     clone.setTherapist(patient.getTherapist());
     clone.setPatient(patient);

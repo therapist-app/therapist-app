@@ -55,16 +55,6 @@ public class ChatMessageService {
       sb.append("\nYour role is **").append(c.getChatbotRole()).append("**.");
     if (nonEmpty(c.getChatbotTone()))
       sb.append("\nSpeak with a **").append(c.getChatbotTone()).append("** tone.");
-    if (nonEmpty(c.getChatbotLanguage()))
-      sb.append("\nReply in **").append(c.getChatbotLanguage()).append("**.");
-    if (nonEmpty(c.getPreConfiguredExercise()))
-      sb.append("\nGuide the user through the pre-configured exercise: “")
-          .append(c.getPreConfiguredExercise())
-          .append("”.");
-    if (nonEmpty(c.getAdditionalExercise()))
-      sb.append("\nOptionally offer the additional exercise: “")
-          .append(c.getAdditionalExercise())
-          .append("”.");
     if (nonEmpty(c.getWelcomeMessage()))
       sb.append("\nYour default welcome message is: “").append(c.getWelcomeMessage()).append("”.");
 

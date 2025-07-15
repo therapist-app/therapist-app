@@ -30,15 +30,10 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist {
   @Column(nullable = false)
   private String chatbotName;
 
-  private String description;
-  private String chatbotModel;
   private String chatbotIcon;
-  private String chatbotLanguage;
   private String chatbotRole;
   private String chatbotTone;
   private String welcomeMessage;
-  private String preConfiguredExercise;
-  private String additionalExercise;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id")

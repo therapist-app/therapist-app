@@ -8,6 +8,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 | [**deleteChat**](ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} |  |
 | [**getAllMessages1**](ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} |  |
 | [**getConversationNames**](ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations |  |
+| [**postConversationName**](ConversationControllerPatientAPI.md#postConversationName) | **PUT** /patients/conversations/{conversationId}/conversation-name |  |
 | [**sendMessage1**](ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} |  |
 | [**updateSharing**](ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} |  |
 
@@ -15,7 +16,7 @@ All URIs are relative to *http://backend-patient-app-main.jonas-blum.ch*
 
 ## createConversation
 
-> CreateConversationOutputDTOPatientAPI createConversation(createConversationDTOPatientAPI)
+> CreateConversationOutputDTOPatientAPI createConversation()
 
 
 
@@ -42,9 +43,8 @@ public class Example {
         //X-Coach-Key.setApiKeyPrefix("Token");
 
         ConversationControllerPatientAPI apiInstance = new ConversationControllerPatientAPI(defaultClient);
-        CreateConversationDTOPatientAPI createConversationDTOPatientAPI = new CreateConversationDTOPatientAPI(); // CreateConversationDTOPatientAPI | 
         try {
-            CreateConversationOutputDTOPatientAPI result = apiInstance.createConversation(createConversationDTOPatientAPI);
+            CreateConversationOutputDTOPatientAPI result = apiInstance.createConversation();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ConversationControllerPatientAPI#createConversation");
@@ -59,10 +59,7 @@ public class Example {
 
 ### Parameters
 
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **createConversationDTOPatientAPI** | [**CreateConversationDTOPatientAPI**](CreateConversationDTOPatientAPI.md)|  | |
+This endpoint does not need any parameter.
 
 ### Return type
 
@@ -74,7 +71,7 @@ public class Example {
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: Not defined
 - **Accept**: */*
 
 
@@ -284,6 +281,78 @@ This endpoint does not need any parameter.
 
 - **Content-Type**: Not defined
 - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+
+
+## postConversationName
+
+> postConversationName(conversationId, putConversationNameDTOPatientAPI)
+
+
+
+### Example
+
+```java
+// Import classes:
+import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
+import ch.uzh.ifi.imrg.generated.invoker.ApiException;
+import ch.uzh.ifi.imrg.generated.invoker.Configuration;
+import ch.uzh.ifi.imrg.generated.invoker.auth.*;
+import ch.uzh.ifi.imrg.generated.invoker.models.*;
+import ch.uzh.ifi.imrg.generated.api.ConversationControllerPatientAPI;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://backend-patient-app-main.jonas-blum.ch");
+        
+        // Configure API key authorization: X-Coach-Key
+        ApiKeyAuth X-Coach-Key = (ApiKeyAuth) defaultClient.getAuthentication("X-Coach-Key");
+        X-Coach-Key.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X-Coach-Key.setApiKeyPrefix("Token");
+
+        ConversationControllerPatientAPI apiInstance = new ConversationControllerPatientAPI(defaultClient);
+        String conversationId = "conversationId_example"; // String | 
+        PutConversationNameDTOPatientAPI putConversationNameDTOPatientAPI = new PutConversationNameDTOPatientAPI(); // PutConversationNameDTOPatientAPI | 
+        try {
+            apiInstance.postConversationName(conversationId, putConversationNameDTOPatientAPI);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ConversationControllerPatientAPI#postConversationName");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **conversationId** | **String**|  | |
+| **putConversationNameDTOPatientAPI** | [**PutConversationNameDTOPatientAPI**](PutConversationNameDTOPatientAPI.md)|  | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+[X-Coach-Key](../README.md#X-Coach-Key)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
 
 
 ### HTTP response details
