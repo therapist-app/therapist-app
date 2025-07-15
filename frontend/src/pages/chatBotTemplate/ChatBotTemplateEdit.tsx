@@ -57,7 +57,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const [chatbotConfig, setChatbotConfig] = useState<ChatbotTemplateOutputDTO | null>(null)
 
-  const [selectedTab, setSelectedTab] = useState<'config' | 'analytics' | 'sources'>('config')
+  const [selectedTab, setSelectedTab] = useState<'config' | 'sources'>('config')
 
   const [chat, setChat] = useState<Array<{ question?: string; response: ReactNode | null }>>([])
 
@@ -137,12 +137,6 @@ const ChatBotTemplateEdit: React.FC = () => {
   }, [chatbotConfig])
 
   useEffect(() => {
-    if (selectedTab === 'analytics') {
-      setThreads([{ threadId: 'thread-001' }, { threadId: 'thread-002' }])
-    }
-  }, [selectedTab])
-
-  useEffect(() => {
     if (chatListRef.current) {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight
     }
@@ -156,7 +150,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const handleTabChange = (
     _event: React.SyntheticEvent,
-    newValue: 'config' | 'analytics' | 'sources'
+    newValue: 'config' | 'sources'
   ): void => {
     setSelectedTab(newValue)
   }
@@ -550,7 +544,6 @@ const ChatBotTemplateEdit: React.FC = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label='Configuration' value='config' />
-            <Tab label='Analytics' value='analytics' />
             <Tab label='Sources' value='sources' />
           </Tabs>
         </Box>
@@ -835,26 +828,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                   </Button>
                 </Box>
               </Paper>
-            </Grid>
-          </Grid>
-        )}
-
-        {selectedTab === 'analytics' && (
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant='h6' sx={{ mt: 2 }}>
-                Analytics
-              </Typography>
-              <Typography variant='subtitle1' gutterBottom>
-                Total Chats (Threads): {threads.length}
-              </Typography>
-              {threads.length > 0 ? (
-                threads.map((t) => (
-                  <Typography key={t.threadId}>Thread ID: {t.threadId}</Typography>
-                ))
-              ) : (
-                <Typography>No threads found.</Typography>
-              )}
             </Grid>
           </Grid>
         )}
