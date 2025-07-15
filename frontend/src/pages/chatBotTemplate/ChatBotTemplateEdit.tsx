@@ -47,6 +47,7 @@ import { RootState } from '../../store/store'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
+import { getCurrentLanguage } from '../../utils/languageUtil'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -286,6 +287,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         },
         history: history,
         message: userPrompt,
+        language: getCurrentLanguage(),
       }
 
       const fullText = (await chatApi.chatWithConfig(payload)).data.content ?? ''

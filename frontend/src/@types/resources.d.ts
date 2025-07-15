@@ -20,7 +20,11 @@ interface Resources {
     },
     "settings": {
       "title": "Settings",
-      "language": "Language"
+      "language": "Language",
+      "changePasswordTitle": "Change password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "changePasswordButton": "Submit"
     },
     "layout": {
       "dashboard": "Dashboard",

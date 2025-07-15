@@ -12,6 +12,8 @@ import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanExerciseAIGeneratedDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
@@ -71,11 +73,12 @@ public class CounselingPlanPhaseService {
   }
 
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
-      String counselingPlanId, String therapistId) {
+      CreateCounselingPlanPhaseAIGeneratedDTO dto, String therapistId) {
     CounselingPlan counselingPlan =
         counselingPlanRepository
-            .findById(counselingPlanId)
-            .orElseThrow(() -> new Error("Counseling plan not found with id: " + counselingPlanId));
+            .findById(dto.getCounselingPlanId())
+            .orElseThrow(
+                () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
@@ -99,19 +102,21 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class);
-    generatedDto.setCounselingPlanId(counselingPlanId);
+        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
+    generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
     return generatedDto;
   }
 
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
-      String counselingPlanPhaseId, String therapistId) {
+      CreateCounselingPlanExerciseAIGeneratedDTO dto, String therapistId) {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
-            .findById(counselingPlanPhaseId)
+            .findById(dto.getCounselingPlanPhaseId())
             .orElseThrow(
                 () ->
-                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                    new Error(
+                        "Counseling plan phase not found with id: "
+                            + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
@@ -142,7 +147,8 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
-    CreateExerciseDTO generatedDto = LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class);
+    CreateExerciseDTO generatedDto =
+        LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
     CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
         getOutputDto(counselingPlanPhase, counselingPlan);
     generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());

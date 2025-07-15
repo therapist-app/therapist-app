@@ -17,14 +17,14 @@
 /**
  * 
  * @export
- * @interface ConversationSummaryOutputDTOPatientAPI
+ * @interface UpdateTherapistDTO
  */
-export interface ConversationSummaryOutputDTOPatientAPI {
+export interface UpdateTherapistDTO {
     /**
      * 
      * @type {string}
-     * @memberof ConversationSummaryOutputDTOPatientAPI
+     * @memberof UpdateTherapistDTO
      */
-    'conversationSummary'?: string;
+    'password'?: string;
 }
 

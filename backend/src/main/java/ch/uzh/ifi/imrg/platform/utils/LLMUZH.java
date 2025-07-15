@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
+import ch.uzh.ifi.imrg.platform.enums.Language;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,8 +58,9 @@ public class LLMUZH implements LLM {
   private static final ObjectMapper objectMapper =
       new ObjectMapper().registerModule(new JavaTimeModule());
 
-  public static <T> T callLLMForObject(List<ChatMessageDTO> messages, Class<T> responseType) {
-    String rawContent = getLLMResponseContent(messages);
+  public static <T> T callLLMForObject(
+      List<ChatMessageDTO> messages, Class<T> responseType, Language language) {
+    String rawContent = getLLMResponseContent(messages, language);
     try {
       return objectMapper.readValue(rawContent, responseType);
     } catch (JsonProcessingException e) {
@@ -71,17 +73,35 @@ public class LLMUZH implements LLM {
     }
   }
 
-  public static String callLLM(List<ChatMessageDTO> messages) {
-    return getLLMResponseContent(messages);
+  public static String callLLM(List<ChatMessageDTO> messages, Language language) {
+    return getLLMResponseContent(messages, language);
   }
 
-  private static String getLLMResponseContent(List<ChatMessageDTO> messages) {
+  private static String getLLMResponseContent(List<ChatMessageDTO> messages, Language language) {
+    if (language == null) {
+      language = Language.English;
+    }
     HttpHeaders headers = new HttpHeaders();
     headers.setBearerAuth(EnvironmentVariables.LOCAL_LLM_API_KEY);
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     List<RequestPayload.Message> requestMessages = new ArrayList<>();
     for (ChatMessageDTO message : messages) {
+      if (message.getChatRole() == ChatRole.SYSTEM) {
+        String newContent =
+            "CRITICAL: The user is writing in "
+                + language
+                + ". Your entire response MUST be in "
+                + language
+                + " (even if you cannot answer).\n"
+                + message.getContent()
+                + "CRITICAL: The user is writing in "
+                + language
+                + ". Your entire response MUST be in "
+                + language
+                + " (even if you cannot answer).\n";
+        message.setContent(newContent);
+      }
       RequestPayload.Message requestMessage = new RequestPayload.Message();
       requestMessage.setRole(mapChatRolesToRequestRoles(message.getChatRole()));
       requestMessage.setContent(message.getContent());

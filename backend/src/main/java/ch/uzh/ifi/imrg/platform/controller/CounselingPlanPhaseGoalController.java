@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -38,10 +39,11 @@ public class CounselingPlanPhaseGoalController {
   @PostMapping("/{counselingPlanPhaseId}")
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      @PathVariable String counselingPlanPhaseId, @CurrentTherapistId String therapistId) {
+      @RequestBody CreateCounselingPlanPhaseGoalAIGeneratedDTO dto,
+      @CurrentTherapistId String therapistId) {
 
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
-        counselingPlanPhaseId, therapistId);
+        dto, therapistId);
   }
 
   @GetMapping("/{id}")

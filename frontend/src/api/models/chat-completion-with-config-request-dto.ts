@@ -50,5 +50,19 @@ export interface ChatCompletionWithConfigRequestDTO {
      * @memberof ChatCompletionWithConfigRequestDTO
      */
     'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatCompletionWithConfigRequestDTO
+     */
+    'language'?: ChatCompletionWithConfigRequestDTOLanguageEnum;
 }
+
+export const ChatCompletionWithConfigRequestDTOLanguageEnum = {
+    English: 'English',
+    Ukrainian: 'Ukrainian'
+} as const;
+
+export type ChatCompletionWithConfigRequestDTOLanguageEnum = typeof ChatCompletionWithConfigRequestDTOLanguageEnum[keyof typeof ChatCompletionWithConfigRequestDTOLanguageEnum];
+
 

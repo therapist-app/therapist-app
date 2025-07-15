@@ -60,12 +60,4 @@ public class CreateChatbotDTOPatientAPITest {
         // TODO: test welcomeMessage
     }
 
-    /**
-     * Test the property 'active'
-     */
-    @Test
-    public void activeTest() {
-        // TODO: test active
-    }
-
 }

@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,6 +44,13 @@ public class TherapistController {
     Therapist therapist =
         TherapistMapper.INSTANCE.convertCreateTherapistDTOtoEntity(therapistInputDTO);
     return therapistService.registerTherapist(therapist, httpServletRequest, httpServletResponse);
+  }
+
+  @PutMapping()
+  @ResponseStatus(HttpStatus.OK)
+  public TherapistOutputDTO updateTherapist(
+      @RequestBody UpdateTherapistDTO dto, @CurrentTherapistId String therapistId) {
+    return therapistService.updateTherapist(dto, therapistId);
   }
 
   @PostMapping("/login")

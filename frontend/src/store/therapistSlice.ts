@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CreateTherapistDTO, LoginTherapistDTO, TherapistOutputDTO } from '../api'
+import {
+  CreateTherapistDTO,
+  LoginTherapistDTO,
+  TherapistOutputDTO,
+  UpdateTherapistDTO,
+} from '../api'
 import { therapistApi } from '../utils/api'
 
 interface TherapistState {
@@ -39,6 +44,14 @@ export const getCurrentlyLoggedInTherapist = createAsyncThunk(
   'getCurrentlyLoggedInTherapist',
   async () => {
     const response = await therapistApi.getCurrentlyLoggedInTherapist()
+    return response.data
+  }
+)
+
+export const updateTherapist = createAsyncThunk(
+  'updateTherapist',
+  async (updateDto: UpdateTherapistDTO) => {
+    const response = await therapistApi.updateTherapist(updateDto)
     return response.data
   }
 )
@@ -105,6 +118,20 @@ const therapistSlice = createSlice({
         state.loggedInTherapist = action.payload
       })
       .addCase(getCurrentlyLoggedInTherapist.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(updateTherapist.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateTherapist.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.loggedInTherapist = action.payload
+      })
+      .addCase(updateTherapist.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

@@ -1,6 +1,8 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanExerciseAIGeneratedDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
@@ -34,19 +36,19 @@ public class CounselingPlanPhaseController {
         createCounselingPlanPhaseDTO, therapistId);
   }
 
-  @PostMapping("/ai-generated-phase/{counselingPlanId}")
+  @PostMapping("/ai-generated-phase")
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
-      @PathVariable String counselingPlanId, @CurrentTherapistId String therapistId) {
-    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(
-        counselingPlanId, therapistId);
+      @RequestBody CreateCounselingPlanPhaseAIGeneratedDTO dto,
+      @CurrentTherapistId String therapistId) {
+    return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(dto, therapistId);
   }
 
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
-      @PathVariable String counselingPlanPhaseId, @CurrentTherapistId String therapistId) {
+      @RequestBody CreateCounselingPlanExerciseAIGeneratedDTO dto,
+      @CurrentTherapistId String therapistId) {
 
-    return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(
-        counselingPlanPhaseId, therapistId);
+    return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(dto, therapistId);
   }
 
   @PostMapping("/add-exercise")

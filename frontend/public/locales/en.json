@@ -19,7 +19,11 @@
   },
   "settings": {
     "title": "Settings",
-    "language": "Language"
+    "language": "Language",
+    "changePasswordTitle": "Change password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "changePasswordButton": "Submit"
   },
   "layout": {
     "dashboard": "Dashboard",
@@ -168,9 +172,9 @@
     "description_of_input": "Description of Input",
     "add_text": "Add Text",
     "text": "Text",
-    "create_new_exercise": "Create New Exercise",    
+    "create_new_exercise": "Create New Exercise",
     "exercise": "Exercise",
-    "exercise_type":"Exercise Type",
+    "exercise_type": "Exercise Type",
     "exercise_start": "Exercise Start",
     "duration_in_weeks": "Duration in Weeks",
     "exercise_end": "Exercise End",
@@ -190,7 +194,7 @@
     "edit_exercise": "Edit Exercise",
     "exercise_components": "Exercise Components",
     "delete_exercise": "Delete Exercise"
- },
+  },
   "not_found": {
     "title": "404 - Page Not Found",
     "message": "Oops! The page you're looking for doesn't exist."
@@ -325,8 +329,6 @@
       "no_speech_detected": "No speech detected. Please try speaking a bit louder or clearer.",
       "microphone_not_available": "Microphone not available or permission denied. Please check your microphone settings and browser permissions.",
       "not_allowed": "Permission to use the microphone was denied or has not been granted. Please allow microphone access in your browser settings."
-      
     }
-
   }
 }

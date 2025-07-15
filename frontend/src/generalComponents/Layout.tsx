@@ -28,6 +28,7 @@ import { RootState } from '../store/store'
 import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
+import { getCurrentLanguage } from '../utils/languageUtil'
 import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
 
 interface LayoutProps {
@@ -94,6 +95,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       chatWithTherapistChatbot({
         newMessage: assistantInput,
         patientId: forwardPatientId,
+        language: getCurrentLanguage(),
       })
     )
   }
