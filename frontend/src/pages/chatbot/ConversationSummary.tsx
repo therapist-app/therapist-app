@@ -1,32 +1,33 @@
-import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
-import { ReactElement, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Layout from '../../generalComponents/Layout';
-import { getConversationSummaries } from '../../utils/api';
+import { Card, CardContent, CircularProgress, Typography } from '@mui/material'
+import { ReactElement, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+
+import Layout from '../../generalComponents/Layout'
+import { getConversationSummaries } from '../../utils/api'
 
 interface ConversationNameDTO {
-  id: string;
-  name: string | null;
-  createdAt: string;
+  id: string
+  name: string | null
+  createdAt: string
 }
 
 const ConversationSummary = (): ReactElement => {
-  const { patientId = '' } = useParams<{ patientId: string }>();
-  const [data, setData] = useState<ConversationNameDTO[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { patientId = '' } = useParams<{ patientId: string }>()
+  const [data, setData] = useState<ConversationNameDTO[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
-        const res = await getConversationSummaries(patientId);
-        setData(res.data as ConversationNameDTO[]);
+        const res = await getConversationSummaries(patientId)
+        setData(res.data as ConversationNameDTO[])
       } catch (err) {
-        console.error('Failed to load conversations', err);
+        console.error('Failed to load conversations', err)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    })();
-  }, [patientId]);
+    })()
+  }, [patientId])
 
   return (
     <Layout>
@@ -49,7 +50,7 @@ const ConversationSummary = (): ReactElement => {
         ))
       )}
     </Layout>
-  );
-};
+  )
+}
 
-export default ConversationSummary;
+export default ConversationSummary

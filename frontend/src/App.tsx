@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import ScrollToTop from './generalComponents/ScrollToTop.tsx'
+import ConversationSummary from './pages/chatbot/ConversationSummary.tsx'
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import CounselingPlanDetails from './pages/counselingPlan/CounselingPlanDetails.tsx'
 import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
@@ -16,7 +17,6 @@ import PatientCreate from './pages/patients/PatientCreate.tsx'
 import PatientDetail from './pages/patients/PatientDetail'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
-import ConversationSummary from './pages/chatbot/ConversationSummary.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = (): ReactElement => {
@@ -67,10 +67,9 @@ const App = (): ReactElement => {
             />
 
             <Route
-  path={ROUTES[PAGES.PATIENT_CONVERSATIONS_PAGE]}
-  element={<ConversationSummary />}
-/>
-
+              path={ROUTES[PAGES.PATIENT_CONVERSATIONS_PAGE]}
+              element={<ConversationSummary />}
+            />
 
             <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />
             <Route path={ROUTES[PAGES.NOT_FOUND_PAGE]} element={<NotFound />} />

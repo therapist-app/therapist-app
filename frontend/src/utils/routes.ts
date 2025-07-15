@@ -84,8 +84,7 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.PATIENTS_CREATE_PAGE]: '/patients/create',
   [PAGES.PATIENTS_DETAILS_PAGE]: '/patients/:patientId',
 
-  [PAGES.PATIENT_CONVERSATIONS_PAGE]:
-    '/patients/:patientId/conversations-summary',
+  [PAGES.PATIENT_CONVERSATIONS_PAGE]: '/patients/:patientId/conversations-summary',
 
   [PAGES.CHATBOT_CREATE_PAGE]: '/patients/:patientId/chatBots/create',
   [PAGES.CHATBOT_DETAILS_PAGE]: '/patients/:patientId/chatBots/:chatBotId',

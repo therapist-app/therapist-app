@@ -299,38 +299,37 @@ const ChatbotOverview = (): ReactElement => {
             </>
           )}
 
-{patientTemplates.length ? (
-  <>
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-      <Typography variant='h4'>Client Chatbots</Typography>
+          {patientTemplates.length ? (
+            <>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                <Typography variant='h4'>Client Chatbots</Typography>
 
-      <Button
-        size='small'
-        variant='outlined'
-        onClick={() =>
-          navigate(
-            getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
-            { state: { patientId } }
-          )
-        }
-      >
-        Conversation Summary
-      </Button>
-    </Box>
+                <Button
+                  size='small'
+                  variant='outlined'
+                  onClick={() =>
+                    navigate(
+                      getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
+                      { state: { patientId: patientId } }
+                    )
+                  }
+                >
+                  Conversation Summary
+                </Button>
+              </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-      {patientTemplates.map((bot) => renderCard(bot, true))}
-    </Box>
-  </>
-) : (
-  <Box>
-    <Typography variant='h4' sx={{ mb: 1 }}>
-      Client Chatbots
-    </Typography>
-    <Typography sx={{ mt: 2 }}>{t('dashboard.no_chatbots_created_yet')}</Typography>
-  </Box>
-)}
-
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                {patientTemplates.map((bot) => renderCard(bot, true))}
+              </Box>
+            </>
+          ) : (
+            <Box>
+              <Typography variant='h4' sx={{ mb: 1 }}>
+                Client Chatbots
+              </Typography>
+              <Typography sx={{ mt: 2 }}>{t('dashboard.no_chatbots_created_yet')}</Typography>
+            </Box>
+          )}
         </>
       ) : (
         <>

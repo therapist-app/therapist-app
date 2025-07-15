@@ -80,7 +80,7 @@ export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFa
   api
 )
 export const getConversationSummaries = (patientId: string) =>
-  axios.get(`https://patient-app-main.jonas-blum.ch/patients/${patientId}/conversations`);
+  axios.get(`https://patient-app-main.jonas-blum.ch/patients/${patientId}/conversations`)
 
 api.interceptors.response.use(
   (response) => response,
