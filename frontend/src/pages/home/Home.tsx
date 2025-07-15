@@ -132,12 +132,8 @@ const Home = (): ReactElement => {
         chatbotRole: 'FAQ',
         chatbotTone: 'friendly',
         welcomeMessage: 'Hello! How can I assist you today?',
-        chatbotVoice: 'None',
-        chatbotGender: 'Neutral',
         preConfiguredExercise: 'Breathing exercise',
         additionalExercise: 'Meditation practice',
-        animation: 'Simple',
-        chatbotInputPlaceholder: 'Type your question...',
         description: '',
       }
       const createdChatbot = await dispatch(createChatbotTemplate(chatbotConfigurations)).unwrap()

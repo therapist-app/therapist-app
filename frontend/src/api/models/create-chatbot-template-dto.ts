@@ -73,18 +73,6 @@ export interface CreateChatbotTemplateDTO {
      * @type {string}
      * @memberof CreateChatbotTemplateDTO
      */
-    'chatbotVoice'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChatbotTemplateDTO
-     */
-    'chatbotGender'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChatbotTemplateDTO
-     */
     'preConfiguredExercise'?: string;
     /**
      * 
@@ -92,17 +80,5 @@ export interface CreateChatbotTemplateDTO {
      * @memberof CreateChatbotTemplateDTO
      */
     'additionalExercise'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChatbotTemplateDTO
-     */
-    'animation'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChatbotTemplateDTO
-     */
-    'chatbotInputPlaceholder'?: string;
 }
 

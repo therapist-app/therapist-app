@@ -82,14 +82,10 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [chatbotRole, setChatbotRole] = useState('')
   const [chatbotLanguage, setChatbotLanguage] = useState('')
   const [chatbotIcon, setChatbotIcon] = useState('')
-  const [chatbotVoice, setChatbotVoice] = useState('')
-  const [chatbotGender, setChatbotGender] = useState('')
   const [chatbotTone, setChatbotTone] = useState('')
   const [preConfiguredExercise, setPreconfiguredExercise] = useState('')
   const [additionalExercise, setAdditionalExercise] = useState('')
-  const [chatbotAnimation, setChatbotAnimation] = useState('')
   const [welcomeMessage, setWelcomeMessage] = useState('')
-  const [chatbotInputPlaceholder, setChatbotInputPlaceholder] = useState('')
 
   type ChatCompletionWithTemplate = ChatCompletionWithConfigRequestDTO & {
     templateId: string
@@ -128,15 +124,11 @@ const ChatBotTemplateEdit: React.FC = () => {
       setChatbotRole(chatbotConfig.chatbotRole || '')
       setChatbotLanguage(chatbotConfig.chatbotLanguage || '')
       setChatbotIcon(chatbotConfig.chatbotIcon || '')
-      setChatbotVoice(chatbotConfig.chatbotVoice || '')
-      setChatbotGender(chatbotConfig.chatbotGender || '')
       setChatbotTone(chatbotConfig.chatbotTone || '')
 
       setPreconfiguredExercise(chatbotConfig.preConfiguredExercise || '')
       setAdditionalExercise(chatbotConfig.additionalExercise || '')
-      setChatbotAnimation(chatbotConfig.animation || '')
       setWelcomeMessage(chatbotConfig.welcomeMessage || '')
-      setChatbotInputPlaceholder(chatbotConfig.chatbotInputPlaceholder || '')
 
       if (chatbotConfig.welcomeMessage) {
         setChat([{ response: chatbotConfig.welcomeMessage }])
@@ -308,8 +300,6 @@ const ChatBotTemplateEdit: React.FC = () => {
           chatbotRole: chatbotRole,
           chatbotTone: chatbotTone,
           chatbotLanguage: chatbotLanguage,
-          chatbotVoice: chatbotVoice,
-          chatbotGender: chatbotGender,
           preConfiguredExercise: preConfiguredExercise,
           additionalExercise: additionalExercise,
           welcomeMessage: welcomeMessage,
@@ -388,13 +378,8 @@ const ChatBotTemplateEdit: React.FC = () => {
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
-        chatbotVoice: chatbotVoice,
-        chatbotGender: chatbotGender,
-
         preConfiguredExercise: preConfiguredExercise,
         additionalExercise: additionalExercise,
-        animation: chatbotAnimation,
-        chatbotInputPlaceholder: chatbotInputPlaceholder,
       }
 
       await dispatch(
@@ -638,37 +623,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-voice-label'>Voice</InputLabel>
-                  <Select
-                    labelId='chatbot-voice-label'
-                    id='chatbot-voice-select'
-                    value={chatbotVoice}
-                    label='Voice'
-                    onChange={(e) => setChatbotVoice(e.target.value)}
-                  >
-                    <MenuItem value='None'>None</MenuItem>
-                    <MenuItem value='Male'>Male Voice</MenuItem>
-                    <MenuItem value='Female'>Female Voice</MenuItem>
-                    <MenuItem value='Robotic'>Robotic Voice</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-gender-label'>Gender</InputLabel>
-                  <Select
-                    labelId='chatbot-gender-label'
-                    id='chatbot-gender-select'
-                    value={chatbotGender}
-                    label='Gender'
-                    onChange={(e) => setChatbotGender(e.target.value)}
-                  >
-                    <MenuItem value='Neutral'>Neutral</MenuItem>
-                    <MenuItem value='Male'>Male</MenuItem>
-                    <MenuItem value='Female'>Female</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
                   <InputLabel id='chatbot-tone-label'>Conversation Tone</InputLabel>
                   <Select
                     labelId='chatbot-tone-label'
@@ -718,36 +672,12 @@ const ChatBotTemplateEdit: React.FC = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-animation-label'>Animation</InputLabel>
-                  <Select
-                    labelId='chatbot-animation-label'
-                    id='chatbot-animation-select'
-                    value={chatbotAnimation}
-                    label='Animation'
-                    onChange={(e) => setChatbotAnimation(e.target.value)}
-                  >
-                    <MenuItem value='None'>None</MenuItem>
-                    <MenuItem value='Simple'>Simple</MenuItem>
-                    <MenuItem value='Advanced'>Advanced</MenuItem>
-                  </Select>
-                </FormControl>
-
                 <TextField
                   fullWidth
                   label='Welcome Message'
                   variant='outlined'
                   value={welcomeMessage}
                   onChange={(e) => setWelcomeMessage(e.target.value)}
-                  margin='normal'
-                />
-
-                <TextField
-                  fullWidth
-                  label='Chatbot Input Placeholder'
-                  variant='outlined'
-                  value={chatbotInputPlaceholder}
-                  onChange={(e) => setChatbotInputPlaceholder(e.target.value)}
                   margin='normal'
                 />
 
@@ -885,7 +815,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 >
                   <TextField
                     fullWidth
-                    label={chatbotInputPlaceholder || 'Type a message...'}
+                    label={'Type a message...'}
                     variant='outlined'
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}

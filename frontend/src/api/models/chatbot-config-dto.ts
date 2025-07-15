@@ -43,18 +43,6 @@ export interface ChatbotConfigDTO {
      * @type {string}
      * @memberof ChatbotConfigDTO
      */
-    'chatbotVoice'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'chatbotGender'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
     'preConfiguredExercise'?: string;
     /**
      * 
