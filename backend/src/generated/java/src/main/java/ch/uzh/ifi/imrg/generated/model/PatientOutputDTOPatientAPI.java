@@ -32,7 +32,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   PatientOutputDTOPatientAPI.JSON_PROPERTY_DESCRIPTION,
   PatientOutputDTOPatientAPI.JSON_PROPERTY_EMAIL,
   PatientOutputDTOPatientAPI.JSON_PROPERTY_LANGUAGE,
-  PatientOutputDTOPatientAPI.JSON_PROPERTY_ONBOARDED
+  PatientOutputDTOPatientAPI.JSON_PROPERTY_ONBOARDED,
+  PatientOutputDTOPatientAPI.JSON_PROPERTY_CHAT_BOT_AVATAR
 })
 @JsonTypeName("PatientOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -54,6 +55,56 @@ public class PatientOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_ONBOARDED = "onboarded";
   private Boolean onboarded;
+
+  /**
+   * Gets or Sets chatBotAvatar
+   */
+  public enum ChatBotAvatarEnum {
+    ANIMALISTIC("ANIMALISTIC"),
+    
+    BLOB("BLOB"),
+    
+    CRYSTAL("CRYSTAL"),
+    
+    HUMANISTIC("HUMANISTIC"),
+    
+    NONE("NONE"),
+    
+    PLANT("PLANT"),
+    
+    ROBOTIC("ROBOTIC"),
+    
+    NEURALNETWORK("NEURALNETWORK");
+
+    private String value;
+
+    ChatBotAvatarEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ChatBotAvatarEnum fromValue(String value) {
+      for (ChatBotAvatarEnum b : ChatBotAvatarEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_CHAT_BOT_AVATAR = "chatBotAvatar";
+  private ChatBotAvatarEnum chatBotAvatar;
 
   public PatientOutputDTOPatientAPI() {
   }
@@ -213,6 +264,32 @@ public class PatientOutputDTOPatientAPI {
     this.onboarded = onboarded;
   }
 
+
+  public PatientOutputDTOPatientAPI chatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    
+    this.chatBotAvatar = chatBotAvatar;
+    return this;
+  }
+
+   /**
+   * Get chatBotAvatar
+   * @return chatBotAvatar
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public ChatBotAvatarEnum getChatBotAvatar() {
+    return chatBotAvatar;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setChatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    this.chatBotAvatar = chatBotAvatar;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -227,12 +304,13 @@ public class PatientOutputDTOPatientAPI {
         Objects.equals(this.description, patientOutputDTO.description) &&
         Objects.equals(this.email, patientOutputDTO.email) &&
         Objects.equals(this.language, patientOutputDTO.language) &&
-        Objects.equals(this.onboarded, patientOutputDTO.onboarded);
+        Objects.equals(this.onboarded, patientOutputDTO.onboarded) &&
+        Objects.equals(this.chatBotAvatar, patientOutputDTO.chatBotAvatar);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, email, language, onboarded);
+    return Objects.hash(id, name, description, email, language, onboarded, chatBotAvatar);
   }
 
   @Override
@@ -245,6 +323,7 @@ public class PatientOutputDTOPatientAPI {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    language: ").append(toIndentedString(language)).append("\n");
     sb.append("    onboarded: ").append(toIndentedString(onboarded)).append("\n");
+    sb.append("    chatBotAvatar: ").append(toIndentedString(chatBotAvatar)).append("\n");
     sb.append("}");
     return sb.toString();
   }

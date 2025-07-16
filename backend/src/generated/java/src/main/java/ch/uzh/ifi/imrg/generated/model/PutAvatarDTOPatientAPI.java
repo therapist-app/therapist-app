@@ -24,22 +24,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * CreateConversationOutputDTOPatientAPI
+ * PutAvatarDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
-  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_CHAT_BOT_AVATAR
+  PutAvatarDTOPatientAPI.JSON_PROPERTY_CHAT_BOT_AVATAR
 })
-@JsonTypeName("CreateConversationOutputDTO")
+@JsonTypeName("PutAvatarDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class CreateConversationOutputDTOPatientAPI {
-  public static final String JSON_PROPERTY_ID = "id";
-  private String id;
-
-  public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
-  private String welcomeMessage;
-
+public class PutAvatarDTOPatientAPI {
   /**
    * Gets or Sets chatBotAvatar
    */
@@ -90,62 +82,10 @@ public class CreateConversationOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_CHAT_BOT_AVATAR = "chatBotAvatar";
   private ChatBotAvatarEnum chatBotAvatar;
 
-  public CreateConversationOutputDTOPatientAPI() {
+  public PutAvatarDTOPatientAPI() {
   }
 
-  public CreateConversationOutputDTOPatientAPI id(String id) {
-    
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getId() {
-    return id;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(String id) {
-    this.id = id;
-  }
-
-
-  public CreateConversationOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
-    
-    this.welcomeMessage = welcomeMessage;
-    return this;
-  }
-
-   /**
-   * Get welcomeMessage
-   * @return welcomeMessage
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getWelcomeMessage() {
-    return welcomeMessage;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setWelcomeMessage(String welcomeMessage) {
-    this.welcomeMessage = welcomeMessage;
-  }
-
-
-  public CreateConversationOutputDTOPatientAPI chatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+  public PutAvatarDTOPatientAPI chatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
     
     this.chatBotAvatar = chatBotAvatar;
     return this;
@@ -155,9 +95,9 @@ public class CreateConversationOutputDTOPatientAPI {
    * Get chatBotAvatar
    * @return chatBotAvatar
   **/
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public ChatBotAvatarEnum getChatBotAvatar() {
     return chatBotAvatar;
@@ -165,7 +105,7 @@ public class CreateConversationOutputDTOPatientAPI {
 
 
   @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setChatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
     this.chatBotAvatar = chatBotAvatar;
   }
@@ -178,23 +118,19 @@ public class CreateConversationOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateConversationOutputDTOPatientAPI createConversationOutputDTO = (CreateConversationOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, createConversationOutputDTO.id) &&
-        Objects.equals(this.welcomeMessage, createConversationOutputDTO.welcomeMessage) &&
-        Objects.equals(this.chatBotAvatar, createConversationOutputDTO.chatBotAvatar);
+    PutAvatarDTOPatientAPI putAvatarDTO = (PutAvatarDTOPatientAPI) o;
+    return Objects.equals(this.chatBotAvatar, putAvatarDTO.chatBotAvatar);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, welcomeMessage, chatBotAvatar);
+    return Objects.hash(chatBotAvatar);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateConversationOutputDTOPatientAPI {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
+    sb.append("class PutAvatarDTOPatientAPI {\n");
     sb.append("    chatBotAvatar: ").append(toIndentedString(chatBotAvatar)).append("\n");
     sb.append("}");
     return sb.toString();
