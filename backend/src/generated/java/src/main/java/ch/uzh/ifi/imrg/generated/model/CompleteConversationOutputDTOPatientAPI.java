@@ -36,7 +36,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_COACH,
   CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_SHARE_WITH_AI,
-  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES
+  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_MESSAGES,
+  CompleteConversationOutputDTOPatientAPI.JSON_PROPERTY_CHAT_BOT_AVATAR
 })
 @JsonTypeName("CompleteConversationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -58,6 +59,56 @@ public class CompleteConversationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_MESSAGES = "messages";
   private List<MessageOutputDTOPatientAPI> messages;
+
+  /**
+   * Gets or Sets chatBotAvatar
+   */
+  public enum ChatBotAvatarEnum {
+    ANIMALISTIC("ANIMALISTIC"),
+    
+    BLOB("BLOB"),
+    
+    CRYSTAL("CRYSTAL"),
+    
+    HUMANISTIC("HUMANISTIC"),
+    
+    NONE("NONE"),
+    
+    PLANT("PLANT"),
+    
+    ROBOTIC("ROBOTIC"),
+    
+    NEURALNETWORK("NEURALNETWORK");
+
+    private String value;
+
+    ChatBotAvatarEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ChatBotAvatarEnum fromValue(String value) {
+      for (ChatBotAvatarEnum b : ChatBotAvatarEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_CHAT_BOT_AVATAR = "chatBotAvatar";
+  private ChatBotAvatarEnum chatBotAvatar;
 
   public CompleteConversationOutputDTOPatientAPI() {
   }
@@ -225,6 +276,32 @@ public class CompleteConversationOutputDTOPatientAPI {
     this.messages = messages;
   }
 
+
+  public CompleteConversationOutputDTOPatientAPI chatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    
+    this.chatBotAvatar = chatBotAvatar;
+    return this;
+  }
+
+   /**
+   * Get chatBotAvatar
+   * @return chatBotAvatar
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public ChatBotAvatarEnum getChatBotAvatar() {
+    return chatBotAvatar;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setChatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    this.chatBotAvatar = chatBotAvatar;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -239,12 +316,13 @@ public class CompleteConversationOutputDTOPatientAPI {
         Objects.equals(this.welcomeMessage, completeConversationOutputDTO.welcomeMessage) &&
         Objects.equals(this.shareWithCoach, completeConversationOutputDTO.shareWithCoach) &&
         Objects.equals(this.shareWithAi, completeConversationOutputDTO.shareWithAi) &&
-        Objects.equals(this.messages, completeConversationOutputDTO.messages);
+        Objects.equals(this.messages, completeConversationOutputDTO.messages) &&
+        Objects.equals(this.chatBotAvatar, completeConversationOutputDTO.chatBotAvatar);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, welcomeMessage, shareWithCoach, shareWithAi, messages);
+    return Objects.hash(id, name, welcomeMessage, shareWithCoach, shareWithAi, messages, chatBotAvatar);
   }
 
   @Override
@@ -257,6 +335,7 @@ public class CompleteConversationOutputDTOPatientAPI {
     sb.append("    shareWithCoach: ").append(toIndentedString(shareWithCoach)).append("\n");
     sb.append("    shareWithAi: ").append(toIndentedString(shareWithAi)).append("\n");
     sb.append("    messages: ").append(toIndentedString(messages)).append("\n");
+    sb.append("    chatBotAvatar: ").append(toIndentedString(chatBotAvatar)).append("\n");
     sb.append("}");
     return sb.toString();
   }

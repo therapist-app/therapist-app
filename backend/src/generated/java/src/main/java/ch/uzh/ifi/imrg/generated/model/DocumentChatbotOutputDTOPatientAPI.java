@@ -24,16 +24,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * ExerciseChatbotOutputDTOPatientAPI
+ * DocumentChatbotOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
+  DocumentChatbotOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  DocumentChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID,
+  DocumentChatbotOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
 })
-@JsonTypeName("ExerciseChatbotOutputDTO")
+@JsonTypeName("DocumentChatbotOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class ExerciseChatbotOutputDTOPatientAPI {
+public class DocumentChatbotOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
@@ -43,10 +43,10 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
   private String welcomeMessage;
 
-  public ExerciseChatbotOutputDTOPatientAPI() {
+  public DocumentChatbotOutputDTOPatientAPI() {
   }
 
-  public ExerciseChatbotOutputDTOPatientAPI name(String name) {
+  public DocumentChatbotOutputDTOPatientAPI name(String name) {
     
     this.name = name;
     return this;
@@ -72,7 +72,7 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   }
 
 
-  public ExerciseChatbotOutputDTOPatientAPI id(String id) {
+  public DocumentChatbotOutputDTOPatientAPI id(String id) {
     
     this.id = id;
     return this;
@@ -98,7 +98,7 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   }
 
 
-  public ExerciseChatbotOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
+  public DocumentChatbotOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
     
     this.welcomeMessage = welcomeMessage;
     return this;
@@ -131,10 +131,10 @@ public class ExerciseChatbotOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExerciseChatbotOutputDTOPatientAPI exerciseChatbotOutputDTO = (ExerciseChatbotOutputDTOPatientAPI) o;
-    return Objects.equals(this.name, exerciseChatbotOutputDTO.name) &&
-        Objects.equals(this.id, exerciseChatbotOutputDTO.id) &&
-        Objects.equals(this.welcomeMessage, exerciseChatbotOutputDTO.welcomeMessage);
+    DocumentChatbotOutputDTOPatientAPI documentChatbotOutputDTO = (DocumentChatbotOutputDTOPatientAPI) o;
+    return Objects.equals(this.name, documentChatbotOutputDTO.name) &&
+        Objects.equals(this.id, documentChatbotOutputDTO.id) &&
+        Objects.equals(this.welcomeMessage, documentChatbotOutputDTO.welcomeMessage);
   }
 
   @Override
@@ -145,7 +145,7 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExerciseChatbotOutputDTOPatientAPI {\n");
+    sb.append("class DocumentChatbotOutputDTOPatientAPI {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
