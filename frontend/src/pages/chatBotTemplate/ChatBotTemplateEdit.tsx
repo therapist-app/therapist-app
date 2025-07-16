@@ -366,7 +366,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         })
       )
 
-      setSnackbarMessage(t('dashboard.chatbot_updated_success'))
+      setSnackbarMessage(t('chatbot.chatbot_updated_success'))
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
     } catch (error) {
