@@ -8,6 +8,7 @@ import {
 } from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
+import { useTranslation } from 'react-i18next'
 
 interface CreateCounselingPlanPhaseGoalProps {
   counselingPlanPhaseId: string
@@ -19,7 +20,7 @@ const CreateCounselingPlanPhaseGoal = ({
   onSuccess,
 }: CreateCounselingPlanPhaseGoalProps): ReactElement => {
   const [open, setOpen] = useState(false)
-
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseGoalDTO>({
@@ -72,7 +73,7 @@ const CreateCounselingPlanPhaseGoal = ({
     <div>
       {!open ? (
         <Button variant='contained' onClick={() => setOpen(true)}>
-          Add a goal
+          {t('counseling_plan.add_a_goal')}
         </Button>
       ) : (
         <form
@@ -80,26 +81,26 @@ const CreateCounselingPlanPhaseGoal = ({
           onSubmit={handleSubmit}
         >
           <TextField
-            label='Goal Name'
+            label={t('counseling_plan.goal_name')}
             name='goalName'
             value={formValues.goalName}
             onChange={handleChange}
           />
           <TextField
-            label='Goal Description'
+            label={t('counseling_plan.goal_description')}
             name='goalDescription'
             value={formValues.goalDescription}
             onChange={handleChange}
           />
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button type='submit' variant='contained'>
-              Create goal
+              {t('counseling_plan.create_goal')}
             </Button>
             <Button variant='contained' color='success' onClick={handleGenrateAI}>
-              Make AI generated suggestion
+              {t('counseling_plan.make_ai_generated_suggestion_for_goal')}
             </Button>
             <Button variant='outlined' color='error' onClick={handleCancel}>
-              Cancel
+              {t('counseling_plan.cancel')}
             </Button>
           </div>
         </form>

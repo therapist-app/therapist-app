@@ -20,6 +20,7 @@ import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
+import { useTranslation } from 'react-i18next'
 
 interface FormValues {
   startOfTherapy: Date | null
@@ -27,6 +28,7 @@ interface FormValues {
 
 const CounselingPlanDetails = (): ReactElement => {
   const { patientId } = useParams()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
   const [isEditing, setIsEditing] = useState(false)
@@ -69,7 +71,7 @@ const CounselingPlanDetails = (): ReactElement => {
         {!isEditing ? (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography>
-              Counseling Start Date:{' '}
+              {t('counseling_plan.counseling_start_date')}:{' '}
               <strong>{formatDateNicely(counselingPlan?.startOfTherapy)}</strong>
             </Typography>
             <IconButton onClick={() => setIsEditing(true)}>
@@ -80,7 +82,7 @@ const CounselingPlanDetails = (): ReactElement => {
           <div style={{ display: 'flex', gap: '10px' }}>
             <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
               <DateTimePicker
-                label='Counseling Start Date'
+                label={t('counseling_plan.counseling_start_date')}
                 value={formData.startOfTherapy}
                 onChange={(newValue: Date | null) => {
                   setFormData({
@@ -99,7 +101,7 @@ const CounselingPlanDetails = (): ReactElement => {
           </div>
         )}
 
-        <Typography variant='h2'>Counseling Plan Phases:</Typography>
+        <Typography variant='h2'>{t('counseling_plan.counseling_plan_phases')}</Typography>
         {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (
           <ul
             style={{

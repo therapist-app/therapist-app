@@ -6,6 +6,7 @@ import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } fro
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useTranslation } from 'react-i18next'
 
 interface AddCounselingPlanExerciseProps {
   counselingPlanPhaseId: string
@@ -19,6 +20,7 @@ const AddCounselingPlanExercise = ({
   counselingPlanPhase,
 }: AddCounselingPlanExerciseProps): ReactElement => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const { allExercisesOfPatient } = useSelector((state: RootState) => state.exercise)
 
   const exercisesToSelect = allExercisesOfPatient.filter(
@@ -60,7 +62,7 @@ const AddCounselingPlanExercise = ({
     <div>
       {!open ? (
         <Button variant='contained' onClick={handleAddExerciseFirstClick}>
-          Add existing Exercise
+          {t('counseling_plan.add_existing_exercise')}
         </Button>
       ) : (
         <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
@@ -70,7 +72,7 @@ const AddCounselingPlanExercise = ({
               <Select
                 id='demo-simple-select'
                 value={selectedExerciseId}
-                label='Exercise'
+                label={t('exercise.exercise')}
                 onChange={handleSelectExerciseChange}
               >
                 {exercisesToSelect.map((exercise) => (
@@ -79,7 +81,7 @@ const AddCounselingPlanExercise = ({
               </Select>
             </FormControl>
             <Button variant='contained' color='success' onClick={handleAddExercise}>
-              Add existing Exercise
+              {t('counseling_plan.add_existing_exercise')}
             </Button>
             <Button
               sx={{ maxWidth: '100px' }}
@@ -87,7 +89,7 @@ const AddCounselingPlanExercise = ({
               color='error'
               onClick={handleCancel}
             >
-              Cancel
+              {t('counseling_plan.cancel')}
             </Button>
           </div>
         </div>

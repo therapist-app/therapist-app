@@ -8,6 +8,7 @@ import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
 import CreateCounselingPlanExercise from './CreateCounselingPlanExercise'
 import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
+import { useTranslation } from 'react-i18next'
 
 interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO
@@ -20,6 +21,7 @@ const CounselingPlanPhaseDetail = ({
   phaseNumber,
   onSuccess,
 }: CounselingPlanPhaseDetailProps): ReactElement => {
+  const { t } = useTranslation()
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
   }
@@ -30,14 +32,14 @@ const CounselingPlanPhaseDetail = ({
         {phaseNumber}. {phase.phaseName}
       </Typography>
       <div style={{ paddingLeft: '20px' }}>
-        <Typography>Start Date: {formatDateNicely(phase.startDate)}</Typography>
-        <Typography>End Date: {formatDateNicely(phase.endDate)}</Typography>
+        <Typography>{t('counseling_plan.start_date')}: {formatDateNicely(phase.startDate)}</Typography>
+        <Typography>{t('counseling_plan.end_date')}: {formatDateNicely(phase.endDate)}</Typography>
         <Typography>
-          Duration: <strong>{phase.durationInWeeks}</strong> weeks
+          {t('counseling_plan.duration')}: <strong>{phase.durationInWeeks}</strong> {t('counseling_plan.weeks')}
         </Typography>
         <div></div>
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
-          Goals:
+          {t('counseling_plan.goals')}:
         </Typography>
         <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {phase.phaseGoalsOutputDTO?.map((goal) => (
@@ -53,7 +55,7 @@ const CounselingPlanPhaseDetail = ({
           />
         </div>
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
-          Exercises:
+          {t('counseling_plan.exercises')}:
         </Typography>
         <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {phase.phaseExercisesOutputDTO?.map((exercise) => (

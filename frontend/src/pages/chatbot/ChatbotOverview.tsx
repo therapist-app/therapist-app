@@ -257,9 +257,9 @@ const ChatbotOverview = (): ReactElement => {
   return (
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-        <Typography variant='h2'>{t('Chatbots')}</Typography>
+        <Typography variant='h2'>{t('chatbot.chatbots')}</Typography>
         <Button variant='contained' onClick={handleCreateChatbot}>
-          {t('Create Chatbot')}
+          {t('chatbot.create_new_chatbot')}
         </Button>
       </Box>
 
@@ -268,7 +268,7 @@ const ChatbotOverview = (): ReactElement => {
           {therapistTemplates.length > 0 && (
             <>
               <Typography variant='h4' sx={{ mb: 1 }}>
-                {t('Create Chatbot from Template')}
+                {t('chatbot.create_chatbot_from_template')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
                 {therapistTemplates.map(
@@ -302,7 +302,7 @@ const ChatbotOverview = (): ReactElement => {
           {patientTemplates.length ? (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <Typography variant='h4'>Client Chatbots</Typography>
+                <Typography variant='h4'>{t('chatbot.client_chatbot')}</Typography>
 
                 <Button
                   size='small'
@@ -314,7 +314,7 @@ const ChatbotOverview = (): ReactElement => {
                     )
                   }
                 >
-                  Conversation Summary
+                  {t('chatbot.conversation_summary')}
                 </Button>
               </Box>
 

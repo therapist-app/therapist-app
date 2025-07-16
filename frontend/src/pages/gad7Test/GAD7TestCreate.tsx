@@ -183,7 +183,7 @@ export const GAD7TestCreate = (): ReactElement => {
 
           <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
             <Button variant='outlined' onClick={handleCancel}>
-              Cancel
+              {t('gad7test.cancel')}
             </Button>
             <Button
               variant='contained'
@@ -191,7 +191,7 @@ export const GAD7TestCreate = (): ReactElement => {
               onClick={handleSubmit}
               disabled={!isFormComplete()}
             >
-              Submit
+              {t('gad7test.submit')}
             </Button>
           </Box>
         </Paper>
