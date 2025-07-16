@@ -17,9 +17,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { GAD7TestOutputDTO } from '../../api/models'
 import { patientTestApi } from '../../utils/api'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useTranslation } from 'react-i18next'
 
 export const GAD7TestDetail = (): ReactElement => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { patientId, meetingId } = useParams()
 
   const [gad7Tests, setGad7Tests] = useState<GAD7TestOutputDTO[]>([])
@@ -48,7 +50,7 @@ export const GAD7TestDetail = (): ReactElement => {
             alignItems: 'center',
           }}
         >
-          <Typography variant='h2'>GAD7 Tests </Typography>
+          <Typography variant='h2'>{t('gad7test.gad7tests')}</Typography>
           <Button
             variant='contained'
             color='primary'
@@ -61,7 +63,7 @@ export const GAD7TestDetail = (): ReactElement => {
               )
             }
           >
-            Create GAD7 Test
+            {t('gad7test.create_gad7test')}
           </Button>
         </div>
         {gad7Tests.length > 0 ? (
@@ -74,46 +76,46 @@ export const GAD7TestDetail = (): ReactElement => {
                     <TableCell align='right'>
                       Q1
                       <Typography variant='caption' display='block'>
-                        Feeling nervous, anxious or on edge.
+                        {t('gad7test.question1')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q2
                       <Typography variant='caption' display='block'>
-                        Not being able to stop or control worrying.
+                        {t('gad7test.question2')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q3
                       <Typography variant='caption' display='block'>
-                        Worrying too much about different things.
+                        {t('gad7test.question3')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q4
                       <Typography variant='caption' display='block'>
-                        Trouble relaxing.
+                        {t('gad7test.question4')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q5
                       <Typography variant='caption' display='block'>
-                        Being so restless that it is hard to sit still.
+                        {t('gad7test.question5')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q6
                       <Typography variant='caption' display='block'>
-                        Becoming easily annoyed or irritable.
+                        {t('gad7test.question6')}
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
                       Q7
                       <Typography variant='caption' display='block'>
-                        Feeling afraid as if something awful might happen.
+                        {t('gad7test.question7')}
                       </Typography>
                     </TableCell>
-                    <TableCell align='right'>Total</TableCell>
+                    <TableCell align='right'>{t('gad7test.total_score')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -161,7 +163,7 @@ export const GAD7TestDetail = (): ReactElement => {
             </TableContainer>
           </>
         ) : (
-          <Typography>You haven't recorded any GAD 7 tests...</Typography>
+          <Typography>{t('gad7test.no_tests_yet')}</Typography>
         )}
       </div>
     </div>

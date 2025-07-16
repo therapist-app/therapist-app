@@ -18,29 +18,33 @@ import { CreateGAD7TestDTO } from '../../api/models'
 import Layout from '../../generalComponents/Layout'
 import { patientTestApi } from '../../utils/api'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useTranslation } from 'react-i18next'
 
-const questions = [
-  'Feeling nervous, anxious or on edge.',
-  'Not being able to stop or control worrying.',
-  'Worrying too much about different things.',
-  'Trouble relaxing.',
-  'Being so restless that it is hard to sit still.',
-  'Becoming easily annoyed or irritable.',
-  'Feeling afraid as if something awful might happen.',
-]
 
-const answers = [
-  { value: 0, label: 'Not at all' },
-  { value: 1, label: 'Several days' },
-  { value: 2, label: 'More than half the days' },
-  { value: 3, label: 'Nearly every day' },
-]
 
 export const GAD7TestCreate = (): ReactElement => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { patientId } = useParams()
   const [responses, setResponses] = useState<{ [key: number]: number }>({})
   const [error, setError] = useState<string | null>(null)
+  
+  const answers = [
+    { value: 0, label: t('gad7test.answers.not_at_all') },
+    { value: 1, label: t('gad7test.answers.several_days') },
+    { value: 2, label: t('gad7test.answers.more_than_half_the_days') },
+    { value: 3, label: t('gad7test.answers.nearly_everyday') },
+  ]
+  
+  const questions = [
+    t('gad7test.question1'),
+    t('gad7test.question2'),
+    t('gad7test.question3'),
+    t('gad7test.question4'),
+    t('gad7test.question5'),
+    t('gad7test.question6'),
+    t('gad7test.question7'),
+  ]
 
   const handleAnswerChange = (questionIndex: number, value: number): void => {
     setResponses((prev) => ({
@@ -97,10 +101,10 @@ export const GAD7TestCreate = (): ReactElement => {
       <Box sx={{ maxWidth: 800, margin: '0 auto' }}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Typography variant='h4' gutterBottom>
-            GAD-7 Assessment
+            {t('gad7test.title')}
           </Typography>
           <Typography variant='subtitle1' gutterBottom sx={{ mb: 4 }}>
-            Over the last 2 weeks, how often have you been bothered by the following problems?
+            {t('gad7test.description')}
           </Typography>
 
           {error && (

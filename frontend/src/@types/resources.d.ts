@@ -339,6 +339,29 @@ interface Resources {
       "editMeeting": "Edit Meeting",
       "meetingStatus": "Meeting Status",
       "yourNotes": "Your Notes"
+    },
+    "gad7test": {
+      "title": "GAD-7 Assessment",
+      "gad7tests": "GAD-7 Tests",
+      "create_gad7test": "Create GAD-7 Test",
+      "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
+      "question1": "Feeling nervous, anxious or on edge.",
+      "question2": "Not being able to stop or control worrying.",
+      "question3": "Worrying too much about different things.",
+      "question4": "Trouble relaxing.",
+      "question5": "Being so restless that it is hard to sit still.",
+      "question6": "Becoming easily annoyed or irritable.",
+      "question7": "Feeling afraid as if something awful might happen.",
+      "total_score": "Total Score",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "no_tests_yet": "You haven't created any GAD-7 tests yet.",
+      "answers": {
+        "not_at_all": "Not at all",
+        "several_days": "Several days",
+        "more_than_half_the_days": "More than half the days",
+        "nearly_everyday": "Nearly every day"
+      }
     }
   },
   "ua": {
