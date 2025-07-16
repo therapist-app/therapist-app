@@ -2241,9 +2241,11 @@ components:
       type: object
     uploadAndShare_request:
       properties:
-        patientFile:
+        file:
           format: binary
           type: string
+      required:
+      - file
       type: object
     ExerciseInputDTO_exerciseElements_inner:
       oneOf:

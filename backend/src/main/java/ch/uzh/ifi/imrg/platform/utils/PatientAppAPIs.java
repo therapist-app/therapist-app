@@ -24,12 +24,14 @@ public class PatientAppAPIs {
   public static CoachPsychologicalTestControllerPatientAPI
       coachPsychologicalTestControllerPatientAPI;
   public static String COACH_ACCESS_KEY;
+  public static String PATIENT_APP_URL;
 
   @Autowired
   public PatientAppAPIs(
       @Value("${PATIENT_APP_URL}") String PATIENT_APP_URL,
       @Value("${COACH_ACCESS_KEY}") String COACH_ACCESS_KEY) {
     PatientAppAPIs.COACH_ACCESS_KEY = COACH_ACCESS_KEY;
+    PatientAppAPIs.PATIENT_APP_URL = PATIENT_APP_URL;
 
     ApiClient apiClient = new ApiClient();
     apiClient.setBasePath(PATIENT_APP_URL);
