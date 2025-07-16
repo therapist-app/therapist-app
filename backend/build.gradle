@@ -171,6 +171,8 @@ tasks.named('openApiGenerate') {
 	skipValidateSpec.set(true)
 	generateModelTests.set(false)
 	generateApiTests.set(false)
+	generateModelDocumentation.set(false)
+	generateApiDocumentation.set(false)
 
 }
 
