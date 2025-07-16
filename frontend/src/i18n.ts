@@ -6,7 +6,7 @@ import { initReactI18next } from 'react-i18next'
 
 export const defaultNS = 'translation'
 
-const supportedLngs = ['en', 'ua']
+const supportedLngs = ['en', 'ua', 'de']
 
 i18next
   .use(initReactI18next)

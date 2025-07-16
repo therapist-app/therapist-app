@@ -66,6 +66,7 @@ const Settings = (): ReactElement => {
             >
               <MenuItem value='en'>English</MenuItem>
               <MenuItem value='ua'>Українська</MenuItem>
+              <MenuItem value='de'>Deutsch</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -45,7 +45,8 @@ export interface TherapistChatbotInputDTO {
 
 export const TherapistChatbotInputDTOLanguageEnum = {
     English: 'English',
-    Ukrainian: 'Ukrainian'
+    Ukrainian: 'Ukrainian',
+    German: 'German'
 } as const;
 
 export type TherapistChatbotInputDTOLanguageEnum = typeof TherapistChatbotInputDTOLanguageEnum[keyof typeof TherapistChatbotInputDTOLanguageEnum];
