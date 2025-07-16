@@ -21,6 +21,7 @@ public interface MeetingsMapper {
   @Mapping(source = "meetingEnd", target = "meetingEnd")
   @Mapping(source = "meetingNotes", target = "meetingNotesOutputDTO")
   @Mapping(source = "location", target = "location")
+  @Mapping(source = "meetingStatus", target = "meetingStatus")
   MeetingOutputDTO convertEntityToMeetingOutputDTO(Meeting meeting);
 
   default List<MeetingNoteOutputDTO> mapMeetingNotes(List<MeetingNote> meetingNotes) {
