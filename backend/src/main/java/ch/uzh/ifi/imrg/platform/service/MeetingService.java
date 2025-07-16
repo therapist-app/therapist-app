@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.CreateMeetingDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.UpdateMeetingDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
@@ -85,20 +86,33 @@ public class MeetingService {
     Meeting meeting = meetingRepository.getReferenceById(dto.getId());
     SecurityUtil.checkOwnership(meeting, therapistId);
 
+    UpdateMeetingDTOPatientAPI patientAppDto = new UpdateMeetingDTOPatientAPI();
+
     if (dto.getMeetingStart() != null) {
       meeting.setMeetingStart(dto.getMeetingStart());
+      patientAppDto.setStartAt(dto.getMeetingStart());
     }
     if (dto.getMeetingEnd() != null) {
       meeting.setMeetingEnd(dto.getMeetingEnd());
+      patientAppDto.setEndAt(dto.getMeetingEnd());
     }
     if (dto.getLocation() != null) {
       meeting.setLocation(dto.getLocation());
+      patientAppDto.setLocation(dto.getLocation());
     }
     if (dto.getMeetingStatus() != null) {
       meeting.setMeetingStatus(dto.getMeetingStatus());
+      UpdateMeetingDTOPatientAPI.MeetingStatusEnum updateMeetingStatusEnum =
+          UpdateMeetingDTOPatientAPI.MeetingStatusEnum.valueOf(dto.getMeetingStatus().name());
+      patientAppDto = patientAppDto.meetingStatus(updateMeetingStatusEnum);
     }
 
+    PatientAppAPIs.coachMeetingControllerPatientAPI.updateMeeting1(
+        meeting.getPatient().getId(), meeting.getId(), patientAppDto);
+    // TODO: add .block()
+
     meetingRepository.save(meeting);
+
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(meeting);
   }
 

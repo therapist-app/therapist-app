@@ -330,7 +330,15 @@ interface Resources {
         "no_speech_detected": "No speech detected. Please try speaking a bit louder or clearer.",
         "microphone_not_available": "Microphone not available or permission denied. Please check your microphone settings and browser permissions.",
         "not_allowed": "Permission to use the microphone was denied or has not been granted. Please allow microphone access in your browser settings."
-      }
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "CONFIRMED": "Confirmed",
+      "CANCELLED": "Cancelled",
+      "PENDING": "Pending",
+      "editMeeting": "Edit Meeting",
+      "meetingStatus": "Meeting Status",
+      "yourNotes": "Your Notes"
     }
   },
   "ua": {

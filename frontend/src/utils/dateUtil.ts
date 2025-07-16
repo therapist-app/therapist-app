@@ -9,3 +9,13 @@ export const formatDateNicely = (date: Date | null | undefined | string): string
     locale: de,
   })
 }
+
+export const getMinutesBetweenDates = (
+  startDate: Date | undefined | string,
+  endDate: Date | undefined | string
+): number => {
+  if (startDate === undefined || endDate === undefined) {
+    return 0
+  }
+  return Math.floor((new Date(endDate).getTime() - new Date(startDate).getTime()) / 60000)
+}

@@ -4,6 +4,7 @@ import {
   CreateMeetingDTO,
   CreateMeetingNoteDTO,
   MeetingOutputDTO,
+  UpdateMeetingDTO,
   UpdateMeetingNoteDTO,
 } from '../api'
 import { meetingApi, meetingNoteApi } from '../utils/api'
@@ -42,6 +43,11 @@ export const getAllMeetingsOfPatient = createAsyncThunk(
     return response.data
   }
 )
+
+export const updateMeeting = createAsyncThunk('updateMeeting', async (dto: UpdateMeetingDTO) => {
+  const response = await meetingApi.updateMeeting(dto)
+  return response.data
+})
 
 export const deleteMeeting = createAsyncThunk('deleteMeeting', async (meetingId: string) => {
   const response = await meetingApi.deleteMeetingById(meetingId)
@@ -127,6 +133,20 @@ const meetingSlice = createSlice({
         state.allMeetingsOfPatient = action.payload
       })
       .addCase(getAllMeetingsOfPatient.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(updateMeeting.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateMeeting.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.selectedMeeting = action.payload
+      })
+      .addCase(updateMeeting.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
