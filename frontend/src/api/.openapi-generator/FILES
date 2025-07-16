@@ -66,5 +66,6 @@ models/therapist-output-dto.ts
 models/update-counseling-plan-dto.ts
 models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts
+models/update-meeting-dto.ts
 models/update-meeting-note-dto.ts
 models/update-therapist-dto.ts

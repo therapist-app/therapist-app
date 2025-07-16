@@ -39,5 +39,6 @@ export * from './therapist-output-dto';
 export * from './update-counseling-plan-dto';
 export * from './update-exercise-component-dto';
 export * from './update-exercise-dto';
+export * from './update-meeting-dto';
 export * from './update-meeting-note-dto';
 export * from './update-therapist-dto';

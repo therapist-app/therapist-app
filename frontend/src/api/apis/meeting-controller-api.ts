@@ -25,6 +25,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 import type { CreateMeetingDTO } from '../models';
 // @ts-ignore
 import type { MeetingOutputDTO } from '../models';
+// @ts-ignore
+import type { UpdateMeetingDTO } from '../models';
 /**
  * MeetingControllerApi - axios parameter creator
  * @export
@@ -165,6 +167,41 @@ export const MeetingControllerApiAxiosParamCreator = function (configuration?: C
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {UpdateMeetingDTO} updateMeetingDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMeeting: async (updateMeetingDTO: UpdateMeetingDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateMeetingDTO' is not null or undefined
+            assertParamExists('updateMeeting', 'updateMeetingDTO', updateMeetingDTO)
+            const localVarPath = `/meetings`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateMeetingDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -223,6 +260,18 @@ export const MeetingControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['MeetingControllerApi.getMeetingsOfPatient']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {UpdateMeetingDTO} updateMeetingDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateMeeting(updateMeetingDTO: UpdateMeetingDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MeetingOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMeeting(updateMeetingDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MeetingControllerApi.updateMeeting']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -269,6 +318,15 @@ export const MeetingControllerApiFactory = function (configuration?: Configurati
         getMeetingsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<MeetingOutputDTO>> {
             return localVarFp.getMeetingsOfPatient(patientId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {UpdateMeetingDTO} updateMeetingDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMeeting(updateMeetingDTO: UpdateMeetingDTO, options?: RawAxiosRequestConfig): AxiosPromise<MeetingOutputDTO> {
+            return localVarFp.updateMeeting(updateMeetingDTO, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -313,6 +371,15 @@ export interface MeetingControllerApiInterface {
      * @memberof MeetingControllerApiInterface
      */
     getMeetingsOfPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<MeetingOutputDTO>>;
+
+    /**
+     * 
+     * @param {UpdateMeetingDTO} updateMeetingDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MeetingControllerApiInterface
+     */
+    updateMeeting(updateMeetingDTO: UpdateMeetingDTO, options?: RawAxiosRequestConfig): AxiosPromise<MeetingOutputDTO>;
 
 }
 
@@ -365,6 +432,17 @@ export class MeetingControllerApi extends BaseAPI implements MeetingControllerAp
      */
     public getMeetingsOfPatient(patientId: string, options?: RawAxiosRequestConfig) {
         return MeetingControllerApiFp(this.configuration).getMeetingsOfPatient(patientId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateMeetingDTO} updateMeetingDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MeetingControllerApi
+     */
+    public updateMeeting(updateMeetingDTO: UpdateMeetingDTO, options?: RawAxiosRequestConfig) {
+        return MeetingControllerApiFp(this.configuration).updateMeeting(updateMeetingDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
