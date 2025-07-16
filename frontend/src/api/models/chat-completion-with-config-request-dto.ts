@@ -60,7 +60,8 @@ export interface ChatCompletionWithConfigRequestDTO {
 
 export const ChatCompletionWithConfigRequestDTOLanguageEnum = {
     English: 'English',
-    Ukrainian: 'Ukrainian'
+    Ukrainian: 'Ukrainian',
+    German: 'German'
 } as const;
 
 export type ChatCompletionWithConfigRequestDTOLanguageEnum = typeof ChatCompletionWithConfigRequestDTOLanguageEnum[keyof typeof ChatCompletionWithConfigRequestDTOLanguageEnum];
