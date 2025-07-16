@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material'
 import { ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CreateCounselingPlanPhaseDTO } from '../../../api'
 import {
@@ -8,7 +9,6 @@ import {
 } from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
-import { useTranslation } from 'react-i18next'
 
 interface CreateCounselingPlanePhaseProps {
   counselingPlanId: string

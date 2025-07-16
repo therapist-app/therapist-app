@@ -7,6 +7,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -20,7 +21,6 @@ import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
-import { useTranslation } from 'react-i18next'
 
 interface FormValues {
   startOfTherapy: Date | null

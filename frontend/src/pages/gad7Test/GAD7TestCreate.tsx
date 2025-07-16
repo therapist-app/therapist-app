@@ -12,15 +12,13 @@ import {
   Typography,
 } from '@mui/material'
 import { ChangeEvent, ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateGAD7TestDTO } from '../../api/models'
 import Layout from '../../generalComponents/Layout'
 import { patientTestApi } from '../../utils/api'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useTranslation } from 'react-i18next'
-
-
 
 export const GAD7TestCreate = (): ReactElement => {
   const navigate = useNavigate()
@@ -28,14 +26,14 @@ export const GAD7TestCreate = (): ReactElement => {
   const { patientId } = useParams()
   const [responses, setResponses] = useState<{ [key: number]: number }>({})
   const [error, setError] = useState<string | null>(null)
-  
+
   const answers = [
     { value: 0, label: t('gad7test.answers.not_at_all') },
     { value: 1, label: t('gad7test.answers.several_days') },
     { value: 2, label: t('gad7test.answers.more_than_half_the_days') },
     { value: 3, label: t('gad7test.answers.nearly_everyday') },
   ]
-  
+
   const questions = [
     t('gad7test.question1'),
     t('gad7test.question2'),

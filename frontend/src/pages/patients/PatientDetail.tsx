@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -37,7 +38,6 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
-import { useTranslation } from 'react-i18next'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -245,7 +245,8 @@ const PatientDetail = (): ReactElement => {
         </div>
         {currentCounselingPlanPhase ? (
           <Typography>
-            {t('patient_detail.current_phase')}: <strong>{currentCounselingPlanPhase.phaseName}</strong>
+            {t('patient_detail.current_phase')}:{' '}
+            <strong>{currentCounselingPlanPhase.phaseName}</strong>
           </Typography>
         ) : (
           <Typography>{t('patient_detail.currently_no_phase_is_active')}</Typography>
@@ -265,7 +266,9 @@ const PatientDetail = (): ReactElement => {
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
         <DialogTitle>{t('patient_detail.create_a_new_chatbot')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{t('patient_detail.please_enter_name_for_chatbot')}:</DialogContentText>
+          <DialogContentText>
+            {t('patient_detail.please_enter_name_for_chatbot')}:
+          </DialogContentText>
           <TextField
             autoFocus
             margin='dense'

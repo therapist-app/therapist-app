@@ -12,12 +12,12 @@ import {
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { GAD7TestOutputDTO } from '../../api/models'
 import { patientTestApi } from '../../utils/api'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useTranslation } from 'react-i18next'
 
 export const GAD7TestDetail = (): ReactElement => {
   const navigate = useNavigate()

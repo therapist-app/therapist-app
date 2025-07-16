@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material'
 import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
 import { formatDateNicely } from '../../../utils/dateUtil'
@@ -8,7 +9,6 @@ import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
 import CreateCounselingPlanExercise from './CreateCounselingPlanExercise'
 import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
-import { useTranslation } from 'react-i18next'
 
 interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO
@@ -32,10 +32,15 @@ const CounselingPlanPhaseDetail = ({
         {phaseNumber}. {phase.phaseName}
       </Typography>
       <div style={{ paddingLeft: '20px' }}>
-        <Typography>{t('counseling_plan.start_date')}: {formatDateNicely(phase.startDate)}</Typography>
-        <Typography>{t('counseling_plan.end_date')}: {formatDateNicely(phase.endDate)}</Typography>
         <Typography>
-          {t('counseling_plan.duration')}: <strong>{phase.durationInWeeks}</strong> {t('counseling_plan.weeks')}
+          {t('counseling_plan.start_date')}: {formatDateNicely(phase.startDate)}
+        </Typography>
+        <Typography>
+          {t('counseling_plan.end_date')}: {formatDateNicely(phase.endDate)}
+        </Typography>
+        <Typography>
+          {t('counseling_plan.duration')}: <strong>{phase.durationInWeeks}</strong>{' '}
+          {t('counseling_plan.weeks')}
         </Typography>
         <div></div>
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
