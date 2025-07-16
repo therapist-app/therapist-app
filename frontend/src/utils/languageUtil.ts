@@ -10,6 +10,8 @@ export function mapLanguageCodeToLanguage(
       return TherapistChatbotInputDTOLanguageEnum.English
     case 'ua':
       return TherapistChatbotInputDTOLanguageEnum.Ukrainian
+    case 'de':
+      return TherapistChatbotInputDTOLanguageEnum.German
     default:
       return TherapistChatbotInputDTOLanguageEnum.English
   }

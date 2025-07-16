@@ -36,7 +36,8 @@ export interface CreateCounselingPlanPhaseAIGeneratedDTO {
 
 export const CreateCounselingPlanPhaseAIGeneratedDTOLanguageEnum = {
     English: 'English',
-    Ukrainian: 'Ukrainian'
+    Ukrainian: 'Ukrainian',
+    German: 'German'
 } as const;
 
 export type CreateCounselingPlanPhaseAIGeneratedDTOLanguageEnum = typeof CreateCounselingPlanPhaseAIGeneratedDTOLanguageEnum[keyof typeof CreateCounselingPlanPhaseAIGeneratedDTOLanguageEnum];

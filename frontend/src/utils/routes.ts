@@ -106,33 +106,37 @@ export const ROUTES: Record<PAGES, string> = {
 }
 
 export const PAGE_NAMES: Record<PAGES, string> = {
-  [PAGES.HOME_PAGE]: 'Home',
-  [PAGES.LOGIN_PAGE]: 'Login',
-  [PAGES.REGISTRATION_PAGE]: 'Registration',
-  [PAGES.SETTINGS_PAGE]: 'Settings',
+  [PAGES.HOME_PAGE]: 'pages.home',
+  [PAGES.LOGIN_PAGE]: 'pages.login',
+  [PAGES.REGISTRATION_PAGE]: 'pages.registration',
+  [PAGES.SETTINGS_PAGE]: 'pages.settings',
 
-  [PAGES.PATIENTS_CREATE_PAGE]: 'Register new Client',
-  [PAGES.PATIENTS_DETAILS_PAGE]: 'Client Details',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'pages.patients.create',
+  [PAGES.PATIENTS_DETAILS_PAGE]: 'pages.patients.details',
 
-  [PAGES.PATIENT_CONVERSATIONS_PAGE]: 'Conversation Summary',
+  [PAGES.PATIENT_CONVERSATIONS_PAGE]: 'pages.patients.conversations',
 
-  [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
-  [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
+  [PAGES.CHATBOT_CREATE_PAGE]: 'pages.chatbot.create',
+  [PAGES.CHATBOT_DETAILS_PAGE]: 'pages.chatbot.details',
 
-  [PAGES.MEETINGS_CREATE_PAGE]: 'Create new Meeting',
-  [PAGES.MEETINGS_DETAILS_PAGE]: 'Meeting Details',
+  [PAGES.MEETINGS_CREATE_PAGE]: 'pages.meetings.create',
+  [PAGES.MEETINGS_DETAILS_PAGE]: 'pages.meetings.details',
 
-  [PAGES.GAD7_TEST_CREATE_PAGE]: 'GAD-7 Assessment',
+  [PAGES.GAD7_TEST_CREATE_PAGE]: 'pages.gad7.create',
 
-  [PAGES.EXERCISES_CREATE_PAGE]: 'Create Exercise',
-  [PAGES.EXERCISES_DETAILS_PAGE]: 'Exercise Details',
+  [PAGES.EXERCISES_CREATE_PAGE]: 'pages.exercises.create',
+  [PAGES.EXERCISES_DETAILS_PAGE]: 'pages.exercises.details',
 
-  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'Create new Chatbot Template',
-  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'Chatbot Template Details',
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'pages.chatbot_templates.create',
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'pages.chatbot_templates.details',
 
-  [PAGES.COUNSELING_PLAN_DETAILS_PAGE]: 'Counseling Plan',
+  [PAGES.COUNSELING_PLAN_DETAILS_PAGE]: 'pages.counseling_plan.details',
 
-  [PAGES.NOT_FOUND_PAGE]: 'Not Found',
+  [PAGES.NOT_FOUND_PAGE]: 'pages.not_found',
+}
+
+export const getPageName = (page: PAGES, t: (key: string) => string): string => {
+  return t(PAGE_NAMES[page])
 }
 
 export function getPageFromPath(pathname: string): PAGES {

@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material'
 import { ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CreateCounselingPlanPhaseDTO } from '../../../api'
 import {
@@ -25,10 +26,10 @@ const CreateCounselingPlanePhase = ({
   onSuccess,
 }: CreateCounselingPlanePhaseProps): ReactElement => {
   const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseDTO>(initialFormValues)
-
   const [open, setOpen] = useState(false)
 
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -69,7 +70,7 @@ const CreateCounselingPlanePhase = ({
     <>
       {!open ? (
         <Button variant='contained' onClick={() => setOpen(true)}>
-          Add a phase
+          {t('counseling_plan.add_a_phase')}
         </Button>
       ) : (
         <form
@@ -78,12 +79,12 @@ const CreateCounselingPlanePhase = ({
         >
           <TextField
             fullWidth
-            label='Phase Name'
+            label={t('counseling_plan.phase_name')}
             value={formValues.phaseName}
             onChange={(e) => setFormValues({ ...formValues, phaseName: e.target.value })}
           />
           <TextField
-            label='Duration in Weeks'
+            label={t('counseling_plan.duration_in_weeks')}
             value={formValues.durationInWeeks}
             type='number'
             onChange={(e) =>
@@ -92,13 +93,13 @@ const CreateCounselingPlanePhase = ({
           />
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button variant='contained' type='submit'>
-              Create phase
+              {t('counseling_plan.create_phase')}
             </Button>
             <Button variant='contained' color='success' onClick={handleAIGeneration}>
-              Make AI generated suggestion
+              {t('counseling_plan.make_ai_generated_suggestion_for_phase')}
             </Button>
             <Button variant='outlined' color='error' onClick={handleCancel}>
-              Cancel
+              {t('counseling_plan.cancel')}
             </Button>
           </div>
         </form>

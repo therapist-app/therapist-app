@@ -29,7 +29,13 @@ import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatb
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
-import { findPageTrace, getPageFromPath, getPathFromPage, PAGE_NAMES, PAGES } from '../utils/routes'
+import {
+  findPageTrace,
+  getPageFromPath,
+  getPageName,
+  getPathFromPage,
+  PAGES,
+} from '../utils/routes'
 
 interface LayoutProps {
   children: ReactNode
@@ -70,8 +76,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const currentPage = getPageFromPath(location.pathname)
   const currentPageName =
     currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE
-      ? 'Chatbot Details'
-      : PAGE_NAMES[currentPage]
+      ? t('pages.chatbot.details')
+      : getPageName(currentPage, t)
 
   let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
 
@@ -80,7 +86,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   const labelForPage = (p: PAGES): string =>
-    p === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE ? 'Chatbot Details' : PAGE_NAMES[p]
+    p === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE ? t('pages.chatbot.details') : getPageName(p, t)
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [assistantInput, setAssistantInput] = useState('')

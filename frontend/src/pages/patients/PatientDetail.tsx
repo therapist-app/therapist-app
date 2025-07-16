@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -40,6 +41,7 @@ import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComp
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -148,12 +150,12 @@ const PatientDetail = (): ReactElement => {
         <Card sx={{ mb: 4, p: 2 }}>
           <CardContent>
             <Typography variant='h3' gutterBottom>
-              Client: {patient.name}
+              {t('patient_detail.client')}: {patient.name}
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
-                  Email (for Login in Client App)
+                  {t('patient_detail.email_client_app')}
                 </Typography>
                 <Typography color='info' sx={{ wordBreak: 'break-word' }}>
                   {' '}
@@ -162,7 +164,7 @@ const PatientDetail = (): ReactElement => {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
-                  Initial Password (for Login in Client App)
+                  {t('patient_detail.initial_password_client_app')}
                 </Typography>
                 <Typography color='info' sx={{ wordBreak: 'break-word' }}>
                   {' '}
@@ -171,7 +173,7 @@ const PatientDetail = (): ReactElement => {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' sx={{ fontWeight: 'bold' }}>
-                  Client App Link
+                  {t('patient_detail.client_app_link')}
                 </Typography>
                 <Typography color='info' sx={{ wordBreak: 'break-word' }}>
                   <a
@@ -185,31 +187,31 @@ const PatientDetail = (): ReactElement => {
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
-                  Age
+                  {t('patient_detail.age')}
                 </Typography>
                 <Typography>{patient.age ?? 'N/A'}</Typography>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
-                  Gender
+                  {t('patient_detail.gender')}
                 </Typography>
                 <Typography>{patient.gender || 'N/A'}</Typography>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
-                  Phone
+                  {t('patient_detail.phone')}
                 </Typography>
                 <Typography>{patient.phoneNumber || 'N/A'}</Typography>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
-                  Address
+                  {t('patient_detail.address')}
                 </Typography>
                 <Typography>{patient.address || 'N/A'}</Typography>
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
                 <Typography variant='body2' color='textSecondary'>
-                  Date of Admission
+                  {t('patient_detail.date_of_admission')}
                 </Typography>
                 <Typography>{patient.dateOfAdmission || 'N/A'}</Typography>
               </Grid>
@@ -218,7 +220,7 @@ const PatientDetail = (): ReactElement => {
         </Card>
       ) : (
         <Typography variant='h6' sx={{ mb: 3 }}>
-          Loading patient data...
+          {t('patient_detail.loading_patient_data')}
         </Typography>
       )}
 
@@ -226,7 +228,7 @@ const PatientDetail = (): ReactElement => {
 
       <div>
         <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
-          <Typography variant='h2'>Counseling Plan</Typography>
+          <Typography variant='h2'>{t('patient_detail.counseling_plan')}</Typography>
           <Button
             sx={{ height: 'fit-content' }}
             variant='contained'
@@ -238,15 +240,16 @@ const PatientDetail = (): ReactElement => {
               )
             }
           >
-            Go to Counseling Plan
+            {t('patient_detail.go_to_counseling_plan')}
           </Button>
         </div>
         {currentCounselingPlanPhase ? (
           <Typography>
-            Current Phase: <strong>{currentCounselingPlanPhase.phaseName}</strong>
+            {t('patient_detail.current_phase')}:{' '}
+            <strong>{currentCounselingPlanPhase.phaseName}</strong>
           </Typography>
         ) : (
-          <Typography>Currently no phase is active</Typography>
+          <Typography>{t('patient_detail.currently_no_phase_is_active')}</Typography>
         )}
       </div>
 
@@ -261,13 +264,15 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <Dialog open={openChatbotDialog} onClose={handleCloseChatbotDialog}>
-        <DialogTitle>Create a new Chatbot</DialogTitle>
+        <DialogTitle>{t('patient_detail.create_a_new_chatbot')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Please enter a name for your new chatbot:</DialogContentText>
+          <DialogContentText>
+            {t('patient_detail.please_enter_name_for_chatbot')}:
+          </DialogContentText>
           <TextField
             autoFocus
             margin='dense'
-            label='Chatbot Name'
+            label={t('patient_detail.chatbot_name')}
             type='text'
             fullWidth
             variant='outlined'
@@ -282,7 +287,7 @@ const PatientDetail = (): ReactElement => {
             variant='contained'
             disabled={!chatbotName.trim()}
           >
-            Create Bot
+            {t('patient_detail.create_bot')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -292,7 +297,7 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <FilesTable
-        title='Files visible to Client'
+        title={t('patient_detail.files_visible_to_client')}
         allDocuments={patientDocumentsVisibleToPatient}
         handleFileUpload={handleFileUploadSharedWithPatient}
         handleDeleteFile={handleDeleteFile}
@@ -302,7 +307,7 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <FilesTable
-        title='Files visible only to Coach'
+        title={t('patient_detail.files_visible_only_to_coach')}
         allDocuments={patientDocumentsNotVisibleToPatient}
         handleFileUpload={handleFileUploadNotSharedWithPatient}
         handleDeleteFile={handleDeleteFile}

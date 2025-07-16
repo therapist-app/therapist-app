@@ -402,7 +402,7 @@ const Home = (): ReactElement => {
       <CustomizedDivider />
 
       <FilesTable
-        title='Your Files'
+        title={t('dashboard.your_files')}
         allDocuments={allTherapistDocuments}
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
