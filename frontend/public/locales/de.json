@@ -384,5 +384,39 @@
       "more_than_half_the_days": "An mehr als der Hälfte der Tage",
       "nearly_everyday": "Fast jeden Tag"
     }
+  },
+  "pages": {
+    "home": "Startseite",
+    "login": "Anmeldung",
+    "registration": "Registrierung",
+    "settings": "Einstellungen",
+    "patients": {
+      "create": "Neuen Klienten registrieren",
+      "details": "Klientendetails",
+      "conversations": "Gesprächszusammenfassung"
+    },
+    "chatbot": {
+      "create": "Neuen Chatbot erstellen",
+      "details": "Chatbot-Details"
+    },
+    "meetings": {
+      "create": "Neues Meeting erstellen",
+      "details": "Meeting-Details"
+    },
+    "gad7": {
+      "create": "GAD-7-Bewertung"
+    },
+    "exercises": {
+      "create": "Übung erstellen",
+      "details": "Übungsdetails"
+    },
+    "chatbot_templates": {
+      "create": "Neue Chatbot-Vorlage erstellen",
+      "details": "Chatbot-Vorlagendetails"
+    },
+    "counseling_plan": {
+      "details": "Behandlungsplan"
+    },
+    "not_found": "Nicht gefunden"
   }
 }

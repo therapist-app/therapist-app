@@ -385,6 +385,40 @@ interface Resources {
         "more_than_half_the_days": "An mehr als der Hälfte der Tage",
         "nearly_everyday": "Fast jeden Tag"
       }
+    },
+    "pages": {
+      "home": "Startseite",
+      "login": "Anmeldung",
+      "registration": "Registrierung",
+      "settings": "Einstellungen",
+      "patients": {
+        "create": "Neuen Klienten registrieren",
+        "details": "Klientendetails",
+        "conversations": "Gesprächszusammenfassung"
+      },
+      "chatbot": {
+        "create": "Neuen Chatbot erstellen",
+        "details": "Chatbot-Details"
+      },
+      "meetings": {
+        "create": "Neues Meeting erstellen",
+        "details": "Meeting-Details"
+      },
+      "gad7": {
+        "create": "GAD-7-Bewertung"
+      },
+      "exercises": {
+        "create": "Übung erstellen",
+        "details": "Übungsdetails"
+      },
+      "chatbot_templates": {
+        "create": "Neue Chatbot-Vorlage erstellen",
+        "details": "Chatbot-Vorlagendetails"
+      },
+      "counseling_plan": {
+        "details": "Behandlungsplan"
+      },
+      "not_found": "Nicht gefunden"
     }
   },
   "en": {
@@ -773,6 +807,40 @@ interface Resources {
         "more_than_half_the_days": "More than half the days",
         "nearly_everyday": "Nearly every day"
       }
+    },
+    "pages": {
+      "home": "Home",
+      "login": "Login",
+      "registration": "Registration",
+      "settings": "Settings",
+      "patients": {
+        "create": "Register new Client",
+        "details": "Client Details",
+        "conversations": "Conversation Summary"
+      },
+      "chatbot": {
+        "create": "Create new Chatbot",
+        "details": "Chatbot Details"
+      },
+      "meetings": {
+        "create": "Create new Meeting",
+        "details": "Meeting Details"
+      },
+      "gad7": {
+        "create": "GAD-7 Assessment"
+      },
+      "exercises": {
+        "create": "Create Exercise",
+        "details": "Exercise Details"
+      },
+      "chatbot_templates": {
+        "create": "Create new Chatbot Template",
+        "details": "Chatbot Template Details"
+      },
+      "counseling_plan": {
+        "details": "Counseling Plan"
+      },
+      "not_found": "Not Found"
     }
   },
   "ua": {
@@ -1161,6 +1229,40 @@ interface Resources {
         "more_than_half_the_days": "Більше половини днів",
         "nearly_everyday": "Майже щодня"
       }
+    },
+    "pages": {
+      "home": "Головна",
+      "login": "Вхід",
+      "registration": "Реєстрація",
+      "settings": "Налаштування",
+      "patients": {
+        "create": "Зареєструвати нового клієнта",
+        "details": "Деталі клієнта",
+        "conversations": "Підсумок бесід"
+      },
+      "chatbot": {
+        "create": "Створити нового чат-бота",
+        "details": "Деталі чат-бота"
+      },
+      "meetings": {
+        "create": "Створити нову зустріч",
+        "details": "Деталі зустрічі"
+      },
+      "gad7": {
+        "create": "Опитування GAD-7"
+      },
+      "exercises": {
+        "create": "Створити вправу",
+        "details": "Деталі вправи"
+      },
+      "chatbot_templates": {
+        "create": "Створити новий шаблон чат-бота",
+        "details": "Деталі шаблону чат-бота"
+      },
+      "counseling_plan": {
+        "details": "План консультування"
+      },
+      "not_found": "Не знайдено"
     }
   }
 }

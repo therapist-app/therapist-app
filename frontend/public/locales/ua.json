@@ -384,5 +384,39 @@
       "more_than_half_the_days": "Більше половини днів",
       "nearly_everyday": "Майже щодня"
     }
+  },
+  "pages": {
+    "home": "Головна",
+    "login": "Вхід",
+    "registration": "Реєстрація",
+    "settings": "Налаштування",
+    "patients": {
+      "create": "Зареєструвати нового клієнта",
+      "details": "Деталі клієнта",
+      "conversations": "Підсумок бесід"
+    },
+    "chatbot": {
+      "create": "Створити нового чат-бота",
+      "details": "Деталі чат-бота"
+    },
+    "meetings": {
+      "create": "Створити нову зустріч",
+      "details": "Деталі зустрічі"
+    },
+    "gad7": {
+      "create": "Опитування GAD-7"
+    },
+    "exercises": {
+      "create": "Створити вправу",
+      "details": "Деталі вправи"
+    },
+    "chatbot_templates": {
+      "create": "Створити новий шаблон чат-бота",
+      "details": "Деталі шаблону чат-бота"
+    },
+    "counseling_plan": {
+      "details": "План консультування"
+    },
+    "not_found": "Не знайдено"
   }
 }
