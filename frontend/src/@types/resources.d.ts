@@ -204,7 +204,27 @@ interface Resources {
       "message": "Oops! The page you're looking for doesn't exist."
     },
     "patient_detail": {
-      "message": "This is the client detail page of client with ID"
+      "message": "This is the client detail page of client with ID",
+      "client": "Client",
+      "email_client_app": "Email (for Login in Client App)",
+      "initial_password_client_app": "Initial Password (for Login in Client App)",
+      "client_app_link": "Client App Link",
+      "age": "Age",
+      "gender": "Gender",
+      "phone": "Phone",
+      "address": "Address",
+      "date_of_admission": "Date of Admission",
+      "loading_patient_data": "Loading Patient Data...",
+      "counseling_plan": "Counseling Plan",
+      "go_to_counseling_plan": "Go to Counseling Plan",
+      "current_phase": "Current Phase",
+      "currently_no_phase_is_active": "Currently no phase is active.",
+      "create_a_new_chatbot": "Create a new Chatbot",
+      "please_enter_name_for_chatbot": "Please enter a name for your new chatbot",
+      "chatbot_name": "Chabot Name",
+      "create_bot": "Create Bot",
+      "files_visible_to_client": "Files visible to Client",
+      "files_visible_only_to_coach": "Files visible only to Coach"
     },
     "patient_create": {
       "title": "This is the page to create a new client",
