@@ -5,6 +5,7 @@ import {
   ChatbotTemplateDocumentControllerApiFactory,
   ChatbotTemplateOutputDTO,
   ChatControllerApiFactory,
+  ConversationControllerApiFactory,
   CounselingPlanControllerApiFactory,
   CounselingPlanPhaseControllerApiFactory,
   CounselingPlanPhaseGoalControllerApiFactory,
@@ -18,7 +19,6 @@ import {
   TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
-  ConversationControllerApiFactory,
 } from '../api'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL

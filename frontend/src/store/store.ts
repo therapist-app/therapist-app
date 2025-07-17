@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import chatbotTemplateDocumentReducer from './chatbotTemplateDocumentSlice'
 import chatbotTemplateReducer from './chatbotTemplateSlice'
+import conversationReducer from './conversationSlice'
 import counselingPlanReducer from './counselingPlanSlice'
 import exerciseReducer from './exerciseSlice'
 import meetingReducer from './meetingSlice'
@@ -10,7 +11,6 @@ import patientReducer from './patientSlice'
 import therapistChatbotReducer from './therapistChatbotSlice'
 import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
-import conversationReducer from './conversationSlice'
 
 const store = configureStore({
   reducer: {

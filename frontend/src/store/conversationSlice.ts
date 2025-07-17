@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { conversationApi } from '../utils/api'
 
 interface ConversationState {
@@ -14,13 +15,13 @@ const initialState: ConversationState = {
 }
 
 export const fetchConversationSummary = createAsyncThunk<
-  { patientId: string; summary: string },                       
-  { patientId: string; start: string; end: string },            
+  { patientId: string; summary: string },
+  { patientId: string; start: string; end: string },
   { rejectValue: string }
 >('conversation/fetchConversationSummary', async ({ patientId, start, end }, thunkAPI) => {
   try {
     const { data } = await conversationApi.getConversationSummary(patientId, start, end)
-    return { patientId, summary: data.conversationSummary ?? '' }
+    return { patientId: patientId, summary: data.conversationSummary ?? '' }
   } catch (err: any) {
     return thunkAPI.rejectWithValue(err?.message ?? 'error fetching summary')
   }
@@ -28,9 +29,9 @@ export const fetchConversationSummary = createAsyncThunk<
 
 const conversationSlice = createSlice({
   name: 'conversation',
-  initialState,
+  initialState: initialState,
   reducers: {
-    clearConversationSummary(state, action: PayloadAction<string | void>) {
+    clearConversationSummary: function (state, action: PayloadAction<string | void>) {
       if (action.payload) {
         delete state.byPatient[action.payload]
       } else {
