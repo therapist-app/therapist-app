@@ -121,7 +121,7 @@ def openApiSpecUrl = 'https://backend-patient-app-main.jonas-blum.ch/v3/api-docs
 tasks.named('openApiGenerate') {
 
 	outputs.upToDateWhen { false }
-	
+
 	doFirst {
 		logger.lifecycle("🧹 Cleaning OpenAPI output directory for fresh generation...")
 		delete("$projectDir/src/generated")
@@ -162,10 +162,10 @@ tasks.named('openApiGenerate') {
 	importMappings = ["Instant": "java.time.Instant"]
 
 	configOptions = [
-		library: 'webclient',
-		dateLibrary: 'java8',
-		useTags: 'true',
-		hideGenerationTimestamp: 'true',
+			library: 'webclient',
+			dateLibrary: 'java8',
+			useTags: 'true',
+			hideGenerationTimestamp: 'true',
 	]
 
 	skipValidateSpec.set(true)
