@@ -10,17 +10,17 @@ const ConversationSummary = (): ReactElement => {
   const { patientId } = useParams<{ patientId: string }>()
   const dispatch = useAppDispatch()
 
-  const summary = useAppSelector((s) =>
-    patientId ? s.conversation.byPatient[patientId] : ''
-  )
+  const summary = useAppSelector((s) => (patientId ? s.conversation.byPatient[patientId] : ''))
   const status = useAppSelector((s) => s.conversation.status)
-  const error  = useAppSelector((s) => s.conversation.error)
+  const error = useAppSelector((s) => s.conversation.error)
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     dispatch(
       fetchConversationSummary({
-        patientId,
+        patientId: patientId,
         start: dayjs().subtract(7, 'day').toISOString(),
         end: dayjs().toISOString(),
       })
@@ -31,15 +31,15 @@ const ConversationSummary = (): ReactElement => {
     return <CircularProgress />
   }
   if (status === 'failed') {
-    return <Alert severity="error">{error}</Alert>
+    return <Alert severity='error'>{error}</Alert>
   }
 
   return (
     <Box sx={{ maxWidth: 800 }}>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant='h2' gutterBottom>
         Conversation Summary
       </Typography>
-      <Typography whiteSpace="pre-line">{summary}</Typography>
+      <Typography whiteSpace='pre-line'>{summary}</Typography>
     </Box>
   )
 }

@@ -15,16 +15,15 @@ const initialState: ConversationState = {
 }
 
 export const fetchConversationSummary = createAsyncThunk<
-  { patientId: string; summary: string },                
-  { patientId: string; start: string; end: string },     
+  { patientId: string; summary: string },
+  { patientId: string; start: string; end: string },
   { rejectValue: string }
 >('conversation/fetchConversationSummary', async ({ patientId, start, end }, thunkAPI) => {
   try {
     const { data } = await conversationApi.getConversationSummary(patientId, start, end)
-    return { patientId, summary: data.conversationSummary ?? '' }
+    return { patientId: patientId, summary: data.conversationSummary ?? '' }
   } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : 'error fetching summary'
+    const message = err instanceof Error ? err.message : 'error fetching summary'
     return thunkAPI.rejectWithValue(message)
   }
 })
