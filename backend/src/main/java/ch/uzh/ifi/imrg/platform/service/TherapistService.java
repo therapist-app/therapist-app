@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistMapper;
 import ch.uzh.ifi.imrg.platform.utils.JwtUtil;
@@ -72,6 +73,18 @@ public class TherapistService {
     String jwt = JwtUtil.createJWT(therapist.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist).sortDTO();
+  }
+
+  public TherapistOutputDTO updateTherapist(UpdateTherapistDTO dto, String therapistId) {
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
+
+    if (dto.getPassword() != null) {
+      therapist.setPassword(PasswordUtil.encryptPassword(dto.getPassword()));
+    }
+
+    therapistRepository.save(therapist);
+
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist);
   }
 
   public TherapistOutputDTO loginTherapist(

@@ -37,36 +37,6 @@ export interface ChatbotConfigDTO {
      * @type {string}
      * @memberof ChatbotConfigDTO
      */
-    'chatbotLanguage'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'chatbotVoice'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'chatbotGender'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'preConfiguredExercise'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
-    'additionalExercise'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatbotConfigDTO
-     */
     'welcomeMessage'?: string;
 }
 

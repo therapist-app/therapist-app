@@ -35,5 +35,20 @@ export interface TherapistChatbotInputDTO {
      * @memberof TherapistChatbotInputDTO
      */
     'patientId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TherapistChatbotInputDTO
+     */
+    'language'?: TherapistChatbotInputDTOLanguageEnum;
 }
+
+export const TherapistChatbotInputDTOLanguageEnum = {
+    English: 'English',
+    Ukrainian: 'Ukrainian',
+    German: 'German'
+} as const;
+
+export type TherapistChatbotInputDTOLanguageEnum = typeof TherapistChatbotInputDTOLanguageEnum[keyof typeof TherapistChatbotInputDTOLanguageEnum];
+
 

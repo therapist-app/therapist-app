@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ChatMessageDTO, ChatMessageDTOChatRoleEnum, TherapistChatbotInputDTO } from '../api'
+import {
+  ChatMessageDTO,
+  ChatMessageDTOChatRoleEnum,
+  TherapistChatbotInputDTO,
+  TherapistChatbotInputDTOLanguageEnum,
+} from '../api'
 import { therapistChatbotApi } from '../utils/api'
 import { createAppAsyncThunk } from './thunk'
 
@@ -18,7 +23,14 @@ const initialState: TherapistChatbotState = {
 
 export const chatWithTherapistChatbot = createAppAsyncThunk(
   'chatWithTherapistChatbot',
-  async (payload: { newMessage: string; patientId: string | undefined }, thunkAPI) => {
+  async (
+    payload: {
+      newMessage: string
+      patientId: string | undefined
+      language: TherapistChatbotInputDTOLanguageEnum
+    },
+    thunkAPI
+  ) => {
     thunkAPI.dispatch(
       addMessage({
         chatRole: ChatMessageDTOChatRoleEnum.User,
@@ -26,10 +38,10 @@ export const chatWithTherapistChatbot = createAppAsyncThunk(
       })
     )
     const currentMessages = thunkAPI.getState().therapistChatbot.therapistChatbotMessages
-    console.log(currentMessages)
     const therapistChatbotInputDTO: TherapistChatbotInputDTO = {
       chatMessages: currentMessages,
       patientId: payload.patientId,
+      language: payload.language,
     }
 
     const response = await therapistChatbotApi.chatWithTherapistChatbot(therapistChatbotInputDTO)

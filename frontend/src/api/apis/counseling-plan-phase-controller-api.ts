@@ -26,6 +26,10 @@ import type { AddExerciseToCounselingPlanPhaseDTO } from '../models';
 // @ts-ignore
 import type { CounselingPlanPhaseOutputDTO } from '../models';
 // @ts-ignore
+import type { CreateCounselingPlanExerciseAIGeneratedDTO } from '../models';
+// @ts-ignore
+import type { CreateCounselingPlanPhaseAIGeneratedDTO } from '../models';
+// @ts-ignore
 import type { CreateCounselingPlanPhaseDTO } from '../models';
 // @ts-ignore
 import type { CreateExerciseDTO } from '../models';
@@ -74,15 +78,14 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
         },
         /**
          * 
-         * @param {string} counselingPlanPhaseId 
+         * @param {CreateCounselingPlanExerciseAIGeneratedDTO} createCounselingPlanExerciseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCounselingPlanExerciseAIGenerated: async (counselingPlanPhaseId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'counselingPlanPhaseId' is not null or undefined
-            assertParamExists('createCounselingPlanExerciseAIGenerated', 'counselingPlanPhaseId', counselingPlanPhaseId)
-            const localVarPath = `/counseling-plan-phases/ai-generated-exercise/{counselingPlanPhaseId}`
-                .replace(`{${"counselingPlanPhaseId"}}`, encodeURIComponent(String(counselingPlanPhaseId)));
+        createCounselingPlanExerciseAIGenerated: async (createCounselingPlanExerciseAIGeneratedDTO: CreateCounselingPlanExerciseAIGeneratedDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createCounselingPlanExerciseAIGeneratedDTO' is not null or undefined
+            assertParamExists('createCounselingPlanExerciseAIGenerated', 'createCounselingPlanExerciseAIGeneratedDTO', createCounselingPlanExerciseAIGeneratedDTO)
+            const localVarPath = `/counseling-plan-phases/ai-generated-exercise/{counselingPlanPhaseId}`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -96,9 +99,12 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createCounselingPlanExerciseAIGeneratedDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -142,15 +148,14 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
         },
         /**
          * 
-         * @param {string} counselingPlanId 
+         * @param {CreateCounselingPlanPhaseAIGeneratedDTO} createCounselingPlanPhaseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCounselingPlanPhaseAIGenerated: async (counselingPlanId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'counselingPlanId' is not null or undefined
-            assertParamExists('createCounselingPlanPhaseAIGenerated', 'counselingPlanId', counselingPlanId)
-            const localVarPath = `/counseling-plan-phases/ai-generated-phase/{counselingPlanId}`
-                .replace(`{${"counselingPlanId"}}`, encodeURIComponent(String(counselingPlanId)));
+        createCounselingPlanPhaseAIGenerated: async (createCounselingPlanPhaseAIGeneratedDTO: CreateCounselingPlanPhaseAIGeneratedDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createCounselingPlanPhaseAIGeneratedDTO' is not null or undefined
+            assertParamExists('createCounselingPlanPhaseAIGenerated', 'createCounselingPlanPhaseAIGeneratedDTO', createCounselingPlanPhaseAIGeneratedDTO)
+            const localVarPath = `/counseling-plan-phases/ai-generated-phase`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -164,9 +169,12 @@ export const CounselingPlanPhaseControllerApiAxiosParamCreator = function (confi
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createCounselingPlanPhaseAIGeneratedDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -337,12 +345,12 @@ export const CounselingPlanPhaseControllerApiFp = function(configuration?: Confi
         },
         /**
          * 
-         * @param {string} counselingPlanPhaseId 
+         * @param {CreateCounselingPlanExerciseAIGeneratedDTO} createCounselingPlanExerciseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateExerciseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId, options);
+        async createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO: CreateCounselingPlanExerciseAIGeneratedDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateExerciseDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseControllerApi.createCounselingPlanExerciseAIGenerated']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -361,12 +369,12 @@ export const CounselingPlanPhaseControllerApiFp = function(configuration?: Confi
         },
         /**
          * 
-         * @param {string} counselingPlanId 
+         * @param {CreateCounselingPlanPhaseAIGeneratedDTO} createCounselingPlanPhaseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCounselingPlanPhaseAIGenerated(counselingPlanId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateCounselingPlanPhaseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createCounselingPlanPhaseAIGenerated(counselingPlanId, options);
+        async createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO: CreateCounselingPlanPhaseAIGeneratedDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateCounselingPlanPhaseDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseControllerApi.createCounselingPlanPhaseAIGenerated']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -441,12 +449,12 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
         },
         /**
          * 
-         * @param {string} counselingPlanPhaseId 
+         * @param {CreateCounselingPlanExerciseAIGeneratedDTO} createCounselingPlanExerciseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO> {
-            return localVarFp.createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId, options).then((request) => request(axios, basePath));
+        createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO: CreateCounselingPlanExerciseAIGeneratedDTO, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO> {
+            return localVarFp.createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -459,12 +467,12 @@ export const CounselingPlanPhaseControllerApiFactory = function (configuration?:
         },
         /**
          * 
-         * @param {string} counselingPlanId 
+         * @param {CreateCounselingPlanPhaseAIGeneratedDTO} createCounselingPlanPhaseAIGeneratedDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCounselingPlanPhaseAIGenerated(counselingPlanId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateCounselingPlanPhaseDTO> {
-            return localVarFp.createCounselingPlanPhaseAIGenerated(counselingPlanId, options).then((request) => request(axios, basePath));
+        createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO: CreateCounselingPlanPhaseAIGeneratedDTO, options?: RawAxiosRequestConfig): AxiosPromise<CreateCounselingPlanPhaseDTO> {
+            return localVarFp.createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -523,12 +531,12 @@ export interface CounselingPlanPhaseControllerApiInterface {
 
     /**
      * 
-     * @param {string} counselingPlanPhaseId 
+     * @param {CreateCounselingPlanExerciseAIGeneratedDTO} createCounselingPlanExerciseAIGeneratedDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApiInterface
      */
-    createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO>;
+    createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO: CreateCounselingPlanExerciseAIGeneratedDTO, options?: RawAxiosRequestConfig): AxiosPromise<CreateExerciseDTO>;
 
     /**
      * 
@@ -541,12 +549,12 @@ export interface CounselingPlanPhaseControllerApiInterface {
 
     /**
      * 
-     * @param {string} counselingPlanId 
+     * @param {CreateCounselingPlanPhaseAIGeneratedDTO} createCounselingPlanPhaseAIGeneratedDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApiInterface
      */
-    createCounselingPlanPhaseAIGenerated(counselingPlanId: string, options?: RawAxiosRequestConfig): AxiosPromise<CreateCounselingPlanPhaseDTO>;
+    createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO: CreateCounselingPlanPhaseAIGeneratedDTO, options?: RawAxiosRequestConfig): AxiosPromise<CreateCounselingPlanPhaseDTO>;
 
     /**
      * 
@@ -607,13 +615,13 @@ export class CounselingPlanPhaseControllerApi extends BaseAPI implements Counsel
 
     /**
      * 
-     * @param {string} counselingPlanPhaseId 
+     * @param {CreateCounselingPlanExerciseAIGeneratedDTO} createCounselingPlanExerciseAIGeneratedDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApi
      */
-    public createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId: string, options?: RawAxiosRequestConfig) {
-        return CounselingPlanPhaseControllerApiFp(this.configuration).createCounselingPlanExerciseAIGenerated(counselingPlanPhaseId, options).then((request) => request(this.axios, this.basePath));
+    public createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO: CreateCounselingPlanExerciseAIGeneratedDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanPhaseControllerApiFp(this.configuration).createCounselingPlanExerciseAIGenerated(createCounselingPlanExerciseAIGeneratedDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -629,13 +637,13 @@ export class CounselingPlanPhaseControllerApi extends BaseAPI implements Counsel
 
     /**
      * 
-     * @param {string} counselingPlanId 
+     * @param {CreateCounselingPlanPhaseAIGeneratedDTO} createCounselingPlanPhaseAIGeneratedDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseControllerApi
      */
-    public createCounselingPlanPhaseAIGenerated(counselingPlanId: string, options?: RawAxiosRequestConfig) {
-        return CounselingPlanPhaseControllerApiFp(this.configuration).createCounselingPlanPhaseAIGenerated(counselingPlanId, options).then((request) => request(this.axios, this.basePath));
+    public createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO: CreateCounselingPlanPhaseAIGeneratedDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanPhaseControllerApiFp(this.configuration).createCounselingPlanPhaseAIGenerated(createCounselingPlanPhaseAIGeneratedDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

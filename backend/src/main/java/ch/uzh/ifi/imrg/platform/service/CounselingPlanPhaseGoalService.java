@@ -9,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseGoalRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
@@ -60,16 +61,18 @@ public class CounselingPlanPhaseGoalService {
   }
 
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      String counselingPlanPhaseId, String therapistId) {
+      CreateCounselingPlanPhaseGoalAIGeneratedDTO dto, String therapistId) {
 
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     CounselingPlanPhase phase =
         counselingPlanPhaseRepository
-            .findById(counselingPlanPhaseId)
+            .findById(dto.getCounselingPlanPhaseId())
             .orElseThrow(
                 () ->
-                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                    new Error(
+                        "Counseling plan phase not found with id: "
+                            + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(phase, therapistId);
 
     CounselingPlan counselingPlan = phase.getCounselingPlan();
@@ -89,14 +92,15 @@ public class CounselingPlanPhaseGoalService {
                 + " The goal should have a concise 'goalName' and a slightly more detailed 'goalDescription'."
                 + " Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations."
                 + " Format: {\"goalName\":\"<name>\", \"goalDescription\":\"<description>\"}",
-            phase.getPhaseName(), counselingPlanPhaseId);
+            phase.getPhaseName(), dto.getCounselingPlanPhaseId());
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseGoalDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseGoalDTO.class);
-    generatedDto.setCounselingPlanPhaseId(counselingPlanPhaseId);
+        LLMUZH.callLLMForObject(
+            messages, CreateCounselingPlanPhaseGoalDTO.class, dto.getLanguage());
+    generatedDto.setCounselingPlanPhaseId(dto.getCounselingPlanPhaseId());
     return generatedDto;
   }
 

@@ -43,7 +43,7 @@ public class ChatMessageService {
     if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
-    String responseMessage = LLMUZH.callLLM(msgs);
+    String responseMessage = LLMUZH.callLLM(msgs, req.getLanguage());
     return new ChatCompletionResponseDTO(responseMessage);
   }
 

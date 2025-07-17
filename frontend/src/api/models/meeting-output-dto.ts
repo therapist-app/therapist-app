@@ -61,9 +61,24 @@ export interface MeetingOutputDTO {
     'location'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof MeetingOutputDTO
+     */
+    'meetingStatus'?: MeetingOutputDTOMeetingStatusEnum;
+    /**
+     * 
      * @type {Array<MeetingNoteOutputDTO>}
      * @memberof MeetingOutputDTO
      */
     'meetingNotesOutputDTO'?: Array<MeetingNoteOutputDTO>;
 }
+
+export const MeetingOutputDTOMeetingStatusEnum = {
+    Pending: 'PENDING',
+    Confirmed: 'CONFIRMED',
+    Cancelled: 'CANCELLED'
+} as const;
+
+export type MeetingOutputDTOMeetingStatusEnum = typeof MeetingOutputDTOMeetingStatusEnum[keyof typeof MeetingOutputDTOMeetingStatusEnum];
+
 

@@ -12,6 +12,8 @@ export enum PAGES {
   CHATBOT_CREATE_PAGE = 'CHATBOT_CREATE_PAGE',
   CHATBOT_DETAILS_PAGE = 'CHATBOT_DETAILS_PAGE',
 
+  PATIENT_CONVERSATIONS_PAGE = 'PATIENT_CONVERSATIONS_PAGE',
+
   MEETINGS_CREATE_PAGE = 'MEETINGS_CREATE_PAGE',
   MEETINGS_DETAILS_PAGE = 'MEETINGS_DETAILS_PAGE',
 
@@ -49,6 +51,7 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
     PAGES.EXERCISES_DETAILS_PAGE,
     PAGES.COUNSELING_PLAN_DETAILS_PAGE,
     PAGES.GAD7_TEST_CREATE_PAGE,
+    PAGES.PATIENT_CONVERSATIONS_PAGE,
   ],
 
   [PAGES.CHATBOT_CREATE_PAGE]: [],
@@ -67,6 +70,8 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
 
   [PAGES.COUNSELING_PLAN_DETAILS_PAGE]: [],
 
+  [PAGES.PATIENT_CONVERSATIONS_PAGE]: [],
+
   [PAGES.NOT_FOUND_PAGE]: [],
 }
 
@@ -78,6 +83,8 @@ export const ROUTES: Record<PAGES, string> = {
 
   [PAGES.PATIENTS_CREATE_PAGE]: '/patients/create',
   [PAGES.PATIENTS_DETAILS_PAGE]: '/patients/:patientId',
+
+  [PAGES.PATIENT_CONVERSATIONS_PAGE]: '/patients/:patientId/conversations-summary',
 
   [PAGES.CHATBOT_CREATE_PAGE]: '/patients/:patientId/chatBots/create',
   [PAGES.CHATBOT_DETAILS_PAGE]: '/patients/:patientId/chatBots/:chatBotId',
@@ -99,31 +106,37 @@ export const ROUTES: Record<PAGES, string> = {
 }
 
 export const PAGE_NAMES: Record<PAGES, string> = {
-  [PAGES.HOME_PAGE]: 'Home',
-  [PAGES.LOGIN_PAGE]: 'Login',
-  [PAGES.REGISTRATION_PAGE]: 'Registration',
-  [PAGES.SETTINGS_PAGE]: 'Settings',
+  [PAGES.HOME_PAGE]: 'pages.home',
+  [PAGES.LOGIN_PAGE]: 'pages.login',
+  [PAGES.REGISTRATION_PAGE]: 'pages.registration',
+  [PAGES.SETTINGS_PAGE]: 'pages.settings',
 
-  [PAGES.PATIENTS_CREATE_PAGE]: 'Register new Client',
-  [PAGES.PATIENTS_DETAILS_PAGE]: 'Client Details',
+  [PAGES.PATIENTS_CREATE_PAGE]: 'pages.patients.create',
+  [PAGES.PATIENTS_DETAILS_PAGE]: 'pages.patients.details',
 
-  [PAGES.CHATBOT_CREATE_PAGE]: 'Create new Chatbot',
-  [PAGES.CHATBOT_DETAILS_PAGE]: 'Chatbot Details',
+  [PAGES.PATIENT_CONVERSATIONS_PAGE]: 'pages.patients.conversations',
 
-  [PAGES.MEETINGS_CREATE_PAGE]: 'Create new Meeting',
-  [PAGES.MEETINGS_DETAILS_PAGE]: 'Meeting Details',
+  [PAGES.CHATBOT_CREATE_PAGE]: 'pages.chatbot.create',
+  [PAGES.CHATBOT_DETAILS_PAGE]: 'pages.chatbot.details',
 
-  [PAGES.GAD7_TEST_CREATE_PAGE]: 'GAD-7 Assessment',
+  [PAGES.MEETINGS_CREATE_PAGE]: 'pages.meetings.create',
+  [PAGES.MEETINGS_DETAILS_PAGE]: 'pages.meetings.details',
 
-  [PAGES.EXERCISES_CREATE_PAGE]: 'Create Exercise',
-  [PAGES.EXERCISES_DETAILS_PAGE]: 'Exercise Details',
+  [PAGES.GAD7_TEST_CREATE_PAGE]: 'pages.gad7.create',
 
-  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'Create new Chatbot Template',
-  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'Chatbot Template Details',
+  [PAGES.EXERCISES_CREATE_PAGE]: 'pages.exercises.create',
+  [PAGES.EXERCISES_DETAILS_PAGE]: 'pages.exercises.details',
 
-  [PAGES.COUNSELING_PLAN_DETAILS_PAGE]: 'Counseling Plan',
+  [PAGES.CHATBOT_TEMPLATES_CREATE_PAGE]: 'pages.chatbot_templates.create',
+  [PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]: 'pages.chatbot_templates.details',
 
-  [PAGES.NOT_FOUND_PAGE]: 'Not Found',
+  [PAGES.COUNSELING_PLAN_DETAILS_PAGE]: 'pages.counseling_plan.details',
+
+  [PAGES.NOT_FOUND_PAGE]: 'pages.not_found',
+}
+
+export const getPageName = (page: PAGES, t: (key: string) => string): string => {
+  return t(PAGE_NAMES[page])
 }
 
 export function getPageFromPath(pathname: string): PAGES {

@@ -4,6 +4,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -18,6 +19,7 @@ import {
 } from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { getCurrentLanguage } from '../../../utils/languageUtil'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -35,7 +37,7 @@ const CreateCounselingPlanExercise = ({
 }: CreateCounselingPlanExerciseProps): ReactElement => {
   const [open, setOpen] = useState(false)
   const { patientId } = useParams()
-
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
@@ -60,7 +62,10 @@ const CreateCounselingPlanExercise = ({
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
     const createExerciseDTO = await dispatch(
-      createCounselingPlanExerciseAIGenerated(counselingPlanPhase.id ?? '')
+      createCounselingPlanExerciseAIGenerated({
+        counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+        language: getCurrentLanguage(),
+      })
     ).unwrap()
 
     const newExerciseFormData: ExerciseFormData = {
@@ -104,7 +109,7 @@ const CreateCounselingPlanExercise = ({
     <div>
       {!open ? (
         <Button variant='contained' onClick={handleCreateExercise}>
-          Create new Exercise
+          {t('counseling_plan.create_new_exercise')}
         </Button>
       ) : (
         <form
@@ -112,7 +117,7 @@ const CreateCounselingPlanExercise = ({
           onSubmit={handleSubmit}
         >
           <TextField
-            label='Title'
+            label={t('counseling_plan.title')}
             name='title'
             value={formData.title}
             onChange={handleChange}
@@ -124,7 +129,7 @@ const CreateCounselingPlanExercise = ({
           <TextField
             select
             sx={{ fontWeight: 'bold' }}
-            label='Exercise Type'
+            label={t('counseling_plan.exercise_type')}
             name='exerciseType'
             value={formData.exerciseType}
             onChange={handleChange}
@@ -140,7 +145,7 @@ const CreateCounselingPlanExercise = ({
 
           <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
             <DateTimePicker
-              label='Exercise Start'
+              label={t('counseling_plan.exercise_start')}
               value={formData.exerciseStart}
               onChange={(newValue: Date | null) => {
                 setFormData({
@@ -152,7 +157,7 @@ const CreateCounselingPlanExercise = ({
             />
 
             <TextField
-              label='Duration in Weeks'
+              label={t('counseling_plan.duration_in_weeks')}
               type='number'
               value={formData.durationInWeeks}
               onChange={(e) => {
@@ -166,13 +171,13 @@ const CreateCounselingPlanExercise = ({
           </LocalizationProvider>
           <div style={{ display: 'flex', gap: '10px' }}>
             <Button type='submit' variant='contained'>
-              Create new Exercise
+              {t('counseling_plan.create_new_exercise')}
             </Button>
             <Button variant='contained' color='success' onClick={handleCreateExerciseWithAI}>
-              Make AI generated suggestion
+              {t('counseling_plan.make_ai_generated_suggestion_for_exercise')}
             </Button>
             <Button variant='outlined' onClick={handleCancel} color='error'>
-              Cancel
+              {t('counseling_plan.cancel')}
             </Button>
           </div>
         </form>

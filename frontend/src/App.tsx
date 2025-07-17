@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import ScrollToTop from './generalComponents/ScrollToTop.tsx'
+import ConversationSummary from './pages/chatbot/ConversationSummary.tsx'
 import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import CounselingPlanDetails from './pages/counselingPlan/CounselingPlanDetails.tsx'
 import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
@@ -63,6 +64,11 @@ const App = (): ReactElement => {
             <Route
               path={ROUTES[PAGES.COUNSELING_PLAN_DETAILS_PAGE]}
               element={<CounselingPlanDetails />}
+            />
+
+            <Route
+              path={ROUTES[PAGES.PATIENT_CONVERSATIONS_PAGE]}
+              element={<ConversationSummary />}
             />
 
             <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />

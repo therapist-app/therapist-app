@@ -27,6 +27,8 @@ import type { CreateTherapistDTO } from '../models';
 import type { LoginTherapistDTO } from '../models';
 // @ts-ignore
 import type { TherapistOutputDTO } from '../models';
+// @ts-ignore
+import type { UpdateTherapistDTO } from '../models';
 /**
  * TherapistControllerApi - axios parameter creator
  * @export
@@ -161,6 +163,41 @@ export const TherapistControllerApiAxiosParamCreator = function (configuration?:
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {UpdateTherapistDTO} updateTherapistDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateTherapist: async (updateTherapistDTO: UpdateTherapistDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateTherapistDTO' is not null or undefined
+            assertParamExists('updateTherapist', 'updateTherapistDTO', updateTherapistDTO)
+            const localVarPath = `/therapists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateTherapistDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -217,6 +254,18 @@ export const TherapistControllerApiFp = function(configuration?: Configuration) 
             const localVarOperationServerBasePath = operationServerMap['TherapistControllerApi.logoutTherapist']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {UpdateTherapistDTO} updateTherapistDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateTherapist(updateTherapistDTO: UpdateTherapistDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TherapistOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTherapist(updateTherapistDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TherapistControllerApi.updateTherapist']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -261,6 +310,15 @@ export const TherapistControllerApiFactory = function (configuration?: Configura
         logoutTherapist(options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.logoutTherapist(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {UpdateTherapistDTO} updateTherapistDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateTherapist(updateTherapistDTO: UpdateTherapistDTO, options?: RawAxiosRequestConfig): AxiosPromise<TherapistOutputDTO> {
+            return localVarFp.updateTherapist(updateTherapistDTO, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -303,6 +361,15 @@ export interface TherapistControllerApiInterface {
      * @memberof TherapistControllerApiInterface
      */
     logoutTherapist(options?: RawAxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * 
+     * @param {UpdateTherapistDTO} updateTherapistDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TherapistControllerApiInterface
+     */
+    updateTherapist(updateTherapistDTO: UpdateTherapistDTO, options?: RawAxiosRequestConfig): AxiosPromise<TherapistOutputDTO>;
 
 }
 
@@ -353,6 +420,17 @@ export class TherapistControllerApi extends BaseAPI implements TherapistControll
      */
     public logoutTherapist(options?: RawAxiosRequestConfig) {
         return TherapistControllerApiFp(this.configuration).logoutTherapist(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateTherapistDTO} updateTherapistDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TherapistControllerApi
+     */
+    public updateTherapist(updateTherapistDTO: UpdateTherapistDTO, options?: RawAxiosRequestConfig) {
+        return TherapistControllerApiFp(this.configuration).updateTherapist(updateTherapistDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
