@@ -33,7 +33,7 @@ const ConversationSummary = (): ReactElement => {
       <Box sx={{ maxWidth: 800 }}>
         <Typography variant='h4' gutterBottom>
           Conversations from&nbsp;
-          {dayjs().subtract(7, 'day').format('DD MMM YYYY')} –
+          {dayjs().subtract(7,'day').format('DD MMM YYYY')}–
           {dayjs().format('DD MMM YYYY')}
         </Typography>
 
