@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.CreateChatbotDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
@@ -9,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,15 @@ public class ChatbotTemplateService {
     ChatbotTemplate saved = chatbotTemplateRepository.save(template);
     chatbotTemplateRepository.flush();
 
+    CreateChatbotDTOPatientAPI createChatbotDTO =
+        new CreateChatbotDTOPatientAPI()
+            .chatbotRole(saved.getChatbotRole())
+            .chatbotTone(saved.getChatbotTone())
+            .welcomeMessage(saved.getWelcomeMessage());
+
+    PatientAppAPIs.coachChatbotControllerPatientAPI
+        .createChatbot(patientId, createChatbotDTO)
+        .block();
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
   }
 
