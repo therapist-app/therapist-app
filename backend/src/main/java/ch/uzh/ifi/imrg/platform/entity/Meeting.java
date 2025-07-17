@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -35,6 +36,8 @@ public class Meeting implements Serializable, OwnedByTherapist {
 
   @Column(nullable = true)
   private String location;
+
+  @Column() private MeetingStatus meetingStatus;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")

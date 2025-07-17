@@ -123,6 +123,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CoachChatbotControllerPatientAPI* | [**createChatbot**](docs/CoachChatbotControllerPatientAPI.md#createChatbot) | **POST** /coach/patients/{patientId}/chatbot | 
 *CoachChatbotControllerPatientAPI* | [**getChatbotConfigurations**](docs/CoachChatbotControllerPatientAPI.md#getChatbotConfigurations) | **GET** /coach/patients/{patientId}/chatbot | 
+*CoachChatbotControllerPatientAPI* | [**getConversationSummary**](docs/CoachChatbotControllerPatientAPI.md#getConversationSummary) | **GET** /coach/patients/{patientId}/chatbot-summary | 
 *CoachChatbotControllerPatientAPI* | [**updateChatbot**](docs/CoachChatbotControllerPatientAPI.md#updateChatbot) | **PUT** /coach/patients/{patientId}/chatbot | 
 *CoachDocumentControllerPatientAPI* | [**deleteDocument**](docs/CoachDocumentControllerPatientAPI.md#deleteDocument) | **DELETE** /coach/patients/{patientId}/documents/{documentId} | 
 *CoachDocumentControllerPatientAPI* | [**download1**](docs/CoachDocumentControllerPatientAPI.md#download1) | **GET** /coach/patients/{patientId}/documents/{documentId} | 
@@ -146,13 +147,17 @@ Class | Method | HTTP request | Description
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestResults**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestResults) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
-*ConversationControllerPatientAPI* | [**getAllMessages1**](docs/ConversationControllerPatientAPI.md#getAllMessages1) | **GET** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**getAllMessages3**](docs/ConversationControllerPatientAPI.md#getAllMessages3) | **GET** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getConversationNames**](docs/ConversationControllerPatientAPI.md#getConversationNames) | **GET** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**postConversationName**](docs/ConversationControllerPatientAPI.md#postConversationName) | **PUT** /patients/conversations/{conversationId}/conversation-name | 
-*ConversationControllerPatientAPI* | [**sendMessage1**](docs/ConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/conversations/messages/{conversationId} | 
+*ConversationControllerPatientAPI* | [**sendMessage2**](docs/ConversationControllerPatientAPI.md#sendMessage2) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
 *DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
 *DocumentControllerPatientAPI* | [**download**](docs/DocumentControllerPatientAPI.md#download) | **GET** /patients/documents/{documentId} | 
+*DocumentControllerPatientAPI* | [**getAllMessages1**](docs/DocumentControllerPatientAPI.md#getAllMessages1) | **GET** /patients/documents/{documentId}/chatbot | 
+*DocumentConversationControllerPatientAPI* | [**deleteDocumentChat**](docs/DocumentConversationControllerPatientAPI.md#deleteDocumentChat) | **DELETE** /patients/document-conversation/{conversationId} | 
+*DocumentConversationControllerPatientAPI* | [**getAllMessages2**](docs/DocumentConversationControllerPatientAPI.md#getAllMessages2) | **GET** /patients/document-conversation/{conversationId}/messages | 
+*DocumentConversationControllerPatientAPI* | [**sendMessage1**](docs/DocumentConversationControllerPatientAPI.md#sendMessage1) | **POST** /patients/document-conversation/{conversationId}/messages | 
 *ExerciseControllerPatientAPI* | [**getExercise**](docs/ExerciseControllerPatientAPI.md#getExercise) | **GET** /patients/exercises/{exerciseId} | 
 *ExerciseControllerPatientAPI* | [**getExerciseChatbot**](docs/ExerciseControllerPatientAPI.md#getExerciseChatbot) | **GET** /patients/exercises/{exerciseId}/chatbot | 
 *ExerciseControllerPatientAPI* | [**getExerciseOverview**](docs/ExerciseControllerPatientAPI.md#getExerciseOverview) | **GET** /patients/exercises | 
@@ -174,6 +179,7 @@ Class | Method | HTTP request | Description
 *MeetingControllerPatientAPI* | [**updateMeeting**](docs/MeetingControllerPatientAPI.md#updateMeeting) | **PUT** /patients/meetings/{meetingId} | 
 *PatientAppApplicationPatientAPI* | [**helloWorld**](docs/PatientAppApplicationPatientAPI.md#helloWorld) | **GET** / | 
 *PatientControllerPatientAPI* | [**changePassword**](docs/PatientControllerPatientAPI.md#changePassword) | **PUT** /patients/passwords | 
+*PatientControllerPatientAPI* | [**getAvatar**](docs/PatientControllerPatientAPI.md#getAvatar) | **GET** /patients/chat-bot-avatar | 
 *PatientControllerPatientAPI* | [**getCurrentlyLoggedInPatient**](docs/PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me | 
 *PatientControllerPatientAPI* | [**getLanguage**](docs/PatientControllerPatientAPI.md#getLanguage) | **GET** /patients/language | 
 *PatientControllerPatientAPI* | [**getName**](docs/PatientControllerPatientAPI.md#getName) | **GET** /patients/name | 
@@ -181,6 +187,7 @@ Class | Method | HTTP request | Description
 *PatientControllerPatientAPI* | [**loginTherapist**](docs/PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login | 
 *PatientControllerPatientAPI* | [**logoutTherapist**](docs/PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout | 
 *PatientControllerPatientAPI* | [**registerPatient**](docs/PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register | This endpoint will be removed
+*PatientControllerPatientAPI* | [**setAvatar**](docs/PatientControllerPatientAPI.md#setAvatar) | **PUT** /patients/chat-bot-avatar | 
 *PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
 *PatientControllerPatientAPI* | [**setName**](docs/PatientControllerPatientAPI.md#setName) | **PUT** /patients/name | 
 *PatientControllerPatientAPI* | [**setOnboarded**](docs/PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded | 
@@ -195,11 +202,14 @@ Class | Method | HTTP request | Description
  - [CoachJournalEntryOutputDTOPatientAPI](docs/CoachJournalEntryOutputDTOPatientAPI.md)
  - [CompleteConversationOutputDTOPatientAPI](docs/CompleteConversationOutputDTOPatientAPI.md)
  - [CompleteExerciseConversationOutputDTOPatientAPI](docs/CompleteExerciseConversationOutputDTOPatientAPI.md)
+ - [ConversationSummaryOutputDTOPatientAPI](docs/ConversationSummaryOutputDTOPatientAPI.md)
  - [CreateChatbotDTOPatientAPI](docs/CreateChatbotDTOPatientAPI.md)
  - [CreateConversationOutputDTOPatientAPI](docs/CreateConversationOutputDTOPatientAPI.md)
  - [CreateMeetingDTOPatientAPI](docs/CreateMeetingDTOPatientAPI.md)
  - [CreateMessageDTOPatientAPI](docs/CreateMessageDTOPatientAPI.md)
  - [CreatePatientDTOPatientAPI](docs/CreatePatientDTOPatientAPI.md)
+ - [DocumentChatbotOutputDTOPatientAPI](docs/DocumentChatbotOutputDTOPatientAPI.md)
+ - [DocumentConversationOutputDTOPatientAPI](docs/DocumentConversationOutputDTOPatientAPI.md)
  - [DocumentOverviewDTOPatientAPI](docs/DocumentOverviewDTOPatientAPI.md)
  - [ExerciseChatbotOutputDTOPatientAPI](docs/ExerciseChatbotOutputDTOPatientAPI.md)
  - [ExerciseElementInputDTOPatientAPI](docs/ExerciseElementInputDTOPatientAPI.md)
@@ -222,6 +232,7 @@ Class | Method | HTTP request | Description
  - [ExercisesOverviewOutputDTOPatientAPI](docs/ExercisesOverviewOutputDTOPatientAPI.md)
  - [FileDataPatientAPI](docs/FileDataPatientAPI.md)
  - [GetAllJournalEntriesDTOPatientAPI](docs/GetAllJournalEntriesDTOPatientAPI.md)
+ - [GetConversationSummaryInputDTOPatientAPI](docs/GetConversationSummaryInputDTOPatientAPI.md)
  - [ImageDataPatientAPI](docs/ImageDataPatientAPI.md)
  - [JournalEntryOutputDTOPatientAPI](docs/JournalEntryOutputDTOPatientAPI.md)
  - [JournalEntryRequestDTOPatientAPI](docs/JournalEntryRequestDTOPatientAPI.md)
@@ -235,6 +246,7 @@ Class | Method | HTTP request | Description
  - [PsychologicalTestOutputDTOPatientAPI](docs/PsychologicalTestOutputDTOPatientAPI.md)
  - [PsychologicalTestQuestionInputDTOPatientAPI](docs/PsychologicalTestQuestionInputDTOPatientAPI.md)
  - [PsychologicalTestQuestionOutputDTOPatientAPI](docs/PsychologicalTestQuestionOutputDTOPatientAPI.md)
+ - [PutAvatarDTOPatientAPI](docs/PutAvatarDTOPatientAPI.md)
  - [PutConversationNameDTOPatientAPI](docs/PutConversationNameDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)

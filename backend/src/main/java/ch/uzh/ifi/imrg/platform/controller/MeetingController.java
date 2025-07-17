@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,6 +55,13 @@ public class MeetingController {
     List<MeetingOutputDTO> meetingOutputDTOs =
         meetingService.getAllMeetingsOfPatient(patientId, therapistId);
     return meetingOutputDTOs;
+  }
+
+  @PutMapping()
+  @ResponseStatus(HttpStatus.OK)
+  public MeetingOutputDTO updateMeeting(
+      @RequestBody UpdateMeetingDTO dto, @CurrentTherapistId String therapistId) {
+    return meetingService.updateMeeting(dto, therapistId);
   }
 
   @DeleteMapping("/{meetingId}")

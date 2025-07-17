@@ -297,6 +297,34 @@ paths:
       - conversation-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/chat-bot-avatar:
+    get:
+      operationId: getAvatar
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PatientOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+    put:
+      operationId: setAvatar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutAvatarDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/meetings/{meetingId}:
     delete:
       operationId: deleteMeeting_1
@@ -797,6 +825,54 @@ paths:
       - exercise-conversation-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/document-conversation/{conversationId}/messages:
+    get:
+      operationId: getAllMessages_2
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DocumentConversationOutputDTO'
+          description: OK
+      tags:
+      - document-conversation-controller
+      x-accepts: '*/*'
+    post:
+      operationId: sendMessage_1
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MessageOutputDTO'
+          description: OK
+      tags:
+      - document-conversation-controller
+      x-content-type: application/json
+      x-accepts: '*/*'
   /patients/conversations:
     get:
       operationId: getConversationNames
@@ -826,7 +902,7 @@ paths:
       x-accepts: '*/*'
   /patients/conversations/messages/{conversationId}:
     get:
-      operationId: getAllMessages_1
+      operationId: getAllMessages_3
       parameters:
       - explode: false
         in: path
@@ -846,7 +922,7 @@ paths:
       - conversation-controller
       x-accepts: '*/*'
     post:
-      operationId: sendMessage_1
+      operationId: sendMessage_2
       parameters:
       - explode: false
         in: path
@@ -1183,6 +1259,27 @@ paths:
       tags:
       - document-controller
       x-accepts: '*/*'
+  /patients/documents/{documentId}/chatbot:
+    get:
+      operationId: getAllMessages_1
+      parameters:
+      - explode: false
+        in: path
+        name: documentId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DocumentChatbotOutputDTO'
+          description: OK
+      tags:
+      - document-controller
+      x-accepts: '*/*'
   /coach/patients/{patientId}/psychological-tests:
     get:
       operationId: getPsychologicalTestNames
@@ -1353,6 +1450,42 @@ paths:
       tags:
       - coach-document-controller
       x-accepts: '*/*'
+  /coach/patients/{patientId}/chatbot-summary:
+    get:
+      operationId: getConversationSummary
+      parameters:
+      - explode: true
+        in: query
+        name: getConversationSummaryInputDTO
+        required: true
+        schema:
+          $ref: '#/components/schemas/GetConversationSummaryInputDTO'
+        style: form
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "409":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: Conflict
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ConversationSummaryOutputDTO'
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-chatbot-controller
+      x-accepts: '*/*'
   /:
     get:
       operationId: helloWorld
@@ -1382,6 +1515,23 @@ paths:
           description: OK
       tags:
       - exercise-conversation-controller
+      x-accepts: application/json
+  /patients/document-conversation/{conversationId}:
+    delete:
+      operationId: deleteDocumentChat
+      parameters:
+      - explode: false
+        in: path
+        name: conversationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - document-conversation-controller
       x-accepts: application/json
   /coach/patients/{patientId}:
     delete:
@@ -1556,6 +1706,22 @@ components:
         conversationName:
           type: string
       type: object
+    PutAvatarDTO:
+      properties:
+        chatBotAvatar:
+          enum:
+          - ANIMALISTIC
+          - BLOB
+          - CRYSTAL
+          - HUMANISTIC
+          - NONE
+          - PLANT
+          - ROBOTIC
+          - NEURALNETWORK
+          type: string
+      required:
+      - chatBotAvatar
+      type: object
     ExerciseElementInputDTO:
       discriminator:
         propertyName: type
@@ -1689,6 +1855,7 @@ components:
         language: language
         id: id
         email: email
+        chatBotAvatar: ANIMALISTIC
       properties:
         id:
           type: string
@@ -1702,6 +1869,17 @@ components:
           type: string
         onboarded:
           type: boolean
+        chatBotAvatar:
+          enum:
+          - ANIMALISTIC
+          - BLOB
+          - CRYSTAL
+          - HUMANISTIC
+          - NONE
+          - PLANT
+          - ROBOTIC
+          - NEURALNETWORK
+          type: string
       type: object
     CreateMeetingDTO:
       properties:
@@ -1778,10 +1956,22 @@ components:
       example:
         welcomeMessage: welcomeMessage
         id: id
+        chatBotAvatar: ANIMALISTIC
       properties:
         id:
           type: string
         welcomeMessage:
+          type: string
+        chatBotAvatar:
+          enum:
+          - ANIMALISTIC
+          - BLOB
+          - CRYSTAL
+          - HUMANISTIC
+          - NONE
+          - PLANT
+          - ROBOTIC
+          - NEURALNETWORK
           type: string
       type: object
     DocumentOverviewDTO:
@@ -1809,8 +1999,6 @@ components:
           type: string
         welcomeMessage:
           type: string
-        active:
-          type: boolean
       type: object
     GetAllJournalEntriesDTO:
       example:
@@ -1941,18 +2129,56 @@ components:
       type: object
     ExerciseChatbotOutputDTO:
       example:
-        chatbotIcon: chatbotIcon
+        welcomeMessage: welcomeMessage
         name: name
         id: id
       properties:
         name:
           type: string
-        chatbotIcon:
-          type: string
         id:
+          type: string
+        welcomeMessage:
           type: string
       type: object
     CompleteExerciseConversationOutputDTO:
+      example:
+        name: name
+        messages:
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        - requestMessage: requestMessage
+          conversationId: conversationId
+          id: id
+          responseMessage: responseMessage
+          timestamp: timestamp
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        messages:
+          items:
+            $ref: '#/components/schemas/MessageOutputDTO'
+          type: array
+      type: object
+    DocumentChatbotOutputDTO:
+      example:
+        welcomeMessage: welcomeMessage
+        name: name
+        id: id
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        welcomeMessage:
+          type: string
+      type: object
+    DocumentConversationOutputDTO:
       example:
         name: name
         messages:
@@ -2008,6 +2234,7 @@ components:
           timestamp: timestamp
         id: id
         shareWithCoach: true
+        chatBotAvatar: ANIMALISTIC
       properties:
         id:
           type: string
@@ -2023,6 +2250,17 @@ components:
           items:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
+        chatBotAvatar:
+          enum:
+          - ANIMALISTIC
+          - BLOB
+          - CRYSTAL
+          - HUMANISTIC
+          - NONE
+          - PLANT
+          - ROBOTIC
+          - NEURALNETWORK
+          type: string
       type: object
     PsychologicalTestNameOutputDTO:
       example:
@@ -2186,11 +2424,32 @@ components:
         active:
           type: boolean
       type: object
+    GetConversationSummaryInputDTO:
+      properties:
+        start:
+          format: date-time
+          type: string
+        end:
+          format: date-time
+          type: string
+      required:
+      - end
+      - start
+      type: object
+    ConversationSummaryOutputDTO:
+      example:
+        conversationSummary: conversationSummary
+      properties:
+        conversationSummary:
+          type: string
+      type: object
     uploadAndShare_request:
       properties:
-        patientFile:
+        file:
           format: binary
           type: string
+      required:
+      - file
       type: object
     ExerciseInputDTO_exerciseElements_inner:
       oneOf:

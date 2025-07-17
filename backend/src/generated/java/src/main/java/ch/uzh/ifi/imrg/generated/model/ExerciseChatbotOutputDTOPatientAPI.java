@@ -28,8 +28,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_CHATBOT_ICON,
-  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID
+  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID,
+  ExerciseChatbotOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
 })
 @JsonTypeName("ExerciseChatbotOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -37,11 +37,11 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
-  public static final String JSON_PROPERTY_CHATBOT_ICON = "chatbotIcon";
-  private String chatbotIcon;
-
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
+
+  public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
+  private String welcomeMessage;
 
   public ExerciseChatbotOutputDTOPatientAPI() {
   }
@@ -72,32 +72,6 @@ public class ExerciseChatbotOutputDTOPatientAPI {
   }
 
 
-  public ExerciseChatbotOutputDTOPatientAPI chatbotIcon(String chatbotIcon) {
-    
-    this.chatbotIcon = chatbotIcon;
-    return this;
-  }
-
-   /**
-   * Get chatbotIcon
-   * @return chatbotIcon
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CHATBOT_ICON)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getChatbotIcon() {
-    return chatbotIcon;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_CHATBOT_ICON)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setChatbotIcon(String chatbotIcon) {
-    this.chatbotIcon = chatbotIcon;
-  }
-
-
   public ExerciseChatbotOutputDTOPatientAPI id(String id) {
     
     this.id = id;
@@ -123,6 +97,32 @@ public class ExerciseChatbotOutputDTOPatientAPI {
     this.id = id;
   }
 
+
+  public ExerciseChatbotOutputDTOPatientAPI welcomeMessage(String welcomeMessage) {
+    
+    this.welcomeMessage = welcomeMessage;
+    return this;
+  }
+
+   /**
+   * Get welcomeMessage
+   * @return welcomeMessage
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getWelcomeMessage() {
+    return welcomeMessage;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_WELCOME_MESSAGE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setWelcomeMessage(String welcomeMessage) {
+    this.welcomeMessage = welcomeMessage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -133,13 +133,13 @@ public class ExerciseChatbotOutputDTOPatientAPI {
     }
     ExerciseChatbotOutputDTOPatientAPI exerciseChatbotOutputDTO = (ExerciseChatbotOutputDTOPatientAPI) o;
     return Objects.equals(this.name, exerciseChatbotOutputDTO.name) &&
-        Objects.equals(this.chatbotIcon, exerciseChatbotOutputDTO.chatbotIcon) &&
-        Objects.equals(this.id, exerciseChatbotOutputDTO.id);
+        Objects.equals(this.id, exerciseChatbotOutputDTO.id) &&
+        Objects.equals(this.welcomeMessage, exerciseChatbotOutputDTO.welcomeMessage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, chatbotIcon, id);
+    return Objects.hash(name, id, welcomeMessage);
   }
 
   @Override
@@ -147,8 +147,8 @@ public class ExerciseChatbotOutputDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExerciseChatbotOutputDTOPatientAPI {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    chatbotIcon: ").append(toIndentedString(chatbotIcon)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE
+  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
+  CreateConversationOutputDTOPatientAPI.JSON_PROPERTY_CHAT_BOT_AVATAR
 })
 @JsonTypeName("CreateConversationOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -38,6 +39,56 @@ public class CreateConversationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
   private String welcomeMessage;
+
+  /**
+   * Gets or Sets chatBotAvatar
+   */
+  public enum ChatBotAvatarEnum {
+    ANIMALISTIC("ANIMALISTIC"),
+    
+    BLOB("BLOB"),
+    
+    CRYSTAL("CRYSTAL"),
+    
+    HUMANISTIC("HUMANISTIC"),
+    
+    NONE("NONE"),
+    
+    PLANT("PLANT"),
+    
+    ROBOTIC("ROBOTIC"),
+    
+    NEURALNETWORK("NEURALNETWORK");
+
+    private String value;
+
+    ChatBotAvatarEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ChatBotAvatarEnum fromValue(String value) {
+      for (ChatBotAvatarEnum b : ChatBotAvatarEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_CHAT_BOT_AVATAR = "chatBotAvatar";
+  private ChatBotAvatarEnum chatBotAvatar;
 
   public CreateConversationOutputDTOPatientAPI() {
   }
@@ -93,6 +144,32 @@ public class CreateConversationOutputDTOPatientAPI {
     this.welcomeMessage = welcomeMessage;
   }
 
+
+  public CreateConversationOutputDTOPatientAPI chatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    
+    this.chatBotAvatar = chatBotAvatar;
+    return this;
+  }
+
+   /**
+   * Get chatBotAvatar
+   * @return chatBotAvatar
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public ChatBotAvatarEnum getChatBotAvatar() {
+    return chatBotAvatar;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_CHAT_BOT_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setChatBotAvatar(ChatBotAvatarEnum chatBotAvatar) {
+    this.chatBotAvatar = chatBotAvatar;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -103,12 +180,13 @@ public class CreateConversationOutputDTOPatientAPI {
     }
     CreateConversationOutputDTOPatientAPI createConversationOutputDTO = (CreateConversationOutputDTOPatientAPI) o;
     return Objects.equals(this.id, createConversationOutputDTO.id) &&
-        Objects.equals(this.welcomeMessage, createConversationOutputDTO.welcomeMessage);
+        Objects.equals(this.welcomeMessage, createConversationOutputDTO.welcomeMessage) &&
+        Objects.equals(this.chatBotAvatar, createConversationOutputDTO.chatBotAvatar);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, welcomeMessage);
+    return Objects.hash(id, welcomeMessage, chatBotAvatar);
   }
 
   @Override
@@ -117,6 +195,7 @@ public class CreateConversationOutputDTOPatientAPI {
     sb.append("class CreateConversationOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
+    sb.append("    chatBotAvatar: ").append(toIndentedString(chatBotAvatar)).append("\n");
     sb.append("}");
     return sb.toString();
   }

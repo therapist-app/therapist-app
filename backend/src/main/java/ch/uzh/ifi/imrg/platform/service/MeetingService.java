@@ -1,11 +1,14 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.CreateMeetingDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.UpdateMeetingDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
+import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
@@ -44,6 +47,7 @@ public class MeetingService {
     meeting.setMeetingStart(createMeetingDTO.getMeetingStart());
     meeting.setMeetingEnd(createMeetingDTO.getMeetingEnd());
     meeting.setLocation(createMeetingDTO.getLocation());
+    meeting.setMeetingStatus(MeetingStatus.CONFIRMED);
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
     CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
@@ -76,6 +80,40 @@ public class MeetingService {
     return patient.getMeetings().stream()
         .map(MeetingsMapper.INSTANCE::convertEntityToMeetingOutputDTO)
         .collect(Collectors.toList());
+  }
+
+  public MeetingOutputDTO updateMeeting(UpdateMeetingDTO dto, String therapistId) {
+    Meeting meeting = meetingRepository.getReferenceById(dto.getId());
+    SecurityUtil.checkOwnership(meeting, therapistId);
+
+    UpdateMeetingDTOPatientAPI patientAppDto = new UpdateMeetingDTOPatientAPI();
+
+    if (dto.getMeetingStart() != null) {
+      meeting.setMeetingStart(dto.getMeetingStart());
+      patientAppDto.setStartAt(dto.getMeetingStart());
+    }
+    if (dto.getMeetingEnd() != null) {
+      meeting.setMeetingEnd(dto.getMeetingEnd());
+      patientAppDto.setEndAt(dto.getMeetingEnd());
+    }
+    if (dto.getLocation() != null) {
+      meeting.setLocation(dto.getLocation());
+      patientAppDto.setLocation(dto.getLocation());
+    }
+    if (dto.getMeetingStatus() != null) {
+      meeting.setMeetingStatus(dto.getMeetingStatus());
+      UpdateMeetingDTOPatientAPI.MeetingStatusEnum updateMeetingStatusEnum =
+          UpdateMeetingDTOPatientAPI.MeetingStatusEnum.valueOf(dto.getMeetingStatus().name());
+      patientAppDto = patientAppDto.meetingStatus(updateMeetingStatusEnum);
+    }
+
+    PatientAppAPIs.coachMeetingControllerPatientAPI.updateMeeting1(
+        meeting.getPatient().getId(), meeting.getId(), patientAppDto);
+    // TODO: add .block()
+
+    meetingRepository.save(meeting);
+
+    return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(meeting);
   }
 
   public void deleteMeetingById(String meetingId, String therapistId) {

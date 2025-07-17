@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
+import ch.uzh.ifi.imrg.generated.model.DocumentChatbotOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.DocumentOverviewDTOPatientAPI;
 
 import java.util.HashMap;
@@ -183,5 +184,79 @@ public class DocumentControllerPatientAPI {
      */
     public ResponseSpec downloadWithResponseSpec(String documentId) throws WebClientResponseException {
         return downloadRequestCreation(documentId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param documentId The documentId parameter
+     * @return DocumentChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getAllMessages1RequestCreation(String documentId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'documentId' is set
+        if (documentId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'documentId' when calling getAllMessages1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("documentId", documentId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/documents/{documentId}/chatbot", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param documentId The documentId parameter
+     * @return DocumentChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<DocumentChatbotOutputDTOPatientAPI> getAllMessages1(String documentId) throws WebClientResponseException {
+        ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI>() {};
+        return getAllMessages1RequestCreation(documentId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param documentId The documentId parameter
+     * @return ResponseEntity&lt;DocumentChatbotOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<DocumentChatbotOutputDTOPatientAPI>> getAllMessages1WithHttpInfo(String documentId) throws WebClientResponseException {
+        ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI>() {};
+        return getAllMessages1RequestCreation(documentId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param documentId The documentId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getAllMessages1WithResponseSpec(String documentId) throws WebClientResponseException {
+        return getAllMessages1RequestCreation(documentId);
     }
 }

@@ -6,6 +6,7 @@ import ch.uzh.ifi.imrg.generated.model.ChangePasswordDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.LoginPatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutAvatarDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutNameDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
@@ -120,6 +121,70 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec changePasswordWithResponseSpec(ChangePasswordDTOPatientAPI changePasswordDTOPatientAPI) throws WebClientResponseException {
         return changePasswordRequestCreation(changePasswordDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getAvatarRequestCreation() throws WebClientResponseException {
+        Object postBody = null;
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/chat-bot-avatar", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return PatientOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<PatientOutputDTOPatientAPI> getAvatar() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getAvatarRequestCreation().bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseEntity&lt;PatientOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<PatientOutputDTOPatientAPI>> getAvatarWithHttpInfo() throws WebClientResponseException {
+        ParameterizedTypeReference<PatientOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PatientOutputDTOPatientAPI>() {};
+        return getAvatarRequestCreation().toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getAvatarWithResponseSpec() throws WebClientResponseException {
+        return getAvatarRequestCreation();
     }
     /**
      * 
@@ -583,6 +648,75 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec registerPatientWithResponseSpec(CreatePatientDTOPatientAPI createPatientDTOPatientAPI) throws WebClientResponseException {
         return registerPatientRequestCreation(createPatientDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putAvatarDTOPatientAPI The putAvatarDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec setAvatarRequestCreation(PutAvatarDTOPatientAPI putAvatarDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = putAvatarDTOPatientAPI;
+        // verify the required parameter 'putAvatarDTOPatientAPI' is set
+        if (putAvatarDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'putAvatarDTOPatientAPI' when calling setAvatar", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/chat-bot-avatar", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putAvatarDTOPatientAPI The putAvatarDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> setAvatar(PutAvatarDTOPatientAPI putAvatarDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setAvatarRequestCreation(putAvatarDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putAvatarDTOPatientAPI The putAvatarDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> setAvatarWithHttpInfo(PutAvatarDTOPatientAPI putAvatarDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setAvatarRequestCreation(putAvatarDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param putAvatarDTOPatientAPI The putAvatarDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec setAvatarWithResponseSpec(PutAvatarDTOPatientAPI putAvatarDTOPatientAPI) throws WebClientResponseException {
+        return setAvatarRequestCreation(putAvatarDTOPatientAPI);
     }
     /**
      * 
