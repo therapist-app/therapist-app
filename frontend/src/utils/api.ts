@@ -18,6 +18,7 @@ import {
   TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
+  ConversationControllerApiFactory,
 } from '../api'
 
 const baseURL: string = import.meta.env.VITE_API_BASE_URL
@@ -69,7 +70,7 @@ export const exerciseApi = ExerciseControllerApiFactory(undefined, baseURL, api)
 export const exerciseComponentApi = ExerciseComponentControllerApiFactory(undefined, baseURL, api)
 export const chatApi = ChatControllerApiFactory(undefined, baseURL, api)
 export const counselingPlanApi = CounselingPlanControllerApiFactory(undefined, baseURL, api)
-// export const conversationApi = ConversationControllerApiFactory(undefined, baseURL, api)
+export const conversationApi = ConversationControllerApiFactory(undefined, baseURL, api)
 export const counselingPlanPhaseApi = CounselingPlanPhaseControllerApiFactory(
   undefined,
   baseURL,

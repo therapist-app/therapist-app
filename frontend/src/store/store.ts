@@ -10,6 +10,7 @@ import patientReducer from './patientSlice'
 import therapistChatbotReducer from './therapistChatbotSlice'
 import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
+import conversationReducer from './conversationSlice'
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     therapistChatbot: therapistChatbotReducer,
     counselingPlan: counselingPlanReducer,
     chatbotTemplateDocument: chatbotTemplateDocumentReducer,
+    conversation: conversationReducer,
   },
 })
 

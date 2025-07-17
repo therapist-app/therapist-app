@@ -1,81 +1,46 @@
-import { Box, Card, CardContent, CircularProgress, Typography } from '@mui/material'
-import React, { ReactElement, useEffect, useState } from 'react'
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Alert,
+} from '@mui/material'
+import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+import { fetchConversationSummary } from '../../store/conversationSlice'
 
-import Layout from '../../generalComponents/Layout'
-
-interface ConversationSummaryOutputDTO {
-  name: string | null
-  start: string
-  end: string
-  messages: {
-    id: string
-    excerpt: string
-    time: string
-  }[]
-}
-
-const ConversationSummary = (): ReactElement => {
-  const { patientId = '' } = useParams<{ patientId: string }>()
-  const [summary, setSummary] = useState<ConversationSummaryOutputDTO | null>(null)
+const ConversationSummary = () => {
+  const { patientId } = useParams<{ patientId: string }>()
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+const summary = useAppSelector(
+  (s) => (patientId ? s.conversation.byPatient[patientId] : '')
+)
 
-  useEffect((): void => {
-    if (!patientId) {
-      return
-    }
 
-    const now = new Date()
-    const start = new Date(now)
-    start.setDate(start.getDate() - 30)
-    ;(async (): Promise<void> => {
-      try {
-        // const res = await conversationApi.getConversationSummary(
-        //   patientId,
-        //   start.toISOString(),
-        //   now.toISOString()
-        // )
-        // setSummary(res.data as ConversationSummaryOutputDTO)
-        setSummary(null)
-      } catch (err) {
-        console.error('Failed to load conversation summary', err)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [patientId])
+  useEffect(() => {
+  if (!patientId) return
+  dispatch(
+    fetchConversationSummary({
+      patientId,
+      start: dayjs().subtract(7, 'day').toISOString(),
+      end: dayjs().toISOString(),
+    })
+  )
+}, [dispatch, patientId])
+
+  if (loading) return <CircularProgress />
+  if (error) return <Alert severity='error'>{error}</Alert>
 
   return (
-    <Layout>
-      <Typography variant='h2' sx={{ mb: 3 }}>
+    <Box sx={{ maxWidth: 800 }}>
+      <Typography variant='h2' gutterBottom>
         Conversation Summary
       </Typography>
-
-      {loading && <CircularProgress />}
-
-      {!loading && summary && (
-        <Box sx={{ maxWidth: 700 }}>
-          <Typography variant='h5' sx={{ mb: 2 }}>
-            {summary.name || 'Unnamed chatbot'}
-          </Typography>
-
-          {summary.messages.map((m) => (
-            <Card key={m.id} sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant='caption' color='textSecondary'>
-                  {new Date(m.time).toLocaleString()}
-                </Typography>
-                <Typography variant='body1' sx={{ mt: 1 }}>
-                  {m.excerpt}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-
-          {!summary.messages.length && <Typography>No messages in the selected period.</Typography>}
-        </Box>
-      )}
-    </Layout>
+      <Typography whiteSpace='pre-line'>{summary}</Typography>
+    </Box>
   )
 }
 

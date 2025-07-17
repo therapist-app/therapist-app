@@ -302,21 +302,19 @@ const ChatbotOverview = (): ReactElement => {
           {patientTemplates.length ? (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <Typography variant='h4'>{t('chatbot.client_chatbot')}</Typography>
+  <Typography variant='h4'>{t('chatbot.client_chatbot')}</Typography>
 
-                <Button
-                  size='small'
-                  variant='outlined'
-                  onClick={() =>
-                    navigate(
-                      getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
-                      { state: { patientId: patientId } }
-                    )
-                  }
-                >
-                  {t('chatbot.conversation_summary')}
-                </Button>
-              </Box>
+  <Button
+    variant='outlined'
+    onClick={() =>
+      navigate(
+        getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! })
+      )
+    }
+  >
+    {t('chatbot.conversation_summary')}
+  </Button>
+</Box>
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {patientTemplates.map((bot) => renderCard(bot, true))}
