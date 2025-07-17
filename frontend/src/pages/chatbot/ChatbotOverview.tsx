@@ -305,10 +305,12 @@ const ChatbotOverview = (): ReactElement => {
                 <Typography variant='h4'>{t('chatbot.client_chatbot')}</Typography>
 
                 <Button
+                  size='small'
                   variant='outlined'
                   onClick={() =>
                     navigate(
-                      getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! })
+                      getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
+                      { state: { patientId: patientId } }
                     )
                   }
                 >
