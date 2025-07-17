@@ -1,80 +1,52 @@
-import { Box, Card, CardContent, CircularProgress, Typography } from '@mui/material'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { Alert, Box, CircularProgress, Typography } from '@mui/material'
+import dayjs from 'dayjs'
+import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
-
-interface ConversationSummaryOutputDTO {
-  name: string | null
-  start: string
-  end: string
-  messages: {
-    id: string
-    excerpt: string
-    time: string
-  }[]
-}
+import { fetchConversationSummary } from '../../store/conversationSlice'
+import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
-  const { patientId = '' } = useParams<{ patientId: string }>()
-  const [summary, setSummary] = useState<ConversationSummaryOutputDTO | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { patientId } = useParams<{ patientId: string }>()
+  const dispatch = useAppDispatch()
 
-  useEffect((): void => {
+  const summary = useAppSelector((s) => (patientId ? s.conversation.byPatient[patientId] : ''))
+  const status = useAppSelector((s) => s.conversation.status)
+  const error = useAppSelector((s) => s.conversation.error)
+
+  useEffect(() => {
     if (!patientId) {
       return
     }
-
-    const now = new Date()
-    const start = new Date(now)
-    start.setDate(start.getDate() - 30)
-    ;(async (): Promise<void> => {
-      try {
-        // const res = await conversationApi.getConversationSummary(
-        //   patientId,
-        //   start.toISOString(),
-        //   now.toISOString()
-        // )
-        // setSummary(res.data as ConversationSummaryOutputDTO)
-        setSummary(null)
-      } catch (err) {
-        console.error('Failed to load conversation summary', err)
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [patientId])
+    dispatch(
+      fetchConversationSummary({
+        patientId: patientId,
+        start: dayjs().subtract(7, 'day').toISOString(),
+        end: dayjs().toISOString(),
+      })
+    )
+  }, [dispatch, patientId])
 
   return (
     <Layout>
-      <Typography variant='h2' sx={{ mb: 3 }}>
-        Conversation Summary
-      </Typography>
+      <Box sx={{ maxWidth: 800 }}>
+        <Typography variant='h4' gutterBottom>
+          Conversations from&nbsp;
+          {dayjs().subtract(7, 'day').format('DD MMM YYYY')}–{dayjs().format('DD MMM YYYY')}
+        </Typography>
 
-      {loading && <CircularProgress />}
-
-      {!loading && summary && (
-        <Box sx={{ maxWidth: 700 }}>
-          <Typography variant='h5' sx={{ mb: 2 }}>
-            {summary.name || 'Unnamed chatbot'}
-          </Typography>
-
-          {summary.messages.map((m) => (
-            <Card key={m.id} sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant='caption' color='textSecondary'>
-                  {new Date(m.time).toLocaleString()}
-                </Typography>
-                <Typography variant='body1' sx={{ mt: 1 }}>
-                  {m.excerpt}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-
-          {!summary.messages.length && <Typography>No messages in the selected period.</Typography>}
-        </Box>
-      )}
+        {status === 'loading' || status === 'idle' ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
+            <CircularProgress size={24} />
+            <Typography>Loading conversation summary…</Typography>
+          </Box>
+        ) : status === 'failed' ? (
+          <Alert severity='error'>{error}</Alert>
+        ) : (
+          <Typography whiteSpace='pre-line'>{summary}</Typography>
+        )}
+      </Box>
     </Layout>
   )
 }

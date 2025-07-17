@@ -18,6 +18,7 @@ export * from './apis/application-api';
 export * from './apis/chat-controller-api';
 export * from './apis/chatbot-template-controller-api';
 export * from './apis/chatbot-template-document-controller-api';
+export * from './apis/conversation-controller-api';
 export * from './apis/counseling-plan-controller-api';
 export * from './apis/counseling-plan-phase-controller-api';
 export * from './apis/counseling-plan-phase-goal-controller-api';

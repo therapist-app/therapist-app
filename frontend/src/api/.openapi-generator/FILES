@@ -1,11 +1,11 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/application-api.ts
 apis/chat-controller-api.ts
 apis/chatbot-template-controller-api.ts
 apis/chatbot-template-document-controller-api.ts
+apis/conversation-controller-api.ts
 apis/counseling-plan-controller-api.ts
 apis/counseling-plan-phase-controller-api.ts
 apis/counseling-plan-phase-goal-controller-api.ts
@@ -32,6 +32,7 @@ models/chatbot-config-dto.ts
 models/chatbot-template-document-output-dto.ts
 models/chatbot-template-output-dto.ts
 models/complaint-dto.ts
+models/conversation-summary-output-dto.ts
 models/counseling-plan-output-dto.ts
 models/counseling-plan-phase-goal-output-dto.ts
 models/counseling-plan-phase-output-dto.ts
