@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react'
 
-export function useTypewriter(fullText: string | undefined, chunk = 5) {
-  const [stream, setStream] = useState('')
-  const [running, setRunning] = useState(false)
+interface TypewriterResult {
+  stream: string
+  running: boolean
+}
+
+export function useTypewriter(
+  fullText: string | undefined,
+  chunk = 5
+): TypewriterResult {
+  const [stream, setStream] = useState<string>('')
+  const [running, setRunning] = useState<boolean>(false)
 
   useEffect(() => {
     if (!fullText) {
@@ -13,7 +21,7 @@ export function useTypewriter(fullText: string | undefined, chunk = 5) {
     setStream('')
     setRunning(true)
 
-    const step = () => {
+    const step = (): void => {
       pos = Math.min(pos + chunk, fullText.length)
       setStream(fullText.slice(0, pos))
       if (pos < fullText.length) {
@@ -26,5 +34,5 @@ export function useTypewriter(fullText: string | undefined, chunk = 5) {
     requestAnimationFrame(step)
   }, [fullText, chunk])
 
-  return { stream: stream, running: running }
+  return { stream, running }
 }

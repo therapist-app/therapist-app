@@ -8,30 +8,31 @@ export const formatResponse = (text: string): React.ReactNode => {
   let list: 'ul' | 'ol' | null = null
   let olStart = 0
 
-  const flush = () => {
-    if (!list) {
-      return
-    }
-    const Tag = (list === 'ul' ? 'ul' : 'ol') as React.ElementType
-    out.push(
-      <Tag
-        key={out.length}
-        {...(list === 'ol' ? { start: olStart + 1 } : undefined)}
-        style={{
-          margin: '0.75em 0',
-          paddingLeft: 20,
-          listStyleType: list === 'ol' ? 'decimal' : 'disc',
-        }}
-      >
-        {buf}
-      </Tag>
-    )
-    if (list === 'ol') {
-      olStart += buf.length
-    }
-    buf = []
-    list = null
+  const flush = (): void => {
+  if (!list) {
+    return
   }
+  const Tag = (list === 'ul' ? 'ul' : 'ol') as React.ElementType
+  out.push(
+    <Tag
+      key={out.length}
+      {...(list === 'ol' ? { start: olStart + 1 } : undefined)}
+      style={{
+        margin: '0.75em 0',
+        paddingLeft: 20,
+        listStyleType: list === 'ol' ? 'decimal' : 'disc',
+      }}
+    >
+      {buf}
+    </Tag>
+  )
+  if (list === 'ol') {
+    olStart += buf.length
+  }
+  buf = []
+  list = null
+}
+
 
   const inline = (s: string): React.ReactNode[] => {
     const arr: React.ReactNode[] = []
