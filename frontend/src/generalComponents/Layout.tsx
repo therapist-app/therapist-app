@@ -86,10 +86,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
   }
   const labelFor = (p: PAGES): string => {
-  return p === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE
-    ? t('pages.chatbot.details')
-    : getPageName(p, t)
-}
+    return p === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE
+      ? t('pages.chatbot.details')
+      : getPageName(p, t)
+  }
 
   const [expanded, setExpanded] = useState(false)
   const [input, setInput] = useState('')
@@ -110,26 +110,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, [messages])
 
   const sendMessage = async (): Promise<void> => {
-  const msg = input.trim()
-  if (!msg) {
-    return
+    const msg = input.trim()
+    if (!msg) {
+      return
+    }
+    setInput('')
+    setExpanded(true)
+    setWaiting(true)
+    try {
+      await dispatch(
+        chatWithTherapistChatbot({
+          newMessage: msg,
+          patientId: forwardPatientId,
+          language: getCurrentLanguage(),
+        })
+      )
+    } finally {
+      setWaiting(false)
+    }
   }
-  setInput('')
-  setExpanded(true)
-  setWaiting(true)
-  try {
-    await dispatch(
-      chatWithTherapistChatbot({
-        newMessage: msg,
-        patientId: forwardPatientId,
-        language: getCurrentLanguage(),
-      })
-    )
-  } finally {
-    setWaiting(false)
-  }
-}
-
 
   return (
     <>

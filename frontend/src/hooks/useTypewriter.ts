@@ -5,10 +5,7 @@ interface TypewriterResult {
   running: boolean
 }
 
-export function useTypewriter(
-  fullText: string | undefined,
-  chunk = 5
-): TypewriterResult {
+export function useTypewriter(fullText: string | undefined, chunk = 5): TypewriterResult {
   const [stream, setStream] = useState<string>('')
   const [running, setRunning] = useState<boolean>(false)
 
@@ -34,5 +31,5 @@ export function useTypewriter(
     requestAnimationFrame(step)
   }, [fullText, chunk])
 
-  return { stream, running }
+  return { stream: stream, running: running }
 }
