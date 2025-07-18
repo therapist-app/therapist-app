@@ -28,6 +28,8 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
+import { formatResponse } from '../../utils/formatResponse';
+
 
 import {
   ChatbotTemplateOutputDTO,
@@ -145,107 +147,6 @@ const ChatBotTemplateEdit: React.FC = () => {
     setSelectedTab(newValue)
   }
 
-  const formatResponse = (text: string): ReactNode => {
-    const lines = text.split('\n')
-    const output: ReactNode[] = []
-
-    let listBuffer: ReactNode[] = []
-    let listType: 'ul' | 'ol' | null = null
-
-    const flushList = (): void => {
-      if (!listType) {
-        return
-      }
-      const Wrapper = (listType === 'ul' ? 'ul' : 'ol') as React.ElementType
-      output.push(
-        <Wrapper key={output.length} style={{ margin: '0.75em 0' }}>
-          {listBuffer}
-        </Wrapper>
-      )
-      listBuffer = []
-      listType = null
-    }
-
-    const parseInline = (str: string): ReactNode[] => {
-      const nodes: ReactNode[] = []
-      const boldRe = /\*\*(.+?)\*\*/g
-      let lastIndex = 0
-      let match: RegExpExecArray | null
-
-      while ((match = boldRe.exec(str)) !== null) {
-        if (match.index > lastIndex) {
-          nodes.push(str.slice(lastIndex, match.index))
-        }
-        nodes.push(<strong key={match.index}>{match[1]}</strong>)
-        lastIndex = match.index + match[0].length
-      }
-      if (lastIndex < str.length) {
-        nodes.push(str.slice(lastIndex))
-      }
-      return nodes
-    }
-
-    lines.forEach((raw, idx) => {
-      const line = raw.trim()
-
-      if (!line) {
-        flushList()
-        return
-      }
-
-      const h = line.match(/^(#{1,6})\s+(.*)$/)
-      if (h) {
-        flushList()
-        const level = h[1].length
-        const Tag = `h${level}` as React.ElementType
-        output.push(
-          <Tag key={idx} style={{ margin: '1em 0 0.5em' }}>
-            {parseInline(h[2])}
-          </Tag>
-        )
-        return
-      }
-
-      const ol = line.match(/^\d+\.\s+(.*)$/)
-      if (ol) {
-        if (listType !== 'ol') {
-          flushList()
-          listType = 'ol'
-        }
-        listBuffer.push(
-          <li key={idx} style={{ margin: '0.4em 0' }}>
-            {parseInline(ol[1])}
-          </li>
-        )
-        return
-      }
-
-      const ul = line.match(/^[-*]\s+(.*)$/)
-      if (ul) {
-        if (listType !== 'ul') {
-          flushList()
-          listType = 'ul'
-        }
-        listBuffer.push(
-          <li key={idx} style={{ margin: '0.4em 0' }}>
-            {parseInline(ul[1])}
-          </li>
-        )
-        return
-      }
-
-      flushList()
-      output.push(
-        <p key={idx} style={{ margin: '0.75em 0', lineHeight: 1.5 }}>
-          {parseInline(line)}
-        </p>
-      )
-    })
-
-    flushList()
-
-    return <div>{output}</div>
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -401,31 +302,44 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }
 
-  const renderMessage = (
-    chatItem: { question?: string; response: ReactNode | null },
-    index: number
-  ): ReactElement => (
-    <ListItem key={index} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-      {chatbotIcon && <Avatar /* … */>{getIconComponent(chatbotIcon)}</Avatar>}
-      <Box sx={{ flex: 1, maxWidth: '80%', marginRight: 'auto' }}>
-        <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-          {chatbotName || 'Chatbot'}
-        </Typography>
-        <Paper
-          sx={{
-            py: 1,
-            px: 2,
-            bgcolor: '#E5E5E5',
-            borderRadius: '20px',
-            mt: '0px',
-            display: 'inline-block',
-          }}
-        >
-          <Typography variant='body1'>{chatItem.response}</Typography>
-        </Paper>
-      </Box>
-    </ListItem>
-  )
+const renderMessage = (
+  chatItem: { question?: string; response: ReactNode | null },
+  index: number
+): ReactElement => (
+  <ListItem key={index} sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'row' }}>
+    {chatbotIcon && (
+      <Avatar
+        sx={{
+          width: 45,
+          height: 45,
+          fontSize: '2rem',
+          bgcolor: 'transparent',
+          mr: 2,
+          mt: 2.5,
+        }}
+      >
+        {getIconComponent(chatbotIcon)}
+      </Avatar>
+    )}
+    <Box sx={{ flex: 1, maxWidth: '80%' }}>
+      <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
+        {chatbotName || 'Chatbot'}
+      </Typography>
+      <Paper
+        sx={{
+          px: 2,
+          bgcolor: '#E5E5E5',
+          borderRadius: '20px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          minHeight: '40px',
+        }}
+      >
+        <Typography variant='body1'>{chatItem.response}</Typography>
+      </Paper>
+    </Box>
+  </ListItem>
+)
 
   const commonButtonStyles = {
     borderRadius: 20,
@@ -500,7 +414,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       <style>
         {`
           .typing-indicator {
-            margin-top: -30px;
+            margin-top: -10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -686,51 +600,45 @@ const ChatBotTemplateEdit: React.FC = () => {
                       {chatItem.response && renderMessage(chatItem, index)}
 
                       {isChatbotTyping && !isStreaming && index === chat.length - 1 && (
-                        <ListItem
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-start',
-                          }}
-                        >
-                          {chatbotIcon && (
-                            <Avatar
-                              sx={{
-                                width: 45,
-                                height: 45,
-                                fontSize: '2rem',
-                                bgcolor: 'transparent',
-                                mr: 2,
-                                mt: 2,
-                              }}
-                            >
-                              {getIconComponent(chatbotIcon)}
-                            </Avatar>
-                          )}
-                          <Box sx={{ maxWidth: '80%' }}>
-                            <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                              {chatbotName || 'Chatbot'}
-                            </Typography>
-                            <Box
-                              sx={{
-                                px: 2,
-                                bgcolor: '#E5E5E5',
-                                borderRadius: '20px',
-                                minHeight: '40px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}
-                            >
-                              <div className='typing-indicator'>
-                                <span>.</span>
-                                <span>.</span>
-                                <span>.</span>
-                              </div>
-                            </Box>
-                          </Box>
-                        </ListItem>
-                      )}
+  <ListItem sx={{ display: 'flex', alignItems: 'flex-start' }}>
+    {chatbotIcon && (
+      <Avatar
+        sx={{
+          width: 45,
+          height: 45,
+          fontSize: '2rem',
+          bgcolor: 'transparent',
+          mr: 2,
+          mt: 2,
+        }}
+      >
+        {getIconComponent(chatbotIcon)}
+      </Avatar>
+    )}
+    <Box sx={{ maxWidth: '80%' }}>
+      <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
+        {chatbotName || 'Chatbot'}
+      </Typography>
+      <Box
+        sx={{
+          px: 2,
+          bgcolor: '#E5E5E5',
+          borderRadius: '20px',
+          minHeight: '40px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <div className='typing-indicator'>
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+        </div>
+      </Box>
+    </Box>
+  </ListItem>
+)}
+
                     </React.Fragment>
                   ))}
                 </List>
