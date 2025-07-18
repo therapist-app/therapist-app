@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 export function useTypewriter(fullText: string | undefined, chunk = 5) {
-  const [stream, setStream] = useState('');
-  const [running, setRunning] = useState(false);
+  const [stream, setStream] = useState('')
+  const [running, setRunning] = useState(false)
 
   useEffect(() => {
-    if (!fullText) return;
+    if (!fullText) {
+      return
+    }
 
-    let pos = 0;
-    setStream('');
-    setRunning(true);
+    let pos = 0
+    setStream('')
+    setRunning(true)
 
     const step = () => {
-      pos = Math.min(pos + chunk, fullText.length);
-      setStream(fullText.slice(0, pos));
-      if (pos < fullText.length) requestAnimationFrame(step);
-      else setRunning(false);
-    };
+      pos = Math.min(pos + chunk, fullText.length)
+      setStream(fullText.slice(0, pos))
+      if (pos < fullText.length) {
+        requestAnimationFrame(step)
+      } else {
+        setRunning(false)
+      }
+    }
 
-    requestAnimationFrame(step);
-  }, [fullText, chunk]);
+    requestAnimationFrame(step)
+  }, [fullText, chunk])
 
-  return { stream, running };
+  return { stream: stream, running: running }
 }

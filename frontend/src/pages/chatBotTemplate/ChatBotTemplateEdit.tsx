@@ -28,8 +28,6 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
-import { formatResponse } from '../../utils/formatResponse';
-
 
 import {
   ChatbotTemplateOutputDTO,
@@ -47,6 +45,7 @@ import {
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
+import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
@@ -146,7 +145,6 @@ const ChatBotTemplateEdit: React.FC = () => {
   const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'sources'): void => {
     setSelectedTab(newValue)
   }
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -302,44 +300,44 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }
 
-const renderMessage = (
-  chatItem: { question?: string; response: ReactNode | null },
-  index: number
-): ReactElement => (
-  <ListItem key={index} sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'row' }}>
-    {chatbotIcon && (
-      <Avatar
-        sx={{
-          width: 45,
-          height: 45,
-          fontSize: '2rem',
-          bgcolor: 'transparent',
-          mr: 2,
-          mt: 2.5,
-        }}
-      >
-        {getIconComponent(chatbotIcon)}
-      </Avatar>
-    )}
-    <Box sx={{ flex: 1, maxWidth: '80%' }}>
-      <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-        {chatbotName || 'Chatbot'}
-      </Typography>
-      <Paper
-        sx={{
-          px: 2,
-          bgcolor: '#E5E5E5',
-          borderRadius: '20px',
-          display: 'inline-flex',
-          alignItems: 'center',
-          minHeight: '40px',
-        }}
-      >
-        <Typography variant='body1'>{chatItem.response}</Typography>
-      </Paper>
-    </Box>
-  </ListItem>
-)
+  const renderMessage = (
+    chatItem: { question?: string; response: ReactNode | null },
+    index: number
+  ): ReactElement => (
+    <ListItem key={index} sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'row' }}>
+      {chatbotIcon && (
+        <Avatar
+          sx={{
+            width: 45,
+            height: 45,
+            fontSize: '2rem',
+            bgcolor: 'transparent',
+            mr: 2,
+            mt: 2.5,
+          }}
+        >
+          {getIconComponent(chatbotIcon)}
+        </Avatar>
+      )}
+      <Box sx={{ flex: 1, maxWidth: '80%' }}>
+        <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
+          {chatbotName || 'Chatbot'}
+        </Typography>
+        <Paper
+          sx={{
+            px: 2,
+            bgcolor: '#E5E5E5',
+            borderRadius: '20px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            minHeight: '40px',
+          }}
+        >
+          <Typography variant='body1'>{chatItem.response}</Typography>
+        </Paper>
+      </Box>
+    </ListItem>
+  )
 
   const commonButtonStyles = {
     borderRadius: 20,
@@ -600,45 +598,44 @@ const renderMessage = (
                       {chatItem.response && renderMessage(chatItem, index)}
 
                       {isChatbotTyping && !isStreaming && index === chat.length - 1 && (
-  <ListItem sx={{ display: 'flex', alignItems: 'flex-start' }}>
-    {chatbotIcon && (
-      <Avatar
-        sx={{
-          width: 45,
-          height: 45,
-          fontSize: '2rem',
-          bgcolor: 'transparent',
-          mr: 2,
-          mt: 2,
-        }}
-      >
-        {getIconComponent(chatbotIcon)}
-      </Avatar>
-    )}
-    <Box sx={{ maxWidth: '80%' }}>
-      <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-        {chatbotName || 'Chatbot'}
-      </Typography>
-      <Box
-        sx={{
-          px: 2,
-          bgcolor: '#E5E5E5',
-          borderRadius: '20px',
-          minHeight: '40px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <div className='typing-indicator'>
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-        </div>
-      </Box>
-    </Box>
-  </ListItem>
-)}
-
+                        <ListItem sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                          {chatbotIcon && (
+                            <Avatar
+                              sx={{
+                                width: 45,
+                                height: 45,
+                                fontSize: '2rem',
+                                bgcolor: 'transparent',
+                                mr: 2,
+                                mt: 2,
+                              }}
+                            >
+                              {getIconComponent(chatbotIcon)}
+                            </Avatar>
+                          )}
+                          <Box sx={{ maxWidth: '80%' }}>
+                            <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
+                              {chatbotName || 'Chatbot'}
+                            </Typography>
+                            <Box
+                              sx={{
+                                px: 2,
+                                bgcolor: '#E5E5E5',
+                                borderRadius: '20px',
+                                minHeight: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <div className='typing-indicator'>
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                              </div>
+                            </Box>
+                          </Box>
+                        </ListItem>
+                      )}
                     </React.Fragment>
                   ))}
                 </List>
