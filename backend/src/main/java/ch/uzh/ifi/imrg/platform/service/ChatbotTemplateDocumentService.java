@@ -1,18 +1,20 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +22,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Handles persistence and access control for documents that belong to a Chatbot Template. All
- * operations are verified against the {@link Therapist} who owns the template.
- */
 @Service
 @Transactional
 public class ChatbotTemplateDocumentService {
@@ -65,11 +63,7 @@ public class ChatbotTemplateDocumentService {
 
     ChatbotTemplateDocument saved = chatbotTemplateDocumentRepository.save(templateDocument);
 
-    logger.info(
-        "Uploaded document '{}' ({} bytes) for template '{}'",
-        file.getOriginalFilename(),
-        file.getSize(),
-        templateId);
+    updateChatbot(template);
 
     return saved;
   }
@@ -112,10 +106,33 @@ public class ChatbotTemplateDocumentService {
 
     SecurityUtil.checkOwnership(templateDocument, therapistId);
 
-    templateDocument.getChatbotTemplate().getChatbotTemplateDocuments().remove(templateDocument);
-    logger.info(
-        "Deleted document '{}' from template '{}'",
-        templateDocumentId,
-        templateDocument.getChatbotTemplate().getId());
+    ChatbotTemplate template = templateDocument.getChatbotTemplate();
+
+    template.getChatbotTemplateDocuments().remove(templateDocument);
+    chatbotTemplateDocumentRepository.delete(templateDocument);
+    logger.info("Deleted document '{}' from template '{}'", templateDocumentId, template.getId());
+
+    updateChatbot(template);
+  }
+
+  private void updateChatbot(ChatbotTemplate template) {
+    if (template.getPatient() != null) {
+      String patientId = template.getPatient().getId();
+
+      String chatbotContext =
+          template.getChatbotTemplateDocuments().stream()
+              .map(ChatbotTemplateDocument::getExtractedText)
+              .filter(Objects::nonNull)
+              .collect(Collectors.joining("\n\n"));
+
+      UpdateChatbotDTOPatientAPI updateDto =
+          new UpdateChatbotDTOPatientAPI()
+              .chatbotRole(template.getChatbotRole())
+              .chatbotTone(template.getChatbotTone())
+              .welcomeMessage(template.getWelcomeMessage())
+              .chatbotContext(chatbotContext);
+
+      PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
+    }
   }
 }
