@@ -28,7 +28,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
-
+import { FormControlLabel, Switch } from '@mui/material';
 import {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
@@ -49,6 +49,7 @@ import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
+import { is } from 'date-fns/locale'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -66,6 +67,8 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
+  const [isActive, setIsActive] = useState<boolean>(false);
+
   const chatListRef = useRef<HTMLUListElement>(null)
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -123,6 +126,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       setChatbotIcon(chatbotConfig.chatbotIcon || '')
       setChatbotTone(chatbotConfig.chatbotTone || '')
       setWelcomeMessage(chatbotConfig.welcomeMessage || '')
+      setIsActive(chatbotConfig.isActive || false)
 
       if (chatbotConfig.welcomeMessage) {
         setChat([{ response: chatbotConfig.welcomeMessage }])
@@ -256,6 +260,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
+        isActive: isActive,
       }
 
       await dispatch(
@@ -519,6 +524,17 @@ const ChatBotTemplateEdit: React.FC = () => {
                   onChange={(e) => setWelcomeMessage(e.target.value)}
                   margin='normal'
                 />
+
+                <FormControlLabel
+  control={
+    <Switch
+      checked={isActive}
+      onChange={(e) => setIsActive(e.target.checked)}
+      color="primary"
+    />
+  }
+  label="Active (visible to patient)"
+/>
 
                 <Box
                   sx={{
