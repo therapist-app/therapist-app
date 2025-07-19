@@ -531,7 +531,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                     <Switch
                       checked={isActive}
                       onChange={(e) => setIsActive(e.target.checked)}
-                      color='primary'
+                      color='success'
                     />
                   }
                   label='Active (visible to patient)'

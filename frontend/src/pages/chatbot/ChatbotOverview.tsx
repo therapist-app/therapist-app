@@ -213,51 +213,92 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const renderCard = (bot: ChatbotTemplateOutputDTO, showMenu = true): ReactElement => (
-    <Card
-      key={bot.id}
-      sx={{
-        maxWidth: 300,
-        minWidth: 300,
-        maxHeight: 250,
-        minHeight: 250,
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        border: '1px solid #e0e0e0',
-        boxShadow: 'none',
-        borderRadius: 2,
-      }}
-    >
-      <CardActionArea onClick={() => openTemplate(bot)}>
-        <CardContent>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
+  <Card
+    key={bot.id}
+    sx={{
+      maxWidth: 300,
+      minWidth: 300,
+      maxHeight: 250,
+      minHeight: 250,
+      display: 'flex',
+      flexDirection: 'column',
+      border: '1px solid #e0e0e0',
+      boxShadow: 'none',
+      borderRadius: 2,
+    }}
+  >
+    <CardActionArea onClick={() => openTemplate(bot)} sx={{ height: '100%' }}>
+      <CardContent
+        sx={{
+          pt: 0,
+          marginTop: -5,
+          px: 2,
+          pb: 2,
+          '&:last-child': { pb: 2 },
+        }}
+      >
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mb: 1 }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              pr: 1,
+              flexGrow: 1,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              m: 0,
+            }}
+            title={bot.chatbotName || t('dashboard.unnamed_bot')}
+          >
+            {bot.chatbotName || t('dashboard.unnamed_bot')}
+          </Typography>
+
+          <Box display="flex" alignItems="center" gap={1}>
             {bot.isActive ? (
-              <Chip size='small' color='success' label='Active' />
+              <Chip size="small" color="success" label="Active" />
             ) : (
-              <Chip size='small' color='default' label='Inactive' />
+              <Chip size="small" variant="outlined" label="Inactive" />
+            )}
+            {showMenu && (
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleMenu(e, bot)
+                }}
+              >
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
             )}
           </Box>
-          <Typography variant='body1' sx={{ mt: 1 }}>
-            {t('dashboard.role')}: {bot.chatbotRole}
-          </Typography>
-          <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-          <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
-            {iconFor(bot.chatbotIcon ?? '')}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+        </Box>
 
-      {showMenu && (
-        <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
-          <IconButton onClick={(e) => handleMenu(e, bot)}>
-            <MoreVertIcon />
-          </IconButton>
-        </CardActions>
-      )}
-    </Card>
-  )
+        <Typography variant="body1" sx={{ mt: 0.25 }}>
+          {t('dashboard.role')}: {bot.chatbotRole}
+        </Typography>
+        <Typography variant="body1">{`Tone: ${bot.chatbotTone}`}</Typography>
+
+        <Box
+          sx={{
+            fontSize: 48,
+            textAlign: 'center',
+            mt: 2,
+            lineHeight: 1,
+          }}
+        >
+          {iconFor(bot.chatbotIcon ?? '')}
+        </Box>
+      </CardContent>
+    </CardActionArea>
+  </Card>
+)
+
+
 
   return (
     <>
