@@ -7,7 +7,7 @@ import lombok.Data;
 public class ExerciseComponentOutputDTO {
   private String id;
   private ExerciseComponentType exerciseComponentType;
-  private String description;
+  private String exerciseComponentDescription;
   private String fileName;
   private String fileType;
   private String extractedText;

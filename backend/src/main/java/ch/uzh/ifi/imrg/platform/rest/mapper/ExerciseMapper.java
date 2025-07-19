@@ -16,8 +16,9 @@ public interface ExerciseMapper {
   ExerciseMapper INSTANCE = Mappers.getMapper(ExerciseMapper.class);
 
   @Mapping(source = "id", target = "id")
-  @Mapping(source = "title", target = "title")
-  @Mapping(source = "exerciseType", target = "exerciseType")
+  @Mapping(source = "exerciseTitle", target = "exerciseTitle")
+  @Mapping(source = "exerciseDescription", target = "exerciseDescription")
+  @Mapping(source = "exerciseExplanation", target = "exerciseExplanation")
   @Mapping(source = "exerciseStart", target = "exerciseStart")
   @Mapping(source = "exerciseEnd", target = "exerciseEnd")
   @Mapping(source = "isPaused", target = "isPaused")
