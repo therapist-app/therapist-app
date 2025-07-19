@@ -38,6 +38,7 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
+import PatientInteractionsComponent from './components/PatientInteractions'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -293,6 +294,10 @@ const PatientDetail = (): ReactElement => {
       </Dialog>
 
       <GAD7TestDetail />
+
+      <CustomizedDivider />
+
+      <PatientInteractionsComponent />
 
       <CustomizedDivider />
 
