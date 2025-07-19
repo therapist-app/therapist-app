@@ -13,5 +13,6 @@ public class ExerciseOutputDTO {
   private Instant exerciseStart;
   private Instant exerciseEnd;
   private Boolean isPaused;
+  private Integer doEveryNDays;
   private List<ExerciseComponentOutputDTO> exerciseComponentsOutputDTO;
 }
