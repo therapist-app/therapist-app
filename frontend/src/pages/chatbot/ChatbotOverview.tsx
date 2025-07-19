@@ -11,9 +11,9 @@ import {
   MenuItem,
   Snackbar,
   Typography,
+  Chip,
+  Tooltip,
 } from '@mui/material'
-import { Chip } from '@mui/material'
-import { Tooltip } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

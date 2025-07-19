@@ -18,10 +18,10 @@ import {
   Tabs,
   TextField,
   Typography,
+  FormControlLabel,
+  Switch,
 } from '@mui/material'
-import { FormControlLabel, Switch } from '@mui/material'
 import { AxiosError } from 'axios'
-import { is } from 'date-fns/locale'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
