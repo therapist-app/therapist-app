@@ -405,7 +405,8 @@ interface Resources {
       "patients": {
         "create": "Neuen Klienten registrieren",
         "details": "Klientendetails",
-        "conversations": "Gesprächszusammenfassung"
+        "conversations": "Gesprächszusammenfassung",
+        "interactions": "Klienteninteraktionen"
       },
       "chatbot": {
         "create": "Neuen Chatbot erstellen",
@@ -838,7 +839,8 @@ interface Resources {
       "patients": {
         "create": "Register new Client",
         "details": "Client Details",
-        "conversations": "Conversation Summary"
+        "conversations": "Conversation Summary",
+        "interactions": "Client Interactions"
       },
       "chatbot": {
         "create": "Create new Chatbot",
@@ -1271,7 +1273,8 @@ interface Resources {
       "patients": {
         "create": "Зареєструвати нового клієнта",
         "details": "Деталі клієнта",
-        "conversations": "Підсумок бесід"
+        "conversations": "Підсумок бесід",
+        "interactions": "Взаємодії з клієнтом"
       },
       "chatbot": {
         "create": "Створити нового чат-бота",

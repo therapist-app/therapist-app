@@ -38,7 +38,6 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
-import PatientInteractionsComponent from './components/PatientInteractions'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
@@ -225,6 +224,21 @@ const PatientDetail = (): ReactElement => {
         </Typography>
       )}
 
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ mb: 2 }}
+        onClick={() =>
+          navigate(
+            getPathFromPage(PAGES.CLIENT_INTERACTIONS_PAGE, {
+              patientId: patientId ?? '',
+            })
+          )
+        }
+      >
+        {t('View Client Interactions')}
+      </Button>
+
       <CustomizedDivider />
 
       <div>
@@ -294,10 +308,6 @@ const PatientDetail = (): ReactElement => {
       </Dialog>
 
       <GAD7TestDetail />
-
-      <CustomizedDivider />
-
-      <PatientInteractionsComponent />
 
       <CustomizedDivider />
 

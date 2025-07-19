@@ -404,7 +404,8 @@
     "patients": {
       "create": "Register new Client",
       "details": "Client Details",
-      "conversations": "Conversation Summary"
+      "conversations": "Conversation Summary",
+      "interactions": "Client Interactions"
     },
     "chatbot": {
       "create": "Create new Chatbot",

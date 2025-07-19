@@ -18,6 +18,7 @@ import PatientDetail from './pages/patients/PatientDetail'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
+import ClientInteractions from './pages/interactions/ClientInteractions.tsx'
 
 const App = (): ReactElement => {
   const appContainerStyle = {
@@ -69,6 +70,11 @@ const App = (): ReactElement => {
             <Route
               path={ROUTES[PAGES.PATIENT_CONVERSATIONS_PAGE]}
               element={<ConversationSummary />}
+            />
+            
+            <Route
+              path={ROUTES[PAGES.CLIENT_INTERACTIONS_PAGE]}
+              element={<ClientInteractions />}
             />
 
             <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />
