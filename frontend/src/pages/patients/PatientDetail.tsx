@@ -236,7 +236,7 @@ const PatientDetail = (): ReactElement => {
           )
         }
       >
-        {t('View Client Interactions')}
+        {t('patient_detail.view_client_interactions')}
       </Button>
 
       <CustomizedDivider />

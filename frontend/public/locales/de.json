@@ -215,6 +215,7 @@
   },
   "patient_detail": {
     "message": "Dies ist die Detailseite des Klienten mit der ID",
+    "view_client_interactions": "Klienteninteraktionen anzeigen",
     "client": "Klient",
     "email_client_app": "E-Mail (für Login in der Klienten-App)",
     "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
@@ -235,6 +236,14 @@
     "create_bot": "Bot erstellen",
     "files_visible_to_client": "Für Klienten sichtbare Dateien",
     "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
+  },
+  "patient_interactions": {
+    "patient_interactions": "Klienteninteraktionen",
+    "interaction_type": "Interaktionstyp",
+    "start_date": "Startdatum",
+    "end_date": "Enddatum",
+    "time": "Zeit",
+    "date": "Datum"
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",

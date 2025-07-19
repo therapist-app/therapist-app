@@ -216,6 +216,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "Dies ist die Detailseite des Klienten mit der ID",
+      "view_client_interactions": "Klienteninteraktionen anzeigen",
       "client": "Klient",
       "email_client_app": "E-Mail (für Login in der Klienten-App)",
       "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
@@ -236,6 +237,14 @@ interface Resources {
       "create_bot": "Bot erstellen",
       "files_visible_to_client": "Für Klienten sichtbare Dateien",
       "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
+    },
+    "patient_interactions": {
+      "patient_interactions": "Klienteninteraktionen",
+      "interaction_type": "Interaktionstyp",
+      "start_date": "Startdatum",
+      "end_date": "Enddatum",
+      "time": "Zeit",
+      "date": "Datum"
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -650,6 +659,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "This is the client detail page of client with ID",
+      "view_client_interactions": "View Client Interactions",
       "client": "Client",
       "email_client_app": "Email (for Login in Client App)",
       "initial_password_client_app": "Initial Password (for Login in Client App)",
@@ -670,6 +680,14 @@ interface Resources {
       "create_bot": "Create Bot",
       "files_visible_to_client": "Files visible to Client",
       "files_visible_only_to_coach": "Files visible only to Coach"
+    },
+    "patient_interactions": {
+      "patient_interactions": "Patient Interactions",
+      "interaction_type": "Interaction Type",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "time": "Time",
+      "date": "Date"
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -1084,6 +1102,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "Це сторінка деталей клієнта з ID",
+      "view_client_interactions": "Переглянути взаємодії клієнта",
       "client": "Клієнт",
       "email_client_app": "Email (для входу в клієнтський додаток)",
       "initial_password_client_app": "Початковий пароль (для входу в клієнтський додаток)",
@@ -1104,6 +1123,14 @@ interface Resources {
       "create_bot": "Створити бота",
       "files_visible_to_client": "Файли, видимі клієнту",
       "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
+    },
+    "patient_interactions": {
+      "patient_interactions": "Взаємодії з пацієнтом",
+      "interaction_type": "Тип взаємодії",
+      "start_date": "Дата початку",
+      "end_date": "Дата завершення",
+      "time": "Час",
+      "date": "Дата"
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",

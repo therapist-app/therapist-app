@@ -12,7 +12,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
-import { format, isWithinInterval, eachDayOfInterval, subDays } from 'date-fns'
+import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -66,15 +66,19 @@ const generateMockData = (days: number): InteractionData[] => {
 }
 
 // Transform data for heatmap
-const transformDataForHeatmap = (data: InteractionData[], startDate: Date | null, endDate: Date | null): HeatMapData[] => {
+const transformDataForHeatmap = (
+  data: InteractionData[],
+  startDate: Date | null,
+  endDate: Date | null
+): HeatMapData[] => {
   // Create array of hours (0-23)
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const daysMap = new Map<string, number[]>()
-  
+
   // If we have both dates, generate all dates in between
   if (startDate && endDate) {
     const allDates = eachDayOfInterval({ start: startDate, end: endDate })
-    allDates.forEach(date => {
+    allDates.forEach((date) => {
       const shortDate = format(date, 'MM-dd')
       daysMap.set(shortDate, Array(24).fill(0))
     })
@@ -92,15 +96,19 @@ const transformDataForHeatmap = (data: InteractionData[], startDate: Date | null
 
   // Sort dates in ascending order
   const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
-    const dateA = new Date(`2025-${a}`)
-    const dateB = new Date(`2025-${b}`)
+    const findYear = (shortDate: string) => {
+      const match = data.find(item => format(new Date(item.date), 'MM-dd') === shortDate)
+      return match ? format(new Date(match.date), 'yyyy') : String(new Date().getFullYear())
+    }
+    const dateA = new Date(`${findYear(a)}-${a}`)
+    const dateB = new Date(`${findYear(b)}-${b}`)
     return dateA.getTime() - dateB.getTime()
   })
 
   // Transform into Nivo heatmap format with hours as rows
   return hours.map((hour) => ({
     id: `${hour.toString().padStart(2, '0')}`,
-    data: sortedDates.map(date => ({
+    data: sortedDates.map((date) => ({
       x: date,
       y: daysMap.get(date)![hour],
     })),
@@ -144,19 +152,38 @@ const ClientInteractions = (): ReactElement => {
     <Layout>
       <Paper sx={{ p: 3, height: '800px' }}>
         <Stack spacing={2}>
-          <Typography variant='h6'>{t('Patient Interactions')}</Typography>
+          <Typography variant='h6'>{t('patient_interactions.patient_interactions')}</Typography>
 
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <FormControl sx={{ minWidth: 250 }}>
+                <InputLabel id='interaction-type-label'>{t('patient_interactions.interaction_type')}</InputLabel>
+                <Select
+                  labelId='interaction-type-label'
+                  value={interactionType}
+                  label={t('patient_interactions.interaction_type')}
+                  onChange={(e) => setInteractionType(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value='all'>{t('All Interactions')}</MenuItem>
+                  <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
+                  <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
+                  <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
+                  <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
+                  <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
+                  <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
+                  <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
+                </Select>
+              </FormControl>
               <DatePicker
-                label={t('Start Date')}
+                label={t('patient_interactions.start_date')}
                 value={startDate}
                 onChange={(newValue) => setStartDate(newValue)}
                 slotProps={{ textField: { size: 'small' } }}
                 maxDate={endDate || undefined}
               />
               <DatePicker
-                label={t('End Date')}
+                label={t('patient_interactions.end_date')}
                 value={endDate}
                 onChange={(newValue) => setEndDate(newValue)}
                 slotProps={{ textField: { size: 'small' } }}
@@ -164,25 +191,6 @@ const ClientInteractions = (): ReactElement => {
               />
             </LocalizationProvider>
           </Box>
-
-          <FormControl fullWidth>
-            <InputLabel id='interaction-type-label'>{t('Interaction Type')}</InputLabel>
-            <Select
-              labelId='interaction-type-label'
-              value={interactionType}
-              label={t('Interaction Type')}
-              onChange={(e) => setInteractionType(e.target.value)}
-            >
-              <MenuItem value='all'>{t('All Interactions')}</MenuItem>
-              <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
-              <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
-              <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
-              <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
-              <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
-              <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
-              <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
-            </Select>
-          </FormControl>
 
           <div style={{ height: '650px' }}>
             <ResponsiveHeatMap
@@ -194,7 +202,7 @@ const ClientInteractions = (): ReactElement => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'Date (MM-DD)',
+                legend: t('patient_interactions.date'),
                 legendPosition: 'middle',
                 legendOffset: 50,
               }}
@@ -202,7 +210,7 @@ const ClientInteractions = (): ReactElement => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'Time',
+                legend: t('patient_interactions.time'),
                 legendPosition: 'middle',
                 legendOffset: -70,
                 format: (value) => `${value}:00`,
