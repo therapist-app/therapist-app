@@ -34,13 +34,19 @@ export interface ExerciseOutputDTO {
      * @type {string}
      * @memberof ExerciseOutputDTO
      */
-    'title'?: string;
+    'exerciseTitle'?: string;
     /**
      * 
      * @type {string}
      * @memberof ExerciseOutputDTO
      */
-    'exerciseType'?: ExerciseOutputDTOExerciseTypeEnum;
+    'exerciseDescription'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseOutputDTO
+     */
+    'exerciseExplanation'?: string;
     /**
      * 
      * @type {string}
@@ -61,18 +67,15 @@ export interface ExerciseOutputDTO {
     'isPaused'?: boolean;
     /**
      * 
+     * @type {number}
+     * @memberof ExerciseOutputDTO
+     */
+    'doEveryNDays'?: number;
+    /**
+     * 
      * @type {Array<ExerciseComponentOutputDTO>}
      * @memberof ExerciseOutputDTO
      */
     'exerciseComponentsOutputDTO'?: Array<ExerciseComponentOutputDTO>;
 }
-
-export const ExerciseOutputDTOExerciseTypeEnum = {
-    Journaling: 'JOURNALING',
-    Breathing: 'BREATHING',
-    Other: 'OTHER'
-} as const;
-
-export type ExerciseOutputDTOExerciseTypeEnum = typeof ExerciseOutputDTOExerciseTypeEnum[keyof typeof ExerciseOutputDTOExerciseTypeEnum];
-
 

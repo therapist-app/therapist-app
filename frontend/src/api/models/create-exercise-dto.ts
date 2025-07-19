@@ -31,13 +31,19 @@ export interface CreateExerciseDTO {
      * @type {string}
      * @memberof CreateExerciseDTO
      */
-    'title'?: string;
+    'exerciseTitle'?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateExerciseDTO
      */
-    'exerciseType'?: CreateExerciseDTOExerciseTypeEnum;
+    'exerciseDescription'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseDTO
+     */
+    'exerciseExplanation'?: string;
     /**
      * 
      * @type {string}
@@ -50,14 +56,11 @@ export interface CreateExerciseDTO {
      * @memberof CreateExerciseDTO
      */
     'durationInWeeks'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateExerciseDTO
+     */
+    'doEveryNDays'?: number;
 }
-
-export const CreateExerciseDTOExerciseTypeEnum = {
-    Journaling: 'JOURNALING',
-    Breathing: 'BREATHING',
-    Other: 'OTHER'
-} as const;
-
-export type CreateExerciseDTOExerciseTypeEnum = typeof CreateExerciseDTOExerciseTypeEnum[keyof typeof CreateExerciseDTOExerciseTypeEnum];
-
 

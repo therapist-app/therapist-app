@@ -31,13 +31,19 @@ export interface UpdateExerciseDTO {
      * @type {string}
      * @memberof UpdateExerciseDTO
      */
-    'title'?: string;
+    'exerciseTitle'?: string;
     /**
      * 
      * @type {string}
      * @memberof UpdateExerciseDTO
      */
-    'exerciseType'?: UpdateExerciseDTOExerciseTypeEnum;
+    'exerciseDescription'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateExerciseDTO
+     */
+    'exerciseExplanation'?: string;
     /**
      * 
      * @type {string}
@@ -56,14 +62,11 @@ export interface UpdateExerciseDTO {
      * @memberof UpdateExerciseDTO
      */
     'isPaused'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateExerciseDTO
+     */
+    'doEveryNDays'?: number;
 }
-
-export const UpdateExerciseDTOExerciseTypeEnum = {
-    Journaling: 'JOURNALING',
-    Breathing: 'BREATHING',
-    Other: 'OTHER'
-} as const;
-
-export type UpdateExerciseDTOExerciseTypeEnum = typeof UpdateExerciseDTOExerciseTypeEnum[keyof typeof UpdateExerciseDTOExerciseTypeEnum];
-
 

@@ -37,7 +37,7 @@ export interface ExerciseComponentOutputDTO {
      * @type {string}
      * @memberof ExerciseComponentOutputDTO
      */
-    'description'?: string;
+    'exerciseComponentDescription'?: string;
     /**
      * 
      * @type {string}
@@ -66,7 +66,8 @@ export interface ExerciseComponentOutputDTO {
 
 export const ExerciseComponentOutputDTOExerciseComponentTypeEnum = {
     Text: 'TEXT',
-    InputField: 'INPUT_FIELD',
+    InputFieldPrivate: 'INPUT_FIELD_PRIVATE',
+    InputFieldShared: 'INPUT_FIELD_SHARED',
     File: 'FILE',
     Image: 'IMAGE',
     YoutubeVideo: 'YOUTUBE_VIDEO'

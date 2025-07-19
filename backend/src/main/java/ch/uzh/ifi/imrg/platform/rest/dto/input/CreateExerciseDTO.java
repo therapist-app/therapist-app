@@ -7,6 +7,8 @@ import lombok.Data;
 public class CreateExerciseDTO {
   private String patientId;
   private String exerciseTitle;
+  private String exerciseDescription;
+  private String exerciseExplanation;
   private Instant exerciseStart;
   private long durationInWeeks;
   private Integer doEveryNDays;
