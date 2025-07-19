@@ -1,7 +1,9 @@
-import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
+import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
-import { format, subDays } from 'date-fns'
-import { throttle } from 'lodash'
+import { format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -72,7 +74,7 @@ const transformDataForHeatmap = (data: InteractionData[]): HeatMapData[] => {
 
   // Transform into Nivo heatmap format with hours as rows
   return hours.map((hour) => ({
-    id: `${hour.toString().padStart(2, '0')}:00`,
+    id: `${hour.toString().padStart(2, '0')}`,
     data: Array.from(daysMap.entries()).map(([date, values]) => ({
       x: date,
       y: values[hour],
@@ -84,12 +86,28 @@ const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const [interactionType, setInteractionType] = useState<string>('all')
   const [data] = useState<InteractionData[]>(() => generateMockData(30))
+  const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 30))
+  const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-  // Memoize filtered data
-  const filteredData = useMemo(
-    () => (interactionType === 'all' ? data : data.filter((d) => d.type === interactionType)),
-    [data, interactionType]
-  )
+  // Memoize filtered data with date range
+  const filteredData = useMemo(() => {
+    let filtered = data
+    
+    // Filter by interaction type
+    if (interactionType !== 'all') {
+      filtered = filtered.filter((d) => d.type === interactionType)
+    }
+    
+    // Filter by date range
+    if (startDate && endDate) {
+      filtered = filtered.filter((d) => {
+        const date = new Date(d.date)
+        return isWithinInterval(date, { start: startDate, end: endDate })
+      })
+    }
+    
+    return filtered
+  }, [data, interactionType, startDate, endDate])
 
   // Memoize heatmap data transformation
   const heatmapData = useMemo(() => transformDataForHeatmap(filteredData), [filteredData])
@@ -99,6 +117,25 @@ const ClientInteractions = (): ReactElement => {
       <Paper sx={{ p: 3, height: '800px' }}>
         <Stack spacing={2}>
           <Typography variant='h6'>{t('Patient Interactions')}</Typography>
+
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={t('Start Date')}
+                value={startDate}
+                onChange={(newValue) => setStartDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                maxDate={endDate || undefined}
+              />
+              <DatePicker
+                label={t('End Date')}
+                value={endDate}
+                onChange={(newValue) => setEndDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                minDate={startDate || undefined}
+              />
+            </LocalizationProvider>
+          </Box>
 
           <FormControl fullWidth>
             <InputLabel id='interaction-type-label'>{t('Interaction Type')}</InputLabel>
@@ -122,16 +159,16 @@ const ClientInteractions = (): ReactElement => {
           <div style={{ height: '650px' }}>
             <ResponsiveHeatMap
               data={heatmapData}
-              margin={{ top: 40, right: 40, bottom: 40, left: 80 }}
+              margin={{ top: 40, right: 40, bottom: 80, left: 80 }}
               valueFormat='>-.0f'
               axisTop={null}
               axisBottom={{
                 tickSize: 5,
                 tickPadding: 5,
-                tickRotation: -45,
+                tickRotation: 0,
                 legend: 'Date (MM-DD)',
                 legendPosition: 'middle',
-                legendOffset: 35,
+                legendOffset: 50,
               }}
               axisLeft={{
                 tickSize: 5,
@@ -139,7 +176,7 @@ const ClientInteractions = (): ReactElement => {
                 tickRotation: 0,
                 legend: 'Time',
                 legendPosition: 'middle',
-                legendOffset: -60,
+                legendOffset: -70,
                 format: (value) => `${value}:00`,
               }}
               colors={{
