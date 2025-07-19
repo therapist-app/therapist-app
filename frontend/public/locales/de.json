@@ -238,7 +238,6 @@
     "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
   },
   "patient_interactions": {
-    "patient_interactions": "Klienteninteraktionen",
     "interaction_type": "Interaktionstyp",
     "start_date": "Startdatum",
     "end_date": "Enddatum",

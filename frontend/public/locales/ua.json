@@ -238,7 +238,6 @@
     "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
   },
   "patient_interactions": {
-    "patient_interactions": "Взаємодії з пацієнтом",
     "interaction_type": "Тип взаємодії",
     "start_date": "Дата початку",
     "end_date": "Дата завершення",

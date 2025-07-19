@@ -238,7 +238,6 @@
     "files_visible_only_to_coach": "Files visible only to Coach"
   },
   "patient_interactions": {
-    "patient_interactions": "Patient Interactions",
     "interaction_type": "Interaction Type",
     "start_date": "Start Date",
     "end_date": "End Date",

@@ -152,8 +152,6 @@ const ClientInteractions = (): ReactElement => {
     <Layout>
       <Paper sx={{ p: 3, height: '800px' }}>
         <Stack spacing={2}>
-          <Typography variant='h6'>{t('patient_interactions.patient_interactions')}</Typography>
-
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <FormControl sx={{ minWidth: 250 }}>

@@ -239,7 +239,6 @@ interface Resources {
       "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
     },
     "patient_interactions": {
-      "patient_interactions": "Klienteninteraktionen",
       "interaction_type": "Interaktionstyp",
       "start_date": "Startdatum",
       "end_date": "Enddatum",
@@ -682,7 +681,6 @@ interface Resources {
       "files_visible_only_to_coach": "Files visible only to Coach"
     },
     "patient_interactions": {
-      "patient_interactions": "Patient Interactions",
       "interaction_type": "Interaction Type",
       "start_date": "Start Date",
       "end_date": "End Date",
@@ -1125,7 +1123,6 @@ interface Resources {
       "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
     },
     "patient_interactions": {
-      "patient_interactions": "Взаємодії з пацієнтом",
       "interaction_type": "Тип взаємодії",
       "start_date": "Дата початку",
       "end_date": "Дата завершення",
