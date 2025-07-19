@@ -84,7 +84,9 @@
     "create_chatbot_from_template": "Створити чат-бота з шаблону",
     "create_new_chatbot": "Створити нового чат-бота",
     "new_bot": "Новий бот",
+    "no_chatbots_created_yet": "Ви ще не створили жодного чат-бота.",
     "client_chatbot": "Клієнтський чат-бот",
+    "client_chatbots": "Клієнтські чат-боти",
     "conversation_summary": "Підсумок розмови",
     "what_would_you_like_to_name_your_bot": "Як ви хочете назвати свого бота?",
     "enter_bot_name": "Введіть назву бота",
@@ -213,6 +215,7 @@
   },
   "patient_detail": {
     "message": "Це сторінка деталей клієнта з ID",
+    "view_client_interactions": "Переглянути взаємодії клієнта",
     "client": "Клієнт",
     "email_client_app": "Email (для входу в клієнтський додаток)",
     "initial_password_client_app": "Початковий пароль (для входу в клієнтський додаток)",
@@ -233,6 +236,13 @@
     "create_bot": "Створити бота",
     "files_visible_to_client": "Файли, видимі клієнту",
     "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
+  },
+  "patient_interactions": {
+    "interaction_type": "Тип взаємодії",
+    "start_date": "Дата початку",
+    "end_date": "Дата завершення",
+    "time": "Час",
+    "date": "Дата"
   },
   "patient_create": {
     "title": "Це сторінка створення нового клієнта",
@@ -402,7 +412,8 @@
     "patients": {
       "create": "Зареєструвати нового клієнта",
       "details": "Деталі клієнта",
-      "conversations": "Підсумок бесід"
+      "conversations": "Підсумок бесід",
+      "interactions": "Взаємодії з клієнтом"
     },
     "chatbot": {
       "create": "Створити нового чат-бота",
