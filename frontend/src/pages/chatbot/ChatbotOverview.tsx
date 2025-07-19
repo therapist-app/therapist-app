@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   IconButton,
   Menu,
@@ -23,6 +22,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Tooltip } from '@mui/material';
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
@@ -65,6 +65,10 @@ const ChatbotOverview = (): ReactElement => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
+
+  const isPatientContext = Boolean(patientId);
+const onlyOnePatientTemplateLeft =
+  isPatientContext && patientTemplates.length === 1;
 
   useEffect(() => {
     if (patientId) {
@@ -383,9 +387,18 @@ const ChatbotOverview = (): ReactElement => {
       )}
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
-        <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
-        <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
-      </Menu>
+  <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
+
+  {onlyOnePatientTemplateLeft && currentChatbot?.id === patientTemplates[0]?.id ? (
+    <Tooltip title={'Cannot delete the last template'}>
+      <span>
+        <MenuItem disabled>{t('dashboard.delete')}</MenuItem>
+      </span>
+    </Tooltip>
+  ) : (
+    <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
+  )}
+</Menu>
 
       <Snackbar
         open={snackbar.open}
