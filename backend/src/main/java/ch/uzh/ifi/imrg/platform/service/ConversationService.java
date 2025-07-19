@@ -27,6 +27,9 @@ public class ConversationService {
 
     GetConversationSummaryInputDTOPatientAPI body = new GetConversationSummaryInputDTOPatientAPI();
 
+    body.setStart(start);
+    body.setEnd(end);
+
     var patientResp =
         PatientAppAPIs.coachChatbotControllerPatientAPI
             .getConversationSummary(body, patientId)
