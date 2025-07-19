@@ -40,7 +40,8 @@ public class ExerciseComponentService {
     exerciseComponent.setExerciseComponentType(
         createExerciseComponentDTO.getExerciseComponentType());
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
-    exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
+    exerciseComponent.setExerciseComponentDescription(
+        createExerciseComponentDTO.getExerciseComponentDescription());
 
     exerciseComponentRepository.save(exerciseComponent);
   }
@@ -63,7 +64,8 @@ public class ExerciseComponentService {
     exerciseComponent.setFileType(file.getContentType());
     exerciseComponent.setExtractedText(extractedText);
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
-    exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
+    exerciseComponent.setExerciseComponentDescription(
+        createExerciseComponentDTO.getExerciseComponentDescription());
 
     try {
       exerciseComponent.setFileData(file.getBytes());
@@ -94,8 +96,8 @@ public class ExerciseComponentService {
     SecurityUtil.checkOwnership(exercise, therapistId);
 
     // 1) Update the text if provided
-    if (dto.getDescription() != null) {
-      target.setDescription(dto.getDescription());
+    if (dto.getExerciseComponentDescription() != null) {
+      target.setExerciseComponentDescription(dto.getExerciseComponentDescription());
     }
 
     // 2) Only if they passed in an order number do we need to shuffle anything

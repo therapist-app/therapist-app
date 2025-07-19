@@ -96,12 +96,10 @@ public class LLMContextUtil {
           for (Exercise exercise : phase.getPhaseExercises()) {
             promptBuilder
                 .append("- **Exercise:** ")
-                .append(exercise.getTitle())
+                .append(exercise.getExerciseTitle())
                 .append(" (ID: ")
                 .append(exercise.getId())
                 .append(")\n")
-                .append("  - **Type:** ")
-                .append(exercise.getExerciseType())
                 .append("\n")
                 .append("  - **Scheduled Start:** ")
                 .append(
@@ -118,7 +116,10 @@ public class LLMContextUtil {
             if (!components.isEmpty()) {
               promptBuilder.append("  - **Components:**\n");
               for (ExerciseComponent component : components) {
-                promptBuilder.append("    - ").append(component.getDescription()).append("\n");
+                promptBuilder
+                    .append("    - ")
+                    .append(component.getExerciseComponentDescription())
+                    .append("\n");
               }
             }
           }
@@ -335,8 +336,10 @@ public class LLMContextUtil {
         if (patient.getExercises() != null && !patient.getExercises().isEmpty()) {
           promptBuilder.append("### Exercises\n");
           for (Exercise exercise : patient.getExercises()) {
-            promptBuilder.append("- **Exercise:** ").append(exercise.getTitle()).append("\n");
-            promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
+            promptBuilder
+                .append("- **Exercise:** ")
+                .append(exercise.getExerciseTitle())
+                .append("\n");
             String exerciseStart =
                 exercise.getExerciseStart() != null
                     ? FORMATTER.format(exercise.getExerciseStart())
@@ -362,7 +365,7 @@ public class LLMContextUtil {
               for (ExerciseComponent component : exercise.getExerciseComponents()) {
                 promptBuilder
                     .append("    - **Description:** ")
-                    .append(component.getDescription())
+                    .append(component.getExerciseComponentDescription())
                     .append("\n");
                 promptBuilder
                     .append("      **Type:** ")

@@ -5,7 +5,6 @@ import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
@@ -25,9 +24,7 @@ import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,19 +126,11 @@ public class CounselingPlanPhaseService {
 
     systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
-    String validExerciseTypes =
-        Arrays.stream(ExerciseType.values())
-            .map(Enum::name)
-            .collect(Collectors.joining("', '", "'", "'"));
-
     String userPrompt =
         "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
-            + "The exercise should have a title and a type. "
-            + "The 'exerciseType' MUST be one of the following values: "
-            + validExerciseTypes
-            + ". "
+            + "The exercise should have a title.\n"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\"";
+            + "Format: {\"title\":\"<title>\"";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));

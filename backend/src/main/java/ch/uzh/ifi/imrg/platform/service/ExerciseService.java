@@ -39,8 +39,7 @@ public class ExerciseService {
 
     Exercise exercise = new Exercise();
     exercise.setPatient(patient);
-    exercise.setTitle(createExerciseDTO.getTitle());
-    exercise.setExerciseType(createExerciseDTO.getExerciseType());
+    exercise.setExerciseTitle(createExerciseDTO.getExerciseTitle());
     exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
     exercise.setExerciseEnd(
         DateUtil.addAmountOfWeeks(
@@ -73,11 +72,8 @@ public class ExerciseService {
     Exercise exercise = exerciseRepository.getReferenceById(updateExerciseDTO.getId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
-    if (updateExerciseDTO.getTitle() != null) {
-      exercise.setTitle(updateExerciseDTO.getTitle());
-    }
-    if (updateExerciseDTO.getExerciseType() != null) {
-      exercise.setExerciseType(updateExerciseDTO.getExerciseType());
+    if (updateExerciseDTO.getExerciseTitle() != null) {
+      exercise.setExerciseTitle(updateExerciseDTO.getExerciseTitle());
     }
 
     if (updateExerciseDTO.getExerciseStart() != null) {

@@ -31,7 +31,7 @@ export interface UpdateExerciseComponentDTO {
      * @type {string}
      * @memberof UpdateExerciseComponentDTO
      */
-    'description'?: string;
+    'exerciseComponentDescription'?: string;
     /**
      * 
      * @type {number}

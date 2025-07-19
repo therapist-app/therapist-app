@@ -11,7 +11,7 @@ public interface ExerciseComponentMapper {
   ExerciseComponentMapper INSTANCE = Mappers.getMapper(ExerciseComponentMapper.class);
 
   @Mapping(source = "id", target = "id")
-  @Mapping(source = "description", target = "description")
+  @Mapping(source = "exerciseComponentDescription", target = "exerciseComponentDescription")
   @Mapping(source = "exerciseComponentType", target = "exerciseComponentType")
   @Mapping(source = "fileName", target = "fileName")
   @Mapping(source = "fileType", target = "fileType")
