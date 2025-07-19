@@ -84,7 +84,9 @@
     "create_chatbot_from_template": "Chatbot aus Vorlage erstellen",
     "create_new_chatbot": "Neuen Chatbot erstellen",
     "new_bot": "Neuer Bot",
+    "no_chatbots_created_yet": "Noch keine Chatbots erstellt.",
     "client_chatbot": "Klienten-Chatbot",
+    "client_chatbots": "Klienten-Chatbots",
     "conversation_summary": "Gesprächszusammenfassung",
     "what_would_you_like_to_name_your_bot": "Wie möchtest du deinen Bot nennen?",
     "enter_bot_name": "Botnamen eingeben",
@@ -213,6 +215,7 @@
   },
   "patient_detail": {
     "message": "Dies ist die Detailseite des Klienten mit der ID",
+    "view_client_interactions": "Klienteninteraktionen anzeigen",
     "client": "Klient",
     "email_client_app": "E-Mail (für Login in der Klienten-App)",
     "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
@@ -233,6 +236,13 @@
     "create_bot": "Bot erstellen",
     "files_visible_to_client": "Für Klienten sichtbare Dateien",
     "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
+  },
+  "patient_interactions": {
+    "interaction_type": "Interaktionstyp",
+    "start_date": "Startdatum",
+    "end_date": "Enddatum",
+    "time": "Zeit",
+    "date": "Datum"
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -402,7 +412,8 @@
     "patients": {
       "create": "Neuen Klienten registrieren",
       "details": "Klientendetails",
-      "conversations": "Gesprächszusammenfassung"
+      "conversations": "Gesprächszusammenfassung",
+      "interactions": "Klienteninteraktionen"
     },
     "chatbot": {
       "create": "Neuen Chatbot erstellen",
