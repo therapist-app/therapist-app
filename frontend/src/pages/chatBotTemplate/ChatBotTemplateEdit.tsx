@@ -19,7 +19,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { FormControlLabel, Switch } from '@mui/material'
 import { AxiosError } from 'axios'
+import { is } from 'date-fns/locale'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
@@ -66,6 +68,8 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
+  const [isActive, setIsActive] = useState<boolean>(false)
+
   const chatListRef = useRef<HTMLUListElement>(null)
 
   const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -123,6 +127,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       setChatbotIcon(chatbotConfig.chatbotIcon || '')
       setChatbotTone(chatbotConfig.chatbotTone || '')
       setWelcomeMessage(chatbotConfig.welcomeMessage || '')
+      setIsActive(chatbotConfig.isActive || false)
 
       if (chatbotConfig.welcomeMessage) {
         setChat([{ response: chatbotConfig.welcomeMessage }])
@@ -256,6 +261,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
+        isActive: isActive,
       }
 
       await dispatch(
@@ -518,6 +524,17 @@ const ChatBotTemplateEdit: React.FC = () => {
                   value={welcomeMessage}
                   onChange={(e) => setWelcomeMessage(e.target.value)}
                   margin='normal'
+                />
+
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={isActive}
+                      onChange={(e) => setIsActive(e.target.checked)}
+                      color='success'
+                    />
+                  }
+                  label='Active (visible to patient)'
                 />
 
                 <Box

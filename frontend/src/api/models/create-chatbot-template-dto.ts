@@ -50,5 +50,11 @@ export interface CreateChatbotTemplateDTO {
      * @memberof CreateChatbotTemplateDTO
      */
     'welcomeMessage'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateChatbotTemplateDTO
+     */
+    'isActive'?: boolean;
 }
 
