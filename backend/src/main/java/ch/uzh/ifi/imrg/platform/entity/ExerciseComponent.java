@@ -27,7 +27,7 @@ public class ExerciseComponent implements OwnedByTherapist {
 
   @Column private ExerciseComponentType exerciseComponentType;
 
-  @Column private String description;
+  @Column private String exerciseComponentDescription;
 
   private String fileName;
 
