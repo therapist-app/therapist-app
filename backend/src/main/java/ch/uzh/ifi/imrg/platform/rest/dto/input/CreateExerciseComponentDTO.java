@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CreateExerciseComponentDTO {
   private String exerciseId;
-  private String description;
+  private String exerciseComponentDescription;
   private ExerciseComponentType exerciseComponentType;
 }
