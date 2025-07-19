@@ -9,4 +9,5 @@ public class CreateChatbotTemplateDTO {
   private String chatbotRole;
   private String chatbotTone;
   private String welcomeMessage;
+  private Boolean isActive;
 }

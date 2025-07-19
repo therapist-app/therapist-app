@@ -11,6 +11,7 @@ public class ChatbotTemplateOutputDTO {
   private String chatbotRole;
   private String chatbotTone;
   private String welcomeMessage;
+  private Boolean isActive;
   private Instant createdAt;
   private Instant updatedAt;
   private String patientId;

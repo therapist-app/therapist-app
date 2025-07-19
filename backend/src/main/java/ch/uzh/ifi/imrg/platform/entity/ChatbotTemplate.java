@@ -35,6 +35,9 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist {
   private String chatbotTone;
   private String welcomeMessage;
 
+  @Column(name = "is_active")
+  private boolean isActive = false;
+
   @ManyToOne
   @JoinColumn(name = "therapist_id")
   private Therapist therapist;
