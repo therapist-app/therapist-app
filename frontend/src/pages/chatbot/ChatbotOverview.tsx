@@ -330,7 +330,7 @@ const ChatbotOverview = (): ReactElement => {
           ) : (
             <Box>
               <Typography variant='h4' sx={{ mb: 1 }}>
-                Client Chatbots
+                {t('chatbot.client_chatbots')}
               </Typography>
               <Typography sx={{ mt: 2 }}>{t('chatbot.no_chatbots_created_yet')}</Typography>
             </Box>
