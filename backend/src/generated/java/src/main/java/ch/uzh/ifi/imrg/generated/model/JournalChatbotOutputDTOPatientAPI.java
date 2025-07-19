@@ -24,25 +24,51 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * ImageDataPatientAPI
+ * JournalChatbotOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ImageDataPatientAPI.JSON_PROPERTY_ID,
-  ImageDataPatientAPI.JSON_PROPERTY_ALT
+  JournalChatbotOutputDTOPatientAPI.JSON_PROPERTY_NAME,
+  JournalChatbotOutputDTOPatientAPI.JSON_PROPERTY_ID
 })
-@JsonTypeName("ImageData")
+@JsonTypeName("JournalChatbotOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class ImageDataPatientAPI {
+public class JournalChatbotOutputDTOPatientAPI {
+  public static final String JSON_PROPERTY_NAME = "name";
+  private String name;
+
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
-  public static final String JSON_PROPERTY_ALT = "alt";
-  private String alt;
-
-  public ImageDataPatientAPI() {
+  public JournalChatbotOutputDTOPatientAPI() {
   }
 
-  public ImageDataPatientAPI id(String id) {
+  public JournalChatbotOutputDTOPatientAPI name(String name) {
+    
+    this.name = name;
+    return this;
+  }
+
+   /**
+   * Get name
+   * @return name
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getName() {
+    return name;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
+  public JournalChatbotOutputDTOPatientAPI id(String id) {
     
     this.id = id;
     return this;
@@ -67,32 +93,6 @@ public class ImageDataPatientAPI {
     this.id = id;
   }
 
-
-  public ImageDataPatientAPI alt(String alt) {
-    
-    this.alt = alt;
-    return this;
-  }
-
-   /**
-   * Get alt
-   * @return alt
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ALT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getAlt() {
-    return alt;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ALT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAlt(String alt) {
-    this.alt = alt;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -101,22 +101,22 @@ public class ImageDataPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ImageDataPatientAPI imageData = (ImageDataPatientAPI) o;
-    return Objects.equals(this.id, imageData.id) &&
-        Objects.equals(this.alt, imageData.alt);
+    JournalChatbotOutputDTOPatientAPI journalChatbotOutputDTO = (JournalChatbotOutputDTOPatientAPI) o;
+    return Objects.equals(this.name, journalChatbotOutputDTO.name) &&
+        Objects.equals(this.id, journalChatbotOutputDTO.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, alt);
+    return Objects.hash(name, id);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ImageDataPatientAPI {\n");
+    sb.append("class JournalChatbotOutputDTOPatientAPI {\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    alt: ").append(toIndentedString(alt)).append("\n");
     sb.append("}");
     return sb.toString();
   }

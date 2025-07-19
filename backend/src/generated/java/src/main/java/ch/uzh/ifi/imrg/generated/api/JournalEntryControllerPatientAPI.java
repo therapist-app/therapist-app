@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.generated.api;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.GetAllJournalEntriesDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.JournalChatbotOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.JournalEntryOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.JournalEntryRequestDTOPatientAPI;
 import java.util.Set;
@@ -191,6 +192,80 @@ public class JournalEntryControllerPatientAPI {
      */
     public ResponseSpec deleteEntryWithResponseSpec(String entryId) throws WebClientResponseException {
         return deleteEntryRequestCreation(entryId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param entryId The entryId parameter
+     * @return JournalChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getAllMessages1RequestCreation(String entryId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'entryId' is set
+        if (entryId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'entryId' when calling getAllMessages1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("entryId", entryId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/journal-entries/{entryId}/chatbot", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param entryId The entryId parameter
+     * @return JournalChatbotOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<JournalChatbotOutputDTOPatientAPI> getAllMessages1(String entryId) throws WebClientResponseException {
+        ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI>() {};
+        return getAllMessages1RequestCreation(entryId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param entryId The entryId parameter
+     * @return ResponseEntity&lt;JournalChatbotOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<JournalChatbotOutputDTOPatientAPI>> getAllMessages1WithHttpInfo(String entryId) throws WebClientResponseException {
+        ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalChatbotOutputDTOPatientAPI>() {};
+        return getAllMessages1RequestCreation(entryId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param entryId The entryId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getAllMessages1WithResponseSpec(String entryId) throws WebClientResponseException {
+        return getAllMessages1RequestCreation(entryId);
     }
     /**
      * 

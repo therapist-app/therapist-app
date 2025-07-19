@@ -20,32 +20,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * ExerciseMediaOutputDTOPatientAPI
+ * ExerciseComponentOverviewOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ExerciseMediaOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  ExerciseMediaOutputDTOPatientAPI.JSON_PROPERTY_DATA
+  ExerciseComponentOverviewOutputDTOPatientAPI.JSON_PROPERTY_ID
 })
-@JsonTypeName("ExerciseMediaOutputDTO")
+@JsonTypeName("ExerciseComponentOverviewOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class ExerciseMediaOutputDTOPatientAPI {
+public class ExerciseComponentOverviewOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
-  public static final String JSON_PROPERTY_DATA = "data";
-  private List<byte[]> data;
-
-  public ExerciseMediaOutputDTOPatientAPI() {
+  public ExerciseComponentOverviewOutputDTOPatientAPI() {
   }
 
-  public ExerciseMediaOutputDTOPatientAPI id(String id) {
+  public ExerciseComponentOverviewOutputDTOPatientAPI id(String id) {
     
     this.id = id;
     return this;
@@ -70,40 +63,6 @@ public class ExerciseMediaOutputDTOPatientAPI {
     this.id = id;
   }
 
-
-  public ExerciseMediaOutputDTOPatientAPI data(List<byte[]> data) {
-    
-    this.data = data;
-    return this;
-  }
-
-  public ExerciseMediaOutputDTOPatientAPI addDataItem(byte[] dataItem) {
-    if (this.data == null) {
-      this.data = new ArrayList<>();
-    }
-    this.data.add(dataItem);
-    return this;
-  }
-
-   /**
-   * Get data
-   * @return data
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DATA)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public List<byte[]> getData() {
-    return data;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_DATA)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setData(List<byte[]> data) {
-    this.data = data;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -112,22 +71,20 @@ public class ExerciseMediaOutputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExerciseMediaOutputDTOPatientAPI exerciseMediaOutputDTO = (ExerciseMediaOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, exerciseMediaOutputDTO.id) &&
-        Objects.equals(this.data, exerciseMediaOutputDTO.data);
+    ExerciseComponentOverviewOutputDTOPatientAPI exerciseComponentOverviewOutputDTO = (ExerciseComponentOverviewOutputDTOPatientAPI) o;
+    return Objects.equals(this.id, exerciseComponentOverviewOutputDTO.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, data);
+    return Objects.hash(id);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExerciseMediaOutputDTOPatientAPI {\n");
+    sb.append("class ExerciseComponentOverviewOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

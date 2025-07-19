@@ -2,8 +2,12 @@ package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentOverviewOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentUpdateInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInformationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseUpdateInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExercisesOverviewOutputDTOPatientAPI;
 
 import java.util.HashMap;
@@ -130,6 +134,94 @@ public class CoachExerciseControllerPatientAPI {
     /**
      * 
      * 
+     * <p><b>201</b> - Created
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentInputDTOPatientAPI The exerciseComponentInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec createExerciseComponentRequestCreation(String patientId, String exerciseId, ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = exerciseComponentInputDTOPatientAPI;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling createExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling createExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseComponentInputDTOPatientAPI' is set
+        if (exerciseComponentInputDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseComponentInputDTOPatientAPI' when calling createExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+        pathParams.put("exerciseId", exerciseId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/exercises/{exerciseId}/exercise-components", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>201</b> - Created
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentInputDTOPatientAPI The exerciseComponentInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> createExerciseComponent(String patientId, String exerciseId, ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return createExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentInputDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>201</b> - Created
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentInputDTOPatientAPI The exerciseComponentInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> createExerciseComponentWithHttpInfo(String patientId, String exerciseId, ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return createExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentInputDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>201</b> - Created
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentInputDTOPatientAPI The exerciseComponentInputDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec createExerciseComponentWithResponseSpec(String patientId, String exerciseId, ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI) throws WebClientResponseException {
+        return createExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentInputDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
      * <p><b>204</b> - No Content
      * @param patientId The patientId parameter
      * @param exerciseId The exerciseId parameter
@@ -204,6 +296,176 @@ public class CoachExerciseControllerPatientAPI {
      */
     public ResponseSpec deleteExerciseWithResponseSpec(String patientId, String exerciseId) throws WebClientResponseException {
         return deleteExerciseRequestCreation(patientId, exerciseId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec deleteExerciseComponentRequestCreation(String patientId, String exerciseId, String exerciseComponentId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling deleteExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling deleteExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseComponentId' is set
+        if (exerciseComponentId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseComponentId' when calling deleteExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+        pathParams.put("exerciseId", exerciseId);
+        pathParams.put("exerciseComponentId", exerciseComponentId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/exercises/{exerciseId}/exercise-components/{exerciseComponentId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> deleteExerciseComponent(String patientId, String exerciseId, String exerciseComponentId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deleteExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> deleteExerciseComponentWithHttpInfo(String patientId, String exerciseId, String exerciseComponentId) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return deleteExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec deleteExerciseComponentWithResponseSpec(String patientId, String exerciseId, String exerciseComponentId) throws WebClientResponseException {
+        return deleteExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @return List&lt;ExerciseComponentOverviewOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getAllExerciseComponentsRequestCreation(String patientId, String exerciseId) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getAllExerciseComponents", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling getAllExerciseComponents", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+        pathParams.put("exerciseId", exerciseId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/exercises/{exerciseId}/exercise-components", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @return List&lt;ExerciseComponentOverviewOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Flux<ExerciseComponentOverviewOutputDTOPatientAPI> getAllExerciseComponents(String patientId, String exerciseId) throws WebClientResponseException {
+        ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI>() {};
+        return getAllExerciseComponentsRequestCreation(patientId, exerciseId).bodyToFlux(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @return ResponseEntity&lt;List&lt;ExerciseComponentOverviewOutputDTOPatientAPI&gt;&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<List<ExerciseComponentOverviewOutputDTOPatientAPI>>> getAllExerciseComponentsWithHttpInfo(String patientId, String exerciseId) throws WebClientResponseException {
+        ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<ExerciseComponentOverviewOutputDTOPatientAPI>() {};
+        return getAllExerciseComponentsRequestCreation(patientId, exerciseId).toEntityList(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getAllExerciseComponentsWithResponseSpec(String patientId, String exerciseId) throws WebClientResponseException {
+        return getAllExerciseComponentsRequestCreation(patientId, exerciseId);
     }
     /**
      * 
@@ -368,11 +630,11 @@ public class CoachExerciseControllerPatientAPI {
      * <p><b>204</b> - No Content
      * @param patientId The patientId parameter
      * @param exerciseId The exerciseId parameter
-     * @param exerciseInputDTOPatientAPI The exerciseInputDTOPatientAPI parameter
+     * @param exerciseUpdateInputDTOPatientAPI The exerciseUpdateInputDTOPatientAPI parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec updateExerciseRequestCreation(String patientId, String exerciseId, ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI) throws WebClientResponseException {
-        Object postBody = exerciseInputDTOPatientAPI;
+    private ResponseSpec updateExerciseRequestCreation(String patientId, String exerciseId, ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = exerciseUpdateInputDTOPatientAPI;
         // verify the required parameter 'patientId' is set
         if (patientId == null) {
             throw new WebClientResponseException("Missing the required parameter 'patientId' when calling updateExercise", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
@@ -381,9 +643,9 @@ public class CoachExerciseControllerPatientAPI {
         if (exerciseId == null) {
             throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling updateExercise", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
-        // verify the required parameter 'exerciseInputDTOPatientAPI' is set
-        if (exerciseInputDTOPatientAPI == null) {
-            throw new WebClientResponseException("Missing the required parameter 'exerciseInputDTOPatientAPI' when calling updateExercise", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        // verify the required parameter 'exerciseUpdateInputDTOPatientAPI' is set
+        if (exerciseUpdateInputDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseUpdateInputDTOPatientAPI' when calling updateExercise", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -415,12 +677,12 @@ public class CoachExerciseControllerPatientAPI {
      * <p><b>204</b> - No Content
      * @param patientId The patientId parameter
      * @param exerciseId The exerciseId parameter
-     * @param exerciseInputDTOPatientAPI The exerciseInputDTOPatientAPI parameter
+     * @param exerciseUpdateInputDTOPatientAPI The exerciseUpdateInputDTOPatientAPI parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<Void> updateExercise(String patientId, String exerciseId, ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI) throws WebClientResponseException {
+    public Mono<Void> updateExercise(String patientId, String exerciseId, ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return updateExerciseRequestCreation(patientId, exerciseId, exerciseInputDTOPatientAPI).bodyToMono(localVarReturnType);
+        return updateExerciseRequestCreation(patientId, exerciseId, exerciseUpdateInputDTOPatientAPI).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -429,12 +691,12 @@ public class CoachExerciseControllerPatientAPI {
      * <p><b>204</b> - No Content
      * @param patientId The patientId parameter
      * @param exerciseId The exerciseId parameter
-     * @param exerciseInputDTOPatientAPI The exerciseInputDTOPatientAPI parameter
+     * @param exerciseUpdateInputDTOPatientAPI The exerciseUpdateInputDTOPatientAPI parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<Void>> updateExerciseWithHttpInfo(String patientId, String exerciseId, ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI) throws WebClientResponseException {
+    public Mono<ResponseEntity<Void>> updateExerciseWithHttpInfo(String patientId, String exerciseId, ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return updateExerciseRequestCreation(patientId, exerciseId, exerciseInputDTOPatientAPI).toEntity(localVarReturnType);
+        return updateExerciseRequestCreation(patientId, exerciseId, exerciseUpdateInputDTOPatientAPI).toEntity(localVarReturnType);
     }
 
     /**
@@ -443,11 +705,108 @@ public class CoachExerciseControllerPatientAPI {
      * <p><b>204</b> - No Content
      * @param patientId The patientId parameter
      * @param exerciseId The exerciseId parameter
-     * @param exerciseInputDTOPatientAPI The exerciseInputDTOPatientAPI parameter
+     * @param exerciseUpdateInputDTOPatientAPI The exerciseUpdateInputDTOPatientAPI parameter
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec updateExerciseWithResponseSpec(String patientId, String exerciseId, ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI) throws WebClientResponseException {
-        return updateExerciseRequestCreation(patientId, exerciseId, exerciseInputDTOPatientAPI);
+    public ResponseSpec updateExerciseWithResponseSpec(String patientId, String exerciseId, ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        return updateExerciseRequestCreation(patientId, exerciseId, exerciseUpdateInputDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @param exerciseComponentUpdateInputDTOPatientAPI The exerciseComponentUpdateInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec updateExerciseComponentRequestCreation(String patientId, String exerciseId, String exerciseComponentId, ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = exerciseComponentUpdateInputDTOPatientAPI;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling updateExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseId' is set
+        if (exerciseId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseId' when calling updateExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseComponentId' is set
+        if (exerciseComponentId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseComponentId' when calling updateExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'exerciseComponentUpdateInputDTOPatientAPI' is set
+        if (exerciseComponentUpdateInputDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'exerciseComponentUpdateInputDTOPatientAPI' when calling updateExerciseComponent", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+        pathParams.put("exerciseId", exerciseId);
+        pathParams.put("exerciseComponentId", exerciseComponentId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/exercises/{exerciseId}/exercise-components/{exerciseComponentId}", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @param exerciseComponentUpdateInputDTOPatientAPI The exerciseComponentUpdateInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> updateExerciseComponent(String patientId, String exerciseId, String exerciseComponentId, ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return updateExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId, exerciseComponentUpdateInputDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @param exerciseComponentUpdateInputDTOPatientAPI The exerciseComponentUpdateInputDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> updateExerciseComponentWithHttpInfo(String patientId, String exerciseId, String exerciseComponentId, ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return updateExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId, exerciseComponentUpdateInputDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param exerciseId The exerciseId parameter
+     * @param exerciseComponentId The exerciseComponentId parameter
+     * @param exerciseComponentUpdateInputDTOPatientAPI The exerciseComponentUpdateInputDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec updateExerciseComponentWithResponseSpec(String patientId, String exerciseId, String exerciseComponentId, ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI) throws WebClientResponseException {
+        return updateExerciseComponentRequestCreation(patientId, exerciseId, exerciseComponentId, exerciseComponentUpdateInputDTOPatientAPI);
     }
 }

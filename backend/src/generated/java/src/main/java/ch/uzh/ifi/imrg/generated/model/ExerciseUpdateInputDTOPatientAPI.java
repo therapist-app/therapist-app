@@ -29,25 +29,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * ExerciseInputDTOPatientAPI
+ * ExerciseUpdateInputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_ID,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_TITLE,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_DESCRIPTION,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXPLANATION,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_START,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_END,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_IS_PAUSED,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_DO_EVERY_N_DAYS,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_COMPONENTS
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_TITLE,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_DESCRIPTION,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXPLANATION,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_START,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_END,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_IS_PAUSED,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_DO_EVERY_N_DAYS,
+  ExerciseUpdateInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_COMPONENTS
 })
-@JsonTypeName("ExerciseInputDTO")
+@JsonTypeName("ExerciseUpdateInputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class ExerciseInputDTOPatientAPI {
-  public static final String JSON_PROPERTY_ID = "id";
-  private String id;
-
+public class ExerciseUpdateInputDTOPatientAPI {
   public static final String JSON_PROPERTY_EXERCISE_TITLE = "exerciseTitle";
   private String exerciseTitle;
 
@@ -72,36 +68,10 @@ public class ExerciseInputDTOPatientAPI {
   public static final String JSON_PROPERTY_EXERCISE_COMPONENTS = "exerciseComponents";
   private List<ExerciseComponentInputDTOPatientAPI> exerciseComponents;
 
-  public ExerciseInputDTOPatientAPI() {
+  public ExerciseUpdateInputDTOPatientAPI() {
   }
 
-  public ExerciseInputDTOPatientAPI id(String id) {
-    
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getId() {
-    return id;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(String id) {
-    this.id = id;
-  }
-
-
-  public ExerciseInputDTOPatientAPI exerciseTitle(String exerciseTitle) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseTitle(String exerciseTitle) {
     
     this.exerciseTitle = exerciseTitle;
     return this;
@@ -127,7 +97,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseDescription(String exerciseDescription) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseDescription(String exerciseDescription) {
     
     this.exerciseDescription = exerciseDescription;
     return this;
@@ -153,7 +123,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseExplanation(String exerciseExplanation) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseExplanation(String exerciseExplanation) {
     
     this.exerciseExplanation = exerciseExplanation;
     return this;
@@ -179,7 +149,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseStart(Instant exerciseStart) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseStart(Instant exerciseStart) {
     
     this.exerciseStart = exerciseStart;
     return this;
@@ -205,7 +175,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseEnd(Instant exerciseEnd) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseEnd(Instant exerciseEnd) {
     
     this.exerciseEnd = exerciseEnd;
     return this;
@@ -231,7 +201,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI isPaused(Boolean isPaused) {
+  public ExerciseUpdateInputDTOPatientAPI isPaused(Boolean isPaused) {
     
     this.isPaused = isPaused;
     return this;
@@ -257,7 +227,7 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI doEveryNDays(Integer doEveryNDays) {
+  public ExerciseUpdateInputDTOPatientAPI doEveryNDays(Integer doEveryNDays) {
     
     this.doEveryNDays = doEveryNDays;
     return this;
@@ -283,13 +253,13 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseComponents(List<ExerciseComponentInputDTOPatientAPI> exerciseComponents) {
+  public ExerciseUpdateInputDTOPatientAPI exerciseComponents(List<ExerciseComponentInputDTOPatientAPI> exerciseComponents) {
     
     this.exerciseComponents = exerciseComponents;
     return this;
   }
 
-  public ExerciseInputDTOPatientAPI addExerciseComponentsItem(ExerciseComponentInputDTOPatientAPI exerciseComponentsItem) {
+  public ExerciseUpdateInputDTOPatientAPI addExerciseComponentsItem(ExerciseComponentInputDTOPatientAPI exerciseComponentsItem) {
     if (this.exerciseComponents == null) {
       this.exerciseComponents = new ArrayList<>();
     }
@@ -324,28 +294,26 @@ public class ExerciseInputDTOPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExerciseInputDTOPatientAPI exerciseInputDTO = (ExerciseInputDTOPatientAPI) o;
-    return Objects.equals(this.id, exerciseInputDTO.id) &&
-        Objects.equals(this.exerciseTitle, exerciseInputDTO.exerciseTitle) &&
-        Objects.equals(this.exerciseDescription, exerciseInputDTO.exerciseDescription) &&
-        Objects.equals(this.exerciseExplanation, exerciseInputDTO.exerciseExplanation) &&
-        Objects.equals(this.exerciseStart, exerciseInputDTO.exerciseStart) &&
-        Objects.equals(this.exerciseEnd, exerciseInputDTO.exerciseEnd) &&
-        Objects.equals(this.isPaused, exerciseInputDTO.isPaused) &&
-        Objects.equals(this.doEveryNDays, exerciseInputDTO.doEveryNDays) &&
-        Objects.equals(this.exerciseComponents, exerciseInputDTO.exerciseComponents);
+    ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTO = (ExerciseUpdateInputDTOPatientAPI) o;
+    return Objects.equals(this.exerciseTitle, exerciseUpdateInputDTO.exerciseTitle) &&
+        Objects.equals(this.exerciseDescription, exerciseUpdateInputDTO.exerciseDescription) &&
+        Objects.equals(this.exerciseExplanation, exerciseUpdateInputDTO.exerciseExplanation) &&
+        Objects.equals(this.exerciseStart, exerciseUpdateInputDTO.exerciseStart) &&
+        Objects.equals(this.exerciseEnd, exerciseUpdateInputDTO.exerciseEnd) &&
+        Objects.equals(this.isPaused, exerciseUpdateInputDTO.isPaused) &&
+        Objects.equals(this.doEveryNDays, exerciseUpdateInputDTO.doEveryNDays) &&
+        Objects.equals(this.exerciseComponents, exerciseUpdateInputDTO.exerciseComponents);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, exerciseTitle, exerciseDescription, exerciseExplanation, exerciseStart, exerciseEnd, isPaused, doEveryNDays, exerciseComponents);
+    return Objects.hash(exerciseTitle, exerciseDescription, exerciseExplanation, exerciseStart, exerciseEnd, isPaused, doEveryNDays, exerciseComponents);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExerciseInputDTOPatientAPI {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class ExerciseUpdateInputDTOPatientAPI {\n");
     sb.append("    exerciseTitle: ").append(toIndentedString(exerciseTitle)).append("\n");
     sb.append("    exerciseDescription: ").append(toIndentedString(exerciseDescription)).append("\n");
     sb.append("    exerciseExplanation: ").append(toIndentedString(exerciseExplanation)).append("\n");

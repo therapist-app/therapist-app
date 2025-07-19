@@ -24,73 +24,43 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * FileDataPatientAPI
+ * ExerciseStartOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  FileDataPatientAPI.JSON_PROPERTY_NAME,
-  FileDataPatientAPI.JSON_PROPERTY_ID
+  ExerciseStartOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXECUTION_ID
 })
-@JsonTypeName("FileData")
+@JsonTypeName("ExerciseStartOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class FileDataPatientAPI {
-  public static final String JSON_PROPERTY_NAME = "name";
-  private String name;
+public class ExerciseStartOutputDTOPatientAPI {
+  public static final String JSON_PROPERTY_EXERCISE_EXECUTION_ID = "exerciseExecutionId";
+  private String exerciseExecutionId;
 
-  public static final String JSON_PROPERTY_ID = "id";
-  private String id;
-
-  public FileDataPatientAPI() {
+  public ExerciseStartOutputDTOPatientAPI() {
   }
 
-  public FileDataPatientAPI name(String name) {
+  public ExerciseStartOutputDTOPatientAPI exerciseExecutionId(String exerciseExecutionId) {
     
-    this.name = name;
+    this.exerciseExecutionId = exerciseExecutionId;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get exerciseExecutionId
+   * @return exerciseExecutionId
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getName() {
-    return name;
+  public String getExerciseExecutionId() {
+    return exerciseExecutionId;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
-  public FileDataPatientAPI id(String id) {
-    
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getId() {
-    return id;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(String id) {
-    this.id = id;
+  public void setExerciseExecutionId(String exerciseExecutionId) {
+    this.exerciseExecutionId = exerciseExecutionId;
   }
 
   @Override
@@ -101,22 +71,20 @@ public class FileDataPatientAPI {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FileDataPatientAPI fileData = (FileDataPatientAPI) o;
-    return Objects.equals(this.name, fileData.name) &&
-        Objects.equals(this.id, fileData.id);
+    ExerciseStartOutputDTOPatientAPI exerciseStartOutputDTO = (ExerciseStartOutputDTOPatientAPI) o;
+    return Objects.equals(this.exerciseExecutionId, exerciseStartOutputDTO.exerciseExecutionId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, id);
+    return Objects.hash(exerciseExecutionId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FileDataPatientAPI {\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class ExerciseStartOutputDTOPatientAPI {\n");
+    sb.append("    exerciseExecutionId: ").append(toIndentedString(exerciseExecutionId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

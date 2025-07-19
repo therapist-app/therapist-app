@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   ExercisesOverviewOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  ExercisesOverviewOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  ExercisesOverviewOutputDTOPatientAPI.JSON_PROPERTY_PICTURE_ID
+  ExercisesOverviewOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_TITLE
 })
 @JsonTypeName("ExercisesOverviewOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -37,11 +36,8 @@ public class ExercisesOverviewOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
 
-  public static final String JSON_PROPERTY_NAME = "name";
-  private String name;
-
-  public static final String JSON_PROPERTY_PICTURE_ID = "pictureId";
-  private String pictureId;
+  public static final String JSON_PROPERTY_EXERCISE_TITLE = "exerciseTitle";
+  private String exerciseTitle;
 
   public ExercisesOverviewOutputDTOPatientAPI() {
   }
@@ -72,55 +68,29 @@ public class ExercisesOverviewOutputDTOPatientAPI {
   }
 
 
-  public ExercisesOverviewOutputDTOPatientAPI name(String name) {
+  public ExercisesOverviewOutputDTOPatientAPI exerciseTitle(String exerciseTitle) {
     
-    this.name = name;
+    this.exerciseTitle = exerciseTitle;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get exerciseTitle
+   * @return exerciseTitle
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getName() {
-    return name;
+  public String getExerciseTitle() {
+    return exerciseTitle;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
-  public ExercisesOverviewOutputDTOPatientAPI pictureId(String pictureId) {
-    
-    this.pictureId = pictureId;
-    return this;
-  }
-
-   /**
-   * Get pictureId
-   * @return pictureId
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PICTURE_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getPictureId() {
-    return pictureId;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_PICTURE_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPictureId(String pictureId) {
-    this.pictureId = pictureId;
+  public void setExerciseTitle(String exerciseTitle) {
+    this.exerciseTitle = exerciseTitle;
   }
 
   @Override
@@ -133,13 +103,12 @@ public class ExercisesOverviewOutputDTOPatientAPI {
     }
     ExercisesOverviewOutputDTOPatientAPI exercisesOverviewOutputDTO = (ExercisesOverviewOutputDTOPatientAPI) o;
     return Objects.equals(this.id, exercisesOverviewOutputDTO.id) &&
-        Objects.equals(this.name, exercisesOverviewOutputDTO.name) &&
-        Objects.equals(this.pictureId, exercisesOverviewOutputDTO.pictureId);
+        Objects.equals(this.exerciseTitle, exercisesOverviewOutputDTO.exerciseTitle);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, pictureId);
+    return Objects.hash(id, exerciseTitle);
   }
 
   @Override
@@ -147,8 +116,7 @@ public class ExercisesOverviewOutputDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExercisesOverviewOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    pictureId: ").append(toIndentedString(pictureId)).append("\n");
+    sb.append("    exerciseTitle: ").append(toIndentedString(exerciseTitle)).append("\n");
     sb.append("}");
     return sb.toString();
   }

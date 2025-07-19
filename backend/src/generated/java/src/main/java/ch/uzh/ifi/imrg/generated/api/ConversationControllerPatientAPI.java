@@ -193,11 +193,11 @@ public class ConversationControllerPatientAPI {
      * @return CompleteConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getAllMessages3RequestCreation(String conversationId) throws WebClientResponseException {
+    private ResponseSpec getAllMessages5RequestCreation(String conversationId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'conversationId' is set
         if (conversationId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling getAllMessages3", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling getAllMessages5", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -230,9 +230,9 @@ public class ConversationControllerPatientAPI {
      * @return CompleteConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<CompleteConversationOutputDTOPatientAPI> getAllMessages3(String conversationId) throws WebClientResponseException {
+    public Mono<CompleteConversationOutputDTOPatientAPI> getAllMessages5(String conversationId) throws WebClientResponseException {
         ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI>() {};
-        return getAllMessages3RequestCreation(conversationId).bodyToMono(localVarReturnType);
+        return getAllMessages5RequestCreation(conversationId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -243,9 +243,9 @@ public class ConversationControllerPatientAPI {
      * @return ResponseEntity&lt;CompleteConversationOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<CompleteConversationOutputDTOPatientAPI>> getAllMessages3WithHttpInfo(String conversationId) throws WebClientResponseException {
+    public Mono<ResponseEntity<CompleteConversationOutputDTOPatientAPI>> getAllMessages5WithHttpInfo(String conversationId) throws WebClientResponseException {
         ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteConversationOutputDTOPatientAPI>() {};
-        return getAllMessages3RequestCreation(conversationId).toEntity(localVarReturnType);
+        return getAllMessages5RequestCreation(conversationId).toEntity(localVarReturnType);
     }
 
     /**
@@ -256,8 +256,8 @@ public class ConversationControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getAllMessages3WithResponseSpec(String conversationId) throws WebClientResponseException {
-        return getAllMessages3RequestCreation(conversationId);
+    public ResponseSpec getAllMessages5WithResponseSpec(String conversationId) throws WebClientResponseException {
+        return getAllMessages5RequestCreation(conversationId);
     }
     /**
      * 
@@ -411,15 +411,15 @@ public class ConversationControllerPatientAPI {
      * @return MessageOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec sendMessage2RequestCreation(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+    private ResponseSpec sendMessage3RequestCreation(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
         Object postBody = createMessageDTOPatientAPI;
         // verify the required parameter 'conversationId' is set
         if (conversationId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling sendMessage2", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling sendMessage3", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // verify the required parameter 'createMessageDTOPatientAPI' is set
         if (createMessageDTOPatientAPI == null) {
-            throw new WebClientResponseException("Missing the required parameter 'createMessageDTOPatientAPI' when calling sendMessage2", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'createMessageDTOPatientAPI' when calling sendMessage3", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -455,9 +455,9 @@ public class ConversationControllerPatientAPI {
      * @return MessageOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<MessageOutputDTOPatientAPI> sendMessage2(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+    public Mono<MessageOutputDTOPatientAPI> sendMessage3(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return sendMessage2RequestCreation(conversationId, createMessageDTOPatientAPI).bodyToMono(localVarReturnType);
+        return sendMessage3RequestCreation(conversationId, createMessageDTOPatientAPI).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -469,9 +469,9 @@ public class ConversationControllerPatientAPI {
      * @return ResponseEntity&lt;MessageOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<MessageOutputDTOPatientAPI>> sendMessage2WithHttpInfo(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+    public Mono<ResponseEntity<MessageOutputDTOPatientAPI>> sendMessage3WithHttpInfo(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return sendMessage2RequestCreation(conversationId, createMessageDTOPatientAPI).toEntity(localVarReturnType);
+        return sendMessage3RequestCreation(conversationId, createMessageDTOPatientAPI).toEntity(localVarReturnType);
     }
 
     /**
@@ -483,8 +483,8 @@ public class ConversationControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec sendMessage2WithResponseSpec(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
-        return sendMessage2RequestCreation(conversationId, createMessageDTOPatientAPI);
+    public ResponseSpec sendMessage3WithResponseSpec(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+        return sendMessage3RequestCreation(conversationId, createMessageDTOPatientAPI);
     }
     /**
      * 

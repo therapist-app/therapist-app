@@ -2,8 +2,8 @@ package ch.uzh.ifi.imrg.generated.api;
 
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
-import ch.uzh.ifi.imrg.generated.model.CompleteExerciseConversationOutputDTOPatientAPI;
-import ch.uzh.ifi.imrg.generated.model.CreateMessageDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.CreateJournalMessageDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.JournalConversationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.MessageOutputDTOPatientAPI;
 
 import java.util.HashMap;
@@ -28,15 +28,15 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
-public class ExerciseConversationControllerPatientAPI {
+public class JournalEntryConversationControllerPatientAPI {
     private ApiClient apiClient;
 
-    public ExerciseConversationControllerPatientAPI() {
+    public JournalEntryConversationControllerPatientAPI() {
         this(new ApiClient());
     }
 
     @Autowired
-    public ExerciseConversationControllerPatientAPI(ApiClient apiClient) {
+    public JournalEntryConversationControllerPatientAPI(ApiClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -55,11 +55,11 @@ public class ExerciseConversationControllerPatientAPI {
      * @param conversationId The conversationId parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec deleteExerciseChatRequestCreation(String conversationId) throws WebClientResponseException {
+    private ResponseSpec deleteJournalChatRequestCreation(String conversationId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'conversationId' is set
         if (conversationId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling deleteExerciseChat", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling deleteJournalChat", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -79,7 +79,7 @@ public class ExerciseConversationControllerPatientAPI {
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return apiClient.invokeAPI("/patients/exercise-conversation/{conversationId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/patients/journal-entry-conversation/{conversationId}", HttpMethod.DELETE, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -89,9 +89,9 @@ public class ExerciseConversationControllerPatientAPI {
      * @param conversationId The conversationId parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<Void> deleteExerciseChat(String conversationId) throws WebClientResponseException {
+    public Mono<Void> deleteJournalChat(String conversationId) throws WebClientResponseException {
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return deleteExerciseChatRequestCreation(conversationId).bodyToMono(localVarReturnType);
+        return deleteJournalChatRequestCreation(conversationId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -101,9 +101,9 @@ public class ExerciseConversationControllerPatientAPI {
      * @param conversationId The conversationId parameter
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<Void>> deleteExerciseChatWithHttpInfo(String conversationId) throws WebClientResponseException {
+    public Mono<ResponseEntity<Void>> deleteJournalChatWithHttpInfo(String conversationId) throws WebClientResponseException {
         ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
-        return deleteExerciseChatRequestCreation(conversationId).toEntity(localVarReturnType);
+        return deleteJournalChatRequestCreation(conversationId).toEntity(localVarReturnType);
     }
 
     /**
@@ -114,22 +114,22 @@ public class ExerciseConversationControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec deleteExerciseChatWithResponseSpec(String conversationId) throws WebClientResponseException {
-        return deleteExerciseChatRequestCreation(conversationId);
+    public ResponseSpec deleteJournalChatWithResponseSpec(String conversationId) throws WebClientResponseException {
+        return deleteJournalChatRequestCreation(conversationId);
     }
     /**
      * 
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @return CompleteExerciseConversationOutputDTOPatientAPI
+     * @return JournalConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getAllMessages2RequestCreation(String conversationId) throws WebClientResponseException {
+    private ResponseSpec getAllMessagesRequestCreation(String conversationId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'conversationId' is set
         if (conversationId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling getAllMessages2", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling getAllMessages", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -150,8 +150,8 @@ public class ExerciseConversationControllerPatientAPI {
 
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
-        ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/exercise-conversation/{conversationId}/messages", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/journal-entry-conversation/{conversationId}/messages", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -159,12 +159,12 @@ public class ExerciseConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @return CompleteExerciseConversationOutputDTOPatientAPI
+     * @return JournalConversationOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<CompleteExerciseConversationOutputDTOPatientAPI> getAllMessages2(String conversationId) throws WebClientResponseException {
-        ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI>() {};
-        return getAllMessages2RequestCreation(conversationId).bodyToMono(localVarReturnType);
+    public Mono<JournalConversationOutputDTOPatientAPI> getAllMessages(String conversationId) throws WebClientResponseException {
+        ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI>() {};
+        return getAllMessagesRequestCreation(conversationId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -172,12 +172,12 @@ public class ExerciseConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @return ResponseEntity&lt;CompleteExerciseConversationOutputDTOPatientAPI&gt;
+     * @return ResponseEntity&lt;JournalConversationOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<CompleteExerciseConversationOutputDTOPatientAPI>> getAllMessages2WithHttpInfo(String conversationId) throws WebClientResponseException {
-        ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CompleteExerciseConversationOutputDTOPatientAPI>() {};
-        return getAllMessages2RequestCreation(conversationId).toEntity(localVarReturnType);
+    public Mono<ResponseEntity<JournalConversationOutputDTOPatientAPI>> getAllMessagesWithHttpInfo(String conversationId) throws WebClientResponseException {
+        ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<JournalConversationOutputDTOPatientAPI>() {};
+        return getAllMessagesRequestCreation(conversationId).toEntity(localVarReturnType);
     }
 
     /**
@@ -188,27 +188,27 @@ public class ExerciseConversationControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getAllMessages2WithResponseSpec(String conversationId) throws WebClientResponseException {
-        return getAllMessages2RequestCreation(conversationId);
+    public ResponseSpec getAllMessagesWithResponseSpec(String conversationId) throws WebClientResponseException {
+        return getAllMessagesRequestCreation(conversationId);
     }
     /**
      * 
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @param createMessageDTOPatientAPI The createMessageDTOPatientAPI parameter
+     * @param createJournalMessageDTOPatientAPI The createJournalMessageDTOPatientAPI parameter
      * @return MessageOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec sendMessage1RequestCreation(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
-        Object postBody = createMessageDTOPatientAPI;
+    private ResponseSpec sendMessageRequestCreation(String conversationId, CreateJournalMessageDTOPatientAPI createJournalMessageDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = createJournalMessageDTOPatientAPI;
         // verify the required parameter 'conversationId' is set
         if (conversationId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling sendMessage1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'conversationId' when calling sendMessage", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
-        // verify the required parameter 'createMessageDTOPatientAPI' is set
-        if (createMessageDTOPatientAPI == null) {
-            throw new WebClientResponseException("Missing the required parameter 'createMessageDTOPatientAPI' when calling sendMessage1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        // verify the required parameter 'createJournalMessageDTOPatientAPI' is set
+        if (createJournalMessageDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'createJournalMessageDTOPatientAPI' when calling sendMessage", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -232,7 +232,7 @@ public class ExerciseConversationControllerPatientAPI {
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return apiClient.invokeAPI("/patients/exercise-conversation/{conversationId}/messages", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+        return apiClient.invokeAPI("/patients/journal-entry-conversation/{conversationId}/messages", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
@@ -240,13 +240,13 @@ public class ExerciseConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @param createMessageDTOPatientAPI The createMessageDTOPatientAPI parameter
+     * @param createJournalMessageDTOPatientAPI The createJournalMessageDTOPatientAPI parameter
      * @return MessageOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<MessageOutputDTOPatientAPI> sendMessage1(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+    public Mono<MessageOutputDTOPatientAPI> sendMessage(String conversationId, CreateJournalMessageDTOPatientAPI createJournalMessageDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return sendMessage1RequestCreation(conversationId, createMessageDTOPatientAPI).bodyToMono(localVarReturnType);
+        return sendMessageRequestCreation(conversationId, createJournalMessageDTOPatientAPI).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -254,13 +254,13 @@ public class ExerciseConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @param createMessageDTOPatientAPI The createMessageDTOPatientAPI parameter
+     * @param createJournalMessageDTOPatientAPI The createJournalMessageDTOPatientAPI parameter
      * @return ResponseEntity&lt;MessageOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<MessageOutputDTOPatientAPI>> sendMessage1WithHttpInfo(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
+    public Mono<ResponseEntity<MessageOutputDTOPatientAPI>> sendMessageWithHttpInfo(String conversationId, CreateJournalMessageDTOPatientAPI createJournalMessageDTOPatientAPI) throws WebClientResponseException {
         ParameterizedTypeReference<MessageOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<MessageOutputDTOPatientAPI>() {};
-        return sendMessage1RequestCreation(conversationId, createMessageDTOPatientAPI).toEntity(localVarReturnType);
+        return sendMessageRequestCreation(conversationId, createJournalMessageDTOPatientAPI).toEntity(localVarReturnType);
     }
 
     /**
@@ -268,11 +268,11 @@ public class ExerciseConversationControllerPatientAPI {
      * 
      * <p><b>200</b> - OK
      * @param conversationId The conversationId parameter
-     * @param createMessageDTOPatientAPI The createMessageDTOPatientAPI parameter
+     * @param createJournalMessageDTOPatientAPI The createJournalMessageDTOPatientAPI parameter
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec sendMessage1WithResponseSpec(String conversationId, CreateMessageDTOPatientAPI createMessageDTOPatientAPI) throws WebClientResponseException {
-        return sendMessage1RequestCreation(conversationId, createMessageDTOPatientAPI);
+    public ResponseSpec sendMessageWithResponseSpec(String conversationId, CreateJournalMessageDTOPatientAPI createJournalMessageDTOPatientAPI) throws WebClientResponseException {
+        return sendMessageRequestCreation(conversationId, createJournalMessageDTOPatientAPI);
     }
 }

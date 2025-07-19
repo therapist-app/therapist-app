@@ -15,7 +15,7 @@ package ch.uzh.ifi.imrg.generated.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import ch.uzh.ifi.imrg.generated.model.ExerciseOutputDTOExerciseElementsInnerPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -31,138 +31,138 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * ExerciseOutputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_NAME,
-  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_DESCRIPTION,
-  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_ELEMENTS
+  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXECUTION_ID,
+  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_TITLE,
+  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_DESCRIPTION,
+  ExerciseOutputDTOPatientAPI.JSON_PROPERTY_EXERCISE_COMPONENTS
 })
 @JsonTypeName("ExerciseOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class ExerciseOutputDTOPatientAPI {
-  public static final String JSON_PROPERTY_ID = "id";
-  private String id;
+  public static final String JSON_PROPERTY_EXERCISE_EXECUTION_ID = "exerciseExecutionId";
+  private String exerciseExecutionId;
 
-  public static final String JSON_PROPERTY_NAME = "name";
-  private String name;
+  public static final String JSON_PROPERTY_EXERCISE_TITLE = "exerciseTitle";
+  private String exerciseTitle;
 
-  public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private String description;
+  public static final String JSON_PROPERTY_EXERCISE_DESCRIPTION = "exerciseDescription";
+  private String exerciseDescription;
 
-  public static final String JSON_PROPERTY_EXERCISE_ELEMENTS = "exerciseElements";
-  private List<ExerciseOutputDTOExerciseElementsInnerPatientAPI> exerciseElements;
+  public static final String JSON_PROPERTY_EXERCISE_COMPONENTS = "exerciseComponents";
+  private List<ExerciseComponentOutputDTOPatientAPI> exerciseComponents;
 
   public ExerciseOutputDTOPatientAPI() {
   }
 
-  public ExerciseOutputDTOPatientAPI id(String id) {
+  public ExerciseOutputDTOPatientAPI exerciseExecutionId(String exerciseExecutionId) {
     
-    this.id = id;
+    this.exerciseExecutionId = exerciseExecutionId;
     return this;
   }
 
    /**
-   * Get id
-   * @return id
+   * Get exerciseExecutionId
+   * @return exerciseExecutionId
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getId() {
-    return id;
+  public String getExerciseExecutionId() {
+    return exerciseExecutionId;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(String id) {
-    this.id = id;
+  public void setExerciseExecutionId(String exerciseExecutionId) {
+    this.exerciseExecutionId = exerciseExecutionId;
   }
 
 
-  public ExerciseOutputDTOPatientAPI name(String name) {
+  public ExerciseOutputDTOPatientAPI exerciseTitle(String exerciseTitle) {
     
-    this.name = name;
+    this.exerciseTitle = exerciseTitle;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get exerciseTitle
+   * @return exerciseTitle
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getName() {
-    return name;
+  public String getExerciseTitle() {
+    return exerciseTitle;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setName(String name) {
-    this.name = name;
+  public void setExerciseTitle(String exerciseTitle) {
+    this.exerciseTitle = exerciseTitle;
   }
 
 
-  public ExerciseOutputDTOPatientAPI description(String description) {
+  public ExerciseOutputDTOPatientAPI exerciseDescription(String exerciseDescription) {
     
-    this.description = description;
+    this.exerciseDescription = exerciseDescription;
     return this;
   }
 
    /**
-   * Get description
-   * @return description
+   * Get exerciseDescription
+   * @return exerciseDescription
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getDescription() {
-    return description;
+  public String getExerciseDescription() {
+    return exerciseDescription;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDescription(String description) {
-    this.description = description;
+  public void setExerciseDescription(String exerciseDescription) {
+    this.exerciseDescription = exerciseDescription;
   }
 
 
-  public ExerciseOutputDTOPatientAPI exerciseElements(List<ExerciseOutputDTOExerciseElementsInnerPatientAPI> exerciseElements) {
+  public ExerciseOutputDTOPatientAPI exerciseComponents(List<ExerciseComponentOutputDTOPatientAPI> exerciseComponents) {
     
-    this.exerciseElements = exerciseElements;
+    this.exerciseComponents = exerciseComponents;
     return this;
   }
 
-  public ExerciseOutputDTOPatientAPI addExerciseElementsItem(ExerciseOutputDTOExerciseElementsInnerPatientAPI exerciseElementsItem) {
-    if (this.exerciseElements == null) {
-      this.exerciseElements = new ArrayList<>();
+  public ExerciseOutputDTOPatientAPI addExerciseComponentsItem(ExerciseComponentOutputDTOPatientAPI exerciseComponentsItem) {
+    if (this.exerciseComponents == null) {
+      this.exerciseComponents = new ArrayList<>();
     }
-    this.exerciseElements.add(exerciseElementsItem);
+    this.exerciseComponents.add(exerciseComponentsItem);
     return this;
   }
 
    /**
-   * Get exerciseElements
-   * @return exerciseElements
+   * Get exerciseComponents
+   * @return exerciseComponents
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXERCISE_ELEMENTS)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_COMPONENTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<ExerciseOutputDTOExerciseElementsInnerPatientAPI> getExerciseElements() {
-    return exerciseElements;
+  public List<ExerciseComponentOutputDTOPatientAPI> getExerciseComponents() {
+    return exerciseComponents;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXERCISE_ELEMENTS)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_COMPONENTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExerciseElements(List<ExerciseOutputDTOExerciseElementsInnerPatientAPI> exerciseElements) {
-    this.exerciseElements = exerciseElements;
+  public void setExerciseComponents(List<ExerciseComponentOutputDTOPatientAPI> exerciseComponents) {
+    this.exerciseComponents = exerciseComponents;
   }
 
   @Override
@@ -174,25 +174,25 @@ public class ExerciseOutputDTOPatientAPI {
       return false;
     }
     ExerciseOutputDTOPatientAPI exerciseOutputDTO = (ExerciseOutputDTOPatientAPI) o;
-    return Objects.equals(this.id, exerciseOutputDTO.id) &&
-        Objects.equals(this.name, exerciseOutputDTO.name) &&
-        Objects.equals(this.description, exerciseOutputDTO.description) &&
-        Objects.equals(this.exerciseElements, exerciseOutputDTO.exerciseElements);
+    return Objects.equals(this.exerciseExecutionId, exerciseOutputDTO.exerciseExecutionId) &&
+        Objects.equals(this.exerciseTitle, exerciseOutputDTO.exerciseTitle) &&
+        Objects.equals(this.exerciseDescription, exerciseOutputDTO.exerciseDescription) &&
+        Objects.equals(this.exerciseComponents, exerciseOutputDTO.exerciseComponents);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, exerciseElements);
+    return Objects.hash(exerciseExecutionId, exerciseTitle, exerciseDescription, exerciseComponents);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExerciseOutputDTOPatientAPI {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    exerciseElements: ").append(toIndentedString(exerciseElements)).append("\n");
+    sb.append("    exerciseExecutionId: ").append(toIndentedString(exerciseExecutionId)).append("\n");
+    sb.append("    exerciseTitle: ").append(toIndentedString(exerciseTitle)).append("\n");
+    sb.append("    exerciseDescription: ").append(toIndentedString(exerciseDescription)).append("\n");
+    sb.append("    exerciseComponents: ").append(toIndentedString(exerciseComponents)).append("\n");
     sb.append("}");
     return sb.toString();
   }
