@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.CreateChatbotDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
@@ -13,6 +14,8 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -73,21 +76,28 @@ public class ChatbotTemplateService {
     Patient patient = patientRepository.getPatientById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
+    boolean isFirst =
+        patient.getChatbotTemplates() == null || patient.getChatbotTemplates().isEmpty();
+
     template.setPatient(patient);
     template.setTherapist(patient.getTherapist());
+    template.setActive(isFirst);
 
     ChatbotTemplate saved = chatbotTemplateRepository.save(template);
     chatbotTemplateRepository.flush();
 
-    CreateChatbotDTOPatientAPI createChatbotDTO =
-        new CreateChatbotDTOPatientAPI()
-            .chatbotRole(saved.getChatbotRole())
-            .chatbotTone(saved.getChatbotTone())
-            .welcomeMessage(saved.getWelcomeMessage());
+    if (isFirst) {
+      CreateChatbotDTOPatientAPI createChatbotDTO =
+          new CreateChatbotDTOPatientAPI()
+              .chatbotRole(saved.getChatbotRole())
+              .chatbotTone(saved.getChatbotTone())
+              .welcomeMessage(saved.getWelcomeMessage());
 
-    PatientAppAPIs.coachChatbotControllerPatientAPI
-        .createChatbot(patientId, createChatbotDTO)
-        .block();
+      PatientAppAPIs.coachChatbotControllerPatientAPI
+          .createChatbot(patientId, createChatbotDTO)
+          .block();
+    }
+
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
   }
 
@@ -106,10 +116,52 @@ public class ChatbotTemplateService {
     existingTemplate.setChatbotTone(template.getChatbotTone());
     existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
 
-    ChatbotTemplate updChatbotTemplate = chatbotTemplateRepository.save(existingTemplate);
+    boolean requestedActive = template.isActive();
+    existingTemplate.setActive(requestedActive);
+
+    Patient patient = existingTemplate.getPatient();
+
+    if (patient != null && requestedActive) {
+      String patientId = patient.getId();
+      var allPatientTemplates = chatbotTemplateRepository.findByPatientId(patientId);
+      for (ChatbotTemplate other : allPatientTemplates) {
+        if (!other.getId().equals(existingTemplate.getId()) && other.isActive()) {
+          other.setActive(false);
+        }
+      }
+    }
+
+    ChatbotTemplate updated = chatbotTemplateRepository.save(existingTemplate);
     chatbotTemplateRepository.flush();
 
-    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(updChatbotTemplate);
+    String chatbotContext =
+        updated.getChatbotTemplateDocuments().stream()
+            .map(ChatbotTemplateDocument::getExtractedText)
+            .filter(Objects::nonNull)
+            .collect(Collectors.joining("\n\n"));
+
+    if (patient != null && requestedActive) {
+      String patientId = patient.getId();
+      var firstConfig =
+          PatientAppAPIs.coachChatbotControllerPatientAPI
+              .getChatbotConfigurations(patientId)
+              .blockFirst();
+
+      if (firstConfig != null) {
+        var updateDto =
+            new UpdateChatbotDTOPatientAPI()
+                .id(firstConfig.getId())
+                .active(updated.isActive())
+                .chatbotRole(updated.getChatbotRole())
+                .chatbotTone(updated.getChatbotTone())
+                .welcomeMessage(updated.getWelcomeMessage())
+                .chatbotContext(chatbotContext);
+
+        PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
+      }
+    }
+
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(updated);
   }
 
   public void deleteTemplate(String templateId, String therapistId) {
@@ -140,11 +192,47 @@ public class ChatbotTemplateService {
             .findByIdAndPatientId(templateId, patientId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
 
+    var currentTemplates = chatbotTemplateRepository.findByPatientId(patientId);
+    if (currentTemplates.size() <= 1) {
+      throw new IllegalStateException("Cannot delete the last chatbot template for this patient.");
+    }
+
+    boolean wasActive = template.isActive();
+
     patient.getChatbotTemplates().remove(template);
     template.getTherapist().getChatbotTemplates().remove(template);
 
     chatbotTemplateRepository.delete(template);
     chatbotTemplateRepository.flush();
+
+    if (!wasActive) {
+      return;
+    }
+
+    var remaining = chatbotTemplateRepository.findByPatientId(patientId);
+
+    ChatbotTemplate newlyActive = null;
+
+    if (!remaining.isEmpty()) {
+      newlyActive =
+          remaining.stream()
+              .sorted((a, b) -> b.getUpdatedAt().compareTo(a.getUpdatedAt()))
+              .findFirst()
+              .orElse(remaining.get(0));
+
+      for (ChatbotTemplate other : remaining) {
+        boolean activate = other.getId().equals(newlyActive.getId());
+        if (other.isActive() != activate) {
+          other.setActive(activate);
+          chatbotTemplateRepository.save(other);
+        }
+      }
+      chatbotTemplateRepository.flush();
+
+      pushPatientAppUpdate(patientId, newlyActive);
+    } else {
+      pushPatientAppUpdate(patientId, null);
+    }
   }
 
   public ChatbotTemplateOutputDTO cloneTemplate(String templateId, String therapistId) {
@@ -222,5 +310,48 @@ public class ChatbotTemplateService {
     chatbotTemplateRepository.flush();
 
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
+  }
+
+  private void pushPatientAppUpdate(String patientId, ChatbotTemplate activeTemplateOrNull) {
+    var existingRemote =
+        PatientAppAPIs.coachChatbotControllerPatientAPI
+            .getChatbotConfigurations(patientId)
+            .blockFirst();
+    if (existingRemote == null) {
+      return;
+    }
+
+    boolean active = activeTemplateOrNull != null;
+    String context = "";
+    String role = existingRemote.getChatbotRole();
+    String tone = existingRemote.getChatbotTone();
+    String welcome = existingRemote.getWelcomeMessage();
+
+    if (activeTemplateOrNull != null) {
+      context =
+          activeTemplateOrNull.getChatbotTemplateDocuments().stream()
+              .map(ChatbotTemplateDocument::getExtractedText)
+              .filter(Objects::nonNull)
+              .collect(Collectors.joining("\n\n"));
+      role = activeTemplateOrNull.getChatbotRole();
+      tone = activeTemplateOrNull.getChatbotTone();
+      welcome = activeTemplateOrNull.getWelcomeMessage();
+    } else {
+      role = null;
+      tone = null;
+      welcome = "Chatbot inactive. Please configure a template.";
+      context = "";
+    }
+
+    var updateDto =
+        new UpdateChatbotDTOPatientAPI()
+            .id(existingRemote.getId())
+            .active(active)
+            .chatbotRole(role)
+            .chatbotTone(tone)
+            .welcomeMessage(welcome)
+            .chatbotContext(context);
+
+    PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
   }
 }
