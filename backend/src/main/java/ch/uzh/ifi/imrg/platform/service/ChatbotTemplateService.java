@@ -192,6 +192,11 @@ public class ChatbotTemplateService {
             .findByIdAndPatientId(templateId, patientId)
             .orElseThrow(() -> new EntityNotFoundException("Template not found"));
 
+    var currentTemplates = chatbotTemplateRepository.findByPatientId(patientId);
+    if (currentTemplates.size() <= 1) {
+      throw new IllegalStateException("Cannot delete the last chatbot template for this patient.");
+    }
+
     boolean wasActive = template.isActive();
 
     patient.getChatbotTemplates().remove(template);
