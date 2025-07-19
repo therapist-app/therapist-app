@@ -96,8 +96,8 @@ const transformDataForHeatmap = (
 
   // Sort dates in ascending order
   const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
-    const findYear = (shortDate: string) => {
-      const match = data.find(item => format(new Date(item.date), 'MM-dd') === shortDate)
+    const findYear = (shortDate: string): string => {
+      const match = data.find((item) => format(new Date(item.date), 'MM-dd') === shortDate)
       return match ? format(new Date(match.date), 'yyyy') : String(new Date().getFullYear())
     }
     const dateA = new Date(`${findYear(a)}-${a}`)
@@ -157,13 +157,15 @@ const ClientInteractions = (): ReactElement => {
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <FormControl sx={{ minWidth: 250 }}>
-                <InputLabel id='interaction-type-label'>{t('patient_interactions.interaction_type')}</InputLabel>
+                <InputLabel id='interaction-type-label'>
+                  {t('patient_interactions.interaction_type')}
+                </InputLabel>
                 <Select
                   labelId='interaction-type-label'
                   value={interactionType}
                   label={t('patient_interactions.interaction_type')}
                   onChange={(e) => setInteractionType(e.target.value)}
-                  size="small"
+                  size='small'
                 >
                   <MenuItem value='all'>{t('All Interactions')}</MenuItem>
                   <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>

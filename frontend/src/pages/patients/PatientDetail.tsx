@@ -149,7 +149,7 @@ const PatientDetail = (): ReactElement => {
       {patient ? (
         <Card sx={{ mb: 4, p: 2 }}>
           <CardContent>
-            <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+            <Grid container alignItems='center' justifyContent='space-between' sx={{ mb: 2 }}>
               <Grid item>
                 <Typography variant='h3' gutterBottom>
                   {t('patient_detail.client')}: {patient.name}
