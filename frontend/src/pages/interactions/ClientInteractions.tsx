@@ -118,8 +118,8 @@ const transformDataForHeatmap = (
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const [interactionType, setInteractionType] = useState<string>('all')
-  const [data] = useState<InteractionData[]>(() => generateMockData(30))
-  const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 30))
+  const [data] = useState<InteractionData[]>(() => generateMockData(15))
+  const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
   // Memoize filtered data with date range
