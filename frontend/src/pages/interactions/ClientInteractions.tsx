@@ -1,9 +1,18 @@
-import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
-import { format, isWithinInterval, subDays } from 'date-fns'
+import { format, isWithinInterval, eachDayOfInterval, subDays } from 'date-fns'
 import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -57,14 +66,23 @@ const generateMockData = (days: number): InteractionData[] => {
 }
 
 // Transform data for heatmap
-const transformDataForHeatmap = (data: InteractionData[]): HeatMapData[] => {
+const transformDataForHeatmap = (data: InteractionData[], startDate: Date | null, endDate: Date | null): HeatMapData[] => {
   // Create array of hours (0-23)
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const daysMap = new Map<string, number[]>()
+  
+  // If we have both dates, generate all dates in between
+  if (startDate && endDate) {
+    const allDates = eachDayOfInterval({ start: startDate, end: endDate })
+    allDates.forEach(date => {
+      const shortDate = format(date, 'MM-dd')
+      daysMap.set(shortDate, Array(24).fill(0))
+    })
+  }
 
-  // Initialize all hours for all days with 0
+  // Add interaction data
   data.forEach((item) => {
-    const shortDate = format(new Date(item.date), 'MM-dd') // Shorter date format
+    const shortDate = format(new Date(item.date), 'MM-dd')
     if (!daysMap.has(shortDate)) {
       daysMap.set(shortDate, Array(24).fill(0))
     }
@@ -72,12 +90,19 @@ const transformDataForHeatmap = (data: InteractionData[]): HeatMapData[] => {
     dayData[item.hour] += item.value
   })
 
+  // Sort dates in ascending order
+  const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
+    const dateA = new Date(`2025-${a}`)
+    const dateB = new Date(`2025-${b}`)
+    return dateA.getTime() - dateB.getTime()
+  })
+
   // Transform into Nivo heatmap format with hours as rows
   return hours.map((hour) => ({
     id: `${hour.toString().padStart(2, '0')}`,
-    data: Array.from(daysMap.entries()).map(([date, values]) => ({
+    data: sortedDates.map(date => ({
       x: date,
-      y: values[hour],
+      y: daysMap.get(date)![hour],
     })),
   }))
 }
@@ -92,12 +117,12 @@ const ClientInteractions = (): ReactElement => {
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
     let filtered = data
-    
+
     // Filter by interaction type
     if (interactionType !== 'all') {
       filtered = filtered.filter((d) => d.type === interactionType)
     }
-    
+
     // Filter by date range
     if (startDate && endDate) {
       filtered = filtered.filter((d) => {
@@ -105,12 +130,15 @@ const ClientInteractions = (): ReactElement => {
         return isWithinInterval(date, { start: startDate, end: endDate })
       })
     }
-    
+
     return filtered
   }, [data, interactionType, startDate, endDate])
 
   // Memoize heatmap data transformation
-  const heatmapData = useMemo(() => transformDataForHeatmap(filteredData), [filteredData])
+  const heatmapData = useMemo(
+    () => transformDataForHeatmap(filteredData, startDate, endDate),
+    [filteredData, startDate, endDate]
+  )
 
   return (
     <Layout>
