@@ -75,6 +75,8 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
 
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: [],
 
+  [PAGES.CLIENT_INTERACTIONS_PAGE]: [],
+
   [PAGES.NOT_FOUND_PAGE]: [],
 }
 
@@ -83,10 +85,10 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.LOGIN_PAGE]: '/login',
   [PAGES.REGISTRATION_PAGE]: '/register',
   [PAGES.SETTINGS_PAGE]: '/settings',
-  
+
   [PAGES.PATIENTS_CREATE_PAGE]: '/patients/create',
   [PAGES.PATIENTS_DETAILS_PAGE]: '/patients/:patientId',
-  
+
   [PAGES.CLIENT_INTERACTIONS_PAGE]: '/patients/:patientId/interactions',
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: '/patients/:patientId/conversations-summary',
 

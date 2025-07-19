@@ -4,6 +4,7 @@ import { format, subDays } from 'date-fns'
 import { throttle } from 'lodash'
 import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import Layout from '../../generalComponents/Layout'
 
 // Mock data interface
@@ -95,44 +96,44 @@ const ClientInteractions = (): ReactElement => {
 
   return (
     <Layout>
-        <Paper sx={{ p: 3, height: '800px' }}>
+      <Paper sx={{ p: 3, height: '800px' }}>
         <Stack spacing={2}>
-            <Typography variant='h6'>{t('Patient Interactions')}</Typography>
+          <Typography variant='h6'>{t('Patient Interactions')}</Typography>
 
-            <FormControl fullWidth>
+          <FormControl fullWidth>
             <InputLabel id='interaction-type-label'>{t('Interaction Type')}</InputLabel>
             <Select
-                labelId='interaction-type-label'
-                value={interactionType}
-                label={t('Interaction Type')}
-                onChange={(e) => setInteractionType(e.target.value)}
+              labelId='interaction-type-label'
+              value={interactionType}
+              label={t('Interaction Type')}
+              onChange={(e) => setInteractionType(e.target.value)}
             >
-                <MenuItem value='all'>{t('All Interactions')}</MenuItem>
-                <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
-                <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
-                <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
-                <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
-                <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
-                <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
-                <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
+              <MenuItem value='all'>{t('All Interactions')}</MenuItem>
+              <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
+              <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
+              <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
+              <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
+              <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
+              <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
+              <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
             </Select>
-            </FormControl>
+          </FormControl>
 
-            <div style={{ height: '650px' }}>
+          <div style={{ height: '650px' }}>
             <ResponsiveHeatMap
-                data={heatmapData}
-                margin={{ top: 40, right: 40, bottom: 40, left: 80 }}
-                valueFormat='>-.0f'
-                axisTop={null}
-                axisBottom={{
+              data={heatmapData}
+              margin={{ top: 40, right: 40, bottom: 40, left: 80 }}
+              valueFormat='>-.0f'
+              axisTop={null}
+              axisBottom={{
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: -45,
                 legend: 'Date (MM-DD)',
                 legendPosition: 'middle',
                 legendOffset: 35,
-                }}
-                axisLeft={{
+              }}
+              axisLeft={{
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
@@ -140,23 +141,23 @@ const ClientInteractions = (): ReactElement => {
                 legendPosition: 'middle',
                 legendOffset: -60,
                 format: (value) => `${value}:00`,
-                }}
-                colors={{
+              }}
+              colors={{
                 type: 'sequential',
                 scheme: 'blues',
                 minValue: 0,
                 maxValue: 3,
-                }}
-                emptyColor='#f8f9fa'
-                borderColor='#ffffff'
-                borderWidth={1}
-                enableLabels={false}
-                animate={false}
-                motionConfig='gentle'
+              }}
+              emptyColor='#f8f9fa'
+              borderColor='#ffffff'
+              borderWidth={1}
+              enableLabels={false}
+              animate={false}
+              motionConfig='gentle'
             />
-            </div>
+          </div>
         </Stack>
-        </Paper>
+      </Paper>
     </Layout>
   )
 }

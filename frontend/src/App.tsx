@@ -9,6 +9,7 @@ import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
 import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
 import GAD7TestCreate from './pages/gad7Test/GAD7TestCreate.tsx'
 import Home from './pages/home/Home.tsx'
+import ClientInteractions from './pages/interactions/ClientInteractions.tsx'
 import Login from './pages/login/Login'
 import MeetingCreate from './pages/meetings/MeetingCreate.tsx'
 import MeetingDetail from './pages/meetings/MeetingDetail.tsx'
@@ -18,7 +19,6 @@ import PatientDetail from './pages/patients/PatientDetail'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
-import ClientInteractions from './pages/interactions/ClientInteractions.tsx'
 
 const App = (): ReactElement => {
   const appContainerStyle = {
@@ -71,11 +71,8 @@ const App = (): ReactElement => {
               path={ROUTES[PAGES.PATIENT_CONVERSATIONS_PAGE]}
               element={<ConversationSummary />}
             />
-            
-            <Route
-              path={ROUTES[PAGES.CLIENT_INTERACTIONS_PAGE]}
-              element={<ClientInteractions />}
-            />
+
+            <Route path={ROUTES[PAGES.CLIENT_INTERACTIONS_PAGE]} element={<ClientInteractions />} />
 
             <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />
             <Route path={ROUTES[PAGES.NOT_FOUND_PAGE]} element={<NotFound />} />

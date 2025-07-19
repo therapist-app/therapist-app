@@ -225,8 +225,8 @@ const PatientDetail = (): ReactElement => {
       )}
 
       <Button
-        variant="contained"
-        color="primary"
+        variant='contained'
+        color='primary'
         sx={{ mb: 2 }}
         onClick={() =>
           navigate(
