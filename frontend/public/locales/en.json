@@ -84,7 +84,9 @@
     "create_chatbot_from_template": "Create Chatbot from Template",
     "create_new_chatbot": "Create New Chatbot",
     "new_bot": "New Bot",
+    "no_chatbots_created_yet": "You haven't created any chatbots yet.",
     "client_chatbot": "Client Chatbot",
+    "client_chatbots": "Client Chatbots",
     "conversation_summary": "Conversation Summary",
     "what_would_you_like_to_name_your_bot": "What would you like to name your bot?",
     "enter_bot_name": "Enter bot name",
@@ -213,6 +215,7 @@
   },
   "patient_detail": {
     "message": "This is the client detail page of client with ID",
+    "view_client_interactions": "View Client Interactions",
     "client": "Client",
     "email_client_app": "Email (for Login in Client App)",
     "initial_password_client_app": "Initial Password (for Login in Client App)",
@@ -233,6 +236,13 @@
     "create_bot": "Create Bot",
     "files_visible_to_client": "Files visible to Client",
     "files_visible_only_to_coach": "Files visible only to Coach"
+  },
+  "patient_interactions": {
+    "interaction_type": "Interaction Type",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "time": "Time",
+    "date": "Date"
   },
   "patient_create": {
     "title": "This is the page to create a new client",
@@ -402,7 +412,8 @@
     "patients": {
       "create": "Register new Client",
       "details": "Client Details",
-      "conversations": "Conversation Summary"
+      "conversations": "Conversation Summary",
+      "interactions": "Client Interactions"
     },
     "chatbot": {
       "create": "Create new Chatbot",

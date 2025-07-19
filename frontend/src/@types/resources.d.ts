@@ -85,7 +85,9 @@ interface Resources {
       "create_chatbot_from_template": "Chatbot aus Vorlage erstellen",
       "create_new_chatbot": "Neuen Chatbot erstellen",
       "new_bot": "Neuer Bot",
+      "no_chatbots_created_yet": "Noch keine Chatbots erstellt.",
       "client_chatbot": "Klienten-Chatbot",
+      "client_chatbots": "Klienten-Chatbots",
       "conversation_summary": "Gesprächszusammenfassung",
       "what_would_you_like_to_name_your_bot": "Wie möchtest du deinen Bot nennen?",
       "enter_bot_name": "Botnamen eingeben",
@@ -214,6 +216,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "Dies ist die Detailseite des Klienten mit der ID",
+      "view_client_interactions": "Klienteninteraktionen anzeigen",
       "client": "Klient",
       "email_client_app": "E-Mail (für Login in der Klienten-App)",
       "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
@@ -234,6 +237,13 @@ interface Resources {
       "create_bot": "Bot erstellen",
       "files_visible_to_client": "Für Klienten sichtbare Dateien",
       "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
+    },
+    "patient_interactions": {
+      "interaction_type": "Interaktionstyp",
+      "start_date": "Startdatum",
+      "end_date": "Enddatum",
+      "time": "Zeit",
+      "date": "Datum"
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -403,7 +413,8 @@ interface Resources {
       "patients": {
         "create": "Neuen Klienten registrieren",
         "details": "Klientendetails",
-        "conversations": "Gesprächszusammenfassung"
+        "conversations": "Gesprächszusammenfassung",
+        "interactions": "Klienteninteraktionen"
       },
       "chatbot": {
         "create": "Neuen Chatbot erstellen",
@@ -516,7 +527,9 @@ interface Resources {
       "create_chatbot_from_template": "Create Chatbot from Template",
       "create_new_chatbot": "Create New Chatbot",
       "new_bot": "New Bot",
+      "no_chatbots_created_yet": "You haven't created any chatbots yet.",
       "client_chatbot": "Client Chatbot",
+      "client_chatbots": "Client Chatbots",
       "conversation_summary": "Conversation Summary",
       "what_would_you_like_to_name_your_bot": "What would you like to name your bot?",
       "enter_bot_name": "Enter bot name",
@@ -645,6 +658,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "This is the client detail page of client with ID",
+      "view_client_interactions": "View Client Interactions",
       "client": "Client",
       "email_client_app": "Email (for Login in Client App)",
       "initial_password_client_app": "Initial Password (for Login in Client App)",
@@ -665,6 +679,13 @@ interface Resources {
       "create_bot": "Create Bot",
       "files_visible_to_client": "Files visible to Client",
       "files_visible_only_to_coach": "Files visible only to Coach"
+    },
+    "patient_interactions": {
+      "interaction_type": "Interaction Type",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "time": "Time",
+      "date": "Date"
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -834,7 +855,8 @@ interface Resources {
       "patients": {
         "create": "Register new Client",
         "details": "Client Details",
-        "conversations": "Conversation Summary"
+        "conversations": "Conversation Summary",
+        "interactions": "Client Interactions"
       },
       "chatbot": {
         "create": "Create new Chatbot",
@@ -947,7 +969,9 @@ interface Resources {
       "create_chatbot_from_template": "Створити чат-бота з шаблону",
       "create_new_chatbot": "Створити нового чат-бота",
       "new_bot": "Новий бот",
+      "no_chatbots_created_yet": "Ви ще не створили жодного чат-бота.",
       "client_chatbot": "Клієнтський чат-бот",
+      "client_chatbots": "Клієнтські чат-боти",
       "conversation_summary": "Підсумок розмови",
       "what_would_you_like_to_name_your_bot": "Як ви хочете назвати свого бота?",
       "enter_bot_name": "Введіть назву бота",
@@ -1076,6 +1100,7 @@ interface Resources {
     },
     "patient_detail": {
       "message": "Це сторінка деталей клієнта з ID",
+      "view_client_interactions": "Переглянути взаємодії клієнта",
       "client": "Клієнт",
       "email_client_app": "Email (для входу в клієнтський додаток)",
       "initial_password_client_app": "Початковий пароль (для входу в клієнтський додаток)",
@@ -1096,6 +1121,13 @@ interface Resources {
       "create_bot": "Створити бота",
       "files_visible_to_client": "Файли, видимі клієнту",
       "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
+    },
+    "patient_interactions": {
+      "interaction_type": "Тип взаємодії",
+      "start_date": "Дата початку",
+      "end_date": "Дата завершення",
+      "time": "Час",
+      "date": "Дата"
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",
@@ -1265,7 +1297,8 @@ interface Resources {
       "patients": {
         "create": "Зареєструвати нового клієнта",
         "details": "Деталі клієнта",
-        "conversations": "Підсумок бесід"
+        "conversations": "Підсумок бесід",
+        "interactions": "Взаємодії з клієнтом"
       },
       "chatbot": {
         "create": "Створити нового чат-бота",
