@@ -58,6 +58,12 @@ export interface ChatbotTemplateOutputDTO {
     'welcomeMessage'?: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof ChatbotTemplateOutputDTO
+     */
+    'isActive'?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof ChatbotTemplateOutputDTO
      */

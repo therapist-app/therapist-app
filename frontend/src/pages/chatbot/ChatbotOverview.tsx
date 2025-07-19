@@ -5,12 +5,13 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
+  Chip,
   IconButton,
   Menu,
   MenuItem,
   Snackbar,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
@@ -64,6 +65,9 @@ const ChatbotOverview = (): ReactElement => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
+
+  const isPatientContext = Boolean(patientId)
+  const onlyOnePatientTemplateLeft = isPatientContext && patientTemplates.length === 1
 
   useEffect(() => {
     if (patientId) {
@@ -219,38 +223,76 @@ const ChatbotOverview = (): ReactElement => {
         minWidth: 300,
         maxHeight: 250,
         minHeight: 250,
-        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
         border: '1px solid #e0e0e0',
         boxShadow: 'none',
         borderRadius: 2,
       }}
     >
-      <CardActionArea onClick={() => openTemplate(bot)}>
-        <CardContent>
-          <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
-          <Typography variant='body2' color='textSecondary'>
-            {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
-          </Typography>
-          <Typography variant='body1' sx={{ mt: 1 }}>
+      <CardActionArea onClick={() => openTemplate(bot)} sx={{ height: '100%' }}>
+        <CardContent
+          sx={{
+            pt: 0,
+            marginTop: -5,
+            px: 2,
+            pb: 2,
+            '&:last-child': { pb: 2 },
+          }}
+        >
+          <Box display='flex' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
+            <Typography
+              variant='h6'
+              sx={{
+                pr: 1,
+                flexGrow: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                m: 0,
+              }}
+              title={bot.chatbotName || t('dashboard.unnamed_bot')}
+            >
+              {bot.chatbotName || t('dashboard.unnamed_bot')}
+            </Typography>
+
+            <Box display='flex' alignItems='center' gap={1}>
+              {bot.isActive ? (
+                <Chip size='small' color='success' label='Active' />
+              ) : (
+                <Chip size='small' variant='outlined' label='Inactive' />
+              )}
+              {showMenu && (
+                <IconButton
+                  size='small'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleMenu(e, bot)
+                  }}
+                >
+                  <MoreVertIcon fontSize='small' />
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+
+          <Typography variant='body1' sx={{ mt: 0.25 }}>
             {t('dashboard.role')}: {bot.chatbotRole}
           </Typography>
           <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-          <Typography variant='body1' sx={{ fontSize: 48, textAlign: 'center' }}>
+
+          <Box
+            sx={{
+              fontSize: 48,
+              textAlign: 'center',
+              mt: 2,
+              lineHeight: 1,
+            }}
+          >
             {iconFor(bot.chatbotIcon ?? '')}
-          </Typography>
+          </Box>
         </CardContent>
       </CardActionArea>
-
-      {showMenu && (
-        <CardActions disableSpacing sx={{ position: 'absolute', top: 0, right: 0 }}>
-          <IconButton onClick={(e) => handleMenu(e, bot)}>
-            <MoreVertIcon />
-          </IconButton>
-        </CardActions>
-      )}
     </Card>
   )
 
@@ -345,7 +387,16 @@ const ChatbotOverview = (): ReactElement => {
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
-        <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
+
+        {onlyOnePatientTemplateLeft && currentChatbot?.id === patientTemplates[0]?.id ? (
+          <Tooltip title='Cannot delete the last template'>
+            <span>
+              <MenuItem disabled>{t('dashboard.delete')}</MenuItem>
+            </span>
+          </Tooltip>
+        ) : (
+          <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
+        )}
       </Menu>
 
       <Snackbar
