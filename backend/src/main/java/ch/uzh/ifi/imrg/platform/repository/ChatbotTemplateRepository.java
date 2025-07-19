@@ -18,4 +18,6 @@ public interface ChatbotTemplateRepository extends JpaRepository<ChatbotTemplate
       @Param("templateId") String templateId, @Param("therapistId") String therapistId);
 
   Optional<ChatbotTemplate> findByIdAndPatientId(String id, String patientId);
+
+  List<ChatbotTemplate> findByPatientId(String patientId);
 }

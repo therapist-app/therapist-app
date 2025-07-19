@@ -119,28 +119,34 @@ public class ChatbotTemplateDocumentService {
   }
 
   private void updateChatbot(ChatbotTemplate template) {
-    if (template.getPatient() != null) {
-      String patientId = template.getPatient().getId();
-
-      String chatbotContext =
-          template.getChatbotTemplateDocuments().stream()
-              .map(ChatbotTemplateDocument::getExtractedText)
-              .filter(Objects::nonNull)
-              .collect(Collectors.joining("\n\n"));
-
-      ChatbotConfigurationOutputDTOPatientAPI firstConfig =
-          coachChatbotControllerPatientAPI.getChatbotConfigurations(patientId).blockFirst();
-
-      assert firstConfig != null;
-      UpdateChatbotDTOPatientAPI updateDto =
-          new UpdateChatbotDTOPatientAPI()
-              .id(firstConfig.getId())
-              .chatbotRole(template.getChatbotRole())
-              .chatbotTone(template.getChatbotTone())
-              .welcomeMessage(template.getWelcomeMessage())
-              .chatbotContext(chatbotContext);
-
-      PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
+    if (template.getPatient() == null || !template.isActive()) {
+      return;
     }
+
+    String patientId = template.getPatient().getId();
+
+    String chatbotContext =
+        template.getChatbotTemplateDocuments().stream()
+            .map(ChatbotTemplateDocument::getExtractedText)
+            .filter(Objects::nonNull)
+            .collect(Collectors.joining("\n\n"));
+
+    ChatbotConfigurationOutputDTOPatientAPI firstConfig =
+        coachChatbotControllerPatientAPI.getChatbotConfigurations(patientId).blockFirst();
+
+    if (firstConfig == null) {
+      return;
+    }
+
+    UpdateChatbotDTOPatientAPI updateDto =
+        new UpdateChatbotDTOPatientAPI()
+            .id(firstConfig.getId())
+            .active(true)
+            .chatbotRole(template.getChatbotRole())
+            .chatbotTone(template.getChatbotTone())
+            .welcomeMessage(template.getWelcomeMessage())
+            .chatbotContext(chatbotContext);
+
+    PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
   }
 }

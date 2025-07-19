@@ -18,6 +18,7 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
+  @Mapping(source = "active", target = "isActive")
   @Mapping(
       target = "patientId",
       expression =
@@ -33,6 +34,7 @@ public interface ChatbotTemplateMapper {
   @Mapping(source = "chatbotRole", target = "chatbotRole")
   @Mapping(source = "chatbotTone", target = "chatbotTone")
   @Mapping(source = "welcomeMessage", target = "welcomeMessage")
+  @Mapping(source = "isActive", target = "active")
   @Mapping(target = "chatbotTemplateDocuments", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "id", ignore = true)
