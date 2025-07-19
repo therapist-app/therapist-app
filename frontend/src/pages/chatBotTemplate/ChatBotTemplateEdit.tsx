@@ -19,7 +19,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { FormControlLabel, Switch } from '@mui/material'
 import { AxiosError } from 'axios'
+import { is } from 'date-fns/locale'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
@@ -28,7 +30,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
-import { FormControlLabel, Switch } from '@mui/material';
+
 import {
   ChatbotTemplateOutputDTO,
   ChatCompletionWithConfigRequestDTO,
@@ -49,7 +51,6 @@ import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
-import { is } from 'date-fns/locale'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -67,7 +68,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false)
 
   const chatListRef = useRef<HTMLUListElement>(null)
 
@@ -526,15 +527,15 @@ const ChatBotTemplateEdit: React.FC = () => {
                 />
 
                 <FormControlLabel
-  control={
-    <Switch
-      checked={isActive}
-      onChange={(e) => setIsActive(e.target.checked)}
-      color="primary"
-    />
-  }
-  label="Active (visible to patient)"
-/>
+                  control={
+                    <Switch
+                      checked={isActive}
+                      onChange={(e) => setIsActive(e.target.checked)}
+                      color='primary'
+                    />
+                  }
+                  label='Active (visible to patient)'
+                />
 
                 <Box
                   sx={{

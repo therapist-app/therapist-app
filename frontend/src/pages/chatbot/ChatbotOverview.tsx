@@ -13,6 +13,7 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material'
+import { Chip } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,7 +23,6 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Chip } from '@mui/material';
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
@@ -231,16 +231,14 @@ const ChatbotOverview = (): ReactElement => {
     >
       <CardActionArea onClick={() => openTemplate(bot)}>
         <CardContent>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-    <Typography variant='h6'>
-      {bot.chatbotName || t('dashboard.unnamed_bot')}
-    </Typography>
-    {bot.isActive ? (
-      <Chip size="small" color="success" label="Active" />
-    ) : (
-      <Chip size="small" color="default" label="Inactive" />
-    )}
-  </Box>
+          <Box display='flex' justifyContent='space-between' alignItems='center'>
+            <Typography variant='h6'>{bot.chatbotName || t('dashboard.unnamed_bot')}</Typography>
+            {bot.isActive ? (
+              <Chip size='small' color='success' label='Active' />
+            ) : (
+              <Chip size='small' color='default' label='Inactive' />
+            )}
+          </Box>
           <Typography variant='body1' sx={{ mt: 1 }}>
             {t('dashboard.role')}: {bot.chatbotRole}
           </Typography>
