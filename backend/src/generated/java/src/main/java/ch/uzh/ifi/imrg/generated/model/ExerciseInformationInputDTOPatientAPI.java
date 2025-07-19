@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * ExerciseInformationInputDTOPatientAPI
  */
 @JsonPropertyOrder({
+  ExerciseInformationInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXECUTION_ID,
   ExerciseInformationInputDTOPatientAPI.JSON_PROPERTY_START_TIME,
   ExerciseInformationInputDTOPatientAPI.JSON_PROPERTY_END_TIME,
   ExerciseInformationInputDTOPatientAPI.JSON_PROPERTY_FEEDBACK,
@@ -41,6 +42,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ExerciseInformationInputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class ExerciseInformationInputDTOPatientAPI {
+  public static final String JSON_PROPERTY_EXERCISE_EXECUTION_ID = "exerciseExecutionId";
+  private String exerciseExecutionId;
+
   public static final String JSON_PROPERTY_START_TIME = "startTime";
   private Instant startTime;
 
@@ -58,6 +62,32 @@ public class ExerciseInformationInputDTOPatientAPI {
 
   public ExerciseInformationInputDTOPatientAPI() {
   }
+
+  public ExerciseInformationInputDTOPatientAPI exerciseExecutionId(String exerciseExecutionId) {
+    
+    this.exerciseExecutionId = exerciseExecutionId;
+    return this;
+  }
+
+   /**
+   * Get exerciseExecutionId
+   * @return exerciseExecutionId
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getExerciseExecutionId() {
+    return exerciseExecutionId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_EXERCISE_EXECUTION_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExerciseExecutionId(String exerciseExecutionId) {
+    this.exerciseExecutionId = exerciseExecutionId;
+  }
+
 
   public ExerciseInformationInputDTOPatientAPI startTime(Instant startTime) {
     
@@ -213,7 +243,8 @@ public class ExerciseInformationInputDTOPatientAPI {
       return false;
     }
     ExerciseInformationInputDTOPatientAPI exerciseInformationInputDTO = (ExerciseInformationInputDTOPatientAPI) o;
-    return Objects.equals(this.startTime, exerciseInformationInputDTO.startTime) &&
+    return Objects.equals(this.exerciseExecutionId, exerciseInformationInputDTO.exerciseExecutionId) &&
+        Objects.equals(this.startTime, exerciseInformationInputDTO.startTime) &&
         Objects.equals(this.endTime, exerciseInformationInputDTO.endTime) &&
         Objects.equals(this.feedback, exerciseInformationInputDTO.feedback) &&
         Objects.equals(this.moodsBefore, exerciseInformationInputDTO.moodsBefore) &&
@@ -222,13 +253,14 @@ public class ExerciseInformationInputDTOPatientAPI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, feedback, moodsBefore, moodsAfter);
+    return Objects.hash(exerciseExecutionId, startTime, endTime, feedback, moodsBefore, moodsAfter);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExerciseInformationInputDTOPatientAPI {\n");
+    sb.append("    exerciseExecutionId: ").append(toIndentedString(exerciseExecutionId)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    feedback: ").append(toIndentedString(feedback)).append("\n");

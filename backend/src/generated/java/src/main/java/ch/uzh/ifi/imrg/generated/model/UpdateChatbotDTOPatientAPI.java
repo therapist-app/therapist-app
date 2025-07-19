@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   UpdateChatbotDTOPatientAPI.JSON_PROPERTY_CHATBOT_ROLE,
   UpdateChatbotDTOPatientAPI.JSON_PROPERTY_CHATBOT_TONE,
   UpdateChatbotDTOPatientAPI.JSON_PROPERTY_WELCOME_MESSAGE,
+  UpdateChatbotDTOPatientAPI.JSON_PROPERTY_CHATBOT_CONTEXT,
   UpdateChatbotDTOPatientAPI.JSON_PROPERTY_ACTIVE
 })
 @JsonTypeName("UpdateChatbotDTO")
@@ -47,6 +48,9 @@ public class UpdateChatbotDTOPatientAPI {
 
   public static final String JSON_PROPERTY_WELCOME_MESSAGE = "welcomeMessage";
   private String welcomeMessage;
+
+  public static final String JSON_PROPERTY_CHATBOT_CONTEXT = "chatbotContext";
+  private String chatbotContext;
 
   public static final String JSON_PROPERTY_ACTIVE = "active";
   private Boolean active;
@@ -158,6 +162,32 @@ public class UpdateChatbotDTOPatientAPI {
   }
 
 
+  public UpdateChatbotDTOPatientAPI chatbotContext(String chatbotContext) {
+    
+    this.chatbotContext = chatbotContext;
+    return this;
+  }
+
+   /**
+   * Get chatbotContext
+   * @return chatbotContext
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_CHATBOT_CONTEXT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getChatbotContext() {
+    return chatbotContext;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_CHATBOT_CONTEXT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setChatbotContext(String chatbotContext) {
+    this.chatbotContext = chatbotContext;
+  }
+
+
   public UpdateChatbotDTOPatientAPI active(Boolean active) {
     
     this.active = active;
@@ -196,12 +226,13 @@ public class UpdateChatbotDTOPatientAPI {
         Objects.equals(this.chatbotRole, updateChatbotDTO.chatbotRole) &&
         Objects.equals(this.chatbotTone, updateChatbotDTO.chatbotTone) &&
         Objects.equals(this.welcomeMessage, updateChatbotDTO.welcomeMessage) &&
+        Objects.equals(this.chatbotContext, updateChatbotDTO.chatbotContext) &&
         Objects.equals(this.active, updateChatbotDTO.active);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, chatbotRole, chatbotTone, welcomeMessage, active);
+    return Objects.hash(id, chatbotRole, chatbotTone, welcomeMessage, chatbotContext, active);
   }
 
   @Override
@@ -212,6 +243,7 @@ public class UpdateChatbotDTOPatientAPI {
     sb.append("    chatbotRole: ").append(toIndentedString(chatbotRole)).append("\n");
     sb.append("    chatbotTone: ").append(toIndentedString(chatbotTone)).append("\n");
     sb.append("    welcomeMessage: ").append(toIndentedString(welcomeMessage)).append("\n");
+    sb.append("    chatbotContext: ").append(toIndentedString(chatbotContext)).append("\n");
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("}");
     return sb.toString();

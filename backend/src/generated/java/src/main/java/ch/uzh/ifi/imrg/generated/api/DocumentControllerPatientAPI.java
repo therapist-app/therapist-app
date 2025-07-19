@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.DocumentChatbotOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.DocumentOverviewDTOPatientAPI;
+import java.io.File;
 
 import java.util.HashMap;
 import java.util.List;
@@ -112,11 +113,12 @@ public class DocumentControllerPatientAPI {
         return callListRequestCreation();
     }
     /**
+     * Download a patient’s document
      * 
-     * 
-     * <p><b>200</b> - OK
+     * <p><b>200</b> - The raw file bytes
+     * <p><b>404</b> - Document not found
      * @param documentId The documentId parameter
-     * @return List&lt;byte[]&gt;
+     * @return File
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
     private ResponseSpec downloadRequestCreation(String documentId) throws WebClientResponseException {
@@ -136,7 +138,7 @@ public class DocumentControllerPatientAPI {
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
         final String[] localVarAccepts = { 
-            "*/*"
+            "application/octet-stream"
         };
         final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
         final String[] localVarContentTypes = { };
@@ -144,40 +146,43 @@ public class DocumentControllerPatientAPI {
 
         String[] localVarAuthNames = new String[] { "X-Coach-Key" };
 
-        ParameterizedTypeReference<byte[]> localVarReturnType = new ParameterizedTypeReference<byte[]>() {};
+        ParameterizedTypeReference<File> localVarReturnType = new ParameterizedTypeReference<File>() {};
         return apiClient.invokeAPI("/patients/documents/{documentId}", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
     }
 
     /**
+     * Download a patient’s document
      * 
-     * 
-     * <p><b>200</b> - OK
+     * <p><b>200</b> - The raw file bytes
+     * <p><b>404</b> - Document not found
      * @param documentId The documentId parameter
-     * @return List&lt;byte[]&gt;
+     * @return File
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Flux<byte[]> download(String documentId) throws WebClientResponseException {
-        ParameterizedTypeReference<byte[]> localVarReturnType = new ParameterizedTypeReference<byte[]>() {};
-        return downloadRequestCreation(documentId).bodyToFlux(localVarReturnType);
+    public Mono<File> download(String documentId) throws WebClientResponseException {
+        ParameterizedTypeReference<File> localVarReturnType = new ParameterizedTypeReference<File>() {};
+        return downloadRequestCreation(documentId).bodyToMono(localVarReturnType);
     }
 
     /**
+     * Download a patient’s document
      * 
-     * 
-     * <p><b>200</b> - OK
+     * <p><b>200</b> - The raw file bytes
+     * <p><b>404</b> - Document not found
      * @param documentId The documentId parameter
-     * @return ResponseEntity&lt;List&lt;byte[]&gt;&gt;
+     * @return ResponseEntity&lt;File&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<List<byte[]>>> downloadWithHttpInfo(String documentId) throws WebClientResponseException {
-        ParameterizedTypeReference<byte[]> localVarReturnType = new ParameterizedTypeReference<byte[]>() {};
-        return downloadRequestCreation(documentId).toEntityList(localVarReturnType);
+    public Mono<ResponseEntity<File>> downloadWithHttpInfo(String documentId) throws WebClientResponseException {
+        ParameterizedTypeReference<File> localVarReturnType = new ParameterizedTypeReference<File>() {};
+        return downloadRequestCreation(documentId).toEntity(localVarReturnType);
     }
 
     /**
+     * Download a patient’s document
      * 
-     * 
-     * <p><b>200</b> - OK
+     * <p><b>200</b> - The raw file bytes
+     * <p><b>404</b> - Document not found
      * @param documentId The documentId parameter
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
@@ -193,11 +198,11 @@ public class DocumentControllerPatientAPI {
      * @return DocumentChatbotOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getAllMessages1RequestCreation(String documentId) throws WebClientResponseException {
+    private ResponseSpec getAllMessages3RequestCreation(String documentId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'documentId' is set
         if (documentId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'documentId' when calling getAllMessages1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'documentId' when calling getAllMessages3", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -230,9 +235,9 @@ public class DocumentControllerPatientAPI {
      * @return DocumentChatbotOutputDTOPatientAPI
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<DocumentChatbotOutputDTOPatientAPI> getAllMessages1(String documentId) throws WebClientResponseException {
+    public Mono<DocumentChatbotOutputDTOPatientAPI> getAllMessages3(String documentId) throws WebClientResponseException {
         ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI>() {};
-        return getAllMessages1RequestCreation(documentId).bodyToMono(localVarReturnType);
+        return getAllMessages3RequestCreation(documentId).bodyToMono(localVarReturnType);
     }
 
     /**
@@ -243,9 +248,9 @@ public class DocumentControllerPatientAPI {
      * @return ResponseEntity&lt;DocumentChatbotOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<DocumentChatbotOutputDTOPatientAPI>> getAllMessages1WithHttpInfo(String documentId) throws WebClientResponseException {
+    public Mono<ResponseEntity<DocumentChatbotOutputDTOPatientAPI>> getAllMessages3WithHttpInfo(String documentId) throws WebClientResponseException {
         ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<DocumentChatbotOutputDTOPatientAPI>() {};
-        return getAllMessages1RequestCreation(documentId).toEntity(localVarReturnType);
+        return getAllMessages3RequestCreation(documentId).toEntity(localVarReturnType);
     }
 
     /**
@@ -256,7 +261,7 @@ public class DocumentControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getAllMessages1WithResponseSpec(String documentId) throws WebClientResponseException {
-        return getAllMessages1RequestCreation(documentId);
+    public ResponseSpec getAllMessages3WithResponseSpec(String documentId) throws WebClientResponseException {
+        return getAllMessages3RequestCreation(documentId);
     }
 }

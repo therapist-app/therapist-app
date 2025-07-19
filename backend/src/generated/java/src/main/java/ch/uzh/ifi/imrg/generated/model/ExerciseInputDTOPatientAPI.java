@@ -15,12 +15,13 @@ package ch.uzh.ifi.imrg.generated.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import ch.uzh.ifi.imrg.generated.model.ExerciseInputDTOExerciseElementsInnerPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentInputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,18 +32,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * ExerciseInputDTOPatientAPI
  */
 @JsonPropertyOrder({
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_NAME,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_ID,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_TITLE,
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_DESCRIPTION,
   ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_EXPLANATION,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_DESCRIPTION,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_PICTURE_DATA,
-  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_ELEMENTS
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_START,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_END,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_IS_PAUSED,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_DO_EVERY_N_DAYS,
+  ExerciseInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_COMPONENTS
 })
 @JsonTypeName("ExerciseInputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class ExerciseInputDTOPatientAPI {
-  public static final String JSON_PROPERTY_NAME = "name";
-  private String name;
+  public static final String JSON_PROPERTY_ID = "id";
+  private String id;
+
+  public static final String JSON_PROPERTY_EXERCISE_TITLE = "exerciseTitle";
+  private String exerciseTitle;
 
   public static final String JSON_PROPERTY_EXERCISE_DESCRIPTION = "exerciseDescription";
   private String exerciseDescription;
@@ -50,41 +57,73 @@ public class ExerciseInputDTOPatientAPI {
   public static final String JSON_PROPERTY_EXERCISE_EXPLANATION = "exerciseExplanation";
   private String exerciseExplanation;
 
-  public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private String description;
+  public static final String JSON_PROPERTY_EXERCISE_START = "exerciseStart";
+  private Instant exerciseStart;
 
-  public static final String JSON_PROPERTY_PICTURE_DATA = "pictureData";
-  private String pictureData;
+  public static final String JSON_PROPERTY_EXERCISE_END = "exerciseEnd";
+  private Instant exerciseEnd;
 
-  public static final String JSON_PROPERTY_EXERCISE_ELEMENTS = "exerciseElements";
-  private List<ExerciseInputDTOExerciseElementsInnerPatientAPI> exerciseElements;
+  public static final String JSON_PROPERTY_IS_PAUSED = "isPaused";
+  private Boolean isPaused;
+
+  public static final String JSON_PROPERTY_DO_EVERY_N_DAYS = "doEveryNDays";
+  private Integer doEveryNDays;
+
+  public static final String JSON_PROPERTY_EXERCISE_COMPONENTS = "exerciseComponents";
+  private List<ExerciseComponentInputDTOPatientAPI> exerciseComponents;
 
   public ExerciseInputDTOPatientAPI() {
   }
 
-  public ExerciseInputDTOPatientAPI name(String name) {
+  public ExerciseInputDTOPatientAPI id(String id) {
     
-    this.name = name;
+    this.id = id;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get id
+   * @return id
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getName() {
-    return name;
+  public String getId() {
+    return id;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setName(String name) {
-    this.name = name;
+  public void setId(String id) {
+    this.id = id;
+  }
+
+
+  public ExerciseInputDTOPatientAPI exerciseTitle(String exerciseTitle) {
+    
+    this.exerciseTitle = exerciseTitle;
+    return this;
+  }
+
+   /**
+   * Get exerciseTitle
+   * @return exerciseTitle
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getExerciseTitle() {
+    return exerciseTitle;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_EXERCISE_TITLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExerciseTitle(String exerciseTitle) {
+    this.exerciseTitle = exerciseTitle;
   }
 
 
@@ -140,89 +179,141 @@ public class ExerciseInputDTOPatientAPI {
   }
 
 
-  public ExerciseInputDTOPatientAPI description(String description) {
+  public ExerciseInputDTOPatientAPI exerciseStart(Instant exerciseStart) {
     
-    this.description = description;
+    this.exerciseStart = exerciseStart;
     return this;
   }
 
    /**
-   * Get description
-   * @return description
+   * Get exerciseStart
+   * @return exerciseStart
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_START)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getDescription() {
-    return description;
+  public Instant getExerciseStart() {
+    return exerciseStart;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_START)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDescription(String description) {
-    this.description = description;
+  public void setExerciseStart(Instant exerciseStart) {
+    this.exerciseStart = exerciseStart;
   }
 
 
-  public ExerciseInputDTOPatientAPI pictureData(String pictureData) {
+  public ExerciseInputDTOPatientAPI exerciseEnd(Instant exerciseEnd) {
     
-    this.pictureData = pictureData;
+    this.exerciseEnd = exerciseEnd;
     return this;
   }
 
    /**
-   * Get pictureData
-   * @return pictureData
+   * Get exerciseEnd
+   * @return exerciseEnd
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PICTURE_DATA)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_END)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getPictureData() {
-    return pictureData;
+  public Instant getExerciseEnd() {
+    return exerciseEnd;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PICTURE_DATA)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_END)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPictureData(String pictureData) {
-    this.pictureData = pictureData;
+  public void setExerciseEnd(Instant exerciseEnd) {
+    this.exerciseEnd = exerciseEnd;
   }
 
 
-  public ExerciseInputDTOPatientAPI exerciseElements(List<ExerciseInputDTOExerciseElementsInnerPatientAPI> exerciseElements) {
+  public ExerciseInputDTOPatientAPI isPaused(Boolean isPaused) {
     
-    this.exerciseElements = exerciseElements;
+    this.isPaused = isPaused;
     return this;
   }
 
-  public ExerciseInputDTOPatientAPI addExerciseElementsItem(ExerciseInputDTOExerciseElementsInnerPatientAPI exerciseElementsItem) {
-    if (this.exerciseElements == null) {
-      this.exerciseElements = new ArrayList<>();
+   /**
+   * Get isPaused
+   * @return isPaused
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_IS_PAUSED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getIsPaused() {
+    return isPaused;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_IS_PAUSED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsPaused(Boolean isPaused) {
+    this.isPaused = isPaused;
+  }
+
+
+  public ExerciseInputDTOPatientAPI doEveryNDays(Integer doEveryNDays) {
+    
+    this.doEveryNDays = doEveryNDays;
+    return this;
+  }
+
+   /**
+   * Get doEveryNDays
+   * @return doEveryNDays
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DO_EVERY_N_DAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Integer getDoEveryNDays() {
+    return doEveryNDays;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_DO_EVERY_N_DAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDoEveryNDays(Integer doEveryNDays) {
+    this.doEveryNDays = doEveryNDays;
+  }
+
+
+  public ExerciseInputDTOPatientAPI exerciseComponents(List<ExerciseComponentInputDTOPatientAPI> exerciseComponents) {
+    
+    this.exerciseComponents = exerciseComponents;
+    return this;
+  }
+
+  public ExerciseInputDTOPatientAPI addExerciseComponentsItem(ExerciseComponentInputDTOPatientAPI exerciseComponentsItem) {
+    if (this.exerciseComponents == null) {
+      this.exerciseComponents = new ArrayList<>();
     }
-    this.exerciseElements.add(exerciseElementsItem);
+    this.exerciseComponents.add(exerciseComponentsItem);
     return this;
   }
 
    /**
-   * Get exerciseElements
-   * @return exerciseElements
+   * Get exerciseComponents
+   * @return exerciseComponents
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXERCISE_ELEMENTS)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_COMPONENTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<ExerciseInputDTOExerciseElementsInnerPatientAPI> getExerciseElements() {
-    return exerciseElements;
+  public List<ExerciseComponentInputDTOPatientAPI> getExerciseComponents() {
+    return exerciseComponents;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXERCISE_ELEMENTS)
+  @JsonProperty(JSON_PROPERTY_EXERCISE_COMPONENTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExerciseElements(List<ExerciseInputDTOExerciseElementsInnerPatientAPI> exerciseElements) {
-    this.exerciseElements = exerciseElements;
+  public void setExerciseComponents(List<ExerciseComponentInputDTOPatientAPI> exerciseComponents) {
+    this.exerciseComponents = exerciseComponents;
   }
 
   @Override
@@ -234,29 +325,35 @@ public class ExerciseInputDTOPatientAPI {
       return false;
     }
     ExerciseInputDTOPatientAPI exerciseInputDTO = (ExerciseInputDTOPatientAPI) o;
-    return Objects.equals(this.name, exerciseInputDTO.name) &&
+    return Objects.equals(this.id, exerciseInputDTO.id) &&
+        Objects.equals(this.exerciseTitle, exerciseInputDTO.exerciseTitle) &&
         Objects.equals(this.exerciseDescription, exerciseInputDTO.exerciseDescription) &&
         Objects.equals(this.exerciseExplanation, exerciseInputDTO.exerciseExplanation) &&
-        Objects.equals(this.description, exerciseInputDTO.description) &&
-        Objects.equals(this.pictureData, exerciseInputDTO.pictureData) &&
-        Objects.equals(this.exerciseElements, exerciseInputDTO.exerciseElements);
+        Objects.equals(this.exerciseStart, exerciseInputDTO.exerciseStart) &&
+        Objects.equals(this.exerciseEnd, exerciseInputDTO.exerciseEnd) &&
+        Objects.equals(this.isPaused, exerciseInputDTO.isPaused) &&
+        Objects.equals(this.doEveryNDays, exerciseInputDTO.doEveryNDays) &&
+        Objects.equals(this.exerciseComponents, exerciseInputDTO.exerciseComponents);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, exerciseDescription, exerciseExplanation, description, pictureData, exerciseElements);
+    return Objects.hash(id, exerciseTitle, exerciseDescription, exerciseExplanation, exerciseStart, exerciseEnd, isPaused, doEveryNDays, exerciseComponents);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ExerciseInputDTOPatientAPI {\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    exerciseTitle: ").append(toIndentedString(exerciseTitle)).append("\n");
     sb.append("    exerciseDescription: ").append(toIndentedString(exerciseDescription)).append("\n");
     sb.append("    exerciseExplanation: ").append(toIndentedString(exerciseExplanation)).append("\n");
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    pictureData: ").append(toIndentedString(pictureData)).append("\n");
-    sb.append("    exerciseElements: ").append(toIndentedString(exerciseElements)).append("\n");
+    sb.append("    exerciseStart: ").append(toIndentedString(exerciseStart)).append("\n");
+    sb.append("    exerciseEnd: ").append(toIndentedString(exerciseEnd)).append("\n");
+    sb.append("    isPaused: ").append(toIndentedString(isPaused)).append("\n");
+    sb.append("    doEveryNDays: ").append(toIndentedString(doEveryNDays)).append("\n");
+    sb.append("    exerciseComponents: ").append(toIndentedString(exerciseComponents)).append("\n");
     sb.append("}");
     return sb.toString();
   }

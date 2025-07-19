@@ -1,5 +1,8 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import static ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs.coachChatbotControllerPatientAPI;
+
+import ch.uzh.ifi.imrg.generated.model.ChatbotConfigurationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
@@ -125,8 +128,13 @@ public class ChatbotTemplateDocumentService {
               .filter(Objects::nonNull)
               .collect(Collectors.joining("\n\n"));
 
+      ChatbotConfigurationOutputDTOPatientAPI firstConfig =
+          coachChatbotControllerPatientAPI.getChatbotConfigurations(patientId).blockFirst();
+
+      assert firstConfig != null;
       UpdateChatbotDTOPatientAPI updateDto =
           new UpdateChatbotDTOPatientAPI()
+              .id(firstConfig.getId())
               .chatbotRole(template.getChatbotRole())
               .chatbotTone(template.getChatbotTone())
               .welcomeMessage(template.getWelcomeMessage())
