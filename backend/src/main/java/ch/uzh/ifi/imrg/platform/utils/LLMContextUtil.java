@@ -100,8 +100,6 @@ public class LLMContextUtil {
                 .append(" (ID: ")
                 .append(exercise.getId())
                 .append(")\n")
-                .append("  - **Type:** ")
-                .append(exercise.getExerciseType())
                 .append("\n")
                 .append("  - **Scheduled Start:** ")
                 .append(
@@ -342,7 +340,6 @@ public class LLMContextUtil {
                 .append("- **Exercise:** ")
                 .append(exercise.getExerciseTitle())
                 .append("\n");
-            promptBuilder.append("  - **Type:** ").append(exercise.getExerciseType()).append("\n");
             String exerciseStart =
                 exercise.getExerciseStart() != null
                     ? FORMATTER.format(exercise.getExerciseStart())
