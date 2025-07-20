@@ -18,6 +18,7 @@ import PatientCreate from './pages/patients/PatientCreate.tsx'
 import PatientDetail from './pages/patients/PatientDetail'
 import Register from './pages/register/Register'
 import Settings from './pages/settings/settings.tsx'
+import TherapistChatbot from './pages/therapistChatbot/TherapistChatbot.tsx'
 import { PAGES, ROUTES } from './utils/routes.ts'
 
 const App = (): ReactElement => {
@@ -74,7 +75,14 @@ const App = (): ReactElement => {
 
             <Route path={ROUTES[PAGES.CLIENT_INTERACTIONS_PAGE]} element={<ClientInteractions />} />
 
+            <Route path={ROUTES[PAGES.THERAPIST_CHATBOT_PAGE]} element={<TherapistChatbot />} />
+            <Route
+              path={ROUTES[PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT]}
+              element={<TherapistChatbot />}
+            />
+
             <Route path={ROUTES[PAGES.SETTINGS_PAGE]} element={<Settings />} />
+
             <Route path={ROUTES[PAGES.NOT_FOUND_PAGE]} element={<NotFound />} />
           </Routes>
         </main>
