@@ -28,7 +28,6 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { commonButtonStyles, disabledButtonStyles, cancelButtonStyles } from '../../styles/buttonStyles'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
@@ -46,6 +45,11 @@ import {
   getAllTherapistDocumentsOfTherapist,
 } from '../../store/therapistDocumentSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  disabledButtonStyles,
+} from '../../styles/buttonStyles'
 import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -286,7 +290,11 @@ const Home = (): ReactElement => {
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
         <Typography variant='h2'>{t('dashboard.your_chatbot_templates')}</Typography>
-        <Button variant='contained' onClick={handleCreateChatbot} sx={{ ...commonButtonStyles , minWidth: '230px' }}>
+        <Button
+          variant='contained'
+          onClick={handleCreateChatbot}
+          sx={{ ...commonButtonStyles, minWidth: '230px' }}
+        >
           {t('dashboard.create_bot')}
         </Button>
       </div>

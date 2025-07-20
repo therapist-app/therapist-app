@@ -31,10 +31,10 @@ import {
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
@@ -167,7 +167,7 @@ const PatientDetail = (): ReactElement => {
                       })
                     )
                   }
-                  sx={{ ...commonButtonStyles, minWidth: '220px'}}
+                  sx={{ ...commonButtonStyles, minWidth: '220px' }}
                 >
                   {t('patient_detail.view_client_interactions')}
                 </Button>
@@ -302,7 +302,9 @@ const PatientDetail = (): ReactElement => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseChatbotDialog} sx={commonButtonStyles}>{t('patient_detail.cancel')}</Button>
+          <Button onClick={handleCloseChatbotDialog} sx={commonButtonStyles}>
+            {t('patient_detail.cancel')}
+          </Button>
           <Button
             onClick={handleCreateNewChatbot}
             variant='contained'

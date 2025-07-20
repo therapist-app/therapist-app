@@ -18,9 +18,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
+import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
-import { commonButtonStyles } from '../../../styles/buttonStyles'
 
 const MeetingOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()

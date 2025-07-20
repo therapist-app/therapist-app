@@ -1,6 +1,7 @@
-import React, { useRef } from 'react'
 import { Button } from '@mui/material'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import { commonButtonStyles } from '../styles/buttonStyles'
 
 interface FileUploadProps {
@@ -16,7 +17,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonS
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0]
-    if (file) onUpload(file)
+    if (file) {
+      onUpload(file)
+    }
   }
 
   const triggerFileDialog = (): void => {
