@@ -121,12 +121,12 @@ const CreateCounselingPlanExercise = ({
           onSubmit={handleSubmit}
         >
           <TextField
+            required
             label={t('counseling_plan.title')}
             name='exerciseTitle'
             value={formData.exerciseTitle}
             onChange={handleChange}
             fullWidth
-            required
           />
 
           <TextField

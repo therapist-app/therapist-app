@@ -52,7 +52,7 @@ public class CounselingPlanPhaseService {
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
       CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO, String therapistId) {
-    List<CounselingPlanPhase> allCounselingPlanPhases = counselingPlanPhaseRepository.findAll();
+
     CounselingPlan counselingPlan =
         counselingPlanRepository.getReferenceById(
             createCounselingPlanPhaseDTO.getCounselingPlanId());
@@ -61,7 +61,7 @@ public class CounselingPlanPhaseService {
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
     counselingPlanPhase.setPhaseName(createCounselingPlanPhaseDTO.getPhaseName());
     counselingPlanPhase.setDurationInWeeks(createCounselingPlanPhaseDTO.getDurationInWeeks());
-    counselingPlanPhase.setPhaseNumber(allCounselingPlanPhases.size() + 1);
+    counselingPlanPhase.setPhaseNumber(counselingPlan.getCounselingPlanPhases().size() + 1);
 
     counselingPlanPhase.setCounselingPlan(counselingPlan);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
