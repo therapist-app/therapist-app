@@ -1,5 +1,8 @@
+import { Button } from '@mui/material'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { deleteButtonStyles, successButtonStyles } from '../styles/buttonStyles'
 
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
@@ -406,21 +409,26 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
   }
 
-  const textareaStyle = {
-    ...styles.textarea,
-    ...(isListening ? styles.textareaListening : {}),
-  }
+  const startBtnSx =
+    isListening || !BrowserSpeechRecognition
+      ? {
+          ...successButtonStyles,
+          backgroundImage: 'none',
+          backgroundColor: 'lightgrey',
+          cursor: 'not-allowed',
+          boxShadow: 'none',
+        }
+      : { ...successButtonStyles }
 
-  const startButtonStyle = {
-    ...styles.button,
-    ...styles.startButton,
-    ...(isListening || !BrowserSpeechRecognition ? styles.disabledButton : {}),
-  }
-  const stopButtonStyle = {
-    ...styles.button,
-    ...styles.stopButton,
-    ...(!isListening ? styles.disabledButton : {}),
-  }
+  const stopBtnSx = !isListening
+    ? {
+        ...deleteButtonStyles,
+        backgroundImage: 'none',
+        backgroundColor: 'lightgrey',
+        cursor: 'not-allowed',
+        boxShadow: 'none',
+      }
+    : { ...deleteButtonStyles }
 
   return (
     <div style={styles.container}>
@@ -452,65 +460,54 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           placeholder={
             isListening ? t('meetings.listening') : placeholder || t('meetings.speak_or_type_here')
           }
-          style={textareaStyle}
+          style={{
+            ...styles.textarea,
+            ...(isListening ? styles.textareaListening : {}),
+          }}
           rows={6}
         />
+
         <div style={styles.buttonContainer}>
-          <button
+          <Button
             onClick={handleStartListening}
             disabled={isListening || !BrowserSpeechRecognition}
-            style={startButtonStyle}
-            onMouseEnter={(e) => {
-              if (!(isListening || !BrowserSpeechRecognition)) {
-                e.currentTarget.style.backgroundColor = '#16a34a'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!(isListening || !BrowserSpeechRecognition)) {
-                e.currentTarget.style.backgroundColor = styles.startButton.backgroundColor as string
-              }
-            }}
+            sx={{ ...startBtnSx, width: '180px', minWidth: '180px' }}
+            startIcon={
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='currentColor'
+                style={{ width: 20, height: 20 }}
+              >
+                <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
+                <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
+              </svg>
+            }
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              style={{ width: '20px', height: '20px' }}
-            >
-              <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
-              <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
-            </svg>
             {t('meetings.start_listening')}
-          </button>
-          <button
+          </Button>
+
+          <Button
             onClick={handleStopListening}
             disabled={!isListening}
-            style={stopButtonStyle}
-            onMouseEnter={(e) => {
-              if (isListening) {
-                e.currentTarget.style.backgroundColor = '#dc2626'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (isListening) {
-                e.currentTarget.style.backgroundColor = styles.stopButton.backgroundColor as string
-              }
-            }}
+            sx={{ ...stopBtnSx, width: '180px', minWidth: '180px' }}
+            startIcon={
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='currentColor'
+                style={{ width: 20, height: 20 }}
+              >
+                <path
+                  fillRule='evenodd'
+                  d='M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z'
+                  clipRule='evenodd'
+                />
+              </svg>
+            }
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              style={{ width: '20px', height: '20px' }}
-            >
-              <path
-                fillRule='evenodd'
-                d='M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z'
-                clipRule='evenodd'
-              />
-            </svg>
             {t('meetings.stop_listening')}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -525,13 +522,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
           {t('meetings.listening_speak_into_microphone')}
         </p>
-      )}
-
-      {!BrowserSpeechRecognition && !error && (
-        <div role='alert' style={styles.compatibilityMessage}>
-          <strong style={styles.errorTitle}>{t('meetings.browser_compatibility')}</strong>
-          <p>{t('meetings.web_search_api_not_supported')}</p>
-        </div>
       )}
     </div>
   )

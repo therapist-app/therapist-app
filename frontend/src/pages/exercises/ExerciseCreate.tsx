@@ -14,6 +14,7 @@ import {
 } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -122,7 +123,7 @@ const ExerciseCreate = (): ReactElement => {
           />
         </LocalizationProvider>
 
-        <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+        <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
           {t('exercise.submit')}
         </Button>
       </form>

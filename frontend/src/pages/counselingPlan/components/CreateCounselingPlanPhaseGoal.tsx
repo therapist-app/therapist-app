@@ -7,6 +7,11 @@ import {
   createCounselingPlanPhaseGoal,
   createCounselingPlanPhaseGoalAIGenerated,
 } from '../../../store/counselingPlanSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  successButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 
@@ -72,7 +77,7 @@ const CreateCounselingPlanPhaseGoal = ({
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
+        <Button sx={commonButtonStyles} onClick={() => setOpen(true)}>
           {t('counseling_plan.add_a_goal')}
         </Button>
       ) : (
@@ -93,13 +98,13 @@ const CreateCounselingPlanPhaseGoal = ({
             onChange={handleChange}
           />
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Button type='submit' variant='contained'>
+            <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '150px' }}>
               {t('counseling_plan.create_goal')}
             </Button>
-            <Button variant='contained' color='success' onClick={handleGenrateAI}>
+            <Button sx={{ ...successButtonStyles, minWidth: '340px' }} onClick={handleGenrateAI}>
               {t('counseling_plan.make_ai_generated_suggestion_for_goal')}
             </Button>
-            <Button variant='outlined' color='error' onClick={handleCancel}>
+            <Button sx={{ ...cancelButtonStyles, minWidth: '100px' }} onClick={handleCancel}>
               {t('counseling_plan.cancel')}
             </Button>
           </div>

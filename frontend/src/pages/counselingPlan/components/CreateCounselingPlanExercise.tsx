@@ -18,6 +18,11 @@ import {
   createCounselingPlanExerciseAIGenerated,
 } from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  successButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 
@@ -108,7 +113,7 @@ const CreateCounselingPlanExercise = ({
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={handleCreateExercise}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateExercise}>
           {t('counseling_plan.create_new_exercise')}
         </Button>
       ) : (
@@ -170,13 +175,16 @@ const CreateCounselingPlanExercise = ({
             />
           </LocalizationProvider>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Button type='submit' variant='contained'>
+            <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px' }}>
               {t('counseling_plan.create_new_exercise')}
             </Button>
-            <Button variant='contained' color='success' onClick={handleCreateExerciseWithAI}>
+            <Button
+              sx={{ ...successButtonStyles, minWidth: '360px' }}
+              onClick={handleCreateExerciseWithAI}
+            >
               {t('counseling_plan.make_ai_generated_suggestion_for_exercise')}
             </Button>
-            <Button variant='outlined' onClick={handleCancel} color='error'>
+            <Button sx={{ ...cancelButtonStyles, minWidth: '100px' }} onClick={handleCancel}>
               {t('counseling_plan.cancel')}
             </Button>
           </div>

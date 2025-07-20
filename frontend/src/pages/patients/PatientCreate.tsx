@@ -23,6 +23,11 @@ import { v4 as uuidv4 } from 'uuid'
 import Layout from '../../generalComponents/Layout'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  disabledButtonStyles,
+} from '../../styles/buttonStyles.ts'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
@@ -227,24 +232,6 @@ const PatientCreate = (): ReactElement => {
     }
   }
 
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  }
-
   return (
     <Layout>
       <Box sx={{ maxWidth: 800, mx: 'auto' }}>
@@ -364,10 +351,18 @@ const PatientCreate = (): ReactElement => {
           </Grid>
         </Grid>
         <Box mt={4} display='flex' justifyContent='flex-end'>
-          <Button onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))} sx={{ mr: 2 }}>
+          <Button
+            onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
+            sx={{ ...cancelButtonStyles, mr: 2 }}
+          >
             {t('patient_create.cancel')}
           </Button>
-          <Button variant='contained' onClick={handleSubmit} disabled={!name || !email}>
+          <Button
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={!name || !email}
+            sx={!name || !email ? disabledButtonStyles : commonButtonStyles}
+          >
             {t('patient_create.register')}
           </Button>
         </Box>
@@ -380,7 +375,6 @@ const PatientCreate = (): ReactElement => {
         </Snackbar>
       </Box>
 
-      {/* SECTION 2: Main Complaints */}
       <Box mt={6}>
         {complaints.map((complaint, index) => (
           <Accordion key={complaint.id} defaultExpanded>
@@ -401,7 +395,7 @@ const PatientCreate = (): ReactElement => {
                   edge='end'
                   aria-label='delete'
                   onClick={(e) => {
-                    e.stopPropagation() // Prevent accordion toggle
+                    e.stopPropagation()
                     handleRemoveComplaint(complaint.id)
                   }}
                 >
@@ -485,7 +479,6 @@ const PatientCreate = (): ReactElement => {
                 </Grid>
               </Grid>
 
-              {/* Optional: Advanced HPI */}
               <Box mt={3}>
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -531,13 +524,12 @@ const PatientCreate = (): ReactElement => {
           variant='contained'
           onClick={handleAddComplaint}
           sx={commonButtonStyles}
-          style={{ minWidth: '200px', maxWidth: '200px' }}
+          style={{ minWidth: '220px' }}
         >
           {t('patient_create.add_another_complaint')}
         </Button>
       </Box>
 
-      {/* SECTION 3: Treatment History */}
       <Box mt={4}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -573,7 +565,6 @@ const PatientCreate = (): ReactElement => {
         </Accordion>
       </Box>
 
-      {/* SECTION 4: Past History */}
       <Box mt={4}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -609,7 +600,6 @@ const PatientCreate = (): ReactElement => {
         </Accordion>
       </Box>
 
-      {/* SECTION 5: Family History */}
       <Box mt={4}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -645,7 +635,6 @@ const PatientCreate = (): ReactElement => {
         </Accordion>
       </Box>
 
-      {/* SECTION 6: Personal History */}
       <Box mt={4}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>

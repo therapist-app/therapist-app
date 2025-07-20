@@ -31,6 +31,7 @@ import {
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { patientDocumentApi } from '../../utils/api'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -166,6 +167,7 @@ const PatientDetail = (): ReactElement => {
                       })
                     )
                   }
+                  sx={{ ...commonButtonStyles, minWidth: '220px' }}
                 >
                   {t('patient_detail.view_client_interactions')}
                 </Button>
@@ -249,7 +251,7 @@ const PatientDetail = (): ReactElement => {
         <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
           <Typography variant='h2'>{t('patient_detail.counseling_plan')}</Typography>
           <Button
-            sx={{ height: 'fit-content' }}
+            sx={{ ...commonButtonStyles, minWidth: '210px' }}
             variant='contained'
             onClick={() =>
               navigate(
@@ -300,10 +302,13 @@ const PatientDetail = (): ReactElement => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseChatbotDialog}>Cancel</Button>
+          <Button onClick={handleCloseChatbotDialog} sx={commonButtonStyles}>
+            {t('patient_detail.cancel')}
+          </Button>
           <Button
             onClick={handleCreateNewChatbot}
             variant='contained'
+            sx={chatbotName.trim() ? commonButtonStyles : disabledButtonStyles}
             disabled={!chatbotName.trim()}
           >
             {t('patient_detail.create_bot')}

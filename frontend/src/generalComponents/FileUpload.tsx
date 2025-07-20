@@ -2,13 +2,16 @@ import { Button } from '@mui/material'
 import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { commonButtonStyles } from '../styles/buttonStyles'
+
 interface FileUploadProps {
   onUpload: (file: File) => void
   accept?: string
   text?: string
+  buttonSx?: object
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonSx }) => {
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -17,6 +20,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text }) => {
     if (file) {
       onUpload(file)
     }
+  }
+
+  const triggerFileDialog = (): void => {
+    fileInputRef.current?.click()
   }
 
   return (
@@ -28,7 +35,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text }) => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <Button variant='contained' onClick={() => fileInputRef.current?.click()}>
+      <Button
+        onClick={triggerFileDialog}
+        sx={{ ...commonButtonStyles, minWidth: '150px', ...(buttonSx || {}) }}
+      >
         {text ?? t('dashboard.upload_file')}
       </Button>
     </div>

@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
+import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
@@ -63,7 +64,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'> Exercises</Typography>
-        <Button variant='contained' onClick={handleCreateNewExercise}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateNewExercise}>
           {t('exercise.create_new_exercise')}
         </Button>
       </div>

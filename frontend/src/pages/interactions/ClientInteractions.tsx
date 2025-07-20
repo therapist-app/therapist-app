@@ -8,6 +8,7 @@ import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Layout from '../../generalComponents/Layout'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 
 // Mock data interface
 interface InteractionData {
@@ -185,7 +186,7 @@ const ClientInteractions = (): ReactElement => {
 
           <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
             <Button
-              variant='outlined'
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
               size='small'
               onClick={() => {
                 setStartDate(subDays(new Date(), 7))
@@ -195,7 +196,7 @@ const ClientInteractions = (): ReactElement => {
               {t('patient_interactions.last_week')}
             </Button>
             <Button
-              variant='outlined'
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
               size='small'
               onClick={() => {
                 setStartDate(subDays(new Date(), 14))
@@ -205,7 +206,7 @@ const ClientInteractions = (): ReactElement => {
               {t('patient_interactions.last_two_weeks')}
             </Button>
             <Button
-              variant='outlined'
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
               size='small'
               onClick={() => {
                 setStartDate(subDays(new Date(), 21))
@@ -241,7 +242,7 @@ const ClientInteractions = (): ReactElement => {
               }}
               colors={{
                 type: 'sequential',
-                scheme: 'blues',
+                scheme: 'purples',
                 minValue: 0,
                 maxValue: 3,
               }}

@@ -20,6 +20,11 @@ import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  deleteButtonStyles,
+} from '../../styles/buttonStyles'
 import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -156,8 +161,7 @@ const ExerciseDetail = (): ReactElement => {
             </Typography>
             <Button
               onClick={() => toggleIsEditingExercise(true)}
-              variant='outlined'
-              sx={{ width: 'fit-content', marginTop: '10px' }}
+              sx={{ ...commonButtonStyles, minWidth: '170px', marginTop: '10px' }}
             >
               <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
               {t('exercise.edit_exercise')}
@@ -234,15 +238,12 @@ const ExerciseDetail = (): ReactElement => {
               ></FormControlLabel>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
-                  variant='contained'
-                  color='error'
-                  fullWidth
-                  sx={{ mt: 2 }}
+                  sx={{ ...cancelButtonStyles, minWidth: '280px', mt: 2 }}
                   onClick={() => toggleIsEditingExercise(false)}
                 >
                   {t('exercise.cancel')}
                 </Button>
-                <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+                <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '280px', mt: 2 }}>
                   {t('exercise.submit')}
                 </Button>
               </div>
@@ -364,9 +365,9 @@ const ExerciseDetail = (): ReactElement => {
 
       <CustomizedDivider />
 
-      <Button sx={{ alignSelf: 'start' }} onClick={handleDeleteExercise}>
-        <Typography color='error'>{t('exercise.delete_exercise')}</Typography>
-        <DeleteIcon style={{ color: 'red', marginLeft: '5px' }} />
+      <Button sx={{ ...deleteButtonStyles, minWidth: '190px' }} onClick={handleDeleteExercise}>
+        <Typography>{t('exercise.delete_exercise')}</Typography>
+        <DeleteIcon style={{ marginLeft: '5px' }} />
       </Button>
     </Layout>
   )

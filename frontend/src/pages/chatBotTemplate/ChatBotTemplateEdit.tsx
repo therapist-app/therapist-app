@@ -46,6 +46,7 @@ import {
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
+import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
@@ -345,46 +346,19 @@ const ChatBotTemplateEdit: React.FC = () => {
     </ListItem>
   )
 
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none' as const,
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  }
-
   const sendButtonStyles = {
     ...commonButtonStyles,
     height: '55px',
     minWidth: '80px',
     maxWidth: '80px',
-  }
+  } as const
 
-  const disabledButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none' as const,
-    fontSize: '1rem',
+  const smallDisabledButtonStyles = {
+    ...disabledButtonStyles,
     height: '55px',
     minWidth: '80px',
     maxWidth: '80px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'lightgrey',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    cursor: 'not-allowed',
-    margin: 1,
-  }
+  } as const
 
   const handleFileUpload = async (file: File): Promise<void> => {
     if (!chatbotConfig?.id) {
@@ -677,7 +651,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                   <Button
                     type='submit'
                     variant='contained'
-                    sx={!question || isChatbotTyping ? disabledButtonStyles : sendButtonStyles}
+                    sx={!question || isChatbotTyping ? smallDisabledButtonStyles : sendButtonStyles}
                     disabled={!question || isChatbotTyping || isLoading}
                   >
                     {isChatbotTyping ? <CircularProgress size={24} /> : <SendIcon />}
