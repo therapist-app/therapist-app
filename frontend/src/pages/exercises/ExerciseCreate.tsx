@@ -1,4 +1,4 @@
-import { Button, MenuItem, TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -7,11 +7,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  CreateExerciseDTO,
-  CreateExerciseDTOExerciseTypeEnum,
-  ExerciseOutputDTOExerciseTypeEnum,
-} from '../../api'
+import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
@@ -30,8 +26,9 @@ const ExerciseCreate = (): ReactElement => {
   const { t } = useTranslation()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
-    title: '',
-    exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
+    exerciseTitle: '',
+    exerciseDescription: '',
+    exerciseExplanation: '',
     exerciseStart: new Date(),
     durationInWeeks: 3,
     patientId: patientId,
@@ -71,8 +68,8 @@ const ExerciseCreate = (): ReactElement => {
       >
         <TextField
           label={t('exercise.title')}
-          name='title'
-          value={formData.title}
+          name='exerciseTitle'
+          value={formData.exerciseTitle}
           onChange={handleChange}
           fullWidth
           margin='normal'
@@ -80,21 +77,24 @@ const ExerciseCreate = (): ReactElement => {
         />
 
         <TextField
-          select
-          sx={{ fontWeight: 'bold' }}
-          label={t('exercise.exercise_type')}
-          name='exerciseType'
-          value={formData.exerciseType}
+          label={t('exercise.title')}
+          name='exerciseDescription'
+          value={formData.exerciseDescription}
           onChange={handleChange}
-          required
           fullWidth
-        >
-          {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+          margin='normal'
+          required
+        />
+
+        <TextField
+          label={t('exercise.title')}
+          name='exerciseExplanation'
+          value={formData.exerciseExplanation}
+          onChange={handleChange}
+          fullWidth
+          margin='normal'
+          required
+        />
 
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker

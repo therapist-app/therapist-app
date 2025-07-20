@@ -43,13 +43,13 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -133,7 +133,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -175,7 +175,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           <TextField
             multiline
             name='description'
-            value={formData.description}
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}
           />

@@ -7,12 +7,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import {
-  CounselingPlanPhaseOutputDTO,
-  CreateExerciseDTO,
-  CreateExerciseDTOExerciseTypeEnum,
-  ExerciseOutputDTOExerciseTypeEnum,
-} from '../../../api'
+import { CounselingPlanPhaseOutputDTO, CreateExerciseDTO } from '../../../api'
 import {
   addExerciseToCounselingPlanPhase,
   createCounselingPlanExerciseAIGenerated,
@@ -46,8 +41,7 @@ const CreateCounselingPlanExercise = ({
   const dispatch = useAppDispatch()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
-    title: '',
-    exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
+    exerciseTitle: '',
     exerciseStart: new Date(counselingPlanPhase.startDate ?? ''),
     durationInWeeks: counselingPlanPhase.durationInWeeks ?? 2,
     patientId: patientId,
@@ -74,8 +68,7 @@ const CreateCounselingPlanExercise = ({
     ).unwrap()
 
     const newExerciseFormData: ExerciseFormData = {
-      title: createExerciseDTO.title,
-      exerciseType: createExerciseDTO.exerciseType,
+      exerciseTitle: createExerciseDTO.exerciseTitle,
       exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
       durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
       patientId: patientId,
@@ -123,30 +116,13 @@ const CreateCounselingPlanExercise = ({
         >
           <TextField
             label={t('counseling_plan.title')}
-            name='title'
-            value={formData.title}
+            name='exerciseTitle'
+            value={formData.exerciseTitle}
             onChange={handleChange}
             fullWidth
             margin='normal'
             required
           />
-
-          <TextField
-            select
-            sx={{ fontWeight: 'bold' }}
-            label={t('counseling_plan.exercise_type')}
-            name='exerciseType'
-            value={formData.exerciseType}
-            onChange={handleChange}
-            required
-            fullWidth
-          >
-            {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
 
           <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
             <DateTimePicker

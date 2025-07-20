@@ -26,13 +26,13 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -101,7 +101,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -137,7 +137,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
           <TextField
             multiline
             name='description'
-            value={formData.description}
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}
           />

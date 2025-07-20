@@ -15,6 +15,7 @@ interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
+  isPrivateField: boolean
 }
 
 const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
@@ -26,13 +27,13 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -101,7 +102,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -137,7 +138,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
           <TextField
             multiline
             name='description'
-            value={formData.description}
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.description_of_input')}
           />

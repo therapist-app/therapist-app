@@ -16,11 +16,15 @@ import { useAppDispatch } from '../../../utils/hooks'
 interface CreateExerciseInputFieldComponentProps {
   createdInputField(): void
   active: boolean
+  isPrivateField: boolean
 }
 
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
   props: CreateExerciseInputFieldComponentProps
 ) => {
+  const exerciseComponentType = props.isPrivateField
+    ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
+    : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -33,9 +37,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   }
 
   const showExerciseInputField = (): void => {
-    dispatch(
-      setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField)
-    )
+    dispatch(setAddingExerciseComponent(exerciseComponentType))
+
     setIsCreatingExerciseInputField(true)
   }
 
@@ -51,8 +54,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     try {
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField,
-        description: description,
+        exerciseComponentType: exerciseComponentType,
+        exerciseComponentDescription: description,
       }
       await dispatch(
         createExerciseComponent({
