@@ -2118,10 +2118,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2170,10 +2169,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2518,9 +2516,7 @@ components:
         fileName: fileName
         orderNumber: 0
         exerciseComponentDescription: exerciseComponentDescription
-        fileData:
-        - fileData
-        - fileData
+        fileData: fileData
         id: id
         userInput: userInput
         fileType: fileType
@@ -2546,10 +2542,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2561,9 +2556,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
-          fileData:
-          - fileData
-          - fileData
+          fileData: fileData
           id: id
           userInput: userInput
           fileType: fileType
@@ -2571,9 +2564,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
-          fileData:
-          - fileData
-          - fileData
+          fileData: fileData
           id: id
           userInput: userInput
           fileType: fileType

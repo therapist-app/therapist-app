@@ -136,7 +136,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
 
           <TextField
             multiline
-            name='description'
+            name='exerciseComponentDescription'
             value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}

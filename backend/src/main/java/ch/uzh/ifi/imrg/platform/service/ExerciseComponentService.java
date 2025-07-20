@@ -13,7 +13,6 @@ import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,8 +91,6 @@ public class ExerciseComponentService {
 
     exerciseComponent = exerciseComponentRepository.save(exerciseComponent);
 
-    List<byte[]> bytes = java.util.Collections.singletonList(exerciseComponent.getFileData());
-
     ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI =
         new ExerciseComponentInputDTOPatientAPI()
             .id(exerciseComponent.getId())
@@ -101,9 +98,9 @@ public class ExerciseComponentService {
             .exerciseComponentType(
                 ExerciseComponentInputDTOPatientAPI.ExerciseComponentTypeEnum.fromValue(
                     exerciseComponent.getExerciseComponentType().toString()))
-            .fileData(bytes)
+            .fileData(exerciseComponent.getFileData())
             .fileName(exerciseComponent.getFileName())
-            .fileType(exerciseComponent.getExtractedText())
+            .fileType(exerciseComponent.getFileType())
             .orderNumber(exerciseComponent.getOrderNumber());
 
     PatientAppAPIs.coachExerciseControllerPatientAPI

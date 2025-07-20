@@ -20,9 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -104,7 +101,7 @@ public class ExerciseComponentOutputDTOPatientAPI {
   private String fileType;
 
   public static final String JSON_PROPERTY_FILE_DATA = "fileData";
-  private List<byte[]> fileData;
+  private byte[] fileData;
 
   public static final String JSON_PROPERTY_ORDER_NUMBER = "orderNumber";
   private Integer orderNumber;
@@ -268,36 +265,28 @@ public class ExerciseComponentOutputDTOPatientAPI {
   }
 
 
-  public ExerciseComponentOutputDTOPatientAPI fileData(List<byte[]> fileData) {
+  public ExerciseComponentOutputDTOPatientAPI fileData(byte[] fileData) {
     
     this.fileData = fileData;
     return this;
   }
 
-  public ExerciseComponentOutputDTOPatientAPI addFileDataItem(byte[] fileDataItem) {
-    if (this.fileData == null) {
-      this.fileData = new ArrayList<>();
-    }
-    this.fileData.add(fileDataItem);
-    return this;
-  }
-
    /**
-   * Get fileData
+   * File data encoded in Base64
    * @return fileData
   **/
   @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_FILE_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<byte[]> getFileData() {
+  public byte[] getFileData() {
     return fileData;
   }
 
 
   @JsonProperty(JSON_PROPERTY_FILE_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFileData(List<byte[]> fileData) {
+  public void setFileData(byte[] fileData) {
     this.fileData = fileData;
   }
 
@@ -342,13 +331,13 @@ public class ExerciseComponentOutputDTOPatientAPI {
         Objects.equals(this.userInput, exerciseComponentOutputDTO.userInput) &&
         Objects.equals(this.fileName, exerciseComponentOutputDTO.fileName) &&
         Objects.equals(this.fileType, exerciseComponentOutputDTO.fileType) &&
-        Objects.equals(this.fileData, exerciseComponentOutputDTO.fileData) &&
+        Arrays.equals(this.fileData, exerciseComponentOutputDTO.fileData) &&
         Objects.equals(this.orderNumber, exerciseComponentOutputDTO.orderNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, exerciseComponentType, exerciseComponentDescription, userInput, fileName, fileType, fileData, orderNumber);
+    return Objects.hash(id, exerciseComponentType, exerciseComponentDescription, userInput, fileName, fileType, Arrays.hashCode(fileData), orderNumber);
   }
 
   @Override
