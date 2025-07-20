@@ -195,8 +195,8 @@
     "is_paused": "Is Paused",
     "is_currently_paused": "Is Currently Paused",
     "is_exercise_paused": "Is Exercise Paused",
-    "no_exercises_yet": "You haven't added any exercises yet...",
-    "no_exercise_components_yet": "You haven't added any exercise components yet...",
+    "no_exercises_yet": "You haven't added any exercises yet.",
+    "no_exercise_components_yet": "You haven't added any exercise components yet.",
     "image": "Image",
     "file": "File",
     "input_field": "Input Field",
@@ -242,7 +242,10 @@
     "start_date": "Start Date",
     "end_date": "End Date",
     "time": "Time",
-    "date": "Date"
+    "date": "Date",
+    "last_week": "Last Week",
+    "last_two_weeks": "Last 2 Weeks",
+    "last_three_weeks": "Last 3 Weeks"
   },
   "patient_create": {
     "title": "This is the page to create a new client",
@@ -384,7 +387,6 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
-    "create_gad7test": "Create GAD-7 Test",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
     "question2": "Not being able to stop or control worrying.",
@@ -396,7 +398,7 @@
     "total_score": "Total Score",
     "cancel": "Cancel",
     "submit": "Submit",
-    "no_tests_yet": "You haven't created any GAD-7 tests yet.",
+    "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
     "answers": {
       "not_at_all": "Not at all",
       "several_days": "Several days",

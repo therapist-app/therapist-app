@@ -195,8 +195,8 @@
     "is_paused": "Pausiert",
     "is_currently_paused": "Derzeit pausiert",
     "is_exercise_paused": "Ist Übung pausiert",
-    "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt...",
-    "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt...",
+    "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt.",
+    "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
     "image": "Bild",
     "file": "Datei",
     "input_field": "Eingabefeld",
@@ -242,7 +242,10 @@
     "start_date": "Startdatum",
     "end_date": "Enddatum",
     "time": "Zeit",
-    "date": "Datum"
+    "date": "Datum",
+    "last_week": "Letzte Woche",
+    "last_two_weeks": "Letzte 2 Wochen",
+    "last_three_weeks": "Letzte 3 Wochen"
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -384,7 +387,6 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
-    "create_gad7test": "GAD-7 Test erstellen",
     "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
     "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
     "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -396,7 +398,7 @@
     "total_score": "Gesamtpunktzahl",
     "cancel": "Abbrechen",
     "submit": "Absenden",
-    "no_tests_yet": "Du hast noch keinen GAD-7 Test erstellt.",
+    "no_tests_yet": "Klient hat noch keinen GAD-7 Test ausgefüllt.",
     "answers": {
       "not_at_all": "Überhaupt nicht",
       "several_days": "An einigen Tagen",
