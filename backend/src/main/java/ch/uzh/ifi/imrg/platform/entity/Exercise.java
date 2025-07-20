@@ -28,10 +28,10 @@ public class Exercise implements OwnedByTherapist {
 
   @Column() private String exerciseTitle;
 
-  @Column() private String exerciseDescription;
+  @Lob @Column() private String exerciseDescription;
 
   // used in the system prompt
-  @Column() private String exerciseExplanation;
+  @Lob @Column() private String exerciseExplanation;
 
   @Column(name = "exercise_start")
   private Instant exerciseStart;
