@@ -1,9 +1,8 @@
-import { Typography } from '@mui/material'
 import { ReactElement } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { ExerciseOutputDTO } from '../../../api'
-import { getPageFromPath, getPathFromPage, PAGES } from '../../../utils/routes'
+import { getPathFromPage, PAGES } from '../../../utils/routes'
 
 interface CounselingPlanExerciseDetailProps {
   exercise: ExerciseOutputDTO
