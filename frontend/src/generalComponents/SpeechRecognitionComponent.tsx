@@ -409,11 +409,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
   }
 
-  const textareaStyle = {
-    ...styles.textarea,
-    ...(isListening ? styles.textareaListening : {}),
-  }
-
   const startBtnSx =
     isListening || !BrowserSpeechRecognition
       ? {

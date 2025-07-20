@@ -11,7 +11,6 @@ import {
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import {
-  cancelButtonStyles,
   commonButtonStyles,
   deleteButtonStyles,
 } from '../../../styles/buttonStyles'

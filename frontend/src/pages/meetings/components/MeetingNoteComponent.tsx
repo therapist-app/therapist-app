@@ -21,7 +21,6 @@ import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlic
 import {
   commonButtonStyles,
   deleteButtonStyles,
-  successButtonStyles,
 } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 

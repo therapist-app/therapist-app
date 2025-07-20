@@ -234,7 +234,10 @@ const ChatbotOverview = (): ReactElement => {
         borderRadius: 2,
       }}
     >
-      <CardActionArea onClick={onClick ?? (() => openTemplate(bot))} sx={{ height: '100%' }}>
+      <CardActionArea
+  onClick={onClick ?? (() : void => { openTemplate(bot); })}
+  sx={{ height: '100%' }}
+>
         <CardContent
           sx={{
             px: 2,
@@ -259,7 +262,6 @@ const ChatbotOverview = (): ReactElement => {
             </Typography>
 
             <Box display='flex' alignItems='center' gap={1}>
-              {/* Only show status chip for patient (client) templates */}
               {bot.patientId &&
                 (bot.isActive ? (
                   <Chip size='small' color='success' label='Active' />

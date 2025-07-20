@@ -12,7 +12,6 @@ import { RootState } from '../../../store/store'
 import {
   commonButtonStyles,
   deleteButtonStyles,
-  successButtonStyles,
 } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 

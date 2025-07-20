@@ -9,7 +9,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { common } from '@mui/material/colors'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -30,7 +29,7 @@ const Settings = (): ReactElement => {
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
-    i18n.changeLanguage(selectedLanguage).then(() => {}) // Change the language
+    i18n.changeLanguage(selectedLanguage).then(() => {})
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
