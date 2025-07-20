@@ -77,7 +77,7 @@ const ExerciseCreate = (): ReactElement => {
         />
 
         <TextField
-          label={t('exercise.title')}
+          label={t('exercise.exerciseDescription')}
           name='exerciseDescription'
           value={formData.exerciseDescription}
           onChange={handleChange}
@@ -87,7 +87,7 @@ const ExerciseCreate = (): ReactElement => {
         />
 
         <TextField
-          label={t('exercise.title')}
+          label={t('exercise.exerciseExplanation')}
           name='exerciseExplanation'
           value={formData.exerciseExplanation}
           onChange={handleChange}

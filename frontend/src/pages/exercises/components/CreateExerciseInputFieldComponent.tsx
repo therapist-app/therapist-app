@@ -22,6 +22,10 @@ interface CreateExerciseInputFieldComponentProps {
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
   props: CreateExerciseInputFieldComponentProps
 ) => {
+  const inputFieldTranslationKey = props.isPrivateField
+    ? 'exercise.addPrivateInput'
+    : 'exercise.addSharedInput'
+
   const exerciseComponentType = props.isPrivateField
     ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
     : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
@@ -79,7 +83,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     <div>
       {isCreatingExerciseInputField === false ? (
         <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={showExerciseInputField}>
-          {t('exercise.add_input_field')}
+          {t(inputFieldTranslationKey)}
         </Button>
       ) : (
         <form

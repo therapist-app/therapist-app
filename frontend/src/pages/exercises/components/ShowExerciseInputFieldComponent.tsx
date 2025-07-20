@@ -21,6 +21,9 @@ interface ShowExerciseInputFieldComponentProps {
 const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
   props: ShowExerciseInputFieldComponentProps
 ) => {
+  const inputFieldTranslationKey = props.isPrivateField
+    ? 'exercise.privateInput'
+    : 'exercise.sharedInput'
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -86,7 +89,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>{t('exercise.input_field')}</Typography>
+            <Typography variant='h6'>{t(inputFieldTranslationKey)}</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />

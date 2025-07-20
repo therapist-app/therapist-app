@@ -144,11 +144,11 @@ const ExerciseDetail = (): ReactElement => {
               {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
             </Typography>
             <Typography variant='h5'>
-              {t('exercise.exercise_type')}:{' '}
+              {t('exercise.exerciseDescription')}:{' '}
               <strong>{selectedExercise?.exerciseDescription}</strong>
             </Typography>
             <Typography variant='h5'>
-              {t('exercise.exercise_type')}:{' '}
+              {t('exercise.exerciseExplanation')}:{' '}
               <strong>{selectedExercise?.exerciseExplanation}</strong>
             </Typography>
             <Typography>
@@ -187,7 +187,7 @@ const ExerciseDetail = (): ReactElement => {
                 required
               />
               <TextField
-                label={t('exercise.title')}
+                label={t('exercise.exerciseDescription')}
                 name='exerciseDescription'
                 value={formData.exerciseDescription}
                 onChange={handleChange}
@@ -197,7 +197,7 @@ const ExerciseDetail = (): ReactElement => {
               />
 
               <TextField
-                label={t('exercise.title')}
+                label={t('exercise.exerciseExplanation')}
                 name='exerciseExplanation'
                 value={formData.exerciseExplanation}
                 onChange={handleChange}

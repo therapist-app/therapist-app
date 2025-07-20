@@ -66,7 +66,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
-        description: description,
+        exerciseComponentDescription: description,
       }
       await dispatch(
         createExerciseComponent({

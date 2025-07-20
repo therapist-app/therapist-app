@@ -84,7 +84,7 @@ const AddCounselingPlanExercise = ({
                 onChange={handleSelectExerciseChange}
               >
                 {exercisesToSelect.map((exercise) => (
-                  <MenuItem value={exercise.id}>{exercise.title}</MenuItem>
+                  <MenuItem value={exercise.id}>{exercise.exerciseTitle}</MenuItem>
                 ))}
               </Select>
             </FormControl>
