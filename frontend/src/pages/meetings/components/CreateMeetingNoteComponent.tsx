@@ -9,8 +9,12 @@ import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
+import {
+  commonButtonStyles,
+  deleteButtonStyles,
+  successButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
-import { commonButtonStyles, deleteButtonStyles, successButtonStyles } from '../../../styles/buttonStyles'
 
 interface CreateMeetingNoteComponentProps {
   save(): void
@@ -86,24 +90,24 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
           }}
         >
           <Button
-  type='submit'
-  sx={{
-    ...commonButtonStyles,
-    minWidth: '280px',
-  }}
->
-  <CheckIcon />
-</Button>
+            type='submit'
+            sx={{
+              ...commonButtonStyles,
+              minWidth: '280px',
+            }}
+          >
+            <CheckIcon />
+          </Button>
 
-<Button
-  onClick={props.cancel}
-  sx={{
-    ...deleteButtonStyles,
-    minWidth: '280px',
-  }}
->
-  <ClearIcon />
-</Button>
+          <Button
+            onClick={props.cancel}
+            sx={{
+              ...deleteButtonStyles,
+              minWidth: '280px',
+            }}
+          >
+            <ClearIcon />
+          </Button>
         </div>
       </form>
     </div>

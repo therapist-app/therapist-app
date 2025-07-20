@@ -9,13 +9,19 @@ import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
+import {
+  commonButtonStyles,
+  deleteButtonStyles,
+  disabledButtonStyles,
+  successButtonStyles,
+  successDisabledButtonStyles,
+} from '../../styles/buttonStyles'
 import { formatDateNicely, getMinutesBetweenDates } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
 import MeetingEditing from './MeetingEditing'
-import { commonButtonStyles, deleteButtonStyles, disabledButtonStyles, successButtonStyles, successDisabledButtonStyles } from '../../styles/buttonStyles'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()
@@ -107,7 +113,10 @@ const MeetingDetail = (): ReactElement => {
             <Button
               onClick={() => handleCreateNewNote(false)}
               disabled={showCreateMeetingNote}
-              sx={{ ...(showCreateMeetingNote ? disabledButtonStyles : commonButtonStyles), minWidth: '170px' }}
+              sx={{
+                ...(showCreateMeetingNote ? disabledButtonStyles : commonButtonStyles),
+                minWidth: '170px',
+              }}
             >
               {t('meetings.create_new_note')}
             </Button>
@@ -115,7 +124,10 @@ const MeetingDetail = (): ReactElement => {
             <Button
               onClick={() => handleCreateNewNote(true)}
               disabled={showCreateMeetingNote}
-              sx={{ ...(showCreateMeetingNote ? successDisabledButtonStyles : successButtonStyles), minWidth: '190px' }}
+              sx={{
+                ...(showCreateMeetingNote ? successDisabledButtonStyles : successButtonStyles),
+                minWidth: '190px',
+              }}
             >
               {t('meetings.transcribe_meeting')}
             </Button>

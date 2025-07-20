@@ -20,6 +20,11 @@ import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  deleteButtonStyles,
+} from '../../styles/buttonStyles'
 import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -29,7 +34,6 @@ import CreateExerciseTextComponent from './components/CreateExerciseTextComponen
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
-import { cancelButtonStyles, commonButtonStyles, deleteButtonStyles } from '../../styles/buttonStyles'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null

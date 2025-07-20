@@ -10,9 +10,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { CreateMeetingDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { commonButtonStyles } from '../../styles/buttonStyles'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null

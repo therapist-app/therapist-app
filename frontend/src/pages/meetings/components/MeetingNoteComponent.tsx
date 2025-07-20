@@ -18,8 +18,12 @@ import { useTranslation } from 'react-i18next'
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
+import {
+  commonButtonStyles,
+  deleteButtonStyles,
+  successButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
-import { successButtonStyles, deleteButtonStyles, commonButtonStyles} from '../../../styles/buttonStyles'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO
@@ -159,26 +163,24 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
               }}
             >
               <Button
-  type='submit'
-  sx={{
-    ...commonButtonStyles,
-    minWidth: '280px',
-  }}
->
-  <CheckIcon />
-</Button>
+                type='submit'
+                sx={{
+                  ...commonButtonStyles,
+                  minWidth: '280px',
+                }}
+              >
+                <CheckIcon />
+              </Button>
 
-<Button
-  onClick={clickCancel}
-  sx={{
-    ...deleteButtonStyles,
-    minWidth: '280px',
-  }}
->
-  <ClearIcon />
-</Button>
-
-
+              <Button
+                onClick={clickCancel}
+                sx={{
+                  ...deleteButtonStyles,
+                  minWidth: '280px',
+                }}
+              >
+                <ClearIcon />
+              </Button>
             </div>
           </form>
         </div>

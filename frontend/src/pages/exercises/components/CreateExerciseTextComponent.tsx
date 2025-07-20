@@ -10,8 +10,12 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  deleteButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
-import { cancelButtonStyles, commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void
@@ -100,7 +104,13 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
               <CheckIcon />
             </Button>
 
-            <Button variant='contained' color='error' fullWidth sx={{ ...deleteButtonStyles, minWidth: '150px',mt: 2 }} onClick={cancel}>
+            <Button
+              variant='contained'
+              color='error'
+              fullWidth
+              sx={{ ...deleteButtonStyles, minWidth: '150px', mt: 2 }}
+              onClick={cancel}
+            >
               <ClearIcon />
             </Button>
           </div>

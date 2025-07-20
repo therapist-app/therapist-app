@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { LoginTherapistDTO } from '../../api'
 import { loginTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 
 const Login = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -83,7 +83,7 @@ const Login = (): ReactElement => {
             autoComplete='current-password'
           />
           {error && <Typography color='error'>{error}</Typography>}
-          <Button type='submit' sx={{...commonButtonStyles, minWidth: '380px', mt: 2 }}>
+          <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '380px', mt: 2 }}>
             {t('login.login')}
           </Button>
         </form>

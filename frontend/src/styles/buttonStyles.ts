@@ -55,8 +55,7 @@ export const cancelButtonStyles: SxProps<Theme> = {
     borderColor: '#a3a0d9',
   },
   margin: 1,
-};
-
+}
 
 export const deleteButtonStyles: SxProps<Theme> = {
   borderRadius: 20,

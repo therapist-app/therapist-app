@@ -23,7 +23,6 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { commonButtonStyles } from '../../styles/buttonStyles'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
@@ -37,6 +36,7 @@ import {
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -217,94 +217,89 @@ const ChatbotOverview = (): ReactElement => {
   }
 
   const renderCard = (
-  bot: ChatbotTemplateOutputDTO,
-  {
-    showMenu = true,
-    onClick,
-  }: { showMenu?: boolean; onClick?: () => void } = {}
-): ReactElement => (
-  <Card
-    key={bot.id}
-    sx={{
-      maxWidth: 300,
-      minWidth: 300,
-      maxHeight: 250,
-      minHeight: 250,
-      display: 'flex',
-      flexDirection: 'column',
-      border: '1px solid #e0e0e0',
-      boxShadow: 'none',
-      borderRadius: 2,
-    }}
-  >
-    <CardActionArea onClick={onClick ?? (() => openTemplate(bot))} sx={{ height: '100%' }}>
-      <CardContent
-        sx={{
-          px: 2,
-          pb: 10,
-          '&:last-child': { pb: 2 },
-        }}
-      >
-        <Box display='flex' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
-          <Typography
-            variant='h6'
-            sx={{
-              pr: 1,
-              flexGrow: 1,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              m: 0,
-            }}
-            title={bot.chatbotName || t('dashboard.unnamed_bot')}
-          >
-            {bot.chatbotName || t('dashboard.unnamed_bot')}
-          </Typography>
-
-          <Box display='flex' alignItems='center' gap={1}>
-    {/* Only show status chip for patient (client) templates */}
-    {bot.patientId && (
-      bot.isActive ? (
-        <Chip size='small' color='success' label='Active' />
-      ) : (
-        <Chip size='small' variant='outlined' label='Inactive' />
-      )
-    )}
-
-    {showMenu && (
-      <IconButton
-        size='small'
-        onClick={(e) => {
-          e.stopPropagation()
-          handleMenu(e, bot)
-        }}
-      >
-        <MoreVertIcon fontSize='small' />
-      </IconButton>
-    )}
-  </Box>
-        </Box>
-
-        <Typography variant='body1' sx={{ mt: 0.25 }}>
-          {t('dashboard.role')}: {bot.chatbotRole}
-        </Typography>
-        <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
-
-        <Box
+    bot: ChatbotTemplateOutputDTO,
+    { showMenu = true, onClick }: { showMenu?: boolean; onClick?: () => void } = {}
+  ): ReactElement => (
+    <Card
+      key={bot.id}
+      sx={{
+        maxWidth: 300,
+        minWidth: 300,
+        maxHeight: 250,
+        minHeight: 250,
+        display: 'flex',
+        flexDirection: 'column',
+        border: '1px solid #e0e0e0',
+        boxShadow: 'none',
+        borderRadius: 2,
+      }}
+    >
+      <CardActionArea onClick={onClick ?? (() => openTemplate(bot))} sx={{ height: '100%' }}>
+        <CardContent
           sx={{
-            fontSize: 48,
-            textAlign: 'center',
-            mt: 2,
-            lineHeight: 1,
+            px: 2,
+            pb: 10,
+            '&:last-child': { pb: 2 },
           }}
         >
-          {iconFor(bot.chatbotIcon ?? '')}
-        </Box>
-      </CardContent>
-    </CardActionArea>
-  </Card>
-)
+          <Box display='flex' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
+            <Typography
+              variant='h6'
+              sx={{
+                pr: 1,
+                flexGrow: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                m: 0,
+              }}
+              title={bot.chatbotName || t('dashboard.unnamed_bot')}
+            >
+              {bot.chatbotName || t('dashboard.unnamed_bot')}
+            </Typography>
 
+            <Box display='flex' alignItems='center' gap={1}>
+              {/* Only show status chip for patient (client) templates */}
+              {bot.patientId &&
+                (bot.isActive ? (
+                  <Chip size='small' color='success' label='Active' />
+                ) : (
+                  <Chip size='small' variant='outlined' label='Inactive' />
+                ))}
+
+              {showMenu && (
+                <IconButton
+                  size='small'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleMenu(e, bot)
+                  }}
+                >
+                  <MoreVertIcon fontSize='small' />
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+
+          <Typography variant='body1' sx={{ mt: 0.25 }}>
+            {t('dashboard.role')}: {bot.chatbotRole}
+          </Typography>
+          <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+
+          <Box
+            sx={{
+              fontSize: 48,
+              textAlign: 'center',
+              mt: 2,
+              lineHeight: 1,
+            }}
+          >
+            {iconFor(bot.chatbotIcon ?? '')}
+          </Box>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  )
 
   return (
     <>
@@ -324,12 +319,11 @@ const ChatbotOverview = (): ReactElement => {
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
                 {therapistTemplates.map((bot) =>
-  renderCard(bot, {
-    showMenu: false,
-    onClick: () => handleCreateFromTherapistTemplate(bot),
-  })
-)}
-
+                  renderCard(bot, {
+                    showMenu: false,
+                    onClick: () => handleCreateFromTherapistTemplate(bot),
+                  })
+                )}
               </Box>
             </>
           )}

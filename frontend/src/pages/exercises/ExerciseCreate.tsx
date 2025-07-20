@@ -14,9 +14,9 @@ import {
 } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { commonButtonStyles } from '../../styles/buttonStyles'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null

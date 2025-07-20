@@ -9,16 +9,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { common } from '@mui/material/colors'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { common } from '@mui/material/colors'
-import { commonButtonStyles } from '../../styles/buttonStyles'
 
 const Settings = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -103,7 +103,7 @@ const Settings = (): ReactElement => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <Button type='submit' sx={{...commonButtonStyles, minWidth: '580px', mt: 3, mb: 2 }}>
+          <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '580px', mt: 3, mb: 2 }}>
             {t('settings.changePasswordButton')}
           </Button>
         </Box>

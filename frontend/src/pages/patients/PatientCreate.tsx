@@ -23,10 +23,14 @@ import { v4 as uuidv4 } from 'uuid'
 import Layout from '../../generalComponents/Layout'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  disabledButtonStyles,
+} from '../../styles/buttonStyles.ts'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import { cancelButtonStyles, commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles.ts'
 
 type Complaint = {
   id: string
@@ -347,18 +351,20 @@ const PatientCreate = (): ReactElement => {
           </Grid>
         </Grid>
         <Box mt={4} display='flex' justifyContent='flex-end'>
-          <Button onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))} sx={{...cancelButtonStyles, mr: 2 }}>
+          <Button
+            onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
+            sx={{ ...cancelButtonStyles, mr: 2 }}
+          >
             {t('patient_create.cancel')}
           </Button>
           <Button
-  variant='contained'
-  onClick={handleSubmit}
-  disabled={!name || !email}
-  sx={(!name || !email) ? disabledButtonStyles : commonButtonStyles}
->
-  {t('patient_create.register')}
-</Button>
-
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={!name || !email}
+            sx={!name || !email ? disabledButtonStyles : commonButtonStyles}
+          >
+            {t('patient_create.register')}
+          </Button>
         </Box>
         <Snackbar
           open={snackbarOpen}
