@@ -196,8 +196,8 @@ interface Resources {
       "is_paused": "Pausiert",
       "is_currently_paused": "Derzeit pausiert",
       "is_exercise_paused": "Ist Übung pausiert",
-      "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt...",
-      "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt...",
+      "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt.",
+      "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
       "image": "Bild",
       "file": "Datei",
       "input_field": "Eingabefeld",
@@ -243,7 +243,10 @@ interface Resources {
       "start_date": "Startdatum",
       "end_date": "Enddatum",
       "time": "Zeit",
-      "date": "Datum"
+      "date": "Datum",
+      "last_week": "Letzte Woche",
+      "last_two_weeks": "Letzte 2 Wochen",
+      "last_three_weeks": "Letzte 3 Wochen"
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -385,7 +388,6 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
-      "create_gad7test": "GAD-7 Test erstellen",
       "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
       "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
       "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -397,7 +399,7 @@ interface Resources {
       "total_score": "Gesamtpunktzahl",
       "cancel": "Abbrechen",
       "submit": "Absenden",
-      "no_tests_yet": "Du hast noch keinen GAD-7 Test erstellt.",
+      "no_tests_yet": "Klient hat noch keinen GAD-7 Test ausgefüllt.",
       "answers": {
         "not_at_all": "Überhaupt nicht",
         "several_days": "An einigen Tagen",
@@ -638,8 +640,8 @@ interface Resources {
       "is_paused": "Is Paused",
       "is_currently_paused": "Is Currently Paused",
       "is_exercise_paused": "Is Exercise Paused",
-      "no_exercises_yet": "You haven't added any exercises yet...",
-      "no_exercise_components_yet": "You haven't added any exercise components yet...",
+      "no_exercises_yet": "You haven't added any exercises yet.",
+      "no_exercise_components_yet": "You haven't added any exercise components yet.",
       "image": "Image",
       "file": "File",
       "input_field": "Input Field",
@@ -685,7 +687,10 @@ interface Resources {
       "start_date": "Start Date",
       "end_date": "End Date",
       "time": "Time",
-      "date": "Date"
+      "date": "Date",
+      "last_week": "Last Week",
+      "last_two_weeks": "Last 2 Weeks",
+      "last_three_weeks": "Last 3 Weeks"
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -827,7 +832,6 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
-      "create_gad7test": "Create GAD-7 Test",
       "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
       "question1": "Feeling nervous, anxious or on edge.",
       "question2": "Not being able to stop or control worrying.",
@@ -839,7 +843,7 @@ interface Resources {
       "total_score": "Total Score",
       "cancel": "Cancel",
       "submit": "Submit",
-      "no_tests_yet": "You haven't created any GAD-7 tests yet.",
+      "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
       "answers": {
         "not_at_all": "Not at all",
         "several_days": "Several days",
@@ -1080,8 +1084,8 @@ interface Resources {
       "is_paused": "Призупинено",
       "is_currently_paused": "Зараз призупинено",
       "is_exercise_paused": "Чи призупинено вправу",
-      "no_exercises_yet": "Ви ще не додали жодної вправи...",
-      "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи...",
+      "no_exercises_yet": "Ви ще не додали жодної вправи.",
+      "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи.",
       "image": "Зображення",
       "file": "Файл",
       "input_field": "Поле вводу",
@@ -1127,7 +1131,10 @@ interface Resources {
       "start_date": "Дата початку",
       "end_date": "Дата завершення",
       "time": "Час",
-      "date": "Дата"
+      "date": "Дата",
+      "last_week": "Останній тиждень",
+      "last_two_weeks": "Останні 2 тижні",
+      "last_three_weeks": "Останні 3 тижні"
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",
@@ -1269,7 +1276,6 @@ interface Resources {
     "gad7test": {
       "title": "Опитування GAD-7",
       "gad7tests": "Тести GAD-7",
-      "create_gad7test": "Створити тест GAD-7",
       "description": "Як часто вас турбували наступні проблеми протягом останніх 2 тижнів?",
       "question1": "Нервозність, тривога або напруга.",
       "question2": "Неможливість припинити або контролювати занепокоєння.",
@@ -1281,7 +1287,7 @@ interface Resources {
       "total_score": "Загальний бал",
       "cancel": "Скасувати",
       "submit": "Надіслати",
-      "no_tests_yet": "Ви ще не створили жодного тесту GAD-7.",
+      "no_tests_yet": "Пацієнт ще не заповнив жодного тесту GAD-7.",
       "answers": {
         "not_at_all": "Зовсім ні",
         "several_days": "Кілька днів",
