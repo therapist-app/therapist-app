@@ -28,6 +28,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { commonButtonStyles, disabledButtonStyles, cancelButtonStyles } from '../../styles/buttonStyles'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
@@ -229,45 +230,6 @@ const Home = (): ReactElement => {
         return null
     }
   }
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  } as const
-  const disabledButtonStyles = {
-    ...commonButtonStyles,
-    backgroundImage: 'lightgrey',
-    '&:hover': {
-      disabled: 'true',
-    },
-  } as const
-  const cancelButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'white',
-    color: '#635BFF',
-    '&:hover': {
-      backgroundColor: '#f0f0f0',
-    },
-    margin: 1,
-  } as const
   const dialogStyle = {
     width: '500px',
     height: '300px',
@@ -280,7 +242,7 @@ const Home = (): ReactElement => {
         <Button
           variant='contained'
           onClick={() => navigate(getPathFromPage(PAGES.PATIENTS_CREATE_PAGE))}
-          sx={{ height: 'fit-content' }}
+          sx={{ ...commonButtonStyles }}
         >
           {t('dashboard.add_patient')}
         </Button>
@@ -324,7 +286,7 @@ const Home = (): ReactElement => {
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
         <Typography variant='h2'>{t('dashboard.your_chatbot_templates')}</Typography>
-        <Button variant='contained' onClick={handleCreateChatbot} sx={{ height: 'fit-content' }}>
+        <Button variant='contained' onClick={handleCreateChatbot} sx={{ ...commonButtonStyles , minWidth: '230px' }}>
           {t('dashboard.create_bot')}
         </Button>
       </div>

@@ -23,6 +23,7 @@ import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import {
@@ -300,7 +301,7 @@ const ChatbotOverview = (): ReactElement => {
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
         <Typography variant='h2'>{t('chatbot.chatbots')}</Typography>
-        <Button variant='contained' onClick={handleCreateChatbot}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateChatbot}>
           {t('chatbot.create_new_chatbot')}
         </Button>
       </Box>
@@ -348,7 +349,7 @@ const ChatbotOverview = (): ReactElement => {
 
                 <Button
                   size='small'
-                  variant='outlined'
+                  sx={{ ...commonButtonStyles, minWidth: '220px' }}
                   onClick={() =>
                     navigate(
                       getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),

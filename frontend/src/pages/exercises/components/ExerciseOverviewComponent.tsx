@@ -20,6 +20,7 @@ import { RootState } from '../../../store/store'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
+import { commonButtonStyles } from '../../../styles/buttonStyles'
 
 const ExerciseOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
@@ -63,7 +64,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'> Exercises</Typography>
-        <Button variant='contained' onClick={handleCreateNewExercise}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateNewExercise}>
           {t('exercise.create_new_exercise')}
         </Button>
       </div>
