@@ -58,6 +58,8 @@ const therapistChatbotSlice = createSlice({
     },
     clearMessages: (state) => {
       state.therapistChatbotMessages = []
+      state.status = 'idle'
+      state.error = null
     },
   },
   extraReducers: (builder) => {
