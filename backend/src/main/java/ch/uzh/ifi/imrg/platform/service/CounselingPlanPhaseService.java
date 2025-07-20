@@ -128,9 +128,10 @@ public class CounselingPlanPhaseService {
 
     String userPrompt =
         "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
-            + "The exercise should have a title.\n"
+            + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
+            + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + "Format: {\"title\":\"<title>\"";
+            + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));

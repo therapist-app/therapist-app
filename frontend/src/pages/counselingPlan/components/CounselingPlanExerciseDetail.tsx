@@ -1,7 +1,9 @@
 import { Typography } from '@mui/material'
 import { ReactElement } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { ExerciseOutputDTO } from '../../../api'
+import { getPageFromPath, getPathFromPage, PAGES } from '../../../utils/routes'
 
 interface CounselingPlanExerciseDetailProps {
   exercise: ExerciseOutputDTO
@@ -10,10 +12,19 @@ interface CounselingPlanExerciseDetailProps {
 const CounselingPlanExerciseDetail = ({
   exercise,
 }: CounselingPlanExerciseDetailProps): ReactElement => {
+  const { patientId } = useParams()
+
   return (
     <div>
-      <Typography style={{ fontWeight: 'bold' }}>{exercise.title}</Typography>
-      <Typography>{exercise.exerciseType}</Typography>
+      <Link
+        style={{ fontFamily: 'Roboto' }}
+        to={getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+          exerciseId: exercise.id ?? '',
+        })}
+      >
+        {exercise.exerciseTitle}
+      </Link>
     </div>
   )
 }

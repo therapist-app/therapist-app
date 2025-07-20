@@ -444,6 +444,8 @@ interface Resources {
     }
   },
   "en": {
+    "yes": "Yes",
+    "no": "No",
     "header": {
       "title": "This is the header",
       "subtitle": "These are the current pages:",
@@ -612,7 +614,9 @@ interface Resources {
       "create_phase": "Create Phase",
       "make_ai_generated_suggestion": "Make AI generated suggestion",
       "exercise_title": "Exercise Title",
-      "exercise_type": "Exercise Type",
+      "exerciseDescription": "Description",
+      "exerciseExplanation": "Explanation (for AI context)",
+      "doEveryNDays": "Do once every following days",
       "exercise_start": "Exercise Start",
       "add_a_goal": "Add a Goal",
       "goal_name": "Goal Name",
@@ -643,6 +647,7 @@ interface Resources {
       "no_exercise_components_yet": "You haven't added any exercise components yet.",
       "image": "Image",
       "file": "File",
+      "doEveryNDays": "Do once every following days",
       "privateInput": "Private Input Field",
       "sharedInput": "Shared Input Field",
       "addPrivateInput": "Add private Input Field",

@@ -40,11 +40,14 @@ public class ExerciseService {
     Exercise exercise = new Exercise();
     exercise.setPatient(patient);
     exercise.setExerciseTitle(createExerciseDTO.getExerciseTitle());
+    exercise.setExerciseDescription(createExerciseDTO.getExerciseDescription());
+    exercise.setExerciseExplanation(createExerciseDTO.getExerciseExplanation());
     exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
     exercise.setExerciseEnd(
         DateUtil.addAmountOfWeeks(
             createExerciseDTO.getExerciseStart(), createExerciseDTO.getDurationInWeeks()));
     exercise.setIsPaused(false);
+    exercise.setDoEveryNDays(createExerciseDTO.getDoEveryNDays());
 
     Exercise savedExercise = exerciseRepository.save(exercise);
 
@@ -76,6 +79,14 @@ public class ExerciseService {
       exercise.setExerciseTitle(updateExerciseDTO.getExerciseTitle());
     }
 
+    if (updateExerciseDTO.getExerciseDescription() != null) {
+      exercise.setExerciseDescription(updateExerciseDTO.getExerciseDescription());
+    }
+
+    if (updateExerciseDTO.getExerciseExplanation() != null) {
+      exercise.setExerciseDescription(updateExerciseDTO.getExerciseDescription());
+    }
+
     if (updateExerciseDTO.getExerciseStart() != null) {
       exercise.setExerciseStart(updateExerciseDTO.getExerciseStart());
     }
@@ -86,6 +97,10 @@ public class ExerciseService {
 
     if (updateExerciseDTO.getIsPaused() != null) {
       exercise.setIsPaused(updateExerciseDTO.getIsPaused());
+    }
+
+    if (updateExerciseDTO.getDoEveryNDays() != null) {
+      exercise.setDoEveryNDays(updateExerciseDTO.getDoEveryNDays());
     }
 
     Exercise updatedExercise = exerciseRepository.save(exercise);

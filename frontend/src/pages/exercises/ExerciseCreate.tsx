@@ -31,6 +31,7 @@ const ExerciseCreate = (): ReactElement => {
     exerciseExplanation: '',
     exerciseStart: new Date(),
     durationInWeeks: 3,
+    doEveryNDays: 1,
     patientId: patientId,
   })
 
@@ -63,7 +64,7 @@ const ExerciseCreate = (): ReactElement => {
   return (
     <Layout>
       <form
-        style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '10px' }}
+        style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '15px' }}
         onSubmit={handleSubmit}
       >
         <TextField
@@ -72,7 +73,6 @@ const ExerciseCreate = (): ReactElement => {
           value={formData.exerciseTitle}
           onChange={handleChange}
           fullWidth
-          margin='normal'
           required
         />
 
@@ -82,8 +82,6 @@ const ExerciseCreate = (): ReactElement => {
           value={formData.exerciseDescription}
           onChange={handleChange}
           fullWidth
-          margin='normal'
-          required
         />
 
         <TextField
@@ -92,8 +90,6 @@ const ExerciseCreate = (): ReactElement => {
           value={formData.exerciseExplanation}
           onChange={handleChange}
           fullWidth
-          margin='normal'
-          required
         />
 
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
@@ -108,20 +104,33 @@ const ExerciseCreate = (): ReactElement => {
             }}
             sx={{ width: '100%' }}
           />
-
-          <TextField
-            label={t('exercise.duration_in_weeks')}
-            type='number'
-            value={formData.durationInWeeks}
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                durationInWeeks: Number(e.target.value),
-              })
-            }}
-            sx={{ width: '100%' }}
-          />
         </LocalizationProvider>
+
+        <TextField
+          label={t('exercise.duration_in_weeks')}
+          type='number'
+          value={formData.durationInWeeks}
+          onChange={(e) => {
+            setFormData({
+              ...formData,
+              durationInWeeks: Number(e.target.value),
+            })
+          }}
+          sx={{ width: '100%' }}
+        />
+
+        <TextField
+          label={t('exercise.doEveryNDays')}
+          type='number'
+          value={formData.doEveryNDays}
+          onChange={(e) => {
+            setFormData({
+              ...formData,
+              doEveryNDays: Number(e.target.value),
+            })
+          }}
+          sx={{ width: '100%' }}
+        />
 
         <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
           {t('exercise.submit')}

@@ -57,6 +57,7 @@ const ExerciseDetail = (): ReactElement => {
     exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
     exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
     isPaused: selectedExercise?.isPaused,
+    doEveryNDays: selectedExercise?.doEveryNDays,
   })
 
   const [isEditingExercise, setIsEditingExercise] = useState(false)
@@ -70,6 +71,7 @@ const ExerciseDetail = (): ReactElement => {
         exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
         exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
         isPaused: selectedExercise?.isPaused,
+        doEveryNDays: selectedExercise?.doEveryNDays,
       })
       setIsEditingExercise(true)
     } else {
@@ -143,11 +145,11 @@ const ExerciseDetail = (): ReactElement => {
             <Typography variant='h4'>
               {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
             </Typography>
-            <Typography variant='h5'>
+            <Typography>
               {t('exercise.exerciseDescription')}:{' '}
               <strong>{selectedExercise?.exerciseDescription}</strong>
             </Typography>
-            <Typography variant='h5'>
+            <Typography>
               {t('exercise.exerciseExplanation')}:{' '}
               <strong>{selectedExercise?.exerciseExplanation}</strong>
             </Typography>
@@ -160,7 +162,11 @@ const ExerciseDetail = (): ReactElement => {
               <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
             </Typography>
             <Typography>
-              {t('exercise.is_currently_paused')}: {selectedExercise?.isPaused ? 'Yes' : 'No'}
+              {t('exercise.is_currently_paused')}:{' '}
+              <strong>{selectedExercise?.isPaused ? t('yes') : t('no')}</strong>
+            </Typography>
+            <Typography>
+              {t('exercise.doEveryNDays')}: <strong>{selectedExercise?.doEveryNDays}</strong>
             </Typography>
             <Button
               onClick={() => toggleIsEditingExercise(true)}
@@ -183,7 +189,6 @@ const ExerciseDetail = (): ReactElement => {
                 value={formData.exerciseTitle}
                 onChange={handleChange}
                 fullWidth
-                margin='normal'
                 required
               />
               <TextField
@@ -192,8 +197,6 @@ const ExerciseDetail = (): ReactElement => {
                 value={formData.exerciseDescription}
                 onChange={handleChange}
                 fullWidth
-                margin='normal'
-                required
               />
 
               <TextField
@@ -202,8 +205,6 @@ const ExerciseDetail = (): ReactElement => {
                 value={formData.exerciseExplanation}
                 onChange={handleChange}
                 fullWidth
-                margin='normal'
-                required
               />
 
               <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
@@ -242,6 +243,20 @@ const ExerciseDetail = (): ReactElement => {
                 }
                 label={t('exercise.is_exercise_paused')}
               ></FormControlLabel>
+
+              <TextField
+                label={t('exercise.doEveryNDays')}
+                type='number'
+                value={formData.doEveryNDays}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    doEveryNDays: Number(e.target.value),
+                  })
+                }}
+                sx={{ width: '100%' }}
+              />
+
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
                   sx={{ ...cancelButtonStyles, minWidth: '280px', mt: 2 }}
