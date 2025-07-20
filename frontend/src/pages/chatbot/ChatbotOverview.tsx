@@ -235,9 +235,14 @@ const ChatbotOverview = (): ReactElement => {
       }}
     >
       <CardActionArea
-  onClick={onClick ?? (() : void => { openTemplate(bot); })}
-  sx={{ height: '100%' }}
->
+        onClick={
+          onClick ??
+          ((): void => {
+            openTemplate(bot)
+          })
+        }
+        sx={{ height: '100%' }}
+      >
         <CardContent
           sx={{
             px: 2,

@@ -9,10 +9,7 @@ import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
-import {
-  commonButtonStyles,
-  deleteButtonStyles,
-} from '../../../styles/buttonStyles'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateMeetingNoteComponentProps {

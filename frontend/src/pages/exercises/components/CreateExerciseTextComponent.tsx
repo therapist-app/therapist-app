@@ -10,10 +10,7 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
-import {
-  commonButtonStyles,
-  deleteButtonStyles,
-} from '../../../styles/buttonStyles'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseTextComponentProps {

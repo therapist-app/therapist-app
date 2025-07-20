@@ -18,10 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
-import {
-  commonButtonStyles,
-  deleteButtonStyles,
-} from '../../../styles/buttonStyles'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface MeetingNoteComponentProps {
