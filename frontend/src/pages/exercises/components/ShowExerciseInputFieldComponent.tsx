@@ -140,7 +140,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
 
           <TextField
             multiline
-            name='description'
+            name='exerciseComponentDescription'
             value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.description_of_input')}

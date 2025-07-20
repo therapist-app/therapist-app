@@ -51,6 +51,9 @@ public class ExerciseComponentService {
     ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI =
         new ExerciseComponentInputDTOPatientAPI()
             .id(exerciseComponent.getId())
+            .exerciseComponentType(
+                ExerciseComponentInputDTOPatientAPI.ExerciseComponentTypeEnum.fromValue(
+                    exerciseComponent.getExerciseComponentType().toString()))
             .exerciseComponentDescription(exerciseComponent.getExerciseComponentDescription())
             .orderNumber(exerciseComponent.getOrderNumber());
 
@@ -130,6 +133,8 @@ public class ExerciseComponentService {
     Exercise exercise = target.getExercise();
     SecurityUtil.checkOwnership(exercise, therapistId);
 
+    String patientId = exercise.getPatient().getId();
+
     ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI =
         new ExerciseComponentUpdateInputDTOPatientAPI().id(dto.getId());
 
@@ -155,6 +160,16 @@ public class ExerciseComponentService {
             if (ord >= newOrder && ord < oldOrder) {
               exerciseComponent.setOrderNumber(ord + 1);
               exerciseComponentRepository.save(exerciseComponent);
+
+              ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+                  new ExerciseComponentUpdateInputDTOPatientAPI();
+              exComponent
+                  .id(exerciseComponent.getId())
+                  .orderNumber(exerciseComponent.getOrderNumber());
+              PatientAppAPIs.coachExerciseControllerPatientAPI
+                  .updateExerciseComponent(
+                      patientId, exercise.getId(), exerciseComponent.getId(), exComponent)
+                  .block();
             }
           }
         } else {
@@ -164,6 +179,16 @@ public class ExerciseComponentService {
             if (ord <= newOrder && ord > oldOrder) {
               exerciseComponent.setOrderNumber(ord - 1);
               exerciseComponentRepository.save(exerciseComponent);
+
+              ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+                  new ExerciseComponentUpdateInputDTOPatientAPI();
+              exComponent
+                  .id(exerciseComponent.getId())
+                  .orderNumber(exerciseComponent.getOrderNumber());
+              PatientAppAPIs.coachExerciseControllerPatientAPI
+                  .updateExerciseComponent(
+                      patientId, exercise.getId(), exerciseComponent.getId(), exComponent)
+                  .block();
             }
           }
         }
@@ -190,10 +215,20 @@ public class ExerciseComponentService {
     SecurityUtil.checkOwnership(exerciseComponent, therapistId);
     Exercise exercise = exerciseComponent.getExercise();
 
+    String patientId = exercise.getPatient().getId();
+
     for (ExerciseComponent exerciseComponent2 : exercise.getExerciseComponents()) {
       if (exerciseComponent2.getOrderNumber() > exerciseComponent.getOrderNumber()) {
         exerciseComponent2.setOrderNumber(exerciseComponent2.getOrderNumber() - 1);
         exerciseComponentRepository.save(exerciseComponent2);
+
+        ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+            new ExerciseComponentUpdateInputDTOPatientAPI();
+        exComponent.id(exerciseComponent2.getId()).orderNumber(exerciseComponent2.getOrderNumber());
+        PatientAppAPIs.coachExerciseControllerPatientAPI
+            .updateExerciseComponent(
+                patientId, exercise.getId(), exerciseComponent2.getId(), exComponent)
+            .block();
       }
     }
 

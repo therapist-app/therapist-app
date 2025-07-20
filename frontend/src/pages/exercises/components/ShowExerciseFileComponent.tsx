@@ -123,7 +123,11 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           </div>
 
           {isImageComponent ? (
-            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
+            <img
+              src={imageFileUrl}
+              alt='Exercise'
+              style={{ width: '300px', height: '300px', objectFit: 'contain' }}
+            />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
@@ -174,7 +178,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
 
           <TextField
             multiline
-            name='description'
+            name='exerciseComponentDescription'
             value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}
