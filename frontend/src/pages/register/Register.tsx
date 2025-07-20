@@ -7,6 +7,7 @@ import { CreateTherapistDTO } from '../../api'
 import { registerTherapist } from '../../store/therapistSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 
 const Register = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -83,7 +84,7 @@ const Register = (): ReactElement => {
             autoComplete='current-password'
           />
           {error && <Typography color='error'>{error}</Typography>}
-          <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+          <Button type='submit' sx={{...commonButtonStyles, minWidth: '380px', mt: 2 }}>
             {t('register.register')}
           </Button>
         </form>
@@ -91,9 +92,7 @@ const Register = (): ReactElement => {
       <div style={{ display: 'flex', width: '100%', marginTop: '32px', justifyContent: 'center' }}>
         <Button
           onClick={() => navigate(getPathFromPage(PAGES.LOGIN_PAGE))}
-          color='success'
-          size='large'
-          variant='contained'
+          sx={{ ...successButtonStyles, minWidth: '380px' }}
         >
           {t('register.go_login')}
         </Button>

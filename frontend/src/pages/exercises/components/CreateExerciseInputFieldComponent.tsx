@@ -11,6 +11,7 @@ import {
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 
 interface CreateExerciseInputFieldComponentProps {
   createdInputField(): void
@@ -74,7 +75,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   return (
     <div>
       {isCreatingExerciseInputField === false ? (
-        <Button variant='contained' color='primary' onClick={showExerciseInputField}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '160px'}} onClick={showExerciseInputField}>
           {t('exercise.add_input_field')}
         </Button>
       ) : (
@@ -96,11 +97,11 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
               justifyContent: 'center',
             }}
           >
-            <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+            <Button type='submit' sx={{...commonButtonStyles, minWidth: '180px', mt: 2 }}>
               <CheckIcon />
             </Button>
 
-            <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={cancel}>
+            <Button variant='contained' color='error' fullWidth sx={{ ...deleteButtonStyles, minWidth: '180px', mt: 2 }} onClick={cancel}>
               <ClearIcon />
             </Button>
           </div>

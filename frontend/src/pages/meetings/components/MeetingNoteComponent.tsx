@@ -19,6 +19,7 @@ import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { successButtonStyles, deleteButtonStyles, commonButtonStyles} from '../../../styles/buttonStyles'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO
@@ -157,13 +158,27 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
                 justifyContent: 'center',
               }}
             >
-              <Button type='submit' variant='contained' color='primary' fullWidth>
-                <CheckIcon />
-              </Button>
+              <Button
+  type='submit'
+  sx={{
+    ...commonButtonStyles,
+    minWidth: '280px',
+  }}
+>
+  <CheckIcon />
+</Button>
 
-              <Button variant='contained' color='error' fullWidth onClick={clickCancel}>
-                <ClearIcon />
-              </Button>
+<Button
+  onClick={clickCancel}
+  sx={{
+    ...deleteButtonStyles,
+    minWidth: '280px',
+  }}
+>
+  <ClearIcon />
+</Button>
+
+
             </div>
           </form>
         </div>

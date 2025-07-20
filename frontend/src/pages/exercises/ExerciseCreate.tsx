@@ -16,6 +16,7 @@ import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -122,7 +123,7 @@ const ExerciseCreate = (): ReactElement => {
           />
         </LocalizationProvider>
 
-        <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+        <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
           {t('exercise.submit')}
         </Button>
       </form>

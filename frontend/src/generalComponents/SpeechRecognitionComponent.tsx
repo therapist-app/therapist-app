@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@mui/material'
+import { successButtonStyles, deleteButtonStyles } from '../styles/buttonStyles'
 
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
@@ -411,97 +413,94 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     ...(isListening ? styles.textareaListening : {}),
   }
 
-  const startButtonStyle = {
-    ...styles.button,
-    ...styles.startButton,
-    ...(isListening || !BrowserSpeechRecognition ? styles.disabledButton : {}),
-  }
-  const stopButtonStyle = {
-    ...styles.button,
-    ...styles.stopButton,
-    ...(!isListening ? styles.disabledButton : {}),
-  }
+  const startBtnSx =
+  isListening || !BrowserSpeechRecognition
+    ? {
+        ...successButtonStyles,
+        backgroundImage: 'none',
+        backgroundColor: 'lightgrey',
+        cursor: 'not-allowed',
+        boxShadow: 'none',
+      }
+    : { ...successButtonStyles }
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.languageSelectContainer}>
-        <label htmlFor='language-select' style={styles.languageSelectLabel}>
-          {t('meetings.language')}
-        </label>
-        <select
-          id='language-select'
-          value={selectedLanguage}
-          onChange={handleLanguageChange}
-          style={styles.languageSelect}
-          disabled={isListening}
-        >
-          {availableLanguages.map((lang) => (
-            <option key={lang.code} value={lang.code}>
-              {lang.name}
-            </option>
-          ))}
-        </select>
-      </div>
+const stopBtnSx = !isListening
+  ? {
+      ...deleteButtonStyles,
+      backgroundImage: 'none',
+      backgroundColor: 'lightgrey',
+      cursor: 'not-allowed',
+      boxShadow: 'none',
+    }
+  : { ...deleteButtonStyles }
 
-      <div style={styles.textareaContainer}>
-        <textarea
-          ref={textareaRef}
-          value={value}
-          onChange={handleTextChange}
-          readOnly={isListening}
-          placeholder={
-            isListening ? t('meetings.listening') : placeholder || t('meetings.speak_or_type_here')
-          }
-          style={textareaStyle}
-          rows={6}
-        />
-        <div style={styles.buttonContainer}>
-          <button
-            onClick={handleStartListening}
-            disabled={isListening || !BrowserSpeechRecognition}
-            style={startButtonStyle}
-            onMouseEnter={(e) => {
-              if (!(isListening || !BrowserSpeechRecognition)) {
-                e.currentTarget.style.backgroundColor = '#16a34a'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!(isListening || !BrowserSpeechRecognition)) {
-                e.currentTarget.style.backgroundColor = styles.startButton.backgroundColor as string
-              }
-            }}
-          >
+return (
+  <div style={styles.container}>
+    <div style={styles.languageSelectContainer}>
+      <label htmlFor='language-select' style={styles.languageSelectLabel}>
+        {t('meetings.language')}
+      </label>
+      <select
+        id='language-select'
+        value={selectedLanguage}
+        onChange={handleLanguageChange}
+        style={styles.languageSelect}
+        disabled={isListening}
+      >
+        {availableLanguages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.name}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div style={styles.textareaContainer}>
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={handleTextChange}
+        readOnly={isListening}
+        placeholder={
+          isListening ? t('meetings.listening') : placeholder || t('meetings.speak_or_type_here')
+        }
+        style={{
+          ...styles.textarea,
+          ...(isListening ? styles.textareaListening : {}),
+        }}
+        rows={6}
+      />
+
+      <div style={styles.buttonContainer}>
+        <Button
+          onClick={handleStartListening}
+          disabled={isListening || !BrowserSpeechRecognition}
+          sx={{ ...startBtnSx, width: '180px', minWidth: '180px' }}
+          startIcon={
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
               fill='currentColor'
-              style={{ width: '20px', height: '20px' }}
+              style={{ width: 20, height: 20 }}
             >
               <path d='M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z' />
               <path d='M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.041h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.041a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z' />
             </svg>
-            {t('meetings.start_listening')}
-          </button>
-          <button
-            onClick={handleStopListening}
-            disabled={!isListening}
-            style={stopButtonStyle}
-            onMouseEnter={(e) => {
-              if (isListening) {
-                e.currentTarget.style.backgroundColor = '#dc2626'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (isListening) {
-                e.currentTarget.style.backgroundColor = styles.stopButton.backgroundColor as string
-              }
-            }}
-          >
+          }
+        >
+          {t('meetings.start_listening')}
+        </Button>
+
+        <Button
+          onClick={handleStopListening}
+          disabled={!isListening}
+          sx={{ ...stopBtnSx, width: '180px', minWidth: '180px' }}
+          startIcon={
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
               fill='currentColor'
-              style={{ width: '20px', height: '20px' }}
+              style={{ width: 20, height: 20 }}
             >
               <path
                 fillRule='evenodd'
@@ -509,32 +508,28 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
                 clipRule='evenodd'
               />
             </svg>
-            {t('meetings.stop_listening')}
-          </button>
-        </div>
+          }
+        >
+          {t('meetings.stop_listening')}
+        </Button>
       </div>
-
-      {error && (
-        <div role='alert' style={styles.errorMessage}>
-          <strong style={styles.errorTitle}>Error</strong>
-          <p>{error}</p>
-        </div>
-      )}
-
-      {isListening && !error && (
-        <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
-          {t('meetings.listening_speak_into_microphone')}
-        </p>
-      )}
-
-      {!BrowserSpeechRecognition && !error && (
-        <div role='alert' style={styles.compatibilityMessage}>
-          <strong style={styles.errorTitle}>{t('meetings.browser_compatibility')}</strong>
-          <p>{t('meetings.web_search_api_not_supported')}</p>
-        </div>
-      )}
     </div>
-  )
+
+    {error && (
+      <div role='alert' style={styles.errorMessage}>
+        <strong style={styles.errorTitle}>Error</strong>
+        <p>{error}</p>
+      </div>
+    )}
+
+    {isListening && !error && (
+      <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
+        {t('meetings.listening_speak_into_microphone')}
+      </p>
+    )}
+  </div>
+)
+
 }
 
 export default SpeechToTextComponent

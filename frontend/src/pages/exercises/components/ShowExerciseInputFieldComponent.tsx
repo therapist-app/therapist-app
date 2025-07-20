@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { useAppDispatch } from '../../../utils/hooks'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 
 interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
@@ -121,11 +122,11 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
               ))}
             </TextField>
 
-            <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickCancel}>
+            <Button sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }} onClick={clickCancel}>
               <ClearIcon style={{ color: 'red' }} />
             </Button>
 
-            <Button sx={{ minWidth: '10px' }} onClick={handleSubmit}>
+            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
               <CheckIcon style={{ color: 'green' }} />
             </Button>
           </div>

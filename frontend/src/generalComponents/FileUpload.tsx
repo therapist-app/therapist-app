@@ -36,9 +36,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonS
         style={{ display: 'none' }}
       />
       <Button
-        variant='contained'
         onClick={triggerFileDialog}
-        sx={{ ...commonButtonStyles, ...(buttonSx || {}) }}
+        sx={{ ...commonButtonStyles, minWidth: '150px', ...(buttonSx || {}) }}
       >
         {text ?? t('dashboard.upload_file')}
       </Button>

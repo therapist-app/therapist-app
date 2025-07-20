@@ -10,6 +10,7 @@ import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionC
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
+import { commonButtonStyles, deleteButtonStyles, successButtonStyles } from '../../../styles/buttonStyles'
 
 interface CreateMeetingNoteComponentProps {
   save(): void
@@ -84,13 +85,25 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
             justifyContent: 'center',
           }}
         >
-          <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
-            <CheckIcon />
-          </Button>
+          <Button
+  type='submit'
+  sx={{
+    ...commonButtonStyles,
+    minWidth: '280px',
+  }}
+>
+  <CheckIcon />
+</Button>
 
-          <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={props.cancel}>
-            <ClearIcon />
-          </Button>
+<Button
+  onClick={props.cancel}
+  sx={{
+    ...deleteButtonStyles,
+    minWidth: '280px',
+  }}
+>
+  <ClearIcon />
+</Button>
         </div>
       </form>
     </div>

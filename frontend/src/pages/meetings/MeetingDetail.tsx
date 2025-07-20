@@ -15,6 +15,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
 import MeetingEditing from './MeetingEditing'
+import { commonButtonStyles, deleteButtonStyles, disabledButtonStyles, successButtonStyles, successDisabledButtonStyles } from '../../styles/buttonStyles'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()
@@ -85,8 +86,7 @@ const MeetingDetail = (): ReactElement => {
 
               <Button
                 onClick={() => setIsEditing(true)}
-                sx={{ width: 'fit-content', marginTop: '20px' }}
-                variant='outlined'
+                sx={{ ...commonButtonStyles, minWidth: '170px', marginTop: '20px' }}
               >
                 <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
                 {t('meetings.editMeeting')}
@@ -105,19 +105,17 @@ const MeetingDetail = (): ReactElement => {
           <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <Typography variant='h2'>{t('meetings.yourNotes')}:</Typography>
             <Button
-              variant='contained'
-              color='primary'
               onClick={() => handleCreateNewNote(false)}
               disabled={showCreateMeetingNote}
+              sx={{ ...(showCreateMeetingNote ? disabledButtonStyles : commonButtonStyles), minWidth: '170px' }}
             >
               {t('meetings.create_new_note')}
             </Button>
 
             <Button
-              variant='contained'
-              color='success'
               onClick={() => handleCreateNewNote(true)}
               disabled={showCreateMeetingNote}
+              sx={{ ...(showCreateMeetingNote ? successDisabledButtonStyles : successButtonStyles), minWidth: '190px' }}
             >
               {t('meetings.transcribe_meeting')}
             </Button>
@@ -152,10 +150,8 @@ const MeetingDetail = (): ReactElement => {
         <CustomizedDivider />
 
         <Button
-          variant='contained'
           onClick={handleDeleteMeeting}
-          color='error'
-          sx={{ width: 'fit-content' }}
+          sx={{ ...deleteButtonStyles, minWidth: '160px', width: 'fit-content' }}
         >
           {t('meetings.delete_meeting')}
         </Button>

@@ -7,6 +7,7 @@ import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } fro
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { RootState } from '../../../store/store'
 import { useAppDispatch } from '../../../utils/hooks'
+import { cancelButtonStyles, commonButtonStyles, successButtonStyles } from '../../../styles/buttonStyles'
 
 interface AddCounselingPlanExerciseProps {
   counselingPlanPhaseId: string
@@ -61,7 +62,7 @@ const AddCounselingPlanExercise = ({
   return (
     <div>
       {!open ? (
-        <Button variant='contained' onClick={handleAddExerciseFirstClick}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '210px' }} onClick={handleAddExerciseFirstClick}>
           {t('counseling_plan.add_existing_exercise')}
         </Button>
       ) : (
@@ -80,13 +81,11 @@ const AddCounselingPlanExercise = ({
                 ))}
               </Select>
             </FormControl>
-            <Button variant='contained' color='success' onClick={handleAddExercise}>
+            <Button sx={{ ...successButtonStyles, minWidth: '210px' }} onClick={handleAddExercise}>
               {t('counseling_plan.add_existing_exercise')}
             </Button>
             <Button
-              sx={{ maxWidth: '100px' }}
-              variant='outlined'
-              color='error'
+              sx={{ ...cancelButtonStyles, minWidth: '100px' }}
               onClick={handleCancel}
             >
               {t('counseling_plan.cancel')}

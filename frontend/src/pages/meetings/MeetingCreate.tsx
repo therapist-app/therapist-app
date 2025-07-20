@@ -12,6 +12,7 @@ import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null
@@ -104,7 +105,7 @@ const MeetingCreate = (): ReactElement => {
           />
         </LocalizationProvider>
 
-        <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+        <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
           {t('meetings.create_meeting')}
         </Button>
       </form>
