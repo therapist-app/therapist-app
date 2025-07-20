@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,9 +26,12 @@ public class Exercise implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
+  @Column() private String exerciseTitle;
 
-  @Column() private ExerciseType exerciseType;
+  @Lob @Column() private String exerciseDescription;
+
+  // used in the system prompt
+  @Lob @Column() private String exerciseExplanation;
 
   @Column(name = "exercise_start")
   private Instant exerciseStart;
@@ -38,6 +40,8 @@ public class Exercise implements OwnedByTherapist {
   private Instant exerciseEnd;
 
   @Column() private Boolean isPaused;
+
+  @Column() private Integer doEveryNDays;
 
   @OneToMany(
       mappedBy = "exercise",

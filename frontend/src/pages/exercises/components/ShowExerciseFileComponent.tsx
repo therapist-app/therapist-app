@@ -43,13 +43,13 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -123,7 +123,11 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
           </div>
 
           {isImageComponent ? (
-            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
+            <img
+              src={imageFileUrl}
+              alt='Exercise'
+              style={{ width: '300px', height: '300px', objectFit: 'contain' }}
+            />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
@@ -133,7 +137,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -174,8 +178,8 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
 
           <TextField
             multiline
-            name='description'
-            value={formData.description}
+            name='exerciseComponentDescription'
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}
           />

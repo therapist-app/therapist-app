@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete'
 import {
   IconButton,
   Paper,
@@ -12,6 +11,7 @@ import {
 } from '@mui/material'
 
 import { PatientDocumentOutputDTO } from '../api'
+import DeleteIcon from '../icons/DeleteIcon'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
 
@@ -79,7 +79,7 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
                     aria-label='delete'
                     onClick={() => handleDeleteFile(document.id ?? '')}
                   >
-                    <DeleteIcon sx={{ color: 'red' }} />
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

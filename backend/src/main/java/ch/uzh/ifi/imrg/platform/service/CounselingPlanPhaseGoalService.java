@@ -134,7 +134,7 @@ public class CounselingPlanPhaseGoalService {
 
   public void deleteCounselingPlanPhaseGoal(String id, String therapistId) {
     CounselingPlanPhaseGoal counselingPlanPhaseGoal =
-        counselingPlanPhaseGoalRepository.getReferenceById(therapistId);
+        counselingPlanPhaseGoalRepository.getReferenceById(id);
     SecurityUtil.checkOwnership(counselingPlanPhaseGoal, therapistId);
     counselingPlanPhaseGoal
         .getCounselingPlanPhase()

@@ -83,6 +83,7 @@ const CreateCounselingPlanePhase = ({
           style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '600px' }}
         >
           <TextField
+            required
             fullWidth
             label={t('counseling_plan.phase_name')}
             value={formValues.phaseName}

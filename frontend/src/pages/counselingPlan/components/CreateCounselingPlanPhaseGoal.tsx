@@ -86,6 +86,7 @@ const CreateCounselingPlanPhaseGoal = ({
           onSubmit={handleSubmit}
         >
           <TextField
+            required
             label={t('counseling_plan.goal_name')}
             name='goalName'
             value={formValues.goalName}

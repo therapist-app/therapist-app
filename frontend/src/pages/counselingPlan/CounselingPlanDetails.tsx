@@ -115,6 +115,7 @@ const CounselingPlanDetails = (): ReactElement => {
                   phase={phase}
                   phaseNumber={idx + 1}
                   onSuccess={refresh}
+                  isLastPhase={idx + 1 === counselingPlan?.counselingPlanPhasesOutputDTO?.length}
                 />
 
                 {idx !== amountOfPhases - 1 && <CustomizedDivider />}

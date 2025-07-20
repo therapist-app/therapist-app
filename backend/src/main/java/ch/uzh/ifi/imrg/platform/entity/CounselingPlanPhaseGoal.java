@@ -26,7 +26,7 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist {
 
   @Column() private String goalName;
 
-  @Column() private String goalDescription;
+  @Lob @Column() private String goalDescription;
 
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")

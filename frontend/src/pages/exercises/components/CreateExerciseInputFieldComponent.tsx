@@ -16,11 +16,19 @@ import { useAppDispatch } from '../../../utils/hooks'
 interface CreateExerciseInputFieldComponentProps {
   createdInputField(): void
   active: boolean
+  isPrivateField: boolean
 }
 
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
   props: CreateExerciseInputFieldComponentProps
 ) => {
+  const inputFieldTranslationKey = props.isPrivateField
+    ? 'exercise.addPrivateInput'
+    : 'exercise.addSharedInput'
+
+  const exerciseComponentType = props.isPrivateField
+    ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
+    : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -33,9 +41,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   }
 
   const showExerciseInputField = (): void => {
-    dispatch(
-      setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField)
-    )
+    dispatch(setAddingExerciseComponent(exerciseComponentType))
+
     setIsCreatingExerciseInputField(true)
   }
 
@@ -51,8 +58,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     try {
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField,
-        description: description,
+        exerciseComponentType: exerciseComponentType,
+        exerciseComponentDescription: description,
       }
       await dispatch(
         createExerciseComponent({
@@ -76,7 +83,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     <div>
       {isCreatingExerciseInputField === false ? (
         <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={showExerciseInputField}>
-          {t('exercise.add_input_field')}
+          {t(inputFieldTranslationKey)}
         </Button>
       ) : (
         <form

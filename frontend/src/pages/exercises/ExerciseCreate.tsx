@@ -1,4 +1,4 @@
-import { Button, MenuItem, TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -7,11 +7,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  CreateExerciseDTO,
-  CreateExerciseDTOExerciseTypeEnum,
-  ExerciseOutputDTOExerciseTypeEnum,
-} from '../../api'
+import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
@@ -30,10 +26,12 @@ const ExerciseCreate = (): ReactElement => {
   const { t } = useTranslation()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
-    title: '',
-    exerciseType: ExerciseOutputDTOExerciseTypeEnum.Journaling,
+    exerciseTitle: '',
+    exerciseDescription: '',
+    exerciseExplanation: '',
     exerciseStart: new Date(),
     durationInWeeks: 3,
+    doEveryNDays: 1,
     patientId: patientId,
   })
 
@@ -66,35 +64,33 @@ const ExerciseCreate = (): ReactElement => {
   return (
     <Layout>
       <form
-        style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '10px' }}
+        style={{ maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '15px' }}
         onSubmit={handleSubmit}
       >
         <TextField
           label={t('exercise.title')}
-          name='title'
-          value={formData.title}
+          name='exerciseTitle'
+          value={formData.exerciseTitle}
           onChange={handleChange}
           fullWidth
-          margin='normal'
           required
         />
 
         <TextField
-          select
-          sx={{ fontWeight: 'bold' }}
-          label={t('exercise.exercise_type')}
-          name='exerciseType'
-          value={formData.exerciseType}
+          label={t('exercise.exerciseDescription')}
+          name='exerciseDescription'
+          value={formData.exerciseDescription}
           onChange={handleChange}
-          required
           fullWidth
-        >
-          {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+        />
+
+        <TextField
+          label={t('exercise.exerciseExplanation')}
+          name='exerciseExplanation'
+          value={formData.exerciseExplanation}
+          onChange={handleChange}
+          fullWidth
+        />
 
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
@@ -108,20 +104,33 @@ const ExerciseCreate = (): ReactElement => {
             }}
             sx={{ width: '100%' }}
           />
-
-          <TextField
-            label={t('exercise.duration_in_weeks')}
-            type='number'
-            value={formData.durationInWeeks}
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                durationInWeeks: Number(e.target.value),
-              })
-            }}
-            sx={{ width: '100%' }}
-          />
         </LocalizationProvider>
+
+        <TextField
+          label={t('exercise.duration_in_weeks')}
+          type='number'
+          value={formData.durationInWeeks}
+          onChange={(e) => {
+            setFormData({
+              ...formData,
+              durationInWeeks: Number(e.target.value),
+            })
+          }}
+          sx={{ width: '100%' }}
+        />
+
+        <TextField
+          label={t('exercise.doEveryNDays')}
+          type='number'
+          value={formData.doEveryNDays}
+          onChange={(e) => {
+            setFormData({
+              ...formData,
+              doEveryNDays: Number(e.target.value),
+            })
+          }}
+          sx={{ width: '100%' }}
+        />
 
         <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
           {t('exercise.submit')}

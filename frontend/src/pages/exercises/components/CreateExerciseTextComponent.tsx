@@ -50,7 +50,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
-        description: exerciseText,
+        exerciseComponentDescription: exerciseText,
       }
       await dispatch(
         createExerciseComponent({

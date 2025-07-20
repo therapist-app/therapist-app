@@ -78,7 +78,6 @@ const ExerciseOverviewComponent = (): ReactElement => {
                     {t('exercise.exercise')}
                   </div>
                 </TableCell>
-                <TableCell>{t('exercise.exercise_type')}</TableCell>
                 <TableCell>{t('exercise.exercise_start')}</TableCell>
                 <TableCell>{t('exercise.exercise_end')}</TableCell>
                 <TableCell>{t('exercise.is_paused')}</TableCell>
@@ -104,13 +103,11 @@ const ExerciseOverviewComponent = (): ReactElement => {
                     component='th'
                     scope='row'
                   >
-                    <strong>{exercise.title}</strong>
+                    <strong>{exercise.exerciseTitle}</strong>
                   </TableCell>
-                  <TableCell>{exercise.exerciseType}</TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseStart)}</TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseEnd)}</TableCell>
                   <TableCell>{exercise.isPaused && <CheckIcon />}</TableCell>
-                  <TableCell></TableCell>
                 </TableRow>
               ))}
             </TableBody>

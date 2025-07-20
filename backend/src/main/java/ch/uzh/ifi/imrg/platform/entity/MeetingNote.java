@@ -25,7 +25,7 @@ public class MeetingNote implements OwnedByTherapist {
 
   @Column() private String title;
 
-  @Column() private String content;
+  @Lob @Column() private String content;
 
   @ManyToOne
   @JoinColumn(name = "meeting_id", referencedColumnName = "id")

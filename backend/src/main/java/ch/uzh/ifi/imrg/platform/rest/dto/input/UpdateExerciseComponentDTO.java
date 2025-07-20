@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UpdateExerciseComponentDTO {
   private String id;
-  private String description;
+  private String exerciseComponentDescription;
   private Integer orderNumber;
 }

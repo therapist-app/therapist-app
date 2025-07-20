@@ -1,9 +1,12 @@
-import { Typography } from '@mui/material'
+import { IconButton, Typography } from '@mui/material'
 import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
+import DeleteIcon from '../../../icons/DeleteIcon'
+import { deleteCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { formatDateNicely } from '../../../utils/dateUtil'
+import { useAppDispatch } from '../../../utils/hooks'
 import AddCounselingPlanExercise from './AddCounselingPlanExercise'
 import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
@@ -14,23 +17,39 @@ interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO
   phaseNumber: number
   onSuccess: () => void
+  isLastPhase: boolean
 }
 
 const CounselingPlanPhaseDetail = ({
   phase,
   phaseNumber,
   onSuccess,
+  isLastPhase,
 }: CounselingPlanPhaseDetailProps): ReactElement => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const handleCreateCounselingPlanPhaseGoal = (): void => {
+    onSuccess()
+  }
+
+  const handleDeletePhase = async (): Promise<void> => {
+    await dispatch(deleteCounselingPlanPhase(phase.id ?? ''))
     onSuccess()
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
-      <Typography variant='h3'>
-        {phaseNumber}. {phase.phaseName}
-      </Typography>
+      <div style={{ display: ' flex', gap: '10px', alignItems: 'center' }}>
+        <Typography variant='h3'>
+          {phaseNumber}. {phase.phaseName}
+        </Typography>
+        {isLastPhase && (
+          <IconButton onClick={handleDeletePhase} sx={{ width: 'fit-content' }}>
+            <DeleteIcon />
+          </IconButton>
+        )}
+      </div>
+
       <div style={{ paddingLeft: '20px' }}>
         <Typography>
           {t('counseling_plan.start_date')}: {formatDateNicely(phase.startDate)}
@@ -49,7 +68,7 @@ const CounselingPlanPhaseDetail = ({
         <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {phase.phaseGoalsOutputDTO?.map((goal) => (
             <li key={goal.id}>
-              <CounselingPlanPhaseGoalDetail goal={goal} />
+              <CounselingPlanPhaseGoalDetail goal={goal} refresh={onSuccess} />
             </li>
           ))}
         </ul>
@@ -62,10 +81,14 @@ const CounselingPlanPhaseDetail = ({
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
           {t('counseling_plan.exercises')}:
         </Typography>
-        <ul style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <ul style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {phase.phaseExercisesOutputDTO?.map((exercise) => (
             <li key={exercise.id}>
-              <CounselingPlanExerciseDetail exercise={exercise} />
+              <CounselingPlanExerciseDetail
+                exercise={exercise}
+                counselingPlanPhaseId={phase.id ?? ''}
+                refresh={onSuccess}
+              />
             </li>
           ))}
         </ul>

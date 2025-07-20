@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, Checkbox, FormControlLabel, MenuItem, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -10,11 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import {
-  CreateExerciseDTOExerciseTypeEnum,
-  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
-  UpdateExerciseDTO,
-} from '../../api'
+import { ExerciseComponentOutputDTOExerciseComponentTypeEnum, UpdateExerciseDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
@@ -55,11 +51,13 @@ const ExerciseDetail = (): ReactElement => {
   )
 
   const [formData, setFormData] = useState<ExerciseFormData>({
-    title: selectedExercise?.title,
-    exerciseType: selectedExercise?.exerciseType,
+    exerciseTitle: selectedExercise?.exerciseTitle,
+    exerciseDescription: selectedExercise?.exerciseDescription,
+    exerciseExplanation: selectedExercise?.exerciseExplanation,
     exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
     exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
     isPaused: selectedExercise?.isPaused,
+    doEveryNDays: selectedExercise?.doEveryNDays,
   })
 
   const [isEditingExercise, setIsEditingExercise] = useState(false)
@@ -67,11 +65,13 @@ const ExerciseDetail = (): ReactElement => {
   const toggleIsEditingExercise = (isEditing: boolean): void => {
     if (isEditing) {
       setFormData({
-        title: selectedExercise?.title,
-        exerciseType: selectedExercise?.exerciseType,
+        exerciseTitle: selectedExercise?.exerciseTitle,
+        exerciseDescription: selectedExercise?.exerciseDescription,
+        exerciseExplanation: selectedExercise?.exerciseExplanation,
         exerciseStart: new Date(selectedExercise?.exerciseStart ?? ''),
         exerciseEnd: new Date(selectedExercise?.exerciseEnd ?? ''),
         isPaused: selectedExercise?.isPaused,
+        doEveryNDays: selectedExercise?.doEveryNDays,
       })
       setIsEditingExercise(true)
     } else {
@@ -143,10 +143,15 @@ const ExerciseDetail = (): ReactElement => {
           <>
             {' '}
             <Typography variant='h4'>
-              {t('exercise.title')}: <strong>{selectedExercise?.title}</strong>
+              {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
             </Typography>
-            <Typography variant='h5'>
-              {t('exercise.exercise_type')}: <strong>{selectedExercise?.exerciseType}</strong>
+            <Typography>
+              {t('exercise.exerciseDescription')}:{' '}
+              <strong>{selectedExercise?.exerciseDescription}</strong>
+            </Typography>
+            <Typography>
+              {t('exercise.exerciseExplanation')}:{' '}
+              <strong>{selectedExercise?.exerciseExplanation}</strong>
             </Typography>
             <Typography>
               {t('exercise.exercise_start')}:{' '}
@@ -157,7 +162,11 @@ const ExerciseDetail = (): ReactElement => {
               <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
             </Typography>
             <Typography>
-              {t('exercise.is_currently_paused')}: {selectedExercise?.isPaused ? 'Yes' : 'No'}
+              {t('exercise.is_currently_paused')}:{' '}
+              <strong>{selectedExercise?.isPaused ? t('yes') : t('no')}</strong>
+            </Typography>
+            <Typography>
+              {t('exercise.doEveryNDays')}: <strong>{selectedExercise?.doEveryNDays}</strong>
             </Typography>
             <Button
               onClick={() => toggleIsEditingExercise(true)}
@@ -176,29 +185,27 @@ const ExerciseDetail = (): ReactElement => {
             >
               <TextField
                 label={t('exercise.title')}
-                name='title'
-                value={formData.title}
+                name='exerciseTitle'
+                value={formData.exerciseTitle}
                 onChange={handleChange}
                 fullWidth
-                margin='normal'
                 required
               />
               <TextField
-                select
-                sx={{ fontWeight: 'bold' }}
-                label={t('exercise.exercise_type')}
-                name='exerciseType'
-                value={formData.exerciseType}
+                label={t('exercise.exerciseDescription')}
+                name='exerciseDescription'
+                value={formData.exerciseDescription}
                 onChange={handleChange}
-                required
                 fullWidth
-              >
-                {Object.values(CreateExerciseDTOExerciseTypeEnum).map((option: string) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
+              />
+
+              <TextField
+                label={t('exercise.exerciseExplanation')}
+                name='exerciseExplanation'
+                value={formData.exerciseExplanation}
+                onChange={handleChange}
+                fullWidth
+              />
 
               <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
                 <DateTimePicker
@@ -236,6 +243,20 @@ const ExerciseDetail = (): ReactElement => {
                 }
                 label={t('exercise.is_exercise_paused')}
               ></FormControlLabel>
+
+              <TextField
+                label={t('exercise.doEveryNDays')}
+                type='number'
+                value={formData.doEveryNDays}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    doEveryNDays: Number(e.target.value),
+                  })
+                }}
+                sx={{ width: '100%' }}
+              />
+
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
                   sx={{ ...cancelButtonStyles, minWidth: '280px', mt: 2 }}
@@ -309,8 +330,19 @@ const ExerciseDetail = (): ReactElement => {
                 )}
 
                 {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField && (
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate && (
                   <ShowExerciseInputFieldComponent
+                    isPrivateField
+                    exerciseComponent={exerciseComponent}
+                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                    refresh={refreshExercise}
+                  />
+                )}
+
+                {exerciseComponent.exerciseComponentType ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared && (
+                  <ShowExerciseInputFieldComponent
+                    isPrivateField={false}
                     exerciseComponent={exerciseComponent}
                     numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
                     refresh={refreshExercise}
@@ -354,10 +386,21 @@ const ExerciseDetail = (): ReactElement => {
 
           <CreateExerciseInputFieldComponent
             createdInputField={refreshExercise}
+            isPrivateField
             active={
               addingExerciseComponent === null ||
               addingExerciseComponent ===
-                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
+            }
+          />
+
+          <CreateExerciseInputFieldComponent
+            createdInputField={refreshExercise}
+            isPrivateField={false}
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
             }
           />
         </div>

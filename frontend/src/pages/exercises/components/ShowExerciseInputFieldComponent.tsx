@@ -15,24 +15,28 @@ interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
+  isPrivateField: boolean
 }
 
 const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (
   props: ShowExerciseInputFieldComponentProps
 ) => {
+  const inputFieldTranslationKey = props.isPrivateField
+    ? 'exercise.privateInput'
+    : 'exercise.sharedInput'
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -85,7 +89,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>{t('exercise.input_field')}</Typography>
+            <Typography variant='h6'>{t(inputFieldTranslationKey)}</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
@@ -101,7 +105,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -136,8 +140,8 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
 
           <TextField
             multiline
-            name='description'
-            value={formData.description}
+            name='exerciseComponentDescription'
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.description_of_input')}
           />
