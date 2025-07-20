@@ -893,7 +893,8 @@ interface Resources {
       "counseling_plan": {
         "details": "Counseling Plan"
       },
-      "not_found": "Not Found"
+      "not_found": "Not Found",
+      "therapist_chatbot": "Coach Chatbot"
     }
   },
   "ua": {
