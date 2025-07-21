@@ -10,7 +10,7 @@
 6. Visit <http://localhost:5050> in your browser to check if the database is running (email: <admin@admin.com>, password: admin)
 7. On <http://localhost:5050> connect to DB -> right click "Servers" -> "Register Server" -> "name" = `therapy`, "Host name/address" = `therapy-postgres`, "Port" = `5432`, "Username" = `therapy-user`, "Password" = `therapy-password`, and "Save Password?" = `Yes`
 8. `./gradlew bootRun`
-9. Visit <http://localhost:8080> -> it should say: "The application is running."
+9. Visit <http://localhost:8080/coach-backend> -> it should say: "The application is running."
 
 ## How to run Frontend
 
@@ -18,7 +18,7 @@
 2. `cd frontend`
 3. `npm install`
 4. `npm run dev`
-5. Visit <http://localhost:5173/register> and register as a new therapist
+5. Visit <http://localhost:5173/coach/register> and register as a new therapist
 
 ## Environment Variables
 
@@ -48,14 +48,14 @@
 ###  Main Environment
 
 - The "main" environment shows the latest changes on the main branch
-- Frontend: <https://therapist-app-main.jonas-blum.ch/>
-- Backend: <https://backend-therapist-app-main.jonas-blum.ch/>
+- Frontend: <https://therapist-app-main.jonas-blum.ch/coach>
+- Backend: <https://backend-therapist-app-main.jonas-blum.ch/coach>
 
 ### Production Environment
 
 - The "production" environment shows the latest changes on the production branch
-- Frontend: <https://therapist-app-production.jonas-blum.ch/>
-- Backend: <https://backend-therapist-app-production.jonas-blum.ch/>
+- Frontend: <https://therapist-app-production.jonas-blum.ch/coach>
+- Backend: <https://backend-therapist-app-production.jonas-blum.ch/coach>
 
 ## Pre-Commit Hooks
 

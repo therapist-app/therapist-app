@@ -21,7 +21,7 @@ import {
   TherapistDocumentControllerApiFactory,
 } from '../api'
 
-const baseURL: string = import.meta.env.VITE_API_BASE_URL
+const baseURL: string = import.meta.env.VITE_BACKEND_BASE_URL
 
 const api = axios.create({
   baseURL: baseURL,
