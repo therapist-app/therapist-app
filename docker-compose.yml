@@ -1,14 +1,4 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: coach-app-backend
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-
   frontend:
     build:
       context: ./frontend
@@ -18,6 +8,18 @@ services:
     container_name: coach-app-frontend
     ports:
       - "3001:80"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: coach-app-backend
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=uzh
+    depends_on:
+      - database
 
   database:
     container_name: coach-app-database
@@ -29,4 +31,7 @@ services:
       POSTGRES_PASSWORD: coach-password
       POSTGRES_DB: coach-db
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
