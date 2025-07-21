@@ -16,7 +16,7 @@ spec:
         - name: therapist-app-backend
           image: jonasblum/image-to-be-replaced-depending-on-environment
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           envFrom:
             - configMapRef:
                 name: therapist-app-backend-config
