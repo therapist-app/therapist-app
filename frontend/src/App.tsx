@@ -35,7 +35,7 @@ const App = (): ReactElement => {
   }
 
   return (
-    <Router>
+    <Router basename={import.meta.env.VITE_FRONTEND_PREFIX}>
       <div style={appContainerStyle}>
         <ScrollToTop />
         <main style={contentStyle}>

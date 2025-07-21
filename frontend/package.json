@@ -16,8 +16,8 @@
     "prepare": "cd .. && husky frontend/.husky",
     "generate:resources": "i18next-resources-for-ts interface -i ./public/locales -o ./src/@types/resources.d.ts",
     "watch:translations": "cross-env nodemon --watch public/locales/**/*.json --exec 'npm run generate:resources'",
-    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models --skip-validate-spec",
-    "generate:api:if-available": "wait-on http://localhost:8080/v3/api-docs -t 5000 && rimraf src/api && npm run generate:api || true"
+    "generate:api": "openapi-generator-cli generate -g typescript-axios -i http://localhost:8080/coach-backend/v3/api-docs -o src/api --additional-properties=supportsES6=true,withInterfaces=true,withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models --skip-validate-spec",
+    "generate:api:if-available": "wait-on http://localhost:8080/coach-backend/v3/api-docs -t 5000 && rimraf src/api && npm run generate:api || true"
   },
   "lint-staged": {
     "**/src/**/*.{ts,tsx}": [
