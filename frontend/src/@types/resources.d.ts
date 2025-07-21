@@ -1,5 +1,7 @@
 interface Resources {
   "de": {
+    "yes": "Ja",
+    "no": "Nein",
     "header": {
       "title": "Dies ist der Header",
       "subtitle": "Dies sind die aktuellen Seiten:",
@@ -168,7 +170,9 @@ interface Resources {
       "create_phase": "Phase erstellen",
       "make_ai_generated_suggestion": "KI-generierten Vorschlag erstellen",
       "exercise_title": "Übungstitel",
-      "exercise_type": "Übungstyp",
+      "exerciseDescription": "Beschreibung",
+      "exerciseExplanation": "Erklärung (für AI Kontext)",
+      "doEveryNDays": "Alle x Tage durchführen",
       "exercise_start": "Übungsbeginn",
       "add_a_goal": "Ziel hinzufügen",
       "goal_name": "Zielname",
@@ -189,7 +193,6 @@ interface Resources {
       "text": "Text",
       "create_new_exercise": "Neue Übung erstellen",
       "exercise": "Übung",
-      "exercise_type": "Übungstyp",
       "exercise_start": "Übungsbeginn",
       "duration_in_weeks": "Dauer in Wochen",
       "exercise_end": "Übungsende",
@@ -200,10 +203,16 @@ interface Resources {
       "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
       "image": "Bild",
       "file": "Datei",
-      "input_field": "Eingabefeld",
+      "doEveryNDays": "Alle folgenden Tage einmal ausführen",
+      "privateInput": "Privates Eingabefeld",
+      "sharedInput": "Gemeinsames Eingabefeld",
+      "addPrivateInput": "Privates Eingabefeld hinzufügen",
+      "addSharedInput": "Gemeinsames Eingabefeld hinzufügen",
       "order": "Reihenfolge",
-      "desciption_of_input": "Eingabebeschreibung",
+      "desciption_of_input": "Beschreibung der Eingabe",
       "title": "Titel",
+      "exerciseDescription": "Beschreibung",
+      "exerciseExplanation": "Erklärung (für KI-Kontext)",
       "submit": "Absenden",
       "cancel": "Abbrechen",
       "edit_exercise": "Übung bearbeiten",
@@ -440,7 +449,8 @@ interface Resources {
       "counseling_plan": {
         "details": "Behandlungsplan"
       },
-      "not_found": "Nicht gefunden"
+      "not_found": "Nicht gefunden",
+      "therapist_chatbot": "Coach Chatbot"
     }
   },
   "en": {
@@ -452,9 +462,9 @@ interface Resources {
       "dashboard": "Dashboard Page",
       "register": "Register Page",
       "login": "Login Page",
-      "patients": "Patient Overview Page",
-      "patient_detail": "Example Patient Detail Page for ID: \"{{id}}\"",
-      "patient_create_bot": "Example Patient Create Bot Page",
+      "patients": "Client Overview Page",
+      "patient_detail": "Example Client Detail Page for ID: \"{{id}}\"",
+      "patient_create_bot": "Example Client Create Bot Page",
       "bot_edit": "Example Bot Edit Page for Bot ID: \"{{id}}\"",
       "create_bot_template": "Create ChatBot Template Page",
       "edit_bot_template": "Edit ChatBot Template for ID: \"{{id}}\"",
@@ -679,7 +689,7 @@ interface Resources {
       "phone": "Phone",
       "address": "Address",
       "date_of_admission": "Date of Admission",
-      "loading_patient_data": "Loading Patient Data...",
+      "loading_patient_data": "Loading Client Data...",
       "counseling_plan": "Counseling Plan",
       "go_to_counseling_plan": "Go to Counseling Plan",
       "current_phase": "Current Phase",
@@ -898,6 +908,8 @@ interface Resources {
     }
   },
   "ua": {
+    "yes": "Так",
+    "no": "Ні",
     "header": {
       "title": "Це заголовок",
       "subtitle": "Поточні сторінки:",
@@ -1066,7 +1078,9 @@ interface Resources {
       "create_phase": "Створити фазу",
       "make_ai_generated_suggestion": "Зробити AI-пропозицію",
       "exercise_title": "Назва вправи",
-      "exercise_type": "Тип вправи",
+      "exerciseDescription": "Опис вправи",
+      "exerciseExplanation": "Пояснення (для контексту ШІ)",
+      "doEveryNDays": "Виконувати кожні наступні дні",
       "exercise_start": "Початок вправи",
       "add_a_goal": "Додати ціль",
       "goal_name": "Назва цілі",
@@ -1087,7 +1101,6 @@ interface Resources {
       "text": "Текст",
       "create_new_exercise": "Створити нову вправу",
       "exercise": "Вправа",
-      "exercise_type": "Тип вправи",
       "exercise_start": "Початок вправи",
       "duration_in_weeks": "Тривалість у тижнях",
       "exercise_end": "Завершення вправи",
@@ -1098,10 +1111,16 @@ interface Resources {
       "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи.",
       "image": "Зображення",
       "file": "Файл",
-      "input_field": "Поле вводу",
+      "doEveryNDays": "Виконувати раз на кожні вказані дні",
+      "privateInput": "Приватне поле вводу",
+      "sharedInput": "Спільне поле вводу",
+      "addPrivateInput": "Додати приватне поле вводу",
+      "addSharedInput": "Додати спільне поле вводу",
       "order": "Порядок",
       "desciption_of_input": "Опис вводу",
       "title": "Назва",
+      "exerciseDescription": "Опис вправи",
+      "exerciseExplanation": "Пояснення (для контексту ШІ)",
       "submit": "Надіслати",
       "cancel": "Скасувати",
       "edit_exercise": "Редагувати вправу",
@@ -1338,7 +1357,8 @@ interface Resources {
       "counseling_plan": {
         "details": "План консультування"
       },
-      "not_found": "Не знайдено"
+      "not_found": "Не знайдено",
+      "therapist_chatbot": "Чат-бот терапевта"
     }
   }
 }

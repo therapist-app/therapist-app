@@ -1,4 +1,6 @@
 {
+  "yes": "Так",
+  "no": "Ні",
   "header": {
     "title": "Це заголовок",
     "subtitle": "Поточні сторінки:",
@@ -167,7 +169,9 @@
     "create_phase": "Створити фазу",
     "make_ai_generated_suggestion": "Зробити AI-пропозицію",
     "exercise_title": "Назва вправи",
-    "exercise_type": "Тип вправи",
+    "exerciseDescription": "Опис вправи",
+    "exerciseExplanation": "Пояснення (для контексту ШІ)",
+    "doEveryNDays": "Виконувати кожні наступні дні",
     "exercise_start": "Початок вправи",
     "add_a_goal": "Додати ціль",
     "goal_name": "Назва цілі",
@@ -188,7 +192,6 @@
     "text": "Текст",
     "create_new_exercise": "Створити нову вправу",
     "exercise": "Вправа",
-    "exercise_type": "Тип вправи",
     "exercise_start": "Початок вправи",
     "duration_in_weeks": "Тривалість у тижнях",
     "exercise_end": "Завершення вправи",
@@ -199,10 +202,16 @@
     "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи.",
     "image": "Зображення",
     "file": "Файл",
-    "input_field": "Поле вводу",
+    "doEveryNDays": "Виконувати раз на кожні вказані дні",
+    "privateInput": "Приватне поле вводу",
+    "sharedInput": "Спільне поле вводу",
+    "addPrivateInput": "Додати приватне поле вводу",
+    "addSharedInput": "Додати спільне поле вводу",
     "order": "Порядок",
     "desciption_of_input": "Опис вводу",
     "title": "Назва",
+    "exerciseDescription": "Опис вправи",
+    "exerciseExplanation": "Пояснення (для контексту ШІ)",
     "submit": "Надіслати",
     "cancel": "Скасувати",
     "edit_exercise": "Редагувати вправу",
@@ -439,6 +448,7 @@
     "counseling_plan": {
       "details": "План консультування"
     },
-    "not_found": "Не знайдено"
+    "not_found": "Не знайдено",
+    "therapist_chatbot": "Чат-бот терапевта"
   }
 }
