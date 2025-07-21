@@ -1,4 +1,6 @@
 {
+  "yes": "Ja",
+  "no": "Nein",
   "header": {
     "title": "Dies ist der Header",
     "subtitle": "Dies sind die aktuellen Seiten:",
@@ -167,7 +169,9 @@
     "create_phase": "Phase erstellen",
     "make_ai_generated_suggestion": "KI-generierten Vorschlag erstellen",
     "exercise_title": "Übungstitel",
-    "exercise_type": "Übungstyp",
+    "exerciseDescription": "Beschreibung",
+    "exerciseExplanation": "Erklärung (für AI Kontext)",
+    "doEveryNDays": "Alle x Tage durchführen",
     "exercise_start": "Übungsbeginn",
     "add_a_goal": "Ziel hinzufügen",
     "goal_name": "Zielname",
@@ -188,7 +192,6 @@
     "text": "Text",
     "create_new_exercise": "Neue Übung erstellen",
     "exercise": "Übung",
-    "exercise_type": "Übungstyp",
     "exercise_start": "Übungsbeginn",
     "duration_in_weeks": "Dauer in Wochen",
     "exercise_end": "Übungsende",
@@ -199,10 +202,16 @@
     "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
     "image": "Bild",
     "file": "Datei",
-    "input_field": "Eingabefeld",
+    "doEveryNDays": "Alle folgenden Tage einmal ausführen",
+    "privateInput": "Privates Eingabefeld",
+    "sharedInput": "Gemeinsames Eingabefeld",
+    "addPrivateInput": "Privates Eingabefeld hinzufügen",
+    "addSharedInput": "Gemeinsames Eingabefeld hinzufügen",
     "order": "Reihenfolge",
-    "desciption_of_input": "Eingabebeschreibung",
+    "desciption_of_input": "Beschreibung der Eingabe",
     "title": "Titel",
+    "exerciseDescription": "Beschreibung",
+    "exerciseExplanation": "Erklärung (für KI-Kontext)",
     "submit": "Absenden",
     "cancel": "Abbrechen",
     "edit_exercise": "Übung bearbeiten",
@@ -439,6 +448,7 @@
     "counseling_plan": {
       "details": "Behandlungsplan"
     },
-    "not_found": "Nicht gefunden"
+    "not_found": "Nicht gefunden",
+    "therapist_chatbot": "Coach Chatbot"
   }
 }
