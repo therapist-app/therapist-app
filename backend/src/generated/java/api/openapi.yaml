@@ -1420,6 +1420,59 @@ paths:
       - coach-patient-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/{patientId}/psychological-tests:
+    get:
+      operationId: getPsychologicalTestNames
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestNameAndPatientIdOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - psychological-test-controller
+      x-accepts: '*/*'
+  /patients/{patientId}/psychological-tests/{psychologicalTestName}:
+    get:
+      operationId: getPsychologicalTestResults
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - psychological-test-controller
+      x-accepts: '*/*'
   /patients/me:
     get:
       operationId: getCurrentlyLoggedInPatient
@@ -1627,7 +1680,7 @@ paths:
       x-accepts: '*/*'
   /coach/patients/{patientId}/psychological-tests:
     get:
-      operationId: getPsychologicalTestNames
+      operationId: getPsychologicalTestNames_1
       parameters:
       - explode: false
         in: path
@@ -1652,7 +1705,7 @@ paths:
       x-accepts: '*/*'
   /coach/patients/{patientId}/psychological-tests/{psychologicalTestName}:
     get:
-      operationId: getPsychologicalTestResults
+      operationId: getPsychologicalTestResults_1
       parameters:
       - explode: false
         in: path
@@ -2424,6 +2477,53 @@ components:
         welcomeMessage:
           type: string
       type: object
+    PsychologicalTestNameAndPatientIdOutputDTO:
+      example:
+        patientId: patientId
+        name: name
+      properties:
+        name:
+          type: string
+        patientId:
+          type: string
+      type: object
+    PsychologicalTestOutputDTO:
+      example:
+        completedAt: 2000-01-23T04:56:07.000+00:00
+        patientId: patientId
+        name: name
+        questions:
+        - score: 0
+          question: question
+        - score: 0
+          question: question
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        patientId:
+          type: string
+        completedAt:
+          format: date-time
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/PsychologicalTestQuestionOutputDTO'
+          type: array
+      type: object
+    PsychologicalTestQuestionOutputDTO:
+      example:
+        score: 0
+        question: question
+      properties:
+        question:
+          type: string
+        score:
+          format: int32
+          type: integer
+      type: object
     JournalConversationOutputDTO:
       example:
         name: name
@@ -2724,43 +2824,6 @@ components:
       properties:
         name:
           type: string
-      type: object
-    PsychologicalTestOutputDTO:
-      example:
-        completedAt: 2000-01-23T04:56:07.000+00:00
-        patientId: patientId
-        name: name
-        questions:
-        - score: 0
-          question: question
-        - score: 0
-          question: question
-        description: description
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        patientId:
-          type: string
-        completedAt:
-          format: date-time
-          type: string
-        questions:
-          items:
-            $ref: '#/components/schemas/PsychologicalTestQuestionOutputDTO'
-          type: array
-      type: object
-    PsychologicalTestQuestionOutputDTO:
-      example:
-        score: 0
-        question: question
-      properties:
-        question:
-          type: string
-        score:
-          format: int32
-          type: integer
       type: object
     CoachGetAllJournalEntriesDTO:
       example:
