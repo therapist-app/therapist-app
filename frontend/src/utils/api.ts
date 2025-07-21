@@ -91,7 +91,7 @@ api.interceptors.response.use(
       } catch (err) {
         console.error(err)
       } finally {
-        window.location.href = '/register'
+        window.location.href = import.meta.env.VITE_FRONTEND_PREFIX + 'register'
       }
     }
     return Promise.reject(error)
