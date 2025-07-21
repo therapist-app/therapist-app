@@ -180,9 +180,11 @@ export function getPathFromPage(page: PAGES, params: Record<string, string> = {}
 
   try {
     const toPath = compile(routePattern, { encode: encodeURIComponent })
+
     return toPath(params)
   } catch (error) {
     console.error(`Failed to generate path for page ${page}`, error)
+
     return ROUTES[PAGES.NOT_FOUND_PAGE]
   }
 }
@@ -190,11 +192,13 @@ export function getPathFromPage(page: PAGES, params: Record<string, string> = {}
 export function findPageTrace(
   targetPage: PAGES,
   currentPage: PAGES = PAGES.HOME_PAGE,
+
   visited = new Set<PAGES>()
 ): PAGES[] | null {
   if (visited.has(currentPage)) {
     return null
   }
+
   visited.add(currentPage)
 
   if (currentPage === targetPage) {
@@ -202,8 +206,10 @@ export function findPageTrace(
   }
 
   const children = PAGE_HIERARCHY[currentPage] || []
+
   for (const child of children) {
     const result = findPageTrace(targetPage, child, visited)
+
     if (result) {
       return [currentPage, ...result]
     }

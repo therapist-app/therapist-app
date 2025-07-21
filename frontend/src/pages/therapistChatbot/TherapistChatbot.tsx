@@ -3,7 +3,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
 import { ReactElement, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { ChatMessageDTOChatRoleEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
@@ -19,6 +19,7 @@ const TherapistChatbot = (): ReactElement => {
 
   const navigate = useNavigate()
   const { patientId } = useParams()
+  const location = useLocation()
 
   const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
