@@ -31,4 +31,7 @@ services:
       POSTGRES_PASSWORD: coach-password
       POSTGRES_DB: coach-db
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
