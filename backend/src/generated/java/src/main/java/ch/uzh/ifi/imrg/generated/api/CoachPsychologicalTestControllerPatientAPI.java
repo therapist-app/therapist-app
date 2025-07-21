@@ -55,11 +55,11 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return List&lt;PsychologicalTestNameOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getPsychologicalTestNamesRequestCreation(String patientId) throws WebClientResponseException {
+    private ResponseSpec getPsychologicalTestNames1RequestCreation(String patientId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'patientId' is set
         if (patientId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getPsychologicalTestNames", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getPsychologicalTestNames1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -92,9 +92,9 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return List&lt;PsychologicalTestNameOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Flux<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNames(String patientId) throws WebClientResponseException {
+    public Flux<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNames1(String patientId) throws WebClientResponseException {
         ParameterizedTypeReference<PsychologicalTestNameOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestNameOutputDTOPatientAPI>() {};
-        return getPsychologicalTestNamesRequestCreation(patientId).bodyToFlux(localVarReturnType);
+        return getPsychologicalTestNames1RequestCreation(patientId).bodyToFlux(localVarReturnType);
     }
 
     /**
@@ -105,9 +105,9 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return ResponseEntity&lt;List&lt;PsychologicalTestNameOutputDTOPatientAPI&gt;&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<List<PsychologicalTestNameOutputDTOPatientAPI>>> getPsychologicalTestNamesWithHttpInfo(String patientId) throws WebClientResponseException {
+    public Mono<ResponseEntity<List<PsychologicalTestNameOutputDTOPatientAPI>>> getPsychologicalTestNames1WithHttpInfo(String patientId) throws WebClientResponseException {
         ParameterizedTypeReference<PsychologicalTestNameOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestNameOutputDTOPatientAPI>() {};
-        return getPsychologicalTestNamesRequestCreation(patientId).toEntityList(localVarReturnType);
+        return getPsychologicalTestNames1RequestCreation(patientId).toEntityList(localVarReturnType);
     }
 
     /**
@@ -118,8 +118,8 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getPsychologicalTestNamesWithResponseSpec(String patientId) throws WebClientResponseException {
-        return getPsychologicalTestNamesRequestCreation(patientId);
+    public ResponseSpec getPsychologicalTestNames1WithResponseSpec(String patientId) throws WebClientResponseException {
+        return getPsychologicalTestNames1RequestCreation(patientId);
     }
     /**
      * 
@@ -130,15 +130,15 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return List&lt;PsychologicalTestOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec getPsychologicalTestResultsRequestCreation(String patientId, String psychologicalTestName) throws WebClientResponseException {
+    private ResponseSpec getPsychologicalTestResults1RequestCreation(String patientId, String psychologicalTestName) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'patientId' is set
         if (patientId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getPsychologicalTestResults", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getPsychologicalTestResults1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // verify the required parameter 'psychologicalTestName' is set
         if (psychologicalTestName == null) {
-            throw new WebClientResponseException("Missing the required parameter 'psychologicalTestName' when calling getPsychologicalTestResults", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'psychologicalTestName' when calling getPsychologicalTestResults1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -173,9 +173,9 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return List&lt;PsychologicalTestOutputDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Flux<PsychologicalTestOutputDTOPatientAPI> getPsychologicalTestResults(String patientId, String psychologicalTestName) throws WebClientResponseException {
+    public Flux<PsychologicalTestOutputDTOPatientAPI> getPsychologicalTestResults1(String patientId, String psychologicalTestName) throws WebClientResponseException {
         ParameterizedTypeReference<PsychologicalTestOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestOutputDTOPatientAPI>() {};
-        return getPsychologicalTestResultsRequestCreation(patientId, psychologicalTestName).bodyToFlux(localVarReturnType);
+        return getPsychologicalTestResults1RequestCreation(patientId, psychologicalTestName).bodyToFlux(localVarReturnType);
     }
 
     /**
@@ -187,9 +187,9 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return ResponseEntity&lt;List&lt;PsychologicalTestOutputDTOPatientAPI&gt;&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<List<PsychologicalTestOutputDTOPatientAPI>>> getPsychologicalTestResultsWithHttpInfo(String patientId, String psychologicalTestName) throws WebClientResponseException {
+    public Mono<ResponseEntity<List<PsychologicalTestOutputDTOPatientAPI>>> getPsychologicalTestResults1WithHttpInfo(String patientId, String psychologicalTestName) throws WebClientResponseException {
         ParameterizedTypeReference<PsychologicalTestOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestOutputDTOPatientAPI>() {};
-        return getPsychologicalTestResultsRequestCreation(patientId, psychologicalTestName).toEntityList(localVarReturnType);
+        return getPsychologicalTestResults1RequestCreation(patientId, psychologicalTestName).toEntityList(localVarReturnType);
     }
 
     /**
@@ -201,7 +201,7 @@ public class CoachPsychologicalTestControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec getPsychologicalTestResultsWithResponseSpec(String patientId, String psychologicalTestName) throws WebClientResponseException {
-        return getPsychologicalTestResultsRequestCreation(patientId, psychologicalTestName);
+    public ResponseSpec getPsychologicalTestResults1WithResponseSpec(String patientId, String psychologicalTestName) throws WebClientResponseException {
+        return getPsychologicalTestResults1RequestCreation(patientId, psychologicalTestName);
     }
 }

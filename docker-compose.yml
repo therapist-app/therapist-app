@@ -8,6 +8,7 @@ services:
     container_name: coach-app-frontend
     ports:
       - "3001:80"
+    restart: unless-stopped
 
   backend:
     build:
@@ -20,6 +21,7 @@ services:
       - SPRING_PROFILES_ACTIVE=uzh
     depends_on:
       - database
+    restart: unless-stopped
 
   database:
     container_name: coach-app-database
@@ -32,6 +34,7 @@ services:
       POSTGRES_DB: coach-db
     volumes:
       - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
 
 volumes:
   pgdata:
