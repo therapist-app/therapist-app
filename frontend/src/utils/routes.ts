@@ -172,39 +172,33 @@ export function getPageFromPath(pathname: string): PAGES {
 }
 
 export function getPathFromPage(page: PAGES, params: Record<string, string> = {}): string {
-  // Defensive check for the 'page' argument itself.
-  if (!page || !ROUTES[page]) {
-    console.error(`[Routing Error] Invalid page passed to getPathFromPage: ${page}`)
-    return ROUTES[PAGES.NOT_FOUND_PAGE] || '*'
-  }
-
   const routePattern = ROUTES[page]
 
-  if (routePattern === '*') {
-    return '*'
+  if (!routePattern || routePattern === '*') {
+    return ROUTES[PAGES.NOT_FOUND_PAGE]
   }
 
   try {
     const toPath = compile(routePattern, { encode: encodeURIComponent })
+
     return toPath(params)
   } catch (error) {
-    // This will catch the error if compile fails on a specific pattern.
-    console.error(
-      `[Routing Error] Failed to generate path for page ${page} with pattern "${routePattern}":`,
-      error
-    )
-    return ROUTES[PAGES.NOT_FOUND_PAGE] || '*'
+    console.error(`Failed to generate path for page ${page}`, error)
+
+    return ROUTES[PAGES.NOT_FOUND_PAGE]
   }
 }
 
 export function findPageTrace(
   targetPage: PAGES,
   currentPage: PAGES = PAGES.HOME_PAGE,
+
   visited = new Set<PAGES>()
 ): PAGES[] | null {
   if (visited.has(currentPage)) {
     return null
   }
+
   visited.add(currentPage)
 
   if (currentPage === targetPage) {
@@ -212,8 +206,10 @@ export function findPageTrace(
   }
 
   const children = PAGE_HIERARCHY[currentPage] || []
+
   for (const child of children) {
     const result = findPageTrace(targetPage, child, visited)
+
     if (result) {
       return [currentPage, ...result]
     }
