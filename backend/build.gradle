@@ -135,8 +135,8 @@ tasks.named('openApiGenerate') {
 		try {
 			def connection = new URL(openApiSpecUrl).openConnection() as HttpURLConnection
 			connection.setRequestMethod("HEAD")
-			connection.setConnectTimeout(3000)
-			connection.setReadTimeout(3000)
+			connection.setConnectTimeout(5000)
+			connection.setReadTimeout(5000)
 			connection.connect()
 			boolean reachable = connection.getResponseCode() == 200
 			if (!reachable) {

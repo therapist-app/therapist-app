@@ -2321,6 +2321,12 @@ components:
         endAt:
           format: date-time
           type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
+          type: string
         location:
           type: string
       type: object

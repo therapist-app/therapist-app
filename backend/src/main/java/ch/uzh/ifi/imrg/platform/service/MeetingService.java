@@ -50,12 +50,17 @@ public class MeetingService {
     meeting.setMeetingStatus(MeetingStatus.CONFIRMED);
     meeting.setPatient(patient);
     Meeting createdMeeting = meetingRepository.save(meeting);
+
     CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
         new CreateMeetingDTOPatientAPI()
             .id(createdMeeting.getId())
             .startAt(meeting.getMeetingStart())
             .endAt(meeting.getMeetingEnd())
-            .location(meeting.getLocation());
+            .location(meeting.getLocation())
+            .meetingStatus(
+                CreateMeetingDTOPatientAPI.MeetingStatusEnum.valueOf(
+                    createdMeeting.getMeetingStatus().toString()));
+
     PatientAppAPIs.coachMeetingControllerPatientAPI
         .createMeeting1(createMeetingDTO.getPatientId(), createMeetingDTOPatientAPI)
         .block();

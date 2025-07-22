@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_ID,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_START_AT,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_END_AT,
+  CreateMeetingDTOPatientAPI.JSON_PROPERTY_MEETING_STATUS,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_LOCATION
 })
 @JsonTypeName("CreateMeetingDTO")
@@ -44,6 +45,46 @@ public class CreateMeetingDTOPatientAPI {
 
   public static final String JSON_PROPERTY_END_AT = "endAt";
   private Instant endAt;
+
+  /**
+   * Gets or Sets meetingStatus
+   */
+  public enum MeetingStatusEnum {
+    PENDING("PENDING"),
+    
+    CONFIRMED("CONFIRMED"),
+    
+    CANCELLED("CANCELLED");
+
+    private String value;
+
+    MeetingStatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static MeetingStatusEnum fromValue(String value) {
+      for (MeetingStatusEnum b : MeetingStatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_MEETING_STATUS = "meetingStatus";
+  private MeetingStatusEnum meetingStatus;
 
   public static final String JSON_PROPERTY_LOCATION = "location";
   private String location;
@@ -129,6 +170,32 @@ public class CreateMeetingDTOPatientAPI {
   }
 
 
+  public CreateMeetingDTOPatientAPI meetingStatus(MeetingStatusEnum meetingStatus) {
+    
+    this.meetingStatus = meetingStatus;
+    return this;
+  }
+
+   /**
+   * Get meetingStatus
+   * @return meetingStatus
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MEETING_STATUS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public MeetingStatusEnum getMeetingStatus() {
+    return meetingStatus;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_MEETING_STATUS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMeetingStatus(MeetingStatusEnum meetingStatus) {
+    this.meetingStatus = meetingStatus;
+  }
+
+
   public CreateMeetingDTOPatientAPI location(String location) {
     
     this.location = location;
@@ -166,12 +233,13 @@ public class CreateMeetingDTOPatientAPI {
     return Objects.equals(this.id, createMeetingDTO.id) &&
         Objects.equals(this.startAt, createMeetingDTO.startAt) &&
         Objects.equals(this.endAt, createMeetingDTO.endAt) &&
+        Objects.equals(this.meetingStatus, createMeetingDTO.meetingStatus) &&
         Objects.equals(this.location, createMeetingDTO.location);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, startAt, endAt, location);
+    return Objects.hash(id, startAt, endAt, meetingStatus, location);
   }
 
   @Override
@@ -181,6 +249,7 @@ public class CreateMeetingDTOPatientAPI {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    startAt: ").append(toIndentedString(startAt)).append("\n");
     sb.append("    endAt: ").append(toIndentedString(endAt)).append("\n");
+    sb.append("    meetingStatus: ").append(toIndentedString(meetingStatus)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("}");
     return sb.toString();
