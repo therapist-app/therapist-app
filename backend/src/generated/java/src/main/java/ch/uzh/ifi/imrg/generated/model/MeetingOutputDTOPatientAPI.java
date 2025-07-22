@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   MeetingOutputDTOPatientAPI.JSON_PROPERTY_ID,
-  MeetingOutputDTOPatientAPI.JSON_PROPERTY_EXTERNAL_MEETING_ID,
   MeetingOutputDTOPatientAPI.JSON_PROPERTY_CREATED_AT,
   MeetingOutputDTOPatientAPI.JSON_PROPERTY_UPDATED_AT,
   MeetingOutputDTOPatientAPI.JSON_PROPERTY_PATIENT_ID,
@@ -43,9 +42,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class MeetingOutputDTOPatientAPI {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
-
-  public static final String JSON_PROPERTY_EXTERNAL_MEETING_ID = "externalMeetingId";
-  private String externalMeetingId;
 
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
   private Instant createdAt;
@@ -131,32 +127,6 @@ public class MeetingOutputDTOPatientAPI {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setId(String id) {
     this.id = id;
-  }
-
-
-  public MeetingOutputDTOPatientAPI externalMeetingId(String externalMeetingId) {
-    
-    this.externalMeetingId = externalMeetingId;
-    return this;
-  }
-
-   /**
-   * Get externalMeetingId
-   * @return externalMeetingId
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_MEETING_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getExternalMeetingId() {
-    return externalMeetingId;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_MEETING_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExternalMeetingId(String externalMeetingId) {
-    this.externalMeetingId = externalMeetingId;
   }
 
 
@@ -351,7 +321,6 @@ public class MeetingOutputDTOPatientAPI {
     }
     MeetingOutputDTOPatientAPI meetingOutputDTO = (MeetingOutputDTOPatientAPI) o;
     return Objects.equals(this.id, meetingOutputDTO.id) &&
-        Objects.equals(this.externalMeetingId, meetingOutputDTO.externalMeetingId) &&
         Objects.equals(this.createdAt, meetingOutputDTO.createdAt) &&
         Objects.equals(this.updatedAt, meetingOutputDTO.updatedAt) &&
         Objects.equals(this.patientId, meetingOutputDTO.patientId) &&
@@ -363,7 +332,7 @@ public class MeetingOutputDTOPatientAPI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, externalMeetingId, createdAt, updatedAt, patientId, startAt, endAt, location, meetingStatus);
+    return Objects.hash(id, createdAt, updatedAt, patientId, startAt, endAt, location, meetingStatus);
   }
 
   @Override
@@ -371,7 +340,6 @@ public class MeetingOutputDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class MeetingOutputDTOPatientAPI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    externalMeetingId: ").append(toIndentedString(externalMeetingId)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    patientId: ").append(toIndentedString(patientId)).append("\n");

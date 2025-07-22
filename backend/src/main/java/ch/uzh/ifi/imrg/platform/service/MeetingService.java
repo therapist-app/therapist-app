@@ -52,7 +52,7 @@ public class MeetingService {
     Meeting createdMeeting = meetingRepository.save(meeting);
     CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
         new CreateMeetingDTOPatientAPI()
-            .externalMeetingId(createdMeeting.getId())
+            .id(createdMeeting.getId())
             .startAt(meeting.getMeetingStart())
             .endAt(meeting.getMeetingEnd())
             .location(meeting.getLocation());
@@ -107,9 +107,9 @@ public class MeetingService {
       patientAppDto = patientAppDto.meetingStatus(updateMeetingStatusEnum);
     }
 
-    PatientAppAPIs.coachMeetingControllerPatientAPI.updateMeeting1(
-        meeting.getPatient().getId(), meeting.getId(), patientAppDto);
-    // TODO: add .block()
+    PatientAppAPIs.coachMeetingControllerPatientAPI
+        .updateMeeting1(meeting.getPatient().getId(), meeting.getId(), patientAppDto)
+        .block();
 
     meetingRepository.save(meeting);
 
@@ -121,8 +121,8 @@ public class MeetingService {
     SecurityUtil.checkOwnership(meeting, therapistId);
 
     meeting.getPatient().getMeetings().remove(meeting);
-    // PatientAppAPIs.coachMeetingControllerPatientAPI
-    // .deleteMeeting1(meeting.getPatient().getId(), meetingId)
-    // .block();
+    PatientAppAPIs.coachMeetingControllerPatientAPI
+        .deleteMeeting1(meeting.getPatient().getId(), meetingId)
+        .block();
   }
 }

@@ -2014,7 +2014,6 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         meetingStatus: PENDING
         patientId: patientId
-        externalMeetingId: externalMeetingId
         location: location
         id: id
         endAt: 2000-01-23T04:56:07.000+00:00
@@ -2022,8 +2021,6 @@ components:
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
-          type: string
-        externalMeetingId:
           type: string
         createdAt:
           format: date-time
@@ -2316,7 +2313,7 @@ components:
       type: object
     CreateMeetingDTO:
       properties:
-        externalMeetingId:
+        id:
           type: string
         startAt:
           format: date-time

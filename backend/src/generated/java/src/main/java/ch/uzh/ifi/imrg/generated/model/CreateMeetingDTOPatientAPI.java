@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * CreateMeetingDTOPatientAPI
  */
 @JsonPropertyOrder({
-  CreateMeetingDTOPatientAPI.JSON_PROPERTY_EXTERNAL_MEETING_ID,
+  CreateMeetingDTOPatientAPI.JSON_PROPERTY_ID,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_START_AT,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_END_AT,
   CreateMeetingDTOPatientAPI.JSON_PROPERTY_LOCATION
@@ -36,8 +36,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CreateMeetingDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
 public class CreateMeetingDTOPatientAPI {
-  public static final String JSON_PROPERTY_EXTERNAL_MEETING_ID = "externalMeetingId";
-  private String externalMeetingId;
+  public static final String JSON_PROPERTY_ID = "id";
+  private String id;
 
   public static final String JSON_PROPERTY_START_AT = "startAt";
   private Instant startAt;
@@ -51,29 +51,29 @@ public class CreateMeetingDTOPatientAPI {
   public CreateMeetingDTOPatientAPI() {
   }
 
-  public CreateMeetingDTOPatientAPI externalMeetingId(String externalMeetingId) {
+  public CreateMeetingDTOPatientAPI id(String id) {
     
-    this.externalMeetingId = externalMeetingId;
+    this.id = id;
     return this;
   }
 
    /**
-   * Get externalMeetingId
-   * @return externalMeetingId
+   * Get id
+   * @return id
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_MEETING_ID)
+  @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getExternalMeetingId() {
-    return externalMeetingId;
+  public String getId() {
+    return id;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_MEETING_ID)
+  @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExternalMeetingId(String externalMeetingId) {
-    this.externalMeetingId = externalMeetingId;
+  public void setId(String id) {
+    this.id = id;
   }
 
 
@@ -163,7 +163,7 @@ public class CreateMeetingDTOPatientAPI {
       return false;
     }
     CreateMeetingDTOPatientAPI createMeetingDTO = (CreateMeetingDTOPatientAPI) o;
-    return Objects.equals(this.externalMeetingId, createMeetingDTO.externalMeetingId) &&
+    return Objects.equals(this.id, createMeetingDTO.id) &&
         Objects.equals(this.startAt, createMeetingDTO.startAt) &&
         Objects.equals(this.endAt, createMeetingDTO.endAt) &&
         Objects.equals(this.location, createMeetingDTO.location);
@@ -171,14 +171,14 @@ public class CreateMeetingDTOPatientAPI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(externalMeetingId, startAt, endAt, location);
+    return Objects.hash(id, startAt, endAt, location);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateMeetingDTOPatientAPI {\n");
-    sb.append("    externalMeetingId: ").append(toIndentedString(externalMeetingId)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    startAt: ").append(toIndentedString(startAt)).append("\n");
     sb.append("    endAt: ").append(toIndentedString(endAt)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
