@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseComponentUpdateInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.ExerciseComponent;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseComponentRepository;
@@ -7,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -40,9 +43,26 @@ public class ExerciseComponentService {
     exerciseComponent.setExerciseComponentType(
         createExerciseComponentDTO.getExerciseComponentType());
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
-    exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
+    exerciseComponent.setExerciseComponentDescription(
+        createExerciseComponentDTO.getExerciseComponentDescription());
 
-    exerciseComponentRepository.save(exerciseComponent);
+    exerciseComponent = exerciseComponentRepository.save(exerciseComponent);
+
+    ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI =
+        new ExerciseComponentInputDTOPatientAPI()
+            .id(exerciseComponent.getId())
+            .exerciseComponentType(
+                ExerciseComponentInputDTOPatientAPI.ExerciseComponentTypeEnum.fromValue(
+                    exerciseComponent.getExerciseComponentType().toString()))
+            .exerciseComponentDescription(exerciseComponent.getExerciseComponentDescription())
+            .orderNumber(exerciseComponent.getOrderNumber());
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .createExerciseComponent(
+            exercise.getPatient().getId(),
+            createExerciseComponentDTO.getExerciseId(),
+            exerciseComponentInputDTOPatientAPI)
+        .block();
   }
 
   public void createExerciseComponentWithFile(
@@ -63,7 +83,8 @@ public class ExerciseComponentService {
     exerciseComponent.setFileType(file.getContentType());
     exerciseComponent.setExtractedText(extractedText);
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
-    exerciseComponent.setDescription(createExerciseComponentDTO.getDescription());
+    exerciseComponent.setExerciseComponentDescription(
+        createExerciseComponentDTO.getExerciseComponentDescription());
 
     try {
       exerciseComponent.setFileData(file.getBytes());
@@ -71,7 +92,26 @@ public class ExerciseComponentService {
       throw new RuntimeException("Failed to read file bytes", e);
     }
 
-    exerciseComponentRepository.save(exerciseComponent);
+    exerciseComponent = exerciseComponentRepository.save(exerciseComponent);
+
+    ExerciseComponentInputDTOPatientAPI exerciseComponentInputDTOPatientAPI =
+        new ExerciseComponentInputDTOPatientAPI()
+            .id(exerciseComponent.getId())
+            .exerciseComponentDescription(exerciseComponent.getExerciseComponentDescription())
+            .exerciseComponentType(
+                ExerciseComponentInputDTOPatientAPI.ExerciseComponentTypeEnum.fromValue(
+                    exerciseComponent.getExerciseComponentType().toString()))
+            .fileData(exerciseComponent.getFileData())
+            .fileName(exerciseComponent.getFileName())
+            .fileType(exerciseComponent.getFileType())
+            .orderNumber(exerciseComponent.getOrderNumber());
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .createExerciseComponent(
+            exercise.getPatient().getId(),
+            createExerciseComponentDTO.getExerciseId(),
+            exerciseComponentInputDTOPatientAPI)
+        .block();
   }
 
   public ExerciseComponent getExerciseComponent(String id, String therapistId) {
@@ -93,28 +133,26 @@ public class ExerciseComponentService {
     Exercise exercise = target.getExercise();
     SecurityUtil.checkOwnership(exercise, therapistId);
 
-    // 1) Update the text if provided
-    if (dto.getDescription() != null) {
-      target.setDescription(dto.getDescription());
+    String patientId = exercise.getPatient().getId();
+
+    ExerciseComponentUpdateInputDTOPatientAPI exerciseComponentUpdateInputDTOPatientAPI =
+        new ExerciseComponentUpdateInputDTOPatientAPI().id(dto.getId());
+
+    if (dto.getExerciseComponentDescription() != null) {
+      target.setExerciseComponentDescription(dto.getExerciseComponentDescription());
+      exerciseComponentUpdateInputDTOPatientAPI.exerciseComponentDescription(
+          dto.getExerciseComponentDescription());
     }
 
-    // 2) Only if they passed in an order number do we need to shuffle anything
     if (dto.getOrderNumber() != null) {
       int oldOrder = target.getOrderNumber();
       int newOrder = dto.getOrderNumber();
 
-      // total existing slots = files + texts
       int totalSlots = exercise.getExerciseComponents().size();
-      // clamp to [1..totalSlots]
       newOrder = Math.max(1, Math.min(newOrder, totalSlots));
 
-      // if nothing to do, skip the heavy lifting
       if (newOrder != oldOrder) {
 
-        // 3) For each **other** file/text, shift its order in the gap between old and
-        // new
-        // - if moving **up**: bump everything in [new, old-1] **up** by +1
-        // - if moving **down**: push everything in [old+1, new] **down** by -1
         if (newOrder < oldOrder) {
           // moving up
           for (ExerciseComponent exerciseComponent : exercise.getExerciseComponents()) {
@@ -122,6 +160,16 @@ public class ExerciseComponentService {
             if (ord >= newOrder && ord < oldOrder) {
               exerciseComponent.setOrderNumber(ord + 1);
               exerciseComponentRepository.save(exerciseComponent);
+
+              ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+                  new ExerciseComponentUpdateInputDTOPatientAPI();
+              exComponent
+                  .id(exerciseComponent.getId())
+                  .orderNumber(exerciseComponent.getOrderNumber());
+              PatientAppAPIs.coachExerciseControllerPatientAPI
+                  .updateExerciseComponent(
+                      patientId, exercise.getId(), exerciseComponent.getId(), exComponent)
+                  .block();
             }
           }
         } else {
@@ -131,16 +179,34 @@ public class ExerciseComponentService {
             if (ord <= newOrder && ord > oldOrder) {
               exerciseComponent.setOrderNumber(ord - 1);
               exerciseComponentRepository.save(exerciseComponent);
+
+              ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+                  new ExerciseComponentUpdateInputDTOPatientAPI();
+              exComponent
+                  .id(exerciseComponent.getId())
+                  .orderNumber(exerciseComponent.getOrderNumber());
+              PatientAppAPIs.coachExerciseControllerPatientAPI
+                  .updateExerciseComponent(
+                      patientId, exercise.getId(), exerciseComponent.getId(), exComponent)
+                  .block();
             }
           }
         }
 
-        // 4) Finally, set the target to its new slot
         target.setOrderNumber(newOrder);
       }
     }
 
-    // 5) Persist the target last so that its newOrder is final
+    exerciseComponentUpdateInputDTOPatientAPI.orderNumber(target.getOrderNumber());
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .updateExerciseComponent(
+            exercise.getPatient().getId(),
+            exercise.getId(),
+            target.getId(),
+            exerciseComponentUpdateInputDTOPatientAPI)
+        .block();
+
     exerciseComponentRepository.save(target);
   }
 
@@ -149,13 +215,30 @@ public class ExerciseComponentService {
     SecurityUtil.checkOwnership(exerciseComponent, therapistId);
     Exercise exercise = exerciseComponent.getExercise();
 
+    String patientId = exercise.getPatient().getId();
+
     for (ExerciseComponent exerciseComponent2 : exercise.getExerciseComponents()) {
       if (exerciseComponent2.getOrderNumber() > exerciseComponent.getOrderNumber()) {
         exerciseComponent2.setOrderNumber(exerciseComponent2.getOrderNumber() - 1);
         exerciseComponentRepository.save(exerciseComponent2);
+
+        ExerciseComponentUpdateInputDTOPatientAPI exComponent =
+            new ExerciseComponentUpdateInputDTOPatientAPI();
+        exComponent.id(exerciseComponent2.getId()).orderNumber(exerciseComponent2.getOrderNumber());
+        PatientAppAPIs.coachExerciseControllerPatientAPI
+            .updateExerciseComponent(
+                patientId, exercise.getId(), exerciseComponent2.getId(), exComponent)
+            .block();
       }
     }
 
     exerciseComponent.getExercise().getExerciseComponents().remove(exerciseComponent);
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .deleteExerciseComponent(
+            exerciseComponent.getExercise().getPatient().getId(),
+            exerciseComponent.getExercise().getId(),
+            id)
+        .block();
   }
 }

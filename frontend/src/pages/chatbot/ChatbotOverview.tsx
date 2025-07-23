@@ -17,9 +17,6 @@ import {
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -36,6 +33,7 @@ import {
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -80,10 +78,6 @@ const ChatbotOverview = (): ReactElement => {
     (
       ({
         Chatbot: <TbMessageChatbot />,
-        Robot: <RiRobot2Line />,
-        Person: <IoPersonOutline />,
-        Bulb: <IoBulbOutline />,
-        Book: <PiBookOpenTextLight />,
       }) as Record<string, ReactElement | null>
     )[icon] ?? null
 
@@ -215,7 +209,10 @@ const ChatbotOverview = (): ReactElement => {
     }
   }
 
-  const renderCard = (bot: ChatbotTemplateOutputDTO, showMenu = true): ReactElement => (
+  const renderCard = (
+    bot: ChatbotTemplateOutputDTO,
+    { showMenu = true, onClick }: { showMenu?: boolean; onClick?: () => void } = {}
+  ): ReactElement => (
     <Card
       key={bot.id}
       sx={{
@@ -230,13 +227,19 @@ const ChatbotOverview = (): ReactElement => {
         borderRadius: 2,
       }}
     >
-      <CardActionArea onClick={() => openTemplate(bot)} sx={{ height: '100%' }}>
+      <CardActionArea
+        onClick={
+          onClick ??
+          ((): void => {
+            openTemplate(bot)
+          })
+        }
+        sx={{ height: '100%' }}
+      >
         <CardContent
           sx={{
-            pt: 0,
-            marginTop: -5,
             px: 2,
-            pb: 2,
+            pb: 10,
             '&:last-child': { pb: 2 },
           }}
         >
@@ -257,11 +260,13 @@ const ChatbotOverview = (): ReactElement => {
             </Typography>
 
             <Box display='flex' alignItems='center' gap={1}>
-              {bot.isActive ? (
-                <Chip size='small' color='success' label='Active' />
-              ) : (
-                <Chip size='small' variant='outlined' label='Inactive' />
-              )}
+              {bot.patientId &&
+                (bot.isActive ? (
+                  <Chip size='small' color='success' label='Active' />
+                ) : (
+                  <Chip size='small' variant='outlined' label='Inactive' />
+                ))}
+
               {showMenu && (
                 <IconButton
                   size='small'
@@ -300,7 +305,7 @@ const ChatbotOverview = (): ReactElement => {
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
         <Typography variant='h2'>{t('chatbot.chatbots')}</Typography>
-        <Button variant='contained' onClick={handleCreateChatbot}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateChatbot}>
           {t('chatbot.create_new_chatbot')}
         </Button>
       </Box>
@@ -309,33 +314,15 @@ const ChatbotOverview = (): ReactElement => {
         <>
           {therapistTemplates.length > 0 && (
             <>
-              <Typography variant='h4' sx={{ mb: 1 }}>
+              <Typography variant='h4' sx={{ mb: 3 }}>
                 {t('chatbot.create_chatbot_from_template')}
               </Typography>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
-                {therapistTemplates.map(
-                  (bot: ChatbotTemplateOutputDTO): ReactElement => (
-                    <Card
-                      key={bot.id}
-                      sx={{
-                        maxWidth: 300,
-                        minWidth: 300,
-                        maxHeight: 250,
-                        minHeight: 250,
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        border: '1px solid #e0e0e0',
-                        boxShadow: 'none',
-                        borderRadius: 2,
-                      }}
-                    >
-                      <CardActionArea onClick={() => handleCreateFromTherapistTemplate(bot)}>
-                        {renderCard(bot, false)}
-                      </CardActionArea>
-                    </Card>
-                  )
+                {therapistTemplates.map((bot) =>
+                  renderCard(bot, {
+                    showMenu: false,
+                    onClick: () => handleCreateFromTherapistTemplate(bot),
+                  })
                 )}
               </Box>
             </>
@@ -343,12 +330,12 @@ const ChatbotOverview = (): ReactElement => {
 
           {patientTemplates.length ? (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                 <Typography variant='h4'>{t('chatbot.client_chatbot')}</Typography>
 
                 <Button
                   size='small'
-                  variant='outlined'
+                  sx={{ ...commonButtonStyles, minWidth: '220px' }}
                   onClick={() =>
                     navigate(
                       getPathFromPage(PAGES.PATIENT_CONVERSATIONS_PAGE, { patientId: patientId! }),
@@ -361,7 +348,7 @@ const ChatbotOverview = (): ReactElement => {
               </Box>
 
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                {patientTemplates.map((bot) => renderCard(bot, true))}
+                {patientTemplates.map((bot) => renderCard(bot, { showMenu: true }))}
               </Box>
             </>
           ) : (
@@ -377,7 +364,7 @@ const ChatbotOverview = (): ReactElement => {
         <>
           {therapistTemplates.length ? (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-              {therapistTemplates.map((bot) => renderCard(bot, true))}
+              {therapistTemplates.map((bot) => renderCard(bot, { showMenu: true }))}
             </Box>
           ) : (
             <Typography>{t('chatbot.no_chatbots_created_yet')}</Typography>

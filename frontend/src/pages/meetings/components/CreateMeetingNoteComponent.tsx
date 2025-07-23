@@ -9,6 +9,7 @@ import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateMeetingNoteComponentProps {
@@ -84,11 +85,23 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
             justifyContent: 'center',
           }}
         >
-          <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+          <Button
+            type='submit'
+            sx={{
+              ...commonButtonStyles,
+              minWidth: '280px',
+            }}
+          >
             <CheckIcon />
           </Button>
 
-          <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={props.cancel}>
+          <Button
+            onClick={props.cancel}
+            sx={{
+              ...deleteButtonStyles,
+              minWidth: '280px',
+            }}
+          >
             <ClearIcon />
           </Button>
         </div>

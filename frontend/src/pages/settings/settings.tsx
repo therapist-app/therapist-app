@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -28,7 +29,7 @@ const Settings = (): ReactElement => {
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
-    i18n.changeLanguage(selectedLanguage).then(() => {}) // Change the language
+    i18n.changeLanguage(selectedLanguage).then(() => {})
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -101,7 +102,7 @@ const Settings = (): ReactElement => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+          <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '580px', mt: 3, mb: 2 }}>
             {t('settings.changePasswordButton')}
           </Button>
         </Box>

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface ShowExerciseTextComponentProps {
@@ -25,13 +26,13 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
     id: exerciseComponent.id ?? '',
-    description: exerciseComponent.description,
+    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   })
 
@@ -100,7 +101,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
               whiteSpace: 'pre-line',
             }}
           >
-            {exerciseComponent.description}
+            {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
       ) : (
@@ -121,19 +122,22 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (
               ))}
             </TextField>
 
-            <Button sx={{ minWidth: '10px', marginLeft: '20px' }} onClick={clickCancel}>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
+              onClick={clickCancel}
+            >
               <ClearIcon style={{ color: 'red' }} />
             </Button>
 
-            <Button sx={{ minWidth: '10px' }} onClick={handleSubmit}>
+            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
               <CheckIcon style={{ color: 'green' }} />
             </Button>
           </div>
 
           <TextField
             multiline
-            name='description'
-            value={formData.description}
+            name='exerciseComponentDescription'
+            value={formData.exerciseComponentDescription}
             onChange={handleChange}
             label={t('exercise.text')}
           />

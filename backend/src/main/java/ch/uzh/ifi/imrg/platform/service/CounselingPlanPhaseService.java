@@ -5,7 +5,6 @@ import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
-import ch.uzh.ifi.imrg.platform.enums.ExerciseType;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
@@ -25,9 +24,7 @@ import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +52,7 @@ public class CounselingPlanPhaseService {
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
       CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO, String therapistId) {
-    List<CounselingPlanPhase> allCounselingPlanPhases = counselingPlanPhaseRepository.findAll();
+
     CounselingPlan counselingPlan =
         counselingPlanRepository.getReferenceById(
             createCounselingPlanPhaseDTO.getCounselingPlanId());
@@ -64,7 +61,7 @@ public class CounselingPlanPhaseService {
     CounselingPlanPhase counselingPlanPhase = new CounselingPlanPhase();
     counselingPlanPhase.setPhaseName(createCounselingPlanPhaseDTO.getPhaseName());
     counselingPlanPhase.setDurationInWeeks(createCounselingPlanPhaseDTO.getDurationInWeeks());
-    counselingPlanPhase.setPhaseNumber(allCounselingPlanPhases.size() + 1);
+    counselingPlanPhase.setPhaseNumber(counselingPlan.getCounselingPlanPhases().size() + 1);
 
     counselingPlanPhase.setCounselingPlan(counselingPlan);
     counselingPlanPhaseRepository.save(counselingPlanPhase);
@@ -129,19 +126,12 @@ public class CounselingPlanPhaseService {
 
     systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
-    String validExerciseTypes =
-        Arrays.stream(ExerciseType.values())
-            .map(Enum::name)
-            .collect(Collectors.joining("', '", "'", "'"));
-
     String userPrompt =
         "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
-            + "The exercise should have a title and a type. "
-            + "The 'exerciseType' MUST be one of the following values: "
-            + validExerciseTypes
-            + ". "
+            + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
+            + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + "Format: {\"title\":\"<title>\", \"exerciseType\":\"<TYPE>\"";
+            + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));

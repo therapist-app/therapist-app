@@ -22,9 +22,6 @@ import CardActions from '@mui/material/CardActions'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -45,6 +42,11 @@ import {
   getAllTherapistDocumentsOfTherapist,
 } from '../../store/therapistDocumentSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  disabledButtonStyles,
+} from '../../styles/buttonStyles'
 import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -213,61 +215,9 @@ const Home = (): ReactElement => {
       }
     )
   }
-  const getIconComponent = (iconName: string): ReactElement | null => {
-    switch (iconName) {
-      case 'Chatbot':
-        return <TbMessageChatbot />
-      case 'Robot':
-        return <RiRobot2Line />
-      case 'Person':
-        return <IoPersonOutline />
-      case 'Bulb':
-        return <IoBulbOutline />
-      case 'Book':
-        return <PiBookOpenTextLight />
-      default:
-        return null
-    }
+  const getIconComponent = (): ReactElement | null => {
+    return <TbMessageChatbot />
   }
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  } as const
-  const disabledButtonStyles = {
-    ...commonButtonStyles,
-    backgroundImage: 'lightgrey',
-    '&:hover': {
-      disabled: 'true',
-    },
-  } as const
-  const cancelButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none',
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'white',
-    color: '#635BFF',
-    '&:hover': {
-      backgroundColor: '#f0f0f0',
-    },
-    margin: 1,
-  } as const
   const dialogStyle = {
     width: '500px',
     height: '300px',
@@ -280,7 +230,7 @@ const Home = (): ReactElement => {
         <Button
           variant='contained'
           onClick={() => navigate(getPathFromPage(PAGES.PATIENTS_CREATE_PAGE))}
-          sx={{ height: 'fit-content' }}
+          sx={{ ...commonButtonStyles }}
         >
           {t('dashboard.add_patient')}
         </Button>
@@ -324,7 +274,11 @@ const Home = (): ReactElement => {
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
         <Typography variant='h2'>{t('dashboard.your_chatbot_templates')}</Typography>
-        <Button variant='contained' onClick={handleCreateChatbot} sx={{ height: 'fit-content' }}>
+        <Button
+          variant='contained'
+          onClick={handleCreateChatbot}
+          sx={{ ...commonButtonStyles, minWidth: '230px' }}
+        >
           {t('dashboard.create_bot')}
         </Button>
       </div>
@@ -370,7 +324,7 @@ const Home = (): ReactElement => {
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
-                    {getIconComponent(bot.chatbotIcon ?? '')}
+                    {getIconComponent()}
                   </Typography>
                 </CardContent>
               </CardActionArea>

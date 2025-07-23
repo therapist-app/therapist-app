@@ -67,24 +67,24 @@ public class Patient implements Serializable, OwnedByTherapist {
       fetch = FetchType.EAGER)
   private List<Complaint> complaints = new ArrayList<>();
 
-  @Column private String treatmentPast;
-  @Column private String treatmentCurrent;
-  @Column private String pastMedical;
-  @Column private String pastPsych;
+  @Lob @Column private String treatmentPast;
+  @Lob @Column private String treatmentCurrent;
+  @Lob @Column private String pastMedical;
+  @Lob @Column private String pastPsych;
 
-  @Column private String familyIllness;
-  @Column private String familySocial;
+  @Lob @Column private String familyIllness;
+  @Lob @Column private String familySocial;
 
-  @Column private String personalPerinatal;
-  @Column private String personalChildhood;
-  @Column private String personalEducation;
-  @Column private String personalPlay;
-  @Column private String personalAdolescence;
-  @Column private String personalPuberty;
-  @Column private String personalObstetric;
-  @Column private String personalOccupational;
-  @Column private String personalMarital;
-  @Column private String personalPremorbid;
+  @Lob @Column private String personalPerinatal;
+  @Lob @Column private String personalChildhood;
+  @Lob @Column private String personalEducation;
+  @Lob @Column private String personalPlay;
+  @Lob @Column private String personalAdolescence;
+  @Lob @Column private String personalPuberty;
+  @Lob @Column private String personalObstetric;
+  @Lob @Column private String personalOccupational;
+  @Lob @Column private String personalMarital;
+  @Lob @Column private String personalPremorbid;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id")

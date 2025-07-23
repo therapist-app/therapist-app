@@ -20,4 +20,6 @@ public interface ChatbotTemplateRepository extends JpaRepository<ChatbotTemplate
   Optional<ChatbotTemplate> findByIdAndPatientId(String id, String patientId);
 
   List<ChatbotTemplate> findByPatientId(String patientId);
+
+  long countByPatientId(String patientId);
 }

@@ -1,5 +1,7 @@
 interface Resources {
   "de": {
+    "yes": "Ja",
+    "no": "Nein",
     "header": {
       "title": "Dies ist der Header",
       "subtitle": "Dies sind die aktuellen Seiten:",
@@ -168,7 +170,9 @@ interface Resources {
       "create_phase": "Phase erstellen",
       "make_ai_generated_suggestion": "KI-generierten Vorschlag erstellen",
       "exercise_title": "Übungstitel",
-      "exercise_type": "Übungstyp",
+      "exerciseDescription": "Beschreibung",
+      "exerciseExplanation": "Erklärung (für AI Kontext)",
+      "doEveryNDays": "Alle x Tage durchführen",
       "exercise_start": "Übungsbeginn",
       "add_a_goal": "Ziel hinzufügen",
       "goal_name": "Zielname",
@@ -189,21 +193,26 @@ interface Resources {
       "text": "Text",
       "create_new_exercise": "Neue Übung erstellen",
       "exercise": "Übung",
-      "exercise_type": "Übungstyp",
       "exercise_start": "Übungsbeginn",
       "duration_in_weeks": "Dauer in Wochen",
       "exercise_end": "Übungsende",
       "is_paused": "Pausiert",
       "is_currently_paused": "Derzeit pausiert",
       "is_exercise_paused": "Ist Übung pausiert",
-      "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt...",
-      "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt...",
+      "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt.",
+      "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
       "image": "Bild",
       "file": "Datei",
-      "input_field": "Eingabefeld",
+      "doEveryNDays": "Alle folgenden Tage einmal ausführen",
+      "privateInput": "Privates Eingabefeld",
+      "sharedInput": "Gemeinsames Eingabefeld",
+      "addPrivateInput": "Privates Eingabefeld hinzufügen",
+      "addSharedInput": "Gemeinsames Eingabefeld hinzufügen",
       "order": "Reihenfolge",
-      "desciption_of_input": "Eingabebeschreibung",
+      "desciption_of_input": "Beschreibung der Eingabe",
       "title": "Titel",
+      "exerciseDescription": "Beschreibung",
+      "exerciseExplanation": "Erklärung (für KI-Kontext)",
       "submit": "Absenden",
       "cancel": "Abbrechen",
       "edit_exercise": "Übung bearbeiten",
@@ -243,7 +252,10 @@ interface Resources {
       "start_date": "Startdatum",
       "end_date": "Enddatum",
       "time": "Zeit",
-      "date": "Datum"
+      "date": "Datum",
+      "last_week": "Letzte Woche",
+      "last_two_weeks": "Letzte 2 Wochen",
+      "last_three_weeks": "Letzte 3 Wochen"
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -385,7 +397,6 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
-      "create_gad7test": "GAD-7 Test erstellen",
       "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
       "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
       "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -397,7 +408,7 @@ interface Resources {
       "total_score": "Gesamtpunktzahl",
       "cancel": "Abbrechen",
       "submit": "Absenden",
-      "no_tests_yet": "Du hast noch keinen GAD-7 Test erstellt.",
+      "no_tests_yet": "Klient hat noch keinen GAD-7 Test ausgefüllt.",
       "answers": {
         "not_at_all": "Überhaupt nicht",
         "several_days": "An einigen Tagen",
@@ -438,19 +449,22 @@ interface Resources {
       "counseling_plan": {
         "details": "Behandlungsplan"
       },
-      "not_found": "Nicht gefunden"
+      "not_found": "Nicht gefunden",
+      "therapist_chatbot": "Coach Chatbot"
     }
   },
   "en": {
+    "yes": "Yes",
+    "no": "No",
     "header": {
       "title": "This is the header",
       "subtitle": "These are the current pages:",
       "dashboard": "Dashboard Page",
       "register": "Register Page",
       "login": "Login Page",
-      "patients": "Patient Overview Page",
-      "patient_detail": "Example Patient Detail Page for ID: \"{{id}}\"",
-      "patient_create_bot": "Example Patient Create Bot Page",
+      "patients": "Client Overview Page",
+      "patient_detail": "Example Client Detail Page for ID: \"{{id}}\"",
+      "patient_create_bot": "Example Client Create Bot Page",
       "bot_edit": "Example Bot Edit Page for Bot ID: \"{{id}}\"",
       "create_bot_template": "Create ChatBot Template Page",
       "edit_bot_template": "Edit ChatBot Template for ID: \"{{id}}\"",
@@ -610,7 +624,9 @@ interface Resources {
       "create_phase": "Create Phase",
       "make_ai_generated_suggestion": "Make AI generated suggestion",
       "exercise_title": "Exercise Title",
-      "exercise_type": "Exercise Type",
+      "exerciseDescription": "Description",
+      "exerciseExplanation": "Explanation (for AI context)",
+      "doEveryNDays": "Do once every following days",
       "exercise_start": "Exercise Start",
       "add_a_goal": "Add a Goal",
       "goal_name": "Goal Name",
@@ -631,21 +647,26 @@ interface Resources {
       "text": "Text",
       "create_new_exercise": "Create New Exercise",
       "exercise": "Exercise",
-      "exercise_type": "Exercise Type",
       "exercise_start": "Exercise Start",
       "duration_in_weeks": "Duration in Weeks",
       "exercise_end": "Exercise End",
       "is_paused": "Is Paused",
       "is_currently_paused": "Is Currently Paused",
       "is_exercise_paused": "Is Exercise Paused",
-      "no_exercises_yet": "You haven't added any exercises yet...",
-      "no_exercise_components_yet": "You haven't added any exercise components yet...",
+      "no_exercises_yet": "You haven't added any exercises yet.",
+      "no_exercise_components_yet": "You haven't added any exercise components yet.",
       "image": "Image",
       "file": "File",
-      "input_field": "Input Field",
+      "doEveryNDays": "Do once every following days",
+      "privateInput": "Private Input Field",
+      "sharedInput": "Shared Input Field",
+      "addPrivateInput": "Add private Input Field",
+      "addSharedInput": "Add shared Input Field",
       "order": "Order",
       "desciption_of_input": "Description of Input",
       "title": "Title",
+      "exerciseDescription": "Description",
+      "exerciseExplanation": "Explanation (for AI context)",
       "submit": "Submit",
       "cancel": "Cancel",
       "edit_exercise": "Edit Exercise",
@@ -686,7 +707,10 @@ interface Resources {
       "start_date": "Start Date",
       "end_date": "End Date",
       "time": "Time",
-      "date": "Date"
+      "date": "Date",
+      "last_week": "Last Week",
+      "last_two_weeks": "Last 2 Weeks",
+      "last_three_weeks": "Last 3 Weeks"
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -828,7 +852,6 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
-      "create_gad7test": "Create GAD-7 Test",
       "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
       "question1": "Feeling nervous, anxious or on edge.",
       "question2": "Not being able to stop or control worrying.",
@@ -840,7 +863,7 @@ interface Resources {
       "total_score": "Total Score",
       "cancel": "Cancel",
       "submit": "Submit",
-      "no_tests_yet": "You haven't created any GAD-7 tests yet.",
+      "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
       "answers": {
         "not_at_all": "Not at all",
         "several_days": "Several days",
@@ -881,10 +904,13 @@ interface Resources {
       "counseling_plan": {
         "details": "Counseling Plan"
       },
-      "not_found": "Not Found"
+      "not_found": "Not Found",
+      "therapist_chatbot": "Coach Chatbot"
     }
   },
   "ua": {
+    "yes": "Так",
+    "no": "Ні",
     "header": {
       "title": "Це заголовок",
       "subtitle": "Поточні сторінки:",
@@ -1053,7 +1079,9 @@ interface Resources {
       "create_phase": "Створити фазу",
       "make_ai_generated_suggestion": "Зробити AI-пропозицію",
       "exercise_title": "Назва вправи",
-      "exercise_type": "Тип вправи",
+      "exerciseDescription": "Опис вправи",
+      "exerciseExplanation": "Пояснення (для контексту ШІ)",
+      "doEveryNDays": "Виконувати кожні наступні дні",
       "exercise_start": "Початок вправи",
       "add_a_goal": "Додати ціль",
       "goal_name": "Назва цілі",
@@ -1074,21 +1102,26 @@ interface Resources {
       "text": "Текст",
       "create_new_exercise": "Створити нову вправу",
       "exercise": "Вправа",
-      "exercise_type": "Тип вправи",
       "exercise_start": "Початок вправи",
       "duration_in_weeks": "Тривалість у тижнях",
       "exercise_end": "Завершення вправи",
       "is_paused": "Призупинено",
       "is_currently_paused": "Зараз призупинено",
       "is_exercise_paused": "Чи призупинено вправу",
-      "no_exercises_yet": "Ви ще не додали жодної вправи...",
-      "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи...",
+      "no_exercises_yet": "Ви ще не додали жодної вправи.",
+      "no_exercise_components_yet": "Ви ще не додали жодного компоненту вправи.",
       "image": "Зображення",
       "file": "Файл",
-      "input_field": "Поле вводу",
+      "doEveryNDays": "Виконувати раз на кожні вказані дні",
+      "privateInput": "Приватне поле вводу",
+      "sharedInput": "Спільне поле вводу",
+      "addPrivateInput": "Додати приватне поле вводу",
+      "addSharedInput": "Додати спільне поле вводу",
       "order": "Порядок",
       "desciption_of_input": "Опис вводу",
       "title": "Назва",
+      "exerciseDescription": "Опис вправи",
+      "exerciseExplanation": "Пояснення (для контексту ШІ)",
       "submit": "Надіслати",
       "cancel": "Скасувати",
       "edit_exercise": "Редагувати вправу",
@@ -1129,7 +1162,10 @@ interface Resources {
       "start_date": "Дата початку",
       "end_date": "Дата завершення",
       "time": "Час",
-      "date": "Дата"
+      "date": "Дата",
+      "last_week": "Останній тиждень",
+      "last_two_weeks": "Останні 2 тижні",
+      "last_three_weeks": "Останні 3 тижні"
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",
@@ -1271,7 +1307,6 @@ interface Resources {
     "gad7test": {
       "title": "Опитування GAD-7",
       "gad7tests": "Тести GAD-7",
-      "create_gad7test": "Створити тест GAD-7",
       "description": "Як часто вас турбували наступні проблеми протягом останніх 2 тижнів?",
       "question1": "Нервозність, тривога або напруга.",
       "question2": "Неможливість припинити або контролювати занепокоєння.",
@@ -1283,7 +1318,7 @@ interface Resources {
       "total_score": "Загальний бал",
       "cancel": "Скасувати",
       "submit": "Надіслати",
-      "no_tests_yet": "Ви ще не створили жодного тесту GAD-7.",
+      "no_tests_yet": "Пацієнт ще не заповнив жодного тесту GAD-7.",
       "answers": {
         "not_at_all": "Зовсім ні",
         "several_days": "Кілька днів",
@@ -1324,7 +1359,8 @@ interface Resources {
       "counseling_plan": {
         "details": "План консультування"
       },
-      "not_found": "Не знайдено"
+      "not_found": "Не знайдено",
+      "therapist_chatbot": "Чат-бот терапевта"
     }
   }
 }

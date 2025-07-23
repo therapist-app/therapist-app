@@ -10,16 +10,25 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseInputFieldComponentProps {
   createdInputField(): void
   active: boolean
+  isPrivateField: boolean
 }
 
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
   props: CreateExerciseInputFieldComponentProps
 ) => {
+  const inputFieldTranslationKey = props.isPrivateField
+    ? 'exercise.addPrivateInput'
+    : 'exercise.addSharedInput'
+
+  const exerciseComponentType = props.isPrivateField
+    ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
+    : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -32,9 +41,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   }
 
   const showExerciseInputField = (): void => {
-    dispatch(
-      setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField)
-    )
+    dispatch(setAddingExerciseComponent(exerciseComponentType))
+
     setIsCreatingExerciseInputField(true)
   }
 
@@ -50,8 +58,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     try {
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputField,
-        description: description,
+        exerciseComponentType: exerciseComponentType,
+        exerciseComponentDescription: description,
       }
       await dispatch(
         createExerciseComponent({
@@ -74,8 +82,8 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   return (
     <div>
       {isCreatingExerciseInputField === false ? (
-        <Button variant='contained' color='primary' onClick={showExerciseInputField}>
-          {t('exercise.add_input_field')}
+        <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={showExerciseInputField}>
+          {t(inputFieldTranslationKey)}
         </Button>
       ) : (
         <form
@@ -96,11 +104,17 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
               justifyContent: 'center',
             }}
           >
-            <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+            <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '180px', mt: 2 }}>
               <CheckIcon />
             </Button>
 
-            <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={cancel}>
+            <Button
+              variant='contained'
+              color='error'
+              fullWidth
+              sx={{ ...deleteButtonStyles, minWidth: '180px', mt: 2 }}
+              onClick={cancel}
+            >
               <ClearIcon />
             </Button>
           </div>

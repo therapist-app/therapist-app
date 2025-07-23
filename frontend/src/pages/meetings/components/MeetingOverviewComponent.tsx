@@ -18,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
+import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 
@@ -61,7 +62,7 @@ const MeetingOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'>{t('meetings.meetings')}</Typography>
-        <Button variant='contained' onClick={handleCreateNewMeeting}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={handleCreateNewMeeting}>
           {t('meetings.create_meeting')}
         </Button>
       </div>

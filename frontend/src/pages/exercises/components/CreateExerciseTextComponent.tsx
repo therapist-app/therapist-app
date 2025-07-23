@@ -10,6 +10,7 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseTextComponentProps {
@@ -49,7 +50,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
-        description: exerciseText,
+        exerciseComponentDescription: exerciseText,
       }
       await dispatch(
         createExerciseComponent({
@@ -72,7 +73,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   return (
     <div>
       {isCreatingExerciseText === false ? (
-        <Button variant='contained' color='primary' onClick={showExerciseTextField}>
+        <Button sx={commonButtonStyles} onClick={showExerciseTextField}>
           {t('exercise.add_text')}
         </Button>
       ) : (
@@ -95,11 +96,17 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
               justifyContent: 'center',
             }}
           >
-            <Button type='submit' variant='contained' color='primary' fullWidth sx={{ mt: 2 }}>
+            <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '150px', mt: 2 }}>
               <CheckIcon />
             </Button>
 
-            <Button variant='contained' color='error' fullWidth sx={{ mt: 2 }} onClick={cancel}>
+            <Button
+              variant='contained'
+              color='error'
+              fullWidth
+              sx={{ ...deleteButtonStyles, minWidth: '150px', mt: 2 }}
+              onClick={cancel}
+            >
               <ClearIcon />
             </Button>
           </div>

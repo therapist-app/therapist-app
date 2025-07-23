@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ExerciseUpdateInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
@@ -9,8 +11,10 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseMapper;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,15 +43,33 @@ public class ExerciseService {
 
     Exercise exercise = new Exercise();
     exercise.setPatient(patient);
-    exercise.setTitle(createExerciseDTO.getTitle());
-    exercise.setExerciseType(createExerciseDTO.getExerciseType());
+    exercise.setExerciseTitle(createExerciseDTO.getExerciseTitle());
+    exercise.setExerciseDescription(createExerciseDTO.getExerciseDescription());
+    exercise.setExerciseExplanation(createExerciseDTO.getExerciseExplanation());
     exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
     exercise.setExerciseEnd(
         DateUtil.addAmountOfWeeks(
             createExerciseDTO.getExerciseStart(), createExerciseDTO.getDurationInWeeks()));
     exercise.setIsPaused(false);
+    exercise.setDoEveryNDays(createExerciseDTO.getDoEveryNDays());
 
     Exercise savedExercise = exerciseRepository.save(exercise);
+
+    ExerciseInputDTOPatientAPI exerciseInputDTOPatientAPI =
+        new ExerciseInputDTOPatientAPI()
+            .id(savedExercise.getId())
+            .exerciseTitle(exercise.getExerciseTitle())
+            .exerciseDescription(exercise.getExerciseDescription())
+            .exerciseExplanation(exercise.getExerciseExplanation())
+            .exerciseComponents(new ArrayList<>())
+            .exerciseStart(exercise.getExerciseStart())
+            .exerciseEnd(exercise.getExerciseEnd())
+            .isPaused(false)
+            .doEveryNDays(exercise.getDoEveryNDays());
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .createExercise(savedExercise.getPatient().getId(), exerciseInputDTOPatientAPI)
+        .block();
 
     return exerciseMapper.convertEntityToExerciseOutputDTO(savedExercise);
   }
@@ -73,24 +95,50 @@ public class ExerciseService {
     Exercise exercise = exerciseRepository.getReferenceById(updateExerciseDTO.getId());
     SecurityUtil.checkOwnership(exercise, therapistId);
 
-    if (updateExerciseDTO.getTitle() != null) {
-      exercise.setTitle(updateExerciseDTO.getTitle());
+    ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI =
+        new ExerciseUpdateInputDTOPatientAPI();
+
+    if (updateExerciseDTO.getExerciseTitle() != null) {
+      exercise.setExerciseTitle(updateExerciseDTO.getExerciseTitle());
+      exerciseUpdateInputDTOPatientAPI.exerciseTitle(updateExerciseDTO.getExerciseTitle());
     }
-    if (updateExerciseDTO.getExerciseType() != null) {
-      exercise.setExerciseType(updateExerciseDTO.getExerciseType());
+
+    if (updateExerciseDTO.getExerciseDescription() != null) {
+      exercise.setExerciseDescription(updateExerciseDTO.getExerciseDescription());
+      exerciseUpdateInputDTOPatientAPI.exerciseDescription(
+          updateExerciseDTO.getExerciseDescription());
+    }
+
+    if (updateExerciseDTO.getExerciseExplanation() != null) {
+      exercise.setExerciseExplanation(updateExerciseDTO.getExerciseExplanation());
+      exerciseUpdateInputDTOPatientAPI.exerciseExplanation(
+          updateExerciseDTO.getExerciseExplanation());
     }
 
     if (updateExerciseDTO.getExerciseStart() != null) {
       exercise.setExerciseStart(updateExerciseDTO.getExerciseStart());
+      exerciseUpdateInputDTOPatientAPI.exerciseStart(updateExerciseDTO.getExerciseStart());
     }
 
     if (updateExerciseDTO.getExerciseEnd() != null) {
       exercise.setExerciseEnd(updateExerciseDTO.getExerciseEnd());
+      exerciseUpdateInputDTOPatientAPI.exerciseEnd(updateExerciseDTO.getExerciseEnd());
     }
 
     if (updateExerciseDTO.getIsPaused() != null) {
       exercise.setIsPaused(updateExerciseDTO.getIsPaused());
+      exerciseUpdateInputDTOPatientAPI.isPaused(updateExerciseDTO.getIsPaused());
     }
+
+    if (updateExerciseDTO.getDoEveryNDays() != null) {
+      exercise.setDoEveryNDays(updateExerciseDTO.getDoEveryNDays());
+      exerciseUpdateInputDTOPatientAPI.doEveryNDays(updateExerciseDTO.getDoEveryNDays());
+    }
+
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .updateExercise(
+            exercise.getPatient().getId(), exercise.getId(), exerciseUpdateInputDTOPatientAPI)
+        .block();
 
     Exercise updatedExercise = exerciseRepository.save(exercise);
     return exerciseMapper.convertEntityToExerciseOutputDTO(updatedExercise);
@@ -99,6 +147,9 @@ public class ExerciseService {
   public void deleteExercise(String id, String therapistId) {
     Exercise exercise = exerciseRepository.getReferenceById(id);
     SecurityUtil.checkOwnership(exercise, therapistId);
+    PatientAppAPIs.coachExerciseControllerPatientAPI
+        .deleteExercise(exercise.getPatient().getId(), id)
+        .block();
     exercise.getPatient().getExercises().remove(exercise);
   }
 }

@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -8,6 +8,7 @@ import { ReactElement, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Layout from '../../generalComponents/Layout'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 
 // Mock data interface
 interface InteractionData {
@@ -183,10 +184,43 @@ const ClientInteractions = (): ReactElement => {
             </LocalizationProvider>
           </Box>
 
+          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 7))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_week')}
+            </Button>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 14))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_two_weeks')}
+            </Button>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 21))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_three_weeks')}
+            </Button>
+          </Box>
+
           <div style={{ height: '650px' }}>
             <ResponsiveHeatMap
               data={heatmapData}
-              margin={{ top: 40, right: 40, bottom: 80, left: 80 }}
+              margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
               valueFormat='>-.0f'
               axisTop={null}
               axisBottom={{
@@ -208,7 +242,7 @@ const ClientInteractions = (): ReactElement => {
               }}
               colors={{
                 type: 'sequential',
-                scheme: 'blues',
+                scheme: 'purples',
                 minValue: 0,
                 maxValue: 3,
               }}

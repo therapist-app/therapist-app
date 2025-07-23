@@ -454,5 +454,6 @@ public class CoachPsychologicalTestControllerPatientAPI {
      */
     public ResponseSpec updatePsychologicalTestWithResponseSpec(String patientId, String psychologicalTestName, PsychologicalTestAssignmentInputDTOPatientAPI psychologicalTestAssignmentInputDTOPatientAPI) throws WebClientResponseException {
         return updatePsychologicalTestRequestCreation(patientId, psychologicalTestName, psychologicalTestAssignmentInputDTOPatientAPI);
+
     }
 }

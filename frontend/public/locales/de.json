@@ -1,4 +1,6 @@
 {
+  "yes": "Ja",
+  "no": "Nein",
   "header": {
     "title": "Dies ist der Header",
     "subtitle": "Dies sind die aktuellen Seiten:",
@@ -167,7 +169,9 @@
     "create_phase": "Phase erstellen",
     "make_ai_generated_suggestion": "KI-generierten Vorschlag erstellen",
     "exercise_title": "Übungstitel",
-    "exercise_type": "Übungstyp",
+    "exerciseDescription": "Beschreibung",
+    "exerciseExplanation": "Erklärung (für AI Kontext)",
+    "doEveryNDays": "Alle x Tage durchführen",
     "exercise_start": "Übungsbeginn",
     "add_a_goal": "Ziel hinzufügen",
     "goal_name": "Zielname",
@@ -188,21 +192,26 @@
     "text": "Text",
     "create_new_exercise": "Neue Übung erstellen",
     "exercise": "Übung",
-    "exercise_type": "Übungstyp",
     "exercise_start": "Übungsbeginn",
     "duration_in_weeks": "Dauer in Wochen",
     "exercise_end": "Übungsende",
     "is_paused": "Pausiert",
     "is_currently_paused": "Derzeit pausiert",
     "is_exercise_paused": "Ist Übung pausiert",
-    "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt...",
-    "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt...",
+    "no_exercises_yet": "Sie haben noch keine Übungen hinzugefügt.",
+    "no_exercise_components_yet": "Sie haben noch keine Übungskomponenten hinzugefügt.",
     "image": "Bild",
     "file": "Datei",
-    "input_field": "Eingabefeld",
+    "doEveryNDays": "Alle folgenden Tage einmal ausführen",
+    "privateInput": "Privates Eingabefeld",
+    "sharedInput": "Gemeinsames Eingabefeld",
+    "addPrivateInput": "Privates Eingabefeld hinzufügen",
+    "addSharedInput": "Gemeinsames Eingabefeld hinzufügen",
     "order": "Reihenfolge",
-    "desciption_of_input": "Eingabebeschreibung",
+    "desciption_of_input": "Beschreibung der Eingabe",
     "title": "Titel",
+    "exerciseDescription": "Beschreibung",
+    "exerciseExplanation": "Erklärung (für KI-Kontext)",
     "submit": "Absenden",
     "cancel": "Abbrechen",
     "edit_exercise": "Übung bearbeiten",
@@ -242,7 +251,10 @@
     "start_date": "Startdatum",
     "end_date": "Enddatum",
     "time": "Zeit",
-    "date": "Datum"
+    "date": "Datum",
+    "last_week": "Letzte Woche",
+    "last_two_weeks": "Letzte 2 Wochen",
+    "last_three_weeks": "Letzte 3 Wochen"
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -384,7 +396,6 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
-    "create_gad7test": "GAD-7 Test erstellen",
     "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
     "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
     "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -396,7 +407,7 @@
     "total_score": "Gesamtpunktzahl",
     "cancel": "Abbrechen",
     "submit": "Absenden",
-    "no_tests_yet": "Du hast noch keinen GAD-7 Test erstellt.",
+    "no_tests_yet": "Klient hat noch keinen GAD-7 Test ausgefüllt.",
     "answers": {
       "not_at_all": "Überhaupt nicht",
       "several_days": "An einigen Tagen",
@@ -437,6 +448,7 @@
     "counseling_plan": {
       "details": "Behandlungsplan"
     },
-    "not_found": "Nicht gefunden"
+    "not_found": "Nicht gefunden",
+    "therapist_chatbot": "Coach Chatbot"
   }
 }

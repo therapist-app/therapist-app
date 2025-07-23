@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
+import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
@@ -63,7 +64,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'> Exercises</Typography>
-        <Button variant='contained' onClick={handleCreateNewExercise}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateNewExercise}>
           {t('exercise.create_new_exercise')}
         </Button>
       </div>
@@ -77,7 +78,6 @@ const ExerciseOverviewComponent = (): ReactElement => {
                     {t('exercise.exercise')}
                   </div>
                 </TableCell>
-                <TableCell>{t('exercise.exercise_type')}</TableCell>
                 <TableCell>{t('exercise.exercise_start')}</TableCell>
                 <TableCell>{t('exercise.exercise_end')}</TableCell>
                 <TableCell>{t('exercise.is_paused')}</TableCell>
@@ -103,13 +103,11 @@ const ExerciseOverviewComponent = (): ReactElement => {
                     component='th'
                     scope='row'
                   >
-                    <strong>{exercise.title}</strong>
+                    <strong>{exercise.exerciseTitle}</strong>
                   </TableCell>
-                  <TableCell>{exercise.exerciseType}</TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseStart)}</TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseEnd)}</TableCell>
                   <TableCell>{exercise.isPaused && <CheckIcon />}</TableCell>
-                  <TableCell></TableCell>
                 </TableRow>
               ))}
             </TableBody>

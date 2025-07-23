@@ -13,6 +13,7 @@ import {
 import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseFileComponentProps {
@@ -65,7 +66,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       const createExerciseComponentDTO: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
-        description: description,
+        exerciseComponentDescription: description,
       }
       await dispatch(
         createExerciseComponent({
@@ -127,11 +128,17 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
               justifyContent: 'center',
             }}
           >
-            <Button onClick={handleSubmit} variant='contained' color='primary' fullWidth>
+            <Button onClick={handleSubmit} sx={{ ...commonButtonStyles, minWidth: '180px' }}>
               <CheckIcon />
             </Button>
 
-            <Button variant='contained' color='error' fullWidth onClick={cancel}>
+            <Button
+              variant='contained'
+              color='error'
+              fullWidth
+              sx={{ ...deleteButtonStyles, minWidth: '180px' }}
+              onClick={cancel}
+            >
               <ClearIcon />
             </Button>
           </div>

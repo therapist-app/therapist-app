@@ -7,6 +7,11 @@ import {
   createCounselingPlanPhase,
   createCounselingPlanPhaseAIGenerated,
 } from '../../../store/counselingPlanSlice'
+import {
+  cancelButtonStyles,
+  commonButtonStyles,
+  successButtonStyles,
+} from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 
@@ -69,7 +74,7 @@ const CreateCounselingPlanePhase = ({
   return (
     <>
       {!open ? (
-        <Button variant='contained' onClick={() => setOpen(true)}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '140px' }} onClick={() => setOpen(true)}>
           {t('counseling_plan.add_a_phase')}
         </Button>
       ) : (
@@ -78,6 +83,7 @@ const CreateCounselingPlanePhase = ({
           style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '600px' }}
         >
           <TextField
+            required
             fullWidth
             label={t('counseling_plan.phase_name')}
             value={formValues.phaseName}
@@ -92,13 +98,13 @@ const CreateCounselingPlanePhase = ({
             }
           />
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Button variant='contained' type='submit'>
+            <Button sx={{ ...commonButtonStyles, minWidth: '150px' }} type='submit'>
               {t('counseling_plan.create_phase')}
             </Button>
-            <Button variant='contained' color='success' onClick={handleAIGeneration}>
+            <Button sx={{ ...successButtonStyles, minWidth: '340px' }} onClick={handleAIGeneration}>
               {t('counseling_plan.make_ai_generated_suggestion_for_phase')}
             </Button>
-            <Button variant='outlined' color='error' onClick={handleCancel}>
+            <Button sx={{ ...cancelButtonStyles, minWidth: '100px' }} onClick={handleCancel}>
               {t('counseling_plan.cancel')}
             </Button>
           </div>

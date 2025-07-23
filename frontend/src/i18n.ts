@@ -8,6 +8,8 @@ export const defaultNS = 'translation'
 
 const supportedLngs = ['en', 'ua', 'de']
 
+const loadPath = `${import.meta.env.BASE_URL}locales/{{lng}}.json`
+
 i18next
   .use(initReactI18next)
   .use(HttpApi)
@@ -18,7 +20,7 @@ i18next
     defaultNS: defaultNS,
 
     backend: {
-      loadPath: '/locales/{{lng}}.json',
+      loadPath: loadPath,
     },
     detection: {
       order: ['localStorage'],

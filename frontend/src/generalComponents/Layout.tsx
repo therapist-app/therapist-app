@@ -1,36 +1,25 @@
-import AssistantIcon from '@mui/icons-material/Assistant'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SendIcon from '@mui/icons-material/Send'
 import SettingsIcon from '@mui/icons-material/Settings'
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  Paper,
   TextField,
   Toolbar,
   Typography,
 } from '@mui/material'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
-import { ChatMessageDTOChatRoleEnum } from '../api'
-import { useTypewriter } from '../hooks/useTypewriter'
-import { RootState } from '../store/store'
-import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
+import { chatWithTherapistChatbot } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
-import { formatResponse } from '../utils/formatResponse'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
 import {
@@ -81,6 +70,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       ? t('pages.chatbot.details')
       : getPageName(currentPage, t)
 
+  const therapistChatbotExpandedPage = explicitId
+    ? getPathFromPage(PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT, { patientId: explicitId })
+    : getPathFromPage(PAGES.THERAPIST_CHATBOT_PAGE)
+
   let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
   if (isExplicitCtx && currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE) {
     pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
@@ -91,23 +84,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       : getPageName(p, t)
   }
 
-  const [expanded, setExpanded] = useState(false)
   const [input, setInput] = useState('')
-  const [waiting, setWaiting] = useState(false)
-
-  const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
-
-  const lastAssistant = messages.at(-1)
-  const { stream: typingStream, running: isStreaming } = useTypewriter(
-    lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant
-      ? lastAssistant.content
-      : undefined
-  )
-
-  const listRef = useRef<HTMLUListElement>(null)
-  useEffect(() => {
-    listRef.current?.scrollTo(0, listRef.current.scrollHeight)
-  }, [messages])
 
   const sendMessage = async (): Promise<void> => {
     const msg = input.trim()
@@ -115,19 +92,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       return
     }
     setInput('')
-    setExpanded(true)
-    setWaiting(true)
-    try {
-      await dispatch(
-        chatWithTherapistChatbot({
-          newMessage: msg,
-          patientId: forwardPatientId,
-          language: getCurrentLanguage(),
-        })
-      )
-    } finally {
-      setWaiting(false)
-    }
+
+    navigate(therapistChatbotExpandedPage)
+    await dispatch(
+      chatWithTherapistChatbot({
+        newMessage: msg,
+        patientId: forwardPatientId,
+        language: getCurrentLanguage(),
+      })
+    )
   }
 
   return (
@@ -232,115 +205,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <Box component='main' sx={{ flexGrow: 1, p: 3, bgcolor: 'white', pb: '120px' }}>
           <Toolbar />
-          {!expanded && children}
-        </Box>
-
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 64,
-            left: drawerWidth,
-            height: 'calc(100vh - 164px)',
-            bgcolor: '#b4b6b4',
-            visibility: expanded ? 'visible' : 'hidden',
-            width: `calc(100vw - ${drawerWidth}px)`,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <List
-            ref={listRef}
-            sx={{
-              overflowY: 'auto',
-              flexGrow: 1,
-              p: '20px 40px 20px 30px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-            }}
-          >
-            {messages.map((m, i) => {
-              const isLastAssistant =
-                i === messages.length - 1 && m.chatRole === ChatMessageDTOChatRoleEnum.Assistant
-              const body =
-                isLastAssistant && isStreaming
-                  ? formatResponse(typingStream)
-                  : formatResponse(m.content ?? '')
-
-              return m.chatRole === ChatMessageDTOChatRoleEnum.User ? (
-                <ListItem key={i} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Box sx={{ maxWidth: '80%', ml: 'auto' }}>
-                    <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                      You
-                    </Typography>
-                    <Box
-                      sx={{
-                        py: 1,
-                        px: 2,
-                        bgcolor: 'primary.main',
-                        color: 'white',
-                        borderRadius: '20px',
-                      }}
-                    >
-                      <Typography variant='body1'>{body}</Typography>
-                    </Box>
-                  </Box>
-                </ListItem>
-              ) : (
-                <ListItem key={i} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-                  <Avatar sx={{ bgcolor: 'transparent', mr: 1, mt: 0.5 }}>
-                    <AssistantIcon sx={{ color: 'black' }} />
-                  </Avatar>
-                  <Box sx={{ maxWidth: '80%' }}>
-                    <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                      Chatbot
-                    </Typography>
-                    <Paper
-                      sx={{
-                        py: 1,
-                        px: 2,
-                        bgcolor: '#E5E5E5',
-                        borderRadius: '20px',
-                        display: 'inline-block',
-                      }}
-                    >
-                      <Typography variant='body1'>{body}</Typography>
-                    </Paper>
-                  </Box>
-                </ListItem>
-              )
-            })}
-
-            {waiting && (
-              <ListItem sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-                <Avatar sx={{ bgcolor: 'transparent', mr: 1, mt: 0.5 }}>
-                  <AssistantIcon sx={{ color: 'black' }} />
-                </Avatar>
-                <Box sx={{ maxWidth: '80%' }}>
-                  <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                    Chatbot
-                  </Typography>
-                  <Box
-                    sx={{
-                      px: 2,
-                      bgcolor: '#E5E5E5',
-                      borderRadius: '20px',
-                      minHeight: '40px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <div className='typing-indicator'>
-                      <span>.</span>
-                      <span>.</span>
-                      <span>.</span>
-                    </div>
-                  </Box>
-                </Box>
-              </ListItem>
-            )}
-          </List>
+          {children}
         </Box>
 
         <Box
@@ -376,32 +241,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           />
           <IconButton
             onClick={sendMessage}
-            sx={{ position: 'absolute', right: expanded ? 30 : 70, bottom: 30 }}
+            sx={{ position: 'absolute', right: '30px', bottom: '27px' }}
           >
             <SendIcon sx={{ color: 'black' }} />
           </IconButton>
-          {!expanded && (
-            <IconButton
-              sx={{ color: 'black', height: 30, width: 30 }}
-              onClick={() => setExpanded(true)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          )}
-        </Box>
 
-        {expanded && (
           <IconButton
-            sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
-            onClick={() => {
-              dispatch(clearMessages())
-              setInput('')
-              setExpanded(false)
-            }}
+            sx={{ position: 'absolute', right: '5px', bottom: '60px' }}
+            onClick={() => navigate(therapistChatbotExpandedPage)}
           >
-            <ExpandMoreIcon />
+            <ExpandLessIcon sx={{ color: 'black' }} />
           </IconButton>
-        )}
+        </Box>
       </Box>
     </>
   )

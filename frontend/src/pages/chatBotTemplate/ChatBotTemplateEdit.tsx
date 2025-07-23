@@ -24,9 +24,6 @@ import {
 import { AxiosError } from 'axios'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
@@ -46,6 +43,7 @@ import {
 } from '../../store/chatbotTemplateDocumentSlice'
 import { updateChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { RootState } from '../../store/store'
+import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
@@ -69,6 +67,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
   const [isActive, setIsActive] = useState<boolean>(false)
+  const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
 
   const chatListRef = useRef<HTMLUListElement>(null)
 
@@ -146,6 +145,31 @@ const ChatBotTemplateEdit: React.FC = () => {
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
     }
   }, [dispatch, chatbotConfig?.id, selectedTab])
+
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      if (!chatbotConfig?.patientId) {
+        return
+      }
+      try {
+        const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
+        setIsOnlyTemplateForClient(data.length === 1)
+      } catch (e) {
+        console.error('Cannot load templates for patient', e)
+      }
+    }
+    load()
+  }, [chatbotConfig?.patientId])
+
+  const handleActiveChange = (next: boolean): void => {
+    if (isOnlyTemplateForClient && isActive && !next) {
+      setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
+      setSnackbarSeverity('warning')
+      setSnackbarOpen(true)
+      return
+    }
+    setIsActive(next)
+  }
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'sources'): void => {
     setSelectedTab(newValue)
@@ -257,7 +281,6 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       const updateChatbotTemplateDTO = {
         chatbotName: chatbotName,
-        chatbotIcon: chatbotIcon,
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
@@ -289,21 +312,8 @@ const ChatBotTemplateEdit: React.FC = () => {
     setSnackbarOpen(false)
   }
 
-  const getIconComponent = (iconName: string): ReactElement => {
-    switch (iconName) {
-      case 'Chatbot':
-        return <TbMessageChatbot size='1.2em' color='black' />
-      case 'Robot':
-        return <RiRobot2Line size='1.2em' color='black' />
-      case 'Person':
-        return <IoPersonOutline size='1.2em' color='black' />
-      case 'Bulb':
-        return <IoBulbOutline size='1.2em' color='black' />
-      case 'Book':
-        return <PiBookOpenTextLight size='1.2em' color='black' />
-      default:
-        return <TbMessageChatbot size='1.2em' color='black' />
-    }
+  const getIconComponent = (): ReactElement => {
+    return <TbMessageChatbot size='1.2em' color='black' />
   }
 
   const renderMessage = (
@@ -322,7 +332,7 @@ const ChatBotTemplateEdit: React.FC = () => {
             mt: 2.5,
           }}
         >
-          {getIconComponent(chatbotIcon)}
+          {getIconComponent()}
         </Avatar>
       )}
       <Box sx={{ flex: 1, maxWidth: '80%' }}>
@@ -345,46 +355,19 @@ const ChatBotTemplateEdit: React.FC = () => {
     </ListItem>
   )
 
-  const commonButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none' as const,
-    fontSize: '1rem',
-    minWidth: '130px',
-    maxWidth: '130px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: '#635BFF',
-    backgroundImage: 'linear-gradient(45deg, #635BFF 30%, #7C4DFF 90%)',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#7C4DFF',
-    },
-    margin: 1,
-  }
-
   const sendButtonStyles = {
     ...commonButtonStyles,
     height: '55px',
     minWidth: '80px',
     maxWidth: '80px',
-  }
+  } as const
 
-  const disabledButtonStyles = {
-    borderRadius: 20,
-    textTransform: 'none' as const,
-    fontSize: '1rem',
+  const smallDisabledButtonStyles = {
+    ...disabledButtonStyles,
     height: '55px',
     minWidth: '80px',
     maxWidth: '80px',
-    padding: '6px 24px',
-    lineHeight: 1.75,
-    backgroundColor: 'lightgrey',
-    boxShadow: '0 3px 5px 2px rgba(99, 91, 255, .3)',
-    color: 'white',
-    cursor: 'not-allowed',
-    margin: 1,
-  }
+  } as const
 
   const handleFileUpload = async (file: File): Promise<void> => {
     if (!chatbotConfig?.id) {
@@ -484,23 +467,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-icon-label'>Chatbot Icon</InputLabel>
-                  <Select
-                    labelId='chatbot-icon-label'
-                    id='chatbot-icon-select'
-                    value={chatbotIcon}
-                    label='Chatbot Icon'
-                    onChange={(e) => setChatbotIcon(e.target.value)}
-                  >
-                    <MenuItem value='Chatbot'>Chatbot</MenuItem>
-                    <MenuItem value='Robot'>Robot</MenuItem>
-                    <MenuItem value='Person'>Person</MenuItem>
-                    <MenuItem value='Bulb'>Bulb</MenuItem>
-                    <MenuItem value='Book'>Book</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
                   <InputLabel id='chatbot-tone-label'>Conversation Tone</InputLabel>
                   <Select
                     labelId='chatbot-tone-label'
@@ -530,8 +496,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                   control={
                     <Switch
                       checked={isActive}
-                      onChange={(e) => setIsActive(e.target.checked)}
+                      onChange={(e) => handleActiveChange(e.target.checked)}
                       color='success'
+                      disabled={isOnlyTemplateForClient && isActive}
                     />
                   }
                   label='Active (visible to patient)'
@@ -582,7 +549,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                         mr: 2,
                       }}
                     >
-                      {getIconComponent(chatbotIcon)}
+                      {getIconComponent()}
                     </Avatar>
                   )}
                   <Typography variant='h4'>{chatbotName || 'Chatbot'} Simulation</Typography>
@@ -627,7 +594,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                                 mt: 2,
                               }}
                             >
-                              {getIconComponent(chatbotIcon)}
+                              {getIconComponent()}
                             </Avatar>
                           )}
                           <Box sx={{ maxWidth: '80%' }}>
@@ -677,7 +644,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                   <Button
                     type='submit'
                     variant='contained'
-                    sx={!question || isChatbotTyping ? disabledButtonStyles : sendButtonStyles}
+                    sx={!question || isChatbotTyping ? smallDisabledButtonStyles : sendButtonStyles}
                     disabled={!question || isChatbotTyping || isLoading}
                   >
                     {isChatbotTyping ? <CircularProgress size={24} /> : <SendIcon />}
