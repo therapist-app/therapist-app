@@ -28,7 +28,7 @@ import {
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
-import {getAllPatientsOfTherapist, getPatientById} from '../../store/patientSlice'
+import { getAllPatientsOfTherapist, getPatientById } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { patientDocumentApi } from '../../utils/api'
@@ -242,15 +242,15 @@ const PatientDetail = (): ReactElement => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  variant="contained"
-                  color="primary"
+                  variant='contained'
+                  color='primary'
                   onClick={() =>
                     navigate(
                       getPathFromPage(PAGES.PATIENTS_DETAILS_UPDATE_PAGE, {
                         patientId: patientId ?? '',
                       })
                     )
-                }
+                  }
                 >
                   {t('patient_detail.view_more_details')}
                 </Button>

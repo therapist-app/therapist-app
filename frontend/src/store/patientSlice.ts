@@ -4,8 +4,6 @@ import { CreatePatientDTO, PatientOutputDTO } from '../api'
 import { UpdatePatientDetailDTO } from '../api'
 import { patientApi } from '../utils/api'
 
-
-
 interface PatientState {
   selectedPatient: PatientOutputDTO | null
   allPatientsOfTherapist: PatientOutputDTO[]
@@ -27,7 +25,6 @@ export const registerPatient = createAsyncThunk(
     return response.data
   }
 )
-
 
 export const updatePatient = createAsyncThunk(
   'updatePatient',
@@ -111,7 +108,7 @@ const patientSlice = createSlice({
       })
       .addCase(updatePatient.fulfilled, (state, action) => {
         // Update patient in list
-        const index = state.allPatientsOfTherapist.findIndex(p => p.id === action.payload.id)
+        const index = state.allPatientsOfTherapist.findIndex((p) => p.id === action.payload.id)
         if (index !== -1) {
           state.allPatientsOfTherapist[index] = action.payload
         }

@@ -1,3 +1,4 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
   AccordionDetails,
@@ -11,20 +12,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { AxiosError } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AxiosError } from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 
-import { updatePatient } from '../../store/patientSlice'
 import Layout from '../../generalComponents/Layout'
+import { updatePatient } from '../../store/patientSlice'
+import { RootState } from '../../store/store'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { handleError } from '../../utils/handleError'
-import { RootState } from '../../store/store'
-import {useSelector} from "react-redux";
 
 type Complaint = {
   id: string
@@ -80,7 +80,6 @@ const PatientDetailsUpdate = () => {
       negativeHistory: '',
     },
   ])
-
 
   const [treatmentPast, setTreatmentPast] = useState('')
   const [treatmentCurrent, setTreatmentCurrent] = useState('')
@@ -158,38 +157,38 @@ const PatientDetailsUpdate = () => {
     try {
       await dispatch(
         updatePatient({
-          patientId: patientId ?? '',  // ensure it's not undefined
+          patientId: patientId ?? '', // ensure it's not undefined
           updatePatientDetailDTO: {
             id: patientId ?? '',
-            name,
+            name: name,
             gender: sex,
             age: Number(age),
-            phoneNumber,
-            email,
-            address,
-            maritalStatus,
-            religion,
-            education,
-            occupation,
-            income,
-            dateOfAdmission,
-            complaints,
-            treatmentPast,
-            treatmentCurrent,
-            pastMedical,
-            pastPsych,
-            familyIllness,
-            familySocial,
-            personalPerinatal,
-            personalChildhood,
-            personalEducation,
-            personalPlay,
-            personalAdolescence,
-            personalPuberty,
-            personalObstetric,
-            personalOccupational,
-            personalMarital,
-            personalPremorbid,
+            phoneNumber: phoneNumber,
+            email: email,
+            address: address,
+            maritalStatus: maritalStatus,
+            religion: religion,
+            education: education,
+            occupation: occupation,
+            income: income,
+            dateOfAdmission: dateOfAdmission,
+            complaints: complaints,
+            treatmentPast: treatmentPast,
+            treatmentCurrent: treatmentCurrent,
+            pastMedical: pastMedical,
+            pastPsych: pastPsych,
+            familyIllness: familyIllness,
+            familySocial: familySocial,
+            personalPerinatal: personalPerinatal,
+            personalChildhood: personalChildhood,
+            personalEducation: personalEducation,
+            personalPlay: personalPlay,
+            personalAdolescence: personalAdolescence,
+            personalPuberty: personalPuberty,
+            personalObstetric: personalObstetric,
+            personalOccupational: personalOccupational,
+            personalMarital: personalMarital,
+            personalPremorbid: personalPremorbid,
           },
         })
       )
@@ -198,7 +197,9 @@ const PatientDetailsUpdate = () => {
       setSnackbarSeverity('success')
       setSnackbarOpen(true)
       setIsEditing(false)
-      navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId! }), { replace: true })
+      navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId! }), {
+        replace: true,
+      })
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
@@ -207,7 +208,7 @@ const PatientDetailsUpdate = () => {
     }
   }
 
-    const handleChange = (index: number, field: keyof Complaint, value: string): void => {
+  const handleChange = (index: number, field: keyof Complaint, value: string): void => {
     const updated = [...complaints]
     updated[index] = {
       ...updated[index],
@@ -235,17 +236,16 @@ const PatientDetailsUpdate = () => {
     ])
   }
 
-
   return (
     <Layout>
       <Box sx={{ maxWidth: 800, mx: 'auto' }}>
-        <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Box display='flex' justifyContent='flex-end' mb={2}>
           {!isEditing ? (
-            <Button variant="contained" onClick={() => setIsEditing(true)}>
+            <Button variant='contained' onClick={() => setIsEditing(true)}>
               {t('patient_detail.edit')}
             </Button>
           ) : (
-            <Button variant="contained" color="success" onClick={handleUpdateSubmit}>
+            <Button variant='contained' color='success' onClick={handleUpdateSubmit}>
               {t('patient_detail.save_changes')}
             </Button>
           )}

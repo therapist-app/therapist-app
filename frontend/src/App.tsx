@@ -46,7 +46,10 @@ const App = (): ReactElement => {
 
             <Route path={ROUTES[PAGES.PATIENTS_CREATE_PAGE]} element={<PatientCreate />} />
             <Route path={ROUTES[PAGES.PATIENTS_DETAILS_PAGE]} element={<PatientDetail />} />
-            <Route path={ROUTES[PAGES.PATIENTS_DETAILS_UPDATE_PAGE]} element={<PatientDetailsUpdate />} />
+            <Route
+              path={ROUTES[PAGES.PATIENTS_DETAILS_UPDATE_PAGE]}
+              element={<PatientDetailsUpdate />}
+            />
 
             <Route path={ROUTES[PAGES.CHATBOT_CREATE_PAGE]} element={<NotFound />} />
             <Route path={ROUTES[PAGES.CHATBOT_DETAILS_PAGE]} element={<NotFound />} />
