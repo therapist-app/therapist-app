@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { conversationApi } from '../utils/api'
 
 const PRIVATE_MESSAGE = 'The conversation of the client with the chatbot is private.'
@@ -22,7 +23,7 @@ export const fetchConversationSummary = createAsyncThunk<
 >('conversation/fetchConversationSummary', async ({ patientId, start, end }, thunkAPI) => {
   try {
     const { data } = await conversationApi.getConversationSummary(patientId, start, end)
-    return { patientId, summary: data.conversationSummary ?? '' }
+    return { patientId: patientId, summary: data.conversationSummary ?? '' }
   } catch (err: unknown) {
     const anyErr = err as any
     const status = anyErr?.response?.status as number | undefined
@@ -36,9 +37,9 @@ export const fetchConversationSummary = createAsyncThunk<
 
 const conversationSlice = createSlice({
   name: 'conversation',
-  initialState,
+  initialState: initialState,
   reducers: {
-    clearConversationSummary(state, action: PayloadAction<string | void>) {
+    clearConversationSummary: function (state, action: PayloadAction<string | void>) {
       if (action.payload) {
         delete state.byPatient[action.payload]
       } else {
