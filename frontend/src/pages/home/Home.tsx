@@ -216,7 +216,7 @@ const Home = (): ReactElement => {
     )
   }
   const getIconComponent = (iconName: string): ReactElement | null => {
-        return <TbMessageChatbot />
+    return <TbMessageChatbot />
   }
   const dialogStyle = {
     width: '500px',

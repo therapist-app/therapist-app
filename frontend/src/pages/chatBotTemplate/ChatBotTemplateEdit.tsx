@@ -287,8 +287,8 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const getIconComponent = (iconName: string): ReactElement => {
-        return <TbMessageChatbot size='1.2em' color='black' />
-    }
+    return <TbMessageChatbot size='1.2em' color='black' />
+  }
 
   const renderMessage = (
     chatItem: { question?: string; response: ReactNode | null },
