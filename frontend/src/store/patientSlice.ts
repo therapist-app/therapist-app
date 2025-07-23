@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { CreatePatientDTO, PatientOutputDTO, UpdatePatientDetailDTO } from '../api';
+import { CreatePatientDTO, PatientOutputDTO, UpdatePatientDetailDTO } from '../api'
 import { patientApi } from '../utils/api'
 
 interface PatientState {

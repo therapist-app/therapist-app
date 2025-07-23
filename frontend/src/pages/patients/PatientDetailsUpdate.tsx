@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, {JSX, useEffect, useState} from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -153,7 +153,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
     }
   }, [patient])
 
-  const handleUpdateSubmit = async () :Promise<void> => {
+  const handleUpdateSubmit = async (): Promise<void> => {
     try {
       await dispatch(
         updatePatient({
