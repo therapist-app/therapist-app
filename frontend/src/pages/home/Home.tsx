@@ -22,9 +22,6 @@ import CardActions from '@mui/material/CardActions'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -218,21 +215,8 @@ const Home = (): ReactElement => {
       }
     )
   }
-  const getIconComponent = (iconName: string): ReactElement | null => {
-    switch (iconName) {
-      case 'Chatbot':
-        return <TbMessageChatbot />
-      case 'Robot':
-        return <RiRobot2Line />
-      case 'Person':
-        return <IoPersonOutline />
-      case 'Bulb':
-        return <IoBulbOutline />
-      case 'Book':
-        return <PiBookOpenTextLight />
-      default:
-        return null
-    }
+  const getIconComponent = (): ReactElement | null => {
+    return <TbMessageChatbot />
   }
   const dialogStyle = {
     width: '500px',
@@ -340,7 +324,7 @@ const Home = (): ReactElement => {
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
-                    {getIconComponent(bot.chatbotIcon ?? '')}
+                    {getIconComponent()}
                   </Typography>
                 </CardContent>
               </CardActionArea>

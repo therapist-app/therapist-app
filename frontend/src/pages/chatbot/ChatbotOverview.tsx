@@ -17,9 +17,6 @@ import {
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -81,10 +78,6 @@ const ChatbotOverview = (): ReactElement => {
     (
       ({
         Chatbot: <TbMessageChatbot />,
-        Robot: <RiRobot2Line />,
-        Person: <IoPersonOutline />,
-        Bulb: <IoBulbOutline />,
-        Book: <PiBookOpenTextLight />,
       }) as Record<string, ReactElement | null>
     )[icon] ?? null
 

@@ -24,9 +24,6 @@ import {
 import { AxiosError } from 'axios'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { IoBulbOutline, IoPersonOutline } from 'react-icons/io5'
-import { PiBookOpenTextLight } from 'react-icons/pi'
-import { RiRobot2Line } from 'react-icons/ri'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
@@ -258,7 +255,6 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       const updateChatbotTemplateDTO = {
         chatbotName: chatbotName,
-        chatbotIcon: chatbotIcon,
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
@@ -290,21 +286,8 @@ const ChatBotTemplateEdit: React.FC = () => {
     setSnackbarOpen(false)
   }
 
-  const getIconComponent = (iconName: string): ReactElement => {
-    switch (iconName) {
-      case 'Chatbot':
-        return <TbMessageChatbot size='1.2em' color='black' />
-      case 'Robot':
-        return <RiRobot2Line size='1.2em' color='black' />
-      case 'Person':
-        return <IoPersonOutline size='1.2em' color='black' />
-      case 'Bulb':
-        return <IoBulbOutline size='1.2em' color='black' />
-      case 'Book':
-        return <PiBookOpenTextLight size='1.2em' color='black' />
-      default:
-        return <TbMessageChatbot size='1.2em' color='black' />
-    }
+  const getIconComponent = (): ReactElement => {
+    return <TbMessageChatbot size='1.2em' color='black' />
   }
 
   const renderMessage = (
@@ -323,7 +306,7 @@ const ChatBotTemplateEdit: React.FC = () => {
             mt: 2.5,
           }}
         >
-          {getIconComponent(chatbotIcon)}
+          {getIconComponent()}
         </Avatar>
       )}
       <Box sx={{ flex: 1, maxWidth: '80%' }}>
@@ -458,23 +441,6 @@ const ChatBotTemplateEdit: React.FC = () => {
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-icon-label'>Chatbot Icon</InputLabel>
-                  <Select
-                    labelId='chatbot-icon-label'
-                    id='chatbot-icon-select'
-                    value={chatbotIcon}
-                    label='Chatbot Icon'
-                    onChange={(e) => setChatbotIcon(e.target.value)}
-                  >
-                    <MenuItem value='Chatbot'>Chatbot</MenuItem>
-                    <MenuItem value='Robot'>Robot</MenuItem>
-                    <MenuItem value='Person'>Person</MenuItem>
-                    <MenuItem value='Bulb'>Bulb</MenuItem>
-                    <MenuItem value='Book'>Book</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth margin='normal'>
                   <InputLabel id='chatbot-tone-label'>Conversation Tone</InputLabel>
                   <Select
                     labelId='chatbot-tone-label'
@@ -556,7 +522,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                         mr: 2,
                       }}
                     >
-                      {getIconComponent(chatbotIcon)}
+                      {getIconComponent()}
                     </Avatar>
                   )}
                   <Typography variant='h4'>{chatbotName || 'Chatbot'} Simulation</Typography>
@@ -601,7 +567,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                                 mt: 2,
                               }}
                             >
-                              {getIconComponent(chatbotIcon)}
+                              {getIconComponent()}
                             </Avatar>
                           )}
                           <Box sx={{ maxWidth: '80%' }}>
