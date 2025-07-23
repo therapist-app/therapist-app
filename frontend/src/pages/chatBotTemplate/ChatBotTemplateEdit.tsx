@@ -67,6 +67,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isChatbotTyping, setIsChatbotTyping] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
   const [isActive, setIsActive] = useState<boolean>(false)
+  const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
 
   const chatListRef = useRef<HTMLUListElement>(null)
 
@@ -144,6 +145,31 @@ const ChatBotTemplateEdit: React.FC = () => {
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
     }
   }, [dispatch, chatbotConfig?.id, selectedTab])
+
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      if (!chatbotConfig?.patientId) {
+        return
+      }
+      try {
+        const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
+        setIsOnlyTemplateForClient(data.length === 1)
+      } catch (e) {
+        console.error('Cannot load templates for patient', e)
+      }
+    }
+    load()
+  }, [chatbotConfig?.patientId])
+
+  const handleActiveChange = (next: boolean): void => {
+    if (isOnlyTemplateForClient && isActive && !next) {
+      setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
+      setSnackbarSeverity('warning')
+      setSnackbarOpen(true)
+      return
+    }
+    setIsActive(next)
+  }
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'sources'): void => {
     setSelectedTab(newValue)
@@ -470,8 +496,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                   control={
                     <Switch
                       checked={isActive}
-                      onChange={(e) => setIsActive(e.target.checked)}
+                      onChange={(e) => handleActiveChange(e.target.checked)}
                       color='success'
+                      disabled={isOnlyTemplateForClient && isActive}
                     />
                   }
                   label='Active (visible to patient)'
