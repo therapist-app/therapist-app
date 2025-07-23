@@ -23,7 +23,7 @@ import Layout from '../../generalComponents/Layout'
 import { updatePatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { handleError } from '../../utils/handleError'
-import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
 type Complaint = {
