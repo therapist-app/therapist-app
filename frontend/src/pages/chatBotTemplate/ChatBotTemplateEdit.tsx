@@ -286,7 +286,7 @@ const ChatBotTemplateEdit: React.FC = () => {
     setSnackbarOpen(false)
   }
 
-  const getIconComponent = (iconName: string): ReactElement => {
+  const getIconComponent = (): ReactElement => {
     return <TbMessageChatbot size='1.2em' color='black' />
   }
 
@@ -306,7 +306,7 @@ const ChatBotTemplateEdit: React.FC = () => {
             mt: 2.5,
           }}
         >
-          {getIconComponent(chatbotIcon)}
+          {getIconComponent()}
         </Avatar>
       )}
       <Box sx={{ flex: 1, maxWidth: '80%' }}>
@@ -522,7 +522,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                         mr: 2,
                       }}
                     >
-                      {getIconComponent(chatbotIcon)}
+                      {getIconComponent()}
                     </Avatar>
                   )}
                   <Typography variant='h4'>{chatbotName || 'Chatbot'} Simulation</Typography>
@@ -567,7 +567,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                                 mt: 2,
                               }}
                             >
-                              {getIconComponent(chatbotIcon)}
+                              {getIconComponent()}
                             </Avatar>
                           )}
                           <Box sx={{ maxWidth: '80%' }}>

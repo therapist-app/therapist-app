@@ -215,7 +215,7 @@ const Home = (): ReactElement => {
       }
     )
   }
-  const getIconComponent = (iconName: string): ReactElement | null => {
+  const getIconComponent = (): ReactElement | null => {
     return <TbMessageChatbot />
   }
   const dialogStyle = {
@@ -324,7 +324,7 @@ const Home = (): ReactElement => {
                   </Typography>
                   <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
-                    {getIconComponent(bot.chatbotIcon ?? '')}
+                    {getIconComponent()}
                   </Typography>
                 </CardContent>
               </CardActionArea>
