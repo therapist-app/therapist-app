@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, {JSX, useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -40,7 +40,7 @@ type Complaint = {
   negativeHistory: string
 }
 
-const PatientDetailsUpdate = () => {
+const PatientDetailsUpdate = (): JSX.Element => {
   const { patientId } = useParams()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -153,7 +153,7 @@ const PatientDetailsUpdate = () => {
     }
   }, [patient])
 
-  const handleUpdateSubmit = async () => {
+  const handleUpdateSubmit = async () :Promise<void> => {
     try {
       await dispatch(
         updatePatient({
