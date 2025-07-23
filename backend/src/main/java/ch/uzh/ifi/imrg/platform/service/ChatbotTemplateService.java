@@ -77,8 +77,7 @@ public class ChatbotTemplateService {
     Patient patient = patientRepository.getPatientById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
-    boolean isFirst =
-        patient.getChatbotTemplates() == null || patient.getChatbotTemplates().isEmpty();
+    boolean isFirst = chatbotTemplateRepository.countByPatientId(patientId) == 0;
 
     template.setPatient(patient);
     template.setTherapist(patient.getTherapist());
@@ -88,15 +87,12 @@ public class ChatbotTemplateService {
     chatbotTemplateRepository.flush();
 
     if (isFirst) {
-      CreateChatbotDTOPatientAPI createChatbotDTO =
+      CreateChatbotDTOPatientAPI dto =
           new CreateChatbotDTOPatientAPI()
               .chatbotRole(saved.getChatbotRole())
               .chatbotTone(saved.getChatbotTone())
               .welcomeMessage(saved.getWelcomeMessage());
-
-      PatientAppAPIs.coachChatbotControllerPatientAPI
-          .createChatbot(patientId, createChatbotDTO)
-          .block();
+      PatientAppAPIs.coachChatbotControllerPatientAPI.createChatbot(patientId, dto).block();
     }
 
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
@@ -302,6 +298,7 @@ public class ChatbotTemplateService {
 
     clone.setTherapist(patient.getTherapist());
     clone.setPatient(patient);
+    clone.setActive(false);
 
     original
         .getChatbotTemplateDocuments()
