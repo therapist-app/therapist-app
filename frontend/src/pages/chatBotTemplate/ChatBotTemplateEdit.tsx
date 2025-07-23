@@ -147,27 +147,29 @@ const ChatBotTemplateEdit: React.FC = () => {
   }, [dispatch, chatbotConfig?.id, selectedTab])
 
   useEffect((): void => {
-  const load = async (): Promise<void> => {
-    if (!chatbotConfig?.patientId) return
-    try {
-      const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
-      setIsOnlyTemplateForClient(data.length === 1)
-    } catch (e) {
-      console.error('Cannot load templates for patient', e)
+    const load = async (): Promise<void> => {
+      if (!chatbotConfig?.patientId) {
+        return
+      }
+      try {
+        const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
+        setIsOnlyTemplateForClient(data.length === 1)
+      } catch (e) {
+        console.error('Cannot load templates for patient', e)
+      }
     }
-  }
-  load()
-}, [chatbotConfig?.patientId])
+    load()
+  }, [chatbotConfig?.patientId])
 
-const handleActiveChange = (next: boolean): void => {
-  if (isOnlyTemplateForClient && isActive && !next) {
-    setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
-    setSnackbarSeverity('warning')
-    setSnackbarOpen(true)
-    return
+  const handleActiveChange = (next: boolean): void => {
+    if (isOnlyTemplateForClient && isActive && !next) {
+      setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
+      setSnackbarSeverity('warning')
+      setSnackbarOpen(true)
+      return
+    }
+    setIsActive(next)
   }
-  setIsActive(next)
-}
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: 'config' | 'sources'): void => {
     setSelectedTab(newValue)
