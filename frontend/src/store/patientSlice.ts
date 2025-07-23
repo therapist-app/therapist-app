@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { CreatePatientDTO, PatientOutputDTO } from '../api'
+import { UpdatePatientDetailDTO } from '../api'
 import { patientApi } from '../utils/api'
+
+
 
 interface PatientState {
   selectedPatient: PatientOutputDTO | null
@@ -21,6 +24,21 @@ export const registerPatient = createAsyncThunk(
   'registerPatient',
   async (createPatientDTO: CreatePatientDTO) => {
     const response = await patientApi.createPatientForTherapist(createPatientDTO)
+    return response.data
+  }
+)
+
+
+export const updatePatient = createAsyncThunk(
+  'updatePatient',
+  async ({
+    patientId,
+    updatePatientDetailDTO,
+  }: {
+    patientId: string
+    updatePatientDetailDTO: UpdatePatientDetailDTO
+  }) => {
+    const response = await patientApi.updatePatientDetails(patientId, updatePatientDetailDTO)
     return response.data
   }
 )
@@ -90,6 +108,17 @@ const patientSlice = createSlice({
       .addCase(getPatientById.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
+      })
+      .addCase(updatePatient.fulfilled, (state, action) => {
+        // Update patient in list
+        const index = state.allPatientsOfTherapist.findIndex(p => p.id === action.payload.id)
+        if (index !== -1) {
+          state.allPatientsOfTherapist[index] = action.payload
+        }
+        // Optional: also update selectedPatient
+        if (state.selectedPatient?.id === action.payload.id) {
+          state.selectedPatient = action.payload
+        }
       })
   },
 })

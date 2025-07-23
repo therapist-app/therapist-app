@@ -9,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdatePatientDetailDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientMapper;
 import ch.uzh.ifi.imrg.platform.utils.PasswordGenerationUtil;
@@ -78,6 +79,18 @@ public class PatientService {
         .block();
 
     return mapper.convertEntityToPatientOutputDTO(createdPatient);
+  }
+
+  public PatientOutputDTO updatePatientDetails(
+      String patientId, UpdatePatientDetailDTO inputDTO, String therapistId) {
+
+    Patient patient = patientRepository.getPatientById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId); // ensure therapist owns this patient
+
+    mapper.updatePatientFromDto(inputDTO, patient);
+
+    patientRepository.save(patient);
+    return mapper.convertEntityToPatientOutputDTO(patient);
   }
 
   public PatientOutputDTO getPatientById(String patientId, String therapistId) {

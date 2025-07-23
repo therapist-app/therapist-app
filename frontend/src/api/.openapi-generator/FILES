@@ -70,4 +70,5 @@ models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts
 models/update-meeting-dto.ts
 models/update-meeting-note-dto.ts
+models/update-patient-detail-dto.ts
 models/update-therapist-dto.ts

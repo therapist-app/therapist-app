@@ -52,7 +52,7 @@ public class MeetingService {
     Meeting createdMeeting = meetingRepository.save(meeting);
     CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
         new CreateMeetingDTOPatientAPI()
-            .externalMeetingId(createdMeeting.getId())
+            .id(createdMeeting.getId())
             .startAt(meeting.getMeetingStart())
             .endAt(meeting.getMeetingEnd())
             .location(meeting.getLocation());

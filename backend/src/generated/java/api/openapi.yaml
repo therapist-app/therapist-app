@@ -433,6 +433,102 @@ paths:
       - patient-controller
       x-content-type: application/json
       x-accepts: application/json
+  /coach/patients/{patientId}/psychological-tests/{psychologicalTestName}:
+    get:
+      operationId: getPsychologicalTestResults_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-psychological-test-controller
+      x-accepts: '*/*'
+    post:
+      operationId: createPsychologicalTest_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PsychologicalTestAssignmentInputDTO'
+        required: true
+      responses:
+        "201":
+          description: Created
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-psychological-test-controller
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      operationId: updatePsychologicalTest
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PsychologicalTestAssignmentInputDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-psychological-test-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/meetings/{meetingId}:
     delete:
       operationId: deleteMeeting_1
@@ -1420,6 +1516,59 @@ paths:
       - coach-patient-controller
       x-content-type: application/json
       x-accepts: '*/*'
+  /patients/{patientId}/psychological-tests:
+    get:
+      operationId: getPsychologicalTestNames
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestNameAndPatientIdOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - psychological-test-controller
+      x-accepts: '*/*'
+  /patients/{patientId}/psychological-tests/{psychologicalTestName}:
+    get:
+      operationId: getPsychologicalTestResults
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: psychologicalTestName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - psychological-test-controller
+      x-accepts: '*/*'
   /patients/me:
     get:
       operationId: getCurrentlyLoggedInPatient
@@ -1625,9 +1774,39 @@ paths:
       tags:
       - document-controller
       x-accepts: '*/*'
+  /patients/dashboard/psychological-tests:
+    get:
+      operationId: getPsychologicalTestsOverview
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/PsychologicalTestsOverviewOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - dashboard-controller
+      x-accepts: '*/*'
+  /patients/dashboard/exercises:
+    get:
+      operationId: getExerciseOverview_1
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExercisesOverviewOutputDTO'
+                type: array
+          description: OK
+      tags:
+      - dashboard-controller
+      x-accepts: '*/*'
   /coach/patients/{patientId}/psychological-tests:
     get:
-      operationId: getPsychologicalTestNames
+      operationId: getPsychologicalTestNames_1
       parameters:
       - explode: false
         in: path
@@ -1650,20 +1829,13 @@ paths:
       tags:
       - coach-psychological-test-controller
       x-accepts: '*/*'
-  /coach/patients/{patientId}/psychological-tests/{psychologicalTestName}:
+  /coach/patients/{patientId}/psychological-tests/available-tests:
     get:
-      operationId: getPsychologicalTestResults
+      operationId: getAvailablePsychologicalTestNames
       parameters:
       - explode: false
         in: path
         name: patientId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: psychologicalTestName
         required: true
         schema:
           type: string
@@ -1674,7 +1846,7 @@ paths:
             '*/*':
               schema:
                 items:
-                  $ref: '#/components/schemas/PsychologicalTestOutputDTO'
+                  $ref: '#/components/schemas/PsychologicalTestNameOutputDTO'
                 type: array
           description: OK
       security:
@@ -1961,7 +2133,6 @@ components:
         createdAt: 2000-01-23T04:56:07.000+00:00
         meetingStatus: PENDING
         patientId: patientId
-        externalMeetingId: externalMeetingId
         location: location
         id: id
         endAt: 2000-01-23T04:56:07.000+00:00
@@ -1969,8 +2140,6 @@ components:
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         id:
-          type: string
-        externalMeetingId:
           type: string
         createdAt:
           format: date-time
@@ -2098,6 +2267,24 @@ components:
       required:
       - chatBotAvatar
       type: object
+    PsychologicalTestAssignmentInputDTO:
+      properties:
+        patientId:
+          type: string
+        testName:
+          type: string
+        exerciseStart:
+          format: date-time
+          type: string
+        exerciseEnd:
+          format: date-time
+          type: string
+        isPaused:
+          type: boolean
+        doEveryNDays:
+          format: int32
+          type: integer
+      type: object
     ExerciseComponentInputDTO:
       properties:
         id:
@@ -2118,10 +2305,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2170,10 +2356,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2265,13 +2450,19 @@ components:
       type: object
     CreateMeetingDTO:
       properties:
-        externalMeetingId:
+        id:
           type: string
         startAt:
           format: date-time
           type: string
         endAt:
           format: date-time
+          type: string
+        meetingStatus:
+          enum:
+          - PENDING
+          - CONFIRMED
+          - CANCELLED
           type: string
         location:
           type: string
@@ -2426,6 +2617,53 @@ components:
         welcomeMessage:
           type: string
       type: object
+    PsychologicalTestNameAndPatientIdOutputDTO:
+      example:
+        patientId: patientId
+        name: name
+      properties:
+        name:
+          type: string
+        patientId:
+          type: string
+      type: object
+    PsychologicalTestOutputDTO:
+      example:
+        completedAt: 2000-01-23T04:56:07.000+00:00
+        patientId: patientId
+        name: name
+        questions:
+        - score: 0
+          question: question
+        - score: 0
+          question: question
+        description: description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        patientId:
+          type: string
+        completedAt:
+          format: date-time
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/PsychologicalTestQuestionOutputDTO'
+          type: array
+      type: object
+    PsychologicalTestQuestionOutputDTO:
+      example:
+        score: 0
+        question: question
+      properties:
+        question:
+          type: string
+        score:
+          format: int32
+          type: integer
+      type: object
     JournalConversationOutputDTO:
       example:
         name: name
@@ -2518,9 +2756,7 @@ components:
         fileName: fileName
         orderNumber: 0
         exerciseComponentDescription: exerciseComponentDescription
-        fileData:
-        - fileData
-        - fileData
+        fileData: fileData
         id: id
         userInput: userInput
         fileType: fileType
@@ -2546,10 +2782,9 @@ components:
         fileType:
           type: string
         fileData:
-          items:
-            format: byte
-            type: string
-          type: array
+          description: File data encoded in Base64
+          format: byte
+          type: string
         orderNumber:
           format: int32
           type: integer
@@ -2561,9 +2796,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
-          fileData:
-          - fileData
-          - fileData
+          fileData: fileData
           id: id
           userInput: userInput
           fileType: fileType
@@ -2571,9 +2804,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
-          fileData:
-          - fileData
-          - fileData
+          fileData: fileData
           id: id
           userInput: userInput
           fileType: fileType
@@ -2668,6 +2899,16 @@ components:
             $ref: '#/components/schemas/MessageOutputDTO'
           type: array
       type: object
+    PsychologicalTestsOverviewOutputDTO:
+      example:
+        id: id
+        testName: testName
+      properties:
+        id:
+          type: string
+        testName:
+          type: string
+      type: object
     NameConversationOutputDTO:
       example:
         chatbotIcon: chatbotIcon
@@ -2733,43 +2974,6 @@ components:
       properties:
         name:
           type: string
-      type: object
-    PsychologicalTestOutputDTO:
-      example:
-        completedAt: 2000-01-23T04:56:07.000+00:00
-        patientId: patientId
-        name: name
-        questions:
-        - score: 0
-          question: question
-        - score: 0
-          question: question
-        description: description
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        patientId:
-          type: string
-        completedAt:
-          format: date-time
-          type: string
-        questions:
-          items:
-            $ref: '#/components/schemas/PsychologicalTestQuestionOutputDTO'
-          type: array
-      type: object
-    PsychologicalTestQuestionOutputDTO:
-      example:
-        score: 0
-        question: question
-      properties:
-        question:
-          type: string
-        score:
-          format: int32
-          type: integer
       type: object
     CoachGetAllJournalEntriesDTO:
       example:

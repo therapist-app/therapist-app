@@ -28,7 +28,7 @@ import {
   deleteDocumentOfPatient,
   getAllPatientDocumentsOfPatient,
 } from '../../store/patientDocumentSlice'
-import { getAllPatientsOfTherapist } from '../../store/patientSlice'
+import {getAllPatientsOfTherapist, getPatientById} from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { patientDocumentApi } from '../../utils/api'
@@ -90,6 +90,12 @@ const PatientDetail = (): ReactElement => {
     dispatch(getAllExercisesOfPatient(patientId ?? ''))
     dispatch(getCounselingPlanByPatientId(patientId ?? ''))
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
+
+  useEffect(() => {
+    if (patientId) {
+      dispatch(getPatientById(patientId))
+    }
+  }, [dispatch, patientId])
 
   const handleFileUploadNotSharedWithPatient = async (file: File): Promise<void> => {
     await dispatch(
@@ -233,6 +239,21 @@ const PatientDetail = (): ReactElement => {
                   {t('patient_detail.date_of_admission')}
                 </Typography>
                 <Typography>{patient.dateOfAdmission || 'N/A'}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    navigate(
+                      getPathFromPage(PAGES.PATIENTS_DETAILS_UPDATE_PAGE, {
+                        patientId: patientId ?? '',
+                      })
+                    )
+                }
+                >
+                  {t('patient_detail.view_more_details')}
+                </Button>
               </Grid>
             </Grid>
           </CardContent>

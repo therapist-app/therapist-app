@@ -25,6 +25,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 import type { CreatePatientDTO } from '../models';
 // @ts-ignore
 import type { PatientOutputDTO } from '../models';
+// @ts-ignore
+import type { UpdatePatientDetailDTO } from '../models';
 /**
  * PatientControllerApi - axios parameter creator
  * @export
@@ -161,6 +163,45 @@ export const PatientControllerApiAxiosParamCreator = function (configuration?: C
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdatePatientDetailDTO} updatePatientDetailDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePatientDetails: async (id: string, updatePatientDetailDTO: UpdatePatientDetailDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updatePatientDetails', 'id', id)
+            // verify required parameter 'updatePatientDetailDTO' is not null or undefined
+            assertParamExists('updatePatientDetails', 'updatePatientDetailDTO', updatePatientDetailDTO)
+            const localVarPath = `/patients/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updatePatientDetailDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -218,6 +259,19 @@ export const PatientControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['PatientControllerApi.getPatientsOfTherapist']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdatePatientDetailDTO} updatePatientDetailDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updatePatientDetails(id: string, updatePatientDetailDTO: UpdatePatientDetailDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PatientOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePatientDetails(id, updatePatientDetailDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PatientControllerApi.updatePatientDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -263,6 +317,16 @@ export const PatientControllerApiFactory = function (configuration?: Configurati
         getPatientsOfTherapist(options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>> {
             return localVarFp.getPatientsOfTherapist(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {UpdatePatientDetailDTO} updatePatientDetailDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePatientDetails(id: string, updatePatientDetailDTO: UpdatePatientDetailDTO, options?: RawAxiosRequestConfig): AxiosPromise<PatientOutputDTO> {
+            return localVarFp.updatePatientDetails(id, updatePatientDetailDTO, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -306,6 +370,16 @@ export interface PatientControllerApiInterface {
      * @memberof PatientControllerApiInterface
      */
     getPatientsOfTherapist(options?: RawAxiosRequestConfig): AxiosPromise<Array<PatientOutputDTO>>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {UpdatePatientDetailDTO} updatePatientDetailDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientControllerApiInterface
+     */
+    updatePatientDetails(id: string, updatePatientDetailDTO: UpdatePatientDetailDTO, options?: RawAxiosRequestConfig): AxiosPromise<PatientOutputDTO>;
 
 }
 
@@ -357,6 +431,18 @@ export class PatientControllerApi extends BaseAPI implements PatientControllerAp
      */
     public getPatientsOfTherapist(options?: RawAxiosRequestConfig) {
         return PatientControllerApiFp(this.configuration).getPatientsOfTherapist(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {UpdatePatientDetailDTO} updatePatientDetailDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PatientControllerApi
+     */
+    public updatePatientDetails(id: string, updatePatientDetailDTO: UpdatePatientDetailDTO, options?: RawAxiosRequestConfig) {
+        return PatientControllerApiFp(this.configuration).updatePatientDetails(id, updatePatientDetailDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

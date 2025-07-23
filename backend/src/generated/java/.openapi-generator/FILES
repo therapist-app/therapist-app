@@ -23,6 +23,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.jav
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ConversationControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/DashboardControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/DocumentControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/DocumentConversationControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/ExerciseControllerPatientAPI.java
@@ -87,11 +88,14 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestAssignmentInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestInputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameAndPatientIdOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestQuestionOutputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestsOverviewOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutAvatarDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutConversationNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java

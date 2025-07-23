@@ -225,6 +225,7 @@
     "phone": "Phone",
     "address": "Address",
     "date_of_admission": "Date of Admission",
+    "view_more_details": "View more Details",
     "loading_patient_data": "Loading Patient Data...",
     "counseling_plan": "Counseling Plan",
     "go_to_counseling_plan": "Go to Counseling Plan",
