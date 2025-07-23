@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import type { AxiosError } from 'axios'
 import { conversationApi } from '../utils/api'
 
-const PRIVATE_MESSAGE = 'The conversation of the client with the chatbot is private.'
+export const PRIVATE_MESSAGE = 'The conversation of the client with the chatbot is private.'
 
 interface ConversationState {
   byPatient: Record<string, string>
@@ -16,6 +16,11 @@ const initialState: ConversationState = {
   error: null,
 }
 
+function getStatus(e: unknown): number | undefined {
+  const err = e as Partial<{ response: { status?: number } }>
+  return err.response?.status
+}
+
 export const fetchConversationSummary = createAsyncThunk<
   { patientId: string; summary: string },
   { patientId: string; start: string; end: string },
@@ -23,23 +28,28 @@ export const fetchConversationSummary = createAsyncThunk<
 >('conversation/fetchConversationSummary', async ({ patientId, start, end }, thunkAPI) => {
   try {
     const { data } = await conversationApi.getConversationSummary(patientId, start, end)
-    return { patientId: patientId, summary: data.conversationSummary ?? '' }
+    return { patientId, summary: data.conversationSummary ?? '' }
   } catch (err: unknown) {
-    const anyErr = err as any
-    const status = anyErr?.response?.status as number | undefined
+    const status = getStatus(err)
     if (status === 500) {
       return thunkAPI.rejectWithValue(PRIVATE_MESSAGE)
     }
-    const message = err instanceof Error ? err.message : 'error fetching summary'
+
+    const axiosErr = err as AxiosError<{ message?: string }>
+    const message =
+      axiosErr.response?.data?.message ??
+      axiosErr.message ??
+      (err instanceof Error ? err.message : 'error fetching summary')
+
     return thunkAPI.rejectWithValue(message)
   }
 })
 
 const conversationSlice = createSlice({
   name: 'conversation',
-  initialState: initialState,
+  initialState,
   reducers: {
-    clearConversationSummary: function (state, action: PayloadAction<string | void>) {
+    clearConversationSummary(state, action: PayloadAction<string | void>) {
       if (action.payload) {
         delete state.byPatient[action.payload]
       } else {
@@ -67,4 +77,3 @@ const conversationSlice = createSlice({
 
 export const { clearConversationSummary } = conversationSlice.actions
 export default conversationSlice.reducer
-export { PRIVATE_MESSAGE }

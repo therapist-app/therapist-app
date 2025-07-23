@@ -16,19 +16,17 @@ const ConversationSummary = (): ReactElement => {
   const error = useAppSelector((s) => s.conversation.error)
 
   useEffect(() => {
-    if (!patientId) {
-      return
-    }
+    if (!patientId) return
     dispatch(
       fetchConversationSummary({
-        patientId: patientId,
+        patientId,
         start: dayjs().subtract(7, 'day').toISOString(),
         end: dayjs().toISOString(),
       })
     )
   }, [dispatch, patientId])
 
-  const renderContent = () => {
+  const renderContent = (): ReactElement => {
     if (status === 'loading' || status === 'idle') {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
