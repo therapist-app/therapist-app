@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateChatbotTemplateDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateChatbotTemplateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -55,11 +56,11 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.OK)
   public ChatbotTemplateOutputDTO updateTemplate(
       @PathVariable String templateId,
-      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+      @RequestBody UpdateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
     ChatbotTemplate template =
-        ChatbotTemplateMapper.INSTANCE.convertCreateChatbotTemplateDTOtoEntity(templateInputDTO);
+        ChatbotTemplateMapper.INSTANCE.convertUpdateChatbotTemplateDTOtoEntity(templateInputDTO);
     return chatbotTemplateService.updateTemplate(templateId, template, therapistId);
   }
 
