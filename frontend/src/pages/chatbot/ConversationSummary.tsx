@@ -16,10 +16,12 @@ const ConversationSummary = (): ReactElement => {
   const error = useAppSelector((s) => s.conversation.error)
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     dispatch(
       fetchConversationSummary({
-        patientId,
+        patientId: patientId,
         start: dayjs().subtract(7, 'day').toISOString(),
         end: dayjs().toISOString(),
       })
