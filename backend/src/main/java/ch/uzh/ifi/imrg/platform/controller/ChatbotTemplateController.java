@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ChatbotTemplateService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -97,5 +98,12 @@ public class ChatbotTemplateController {
       @CurrentTherapistId String therapistId) {
 
     return chatbotTemplateService.cloneTemplateForPatient(patientId, templateId, therapistId);
+  }
+
+  @GetMapping("/patients/{patientId}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<ChatbotTemplateOutputDTO> getTemplatesForPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
+    return chatbotTemplateService.getTemplatesForPatient(patientId, therapistId);
   }
 }
