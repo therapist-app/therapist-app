@@ -14,6 +14,7 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,48 +117,53 @@ public class ChatbotTemplateService {
     existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
 
     boolean requestedActive = template.isActive();
-    existingTemplate.setActive(requestedActive);
-
     Patient patient = existingTemplate.getPatient();
 
-    if (patient != null && requestedActive) {
-      String patientId = patient.getId();
-      var allPatientTemplates = chatbotTemplateRepository.findByPatientId(patientId);
-      for (ChatbotTemplate other : allPatientTemplates) {
-        if (!other.getId().equals(existingTemplate.getId()) && other.isActive()) {
-          other.setActive(false);
+    ChatbotTemplate activeAfterUpdate = null;
+
+    if (patient != null) {
+      var all = chatbotTemplateRepository.findByPatientId(patient.getId());
+      boolean onlyTemplate = all.size() == 1 && all.get(0).getId().equals(existingTemplate.getId());
+
+      if (onlyTemplate && existingTemplate.isActive() && !requestedActive) {
+        throw new IllegalStateException(
+            "Cannot deactivate the only chatbot template for this patient.");
+      }
+
+      if (requestedActive) {
+        existingTemplate.setActive(true);
+        for (ChatbotTemplate other : all) {
+          if (!other.getId().equals(existingTemplate.getId()) && other.isActive()) {
+            other.setActive(false);
+            chatbotTemplateRepository.save(other);
+          }
+        }
+        activeAfterUpdate = existingTemplate;
+
+      } else {
+        existingTemplate.setActive(false);
+
+        activeAfterUpdate =
+            all.stream()
+                .filter(tpl -> !tpl.getId().equals(existingTemplate.getId()))
+                .sorted((a, b) -> b.getUpdatedAt().compareTo(a.getUpdatedAt()))
+                .findFirst()
+                .orElse(null);
+
+        if (activeAfterUpdate != null && !activeAfterUpdate.isActive()) {
+          activeAfterUpdate.setActive(true);
+          chatbotTemplateRepository.save(activeAfterUpdate);
         }
       }
+    } else {
+      existingTemplate.setActive(requestedActive);
     }
 
     ChatbotTemplate updated = chatbotTemplateRepository.save(existingTemplate);
     chatbotTemplateRepository.flush();
 
-    String chatbotContext =
-        updated.getChatbotTemplateDocuments().stream()
-            .map(ChatbotTemplateDocument::getExtractedText)
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining("\n\n"));
-
-    if (patient != null && requestedActive) {
-      String patientId = patient.getId();
-      var firstConfig =
-          PatientAppAPIs.coachChatbotControllerPatientAPI
-              .getChatbotConfigurations(patientId)
-              .blockFirst();
-
-      if (firstConfig != null) {
-        var updateDto =
-            new UpdateChatbotDTOPatientAPI()
-                .id(firstConfig.getId())
-                .active(updated.isActive())
-                .chatbotRole(updated.getChatbotRole())
-                .chatbotTone(updated.getChatbotTone())
-                .welcomeMessage(updated.getWelcomeMessage())
-                .chatbotContext(chatbotContext);
-
-        PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
-      }
+    if (patient != null) {
+      pushPatientAppUpdate(patient.getId(), activeAfterUpdate);
     }
 
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(updated);
@@ -352,5 +358,18 @@ public class ChatbotTemplateService {
             .chatbotContext(context);
 
     PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
+  }
+
+  public List<ChatbotTemplateOutputDTO> getTemplatesForPatient(
+      String patientId, String therapistId) {
+
+    if (!patientRepository.existsByIdAndTherapistId(patientId, therapistId)) {
+      throw new IllegalArgumentException(
+          "Patient " + patientId + " does not belong to therapist " + therapistId);
+    }
+
+    return chatbotTemplateRepository.findByPatientId(patientId).stream()
+        .map(chatbotTemplateMapper::convertEntityToChatbotTemplateOutputDTO)
+        .toList();
   }
 }
