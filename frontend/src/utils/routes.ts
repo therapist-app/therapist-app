@@ -99,11 +99,9 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.REGISTRATION_PAGE]: '/register',
   [PAGES.SETTINGS_PAGE]: '/settings',
 
-
   [PAGES.PATIENTS_DETAILS_PAGE]: '/clients/:patientId',
   [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: '/clients/:patientId/updatePatientDetail',
   [PAGES.PATIENTS_CREATE_PAGE]: '/clients/create',
-  [PAGES.PATIENTS_DETAILS_PAGE]: '/clients/:patientId',
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: '/clients/:patientId/interactions',
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: '/clients/:patientId/conversations-summary',
