@@ -25,6 +25,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 import type { ChatbotTemplateOutputDTO } from '../models';
 // @ts-ignore
 import type { CreateChatbotTemplateDTO } from '../models';
+// @ts-ignore
+import type { UpdateChatbotTemplateDTO } from '../models';
 /**
  * ChatbotTemplateControllerApi - axios parameter creator
  * @export
@@ -281,15 +283,15 @@ export const ChatbotTemplateControllerApiAxiosParamCreator = function (configura
         /**
          * 
          * @param {string} templateId 
-         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {UpdateChatbotTemplateDTO} updateChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTemplate: async (templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateTemplate: async (templateId: string, updateChatbotTemplateDTO: UpdateChatbotTemplateDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'templateId' is not null or undefined
             assertParamExists('updateTemplate', 'templateId', templateId)
-            // verify required parameter 'createChatbotTemplateDTO' is not null or undefined
-            assertParamExists('updateTemplate', 'createChatbotTemplateDTO', createChatbotTemplateDTO)
+            // verify required parameter 'updateChatbotTemplateDTO' is not null or undefined
+            assertParamExists('updateTemplate', 'updateChatbotTemplateDTO', updateChatbotTemplateDTO)
             const localVarPath = `/chatbot-templates/{templateId}`
                 .replace(`{${"templateId"}}`, encodeURIComponent(String(templateId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -310,7 +312,7 @@ export const ChatbotTemplateControllerApiAxiosParamCreator = function (configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createChatbotTemplateDTO, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateChatbotTemplateDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -417,12 +419,12 @@ export const ChatbotTemplateControllerApiFp = function(configuration?: Configura
         /**
          * 
          * @param {string} templateId 
-         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {UpdateChatbotTemplateDTO} updateChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateTemplate(templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatbotTemplateOutputDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTemplate(templateId, createChatbotTemplateDTO, options);
+        async updateTemplate(templateId: string, updateChatbotTemplateDTO: UpdateChatbotTemplateDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatbotTemplateOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTemplate(templateId, updateChatbotTemplateDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ChatbotTemplateControllerApi.updateTemplate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -506,12 +508,12 @@ export const ChatbotTemplateControllerApiFactory = function (configuration?: Con
         /**
          * 
          * @param {string} templateId 
-         * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+         * @param {UpdateChatbotTemplateDTO} updateChatbotTemplateDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateTemplate(templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO> {
-            return localVarFp.updateTemplate(templateId, createChatbotTemplateDTO, options).then((request) => request(axios, basePath));
+        updateTemplate(templateId: string, updateChatbotTemplateDTO: UpdateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO> {
+            return localVarFp.updateTemplate(templateId, updateChatbotTemplateDTO, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -591,12 +593,12 @@ export interface ChatbotTemplateControllerApiInterface {
     /**
      * 
      * @param {string} templateId 
-     * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+     * @param {UpdateChatbotTemplateDTO} updateChatbotTemplateDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatbotTemplateControllerApiInterface
      */
-    updateTemplate(templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO>;
+    updateTemplate(templateId: string, updateChatbotTemplateDTO: UpdateChatbotTemplateDTO, options?: RawAxiosRequestConfig): AxiosPromise<ChatbotTemplateOutputDTO>;
 
 }
 
@@ -690,13 +692,13 @@ export class ChatbotTemplateControllerApi extends BaseAPI implements ChatbotTemp
     /**
      * 
      * @param {string} templateId 
-     * @param {CreateChatbotTemplateDTO} createChatbotTemplateDTO 
+     * @param {UpdateChatbotTemplateDTO} updateChatbotTemplateDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatbotTemplateControllerApi
      */
-    public updateTemplate(templateId: string, createChatbotTemplateDTO: CreateChatbotTemplateDTO, options?: RawAxiosRequestConfig) {
-        return ChatbotTemplateControllerApiFp(this.configuration).updateTemplate(templateId, createChatbotTemplateDTO, options).then((request) => request(this.axios, this.basePath));
+    public updateTemplate(templateId: string, updateChatbotTemplateDTO: UpdateChatbotTemplateDTO, options?: RawAxiosRequestConfig) {
+        return ChatbotTemplateControllerApiFp(this.configuration).updateTemplate(templateId, updateChatbotTemplateDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../api'
+import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO, UpdateChatbotTemplateDTO } from '../api'
 import { chatbotTemplateApi } from '../utils/api'
 
 interface ChatbotTemplateState {
@@ -41,7 +41,7 @@ export const updateChatbotTemplate = createAsyncThunk(
   'updateChatbotTemplate',
   async (payload: {
     chatbotTemplateId: string
-    updateChatbotTemplateDTO: CreateChatbotTemplateDTO
+    updateChatbotTemplateDTO: UpdateChatbotTemplateDTO
   }) => {
     const response = await chatbotTemplateApi.updateTemplate(
       payload.chatbotTemplateId,
