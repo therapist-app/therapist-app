@@ -111,7 +111,6 @@ public class ChatbotTemplateService {
     SecurityUtil.checkOwnership(existingTemplate, therapistId);
 
     existingTemplate.setChatbotName(template.getChatbotName());
-    existingTemplate.setChatbotIcon(template.getChatbotIcon());
     existingTemplate.setChatbotRole(template.getChatbotRole());
     existingTemplate.setChatbotTone(template.getChatbotTone());
     existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
