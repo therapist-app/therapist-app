@@ -15,11 +15,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "exercises")
-public class Exercise implements OwnedByTherapist {
+public class Exercise implements OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Exercise ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -84,11 +83,14 @@ public class Exercise implements OwnedByTherapist {
 
   public String toLLMContext() {
     StringBuilder sb =
-        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
+        new StringBuilder(
+            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
 
     if (!this.exerciseComponents.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Exercise Components ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Exercise Components ---\n", HIERARCHY_LEVEL, false));
       for (ExerciseComponent component : this.exerciseComponents) {
+        sb.append(
+            FormatUtil.indentBlock("\nComponent: " + component.getId(), HIERARCHY_LEVEL, true));
         sb.append(component.toLLMContext());
       }
     }

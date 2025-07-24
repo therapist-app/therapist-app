@@ -14,11 +14,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "exercise_components")
-public class ExerciseComponent implements OwnedByTherapist {
+public class ExerciseComponent implements OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Exercise.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Exercise Component ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -67,6 +66,6 @@ public class ExerciseComponent implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
   }
 }

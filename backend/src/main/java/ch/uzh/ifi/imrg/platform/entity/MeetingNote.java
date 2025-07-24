@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meeting_notes")
-public class MeetingNote implements OwnedByTherapist {
+public class MeetingNote implements OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Meeting.HIERARCHY_LEVEL + 1;
 
@@ -37,5 +39,10 @@ public class MeetingNote implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getMeeting().getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext() {
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
   }
 }

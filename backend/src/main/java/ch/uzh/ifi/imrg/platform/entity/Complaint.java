@@ -4,20 +4,18 @@ import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
-import java.util.UUID;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "complaints")
-public class Complaint implements OwnedByTherapist {
+public class Complaint implements OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Complaint ID", order = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  private String id;
 
   @LLMContextField(label = "Complaint main complaint", order = 2)
   private String mainComplaint;
@@ -59,6 +57,6 @@ public class Complaint implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
   }
 }
