@@ -1,5 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -17,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "patients")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-public class Patient implements Serializable, OwnedByTherapist {
+public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -32,33 +35,136 @@ public class Patient implements Serializable, OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Client name", order = 1)
   @Column(nullable = false)
   private String name;
 
+  @LLMContextField(label = "Client gender", order = 2)
   @Column(nullable = true)
   private String gender;
 
+  @LLMContextField(label = "Client age", order = 3)
   @Column(nullable = true)
   private int age;
 
+  @LLMContextField(label = "Client phone number", order = 4)
   @Column(nullable = true)
   private String phoneNumber;
 
-  @Column(nullable = false, unique = true)
+  @LLMContextField(label = "Client email", order = 5)
+  @Column(nullable = false)
   private String email;
 
   @Column(nullable = false)
   private String initialPassword;
 
+  @LLMContextField(label = "Client address", order = 6)
   @Column(nullable = true)
   private String address;
 
-  @Column private String maritalStatus;
-  @Column private String religion;
-  @Column private String education;
-  @Column private String occupation;
-  @Column private String income;
-  @Column private String dateOfAdmission;
+  @LLMContextField(label = "Client marital status", order = 7)
+  @Column
+  private String maritalStatus;
+
+  @LLMContextField(label = "Client religion", order = 8)
+  @Column
+  private String religion;
+
+  @LLMContextField(label = "Client education", order = 9)
+  @Column
+  private String education;
+
+  @LLMContextField(label = "Client occupation", order = 10)
+  @Column
+  private String occupation;
+
+  @LLMContextField(label = "Client income", order = 11)
+  @Column
+  private String income;
+
+  @LLMContextField(label = "Client date of admission", order = 12)
+  @Column
+  private String dateOfAdmission;
+
+  @LLMContextField(label = "Client treatment past", order = 13)
+  @Lob
+  @Column
+  private String treatmentPast;
+
+  @LLMContextField(label = "Client treatment current", order = 14)
+  @Lob
+  @Column
+  private String treatmentCurrent;
+
+  @LLMContextField(label = "Client past medical", order = 15)
+  @Lob
+  @Column
+  private String pastMedical;
+
+  @LLMContextField(label = "Client past psych", order = 16)
+  @Lob
+  @Column
+  private String pastPsych;
+
+  @LLMContextField(label = "Client family illness", order = 17)
+  @Lob
+  @Column
+  private String familyIllness;
+
+  @LLMContextField(label = "Client family social", order = 18)
+  @Lob
+  @Column
+  private String familySocial;
+
+  @LLMContextField(label = "Client personal perinatal", order = 19)
+  @Lob
+  @Column
+  private String personalPerinatal;
+
+  @LLMContextField(label = "Client personal childhood", order = 20)
+  @Lob
+  @Column
+  private String personalChildhood;
+
+  @LLMContextField(label = "Client personal education", order = 21)
+  @Lob
+  @Column
+  private String personalEducation;
+
+  @LLMContextField(label = "Client personal play", order = 22)
+  @Lob
+  @Column
+  private String personalPlay;
+
+  @LLMContextField(label = "Client personal adolescence", order = 23)
+  @Lob
+  @Column
+  private String personalAdolescence;
+
+  @LLMContextField(label = "Client personal puberty", order = 24)
+  @Lob
+  @Column
+  private String personalPuberty;
+
+  @LLMContextField(label = "Client personal obstetric", order = 25)
+  @Lob
+  @Column
+  private String personalObstetric;
+
+  @LLMContextField(label = "Client personal occupational", order = 26)
+  @Lob
+  @Column
+  private String personalOccupational;
+
+  @LLMContextField(label = "Client personal marital", order = 27)
+  @Lob
+  @Column
+  private String personalMarital;
+
+  @LLMContextField(label = "Client personal premorbid", order = 28)
+  @Lob
+  @Column
+  private String personalPremorbid;
 
   @OneToMany(
       mappedBy = "patient",
@@ -66,25 +172,6 @@ public class Patient implements Serializable, OwnedByTherapist {
       orphanRemoval = true,
       fetch = FetchType.EAGER)
   private List<Complaint> complaints = new ArrayList<>();
-
-  @Lob @Column private String treatmentPast;
-  @Lob @Column private String treatmentCurrent;
-  @Lob @Column private String pastMedical;
-  @Lob @Column private String pastPsych;
-
-  @Lob @Column private String familyIllness;
-  @Lob @Column private String familySocial;
-
-  @Lob @Column private String personalPerinatal;
-  @Lob @Column private String personalChildhood;
-  @Lob @Column private String personalEducation;
-  @Lob @Column private String personalPlay;
-  @Lob @Column private String personalAdolescence;
-  @Lob @Column private String personalPuberty;
-  @Lob @Column private String personalObstetric;
-  @Lob @Column private String personalOccupational;
-  @Lob @Column private String personalMarital;
-  @Lob @Column private String personalPremorbid;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id")
@@ -132,5 +219,24 @@ public class Patient implements Serializable, OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, complaints, "Complaint", level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetings, "Meeting", level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", level);
+
+    if (!counselingPlan.getCounselingPlanPhases().isEmpty()) {
+      sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", level, false));
+      sb.append(counselingPlan.toLLMContext(level + 1));
+    }
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, chatbotTemplates, "Chatbot", level);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, patientDocuments, "Client Document", level);
+
+    return sb.toString();
   }
 }

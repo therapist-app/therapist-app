@@ -42,7 +42,7 @@ const CreateCounselingPlanExercise = ({
   const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
-  const [formData, setFormData] = useState<ExerciseFormData>({
+  const initialFormData: ExerciseFormData = {
     exerciseTitle: '',
     exerciseDescription: '',
     exerciseExplanation: '',
@@ -50,7 +50,9 @@ const CreateCounselingPlanExercise = ({
     durationInWeeks: counselingPlanPhase.durationInWeeks ?? 2,
     patientId: patientId,
     doEveryNDays: 1,
-  })
+  }
+
+  const [formData, setFormData] = useState<ExerciseFormData>(initialFormData)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -58,34 +60,35 @@ const CreateCounselingPlanExercise = ({
 
   const handleCancel = (): void => {
     setOpen(false)
+    setFormData(initialFormData)
   }
 
   const handleCreateExercise = (): void => {
+    setFormData(initialFormData)
     setOpen(true)
   }
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
-    try {
-      const aiDto = await dispatch(
-        createCounselingPlanExerciseAIGenerated({
-          counselingPlanPhaseId: counselingPlanPhase.id ?? '',
-          language: getCurrentLanguage(),
-        })
-      ).unwrap()
-
-      setFormData({
-        exerciseTitle: aiDto.exerciseTitle,
-        exerciseDescription: aiDto.exerciseDescription,
-        exerciseExplanation: aiDto.exerciseExplanation,
-        exerciseStart: aiDto.exerciseStart ? new Date(aiDto.exerciseStart) : new Date(),
-        durationInWeeks: aiDto.durationInWeeks ?? 2,
-        doEveryNDays: aiDto.doEveryNDays,
-        patientId: patientId,
+    setFormData(initialFormData)
+    const createExerciseDTO = await dispatch(
+      createCounselingPlanExerciseAIGenerated({
+        counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+        language: getCurrentLanguage(),
       })
-      setOpen(true)
-    } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    ).unwrap()
+
+    const newExerciseFormData: ExerciseFormData = {
+      exerciseTitle: createExerciseDTO.exerciseTitle,
+      exerciseDescription: createExerciseDTO.exerciseDescription,
+      exerciseExplanation: createExerciseDTO.exerciseExplanation,
+      exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
+      durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
+      doEveryNDays: createExerciseDTO.doEveryNDays,
+      patientId: patientId,
     }
+
+    setFormData(newExerciseFormData)
+    setOpen(true)
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -108,7 +111,10 @@ const CreateCounselingPlanExercise = ({
       ).unwrap()
 
       notifySuccess(t('counseling_plan.exercise_created_success'))
+
       setOpen(false)
+      setFormData(initialFormData)
+        
       onSuccess()
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
