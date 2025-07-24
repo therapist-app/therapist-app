@@ -11,6 +11,7 @@ import patientReducer from './patientSlice'
 import therapistChatbotReducer from './therapistChatbotSlice'
 import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
+import errorReducer from './errorSlice'
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     counselingPlan: counselingPlanReducer,
     chatbotTemplateDocument: chatbotTemplateDocumentReducer,
     conversation: conversationReducer,
+    globalError: errorReducer,
   },
 })
 

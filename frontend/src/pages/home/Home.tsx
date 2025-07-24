@@ -17,6 +17,7 @@ import {
   Snackbar,
   TextField,
   Typography,
+  AlertColor,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
 import { AxiosError } from 'axios'
@@ -51,6 +52,7 @@ import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { showError } from '../../store/errorSlice'
 
 const Home = (): ReactElement => {
   const navigate = useNavigate()
@@ -64,12 +66,6 @@ const Home = (): ReactElement => {
   const allTherapistDocuments = useSelector(
     (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
   )
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
 
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
@@ -93,6 +89,10 @@ const Home = (): ReactElement => {
     setRefreshTherapistCounter((prev) => prev + 1)
   }
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+  dispatch(showError({ message, severity }))
+}
+
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     await dispatch(deleteDocumentOfTherapist(fileId))
     setRefreshTherapistCounter((prev) => prev + 1)
@@ -107,12 +107,6 @@ const Home = (): ReactElement => {
     return url
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setSnackbarOpen(false)
-  }
   const handlePatientClick = (patientId: string): void => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
@@ -141,9 +135,7 @@ const Home = (): ReactElement => {
       )
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      showMessage(errorMessage, 'error')
     }
   }
   const handleMenuClick = (
@@ -164,15 +156,11 @@ const Home = (): ReactElement => {
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      showMessage(t('dashboard.chatbot_cloned_success'), 'success')
       handleMenuClose()
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      showMessage(errorMessage, 'error')
     }
   }
   const handleDelete = async (): Promise<void> => {
@@ -182,15 +170,11 @@ const Home = (): ReactElement => {
       }
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      showMessage(t('dashboard.chatbot_deleted_success'), 'success')
       handleMenuClose()
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      showMessage(errorMessage, 'error')
     }
   }
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {
@@ -430,17 +414,6 @@ const Home = (): ReactElement => {
           />
         </DialogContent>
       </Dialog>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Layout>
   )
 }
