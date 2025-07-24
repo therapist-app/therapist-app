@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -81,20 +80,11 @@ public class Exercise implements OwnedByTherapist, HasLLMContext {
     return this.getPatient().getTherapist().getId();
   }
 
+  @Override
   public String toLLMContext() {
-    StringBuilder sb =
-        new StringBuilder(
-            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
-
-    if (!this.exerciseComponents.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Exercise Components ---\n", HIERARCHY_LEVEL, false));
-      for (ExerciseComponent component : this.exerciseComponents) {
-        sb.append(
-            FormatUtil.indentBlock("\nComponent: " + component.getId(), HIERARCHY_LEVEL, true));
-        sb.append(component.toLLMContext());
-      }
-    }
-
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, exerciseComponents, "Exercise Component", HIERARCHY_LEVEL);
     return sb.toString();
   }
 }

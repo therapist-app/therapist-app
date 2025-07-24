@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -71,19 +70,11 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMCo
     return this.getTherapist().getId();
   }
 
+  @Override
   public String toLLMContext() {
-    StringBuilder sb =
-        new StringBuilder(
-            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
-
-    if (!this.chatbotTemplateDocuments.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Chatbot documents ---\n", HIERARCHY_LEVEL, false));
-      for (ChatbotTemplateDocument document : this.chatbotTemplateDocuments) {
-        sb.append(FormatUtil.indentBlock("\nDocument: " + document.getId(), HIERARCHY_LEVEL, true));
-        sb.append(document.toLLMContext());
-      }
-    }
-
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, chatbotTemplateDocuments, "Chatbot Document", HIERARCHY_LEVEL);
     return sb.toString();
   }
 }

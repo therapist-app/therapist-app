@@ -59,10 +59,14 @@ public class Therapist implements Serializable, HasLLMContext {
       orphanRemoval = true)
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 
+  @Override
   public String toLLMContext() {
     StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
 
     LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Patient", HIERARCHY_LEVEL);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, this.therapistDocuments, "Document", HIERARCHY_LEVEL);
 
     return sb.toString();
   }

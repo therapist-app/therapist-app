@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.time.Instant;
@@ -63,6 +62,12 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
 
   @Override
   public String toLLMContext() {
-    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, phaseGoals, "Counseling Plan Phase Goal", HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, phaseExercises, "Counseling Plan Exercise", HIERARCHY_LEVEL);
+
+    return sb.toString();
   }
 }
