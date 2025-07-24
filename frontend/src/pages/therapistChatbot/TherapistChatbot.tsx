@@ -11,8 +11,8 @@ import Layout from '../../generalComponents/Layout'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
 import { clearMessages } from '../../store/therapistChatbotSlice'
-import { handleError } from '../../utils/handleError'
 import { formatResponse } from '../../utils/formatResponse'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -29,13 +29,11 @@ const TherapistChatbot = (): ReactElement => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
-  if (chatbotError) {
-    const msg = isAxiosError(chatbotError)
-      ? handleError(chatbotError)
-      : String(chatbotError)
-    setErrorMessage(msg)
-  }
-}, [chatbotError])
+    if (chatbotError) {
+      const msg = isAxiosError(chatbotError) ? handleError(chatbotError) : String(chatbotError)
+      setErrorMessage(msg)
+    }
+  }, [chatbotError])
 
   const currentPage = getPageFromPath(location.pathname)
   const closePage =
