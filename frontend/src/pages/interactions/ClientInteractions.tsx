@@ -10,12 +10,8 @@ import { useTranslation } from 'react-i18next'
 
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
-import { useAppDispatch } from '../../utils/hooks'
-
-const { notifyError } = useNotify()
 
 interface InteractionData {
   hour: number
@@ -51,9 +47,9 @@ const generateMockData = (days: number): InteractionData[] => {
 
       data.push({
         date: format(date, 'yyyy-MM-dd'),
-        hour: hour,
+        hour,
         value: 1,
-        type: type,
+        type,
       })
     }
   }
@@ -106,15 +102,15 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const { notifyError } = useNotify()
 
   const [interactionType, setInteractionType] = useState<string>('all')
   const [data] = useState<InteractionData[]>(() => {
     try {
       return generateMockData(15)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      dispatch(showError({ message: msg, severity: 'error' }))
+      const msg = typeof handleError === 'function' ? String(error) : 'Failed to generate data'
+      notifyError(msg)
       return []
     }
   })
@@ -125,7 +121,7 @@ const ClientInteractions = (): ReactElement => {
     if (startDate && endDate && startDate > endDate) {
       notifyError(t('patient_interactions.invalid_date_range'))
     }
-  }, [startDate, endDate, t])
+  }, [startDate, endDate, t, notifyError])
 
   const filteredData = useMemo(() => {
     try {
@@ -144,21 +140,19 @@ const ClientInteractions = (): ReactElement => {
 
       return filtered
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(String(error))
       return []
     }
-  }, [data, interactionType, startDate, endDate])
+  }, [data, interactionType, startDate, endDate, notifyError])
 
   const heatmapData = useMemo(() => {
     try {
       return transformDataForHeatmap(filteredData, startDate, endDate)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(String(error))
       return []
     }
-  }, [filteredData, startDate, endDate])
+  }, [filteredData, startDate, endDate, notifyError])
 
   return (
     <Layout>

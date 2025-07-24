@@ -24,21 +24,23 @@ const Login = (): ReactElement => {
     password: '',
   })
 
-  const handleLogin = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault()
-
-    if (!formData.email || !formData.password) {
-      notifyWarning(t('login.fields_required') || 'Both fields are required.')
-      return
-    }
-    try {
-      await dispatch(loginTherapist(formData)).unwrap()
-      notifySuccess(t('login.success') || 'Login successful.')
-      navigate(getPathFromPage(PAGES.HOME_PAGE))
-    } catch (e) {
-      notifyError(handleError(e as AxiosError))
-    }
+  // Login.tsx
+const handleLogin = async (e: React.FormEvent): Promise<void> => {
+  e.preventDefault()
+  if (!formData.email || !formData.password) {
+    notifyWarning(t('login.fields_required') || 'Both fields are required.')
+    return
   }
+  try {
+  await dispatch(loginTherapist(formData)).unwrap()
+  notifySuccess(t('login.success') || 'Login successful.')
+  navigate(getPathFromPage(PAGES.HOME_PAGE))
+} catch (msg) {
+  notifyError(typeof msg === 'string' ? msg : 'An unknown error occurred')
+}
+
+}
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })

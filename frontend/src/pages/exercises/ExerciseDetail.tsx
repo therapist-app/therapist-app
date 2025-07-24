@@ -1,7 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -16,8 +15,7 @@ import { ExerciseComponentOutputDTOExerciseComponentTypeEnum, UpdateExerciseDTO 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
-import { showError } from '../../store/errorSlice'
-import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
+import { deleteExercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import {
   cancelButtonStyles,
@@ -34,6 +32,7 @@ import CreateExerciseTextComponent from './components/CreateExerciseTextComponen
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
+import { useNotify } from '../../hooks/useNotify'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -45,16 +44,13 @@ const ExerciseDetail = (): ReactElement => {
   const { patientId, exerciseId } = useParams()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
   const exerciseStatus = useSelector((state: RootState) => state.exercise.status)
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
   )
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: selectedExercise?.exerciseTitle,
@@ -99,12 +95,12 @@ const ExerciseDetail = (): ReactElement => {
         id: exerciseId ?? '',
       }
       await dispatch(updateExercise(dto)).unwrap()
-      showMessage(t('exercise.exercise_updated_successfully'), 'success')
+      notifySuccess(t('exercise.exercise_updated_successfully'))
       setIsEditingExercise(false)
       await refreshExercise()
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -113,14 +109,14 @@ const ExerciseDetail = (): ReactElement => {
       await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
     } catch (e) {
       const msg = handleError(e as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
   const handleDeleteExercise = async (): Promise<void> => {
     try {
-      await dispatch(deleteExcercise(exerciseId ?? '')).unwrap()
-      showMessage(t('exercise.exercise_deleted_successfully'), 'success')
+      await dispatch(deleteExercise(exerciseId ?? '')).unwrap()
+      notifySuccess(t('exercise.exercise_deleted_successfully'))
       navigate(
         getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -128,7 +124,7 @@ const ExerciseDetail = (): ReactElement => {
       )
     } catch (e) {
       const msg = handleError(e as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -138,7 +134,7 @@ const ExerciseDetail = (): ReactElement => {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
       } catch (e) {
         const msg = handleError(e as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [exerciseId, dispatch])

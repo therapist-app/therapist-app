@@ -3,17 +3,16 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
-import { showError } from '../../../store/errorSlice'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
@@ -29,9 +28,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
   const { exerciseComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifyError, notifySuccess } = useNotify()
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
@@ -61,23 +58,23 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
   const handleSubmit = async (): Promise<void> => {
     try {
       await dispatch(updateExerciseComponent(formData)).unwrap()
-      showMessage(t('exercise.component_updated_successfully'), 'success')
+      notifySuccess(t('exercise.component_updated_successfully'))
       setIsEditing(false)
       props.refresh()
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
   const clickDelete = async (): Promise<void> => {
     try {
       await dispatch(deleteExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-      showMessage(t('exercise.component_deleted_successfully'), 'success')
+      notifySuccess(t('exercise.component_deleted_successfully'))
       props.refresh()
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

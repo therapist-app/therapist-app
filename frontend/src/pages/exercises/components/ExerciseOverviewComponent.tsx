@@ -25,15 +25,14 @@ import { formatDateNicely } from '../../../utils/dateUtil'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
+import { useNotify } from '../../../hooks/useNotify'
 
 const ExerciseOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifyError } = useNotify()
 
   const handleCreateNewExercise = (): void => {
     navigate(
@@ -62,7 +61,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
         await dispatch(getAllExercisesOfPatient(patientId ?? '')).unwrap()
       } catch (err) {
         const msg = handleError(err as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [dispatch, patientId])

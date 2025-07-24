@@ -1,7 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,11 +10,11 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
-import { showError } from '../../../store/errorSlice'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void
@@ -27,9 +26,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifyError, notifySuccess } = useNotify()
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -59,12 +56,12 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
       await dispatch(
         createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })
       ).unwrap()
-      showMessage(t('exercise.component_created_successfully'), 'success')
+      notifySuccess(t('exercise.component_created_successfully'))
       cancel()
       props.createdExercise()
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

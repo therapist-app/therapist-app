@@ -1,35 +1,60 @@
-import { AxiosError } from 'axios'
+// utils/handleError.ts
+import { isAxiosError } from 'axios'
 
 interface ErrorResponseData {
   detail?: string
   message?: string
+  error?: string
+  title?: string
+  errors?: unknown
   [key: string]: unknown
 }
 
-export const handleError = (error: AxiosError): string => {
-  const response = error.response
+export const handleError = async (err: unknown): Promise<string> => {
+  if (isAxiosError(err)) {
+    const res = err.response
+    if (res) {
+      const data = res.data
 
-  // catch 4xx and 5xx status codes
-  if (response && `${response.status}`.match(/^[4|5]\d{2}$/)) {
-    let info = ''
+      if (typeof data === 'string') return data
 
-    const data = response.data as ErrorResponseData
+      if (data instanceof Blob || data instanceof ArrayBuffer) {
+        try {
+          const text = data instanceof Blob ? await data.text() : arrayBufferToText(data)
+          try {
+            const obj = JSON.parse(text) as ErrorResponseData
+            return pickMessageFromObject(obj) ?? text
+          } catch {
+            return text
+          }
+        } catch {
+          return `HTTP ${res.status}`
+        }
+      }
 
-    if (data.detail) {
-      info += data.detail
-    } else if (data.message) {
-      info += data.message
-    } else {
-      info += `\nstatus code: ${response.status}`
-      info += `\nerror message:\n${JSON.stringify(data, null, 2)}`
+      if (typeof data === 'object' && data !== null) {
+        const obj = data as ErrorResponseData
+        return pickMessageFromObject(obj) ?? `HTTP ${res.status}\n${JSON.stringify(obj, null, 2)}`
+      }
+
+      return `HTTP ${res.status}`
     }
 
-    return info
-  } else {
-    if (error.message && error.message.match(/Network Error/)) {
-      alert('The server cannot be reached.\nDid you start it?')
+    if (err.message && /Network Error/i.test(err.message)) {
+      return 'The server cannot be reached. Did you start it?'
     }
-
-    return error.message ? error.message : 'An unknown error occurred'
+    return err.message || 'An unknown error occurred'
   }
+
+  if (typeof err === 'string') return err
+  if (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') {
+    return (err as any).message
+  }
+  return 'An unknown error occurred'
 }
+
+const pickMessageFromObject = (o: ErrorResponseData): string | undefined =>
+  o.detail || o.message || o.error || o.title
+
+const arrayBufferToText = (ab: ArrayBuffer): string =>
+  new TextDecoder('utf-8').decode(new Uint8Array(ab))

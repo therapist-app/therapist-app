@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 import {
   CreateTherapistDTO,
   LoginTherapistDTO,
@@ -7,6 +6,7 @@ import {
   UpdateTherapistDTO,
 } from '../api'
 import { therapistApi } from '../utils/api'
+import { handleError } from '../utils/handleError'
 
 interface TherapistState {
   loggedInTherapist: TherapistOutputDTO | null
@@ -20,45 +20,74 @@ const initialState: TherapistState = {
   error: null,
 }
 
-export const registerTherapist = createAsyncThunk(
-  'registerTherapist',
-  async (createTherapistDTO: CreateTherapistDTO) => {
-    const response = await therapistApi.createTherapist(createTherapistDTO)
-    return response.data
+export const registerTherapist = createAsyncThunk<
+  TherapistOutputDTO,
+  CreateTherapistDTO,
+  { rejectValue: string }
+>('therapist/registerTherapist', async (dto, { rejectWithValue }) => {
+  try {
+    const { data } = await therapistApi.createTherapist(dto)
+    return data
+  } catch (err) {
+    return rejectWithValue(await handleError(err))
   }
-)
-
-export const loginTherapist = createAsyncThunk(
-  'loginTherapist',
-  async (loginTherapistDTO: LoginTherapistDTO) => {
-    const response = await therapistApi.loginTherapist(loginTherapistDTO)
-    return response.data
-  }
-)
-
-export const logoutTherapist = createAsyncThunk('logoutTherapist', async () => {
-  await therapistApi.logoutTherapist()
 })
 
-export const getCurrentlyLoggedInTherapist = createAsyncThunk(
-  'getCurrentlyLoggedInTherapist',
-  async () => {
-    const response = await therapistApi.getCurrentlyLoggedInTherapist()
-    return response.data
+export const loginTherapist = createAsyncThunk<
+  TherapistOutputDTO,
+  LoginTherapistDTO,
+  { rejectValue: string }
+>('therapist/loginTherapist', async (dto, { rejectWithValue }) => {
+  try {
+    const { data } = await therapistApi.loginTherapist(dto)
+    return data
+  } catch (err) {
+    return rejectWithValue(await handleError(err))
   }
-)
+})
 
-export const updateTherapist = createAsyncThunk(
-  'updateTherapist',
-  async (updateDto: UpdateTherapistDTO) => {
-    const response = await therapistApi.updateTherapist(updateDto)
-    return response.data
+export const logoutTherapist = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('therapist/logoutTherapist', async (_, { rejectWithValue }) => {
+  try {
+    await therapistApi.logoutTherapist()
+  } catch (err) {
+    return rejectWithValue(await handleError(err))
   }
-)
+})
+
+export const getCurrentlyLoggedInTherapist = createAsyncThunk<
+  TherapistOutputDTO,
+  void,
+  { rejectValue: string }
+>('therapist/getCurrentlyLoggedInTherapist', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await therapistApi.getCurrentlyLoggedInTherapist()
+    return data
+  } catch (err) {
+    return rejectWithValue(await handleError(err))
+  }
+})
+
+export const updateTherapist = createAsyncThunk<
+  TherapistOutputDTO,
+  UpdateTherapistDTO,
+  { rejectValue: string }
+>('therapist/updateTherapist', async (dto, { rejectWithValue }) => {
+  try {
+    const { data } = await therapistApi.updateTherapist(dto)
+    return data
+  } catch (err) {
+    return rejectWithValue(await handleError(err))
+  }
+})
+
 
 const therapistSlice = createSlice({
   name: 'therapist',
-  initialState: initialState,
+  initialState,
   reducers: {
     setLoggedInTherapist: (state, action: PayloadAction<TherapistOutputDTO>) => {
       state.loggedInTherapist = action.payload
@@ -79,10 +108,13 @@ const therapistSlice = createSlice({
       })
       .addCase(registerTherapist.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
+        state.error =
+          action.meta.rejectedWithValue && typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
 
+      // login
       .addCase(loginTherapist.pending, (state) => {
         state.status = 'loading'
         state.error = null
@@ -93,7 +125,10 @@ const therapistSlice = createSlice({
       })
       .addCase(loginTherapist.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
+        state.error =
+          action.meta.rejectedWithValue && typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
 
       .addCase(logoutTherapist.pending, (state) => {
@@ -106,7 +141,10 @@ const therapistSlice = createSlice({
       })
       .addCase(logoutTherapist.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
+        state.error =
+          action.meta.rejectedWithValue && typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
 
       .addCase(getCurrentlyLoggedInTherapist.pending, (state) => {
@@ -119,8 +157,10 @@ const therapistSlice = createSlice({
       })
       .addCase(getCurrentlyLoggedInTherapist.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
+        state.error =
+          action.meta.rejectedWithValue && typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
 
       .addCase(updateTherapist.pending, (state) => {
@@ -133,8 +173,10 @@ const therapistSlice = createSlice({
       })
       .addCase(updateTherapist.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message || 'Something went wrong'
-        console.log(action)
+        state.error =
+          action.meta.rejectedWithValue && typeof action.payload === 'string'
+            ? action.payload
+            : action.error.message || 'Something went wrong'
       })
   },
 })

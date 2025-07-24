@@ -53,11 +53,13 @@ import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 const Home = (): ReactElement => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
   const ownTemplates: ChatbotTemplateOutputDTO[] = (
@@ -87,10 +89,6 @@ const Home = (): ReactElement => {
   const handleFileUpload = async (file: File): Promise<void> => {
     await dispatch(createDocumentForTherapist(file))
     setRefreshTherapistCounter((prev) => prev + 1)
-  }
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
@@ -135,7 +133,7 @@ const Home = (): ReactElement => {
       )
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      showMessage(errorMessage, 'error')
+      notifyError(errorMessage)
     }
   }
   const handleMenuClick = (
@@ -156,11 +154,11 @@ const Home = (): ReactElement => {
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      showMessage(t('dashboard.chatbot_cloned_success'), 'success')
+      notifySuccess(t('dashboard.chatbot_cloned_success'))
       handleMenuClose()
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      showMessage(errorMessage, 'error')
+      notifyError(errorMessage)
     }
   }
   const handleDelete = async (): Promise<void> => {
@@ -170,11 +168,11 @@ const Home = (): ReactElement => {
       }
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      showMessage(t('dashboard.chatbot_deleted_success'), 'success')
+      notifySuccess(t('dashboard.chatbot_deleted_success'))
       handleMenuClose()
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      showMessage(errorMessage, 'error')
+      notifyError(errorMessage)
     }
   }
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {

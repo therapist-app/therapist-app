@@ -19,6 +19,7 @@ import { createExerciseComponent, setAddingExerciseComponent } from '../../../st
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateExerciseFileComponentProps {
   createdExerciseFile(): void
@@ -35,8 +36,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
   const [description, setDescription] = useState('')
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifyError, notifySuccess } = useNotify()
 
   const saveSelectedFile = (file: File): void => {
     setSelectedFile(file)
@@ -82,12 +82,12 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
         })
       ).unwrap()
 
-      showMessage(t('exercise.component_created_successfully'), 'success')
+      notifySuccess(t('exercise.component_created_successfully'))
       cancel()
       props.createdExerciseFile()
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

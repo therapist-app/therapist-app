@@ -14,14 +14,16 @@ export const useNotify = () => {
 
   const notify: Notify = useCallback(
     (message: string, severity: AlertColor = 'error') => {
-      dispatch(showError({ message: message, severity: severity }))
+      dispatch(showError({ message, severity }))
     },
     [dispatch]
   )
 
   const notifyError: NotifyError = useCallback(
     (err: unknown) => {
-      notify(handleError(err as AxiosError), 'error')
+      Promise.resolve(handleError(err as AxiosError))
+        .then((msg) => notify(msg, 'error'))
+        .catch(() => notify('An unknown error occurred', 'error'))
     },
     [notify]
   )
@@ -30,11 +32,5 @@ export const useNotify = () => {
   const notifyInfo = useCallback((message: string) => notify(message, 'info'), [notify])
   const notifyWarning = useCallback((message: string) => notify(message, 'warning'), [notify])
 
-  return {
-    notify: notify,
-    notifyError: notifyError,
-    notifySuccess: notifySuccess,
-    notifyInfo: notifyInfo,
-    notifyWarning: notifyWarning,
-  }
+  return { notify, notifyError, notifySuccess, notifyInfo, notifyWarning }
 }

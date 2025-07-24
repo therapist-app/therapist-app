@@ -1,5 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -11,12 +10,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
-import { showError } from '../../store/errorSlice'
 import { createExercise } from '../../store/exerciseSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -28,10 +27,7 @@ const ExerciseCreate = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
+  const { notifyError, notifySuccess } = useNotify()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: '',
@@ -56,7 +52,7 @@ const ExerciseCreate = (): ReactElement => {
         durationInWeeks: formData.durationInWeeks,
       }
       const createdExercise = await dispatch(createExercise(dto)).unwrap()
-      showMessage(t('exercise.exercise_created_successfully'), 'success')
+      notifySuccess(t('exercise.exercise_created_successfully'))
       navigate(
         getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
           exerciseId: createdExercise.id ?? '',
@@ -66,7 +62,7 @@ const ExerciseCreate = (): ReactElement => {
       )
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
