@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "chatbot_templates")
 public class ChatbotTemplate implements Serializable, OwnedByTherapist {
 
+  @LLMContextField(label = "Chatbot ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -27,14 +30,22 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Chatbot name", order = 2)
   @Column(nullable = false)
   private String chatbotName;
 
   private String chatbotIcon;
+
+  @LLMContextField(label = "Chatbot role", order = 3)
   private String chatbotRole;
+
+  @LLMContextField(label = "Chatbot tone", order = 4)
   private String chatbotTone;
+
+  @LLMContextField(label = "Chatbot welcome message", order = 5)
   private String welcomeMessage;
 
+  @LLMContextField(label = "Chatbot is active", order = 6)
   @Column(name = "is_active")
   private boolean isActive = false;
 
@@ -56,5 +67,18 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getTherapist().getId();
+  }
+
+  public String toLLMContext() {
+    StringBuilder sb = new StringBuilder(LLMContextBuilder.build(this));
+
+    if (!this.chatbotTemplateDocuments.isEmpty()) {
+      sb.append("\n--- Chatbot documents ---\n");
+      for (ChatbotTemplateDocument document : this.chatbotTemplateDocuments) {
+        sb.append(document.toLLMContext());
+      }
+    }
+
+    return sb.toString();
   }
 }

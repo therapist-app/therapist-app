@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -12,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "chatbot_template_documents")
 public class ChatbotTemplateDocument implements OwnedByTherapist {
 
+  @LLMContextField(label = "Chatbot Document", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -28,9 +31,11 @@ public class ChatbotTemplateDocument implements OwnedByTherapist {
   @JoinColumn(name = "chatbot_template_id", nullable = false)
   private ChatbotTemplate chatbotTemplate;
 
+  @LLMContextField(label = "Chabot Document file name", order = 2)
   @Column(nullable = false)
   private String fileName;
 
+  @LLMContextField(label = "Chabot Document file type", order = 3)
   @Column(nullable = false)
   private String fileType;
 
@@ -38,10 +43,17 @@ public class ChatbotTemplateDocument implements OwnedByTherapist {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob @Column private String extractedText;
+  @LLMContextField(label = "Chabot Document extracted text", order = 4)
+  @Lob
+  @Column
+  private String extractedText;
 
   @Override
   public String getOwningTherapistId() {
     return this.getChatbotTemplate().getTherapist().getId();
+  }
+
+  public String toLLMContext() {
+    return LLMContextBuilder.build(this);
   }
 }
