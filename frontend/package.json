@@ -40,7 +40,6 @@
     "axios": "^1.7.9",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.13",
-    "gradle": "^1.0.8",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
