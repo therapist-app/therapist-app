@@ -19,8 +19,8 @@ import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
-import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { showError } from '../../../store/errorSlice'
+import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -36,7 +36,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({

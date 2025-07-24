@@ -18,8 +18,8 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { showError } from '../../../store/errorSlice'
+import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
@@ -33,7 +33,7 @@ const MeetingOverviewComponent = (): ReactElement => {
   const { t } = useTranslation()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const MeetingOverviewComponent = (): ReactElement => {
     navigate(
       getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        meetingId,
+        meetingId: meetingId,
       })
     )
   }

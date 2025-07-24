@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
-import { createMeetingNote } from '../../../store/meetingSlice'
 import { showError } from '../../../store/errorSlice'
+import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
@@ -27,7 +27,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
   const { t } = useTranslation()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)

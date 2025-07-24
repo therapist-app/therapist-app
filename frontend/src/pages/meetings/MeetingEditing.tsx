@@ -3,18 +3,14 @@ import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AxiosError } from 'axios'
 import { de } from 'date-fns/locale'
 import { t } from 'i18next'
-import { AxiosError } from 'axios'
 import { useState } from 'react'
 
-import {
-  MeetingOutputDTO,
-  UpdateMeetingDTO,
-  UpdateMeetingDTOMeetingStatusEnum,
-} from '../../api'
-import { updateMeeting } from '../../store/meetingSlice'
+import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
 import { showError } from '../../store/errorSlice'
+import { updateMeeting } from '../../store/meetingSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -46,7 +42,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
   }
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleSubmit = async (): Promise<void> => {
@@ -68,7 +64,13 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
   }
 
   return (
-    <form style={{ maxWidth: '500px' }} onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
+    <form
+      style={{ maxWidth: '500px' }}
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit()
+      }}
+    >
       <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
         <DateTimePicker
           label={t('meetings.meeting_start')}

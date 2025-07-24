@@ -9,8 +9,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
-import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { showError } from '../../store/errorSlice'
+import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import {
   commonButtonStyles,
@@ -40,7 +40,7 @@ const MeetingDetail = (): ReactElement => {
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   useEffect(() => {
