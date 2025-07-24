@@ -700,7 +700,9 @@ interface Resources {
       "chatbot_name": "Chabot Name",
       "create_bot": "Create Bot",
       "files_visible_to_client": "Files visible to Client",
-      "files_visible_only_to_coach": "Files visible only to Coach"
+      "files_visible_only_to_coach": "Files visible only to Coach",
+      "edit": "Edit",
+      "save_changes": "Save"
     },
     "patient_interactions": {
       "interaction_type": "Interaction Type",
@@ -880,7 +882,8 @@ interface Resources {
         "create": "Register new Client",
         "details": "Client Details",
         "conversations": "Conversation Summary",
-        "interactions": "Client Interactions"
+        "interactions": "Client Interactions",
+        "details-update": "Updating Client"
       },
       "chatbot": {
         "create": "Create new Chatbot",

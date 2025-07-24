@@ -100,7 +100,7 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.SETTINGS_PAGE]: '/settings',
 
   [PAGES.PATIENTS_DETAILS_PAGE]: '/clients/:patientId',
-  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: '/clients/:patientId/updatePatientDetail',
+  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: '/clients/:patientId/updatClientDetail',
   [PAGES.PATIENTS_CREATE_PAGE]: '/clients/create',
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: '/clients/:patientId/interactions',
