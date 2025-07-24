@@ -2844,6 +2844,7 @@ components:
         fileName: fileName
         orderNumber: 0
         exerciseComponentDescription: exerciseComponentDescription
+        youtubeUrl: youtubeUrl
         fileData: fileData
         id: id
         userInput: userInput
@@ -2869,6 +2870,8 @@ components:
           type: string
         fileType:
           type: string
+        youtubeUrl:
+          type: string
         fileData:
           description: File data encoded in Base64
           format: byte
@@ -2884,6 +2887,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
+          youtubeUrl: youtubeUrl
           fileData: fileData
           id: id
           userInput: userInput
@@ -2892,6 +2896,7 @@ components:
         - fileName: fileName
           orderNumber: 0
           exerciseComponentDescription: exerciseComponentDescription
+          youtubeUrl: youtubeUrl
           fileData: fileData
           id: id
           userInput: userInput

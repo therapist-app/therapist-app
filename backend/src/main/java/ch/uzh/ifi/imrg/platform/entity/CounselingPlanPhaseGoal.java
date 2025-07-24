@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plan_phase_goals")
-public class CounselingPlanPhaseGoal implements OwnedByTherapist {
+public class CounselingPlanPhaseGoal implements OwnedByTherapist, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -24,9 +26,14 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String goalName;
+  @LLMContextField(label = "Counseling Plan Phase Goal name", order = 1)
+  @Column()
+  private String goalName;
 
-  @Lob @Column() private String goalDescription;
+  @LLMContextField(label = "Counseling Plan Phase Goal description", order = 2)
+  @Lob
+  @Column()
+  private String goalDescription;
 
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")
@@ -35,5 +42,11 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getCounselingPlanPhase().getCounselingPlan().getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    return sb.toString();
   }
 }
