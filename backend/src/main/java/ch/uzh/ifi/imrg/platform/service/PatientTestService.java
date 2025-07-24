@@ -1,15 +1,18 @@
 package ch.uzh.ifi.imrg.platform.service;
 
-import ch.uzh.ifi.imrg.platform.entity.GAD7Test;
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.repository.GAD7Repository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateGAD7TestDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.output.GAD7TestOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
+import ch.uzh.ifi.imrg.platform.rest.mapper.PatientPsychologicalTestMapper;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,90 +20,47 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class PatientTestService {
-
-  private final GAD7Repository gad7Repository;
   private final PatientRepository patientRepository;
+  private static final String GAD7_TEST_NAME = "GAD7";
+  private static final Logger logger = LoggerFactory.getLogger(PatientTestService.class);
 
-  public PatientTestService(GAD7Repository gad7Repository, PatientRepository patientRepository) {
-    this.gad7Repository = gad7Repository;
+  public PatientTestService(PatientRepository patientRepository) {
     this.patientRepository = patientRepository;
   }
 
-  public GAD7TestOutputDTO createTest(CreateGAD7TestDTO dto, String therapistId) {
-    Patient patient = patientRepository.getPatientById(dto.getPatientId());
-    SecurityUtil.checkOwnership(patient, therapistId);
-
-    GAD7Test test = new GAD7Test();
-    test.setPatient(patient);
-    test.setQuestion1(dto.getQuestion1());
-    test.setQuestion2(dto.getQuestion2());
-    test.setQuestion3(dto.getQuestion3());
-    test.setQuestion4(dto.getQuestion4());
-    test.setQuestion5(dto.getQuestion5());
-    test.setQuestion6(dto.getQuestion6());
-    test.setQuestion7(dto.getQuestion7());
-
-    GAD7Test savedTest = gad7Repository.save(test);
-
-    GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
-    outputDTO.setTestId(savedTest.getTestId());
-    outputDTO.setPatientId(savedTest.getPatient().getId());
-    outputDTO.setCreationDate(savedTest.getCreationDate());
-    outputDTO.setQuestion1(savedTest.getQuestion1());
-    outputDTO.setQuestion2(savedTest.getQuestion2());
-    outputDTO.setQuestion3(savedTest.getQuestion3());
-    outputDTO.setQuestion4(savedTest.getQuestion4());
-    outputDTO.setQuestion5(savedTest.getQuestion5());
-    outputDTO.setQuestion6(savedTest.getQuestion6());
-    outputDTO.setQuestion7(savedTest.getQuestion7());
-
-    return outputDTO;
-  }
-
-  public List<GAD7TestOutputDTO> getTestsByPatient(String patientId, String therapistId) {
+  public List<PsychologicalTestOutputDTO> getTestsByPatient(String patientId, String therapistId) {
     Patient patient = patientRepository.getReferenceById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
-    return patient.getGAD7Tests().stream()
-        .map(
-            test -> {
-              GAD7TestOutputDTO dto = new GAD7TestOutputDTO();
-              dto.setTestId(test.getTestId());
-              dto.setPatientId(test.getPatient().getId());
-              dto.setCreationDate(test.getCreationDate());
-              dto.setQuestion1(test.getQuestion1());
-              dto.setQuestion2(test.getQuestion2());
-              dto.setQuestion3(test.getQuestion3());
-              dto.setQuestion4(test.getQuestion4());
-              dto.setQuestion5(test.getQuestion5());
-              dto.setQuestion6(test.getQuestion6());
-              dto.setQuestion7(test.getQuestion7());
-              return dto;
-            })
-        .collect(Collectors.toList());
-  }
+    try {
+      List<PsychologicalTestOutputDTOPatientAPI> apiResults =
+          PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+              .getPsychologicalTestResults1(patientId, GAD7_TEST_NAME)
+              .collectList()
+              .block();
 
-  public GAD7TestOutputDTO getTest(String testId, String therapistId) {
-    GAD7Test test =
-        gad7Repository
-            .findById(testId)
-            .orElseThrow(
-                () ->
-                    new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "GAD7 test not found with id: " + testId));
-    SecurityUtil.checkOwnership(test, therapistId);
+      if (apiResults == null) {
+        logger.warn("No test results found for patient {}", patientId);
+        return Collections.emptyList();
+      }
 
-    GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();
-    outputDTO.setTestId(test.getTestId());
-    outputDTO.setPatientId(test.getPatient().getId());
-    outputDTO.setCreationDate(test.getCreationDate());
-    outputDTO.setQuestion1(test.getQuestion1());
-    outputDTO.setQuestion2(test.getQuestion2());
-    outputDTO.setQuestion3(test.getQuestion3());
-    outputDTO.setQuestion4(test.getQuestion4());
-    outputDTO.setQuestion5(test.getQuestion5());
-    outputDTO.setQuestion6(test.getQuestion6());
-    outputDTO.setQuestion7(test.getQuestion7());
-    return outputDTO;
+      return apiResults.stream()
+          .map(
+              apiDto -> {
+                try {
+                  return PatientPsychologicalTestMapper.INSTANCE.toPsychologicalTestOutputDTO(
+                      apiDto);
+                } catch (Exception e) {
+                  logger.error("Error mapping test result for patient {}", patientId, e);
+                  return null;
+                }
+              })
+          .filter(Objects::nonNull)
+          .toList();
+    } catch (Exception e) {
+      logger.error("Error fetching test results for patient {}", patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test results", e);
+    }
   }
 }
