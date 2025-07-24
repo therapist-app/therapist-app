@@ -1,28 +1,19 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-} from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
+import { AxiosError } from 'axios'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AlertColor } from '@mui/material'
-import { AxiosError } from 'axios'
 
 import Layout from '../../generalComponents/Layout'
-import { commonButtonStyles } from '../../styles/buttonStyles'
 import { showError } from '../../store/errorSlice'
-import { useAppDispatch } from '../../utils/hooks'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
 
 interface InteractionData {
   hour: number
@@ -58,9 +49,9 @@ const generateMockData = (days: number): InteractionData[] => {
 
       data.push({
         date: format(date, 'yyyy-MM-dd'),
-        hour,
+        hour: hour,
         value: 1,
-        type,
+        type: type,
       })
     }
   }
@@ -129,7 +120,7 @@ const ClientInteractions = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   useEffect(() => {
