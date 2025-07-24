@@ -255,7 +255,9 @@ interface Resources {
       "date": "Datum",
       "last_week": "Letzte Woche",
       "last_two_weeks": "Letzte 2 Wochen",
-      "last_three_weeks": "Letzte 3 Wochen"
+      "last_three_weeks": "Letzte 3 Wochen",
+      "loading": "Lade Klientendaten...",
+      "no_data": "Keine Klienten-Logdaten verfügbar."
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -710,7 +712,9 @@ interface Resources {
       "date": "Date",
       "last_week": "Last Week",
       "last_two_weeks": "Last 2 Weeks",
-      "last_three_weeks": "Last 3 Weeks"
+      "last_three_weeks": "Last 3 Weeks",
+      "loading": "Loading patient interactions data...",
+      "no_data": "No client log data available."
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -1165,7 +1169,9 @@ interface Resources {
       "date": "Дата",
       "last_week": "Останній тиждень",
       "last_two_weeks": "Останні 2 тижні",
-      "last_three_weeks": "Останні 3 тижні"
+      "last_three_weeks": "Останні 3 тижні",
+      "loading": "Завантаження даних взаємодій пацієнта...",
+      "no_data": "Дані клієнтського журналу не доступні."
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",

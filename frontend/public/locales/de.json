@@ -254,7 +254,9 @@
     "date": "Datum",
     "last_week": "Letzte Woche",
     "last_two_weeks": "Letzte 2 Wochen",
-    "last_three_weeks": "Letzte 3 Wochen"
+    "last_three_weeks": "Letzte 3 Wochen",
+    "loading": "Lade Klientendaten...",
+    "no_data": "Keine Klienten-Logdaten verfügbar."
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",

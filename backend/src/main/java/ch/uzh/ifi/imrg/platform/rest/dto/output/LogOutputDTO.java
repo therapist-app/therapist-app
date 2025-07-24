@@ -11,6 +11,5 @@ public class LogOutputDTO {
   private String patientId;
   private String logType;
   private Instant timestamp;
-  private String associatedEntityId;
-  private String comment;
+  private String uniqueIdentifier;
 }

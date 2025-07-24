@@ -16,6 +16,7 @@ apis/meeting-controller-api.ts
 apis/meeting-note-controller-api.ts
 apis/patient-controller-api.ts
 apis/patient-document-controller-api.ts
+apis/patient-log-controller-api.ts
 apis/patient-test-controller-api.ts
 apis/therapist-chatbot-controller-api.ts
 apis/therapist-controller-api.ts
@@ -55,6 +56,7 @@ models/exercise-component-output-dto.ts
 models/exercise-output-dto.ts
 models/gad7-test-output-dto.ts
 models/index.ts
+models/log-output-dto.ts
 models/login-therapist-dto.ts
 models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts

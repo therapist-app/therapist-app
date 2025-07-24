@@ -254,7 +254,9 @@
     "date": "Date",
     "last_week": "Last Week",
     "last_two_weeks": "Last 2 Weeks",
-    "last_three_weeks": "Last 3 Weeks"
+    "last_three_weeks": "Last 3 Weeks",
+    "loading": "Loading patient interactions data...",
+    "no_data": "No client log data available."
   },
   "patient_create": {
     "title": "This is the page to create a new client",

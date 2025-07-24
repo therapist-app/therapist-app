@@ -1,4 +1,15 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -6,10 +17,13 @@ import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { patientLogApi } from '../../utils/api.ts'
 
 interface InteractionData {
   hour: number
@@ -51,7 +65,13 @@ const generateMockData = (days: number): InteractionData[] => {
       })
     }
   }
-  return data
+
+  return logs.map((log) => ({
+    date: format(new Date(log.timestamp), 'yyyy-MM-dd'),
+    hour: new Date(log.timestamp).getHours(),
+    value: 1,
+    type: log.logType,
+  }))
 }
 
 const transformDataForHeatmap = (
@@ -113,6 +133,40 @@ const ClientInteractions = (): ReactElement => {
   })
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
+  const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
+
+  useEffect(() => {
+    const fetchLogs = async (): Promise<void> => {
+      try {
+        setLoading(true)
+        setError(null)
+
+        const response = await patientLogApi.listLogs(patientId!, activeLogType)
+
+        const normalized: LogOutputDTO[] = response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        }))
+
+        setLogs(normalized)
+      } catch (err) {
+        console.error('Error fetching logs:', err)
+        setError(t('patient_interactions.fetch_error'))
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (patientId) {
+      fetchLogs()
+    }
+  }, [patientId, t])
+
+  // Transform logs to interaction data
+  const interactionData = useMemo(() => transformLogsToInteractionData(logs), [logs])
 
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
@@ -151,6 +205,27 @@ const ClientInteractions = (): ReactElement => {
     }
   }, [filteredData, startDate, endDate, notifyError])
 
+  if (loading) {
+    return (
+      <Layout>
+        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
+          <Typography>{t('patient_interactions.loading')}</Typography>
+          <CircularProgress />
+        </Box>
+      </Layout>
+    )
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
+          <Typography color='error'>{error}</Typography>
+        </Box>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <Paper sx={{ p: 3, height: '800px' }}>
@@ -162,20 +237,15 @@ const ClientInteractions = (): ReactElement => {
                   {t('patient_interactions.interaction_type')}
                 </InputLabel>
                 <Select
-                  labelId='interaction-type-label'
-                  value={interactionType}
-                  label={t('patient_interactions.interaction_type')}
-                  onChange={(e) => setInteractionType(e.target.value)}
-                  size='small'
+                  value={activeLogType}
+                  onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                  label={t('patient_interactions.log_type')}
                 >
-                  <MenuItem value='all'>{t('All Interactions')}</MenuItem>
-                  <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
-                  <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
-                  <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
-                  <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
-                  <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
-                  <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
-                  <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
+                  {LOG_TYPES.map((logType) => (
+                    <MenuItem key={logType} value={logType}>
+                      {t(`logTypes.${logType.toLowerCase()}`)}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <DatePicker
