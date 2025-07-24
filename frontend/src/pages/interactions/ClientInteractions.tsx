@@ -1,16 +1,31 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
+import { LOG_TYPES } from '../../store/logTypes.ts'
+import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { patientLogApi } from '../../utils/api.ts'
 
-// Mock data interface
 interface InteractionData {
   hour: number
   date: string
@@ -23,51 +38,30 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-// Mock data generator
-const generateMockData = (days: number): InteractionData[] => {
-  const data: InteractionData[] = []
-  const interactionTypes = [
-    'Journal Creation',
-    'Journal Update',
-    'Exercise Start',
-    'Exercise Completion',
-    'Chatbot Creation',
-    'Message Sent',
-    'Chatbot Interaction',
-  ]
-
-  for (let i = 0; i < days; i++) {
-    const date = subDays(new Date(), i)
-    // Generate 0-5 interactions for each day
-    const dailyInteractions = Math.floor(Math.random() * 6)
-
-    // For each interaction in this day
-    for (let j = 0; j < dailyInteractions; j++) {
-      const hour = Math.floor(Math.random() * 24)
-      const type = interactionTypes[Math.floor(Math.random() * interactionTypes.length)]
-
-      data.push({
-        date: format(date, 'yyyy-MM-dd'),
-        hour: hour,
-        value: 1,
-        type: type,
-      })
-    }
+const transformLogsToInteractionData = (
+  logs: LogOutputDTO[] | undefined | null
+): InteractionData[] => {
+  // Handle cases where logs might be undefined or null
+  if (!logs || !Array.isArray(logs)) {
+    return []
   }
-  return data
+
+  return logs.map((log) => ({
+    date: format(new Date(log.timestamp), 'yyyy-MM-dd'),
+    hour: new Date(log.timestamp).getHours(),
+    value: 1,
+    type: log.logType,
+  }))
 }
 
-// Transform data for heatmap
 const transformDataForHeatmap = (
   data: InteractionData[],
   startDate: Date | null,
   endDate: Date | null
 ): HeatMapData[] => {
-  // Create array of hours (0-23)
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const daysMap = new Map<string, number[]>()
 
-  // If we have both dates, generate all dates in between
   if (startDate && endDate) {
     const allDates = eachDayOfInterval({ start: startDate, end: endDate })
     allDates.forEach((date) => {
@@ -76,7 +70,6 @@ const transformDataForHeatmap = (
     })
   }
 
-  // Add interaction data
   data.forEach((item) => {
     const shortDate = format(new Date(item.date), 'MM-dd')
     if (!daysMap.has(shortDate)) {
@@ -86,7 +79,6 @@ const transformDataForHeatmap = (
     dayData[item.hour] += item.value
   })
 
-  // Sort dates in ascending order
   const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
     const findYear = (shortDate: string): string => {
       const match = data.find((item) => format(new Date(item.date), 'MM-dd') === shortDate)
@@ -97,7 +89,6 @@ const transformDataForHeatmap = (
     return dateA.getTime() - dateB.getTime()
   })
 
-  // Transform into Nivo heatmap format with hours as rows
   return hours.map((hour) => ({
     id: `${hour.toString().padStart(2, '0')}`,
     data: sortedDates.map((date) => ({
@@ -109,21 +100,55 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
-  const [interactionType, setInteractionType] = useState<string>('all')
-  const [data] = useState<InteractionData[]>(() => generateMockData(15))
+  const { patientId } = useParams()
+  const [logs, setLogs] = useState<LogOutputDTO[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
+  const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
+
+  useEffect(() => {
+    const fetchLogs = async (): Promise<void> => {
+      try {
+        setLoading(true)
+        setError(null)
+
+        const response = await patientLogApi.listLogs(patientId!, activeLogType)
+
+        const normalized: LogOutputDTO[] = response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        }))
+
+        setLogs(normalized)
+      } catch (err) {
+        console.error('Error fetching logs:', err)
+        setError(t('patient_interactions.fetch_error'))
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (patientId) {
+      fetchLogs()
+    }
+  }, [patientId, t])
+
+  // Transform logs to interaction data
+  const interactionData = useMemo(() => transformLogsToInteractionData(logs), [logs])
 
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
-    let filtered = data
+    let filtered = interactionData
 
-    // Filter by interaction type
-    if (interactionType !== 'all') {
-      filtered = filtered.filter((d) => d.type === interactionType)
-    }
+    // if (activeLogType !== 'all') {
+    //   filtered = filtered.filter((d) => d.type === activeLogType)
+    // }
 
-    // Filter by date range
     if (startDate && endDate) {
       filtered = filtered.filter((d) => {
         const date = new Date(d.date)
@@ -132,13 +157,34 @@ const ClientInteractions = (): ReactElement => {
     }
 
     return filtered
-  }, [data, interactionType, startDate, endDate])
+  }, [interactionData, activeLogType, startDate, endDate])
 
   // Memoize heatmap data transformation
   const heatmapData = useMemo(
     () => transformDataForHeatmap(filteredData, startDate, endDate),
     [filteredData, startDate, endDate]
   )
+
+  if (loading) {
+    return (
+      <Layout>
+        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
+          <Typography>{t('patient_interactions.loading')}</Typography>
+          <CircularProgress />
+        </Box>
+      </Layout>
+    )
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
+          <Typography color='error'>{error}</Typography>
+        </Box>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
@@ -151,20 +197,15 @@ const ClientInteractions = (): ReactElement => {
                   {t('patient_interactions.interaction_type')}
                 </InputLabel>
                 <Select
-                  labelId='interaction-type-label'
-                  value={interactionType}
-                  label={t('patient_interactions.interaction_type')}
-                  onChange={(e) => setInteractionType(e.target.value)}
-                  size='small'
+                  value={activeLogType}
+                  onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                  label={t('patient_interactions.log_type')}
                 >
-                  <MenuItem value='all'>{t('All Interactions')}</MenuItem>
-                  <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
-                  <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
-                  <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
-                  <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
-                  <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
-                  <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
-                  <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
+                  {LOG_TYPES.map((logType) => (
+                    <MenuItem key={logType} value={logType}>
+                      {t(`logTypes.${logType.toLowerCase()}`)}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <DatePicker

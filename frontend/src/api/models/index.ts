@@ -25,6 +25,7 @@ export * from './create-patient-document-from-therapist-document-dto';
 export * from './create-therapist-dto';
 export * from './exercise-component-output-dto';
 export * from './exercise-output-dto';
+export * from './log-output-dto';
 export * from './login-therapist-dto';
 export * from './meeting-note-output-dto';
 export * from './meeting-output-dto';

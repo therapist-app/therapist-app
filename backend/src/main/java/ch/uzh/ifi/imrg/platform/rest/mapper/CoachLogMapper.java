@@ -16,8 +16,7 @@ public interface CoachLogMapper {
   @Mapping(source = "patientId", target = "patientId")
   @Mapping(source = "logType", target = "logType")
   @Mapping(source = "timestamp", target = "timestamp")
-  @Mapping(source = "associatedEntityId", target = "associatedEntityId")
-  @Mapping(source = "comment", target = "comment")
+  @Mapping(source = "uniqueIdentifier", target = "uniqueIdentifier")
   LogOutputDTO apiToLocal(LogOutputDTOPatientAPI apiDto);
 
   default List<LogOutputDTO> apiToLocal(List<LogOutputDTOPatientAPI> apiDtos) {
