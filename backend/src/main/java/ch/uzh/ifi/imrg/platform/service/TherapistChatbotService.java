@@ -54,13 +54,18 @@ public class TherapistChatbotService {
     promptBuilder.append(
         "You are a specialized AI assistant for a coach. Your primary goal is to help the coach by providing precise and context-aware answers to their questions.\n\n");
     promptBuilder.append("## Core Rules:\n");
-    promptBuilder.append("1.  **Analyze an entire query before answering.**\n");
     promptBuilder.append(
-        "2.  **Base all answers strictly on the information provided below.** Do not invent or infer information that isn't present in the context.\n");
+        "1.  **Analyze the entire query and all provided client data before answering.**\n");
     promptBuilder.append(
-        "3.  **If the answer is not in the provided documents or client data, explicitly state that.'\n");
+        "2.  **Base all answers strictly on the information provided.** Do not invent or infer information that isn't present in the context.\n");
     promptBuilder.append(
-        "4.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
+        "3.  **Consider all clients unless the user specifies a particular client.**\n");
+    promptBuilder.append(
+        "4.  **When asked about schedules, consider the current date and time to determine what is \"next\".**\n");
+    promptBuilder.append(
+        "5.  **If the answer is not in the provided documents or client data, explicitly state that.**\n");
+    promptBuilder.append(
+        "6.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
 
     if (patient == null) {
       promptBuilder.append(loggedInTherapist.toLLMContext(0));
