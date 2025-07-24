@@ -74,6 +74,6 @@ public class LLMUZH extends LLM {
   }
 
   private String mapChatRoleToString(ChatRole chatRole) {
-    return chatRole.toString().toLowerCase(); // e.g., USER -> "user"
+    return chatRole.toString().toLowerCase();
   }
 }
