@@ -12,7 +12,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -21,7 +20,6 @@ import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionC
 import { useNotify } from '../../../hooks/useNotify'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface MeetingNoteComponentProps {
@@ -54,8 +52,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
       notifySuccess(t('meetings.note_updated_successfully'))
       setIsEditing(false)
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -84,8 +81,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
       await dispatch(deleteMeetingNote(formData.id ?? '')).unwrap()
       notifySuccess(t('meetings.note_deleted_successfully'))
     } catch (e) {
-      const msg = handleError(e as AxiosError)
-      notifyError(msg)
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
     } finally {
       props.delete()
     }

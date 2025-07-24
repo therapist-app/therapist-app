@@ -1,5 +1,4 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +8,6 @@ import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 import { useNotify } from '../../hooks/useNotify'
 import { registerTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -41,7 +39,7 @@ const Register = (): ReactElement => {
       notifySuccess(t('register.success') || 'Registration successful.')
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

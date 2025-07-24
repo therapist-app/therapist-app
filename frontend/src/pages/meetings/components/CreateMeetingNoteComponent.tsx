@@ -48,8 +48,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
       await dispatch(createMeetingNote(formData)).unwrap()
       notifySuccess(t('meetings.note_created_successfully'))
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       props.save()
     }

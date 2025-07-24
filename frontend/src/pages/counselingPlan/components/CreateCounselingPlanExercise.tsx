@@ -86,8 +86,7 @@ const CreateCounselingPlanExercise = ({
       })
       setOpen(true)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -114,8 +113,7 @@ const CreateCounselingPlanExercise = ({
       setOpen(false)
       onSuccess()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

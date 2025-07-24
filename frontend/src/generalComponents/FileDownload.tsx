@@ -1,10 +1,8 @@
 import DownloadIcon from '@mui/icons-material/Download'
 import { IconButton } from '@mui/material'
-import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 
 import { useNotify } from '../hooks/useNotify'
-import { handleError } from '../utils/handleError'
 
 interface FileDownloadProps {
   download(): Promise<string>
@@ -27,8 +25,7 @@ const FileDownload: React.FC<FileDownloadProps> = ({ download, fileName }) => {
       window.URL.revokeObjectURL(downloadUrl)
       notifySuccess(t('files.download_success'))
     } catch (error) {
-      const message = handleError(error as AxiosError)
-      notifyError(message || t('files.download_failed'))
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

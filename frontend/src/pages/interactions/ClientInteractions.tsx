@@ -109,8 +109,7 @@ const ClientInteractions = (): ReactElement => {
     try {
       return generateMockData(15)
     } catch (error) {
-      const msg = typeof handleError === 'function' ? String(error) : 'Failed to generate data'
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       return []
     }
   })
@@ -140,7 +139,7 @@ const ClientInteractions = (): ReactElement => {
 
       return filtered
     } catch (error) {
-      notifyError(String(error))
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       return []
     }
   }, [data, interactionType, startDate, endDate, notifyError])
@@ -149,7 +148,7 @@ const ClientInteractions = (): ReactElement => {
     try {
       return transformDataForHeatmap(filteredData, startDate, endDate)
     } catch (error) {
-      notifyError(String(error))
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       return []
     }
   }, [filteredData, startDate, endDate, notifyError])

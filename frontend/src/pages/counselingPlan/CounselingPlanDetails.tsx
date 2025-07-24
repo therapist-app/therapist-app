@@ -53,8 +53,7 @@ const CounselingPlanDetails = (): ReactElement => {
           dispatch(getAllExercisesOfPatient(patientId)).unwrap(),
         ])
       } catch (error) {
-        const msg = handleError(error as AxiosError)
-        notifyError(msg)
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
     })()
   }, [patientId, dispatch])
@@ -64,8 +63,7 @@ const CounselingPlanDetails = (): ReactElement => {
       return
     }
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
   }
 
@@ -80,8 +78,7 @@ const CounselingPlanDetails = (): ReactElement => {
       notifySuccess(t('counseling_plan.updated_successfully'))
       refresh()
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

@@ -45,7 +45,6 @@ import { RootState } from '../../store/store'
 import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { formatResponse } from '../../utils/formatResponse'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
 
@@ -100,7 +99,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         const { data } = await chatbotTemplateApi.getTemplate(id)
         setChatbotConfig(data)
       } catch (e) {
-        notifyError(handleError(e as AxiosError))
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     })()
   }, [chatbotConfig, chatbotTemplateId, notifyError])
@@ -137,7 +136,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   useEffect(() => {
     if (chatbotConfig?.id && selectedTab === 'sources') {
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id)).catch((err: AxiosError) =>
-        notifyError(handleError(err))
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       )
     }
   }, [dispatch, chatbotConfig?.id, selectedTab, notifyError])
@@ -151,7 +150,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
         setIsOnlyTemplateForClient(data.length === 1)
       } catch (e) {
-        notifyError(handleError(e as AxiosError))
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     }
     load()
@@ -248,8 +247,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       typeChunk()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
 
       setChat((prev) => {
         const copy = [...prev]
@@ -288,7 +286,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       notifySuccess(t('chatbot.chatbot_updated_success') || 'Chatbot updated successfully')
     } catch (error) {
-      notifyError(handleError(error as AxiosError))
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -358,7 +356,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
       notifySuccess(t('files.file_uploaded_successfully') || 'File uploaded successfully')
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -371,7 +369,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
       notifySuccess(t('files.file_deleted_successfully') || 'File deleted successfully')
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -382,7 +380,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       })
       return URL.createObjectURL(data)
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       throw err
     }
   }

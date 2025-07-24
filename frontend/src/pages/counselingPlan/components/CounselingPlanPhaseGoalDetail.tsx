@@ -27,8 +27,7 @@ const CounselingPlanPhaseGoalDetail = ({
       notifySuccess('Goal removed successfully')
       refresh()
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

@@ -58,8 +58,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
       setIsEditing(false)
       props.refresh()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -69,8 +68,7 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
       notifySuccess(t('exercise.component_deleted_successfully'))
       props.refresh()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

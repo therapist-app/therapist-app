@@ -1,5 +1,4 @@
 import { Button, Container, TextField, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +8,6 @@ import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 import { useNotify } from '../../hooks/useNotify'
 import { loginTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -24,7 +22,6 @@ const Login = (): ReactElement => {
     password: '',
   })
 
-  // Login.tsx
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
     if (!formData.email || !formData.password) {

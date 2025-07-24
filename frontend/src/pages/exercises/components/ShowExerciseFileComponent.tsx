@@ -42,8 +42,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
         ).unwrap()
         setImageFileUrl(fileUrl)
       } catch (err) {
-        const msg = handleError(err as AxiosError)
-        notifyError(msg)
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       }
     })()
   }, [dispatch, exerciseComponent.id])
@@ -79,8 +78,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
       setIsEditing(false)
       props.refresh()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -90,8 +88,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
       notifySuccess(t('exercise.component_deleted_successfully'))
       props.refresh()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

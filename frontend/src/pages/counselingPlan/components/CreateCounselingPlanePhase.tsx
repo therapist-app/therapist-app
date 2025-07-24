@@ -53,8 +53,7 @@ const CreateCounselingPlanePhase = ({
       setOpen(false)
       setFormValues(initialFormValues)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -73,8 +72,7 @@ const CreateCounselingPlanePhase = ({
       })
       setOpen(true)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

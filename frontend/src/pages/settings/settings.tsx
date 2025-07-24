@@ -9,7 +9,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -18,7 +17,6 @@ import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -35,7 +33,7 @@ const Settings = (): ReactElement => {
     const selectedLanguage = event.target.value
     i18n
       .changeLanguage(selectedLanguage)
-      .catch((err) => notifyError(handleError(err as AxiosError)))
+      .catch((err) => notifyError(typeof err === 'string' ? err : 'An unknown error occurred'))
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -56,7 +54,7 @@ const Settings = (): ReactElement => {
       notifySuccess(t('settings.password_changed_success') || 'Password changed.')
       navigate(getPathFromPage(PAGES.LOGIN_PAGE))
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       setNewPassword('')
       setConfirmPassword('')

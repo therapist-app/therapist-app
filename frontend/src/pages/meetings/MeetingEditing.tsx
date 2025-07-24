@@ -54,8 +54,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
       notifySuccess(t('meetings.meeting_updated_successfully'))
       props.save()
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

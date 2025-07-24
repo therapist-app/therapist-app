@@ -99,8 +99,7 @@ const ExerciseDetail = (): ReactElement => {
       setIsEditingExercise(false)
       await refreshExercise()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -108,8 +107,7 @@ const ExerciseDetail = (): ReactElement => {
     try {
       await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
     } catch (e) {
-      const msg = handleError(e as AxiosError)
-      notifyError(msg)
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
     }
   }
 
@@ -123,8 +121,7 @@ const ExerciseDetail = (): ReactElement => {
         })
       )
     } catch (e) {
-      const msg = handleError(e as AxiosError)
-      notifyError(msg)
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
     }
   }
 
@@ -133,8 +130,7 @@ const ExerciseDetail = (): ReactElement => {
       try {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
       } catch (e) {
-        const msg = handleError(e as AxiosError)
-        notifyError(msg)
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     })()
   }, [exerciseId, dispatch])

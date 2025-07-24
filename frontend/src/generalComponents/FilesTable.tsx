@@ -9,13 +9,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
 import { useNotify } from '../hooks/useNotify'
 import DeleteIcon from '../icons/DeleteIcon'
-import { handleError } from '../utils/handleError'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
 
@@ -36,8 +34,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
       await handleFileUpload(file)
       notifySuccess('File uploaded successfully.')
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -46,8 +43,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
       await handleDeleteFile(fileId)
       notifySuccess('File deleted successfully.')
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -55,8 +51,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
     try {
       return await downloadFile(fileId)
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       return ''
     }
   }

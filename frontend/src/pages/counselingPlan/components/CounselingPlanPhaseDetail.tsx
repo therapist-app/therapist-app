@@ -43,8 +43,7 @@ const CounselingPlanPhaseDetail = ({
       notifySuccess(t('counseling_plan.phase_deleted_success'))
       onSuccess()
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

@@ -12,7 +12,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
@@ -33,7 +32,6 @@ import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -119,7 +117,7 @@ const ChatbotOverview = (): ReactElement => {
         }
       )
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -148,7 +146,7 @@ const ChatbotOverview = (): ReactElement => {
         { state: { patientId: patientId, chatbotConfig: created } }
       )
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -177,7 +175,7 @@ const ChatbotOverview = (): ReactElement => {
       }
       notifySuccess(t('chatbot.chatbot_cloned_success'))
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       closeMenu()
     }
@@ -199,7 +197,7 @@ const ChatbotOverview = (): ReactElement => {
       }
       notifySuccess(t('chatbot.chatbot_deleted_success'))
     } catch (err) {
-      notifyError(handleError(err as AxiosError))
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       closeMenu()
     }

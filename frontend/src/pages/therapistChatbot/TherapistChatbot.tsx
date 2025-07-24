@@ -1,7 +1,6 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
 import { Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
-import { isAxiosError } from 'axios'
 import { ReactElement, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -13,7 +12,6 @@ import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
 import { clearMessages } from '../../store/therapistChatbotSlice'
 import { formatResponse } from '../../utils/formatResponse'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -30,8 +28,7 @@ const TherapistChatbot = (): ReactElement => {
 
   useEffect(() => {
     if (chatbotError) {
-      const msg = isAxiosError(chatbotError) ? handleError(chatbotError) : String(chatbotError)
-      notifyError(msg)
+      notifyError(typeof chatbotError === 'string' ? chatbotError : 'An unknown error occurred')
     }
   }, [chatbotError, notifyError])
 

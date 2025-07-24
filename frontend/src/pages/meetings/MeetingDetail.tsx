@@ -44,8 +44,7 @@ const MeetingDetail = (): ReactElement => {
       try {
         await dispatch(getMeeting(meetingId ?? '')).unwrap()
       } catch (error) {
-        const msg = handleError(error as AxiosError)
-        notifyError(msg)
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
     })()
   }, [dispatch, meetingId])
@@ -57,8 +56,7 @@ const MeetingDetail = (): ReactElement => {
       await dispatch(getMeeting(meetingId ?? '')).unwrap()
       setShowCreateMeetingNote(false)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -72,8 +70,7 @@ const MeetingDetail = (): ReactElement => {
         })
       )
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

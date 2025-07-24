@@ -60,8 +60,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
       cancel()
       props.createdExercise()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

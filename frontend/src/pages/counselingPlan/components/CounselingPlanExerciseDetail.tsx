@@ -37,8 +37,7 @@ const CounselingPlanExerciseDetail = ({
       notifySuccess('Exercise removed successfully')
       refresh()
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

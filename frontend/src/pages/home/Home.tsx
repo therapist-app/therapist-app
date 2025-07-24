@@ -132,8 +132,7 @@ const Home = (): ReactElement => {
         })
       )
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      notifyError(errorMessage)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleMenuClick = (
@@ -157,8 +156,7 @@ const Home = (): ReactElement => {
       notifySuccess(t('dashboard.chatbot_cloned_success'))
       handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      notifyError(errorMessage)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleDelete = async (): Promise<void> => {
@@ -171,8 +169,7 @@ const Home = (): ReactElement => {
       notifySuccess(t('dashboard.chatbot_deleted_success'))
       handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      notifyError(errorMessage)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {

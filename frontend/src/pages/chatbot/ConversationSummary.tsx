@@ -1,5 +1,4 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import dayjs from 'dayjs'
 import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -7,7 +6,6 @@ import { useParams } from 'react-router-dom'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
@@ -33,8 +31,7 @@ const ConversationSummary = (): ReactElement => {
           })
         ).unwrap()
       } catch (err) {
-        const msg = handleError(err as AxiosError)
-        notifyError(msg)
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       }
     })()
   }, [dispatch, patientId])

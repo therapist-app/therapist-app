@@ -86,8 +86,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       cancel()
       props.createdExerciseFile()
     } catch (err) {
-      const msg = handleError(err as AxiosError)
-      notifyError(msg)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

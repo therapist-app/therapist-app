@@ -168,8 +168,7 @@ const PatientCreate = (): ReactElement => {
       try {
         await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
       } catch (error) {
-        const msg = handleError(error as AxiosError)
-        notifyError(msg)
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
     }
     fetchTherapist()
@@ -220,8 +219,7 @@ const PatientCreate = (): ReactElement => {
         throw new Error('Patient registration failed')
       }
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      notifyError(errorMessage)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 

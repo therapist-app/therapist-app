@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -35,7 +34,6 @@ import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { patientDocumentApi } from '../../utils/api'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ChatbotOverview from '../chatbot/ChatbotOverview'
@@ -75,8 +73,7 @@ const PatientDetail = (): ReactElement => {
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist()).catch((error: unknown) => {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
   }, [dispatch])
 
@@ -101,8 +98,7 @@ const PatientDetail = (): ReactElement => {
           dispatch(getCounselingPlanByPatientId(patientId ?? '')).unwrap(),
         ])
       } catch (error) {
-        const msg = handleError(error as AxiosError)
-        notifyError(msg)
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
     })()
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
@@ -119,8 +115,7 @@ const PatientDetail = (): ReactElement => {
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
       notifySuccess(t('patient_detail.file_upload_success'))
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -136,8 +131,7 @@ const PatientDetail = (): ReactElement => {
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
       notifySuccess(t('patient_detail.file_upload_success'))
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -147,8 +141,7 @@ const PatientDetail = (): ReactElement => {
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
       notifySuccess(t('patient_detail.file_delete_success'))
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -161,8 +154,7 @@ const PatientDetail = (): ReactElement => {
       const url = window.URL.createObjectURL(file)
       return url
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       throw error
     }
   }

@@ -51,8 +51,7 @@ const CreateCounselingPlanPhaseGoal = ({
         goalDescription: '',
       })
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -71,8 +70,7 @@ const CreateCounselingPlanPhaseGoal = ({
       })
       setOpen(true)
     } catch (error) {
-      const msg = handleError(error as AxiosError)
-      notifyError(msg)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
