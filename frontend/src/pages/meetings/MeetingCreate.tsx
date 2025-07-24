@@ -1,5 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -11,12 +10,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateMeetingDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
-import { showError } from '../../store/errorSlice'
 import { createMeeting } from '../../store/meetingSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 type MeetingFormData = Omit<CreateMeetingDTO, 'meetingStart' | 'meetingEnd'> & {
   meetingStart: Date | null
@@ -29,6 +28,7 @@ const MeetingCreate = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [meetingFormData, setMeetingFormData] = useState<MeetingFormData>({
     meetingStart: new Date(),
@@ -37,15 +37,11 @@ const MeetingCreate = (): ReactElement => {
     location: '',
   })
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     if (!meetingFormData.meetingStart) {
-      showMessage(t('meetings.error_start_date_required'), 'error')
+      notifyError(t('meetings.error_start_date_required'))
       return
     }
 
@@ -59,7 +55,7 @@ const MeetingCreate = (): ReactElement => {
         location: meetingFormData.location,
       }
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
-      showMessage(t('meetings.meeting_created_successfully'), 'success')
+      notifySuccess(t('meetings.meeting_created_successfully'))
       navigate(
         getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -68,7 +64,7 @@ const MeetingCreate = (): ReactElement => {
       )
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

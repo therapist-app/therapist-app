@@ -1,5 +1,4 @@
 import { IconButton, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhase } from '../../../store/counselingPlanSlice'
-import { showError } from '../../../store/errorSlice'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -16,6 +14,7 @@ import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
 import CreateCounselingPlanExercise from './CreateCounselingPlanExercise'
 import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO
@@ -31,11 +30,8 @@ const CounselingPlanPhaseDetail = ({
   isLastPhase,
 }: CounselingPlanPhaseDetailProps): ReactElement => {
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
@@ -44,11 +40,11 @@ const CounselingPlanPhaseDetail = ({
   const handleDeletePhase = async (): Promise<void> => {
     try {
       await dispatch(deleteCounselingPlanPhase(phase.id ?? '')).unwrap()
-      showMessage(t('counseling_plan.phase_deleted_success'), 'success')
+      notifySuccess(t('counseling_plan.phase_deleted_success'))
       onSuccess()
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

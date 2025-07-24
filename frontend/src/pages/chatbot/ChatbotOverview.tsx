@@ -12,7 +12,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -29,7 +28,6 @@ import {
   deleteChatbotTemplate,
   deletePatientChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
-import { showError } from '../../store/errorSlice'
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
@@ -37,12 +35,14 @@ import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 const ChatbotOverview = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams<{ patientId: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { notifySuccess, notifyError } = useNotify()
 
   const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
   const patient = useSelector((s: RootState) =>
@@ -53,9 +53,6 @@ const ChatbotOverview = (): ReactElement => {
   const therapistTemplates: ChatbotTemplateOutputDTO[] = (
     therapist?.chatbotTemplatesOutputDTO ?? []
   ).filter((tpl) => tpl.patientId == null)
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
@@ -111,7 +108,7 @@ const ChatbotOverview = (): ReactElement => {
         dispatch(getCurrentlyLoggedInTherapist())
       }
 
-      showMessage(t('chatbot.chatbot_created_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_created_success'))
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -122,7 +119,7 @@ const ChatbotOverview = (): ReactElement => {
         }
       )
     } catch (err) {
-      showMessage(handleError(err as AxiosError), 'error')
+      notifyError(handleError(err as AxiosError))
     }
   }
 
@@ -142,7 +139,7 @@ const ChatbotOverview = (): ReactElement => {
       ).unwrap()
 
       dispatch(getAllPatientsOfTherapist())
-      showMessage(t('chatbot.chatbot_created_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_created_success'))
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -151,7 +148,7 @@ const ChatbotOverview = (): ReactElement => {
         { state: { patientId: patientId, chatbotConfig: created } }
       )
     } catch (err) {
-      showMessage(handleError(err as AxiosError), 'error')
+      notifyError(handleError(err as AxiosError))
     }
   }
 
@@ -178,9 +175,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(cloneChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      showMessage(t('chatbot.chatbot_cloned_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_cloned_success'))
     } catch (err) {
-      showMessage(handleError(err as AxiosError), 'error')
+      notifyError(handleError(err as AxiosError))
     } finally {
       closeMenu()
     }
@@ -200,9 +197,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(deleteChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      showMessage(t('chatbot.chatbot_deleted_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_deleted_success'))
     } catch (err) {
-      showMessage(handleError(err as AxiosError), 'error')
+      notifyError(handleError(err as AxiosError))
     } finally {
       closeMenu()
     }

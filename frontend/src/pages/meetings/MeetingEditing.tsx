@@ -1,5 +1,4 @@
 import { Button, MenuItem, Select, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -9,10 +8,10 @@ import { t } from 'i18next'
 import { useState } from 'react'
 
 import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
-import { showError } from '../../store/errorSlice'
 import { updateMeeting } from '../../store/meetingSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
+import { useNotify } from '../../hooks/useNotify'
 
 interface MeetingEditingProps {
   save(): void
@@ -29,6 +28,7 @@ interface FormValues {
 
 const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [meetingFormData, setMeetingFormData] = useState<FormValues>({
     meetingStart: new Date(props.meeting?.meetingStart ?? ''),
@@ -41,10 +41,6 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
     return <></>
   }
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   const handleSubmit = async (): Promise<void> => {
     try {
       const dto: UpdateMeetingDTO = {
@@ -55,11 +51,11 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
         meetingStatus: meetingFormData.meetingStatus,
       }
       await dispatch(updateMeeting(dto)).unwrap()
-      showMessage(t('meetings.meeting_updated_successfully'), 'success')
+      notifySuccess(t('meetings.meeting_updated_successfully'))
       props.save()
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

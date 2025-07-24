@@ -1,5 +1,4 @@
 import { IconButton } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
@@ -7,10 +6,10 @@ import { Link, useParams } from 'react-router-dom'
 import { ExerciseOutputDTO } from '../../../api'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { removeExerciseFromCounselingPlanPhase } from '../../../store/counselingPlanSlice'
-import { showError } from '../../../store/errorSlice'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CounselingPlanExerciseDetailProps {
   exercise: ExerciseOutputDTO
@@ -25,10 +24,7 @@ const CounselingPlanExerciseDetail = ({
 }: CounselingPlanExerciseDetailProps): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
+  const { notifyError, notifySuccess } = useNotify()
 
   const handleRemoveExercise = async (): Promise<void> => {
     try {
@@ -38,11 +34,11 @@ const CounselingPlanExerciseDetail = ({
           counselingPlanPhaseId: counselingPlanPhaseId,
         })
       ).unwrap()
-      showMessage('Exercise removed successfully', 'success')
+      notifySuccess('Exercise removed successfully')
       refresh()
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

@@ -1,7 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,12 +8,12 @@ import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
-import { showError } from '../../../store/errorSlice'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateMeetingNoteComponentProps {
   save(): void
@@ -25,10 +24,7 @@ interface CreateMeetingNoteComponentProps {
 const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
+  const { notifyError, notifySuccess } = useNotify()
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
@@ -50,10 +46,10 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
     e.preventDefault()
     try {
       await dispatch(createMeetingNote(formData)).unwrap()
-      showMessage(t('meetings.note_created_successfully'), 'success')
+      notifySuccess(t('meetings.note_created_successfully'))
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     } finally {
       props.save()
     }

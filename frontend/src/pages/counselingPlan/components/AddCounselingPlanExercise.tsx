@@ -1,5 +1,4 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,7 +6,6 @@ import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
-import { showError } from '../../../store/errorSlice'
 import { RootState } from '../../../store/store'
 import {
   cancelButtonStyles,
@@ -16,6 +14,7 @@ import {
 } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface AddCounselingPlanExerciseProps {
   counselingPlanPhaseId: string
@@ -31,6 +30,7 @@ const AddCounselingPlanExercise = ({
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { allExercisesOfPatient } = useSelector((state: RootState) => state.exercise)
+  const { notifyError, notifySuccess } = useNotify()
 
   const exercisesToSelect = allExercisesOfPatient.filter(
     (exercise) =>
@@ -39,10 +39,6 @@ const AddCounselingPlanExercise = ({
 
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('')
   const [open, setOpen] = useState(false)
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   const handleSelectExerciseChange = (event: SelectChangeEvent): void => {
     setSelectedExerciseId(event.target.value)
@@ -60,11 +56,11 @@ const AddCounselingPlanExercise = ({
       }
       await dispatch(addExerciseToCounselingPlanPhase(dto)).unwrap()
       setOpen(false)
-      showMessage(t('counseling_plan.exercise_added_success'), 'success')
+      notifySuccess(t('counseling_plan.exercise_added_success'))
       onSuccess()
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

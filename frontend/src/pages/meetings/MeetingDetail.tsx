@@ -1,6 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +8,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
-import { showError } from '../../store/errorSlice'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import {
@@ -26,12 +24,14 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
 import MeetingEditing from './MeetingEditing'
+import { useNotify } from '../../hooks/useNotify'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const [isEditing, setIsEditing] = useState(false)
 
   const [showCreateMeetingNote, setShowCreateMeetingNote] = useState(false)
@@ -39,17 +39,13 @@ const MeetingDetail = (): ReactElement => {
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   useEffect(() => {
     ;(async () => {
       try {
         await dispatch(getMeeting(meetingId ?? '')).unwrap()
       } catch (error) {
         const msg = handleError(error as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [dispatch, meetingId])
@@ -62,14 +58,14 @@ const MeetingDetail = (): ReactElement => {
       setShowCreateMeetingNote(false)
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
   const handleDeleteMeeting = async (): Promise<void> => {
     try {
       await dispatch(deleteMeeting(meetingId ?? '')).unwrap()
-      showMessage(t('meetings.meeting_deleted_successfully'), 'success')
+      notifySuccess(t('meetings.meeting_deleted_successfully'))
       navigate(
         getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -77,7 +73,7 @@ const MeetingDetail = (): ReactElement => {
       )
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

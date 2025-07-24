@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -20,7 +19,6 @@ import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import Layout from '../../generalComponents/Layout'
-import { showError } from '../../store/errorSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import {
@@ -31,6 +29,7 @@ import {
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
+import { useNotify } from '../../hooks/useNotify.ts'
 
 type Complaint = {
   id: string
@@ -128,12 +127,9 @@ const PatientCreate = (): ReactElement => {
   const [personalOccupational, setPersonalOccupational] = useState('')
   const [personalMarital, setPersonalMarital] = useState('')
   const [personalPremorbid, setPersonalPremorbid] = useState('')
+  const { notifyError, notifySuccess } = useNotify()
 
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   const handleChange = (index: number, field: keyof Complaint, value: string): void => {
     const updated = [...complaints]
@@ -173,7 +169,7 @@ const PatientCreate = (): ReactElement => {
         await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
       } catch (error) {
         const msg = handleError(error as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     }
     fetchTherapist()
@@ -217,7 +213,7 @@ const PatientCreate = (): ReactElement => {
 
       if (registerPatient.fulfilled.match(resultAction)) {
         const newPatient = resultAction.payload
-        showMessage(t('patient_create.patient_register_success'), 'success')
+        notifySuccess(t('patient_create.patient_register_success'))
         setRefreshTherapistCounter((prev) => prev + 1)
         navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id! }))
       } else {
@@ -225,7 +221,7 @@ const PatientCreate = (): ReactElement => {
       }
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      showMessage(errorMessage, 'error')
+      notifyError(errorMessage)
     }
   }
 

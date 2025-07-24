@@ -1,8 +1,8 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
-import { Alert, Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
 import { isAxiosError } from 'axios'
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
@@ -15,25 +15,25 @@ import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { patientId } = useParams()
   const location = useLocation()
+  const { notifyError } = useNotify()
 
   const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
   const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
   useEffect(() => {
     if (chatbotError) {
       const msg = isAxiosError(chatbotError) ? handleError(chatbotError) : String(chatbotError)
-      setErrorMessage(msg)
+      notifyError(msg)
     }
-  }, [chatbotError])
+  }, [chatbotError, notifyError])
 
   const currentPage = getPageFromPath(location.pathname)
   const closePage =
@@ -56,12 +56,6 @@ const TherapistChatbot = (): ReactElement => {
   return (
     <Layout>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        {errorMessage && (
-          <Alert severity='error' sx={{ mb: 2 }}>
-            {errorMessage}
-          </Alert>
-        )}
-
         <IconButton
           sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
           onClick={() => {

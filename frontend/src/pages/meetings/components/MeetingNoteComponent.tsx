@@ -12,18 +12,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
-import { showError } from '../../../store/errorSlice'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO
@@ -33,11 +32,8 @@ interface MeetingNoteComponentProps {
 const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false)
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({
     id: props?.meetingNote.id ?? '',
@@ -55,11 +51,11 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
     try {
       const updatedMeeting = await dispatch(updateMeetingNote(formData)).unwrap()
       setOriginalFormData(updatedMeeting)
-      showMessage(t('meetings.note_updated_successfully'), 'success')
+      notifySuccess(t('meetings.note_updated_successfully'))
       setIsEditing(false)
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -86,10 +82,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
     event.stopPropagation()
     try {
       await dispatch(deleteMeetingNote(formData.id ?? '')).unwrap()
-      showMessage(t('meetings.note_deleted_successfully'), 'success')
+      notifySuccess(t('meetings.note_deleted_successfully'))
     } catch (e) {
       const msg = handleError(e as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     } finally {
       props.delete()
     }

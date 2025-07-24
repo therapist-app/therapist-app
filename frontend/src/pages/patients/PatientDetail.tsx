@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,7 +22,6 @@ import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
-import { showError } from '../../store/errorSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
@@ -43,10 +41,12 @@ import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
+import { useNotify } from '../../hooks/useNotify'
 
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -73,14 +73,10 @@ const PatientDetail = (): ReactElement => {
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist()).catch((error: unknown) => {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     })
   }, [dispatch])
 
@@ -106,7 +102,7 @@ const PatientDetail = (): ReactElement => {
         ])
       } catch (error) {
         const msg = handleError(error as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
@@ -121,10 +117,10 @@ const PatientDetail = (): ReactElement => {
         })
       ).unwrap()
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
-      showMessage(t('patient_detail.file_upload_success'), 'success')
+      notifySuccess(t('patient_detail.file_upload_success'))
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -138,10 +134,10 @@ const PatientDetail = (): ReactElement => {
         })
       ).unwrap()
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
-      showMessage(t('patient_detail.file_upload_success'), 'success')
+      notifySuccess(t('patient_detail.file_upload_success'))
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -149,10 +145,10 @@ const PatientDetail = (): ReactElement => {
     try {
       await dispatch(deleteDocumentOfPatient(fileId)).unwrap()
       setRefreshPatientDocumentsCounter((prev) => prev + 1)
-      showMessage(t('patient_detail.file_delete_success'), 'success')
+      notifySuccess(t('patient_detail.file_delete_success'))
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -166,7 +162,7 @@ const PatientDetail = (): ReactElement => {
       return url
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
       throw error
     }
   }

@@ -8,26 +8,23 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { showError } from '../../store/errorSlice'
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { patientTestApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
+import { useNotify } from '../../hooks/useNotify'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifyError } = useNotify()
 
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 
@@ -50,7 +47,7 @@ export const GAD7TestDetail = (): ReactElement => {
         setGad7Tests(normalized)
       } catch (err) {
         const msg = handleError(err as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     }
     if (patientId) {

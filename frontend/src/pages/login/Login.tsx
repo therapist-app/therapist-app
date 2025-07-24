@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Snackbar, TextField, Typography } from '@mui/material'
+import { Button, Container, TextField, Typography } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,44 +10,33 @@ import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyl
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
+import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 
 const Login = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess, notifyWarning } = useNotify()
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
     email: '',
     password: '',
   })
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('error')
-
-  const openSnackbar = (
-    msg: string,
-    sev: 'info' | 'success' | 'error' | 'warning' = 'error'
-  ): void => {
-    setSnackbarMessage(msg)
-    setSnackbarSeverity(sev)
-    setSnackbarOpen(true)
-  }
 
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     if (!formData.email || !formData.password) {
-      openSnackbar(t('login.fields_required') || 'Both fields are required.', 'warning')
+      notifyWarning(t('login.fields_required') || 'Both fields are required.')
       return
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
-      openSnackbar(t('login.success') || 'Login successful.', 'success')
+      notifySuccess(t('login.success') || 'Login successful.')
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (e) {
-      openSnackbar(handleError(e as AxiosError), 'error')
+      notifyError(handleError(e as AxiosError))
     }
   }
 
@@ -66,7 +55,7 @@ const Login = (): ReactElement => {
           gap: '32px',
         }}
       >
-        <Typography variant='h2'>{t('login.welcome')}</Typography>
+        <Typography variant='h2'> {t('login.welcome')}</Typography>
         <Typography variant='h4' gutterBottom>
           {t('login.login_therapist')}
         </Typography>
@@ -108,21 +97,7 @@ const Login = (): ReactElement => {
           {t('login.go_registration')}
         </Button>
       </div>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity={snackbarSeverity}
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      <GlobalErrorSnackbar />
     </>
   )
 }

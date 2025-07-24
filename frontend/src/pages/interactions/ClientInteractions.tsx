@@ -1,5 +1,4 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -14,6 +13,9 @@ import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
+import { useNotify } from '../../hooks/useNotify'
+
+const { notifyError } = useNotify()
 
 interface InteractionData {
   hour: number
@@ -119,13 +121,9 @@ const ClientInteractions = (): ReactElement => {
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
-      showMessage(t('patient_interactions.invalid_date_range'), 'error')
+      notifyError(t('patient_interactions.invalid_date_range'))
     }
   }, [startDate, endDate, t])
 
@@ -147,7 +145,7 @@ const ClientInteractions = (): ReactElement => {
       return filtered
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
       return []
     }
   }, [data, interactionType, startDate, endDate])
@@ -157,7 +155,7 @@ const ClientInteractions = (): ReactElement => {
       return transformDataForHeatmap(filteredData, startDate, endDate)
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
       return []
     }
   }, [filteredData, startDate, endDate])

@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   FormControl,
@@ -21,51 +20,41 @@ import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
+import { useNotify } from '../../hooks/useNotify'
 
 const Settings = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
-
-  const showError = (msg: string): void => {
-    setSuccessMessage(null)
-    setErrorMessage(msg)
-  }
-  const showSuccess = (msg: string): void => {
-    setErrorMessage(null)
-    setSuccessMessage(msg)
-  }
-
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
-    i18n.changeLanguage(selectedLanguage).catch((err) => showError(handleError(err as AxiosError)))
+    i18n.changeLanguage(selectedLanguage).catch((err) => notifyError(handleError(err as AxiosError)))
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
 
     if (!newPassword || !confirmPassword) {
-      showError(t('settings.fill_all_fields') || 'Please fill all fields.')
+      notifyError(t('settings.fill_all_fields') || 'Please fill all fields.')
       return
     }
     if (newPassword !== confirmPassword) {
-      showError(t('settings.passwords_not_match') || 'Passwords do not match.')
+      notifyError(t('settings.passwords_not_match') || 'Passwords do not match.')
       return
     }
 
     try {
       await dispatch(updateTherapist({ password: newPassword })).unwrap()
       await dispatch(logoutTherapist()).unwrap()
-      showSuccess(t('settings.password_changed_success') || 'Password changed.')
+      notifySuccess(t('settings.password_changed_success') || 'Password changed.')
       navigate(getPathFromPage(PAGES.LOGIN_PAGE))
     } catch (err) {
-      showError(handleError(err as AxiosError))
+      notifyError(handleError(err as AxiosError))
     } finally {
       setNewPassword('')
       setConfirmPassword('')
@@ -78,9 +67,6 @@ const Settings = (): ReactElement => {
         <Typography variant='h4' gutterBottom>
           {t('settings.title')}
         </Typography>
-
-        {errorMessage && <Alert severity='error'>{errorMessage}</Alert>}
-        {successMessage && <Alert severity='success'>{successMessage}</Alert>}
 
         <Box sx={{ mb: 4, mt: 2 }}>
           <FormControl fullWidth>

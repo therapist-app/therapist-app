@@ -1,5 +1,4 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import dayjs from 'dayjs'
 import { ReactElement, useEffect } from 'react'
@@ -7,20 +6,18 @@ import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
-import { showError } from '../../store/errorSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+import { useNotify } from '../../hooks/useNotify'
 
 const ConversationSummary = (): ReactElement => {
   const { patientId } = useParams<{ patientId: string }>()
   const dispatch = useAppDispatch()
+  const { notifyError } = useNotify()
 
   const summary = useAppSelector((s) => (patientId ? s.conversation.byPatient[patientId] : ''))
   const status = useAppSelector((s) => s.conversation.status)
   const error = useAppSelector((s) => s.conversation.error)
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
 
   useEffect(() => {
     if (!patientId) {
@@ -37,7 +34,7 @@ const ConversationSummary = (): ReactElement => {
         ).unwrap()
       } catch (err) {
         const msg = handleError(err as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [dispatch, patientId])

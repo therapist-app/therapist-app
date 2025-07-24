@@ -1,5 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +8,6 @@ import {
   createCounselingPlanPhase,
   createCounselingPlanPhaseAIGenerated,
 } from '../../../store/counselingPlanSlice'
-import { showError } from '../../../store/errorSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
@@ -18,6 +16,7 @@ import {
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateCounselingPlanePhaseProps {
   counselingPlanId: string
@@ -38,10 +37,7 @@ const CreateCounselingPlanePhase = ({
 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
+  const { notifyError, notifySuccess } = useNotify()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -52,13 +48,13 @@ const CreateCounselingPlanePhase = ({
         durationInWeeks: formValues.durationInWeeks,
       }
       await dispatch(createCounselingPlanPhase(dto)).unwrap()
-      showMessage(t('counseling_plan.phase_created_success'), 'success')
+      notifySuccess(t('counseling_plan.phase_created_success'))
       onSuccess()
       setOpen(false)
       setFormValues(initialFormValues)
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -78,7 +74,7 @@ const CreateCounselingPlanePhase = ({
       setOpen(true)
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

@@ -9,7 +9,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
@@ -18,23 +17,20 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { showError } from '../../../store/errorSlice'
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
+import { useNotify } from '../../../hooks/useNotify'
 
 const MeetingOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
+  const { notifyError } = useNotify()
 
   useEffect(() => {
     ;(async () => {
@@ -42,7 +38,7 @@ const MeetingOverviewComponent = (): ReactElement => {
         await dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap()
       } catch (error) {
         const msg = handleError(error as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [dispatch, patientId])

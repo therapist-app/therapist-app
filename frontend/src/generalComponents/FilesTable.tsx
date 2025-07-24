@@ -9,17 +9,15 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
 import DeleteIcon from '../icons/DeleteIcon'
-import { showError } from '../store/errorSlice'
 import { handleError } from '../utils/handleError'
-import { useAppDispatch } from '../utils/hooks'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
+import { useNotify } from '../hooks/useNotify'
 
 interface FilesTableProps {
   title: string
@@ -31,28 +29,25 @@ interface FilesTableProps {
 
 const FilesTable: React.FC<FilesTableProps> = (props) => {
   const { allDocuments, handleFileUpload, handleDeleteFile, downloadFile, title } = props
-  const dispatch = useAppDispatch()
-
-  const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message: message, severity: severity }))
+  const { notifySuccess, notifyError } = useNotify()
 
   const wrappedUpload = async (file: File): Promise<void> => {
     try {
       await handleFileUpload(file)
-      showMessage('File uploaded successfully.', 'success')
+      notifySuccess('File uploaded successfully.')
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
   const wrappedDelete = async (fileId: string): Promise<void> => {
     try {
       await handleDeleteFile(fileId)
-      showMessage('File deleted successfully.', 'success')
+      notifySuccess('File deleted successfully.')
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -61,7 +56,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
       return await downloadFile(fileId)
     } catch (err) {
       const msg = handleError(err as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
       return ''
     }
   }

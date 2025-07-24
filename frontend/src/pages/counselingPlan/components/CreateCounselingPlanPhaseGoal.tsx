@@ -1,5 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +8,6 @@ import {
   createCounselingPlanPhaseGoal,
   createCounselingPlanPhaseGoalAIGenerated,
 } from '../../../store/counselingPlanSlice'
-import { showError } from '../../../store/errorSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
@@ -18,6 +16,7 @@ import {
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
+import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateCounselingPlanPhaseGoalProps {
   counselingPlanPhaseId: string
@@ -30,6 +29,7 @@ const CreateCounselingPlanPhaseGoal = ({
 }: CreateCounselingPlanPhaseGoalProps): ReactElement => {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
   const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseGoalDTO>({
@@ -38,15 +38,11 @@ const CreateCounselingPlanPhaseGoal = ({
     goalDescription: '',
   })
 
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     try {
       await dispatch(createCounselingPlanPhaseGoal(formValues)).unwrap()
-      showMessage(t('counseling_plan.goal_created_success'), 'success')
+      notifySuccess(t('counseling_plan.goal_created_success'))
       onSuccess()
       setOpen(false)
       setFormValues({
@@ -56,7 +52,7 @@ const CreateCounselingPlanPhaseGoal = ({
       })
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
@@ -76,7 +72,7 @@ const CreateCounselingPlanPhaseGoal = ({
       setOpen(true)
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 
