@@ -135,35 +135,76 @@ const ClientInteractions = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
+  const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
+    {} as Record<LogType, LogOutputDTO[]>
+  )
+
+  // Combine all logs when needed
+  const allLogs = useMemo(() => {
+    return Object.values(logsByType).flat()
+  }, [logsByType])
+
+  // Transform logs to interaction data
+  // const interactionData = useMemo(() => transformLogsToInteractionData(allLogs), [allLogs])
+
   useEffect(() => {
-    const fetchLogs = async (): Promise<void> => {
-      try {
-        setLoading(true)
-        setError(null)
+    fetchAllLogTypes()
+  }, [patientId])
 
-        const response = await patientLogApi.listLogs(patientId!, activeLogType)
-
-        const normalized: LogOutputDTO[] = response.data.map((apiDto) => ({
-          id: apiDto.id || '',
-          patientId: apiDto.patientId || '',
-          logType: apiDto.logType || '',
-          timestamp: apiDto.timestamp || '',
-          uniqueIdentifier: apiDto.uniqueIdentifier || '',
-        }))
-
-        setLogs(normalized)
-      } catch (err) {
-        console.error('Error fetching logs:', err)
-        setError(t('patient_interactions.fetch_error'))
-      } finally {
-        setLoading(false)
-      }
+  const fetchAllLogTypes = async (): Promise<void> => {
+    if (!patientId) {
+      return
     }
 
-    if (patientId) {
-      fetchLogs()
+    try {
+      setLoading(true)
+      setError(null)
+
+      // Create an array of promises for each log type
+      const fetchPromises = LOG_TYPES.map(async (logType) => {
+        try {
+          const response = await patientLogApi.listLogs(patientId, logType)
+          return {
+            logType: logType,
+            data: response.data.map((apiDto) => ({
+              id: apiDto.id || '',
+              patientId: apiDto.patientId || '',
+              logType: apiDto.logType || '',
+              timestamp: apiDto.timestamp || '',
+              uniqueIdentifier: apiDto.uniqueIdentifier || '',
+            })),
+          }
+        } catch (err) {
+          console.error(`Error fetching ${logType} logs:`, err)
+          return { logType: logType, data: [] } // Return empty array if fetch fails
+        }
+      })
+
+      // Wait for all requests to complete
+      const results = await Promise.all(fetchPromises)
+
+      // Convert results to a Record<LogType, LogOutputDTO[]>
+      const logsMap = results.reduce(
+        (acc, { logType, data }) => {
+          return {
+            ...acc,
+            [logType]: data,
+          }
+        },
+        LOG_TYPES.reduce(
+          (emptyAcc, type) => ({ ...emptyAcc, [type]: [] }),
+          {} as Record<LogType, LogOutputDTO[]>
+        )
+      )
+
+      setLogsByType(logsMap)
+    } catch (err) {
+      console.error('Error fetching logs:', err)
+      setError(t('patient_interactions.fetch_error'))
+    } finally {
+      setLoading(false)
     }
-  }, [patientId, t])
+  }
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => transformLogsToInteractionData(logs), [logs])
@@ -237,10 +278,11 @@ const ClientInteractions = (): ReactElement => {
                   {t('patient_interactions.interaction_type')}
                 </InputLabel>
                 <Select
-                  value={activeLogType}
+                  value={activeLogType || ''}
                   onChange={(e) => setActiveLogType(e.target.value as LogType)}
                   label={t('patient_interactions.log_type')}
                 >
+                  <MenuItem value=''>All Log Types</MenuItem>
                   {LOG_TYPES.map((logType) => (
                     <MenuItem key={logType} value={logType}>
                       {t(`logTypes.${logType.toLowerCase()}`)}
