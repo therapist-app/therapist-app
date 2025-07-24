@@ -12,6 +12,9 @@ public class EnvironmentVariables {
   public static String LOCAL_LLM_URL;
   public static String LOCAL_LLM_API_KEY;
   public static String PATIENT_APP_URL;
+  public static String AZURE_OPENAI_ENDPOINT;
+  public static String AZURE_OPENAI_API_KEY;
+  public static String AZURE_OPENAI_DEPLOYMENT_NAME;
   public static Boolean IS_PRODUCTION;
 
   @Autowired

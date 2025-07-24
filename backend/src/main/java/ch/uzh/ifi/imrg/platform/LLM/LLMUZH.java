@@ -1,7 +1,10 @@
-package ch.uzh.ifi.imrg.platform.utils;
+package ch.uzh.ifi.imrg.platform.LLM;
 
 import ch.uzh.ifi.imrg.platform.enums.Language;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
+import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -46,7 +49,7 @@ class RequestPayload {
   }
 }
 
-public class LLMUZH implements LLM {
+public class LLMUZH extends LLM {
 
   private static final Logger logger = LoggerFactory.getLogger(LLMUZH.class);
 

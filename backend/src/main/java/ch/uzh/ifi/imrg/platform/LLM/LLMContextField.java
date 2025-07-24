@@ -1,4 +1,4 @@
-package ch.uzh.ifi.imrg.platform.utils;
+package ch.uzh.ifi.imrg.platform.LLM;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

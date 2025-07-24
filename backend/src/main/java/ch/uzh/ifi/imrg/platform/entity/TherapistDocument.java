@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;

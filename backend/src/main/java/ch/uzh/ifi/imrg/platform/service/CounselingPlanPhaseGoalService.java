@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMUZH;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseGoalRepository;
@@ -11,7 +12,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;

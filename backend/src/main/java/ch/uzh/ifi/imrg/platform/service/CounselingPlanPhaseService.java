@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMUZH;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
@@ -19,7 +20,6 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
 import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;

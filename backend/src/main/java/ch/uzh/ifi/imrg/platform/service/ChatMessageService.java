@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMUZH;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
@@ -8,7 +9,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatbotConfigDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatCompletionResponseDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.time.ZoneId;
