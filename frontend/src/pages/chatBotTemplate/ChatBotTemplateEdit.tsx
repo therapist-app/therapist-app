@@ -102,11 +102,14 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   useEffect(() => {
-    if (chatbotConfig) return
+    if (chatbotConfig) {
+      return
+    }
 
     const id = chatbotTemplateId ?? sessionStorage.getItem('chatbotTemplateId')
-    if (!id) return
-
+    if (!id) {
+      return
+    }
     ;(async (): Promise<void> => {
       try {
         const { data } = await chatbotTemplateApi.getTemplate(id)
@@ -154,7 +157,9 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
-      if (!chatbotConfig?.patientId) return
+      if (!chatbotConfig?.patientId) {
+        return
+      }
       try {
         const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
         setIsOnlyTemplateForClient(data.length === 1)
@@ -184,7 +189,9 @@ const ChatBotTemplateEdit: React.FC = () => {
       return
     }
     const userPrompt = question.trim()
-    if (!userPrompt) return
+    if (!userPrompt) {
+      return
+    }
 
     setChat((prev) => [...prev, { question: userPrompt, response: null }])
     setQuestion('')
@@ -271,7 +278,9 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const handleSaveConfiguration = async (): Promise<void> => {
     try {
-      if (!chatbotConfig) return
+      if (!chatbotConfig) {
+        return
+      }
 
       const updateChatbotTemplateDTO = {
         chatbotName: chatbotName,
@@ -284,7 +293,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: chatbotConfig.id ?? '',
-          updateChatbotTemplateDTO,
+          updateChatbotTemplateDTO: updateChatbotTemplateDTO,
         })
       ).unwrap()
 
@@ -295,7 +304,9 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     setSnackbarOpen(false)
   }
 
@@ -357,9 +368,13 @@ const ChatBotTemplateEdit: React.FC = () => {
   } as const
 
   const handleFileUpload = async (file: File): Promise<void> => {
-    if (!chatbotConfig?.id) return
+    if (!chatbotConfig?.id) {
+      return
+    }
     try {
-      await dispatch(createDocumentForTemplate({ file, templateId: chatbotConfig.id })).unwrap()
+      await dispatch(
+        createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
+      ).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
       openSnackbar(t('files.file_uploaded_successfully') || 'File uploaded successfully', 'success')
     } catch (err) {
@@ -368,7 +383,9 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
-    if (!chatbotConfig?.id) return
+    if (!chatbotConfig?.id) {
+      return
+    }
     try {
       await dispatch(deleteDocumentOfTemplate(fileId)).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))

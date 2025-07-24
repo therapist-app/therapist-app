@@ -20,7 +20,7 @@ const ConversationSummary = (): ReactElement => {
   const error = useAppSelector((s) => s.conversation.error)
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   useEffect(() => {
     if (!patientId) {

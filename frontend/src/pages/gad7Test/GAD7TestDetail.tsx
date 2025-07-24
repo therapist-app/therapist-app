@@ -15,8 +15,8 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { showError } from '../../store/errorSlice'
+import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { patientTestApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -27,7 +27,7 @@ export const GAD7TestDetail = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 

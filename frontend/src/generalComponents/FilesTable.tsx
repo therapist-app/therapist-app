@@ -15,11 +15,11 @@ import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
 import DeleteIcon from '../icons/DeleteIcon'
-import FileDownload from './FileDownload'
-import FileUpload from './FileUpload'
-import { useAppDispatch } from '../utils/hooks'
 import { showError } from '../store/errorSlice'
 import { handleError } from '../utils/handleError'
+import { useAppDispatch } from '../utils/hooks'
+import FileDownload from './FileDownload'
+import FileUpload from './FileUpload'
 
 interface FilesTableProps {
   title: string
@@ -34,7 +34,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
   const dispatch = useAppDispatch()
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const wrappedUpload = async (file: File): Promise<void> => {
     try {

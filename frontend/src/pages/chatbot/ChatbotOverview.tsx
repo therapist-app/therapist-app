@@ -29,10 +29,10 @@ import {
   deleteChatbotTemplate,
   deletePatientChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
+import { showError } from '../../store/errorSlice'
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -55,7 +55,7 @@ const ChatbotOverview = (): ReactElement => {
   ).filter((tpl) => tpl.patientId == null)
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
