@@ -230,11 +230,11 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
     LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetings, "Meeting", HIERARCHY_LEVEL);
     LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", HIERARCHY_LEVEL);
 
-    sb.append(
-        sb.append(
-            FormatUtil.indentBlock(
-                "\n--- " + "Counseling Plan" + "s ---\n", HIERARCHY_LEVEL, false)));
-    sb.append(counselingPlan.toLLMContext());
+    if (!counselingPlan.getCounselingPlanPhases().isEmpty()) {
+      sb.append(
+          sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", HIERARCHY_LEVEL, false)));
+      sb.append(counselingPlan.toLLMContext());
+    }
 
     return sb.toString();
   }
