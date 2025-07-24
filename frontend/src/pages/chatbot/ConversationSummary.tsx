@@ -4,7 +4,7 @@ import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
-import { fetchConversationSummary } from '../../store/conversationSlice'
+import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
@@ -28,24 +28,43 @@ const ConversationSummary = (): ReactElement => {
     )
   }, [dispatch, patientId])
 
+  const renderContent = (): ReactElement => {
+    if (status === 'loading' || status === 'idle') {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
+          <CircularProgress size={24} />
+          <Typography>Loading conversation summary…</Typography>
+        </Box>
+      )
+    }
+
+    if (status === 'failed') {
+      if (error === PRIVATE_MESSAGE) {
+        return (
+          <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
+            {PRIVATE_MESSAGE}
+          </Typography>
+        )
+      }
+      return <Alert severity='error'>{error}</Alert>
+    }
+
+    return (
+      <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
+        {summary}
+      </Typography>
+    )
+  }
+
   return (
     <Layout>
       <Box sx={{ maxWidth: 800 }}>
         <Typography variant='h4' gutterBottom>
           Conversations from&nbsp;
-          {dayjs().subtract(7, 'day').format('DD MMM YYYY')}–{dayjs().format('DD MMM YYYY')}
+          {dayjs().subtract(7, 'day').format('DD MMM YYYY')}–{dayjs().format('DD MMM YYYY')}
         </Typography>
 
-        {status === 'loading' || status === 'idle' ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
-            <CircularProgress size={24} />
-            <Typography>Loading conversation summary…</Typography>
-          </Box>
-        ) : status === 'failed' ? (
-          <Alert severity='error'>{error}</Alert>
-        ) : (
-          <Typography whiteSpace='pre-line'>{summary}</Typography>
-        )}
+        {renderContent()}
       </Box>
     </Layout>
   )
