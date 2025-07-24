@@ -1,5 +1,4 @@
 import { IconButton, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -8,7 +7,6 @@ import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { formatDateNicely } from '../../../utils/dateUtil'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import AddCounselingPlanExercise from './AddCounselingPlanExercise'
 import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'

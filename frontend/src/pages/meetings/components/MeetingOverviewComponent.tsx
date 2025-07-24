@@ -9,7 +9,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect } from 'react'
@@ -21,7 +20,6 @@ import { useNotify } from '../../../hooks/useNotify'
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 

@@ -2,7 +2,6 @@ import { Button, TextField } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AxiosError } from 'axios'
 import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +19,6 @@ import {
   commonButtonStyles,
   successButtonStyles,
 } from '../../../styles/buttonStyles'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 

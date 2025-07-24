@@ -1,7 +1,5 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
-  Alert,
-  AlertColor,
   Box,
   Button,
   Card,
@@ -20,7 +18,6 @@ import {
   Typography,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
@@ -37,7 +34,6 @@ import {
   createChatbotTemplate,
   deleteChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
-import { showError } from '../../store/errorSlice'
 import { RootState } from '../../store/store'
 import {
   createDocumentForTherapist,
@@ -51,7 +47,6 @@ import {
   disabledButtonStyles,
 } from '../../styles/buttonStyles'
 import { therapistDocumentApi } from '../../utils/api'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 

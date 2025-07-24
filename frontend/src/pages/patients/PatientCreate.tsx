@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -27,7 +26,6 @@ import {
   commonButtonStyles,
   disabledButtonStyles,
 } from '../../styles/buttonStyles.ts'
-import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
 

@@ -10,20 +10,16 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { AlertColor } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useNotify } from '../../../hooks/useNotify'
-import { showError } from '../../../store/errorSlice'
 import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { formatDateNicely } from '../../../utils/dateUtil'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 

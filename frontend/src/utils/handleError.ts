@@ -1,4 +1,3 @@
-// utils/handleError.ts
 import { isAxiosError } from 'axios'
 
 interface ErrorResponseData {

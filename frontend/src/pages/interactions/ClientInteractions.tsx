@@ -3,7 +3,6 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
-import { AxiosError } from 'axios'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { commonButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 
 interface InteractionData {
   hour: number

@@ -1,5 +1,4 @@
 import { Button, TextField } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -14,7 +13,6 @@ import {
   commonButtonStyles,
   successButtonStyles,
 } from '../../../styles/buttonStyles'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 

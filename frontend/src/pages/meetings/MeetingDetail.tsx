@@ -1,6 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'

@@ -1,12 +1,10 @@
 import { IconButton, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 
 import { CounselingPlanPhaseGoalOutputDTO } from '../../../api'
 import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhaseGoal } from '../../../store/counselingPlanSlice'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CounselingPlanPhaseGoalDetailProps {
