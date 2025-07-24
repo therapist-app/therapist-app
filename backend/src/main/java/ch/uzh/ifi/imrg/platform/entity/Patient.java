@@ -223,36 +223,18 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
     return this.getTherapist().getId();
   }
 
+  @Override
   public String toLLMContext() {
-    StringBuilder sb =
-        new StringBuilder(
-            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, complaints, "Complaint", HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetings, "Meeting", HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", HIERARCHY_LEVEL);
 
-    if (!this.complaints.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Complaints ---\n", HIERARCHY_LEVEL, false));
-      for (Complaint complaint : this.complaints) {
+    sb.append(
         sb.append(
-            FormatUtil.indentBlock("\nComplaint: " + complaint.getId(), HIERARCHY_LEVEL, true));
-        sb.append(complaint.toLLMContext());
-      }
-    }
-
-    if (!this.chatbotTemplates.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Chatbots ---\n", HIERARCHY_LEVEL, false));
-      for (ChatbotTemplate chatbotTemplate : this.chatbotTemplates) {
-        sb.append(
-            FormatUtil.indentBlock("\nChatbot: " + chatbotTemplate.getId(), HIERARCHY_LEVEL, true));
-        sb.append(chatbotTemplate.toLLMContext());
-      }
-    }
-
-    if (!this.exercises.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Exercises ---\n", HIERARCHY_LEVEL, false));
-      for (Exercise exercise : this.exercises) {
-        sb.append(FormatUtil.indentBlock("\nExercise: " + exercise.getId(), HIERARCHY_LEVEL, true));
-        sb.append(exercise.toLLMContext());
-      }
-    }
+            FormatUtil.indentBlock(
+                "\n--- " + "Counseling Plan" + "s ---\n", HIERARCHY_LEVEL, false)));
+    sb.append(counselingPlan.toLLMContext());
 
     return sb.toString();
   }

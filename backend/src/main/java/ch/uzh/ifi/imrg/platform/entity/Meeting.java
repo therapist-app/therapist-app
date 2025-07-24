@@ -1,7 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
-import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.io.Serializable;
@@ -61,6 +60,9 @@ public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
 
   @Override
   public String toLLMContext() {
-    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, meetingNotes, "Meeting Note", HIERARCHY_LEVEL);
+    return sb.toString();
   }
 }
