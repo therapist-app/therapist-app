@@ -1,5 +1,3 @@
-// src/main/java/ch/uzh/ifi/imrg/platform/LLM/LLMFactory.java
-
 package ch.uzh.ifi.imrg.platform.LLM;
 
 import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
