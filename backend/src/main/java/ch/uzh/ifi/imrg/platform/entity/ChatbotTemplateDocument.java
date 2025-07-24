@@ -32,11 +32,11 @@ public class ChatbotTemplateDocument implements OwnedByTherapist, HasLLMContext 
   @JoinColumn(name = "chatbot_template_id", nullable = false)
   private ChatbotTemplate chatbotTemplate;
 
-  @LLMContextField(label = "Chabot Document file name", order = 2)
+  @LLMContextField(label = "Chabot Document file name", order = 1)
   @Column(nullable = false)
   private String fileName;
 
-  @LLMContextField(label = "Chabot Document file type", order = 3)
+  @LLMContextField(label = "Chabot Document file type", order = 2)
   @Column(nullable = false)
   private String fileType;
 
@@ -44,7 +44,7 @@ public class ChatbotTemplateDocument implements OwnedByTherapist, HasLLMContext 
   @Column(nullable = false)
   private byte[] fileData;
 
-  @LLMContextField(label = "Chabot Document extracted text", order = 4)
+  @LLMContextField(label = "Chabot Document extracted text", order = 3)
   @Lob
   @Column
   private String extractedText;

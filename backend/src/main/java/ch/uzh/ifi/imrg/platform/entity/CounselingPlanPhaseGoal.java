@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -27,9 +28,14 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist, HasLLMContext 
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String goalName;
+  @LLMContextField(label = "Counseling Plan Phase Goal name", order = 1)
+  @Column()
+  private String goalName;
 
-  @Lob @Column() private String goalDescription;
+  @LLMContextField(label = "Counseling Plan Phase Goal description", order = 2)
+  @Lob
+  @Column()
+  private String goalDescription;
 
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")

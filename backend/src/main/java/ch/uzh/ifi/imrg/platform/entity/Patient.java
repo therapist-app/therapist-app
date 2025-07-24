@@ -37,133 +37,133 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @LLMContextField(label = "Patient name", order = 2)
+  @LLMContextField(label = "Client name", order = 1)
   @Column(nullable = false)
   private String name;
 
-  @LLMContextField(label = "Patient gender", order = 3)
+  @LLMContextField(label = "Client gender", order = 2)
   @Column(nullable = true)
   private String gender;
 
-  @LLMContextField(label = "Patient age", order = 4)
+  @LLMContextField(label = "Client age", order = 3)
   @Column(nullable = true)
   private int age;
 
-  @LLMContextField(label = "Patient phone number", order = 6)
+  @LLMContextField(label = "Client phone number", order = 4)
   @Column(nullable = true)
   private String phoneNumber;
 
-  @LLMContextField(label = "Patient email", order = 7)
-  @Column(nullable = false, unique = true)
+  @LLMContextField(label = "Client email", order = 5)
+  @Column(nullable = false)
   private String email;
 
   @Column(nullable = false)
   private String initialPassword;
 
-  @LLMContextField(label = "Patient address", order = 8)
+  @LLMContextField(label = "Client address", order = 6)
   @Column(nullable = true)
   private String address;
 
-  @LLMContextField(label = "Patient marital status", order = 9)
+  @LLMContextField(label = "Client marital status", order = 7)
   @Column
   private String maritalStatus;
 
-  @LLMContextField(label = "Patient religion", order = 10)
+  @LLMContextField(label = "Client religion", order = 8)
   @Column
   private String religion;
 
-  @LLMContextField(label = "Patient education", order = 11)
+  @LLMContextField(label = "Client education", order = 9)
   @Column
   private String education;
 
-  @LLMContextField(label = "Patient occupation", order = 12)
+  @LLMContextField(label = "Client occupation", order = 10)
   @Column
   private String occupation;
 
-  @LLMContextField(label = "Patient income", order = 13)
+  @LLMContextField(label = "Client income", order = 11)
   @Column
   private String income;
 
-  @LLMContextField(label = "Patient date of admission", order = 14)
+  @LLMContextField(label = "Client date of admission", order = 12)
   @Column
   private String dateOfAdmission;
 
-  @LLMContextField(label = "Patient treatment past", order = 15)
+  @LLMContextField(label = "Client treatment past", order = 13)
   @Lob
   @Column
   private String treatmentPast;
 
-  @LLMContextField(label = "Patient treatment current", order = 16)
+  @LLMContextField(label = "Client treatment current", order = 14)
   @Lob
   @Column
   private String treatmentCurrent;
 
-  @LLMContextField(label = "Patient past medical", order = 17)
+  @LLMContextField(label = "Client past medical", order = 15)
   @Lob
   @Column
   private String pastMedical;
 
-  @LLMContextField(label = "Patient past psych", order = 18)
+  @LLMContextField(label = "Client past psych", order = 16)
   @Lob
   @Column
   private String pastPsych;
 
-  @LLMContextField(label = "Patient family illness", order = 19)
+  @LLMContextField(label = "Client family illness", order = 17)
   @Lob
   @Column
   private String familyIllness;
 
-  @LLMContextField(label = "Patient family social", order = 20)
+  @LLMContextField(label = "Client family social", order = 18)
   @Lob
   @Column
   private String familySocial;
 
-  @LLMContextField(label = "Patient personal perinatal", order = 21)
+  @LLMContextField(label = "Client personal perinatal", order = 19)
   @Lob
   @Column
   private String personalPerinatal;
 
-  @LLMContextField(label = "Patient personal childhood", order = 22)
+  @LLMContextField(label = "Client personal childhood", order = 20)
   @Lob
   @Column
   private String personalChildhood;
 
-  @LLMContextField(label = "Patient personal education", order = 23)
+  @LLMContextField(label = "Client personal education", order = 21)
   @Lob
   @Column
   private String personalEducation;
 
-  @LLMContextField(label = "Patient personal play", order = 24)
+  @LLMContextField(label = "Client personal play", order = 22)
   @Lob
   @Column
   private String personalPlay;
 
-  @LLMContextField(label = "Patient personal adolescence", order = 25)
+  @LLMContextField(label = "Client personal adolescence", order = 23)
   @Lob
   @Column
   private String personalAdolescence;
 
-  @LLMContextField(label = "Patient personal puberty", order = 26)
+  @LLMContextField(label = "Client personal puberty", order = 24)
   @Lob
   @Column
   private String personalPuberty;
 
-  @LLMContextField(label = "Patient personal obstetric", order = 27)
+  @LLMContextField(label = "Client personal obstetric", order = 25)
   @Lob
   @Column
   private String personalObstetric;
 
-  @LLMContextField(label = "Patient personal occupational", order = 28)
+  @LLMContextField(label = "Client personal occupational", order = 26)
   @Lob
   @Column
   private String personalOccupational;
 
-  @LLMContextField(label = "Patient personal marital", order = 29)
+  @LLMContextField(label = "Client personal marital", order = 27)
   @Lob
   @Column
   private String personalMarital;
 
-  @LLMContextField(label = "Patient personal premorbid", order = 30)
+  @LLMContextField(label = "Client personal premorbid", order = 28)
   @Lob
   @Column
   private String personalPremorbid;

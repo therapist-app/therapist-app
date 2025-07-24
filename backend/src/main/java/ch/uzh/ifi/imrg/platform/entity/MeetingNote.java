@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -27,9 +28,14 @@ public class MeetingNote implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
+  @LLMContextField(label = "Meeting Note title", order = 1)
+  @Column()
+  private String title;
 
-  @Lob @Column() private String content;
+  @LLMContextField(label = "Meeting Note content", order = 2)
+  @Lob
+  @Column()
+  private String content;
 
   @ManyToOne
   @JoinColumn(name = "meeting_id", referencedColumnName = "id")

@@ -35,7 +35,7 @@ public class LLMContextBuilder {
     if (!entities.isEmpty()) {
       sb.append(FormatUtil.indentBlock("\n--- " + label + "s ---\n", level, false));
 
-      Boolean first = false;
+      Boolean first = true;
       for (HasLLMContext entity : entities) {
         if (first) {
           first = false;

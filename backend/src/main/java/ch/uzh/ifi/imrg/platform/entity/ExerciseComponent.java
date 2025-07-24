@@ -29,29 +29,29 @@ public class ExerciseComponent implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @LLMContextField(label = "Exercise Component Type", order = 2)
+  @LLMContextField(label = "Exercise Component type", order = 1)
   @Column
   private ExerciseComponentType exerciseComponentType;
 
-  @LLMContextField(label = "Exercise Component Description", order = 3)
+  @LLMContextField(label = "Exercise Component description", order = 2)
   @Lob
   @Column
   private String exerciseComponentDescription;
 
-  @LLMContextField(label = "Exercise Component File Name", order = 4)
+  @LLMContextField(label = "Exercise Component file name", order = 3)
   private String fileName;
 
-  @LLMContextField(label = "Exercise Component File Type", order = 5)
+  @LLMContextField(label = "Exercise Component file type", order = 4)
   private String fileType;
 
   @Lob private byte[] fileData;
 
-  @LLMContextField(label = "Exercise Component Extracted Text", order = 6)
+  @LLMContextField(label = "Exercise Component extracted text", order = 5)
   @Lob
   @Column
   private String extractedText;
 
-  @LLMContextField(label = "Exercise Component Order Number", order = 7)
+  @LLMContextField(label = "Exercise Component order number", order = 6)
   @Column()
   private Integer orderNumber;
 
