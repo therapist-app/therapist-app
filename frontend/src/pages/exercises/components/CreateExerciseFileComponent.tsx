@@ -14,8 +14,8 @@ import {
 } from '../../../api'
 import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
-import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { showError } from '../../../store/errorSlice'
+import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -36,7 +36,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const saveSelectedFile = (file: File): void => {
     setSelectedFile(file)

@@ -10,12 +10,12 @@ import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import FileDownload from '../../../generalComponents/FileDownload'
+import { showError } from '../../../store/errorSlice'
 import {
   deleteExerciseComponent,
   downloadExerciseComponent,
   updateExerciseComponent,
 } from '../../../store/exerciseSlice'
-import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -35,12 +35,14 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
   const [isEditing, setIsEditing] = useState(false)
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   useEffect(() => {
     ;(async () => {
       try {
-        const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+        const fileUrl = await dispatch(
+          downloadExerciseComponent(exerciseComponent.id ?? '')
+        ).unwrap()
         setImageFileUrl(fileUrl)
       } catch (err) {
         const msg = handleError(err as AxiosError)

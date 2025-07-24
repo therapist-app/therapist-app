@@ -11,8 +11,8 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
-import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { showError } from '../../../store/errorSlice'
+import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -40,7 +40,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   const [description, setDescription] = useState('')
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const [isCreatingExerciseInputField, setIsCreatingExerciseInputField] = useState(false)
 
@@ -67,7 +67,9 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
         exerciseComponentType: exerciseComponentType,
         exerciseComponentDescription: description,
       }
-      await dispatch(createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })).unwrap()
+      await dispatch(
+        createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })
+      ).unwrap()
       showMessage(t('exercise.component_created_successfully'), 'success')
       cancel()
       props.createdInputField()

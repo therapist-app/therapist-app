@@ -17,8 +17,8 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { showError } from '../../../store/errorSlice'
+import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { formatDateNicely } from '../../../utils/dateUtil'
@@ -33,7 +33,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
   const navigate = useNavigate()
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const handleCreateNewExercise = (): void => {
     navigate(

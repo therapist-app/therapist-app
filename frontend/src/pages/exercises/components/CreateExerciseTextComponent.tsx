@@ -11,8 +11,8 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
-import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { showError } from '../../../store/errorSlice'
+import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -29,7 +29,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   const { t } = useTranslation()
 
   const showMessage = (message: string, severity: AlertColor = 'error') =>
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -56,7 +56,9 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
         exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
         exerciseComponentDescription: exerciseText,
       }
-      await dispatch(createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })).unwrap()
+      await dispatch(
+        createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })
+      ).unwrap()
       showMessage(t('exercise.component_created_successfully'), 'success')
       cancel()
       props.createdExercise()
