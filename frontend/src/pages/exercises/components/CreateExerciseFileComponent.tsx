@@ -14,12 +14,12 @@ import {
 } from '../../../api'
 import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
+import { useNotify } from '../../../hooks/useNotify'
 import { showError } from '../../../store/errorSlice'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateExerciseFileComponentProps {
   createdExerciseFile(): void

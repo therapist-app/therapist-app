@@ -16,7 +16,9 @@ export const handleError = async (err: unknown): Promise<string> => {
     if (res) {
       const data = res.data
 
-      if (typeof data === 'string') return data
+      if (typeof data === 'string') {
+        return data
+      }
 
       if (data instanceof Blob || data instanceof ArrayBuffer) {
         try {
@@ -46,8 +48,15 @@ export const handleError = async (err: unknown): Promise<string> => {
     return err.message || 'An unknown error occurred'
   }
 
-  if (typeof err === 'string') return err
-  if (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string') {
+  if (typeof err === 'string') {
+    return err
+  }
+  if (
+    err &&
+    typeof err === 'object' &&
+    'message' in err &&
+    typeof (err as any).message === 'string'
+  ) {
     return (err as any).message
   }
   return 'An unknown error occurred'

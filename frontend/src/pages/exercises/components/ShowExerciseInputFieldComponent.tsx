@@ -8,11 +8,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface ShowExerciseInputFieldComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO

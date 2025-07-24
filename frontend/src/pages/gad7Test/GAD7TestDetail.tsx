@@ -15,8 +15,8 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { GAD7TestOutputDTO } from '../../api/models'
-import { patientTestApi } from '../../utils/api'
 import { useNotify } from '../../hooks/useNotify'
+import { patientTestApi } from '../../utils/api'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()

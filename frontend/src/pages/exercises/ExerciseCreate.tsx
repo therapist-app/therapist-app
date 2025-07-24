@@ -10,12 +10,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { createExercise } from '../../store/exerciseSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null

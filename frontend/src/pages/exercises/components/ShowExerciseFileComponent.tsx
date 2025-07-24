@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import FileDownload from '../../../generalComponents/FileDownload'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   deleteExerciseComponent,
   downloadExerciseComponent,
@@ -17,7 +18,6 @@ import {
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface ShowExerciseFileComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO

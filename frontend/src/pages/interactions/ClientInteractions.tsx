@@ -47,9 +47,9 @@ const generateMockData = (days: number): InteractionData[] => {
 
       data.push({
         date: format(date, 'yyyy-MM-dd'),
-        hour,
+        hour: hour,
         value: 1,
-        type,
+        type: type,
       })
     }
   }

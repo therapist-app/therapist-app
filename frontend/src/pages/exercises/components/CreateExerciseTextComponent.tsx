@@ -10,11 +10,11 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateExerciseTextComponentProps {
   createdExercise(): void

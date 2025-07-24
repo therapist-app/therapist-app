@@ -14,7 +14,7 @@ export const useNotify = () => {
 
   const notify: Notify = useCallback(
     (message: string, severity: AlertColor = 'error') => {
-      dispatch(showError({ message, severity }))
+      dispatch(showError({ message: message, severity: severity }))
     },
     [dispatch]
   )
@@ -32,5 +32,11 @@ export const useNotify = () => {
   const notifyInfo = useCallback((message: string) => notify(message, 'info'), [notify])
   const notifyWarning = useCallback((message: string) => notify(message, 'warning'), [notify])
 
-  return { notify, notifyError, notifySuccess, notifyInfo, notifyWarning }
+  return {
+    notify: notify,
+    notifyError: notifyError,
+    notifySuccess: notifySuccess,
+    notifyInfo: notifyInfo,
+    notifyWarning: notifyWarning,
+  }
 }

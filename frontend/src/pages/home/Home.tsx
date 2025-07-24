@@ -31,6 +31,7 @@ import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import {
   cloneChatbotTemplate,
   createChatbotTemplate,
@@ -53,7 +54,6 @@ import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
 
 const Home = (): ReactElement => {
   const navigate = useNavigate()

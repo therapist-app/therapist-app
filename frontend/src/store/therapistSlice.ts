@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import {
   CreateTherapistDTO,
   LoginTherapistDTO,
@@ -46,17 +47,16 @@ export const loginTherapist = createAsyncThunk<
   }
 })
 
-export const logoutTherapist = createAsyncThunk<
-  void,
-  void,
-  { rejectValue: string }
->('therapist/logoutTherapist', async (_, { rejectWithValue }) => {
-  try {
-    await therapistApi.logoutTherapist()
-  } catch (err) {
-    return rejectWithValue(await handleError(err))
+export const logoutTherapist = createAsyncThunk<void, void, { rejectValue: string }>(
+  'therapist/logoutTherapist',
+  async (_, { rejectWithValue }) => {
+    try {
+      await therapistApi.logoutTherapist()
+    } catch (err) {
+      return rejectWithValue(await handleError(err))
+    }
   }
-})
+)
 
 export const getCurrentlyLoggedInTherapist = createAsyncThunk<
   TherapistOutputDTO,
@@ -84,10 +84,9 @@ export const updateTherapist = createAsyncThunk<
   }
 })
 
-
 const therapistSlice = createSlice({
   name: 'therapist',
-  initialState,
+  initialState: initialState,
   reducers: {
     setLoggedInTherapist: (state, action: PayloadAction<TherapistOutputDTO>) => {
       state.loggedInTherapist = action.payload

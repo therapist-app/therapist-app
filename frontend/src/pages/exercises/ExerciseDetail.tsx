@@ -15,6 +15,7 @@ import { ExerciseComponentOutputDTOExerciseComponentTypeEnum, UpdateExerciseDTO 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
+import { useNotify } from '../../hooks/useNotify'
 import { deleteExercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import {
@@ -32,7 +33,6 @@ import CreateExerciseTextComponent from './components/CreateExerciseTextComponen
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
-import { useNotify } from '../../hooks/useNotify'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
