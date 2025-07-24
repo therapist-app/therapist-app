@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
@@ -65,7 +66,9 @@ public class CounselingPlanPhaseGoalService {
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(phase, therapistId);
 
-    String systemPrompt = phase.getCounselingPlan().getPatient().toLLMContext(0);
+    String systemPrompt =
+        ExampleCounselingPlans.getCounselingPlanSystemPrompt(
+            phase.getCounselingPlan().getPatient());
 
     String userPrompt =
         String.format(

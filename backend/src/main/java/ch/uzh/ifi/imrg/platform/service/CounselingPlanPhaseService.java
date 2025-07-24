@@ -18,6 +18,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
+import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
@@ -72,7 +73,8 @@ public class CounselingPlanPhaseService {
                 () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
-    String systemPrompt = counselingPlan.getPatient().toLLMContext(0);
+    String systemPrompt =
+        ExampleCounselingPlans.getCounselingPlanSystemPrompt(counselingPlan.getPatient());
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
@@ -108,7 +110,8 @@ public class CounselingPlanPhaseService {
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
-    String systemPrompt = counselingPlan.getPatient().toLLMContext(0);
+    String systemPrompt =
+        ExampleCounselingPlans.getCounselingPlanSystemPrompt(counselingPlan.getPatient());
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
