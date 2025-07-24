@@ -1,6 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.ExerciseComponentType;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -13,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "exercise_components")
 public class ExerciseComponent implements OwnedByTherapist {
 
+  @LLMContextField(label = "Exercise Component ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -25,19 +28,31 @@ public class ExerciseComponent implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column private ExerciseComponentType exerciseComponentType;
+  @LLMContextField(label = "Exercise Component Type", order = 2)
+  @Column
+  private ExerciseComponentType exerciseComponentType;
 
-  @Lob @Column private String exerciseComponentDescription;
+  @LLMContextField(label = "Exercise Component Description", order = 3)
+  @Lob
+  @Column
+  private String exerciseComponentDescription;
 
+  @LLMContextField(label = "Exercise Component File Name", order = 4)
   private String fileName;
 
+  @LLMContextField(label = "Exercise Component File Type", order = 5)
   private String fileType;
 
   @Lob private byte[] fileData;
 
-  @Lob @Column private String extractedText;
+  @LLMContextField(label = "Exercise Component Extracted Text", order = 6)
+  @Lob
+  @Column
+  private String extractedText;
 
-  @Column() private Integer orderNumber;
+  @LLMContextField(label = "Exercise Component Order Number", order = 7)
+  @Column()
+  private Integer orderNumber;
 
   @ManyToOne
   @JoinColumn(name = "exercise_id", referencedColumnName = "id")
@@ -46,5 +61,9 @@ public class ExerciseComponent implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getExercise().getPatient().getTherapist().getId();
+  }
+
+  public String toLLMContext() {
+    return LLMContextBuilder.build(this);
   }
 }
