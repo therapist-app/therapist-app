@@ -19,6 +19,4 @@ AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
 
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
 
-APP_ENVIRONMENT=dev
-
 COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough
