@@ -1,6 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -10,7 +12,9 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseTextComponentProps {
@@ -18,13 +22,14 @@ interface CreateExerciseTextComponentProps {
   active: boolean
 }
 
-const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
-  props: CreateExerciseTextComponentProps
-) => {
+const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (props) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
   const { t } = useTranslation()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -45,24 +50,19 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
         exerciseComponentDescription: exerciseText,
       }
-      await dispatch(
-        createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
-          file: undefined,
-        })
-      )
+      await dispatch(createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })).unwrap()
+      showMessage(t('exercise.component_created_successfully'), 'success')
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdExercise()
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
@@ -86,13 +86,12 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
             label={t('exercise.text')}
             value={exerciseText}
             onChange={handleChange}
-          ></TextField>
+          />
           <div
             style={{
               display: 'flex',
               width: '100%',
               gap: '10px',
-
               justifyContent: 'center',
             }}
           >

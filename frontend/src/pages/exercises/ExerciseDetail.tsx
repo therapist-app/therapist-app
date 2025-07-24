@@ -1,20 +1,26 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
+import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ExerciseComponentOutputDTOExerciseComponentTypeEnum, UpdateExerciseDTO } from '../../api'
+import {
+  ExerciseComponentOutputDTOExerciseComponentTypeEnum,
+  UpdateExerciseDTO,
+} from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
+import { showError } from '../../store/errorSlice'
 import { RootState } from '../../store/store'
 import {
   cancelButtonStyles,
@@ -22,6 +28,7 @@ import {
   deleteButtonStyles,
 } from '../../styles/buttonStyles'
 import { formatDateNicely } from '../../utils/dateUtil'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateExerciseFileComponent from './components/CreateExerciseFileComponent'
@@ -43,12 +50,14 @@ const ExerciseDetail = (): ReactElement => {
   const dispatch = useAppDispatch()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
-
   const exerciseStatus = useSelector((state: RootState) => state.exercise.status)
-
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
   )
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: selectedExercise?.exerciseTitle,
@@ -85,53 +94,62 @@ const ExerciseDetail = (): ReactElement => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const UpdateExerciseDTO: UpdateExerciseDTO = {
+      const dto: UpdateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
         exerciseEnd: formData.exerciseEnd?.toISOString(),
         id: exerciseId ?? '',
       }
-      await dispatch(updateExercise(UpdateExerciseDTO))
+      await dispatch(updateExercise(dto)).unwrap()
+      showMessage(t('exercise.exercise_updated_successfully'), 'success')
       setIsEditingExercise(false)
+      await refreshExercise()
     } catch (err) {
-      console.error('Registration error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
   const refreshExercise = async (): Promise<void> => {
     try {
-      await dispatch(getExerciseById(exerciseId ?? ''))
+      await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
     } catch (e) {
-      console.error(e)
+      const msg = handleError(e as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
   const handleDeleteExercise = async (): Promise<void> => {
-    await dispatch(deleteExcercise(exerciseId ?? ''))
-    navigate(
-      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
-        patientId: patientId ?? '',
-      })
-    )
+    try {
+      await dispatch(deleteExcercise(exerciseId ?? '')).unwrap()
+      showMessage(t('exercise.exercise_deleted_successfully'), 'success')
+      navigate(
+        getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+        })
+      )
+    } catch (e) {
+      const msg = handleError(e as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   useEffect(() => {
-    const refreshExercise = async (): Promise<void> => {
+    ;(async () => {
       try {
-        await dispatch(getExerciseById(exerciseId ?? ''))
+        await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
       } catch (e) {
-        console.error(e)
+        const msg = handleError(e as AxiosError)
+        showMessage(msg, 'error')
       }
-    }
-    refreshExercise()
+    })()
   }, [exerciseId, dispatch])
 
   if (exerciseStatus === 'loading') {
     return (
       <Layout>
-        <LoadingSpinner />{' '}
+        <LoadingSpinner />
       </Layout>
     )
   }
@@ -139,9 +157,8 @@ const ExerciseDetail = (): ReactElement => {
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {isEditingExercise === false ? (
+        {!isEditingExercise ? (
           <>
-            {' '}
             <Typography variant='h4'>
               {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
             </Typography>
@@ -279,16 +296,15 @@ const ExerciseDetail = (): ReactElement => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-
             maxWidth: '600px',
           }}
         >
           {selectedExercise?.exerciseComponentsOutputDTO &&
           selectedExercise.exerciseComponentsOutputDTO.length > 0 ? (
-            <Typography variant='h5'>{t('exercise.exercise_components')}: </Typography>
+            <Typography variant='h5'>{t('exercise.exercise_components')}:</Typography>
           ) : (
             <Typography sx={{ marginBottom: '20px' }} variant='h5'>
-              {t('exercise.no_exercise_components_yet')}{' '}
+              {t('exercise.no_exercise_components_yet')}
             </Typography>
           )}
 
@@ -351,39 +367,34 @@ const ExerciseDetail = (): ReactElement => {
               </div>
             ))}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: '15px',
-            marginTop: '20px',
-          }}
-        >
+
+        <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
           <CreateExerciseTextComponent
             createdExercise={refreshExercise}
             active={
               addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
             }
           />
-
           <CreateExerciseFileComponent
             createdExerciseFile={refreshExercise}
             isImageComponent
             active={
               addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
             }
           />
-
           <CreateExerciseFileComponent
             createdExerciseFile={refreshExercise}
             isImageComponent={false}
             active={
               addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
             }
           />
-
           <CreateExerciseInputFieldComponent
             createdInputField={refreshExercise}
             isPrivateField
@@ -393,7 +404,6 @@ const ExerciseDetail = (): ReactElement => {
                 ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
             }
           />
-
           <CreateExerciseInputFieldComponent
             createdInputField={refreshExercise}
             isPrivateField={false}

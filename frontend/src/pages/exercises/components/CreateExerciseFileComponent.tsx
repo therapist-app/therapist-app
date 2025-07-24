@@ -1,6 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -13,7 +15,9 @@ import {
 import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseFileComponentProps {
@@ -22,9 +26,7 @@ interface CreateExerciseFileComponentProps {
   active: boolean
 }
 
-const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = (
-  props: CreateExerciseFileComponentProps
-) => {
+const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = (props) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -32,6 +34,9 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
   const [isCreatingFile, setIsCreatingFile] = useState(false)
   const [description, setDescription] = useState('')
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   const saveSelectedFile = (file: File): void => {
     setSelectedFile(file)
@@ -63,22 +68,26 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       if (props.isImageComponent) {
         exerciseComponentType = CreateExerciseComponentDTOExerciseComponentTypeEnum.Image
       }
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
         exerciseComponentDescription: description,
       }
+
       await dispatch(
         createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
+          createExerciseComponentDTO: dto,
           file: selectedFile,
         })
-      )
+      ).unwrap()
+
+      showMessage(t('exercise.component_created_successfully'), 'success')
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdExerciseFile()
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 

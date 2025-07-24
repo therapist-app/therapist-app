@@ -1,6 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -10,7 +12,9 @@ import {
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
+import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateExerciseInputFieldComponentProps {
@@ -20,7 +24,7 @@ interface CreateExerciseInputFieldComponentProps {
 }
 
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
-  props: CreateExerciseInputFieldComponentProps
+  props
 ) => {
   const inputFieldTranslationKey = props.isPrivateField
     ? 'exercise.addPrivateInput'
@@ -29,10 +33,14 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   const exerciseComponentType = props.isPrivateField
     ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
     : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
+
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const [description, setDescription] = useState('')
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   const [isCreatingExerciseInputField, setIsCreatingExerciseInputField] = useState(false)
 
@@ -42,7 +50,6 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 
   const showExerciseInputField = (): void => {
     dispatch(setAddingExerciseComponent(exerciseComponentType))
-
     setIsCreatingExerciseInputField(true)
   }
 
@@ -54,24 +61,19 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
         exerciseComponentDescription: description,
       }
-      await dispatch(
-        createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
-          file: undefined,
-        })
-      )
+      await dispatch(createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })).unwrap()
+      showMessage(t('exercise.component_created_successfully'), 'success')
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdInputField()
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
@@ -95,7 +97,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
             label={t('exercise.description_of_input')}
             value={description}
             onChange={handleChange}
-          ></TextField>
+          />
           <div
             style={{
               display: 'flex',

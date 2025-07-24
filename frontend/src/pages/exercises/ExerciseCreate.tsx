@@ -1,8 +1,10 @@
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,7 +12,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createExercise } from '../../store/exerciseSlice'
+import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -24,6 +28,10 @@ const ExerciseCreate = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
   const { t } = useTranslation()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: '',
@@ -41,14 +49,14 @@ const ExerciseCreate = (): ReactElement => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseDTO: CreateExerciseDTO = {
+      const dto: CreateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
         durationInWeeks: formData.durationInWeeks,
       }
-      const createdExercise = await dispatch(createExercise(createExerciseDTO)).unwrap()
+      const createdExercise = await dispatch(createExercise(dto)).unwrap()
+      showMessage(t('exercise.exercise_created_successfully'), 'success')
       navigate(
         getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
           exerciseId: createdExercise.id ?? '',
@@ -57,7 +65,8 @@ const ExerciseCreate = (): ReactElement => {
         })
       )
     } catch (err) {
-      console.error('Registration error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 

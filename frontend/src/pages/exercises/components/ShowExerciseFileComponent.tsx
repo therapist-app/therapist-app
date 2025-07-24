@@ -3,6 +3,8 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -13,7 +15,9 @@ import {
   downloadExerciseComponent,
   updateExerciseComponent,
 } from '../../../store/exerciseSlice'
+import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface ShowExerciseFileComponentProps {
@@ -23,22 +27,26 @@ interface ShowExerciseFileComponentProps {
   refresh(): void
 }
 
-const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
-  props: ShowExerciseFileComponentProps
-) => {
+const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (props) => {
   const { exerciseComponent, isImageComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(undefined)
+  const [imageFileUrl, setImageFileUrl] = useState<string>()
+  const [isEditing, setIsEditing] = useState(false)
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   useEffect(() => {
-    const downloadImageFile = async (): Promise<void> => {
-      console.log('Downloading Image file')
-      const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-      setImageFileUrl(fileUrl)
-    }
-    console.log('Fired')
-    downloadImageFile()
+    ;(async () => {
+      try {
+        const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+        setImageFileUrl(fileUrl)
+      } catch (err) {
+        const msg = handleError(err as AxiosError)
+        showMessage(msg, 'error')
+      }
+    })()
   }, [dispatch, exerciseComponent.id])
 
   const originalFormData: UpdateExerciseComponentDTO = {
@@ -47,18 +55,9 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
     orderNumber: exerciseComponent.orderNumber,
   }
 
-  const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
-    id: exerciseComponent.id ?? '',
-    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
-    orderNumber: exerciseComponent.orderNumber,
-  })
+  const [formData, setFormData] = useState<UpdateExerciseComponentDTO>(originalFormData)
 
-  const [isEditing, setIsEditing] = useState(false)
-
-  const arrayOfNumbers: number[] = Array.from(
-    { length: props.numberOfExercises },
-    (value, index) => index + 1
-  )
+  const arrayOfNumbers: number[] = Array.from({ length: props.numberOfExercises }, (_, i) => i + 1)
 
   const clickCancel = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation()
@@ -77,27 +76,29 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
   const handleSubmit = async (): Promise<void> => {
     try {
       await dispatch(updateExerciseComponent(formData)).unwrap()
+      showMessage(t('exercise.component_updated_successfully'), 'success')
       setIsEditing(false)
       props.refresh()
     } catch (err) {
-      console.error(err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
   const clickDelete = async (): Promise<void> => {
-    await dispatch(deleteExerciseComponent(exerciseComponent.id ?? ''))
-
-    props.refresh()
+    try {
+      await dispatch(deleteExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+      showMessage(t('exercise.component_deleted_successfully'), 'success')
+      props.refresh()
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '20px',
-        flexDirection: 'column',
-      }}
-    >
-      {isEditing === false ? (
+    <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+      {!isEditing ? (
         <>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
@@ -132,11 +133,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
 
-          <Typography
-            sx={{
-              whiteSpace: 'pre-line',
-            }}
-          >
+          <Typography sx={{ whiteSpace: 'pre-line' }}>
             {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
@@ -146,12 +143,12 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
-              label='Order'
+              label={t('exercise.order')}
               name='orderNumber'
               value={formData.orderNumber}
               onChange={handleChange}
             >
-              {arrayOfNumbers.map((option: number) => (
+              {arrayOfNumbers.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
