@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -61,26 +60,9 @@ public class Therapist implements Serializable, HasLLMContext {
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 
   public String toLLMContext() {
-    StringBuilder sb =
-        new StringBuilder(
-            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
 
-    if (!this.patients.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patients ---\n", HIERARCHY_LEVEL, false));
-      Boolean first = true;
-      for (Patient patient : this.patients) {
-        if (first) {
-          first = false;
-        } else {
-          sb.append(
-              FormatUtil.indentBlock(
-                  "\n------------------------------------", HIERARCHY_LEVEL, true));
-        }
-        sb.append(FormatUtil.indentBlock("\nPatient: " + patient.getId(), HIERARCHY_LEVEL, true));
-
-        sb.append(patient.toLLMContext());
-      }
-    }
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Patient", HIERARCHY_LEVEL);
 
     return sb.toString();
   }
