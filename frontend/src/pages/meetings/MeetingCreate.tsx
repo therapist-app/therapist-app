@@ -1,8 +1,10 @@
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,7 +12,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { CreateMeetingDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { createMeeting } from '../../store/meetingSlice'
+import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -33,11 +37,15 @@ const MeetingCreate = (): ReactElement => {
     location: '',
   })
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
     if (!meetingFormData.meetingStart) {
-      console.error('Start date is required')
+      showMessage(t('meetings.error_start_date_required'), 'error')
       return
     }
 
@@ -51,6 +59,7 @@ const MeetingCreate = (): ReactElement => {
         location: meetingFormData.location,
       }
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
+      showMessage(t('meetings.meeting_created_successfully'), 'success')
       navigate(
         getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -58,7 +67,8 @@ const MeetingCreate = (): ReactElement => {
         })
       )
     } catch (err) {
-      console.error('Creating meetings error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 

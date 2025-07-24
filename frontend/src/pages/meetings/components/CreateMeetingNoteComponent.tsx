@@ -1,6 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Button, TextField, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -8,8 +10,10 @@ import { useSelector } from 'react-redux'
 import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { createMeetingNote } from '../../../store/meetingSlice'
+import { showError } from '../../../store/errorSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateMeetingNoteComponentProps {
@@ -21,6 +25,10 @@ interface CreateMeetingNoteComponentProps {
 const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
@@ -40,11 +48,12 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
       await dispatch(createMeetingNote(formData)).unwrap()
+      showMessage(t('meetings.note_created_successfully'), 'success')
     } catch (err) {
-      console.error('Registration error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     } finally {
       props.save()
     }
@@ -81,7 +90,6 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
             display: 'flex',
             width: '100%',
             gap: '10px',
-
             justifyContent: 'center',
           }}
         >

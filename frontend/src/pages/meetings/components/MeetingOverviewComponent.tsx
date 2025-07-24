@@ -9,6 +9,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { ReactElement, useEffect } from 'react'
@@ -17,8 +19,10 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
+import { showError } from '../../../store/errorSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 
@@ -28,8 +32,19 @@ const MeetingOverviewComponent = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   useEffect(() => {
-    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
+    ;(async () => {
+      try {
+        await dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap()
+      } catch (error) {
+        const msg = handleError(error as AxiosError)
+        showMessage(msg, 'error')
+      }
+    })()
   }, [dispatch, patientId])
 
   const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
@@ -46,7 +61,7 @@ const MeetingOverviewComponent = (): ReactElement => {
     navigate(
       getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
         patientId: patientId ?? '',
-        meetingId: meetingId,
+        meetingId,
       })
     )
   }

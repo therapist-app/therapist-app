@@ -1,13 +1,21 @@
 import { Button, MenuItem, Select, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
 import { t } from 'i18next'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 
-import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
+import {
+  MeetingOutputDTO,
+  UpdateMeetingDTO,
+  UpdateMeetingDTOMeetingStatusEnum,
+} from '../../api'
 import { updateMeeting } from '../../store/meetingSlice'
+import { showError } from '../../store/errorSlice'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 
 interface MeetingEditingProps {
@@ -37,20 +45,30 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
     return <></>
   }
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   const handleSubmit = async (): Promise<void> => {
-    const dto: UpdateMeetingDTO = {
-      id: props.meeting?.id ?? '',
-      meetingStart: meetingFormData.meetingStart?.toISOString(),
-      meetingEnd: meetingFormData.meetingEnd?.toISOString(),
-      location: meetingFormData.location,
-      meetingStatus: meetingFormData.meetingStatus,
+    try {
+      const dto: UpdateMeetingDTO = {
+        id: props.meeting?.id ?? '',
+        meetingStart: meetingFormData.meetingStart?.toISOString(),
+        meetingEnd: meetingFormData.meetingEnd?.toISOString(),
+        location: meetingFormData.location,
+        meetingStatus: meetingFormData.meetingStatus,
+      }
+      await dispatch(updateMeeting(dto)).unwrap()
+      showMessage(t('meetings.meeting_updated_successfully'), 'success')
+      props.save()
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
     }
-    await dispatch(updateMeeting(dto))
-    props.save()
   }
 
   return (
-    <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
+    <form style={{ maxWidth: '500px' }} onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
       <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
         <DateTimePicker
           label={t('meetings.meeting_start')}

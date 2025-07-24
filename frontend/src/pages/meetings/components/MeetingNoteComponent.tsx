@@ -12,13 +12,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
+import { showError } from '../../../store/errorSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface MeetingNoteComponentProps {
@@ -30,6 +34,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({
     id: props?.meetingNote.id ?? '',
@@ -45,11 +53,13 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      setIsEditing(false)
       const updatedMeeting = await dispatch(updateMeetingNote(formData)).unwrap()
       setOriginalFormData(updatedMeeting)
+      showMessage(t('meetings.note_updated_successfully'), 'success')
+      setIsEditing(false)
     } catch (err) {
-      console.error('Registration error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 
@@ -75,9 +85,11 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const deleteNote = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     event.stopPropagation()
     try {
-      await dispatch(deleteMeetingNote(formData.id ?? ''))
+      await dispatch(deleteMeetingNote(formData.id ?? '')).unwrap()
+      showMessage(t('meetings.note_deleted_successfully'), 'success')
     } catch (e) {
-      console.error(e)
+      const msg = handleError(e as AxiosError)
+      showMessage(msg, 'error')
     } finally {
       props.delete()
     }
@@ -85,7 +97,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
 
   return (
     <div>
-      {isEditing === false ? (
+      {!isEditing ? (
         <Accordion sx={{ maxWidth: '600px' }}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
@@ -125,13 +137,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
           <Divider />
           <AccordionDetails sx={{ padding: '16px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', minHeight: '40px' }}>
-              <Typography
-                sx={{
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {formData.content}
-              </Typography>
+              <Typography sx={{ whiteSpace: 'pre-line' }}>{formData.content}</Typography>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -139,7 +145,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <form
             style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSubmit()
+            }}
           >
             <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
@@ -154,7 +163,6 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
                 display: 'flex',
                 width: '100%',
                 gap: '10px',
-
                 justifyContent: 'center',
               }}
             >
