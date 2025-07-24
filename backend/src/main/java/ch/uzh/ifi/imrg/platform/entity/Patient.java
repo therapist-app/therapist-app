@@ -229,7 +229,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
     LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", level);
 
     if (!counselingPlan.getCounselingPlanPhases().isEmpty()) {
-      sb.append(sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", level, false)));
+      sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", level, false));
       sb.append(counselingPlan.toLLMContext(level + 1));
     }
 
