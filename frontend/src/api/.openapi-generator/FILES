@@ -45,7 +45,6 @@ models/create-counseling-plan-phase-goal-aigenerated-dto.ts
 models/create-counseling-plan-phase-goal-dto.ts
 models/create-exercise-component-dto.ts
 models/create-exercise-dto.ts
-models/create-gad7-test-dto.ts
 models/create-meeting-dto.ts
 models/create-meeting-note-dto.ts
 models/create-patient-document-from-therapist-document-dto.ts
@@ -53,13 +52,14 @@ models/create-patient-dto.ts
 models/create-therapist-dto.ts
 models/exercise-component-output-dto.ts
 models/exercise-output-dto.ts
-models/gad7-test-output-dto.ts
 models/index.ts
 models/login-therapist-dto.ts
 models/meeting-note-output-dto.ts
 models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
+models/psychological-test-output-dto.ts
+models/psychological-test-question-output-dto.ts
 models/remove-exercise-from-counseling-plan-phase-dto.ts
 models/therapist-chatbot-input-dto.ts
 models/therapist-chatbot-output-dto.ts
