@@ -5,6 +5,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -97,16 +98,19 @@ public class LLMUZH implements LLM {
 
     RequestPayload.Message systemMessage =
         finalMessages.stream().filter(m -> "system".equals(m.getRole())).findFirst().orElse(null);
-    String newContent =
-        "CRITICAL: Your entire response MUST be in "
+    StringBuilder sb = new StringBuilder();
+    sb.append("The current Date and Time is: " + FormatUtil.formatDate(Instant.now()));
+    sb.append(
+        "\n\nCRITICAL: Your entire response MUST be in "
             + language
-            + " (even if you cannot answer).\n\n"
-            + systemMessage.getContent()
-            + "\n\nCRITICAL: Your entire response MUST be in "
+            + " (even if you cannot answer).\n\n");
+    sb.append(systemMessage.getContent());
+    sb.append(
+        "\n\nCRITICAL: Your entire response MUST be in "
             + language
-            + " (even if you cannot answer).";
+            + " (even if you cannot answer).");
     if (systemMessage != null) {
-      systemMessage.setContent(newContent);
+      systemMessage.setContent(sb.toString());
     }
 
     RequestPayload payload = new RequestPayload();
