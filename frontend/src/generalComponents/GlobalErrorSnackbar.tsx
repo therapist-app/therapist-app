@@ -9,7 +9,7 @@ const GlobalErrorSnackbar: React.FC = () => {
   const dispatch = useDispatch()
   const { open, message, severity } = useSelector((state: RootState) => state.globalError)
 
-  const handleClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason === 'clickaway') {
       return
     }

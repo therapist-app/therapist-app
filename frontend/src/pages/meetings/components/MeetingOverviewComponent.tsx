@@ -30,15 +30,16 @@ const MeetingOverviewComponent = (): ReactElement => {
   const { t } = useTranslation()
   const { notifyError } = useNotify()
 
-  useEffect(() => {
-    ;(async () => {
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
       try {
         await dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap()
       } catch (error) {
         notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
-    })()
-  }, [dispatch, patientId])
+    }
+    void load()
+  }, [dispatch, patientId, notifyError])
 
   const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
 

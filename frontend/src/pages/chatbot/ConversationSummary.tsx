@@ -21,11 +21,12 @@ const ConversationSummary = (): ReactElement => {
     if (!patientId) {
       return
     }
-    ;(async () => {
+
+    const load = async (): Promise<void> => {
       try {
         await dispatch(
           fetchConversationSummary({
-            patientId: patientId,
+            patientId,
             start: dayjs().subtract(7, 'day').toISOString(),
             end: dayjs().toISOString(),
           })
@@ -33,8 +34,10 @@ const ConversationSummary = (): ReactElement => {
       } catch (err) {
         notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       }
-    })()
-  }, [dispatch, patientId])
+    }
+
+    void load()
+  }, [dispatch, patientId, notifyError])
 
   const renderContent = (): ReactElement => {
     if (status === 'loading' || status === 'idle') {

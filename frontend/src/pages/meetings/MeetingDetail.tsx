@@ -18,7 +18,6 @@ import {
   successDisabledButtonStyles,
 } from '../../styles/buttonStyles'
 import { formatDateNicely, getMinutesBetweenDates } from '../../utils/dateUtil'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
@@ -38,15 +37,16 @@ const MeetingDetail = (): ReactElement => {
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
-  useEffect(() => {
-    ;(async () => {
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
       try {
         await dispatch(getMeeting(meetingId ?? '')).unwrap()
       } catch (error) {
         notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
-    })()
-  }, [dispatch, meetingId])
+    }
+    void load()
+  }, [dispatch, meetingId, notifyError])
 
   const cancelCreateMeetingNote = (): void => setShowCreateMeetingNote(false)
 

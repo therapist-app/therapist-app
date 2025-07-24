@@ -124,14 +124,15 @@ const ExerciseDetail = (): ReactElement => {
   }
 
   useEffect(() => {
-    ;(async () => {
+    const load = async (): Promise<void> => {
       try {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
       } catch (e) {
         notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
-    })()
-  }, [exerciseId, dispatch])
+    }
+    void load()
+  }, [exerciseId, dispatch, notifyError])
 
   if (exerciseStatus === 'loading') {
     return (

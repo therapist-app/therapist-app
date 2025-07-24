@@ -170,7 +170,7 @@ const PatientCreate = (): ReactElement => {
       }
     }
     fetchTherapist()
-  }, [dispatch, refreshTherapistCounter])
+  }, [dispatch, refreshTherapistCounter, notifyError])
 
   const handleSubmit = async (): Promise<void> => {
     try {

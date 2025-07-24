@@ -29,7 +29,7 @@ const ImageComponent: React.FC<ImageComponentProps> = ({ imageFile }) => {
       url = URL.createObjectURL(imageFile)
       setImageUrl(url)
     } catch (err) {
-      notifyError(t('errors.could_not_preview_image'))
+      notifyError(typeof err === 'string' ? err : t('errors.image_load_failed'))
       setImageUrl(null)
     }
 

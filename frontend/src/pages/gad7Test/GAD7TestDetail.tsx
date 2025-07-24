@@ -25,21 +25,21 @@ export const GAD7TestDetail = (): ReactElement => {
 
   const [gad7Tests, setGad7Tests] = useState<GAD7TestOutputDTO[]>([])
 
-  useEffect(() => {
-    const fetchTests = async (): Promise<void> => {
-      try {
-        const response = await patientTestApi.getTestsForPatient(patientId ?? '')
-        setGad7Tests(response.data)
-      } catch (error) {
-        notifyError('Failed to fetch GAD7 tests')
-      }
+  useEffect((): void => {
+  const fetchTests = async (): Promise<void> => {
+    try {
+      const response = await patientTestApi.getTestsForPatient(patientId ?? '')
+      setGad7Tests(response.data)
+    } catch {
+      notifyError('Failed to fetch GAD7 tests')
     }
-    if (patientId) {
-      fetchTests()
-    } else {
-      notifyError('Patient ID is not defined')
-    }
-  }, [patientId])
+  }
+  if (patientId) {
+    void fetchTests()
+  } else {
+    notifyError('Patient ID is not defined')
+  }
+}, [patientId, notifyError])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>

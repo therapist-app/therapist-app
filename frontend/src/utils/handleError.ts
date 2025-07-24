@@ -9,15 +9,16 @@ interface ErrorResponseData {
   [key: string]: unknown
 }
 
+const hasStringMessage = (e: unknown): e is { message: string } =>
+  typeof e === 'object' && e !== null && 'message' in e && typeof (e as { message: unknown }).message === 'string'
+
 export const handleError = async (err: unknown): Promise<string> => {
   if (isAxiosError(err)) {
     const res = err.response
     if (res) {
       const data = res.data
 
-      if (typeof data === 'string') {
-        return data
-      }
+      if (typeof data === 'string') return data
 
       if (data instanceof Blob || data instanceof ArrayBuffer) {
         try {
@@ -47,17 +48,12 @@ export const handleError = async (err: unknown): Promise<string> => {
     return err.message || 'An unknown error occurred'
   }
 
-  if (typeof err === 'string') {
-    return err
+  if (typeof err === 'string') return err
+
+  if (hasStringMessage(err)) {
+    return err.message
   }
-  if (
-    err &&
-    typeof err === 'object' &&
-    'message' in err &&
-    typeof (err as any).message === 'string'
-  ) {
-    return (err as any).message
-  }
+
   return 'An unknown error occurred'
 }
 

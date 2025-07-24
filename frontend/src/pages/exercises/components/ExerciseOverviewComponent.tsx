@@ -51,15 +51,16 @@ const ExerciseOverviewComponent = (): ReactElement => {
     (state: RootState) => state.exercise.allExercisesOfPatient
   )
 
-  useEffect(() => {
-    ;(async () => {
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
       try {
         await dispatch(getAllExercisesOfPatient(patientId ?? '')).unwrap()
       } catch (err) {
         notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       }
-    })()
-  }, [dispatch, patientId])
+    }
+    void load()
+  }, [dispatch, patientId, notifyError]) 
 
   return (
     <>

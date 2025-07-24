@@ -75,7 +75,7 @@ const PatientDetail = (): ReactElement => {
     dispatch(getCurrentlyLoggedInTherapist()).catch((error: unknown) => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
-  }, [dispatch])
+  }, [dispatch, notifyError])
 
   useEffect(() => {
     setCurrentCounselingPlanPhase(
@@ -87,8 +87,8 @@ const PatientDetail = (): ReactElement => {
     )
   }, [counselingPlan?.counselingPlanPhasesOutputDTO, counselingPlan])
 
-  useEffect(() => {
-    ;(async () => {
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
       try {
         await Promise.all([
           dispatch(getAllPatientsOfTherapist()).unwrap(),
@@ -100,8 +100,9 @@ const PatientDetail = (): ReactElement => {
       } catch (error) {
         notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
-    })()
-  }, [dispatch, patientId, refreshPatientDocumentsCounter])
+    }
+    void load()
+  }, [dispatch, patientId, refreshPatientDocumentsCounter, notifyError])
 
   const handleFileUploadNotSharedWithPatient = async (file: File): Promise<void> => {
     try {

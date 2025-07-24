@@ -41,10 +41,9 @@ const CounselingPlanDetails = (): ReactElement => {
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
   useEffect(() => {
-    if (!patientId) {
-      return
-    }
-    ;(async () => {
+    if (!patientId) return
+
+    const load = async (): Promise<void> => {
       try {
         await Promise.all([
           dispatch(getCounselingPlanByPatientId(patientId)).unwrap(),
@@ -53,13 +52,13 @@ const CounselingPlanDetails = (): ReactElement => {
       } catch (error) {
         notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
       }
-    })()
-  }, [patientId, dispatch])
+    }
+
+    void load()
+  }, [patientId, dispatch, notifyError])
 
   const refresh = (): void => {
-    if (!patientId) {
-      return
-    }
+    if (!patientId) return
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
@@ -106,7 +105,7 @@ const CounselingPlanDetails = (): ReactElement => {
               <DateTimePicker
                 label={t('counseling_plan.counseling_start_date')}
                 value={formData.startOfTherapy}
-                onChange={(newValue: Date | null) => {
+                onChange={(newValue: Date | null): void => {
                   setFormData((prev) => ({
                     ...prev,
                     startOfTherapy: newValue,

@@ -9,18 +9,26 @@ import { useAppDispatch } from '../utils/hooks'
 type Notify = (message: string, severity?: AlertColor) => void
 type NotifyError = (error: unknown) => void
 
-export const useNotify = () => {
+interface UseNotifyReturn {
+  notify: Notify
+  notifyError: NotifyError
+  notifySuccess: (message: string) => void
+  notifyInfo: (message: string) => void
+  notifyWarning: (message: string) => void
+}
+
+export const useNotify = (): UseNotifyReturn => {
   const dispatch = useAppDispatch()
 
   const notify: Notify = useCallback(
-    (message: string, severity: AlertColor = 'error') => {
-      dispatch(showError({ message: message, severity: severity }))
+    (message: string, severity: AlertColor = 'error'): void => {
+      dispatch(showError({ message, severity }))
     },
     [dispatch]
   )
 
   const notifyError: NotifyError = useCallback(
-    (err: unknown) => {
+    (err: unknown): void => {
       Promise.resolve(handleError(err as AxiosError))
         .then((msg) => notify(msg, 'error'))
         .catch(() => notify('An unknown error occurred', 'error'))

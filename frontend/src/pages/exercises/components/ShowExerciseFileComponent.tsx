@@ -32,18 +32,17 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
   const [isEditing, setIsEditing] = useState(false)
   const { notifyError, notifySuccess } = useNotify()
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const fileUrl = await dispatch(
-          downloadExerciseComponent(exerciseComponent.id ?? '')
-        ).unwrap()
-        setImageFileUrl(fileUrl)
-      } catch (err) {
-        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-      }
-    })()
-  }, [dispatch, exerciseComponent.id])
+  useEffect((): void => {
+  const load = async (): Promise<void> => {
+    try {
+      const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+      setImageFileUrl(fileUrl)
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
+  }
+  void load()
+}, [dispatch, exerciseComponent.id, notifyError])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',

@@ -1,5 +1,4 @@
 import { IconButton } from '@mui/material'
-import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -7,7 +6,6 @@ import { ExerciseOutputDTO } from '../../../api'
 import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { removeExerciseFromCounselingPlanPhase } from '../../../store/counselingPlanSlice'
-import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 

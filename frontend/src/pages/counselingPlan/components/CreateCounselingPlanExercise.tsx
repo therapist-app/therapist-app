@@ -114,7 +114,6 @@ const CreateCounselingPlanExercise = ({
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
-
   return (
     <div>
       {!open ? (
