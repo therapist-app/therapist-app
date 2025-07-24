@@ -139,7 +139,8 @@ Class | Method | HTTP request | Description
 *CoachExerciseControllerPatientAPI* | [**updateExercise**](docs/CoachExerciseControllerPatientAPI.md#updateExercise) | **PUT** /coach/patients/{patientId}/exercises/{exerciseId} | 
 *CoachExerciseControllerPatientAPI* | [**updateExerciseComponent**](docs/CoachExerciseControllerPatientAPI.md#updateExerciseComponent) | **PUT** /coach/patients/{patientId}/exercises/{exerciseId}/exercise-components/{exerciseComponentId} | 
 *CoachJournalEntryControllerPatientAPI* | [**getOne1**](docs/CoachJournalEntryControllerPatientAPI.md#getOne1) | **GET** /coach/patients/{patientId}/journal-entries/{entryId} | 
-*CoachJournalEntryControllerPatientAPI* | [**listAll1**](docs/CoachJournalEntryControllerPatientAPI.md#listAll1) | **GET** /coach/patients/{patientId}/journal-entries | 
+*CoachJournalEntryControllerPatientAPI* | [**listAll2**](docs/CoachJournalEntryControllerPatientAPI.md#listAll2) | **GET** /coach/patients/{patientId}/journal-entries | 
+*CoachLogControllerPatientAPI* | [**listAll1**](docs/CoachLogControllerPatientAPI.md#listAll1) | **GET** /coach/patients/{patientId}/logs/{logType} | 
 *CoachMeetingControllerPatientAPI* | [**createMeeting1**](docs/CoachMeetingControllerPatientAPI.md#createMeeting1) | **POST** /coach/patients/{patientId}/meetings | 
 *CoachMeetingControllerPatientAPI* | [**deleteMeeting1**](docs/CoachMeetingControllerPatientAPI.md#deleteMeeting1) | **DELETE** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachMeetingControllerPatientAPI* | [**getMeeting1**](docs/CoachMeetingControllerPatientAPI.md#getMeeting1) | **GET** /coach/patients/{patientId}/meetings/{meetingId} | 
@@ -147,8 +148,12 @@ Class | Method | HTTP request | Description
 *CoachMeetingControllerPatientAPI* | [**updateMeeting1**](docs/CoachMeetingControllerPatientAPI.md#updateMeeting1) | **PUT** /coach/patients/{patientId}/meetings/{meetingId} | 
 *CoachPatientControllerPatientAPI* | [**deletePatient**](docs/CoachPatientControllerPatientAPI.md#deletePatient) | **DELETE** /coach/patients/{patientId} | 
 *CoachPatientControllerPatientAPI* | [**registerPatient1**](docs/CoachPatientControllerPatientAPI.md#registerPatient1) | **POST** /coach/patients/register | 
+*CoachPatientControllerPatientAPI* | [**setCoachEmail**](docs/CoachPatientControllerPatientAPI.md#setCoachEmail) | **PUT** /coach/patients/{patientId}/coach-email | 
+*CoachPsychologicalTestControllerPatientAPI* | [**createPsychologicalTest1**](docs/CoachPsychologicalTestControllerPatientAPI.md#createPsychologicalTest1) | **POST** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
+*CoachPsychologicalTestControllerPatientAPI* | [**getAvailablePsychologicalTestNames**](docs/CoachPsychologicalTestControllerPatientAPI.md#getAvailablePsychologicalTestNames) | **GET** /coach/patients/{patientId}/psychological-tests/available-tests | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestNames1**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestNames1) | **GET** /coach/patients/{patientId}/psychological-tests | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestResults1**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestResults1) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
+*CoachPsychologicalTestControllerPatientAPI* | [**updatePsychologicalTest**](docs/CoachPsychologicalTestControllerPatientAPI.md#updatePsychologicalTest) | **PUT** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *ConversationControllerPatientAPI* | [**createConversation**](docs/ConversationControllerPatientAPI.md#createConversation) | **POST** /patients/conversations | 
 *ConversationControllerPatientAPI* | [**deleteChat**](docs/ConversationControllerPatientAPI.md#deleteChat) | **DELETE** /patients/conversations/{conversationId} | 
 *ConversationControllerPatientAPI* | [**getAllMessages5**](docs/ConversationControllerPatientAPI.md#getAllMessages5) | **GET** /patients/conversations/messages/{conversationId} | 
@@ -156,6 +161,8 @@ Class | Method | HTTP request | Description
 *ConversationControllerPatientAPI* | [**postConversationName**](docs/ConversationControllerPatientAPI.md#postConversationName) | **PUT** /patients/conversations/{conversationId}/conversation-name | 
 *ConversationControllerPatientAPI* | [**sendMessage3**](docs/ConversationControllerPatientAPI.md#sendMessage3) | **POST** /patients/conversations/messages/{conversationId} | 
 *ConversationControllerPatientAPI* | [**updateSharing**](docs/ConversationControllerPatientAPI.md#updateSharing) | **PUT** /patients/conversations/{conversationId} | 
+*DashboardControllerPatientAPI* | [**getExerciseOverview1**](docs/DashboardControllerPatientAPI.md#getExerciseOverview1) | **GET** /patients/dashboard/exercises | 
+*DashboardControllerPatientAPI* | [**getPsychologicalTestsOverview**](docs/DashboardControllerPatientAPI.md#getPsychologicalTestsOverview) | **GET** /patients/dashboard/psychological-tests | 
 *DocumentControllerPatientAPI* | [**callList**](docs/DocumentControllerPatientAPI.md#callList) | **GET** /patients/documents | 
 *DocumentControllerPatientAPI* | [**download**](docs/DocumentControllerPatientAPI.md#download) | **GET** /patients/documents/{documentId} | Download a patient’s document
 *DocumentControllerPatientAPI* | [**getAllMessages3**](docs/DocumentControllerPatientAPI.md#getAllMessages3) | **GET** /patients/documents/{documentId}/chatbot | 
@@ -200,6 +207,7 @@ Class | Method | HTTP request | Description
 *PatientControllerPatientAPI* | [**loginTherapist**](docs/PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login | 
 *PatientControllerPatientAPI* | [**logoutTherapist**](docs/PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout | 
 *PatientControllerPatientAPI* | [**registerPatient**](docs/PatientControllerPatientAPI.md#registerPatient) | **POST** /patients/register | This endpoint will be removed
+*PatientControllerPatientAPI* | [**resetPassword**](docs/PatientControllerPatientAPI.md#resetPassword) | **POST** /patients/reset-password | 
 *PatientControllerPatientAPI* | [**setAvatar**](docs/PatientControllerPatientAPI.md#setAvatar) | **PUT** /patients/chat-bot-avatar | 
 *PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
 *PatientControllerPatientAPI* | [**setName**](docs/PatientControllerPatientAPI.md#setName) | **PUT** /patients/name | 
@@ -250,24 +258,29 @@ Class | Method | HTTP request | Description
  - [JournalConversationOutputDTOPatientAPI](docs/JournalConversationOutputDTOPatientAPI.md)
  - [JournalEntryOutputDTOPatientAPI](docs/JournalEntryOutputDTOPatientAPI.md)
  - [JournalEntryRequestDTOPatientAPI](docs/JournalEntryRequestDTOPatientAPI.md)
+ - [LogOutputDTOPatientAPI](docs/LogOutputDTOPatientAPI.md)
  - [LoginPatientDTOPatientAPI](docs/LoginPatientDTOPatientAPI.md)
  - [MeetingOutputDTOPatientAPI](docs/MeetingOutputDTOPatientAPI.md)
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
  - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
+ - [PsychologicalTestAssignmentInputDTOPatientAPI](docs/PsychologicalTestAssignmentInputDTOPatientAPI.md)
  - [PsychologicalTestInputDTOPatientAPI](docs/PsychologicalTestInputDTOPatientAPI.md)
  - [PsychologicalTestNameAndPatientIdOutputDTOPatientAPI](docs/PsychologicalTestNameAndPatientIdOutputDTOPatientAPI.md)
  - [PsychologicalTestNameOutputDTOPatientAPI](docs/PsychologicalTestNameOutputDTOPatientAPI.md)
  - [PsychologicalTestOutputDTOPatientAPI](docs/PsychologicalTestOutputDTOPatientAPI.md)
  - [PsychologicalTestQuestionInputDTOPatientAPI](docs/PsychologicalTestQuestionInputDTOPatientAPI.md)
  - [PsychologicalTestQuestionOutputDTOPatientAPI](docs/PsychologicalTestQuestionOutputDTOPatientAPI.md)
+ - [PsychologicalTestsOverviewOutputDTOPatientAPI](docs/PsychologicalTestsOverviewOutputDTOPatientAPI.md)
  - [PutAvatarDTOPatientAPI](docs/PutAvatarDTOPatientAPI.md)
  - [PutConversationNameDTOPatientAPI](docs/PutConversationNameDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
  - [PutSharingDTOPatientAPI](docs/PutSharingDTOPatientAPI.md)
+ - [ResetPasswordDTOPatientAPI](docs/ResetPasswordDTOPatientAPI.md)
  - [UpdateChatbotDTOPatientAPI](docs/UpdateChatbotDTOPatientAPI.md)
+ - [UpdateCoachEmailDTOPatientAPI](docs/UpdateCoachEmailDTOPatientAPI.md)
  - [UpdateMeetingDTOPatientAPI](docs/UpdateMeetingDTOPatientAPI.md)
 
 

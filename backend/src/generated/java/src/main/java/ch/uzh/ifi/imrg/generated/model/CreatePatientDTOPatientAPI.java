@@ -30,7 +30,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   CreatePatientDTOPatientAPI.JSON_PROPERTY_ID,
   CreatePatientDTOPatientAPI.JSON_PROPERTY_EMAIL,
   CreatePatientDTOPatientAPI.JSON_PROPERTY_PASSWORD,
-  CreatePatientDTOPatientAPI.JSON_PROPERTY_COACH_ACCESS_KEY
+  CreatePatientDTOPatientAPI.JSON_PROPERTY_COACH_ACCESS_KEY,
+  CreatePatientDTOPatientAPI.JSON_PROPERTY_COACH_EMAIL
 })
 @JsonTypeName("CreatePatientDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -46,6 +47,9 @@ public class CreatePatientDTOPatientAPI {
 
   public static final String JSON_PROPERTY_COACH_ACCESS_KEY = "coachAccessKey";
   private String coachAccessKey;
+
+  public static final String JSON_PROPERTY_COACH_EMAIL = "coachEmail";
+  private String coachEmail;
 
   public CreatePatientDTOPatientAPI() {
   }
@@ -153,6 +157,32 @@ public class CreatePatientDTOPatientAPI {
     this.coachAccessKey = coachAccessKey;
   }
 
+
+  public CreatePatientDTOPatientAPI coachEmail(String coachEmail) {
+    
+    this.coachEmail = coachEmail;
+    return this;
+  }
+
+   /**
+   * Get coachEmail
+   * @return coachEmail
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_COACH_EMAIL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getCoachEmail() {
+    return coachEmail;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_COACH_EMAIL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCoachEmail(String coachEmail) {
+    this.coachEmail = coachEmail;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -165,12 +195,13 @@ public class CreatePatientDTOPatientAPI {
     return Objects.equals(this.id, createPatientDTO.id) &&
         Objects.equals(this.email, createPatientDTO.email) &&
         Objects.equals(this.password, createPatientDTO.password) &&
-        Objects.equals(this.coachAccessKey, createPatientDTO.coachAccessKey);
+        Objects.equals(this.coachAccessKey, createPatientDTO.coachAccessKey) &&
+        Objects.equals(this.coachEmail, createPatientDTO.coachEmail);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, email, password, coachAccessKey);
+    return Objects.hash(id, email, password, coachAccessKey, coachEmail);
   }
 
   @Override
@@ -181,6 +212,7 @@ public class CreatePatientDTOPatientAPI {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    coachAccessKey: ").append(toIndentedString(coachAccessKey)).append("\n");
+    sb.append("    coachEmail: ").append(toIndentedString(coachEmail)).append("\n");
     sb.append("}");
     return sb.toString();
   }
