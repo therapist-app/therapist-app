@@ -1,10 +1,8 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
-import ch.uzh.ifi.imrg.platform.entity.Patient;
-
 public class ExampleCounselingPlans {
 
-  public static String getCounselingPlanSystemPrompt(Patient patient) {
+  public static String getCounselingPlanSystemPrompt() {
     StringBuilder sb = new StringBuilder();
 
     sb.append(
@@ -14,13 +12,6 @@ public class ExampleCounselingPlans {
     sb.append(
         "The following are high-quality example counseling plans. Use them as a reference for tone, structure, and content.\n\n");
     sb.append(ExampleCounselingPlans.getExampleCounselingPlans());
-    sb.append("\n\n");
-
-    sb.append("--- CURRENT PATIENT CONTEXT ---\n");
-    sb.append(
-        "This is the specific patient and their current counseling plan that the user is working on.\n\n");
-    sb.append(patient.toLLMContext(0));
-
     return sb.toString();
   }
 

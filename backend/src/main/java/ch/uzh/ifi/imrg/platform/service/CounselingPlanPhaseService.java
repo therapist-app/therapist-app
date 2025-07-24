@@ -73,19 +73,22 @@ public class CounselingPlanPhaseService {
                 () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
-    String systemPrompt =
-        ExampleCounselingPlans.getCounselingPlanSystemPrompt(counselingPlan.getPatient());
+    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
 
     String userPrompt =
-        "Based on the counseling plan context provided, generate the *next* phase. "
-            + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
+        "Based on the counseling plan context provided, generate the next phase. "
+            + "If there are no existing phases, create the very first phase. "
             + "Determine a suitable phase name, and a duration in weeks. "
             + "A typical phase duration is between 1 and 4 weeks. "
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
+
+    userPrompt +=
+        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
+            + counselingPlan.getPatient().toLLMContext(0);
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
@@ -110,18 +113,21 @@ public class CounselingPlanPhaseService {
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
-    String systemPrompt =
-        ExampleCounselingPlans.getCounselingPlanSystemPrompt(counselingPlan.getPatient());
+    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
 
     String userPrompt =
-        "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
+        "Based on the counseling plan provided, generate one new exercise that would be a good next step for the patient. "
             + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
             + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
+
+    userPrompt +=
+        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
+            + counselingPlan.getPatient().toLLMContext(0);
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));

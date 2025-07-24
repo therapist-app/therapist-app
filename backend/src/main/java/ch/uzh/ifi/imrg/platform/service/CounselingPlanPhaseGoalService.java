@@ -66,9 +66,7 @@ public class CounselingPlanPhaseGoalService {
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(phase, therapistId);
 
-    String systemPrompt =
-        ExampleCounselingPlans.getCounselingPlanSystemPrompt(
-            phase.getCounselingPlan().getPatient());
+    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
     String userPrompt =
         String.format(
@@ -79,6 +77,9 @@ public class CounselingPlanPhaseGoalService {
                 + " Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations."
                 + " Format: {\"goalName\":\"<name>\", \"goalDescription\":\"<description>\"}",
             phase.getPhaseName(), dto.getCounselingPlanPhaseId());
+    userPrompt +=
+        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
+            + phase.getCounselingPlan().getPatient().toLLMContext(0);
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
