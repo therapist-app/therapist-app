@@ -22,8 +22,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString(onlyExplicitlyIncluded = true)
 public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
 
-  public static final Integer HIERARCHY_LEVEL = Therapist.HIERARCHY_LEVEL + 1;
-
   @Id
   @Column(unique = true)
   @EqualsAndHashCode.Include
@@ -224,16 +222,15 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   }
 
   @Override
-  public String toLLMContext() {
-    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
-    LLMContextBuilder.addLLMContextOfListOfEntities(sb, complaints, "Complaint", HIERARCHY_LEVEL);
-    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetings, "Meeting", HIERARCHY_LEVEL);
-    LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", HIERARCHY_LEVEL);
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, complaints, "Complaint", level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetings, "Meeting", level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, exercises, "Exercise", level);
 
     if (!counselingPlan.getCounselingPlanPhases().isEmpty()) {
-      sb.append(
-          sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", HIERARCHY_LEVEL, false)));
-      sb.append(counselingPlan.toLLMContext());
+      sb.append(sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", level, false)));
+      sb.append(counselingPlan.toLLMContext(level + 1));
     }
 
     return sb.toString();

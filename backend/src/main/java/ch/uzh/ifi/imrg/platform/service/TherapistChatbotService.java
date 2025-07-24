@@ -65,9 +65,9 @@ public class TherapistChatbotService {
         "4.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
 
     if (patient == null) {
-      promptBuilder.append(loggedInTherapist.toLLMContext());
+      promptBuilder.append(loggedInTherapist.toLLMContext(0));
     } else {
-      promptBuilder.append(patient.toLLMContext());
+      promptBuilder.append(patient.toLLMContext(0));
     }
 
     return promptBuilder.toString();

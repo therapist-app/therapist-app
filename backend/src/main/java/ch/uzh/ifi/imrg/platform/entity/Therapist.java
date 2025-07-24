@@ -17,8 +17,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "therapists")
 public class Therapist implements Serializable, HasLLMContext {
 
-  public static final Integer HIERARCHY_LEVEL = 0;
-
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -60,13 +58,13 @@ public class Therapist implements Serializable, HasLLMContext {
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 
   @Override
-  public String toLLMContext() {
-    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
 
-    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Client", HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Client", level);
 
     LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, this.therapistDocuments, "Coach Document", HIERARCHY_LEVEL);
+        sb, this.therapistDocuments, "Coach Document", level);
 
     return sb.toString();
   }

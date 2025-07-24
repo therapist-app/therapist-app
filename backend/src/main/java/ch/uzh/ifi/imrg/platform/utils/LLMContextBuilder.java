@@ -45,7 +45,7 @@ public class LLMContextBuilder {
 
         sb.append(FormatUtil.indentBlock("\n" + label + ": " + entity.getId(), level, true));
 
-        sb.append(entity.toLLMContext());
+        sb.append(entity.toLLMContext(level + 1));
       }
     }
   }
