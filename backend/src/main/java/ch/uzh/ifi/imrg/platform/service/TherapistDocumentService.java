@@ -8,14 +8,15 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.TherapistDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -37,7 +38,8 @@ public class TherapistDocumentService {
     Therapist therapist =
         therapistRepository
             .findById(therapistId)
-            .orElseThrow(() -> new RuntimeException("Therapist not found"));
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Therapist not found"));
 
     String extractedText = DocumentParserUtil.extractText(file);
     TherapistDocument therapistDocument = new TherapistDocument();
@@ -47,7 +49,7 @@ public class TherapistDocumentService {
     try {
       therapistDocument.setFileData(file.getBytes());
     } catch (IOException e) {
-      throw new RuntimeException("Failed to read file bytes", e);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to read file bytes", e);
     }
     therapistDocument.setExtractedText(extractedText);
 
@@ -59,7 +61,8 @@ public class TherapistDocumentService {
     Therapist therapist =
         therapistRepository
             .findById(therapistId)
-            .orElseThrow(() -> new EntityNotFoundException("Therapist not found"));
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Therapist not found"));
 
     return therapist.getTherapistDocuments().stream()
         .map(TherapistDocumentMapper.INSTANCE::convertEntityToTherapistDocumentOutputDTO)
@@ -72,7 +75,10 @@ public class TherapistDocumentService {
     TherapistDocument therapistDocument =
         therapistDocumentRepository
             .findById(therapistDocumentId)
-            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Therapist document not found"));
     SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
     return therapistDocument;
