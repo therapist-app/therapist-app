@@ -6,8 +6,8 @@ import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { de } from 'date-fns/locale'
 import { AxiosError } from 'axios'
+import { de } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -16,12 +16,9 @@ import { useParams } from 'react-router-dom'
 import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
-import {
-  getCounselingPlanByPatientId,
-  updateCounselingPlan,
-} from '../../store/counselingPlanSlice'
-import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
+import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
 import { showError } from '../../store/errorSlice'
+import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { formatDateNicely } from '../../utils/dateUtil'
 import { handleError } from '../../utils/handleError'
@@ -46,11 +43,13 @@ const CounselingPlanDetails = (): ReactElement => {
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     ;(async () => {
       try {
         await Promise.all([
@@ -65,7 +64,9 @@ const CounselingPlanDetails = (): ReactElement => {
   }, [patientId, dispatch])
 
   const refresh = (): void => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       const msg = handleError(error as AxiosError)
       showMessage(msg, 'error')
@@ -153,7 +154,10 @@ const CounselingPlanDetails = (): ReactElement => {
           </ul>
         )}
 
-        <CreateCounselingPlanePhase counselingPlanId={counselingPlan?.id || ''} onSuccess={refresh} />
+        <CreateCounselingPlanePhase
+          counselingPlanId={counselingPlan?.id || ''}
+          onSuccess={refresh}
+        />
       </div>
     </Layout>
   )

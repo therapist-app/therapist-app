@@ -3,8 +3,8 @@ import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { de } from 'date-fns/locale'
 import { AxiosError } from 'axios'
+import { de } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -14,8 +14,8 @@ import {
   addExerciseToCounselingPlanPhase,
   createCounselingPlanExerciseAIGenerated,
 } from '../../../store/counselingPlanSlice'
-import { createExercise } from '../../../store/exerciseSlice'
 import { showError } from '../../../store/errorSlice'
+import { createExercise } from '../../../store/exerciseSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
@@ -45,7 +45,7 @@ const CreateCounselingPlanExercise = ({
   const dispatch = useAppDispatch()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const [formData, setFormData] = useState<ExerciseFormData>({

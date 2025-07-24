@@ -40,14 +40,14 @@ const CreateCounselingPlanePhase = ({
   const { t } = useTranslation()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     try {
       const dto: CreateCounselingPlanPhaseDTO = {
-        counselingPlanId,
+        counselingPlanId: counselingPlanId,
         phaseName: formValues.phaseName,
         durationInWeeks: formValues.durationInWeeks,
       }
@@ -66,7 +66,7 @@ const CreateCounselingPlanePhase = ({
     try {
       const aiDto = await dispatch(
         createCounselingPlanPhaseAIGenerated({
-          counselingPlanId,
+          counselingPlanId: counselingPlanId,
           language: getCurrentLanguage(),
         })
       ).unwrap()

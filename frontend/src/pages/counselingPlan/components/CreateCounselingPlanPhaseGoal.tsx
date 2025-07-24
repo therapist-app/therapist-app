@@ -39,7 +39,7 @@ const CreateCounselingPlanPhaseGoal = ({
   })
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -50,7 +50,7 @@ const CreateCounselingPlanPhaseGoal = ({
       onSuccess()
       setOpen(false)
       setFormValues({
-        counselingPlanPhaseId,
+        counselingPlanPhaseId: counselingPlanPhaseId,
         goalName: '',
         goalDescription: '',
       })
@@ -64,14 +64,14 @@ const CreateCounselingPlanPhaseGoal = ({
     try {
       const aiGenerated: CreateCounselingPlanPhaseGoalDTO = await dispatch(
         createCounselingPlanPhaseGoalAIGenerated({
-          counselingPlanPhaseId,
+          counselingPlanPhaseId: counselingPlanPhaseId,
           language: getCurrentLanguage(),
         })
       ).unwrap()
 
       setFormValues({
         ...aiGenerated,
-        counselingPlanPhaseId,
+        counselingPlanPhaseId: counselingPlanPhaseId,
       })
       setOpen(true)
     } catch (error) {
@@ -87,7 +87,7 @@ const CreateCounselingPlanPhaseGoal = ({
   const handleCancel = (): void => {
     setOpen(false)
     setFormValues({
-      counselingPlanPhaseId,
+      counselingPlanPhaseId: counselingPlanPhaseId,
       goalName: '',
       goalDescription: '',
     })

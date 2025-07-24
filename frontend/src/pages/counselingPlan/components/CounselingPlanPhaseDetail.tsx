@@ -34,7 +34,7 @@ const CounselingPlanPhaseDetail = ({
   const dispatch = useAppDispatch()
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleCreateCounselingPlanPhaseGoal = (): void => {

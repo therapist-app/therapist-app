@@ -41,7 +41,7 @@ const AddCounselingPlanExercise = ({
   const [open, setOpen] = useState(false)
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleSelectExerciseChange = (event: SelectChangeEvent): void => {
@@ -49,7 +49,9 @@ const AddCounselingPlanExercise = ({
   }
 
   const handleAddExercise = async (): Promise<void> => {
-    if (!selectedExerciseId) return
+    if (!selectedExerciseId) {
+      return
+    }
 
     try {
       const dto: AddExerciseToCounselingPlanPhaseDTO = {
