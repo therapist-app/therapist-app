@@ -4,11 +4,9 @@ import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanExerciseAIGeneratedDTO;
@@ -20,7 +18,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
-import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
@@ -36,18 +33,15 @@ public class CounselingPlanPhaseService {
   private final CounselingPlanRepository counselingPlanRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
   private final ExerciseRepository exerciseRepository;
-  private final TherapistRepository therapistRepository;
 
   public CounselingPlanPhaseService(
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
     this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
-    this.therapistRepository = therapistRepository;
   }
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
@@ -78,14 +72,10 @@ public class CounselingPlanPhaseService {
                 () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
-    Therapist therapist = therapistRepository.getReferenceById(therapistId);
-
-    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+    String systemPrompt = counselingPlan.getPatient().toLLMContext(0);
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
-
-    systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
     String userPrompt =
         "Based on the counseling plan context provided, generate the *next* phase. "
@@ -115,16 +105,13 @@ public class CounselingPlanPhaseService {
                         "Counseling plan phase not found with id: "
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
-    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+    String systemPrompt = counselingPlan.getPatient().toLLMContext(0);
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
-
-    systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
 
     String userPrompt =
         "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
