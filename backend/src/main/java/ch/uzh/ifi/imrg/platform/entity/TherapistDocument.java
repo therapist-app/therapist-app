@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Data
 @Table(name = "therapist_documents")
-public class TherapistDocument implements OwnedByTherapist {
+public class TherapistDocument implements OwnedByTherapist, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -43,5 +44,11 @@ public class TherapistDocument implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    return sb.toString();
   }
 }

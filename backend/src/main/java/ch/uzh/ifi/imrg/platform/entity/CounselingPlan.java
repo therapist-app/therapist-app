@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "counseling_plans")
-public class CounselingPlan implements OwnedByTherapist {
+public class CounselingPlan implements OwnedByTherapist, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -26,6 +28,7 @@ public class CounselingPlan implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Counseling start", order = 1)
   private Instant startOfTherapy;
 
   @OneToMany(
@@ -41,5 +44,14 @@ public class CounselingPlan implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, counselingPlanPhases, "Counseling Plan Phase", level);
+
+    return sb.toString();
   }
 }

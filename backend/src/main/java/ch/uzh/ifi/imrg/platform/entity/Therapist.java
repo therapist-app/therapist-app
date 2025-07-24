@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "therapists")
-public class Therapist implements Serializable {
+public class Therapist implements Serializable, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -27,6 +29,7 @@ public class Therapist implements Serializable {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Coach email", order = 2)
   @Column(unique = true)
   private String email;
 
@@ -53,4 +56,16 @@ public class Therapist implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Client", level);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, this.therapistDocuments, "Coach Document", level);
+
+    return sb.toString();
+  }
 }

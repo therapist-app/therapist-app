@@ -1,6 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -14,7 +16,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meetings")
-public class Meeting implements Serializable, OwnedByTherapist {
+public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
 
   @Id
   @Column(unique = true)
@@ -28,16 +30,21 @@ public class Meeting implements Serializable, OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Meeting start", order = 1)
   @Column(name = "meeting_start")
   private Instant meetingStart;
 
+  @LLMContextField(label = "Meeting end", order = 2)
   @Column(name = "meeting_end")
   private Instant meetingEnd;
 
+  @LLMContextField(label = "Meeting location", order = 3)
   @Column(nullable = true)
   private String location;
 
-  @Column() private MeetingStatus meetingStatus;
+  @LLMContextField(label = "Meeting status", order = 4)
+  @Column()
+  private MeetingStatus meetingStatus;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
@@ -53,5 +60,12 @@ public class Meeting implements Serializable, OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetingNotes, "Meeting Note", level);
+    return sb.toString();
   }
 }
