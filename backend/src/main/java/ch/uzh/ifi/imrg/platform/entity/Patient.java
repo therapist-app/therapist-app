@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -19,6 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString(onlyExplicitlyIncluded = true)
 public class Patient implements Serializable, OwnedByTherapist {
 
+  @LLMContextField(label = "Patient ID", order = 1)
   @Id
   @Column(unique = true)
   @EqualsAndHashCode.Include
@@ -32,33 +35,136 @@ public class Patient implements Serializable, OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Patient name", order = 2)
   @Column(nullable = false)
   private String name;
 
+  @LLMContextField(label = "Patient gender", order = 3)
   @Column(nullable = true)
   private String gender;
 
+  @LLMContextField(label = "Patient age", order = 4)
   @Column(nullable = true)
   private int age;
 
+  @LLMContextField(label = "Patient phone number", order = 6)
   @Column(nullable = true)
   private String phoneNumber;
 
+  @LLMContextField(label = "Patient email", order = 7)
   @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false)
   private String initialPassword;
 
+  @LLMContextField(label = "Patient address", order = 8)
   @Column(nullable = true)
   private String address;
 
-  @Column private String maritalStatus;
-  @Column private String religion;
-  @Column private String education;
-  @Column private String occupation;
-  @Column private String income;
-  @Column private String dateOfAdmission;
+  @LLMContextField(label = "Patient marital status", order = 9)
+  @Column
+  private String maritalStatus;
+
+  @LLMContextField(label = "Patient religion", order = 10)
+  @Column
+  private String religion;
+
+  @LLMContextField(label = "Patient education", order = 11)
+  @Column
+  private String education;
+
+  @LLMContextField(label = "Patient occupation", order = 12)
+  @Column
+  private String occupation;
+
+  @LLMContextField(label = "Patient income", order = 13)
+  @Column
+  private String income;
+
+  @LLMContextField(label = "Patient date of admission", order = 14)
+  @Column
+  private String dateOfAdmission;
+
+  @LLMContextField(label = "Patient treatment past", order = 15)
+  @Lob
+  @Column
+  private String treatmentPast;
+
+  @LLMContextField(label = "Patient treatment current", order = 16)
+  @Lob
+  @Column
+  private String treatmentCurrent;
+
+  @LLMContextField(label = "Patient past medical", order = 17)
+  @Lob
+  @Column
+  private String pastMedical;
+
+  @LLMContextField(label = "Patient past psych", order = 18)
+  @Lob
+  @Column
+  private String pastPsych;
+
+  @LLMContextField(label = "Patient family illness", order = 19)
+  @Lob
+  @Column
+  private String familyIllness;
+
+  @LLMContextField(label = "Patient family social", order = 20)
+  @Lob
+  @Column
+  private String familySocial;
+
+  @LLMContextField(label = "Patient personal perinatal", order = 21)
+  @Lob
+  @Column
+  private String personalPerinatal;
+
+  @LLMContextField(label = "Patient personal childhood", order = 22)
+  @Lob
+  @Column
+  private String personalChildhood;
+
+  @LLMContextField(label = "Patient personal education", order = 23)
+  @Lob
+  @Column
+  private String personalEducation;
+
+  @LLMContextField(label = "Patient personal play", order = 24)
+  @Lob
+  @Column
+  private String personalPlay;
+
+  @LLMContextField(label = "Patient personal adolescence", order = 25)
+  @Lob
+  @Column
+  private String personalAdolescence;
+
+  @LLMContextField(label = "Patient personal puberty", order = 26)
+  @Lob
+  @Column
+  private String personalPuberty;
+
+  @LLMContextField(label = "Patient personal obstetric", order = 27)
+  @Lob
+  @Column
+  private String personalObstetric;
+
+  @LLMContextField(label = "Patient personal occupational", order = 28)
+  @Lob
+  @Column
+  private String personalOccupational;
+
+  @LLMContextField(label = "Patient personal marital", order = 29)
+  @Lob
+  @Column
+  private String personalMarital;
+
+  @LLMContextField(label = "Patient personal premorbid", order = 30)
+  @Lob
+  @Column
+  private String personalPremorbid;
 
   @OneToMany(
       mappedBy = "patient",
@@ -66,25 +172,6 @@ public class Patient implements Serializable, OwnedByTherapist {
       orphanRemoval = true,
       fetch = FetchType.EAGER)
   private List<Complaint> complaints = new ArrayList<>();
-
-  @Lob @Column private String treatmentPast;
-  @Lob @Column private String treatmentCurrent;
-  @Lob @Column private String pastMedical;
-  @Lob @Column private String pastPsych;
-
-  @Lob @Column private String familyIllness;
-  @Lob @Column private String familySocial;
-
-  @Lob @Column private String personalPerinatal;
-  @Lob @Column private String personalChildhood;
-  @Lob @Column private String personalEducation;
-  @Lob @Column private String personalPlay;
-  @Lob @Column private String personalAdolescence;
-  @Lob @Column private String personalPuberty;
-  @Lob @Column private String personalObstetric;
-  @Lob @Column private String personalOccupational;
-  @Lob @Column private String personalMarital;
-  @Lob @Column private String personalPremorbid;
 
   @ManyToOne
   @JoinColumn(name = "therapist_id")
@@ -132,5 +219,32 @@ public class Patient implements Serializable, OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getTherapist().getId();
+  }
+
+  public String toLLMContext() {
+    StringBuilder sb = new StringBuilder(LLMContextBuilder.build(this));
+
+    if (!this.complaints.isEmpty()) {
+      sb.append("\n--- Patient Complaints ---\n");
+      for (Complaint complaint : this.complaints) {
+        sb.append(complaint.toLLMContext());
+      }
+    }
+
+    if (!this.complaints.isEmpty()) {
+      sb.append("\n--- Patient Chatbots ---\n");
+      for (ChatbotTemplate chatbotTemplate : this.chatbotTemplates) {
+        sb.append(chatbotTemplate.toLLMContext());
+      }
+    }
+
+    if (!this.complaints.isEmpty()) {
+      sb.append("\n--- Patient Exercises ---\n");
+      for (Exercise exercise : this.exercises) {
+        sb.append(exercise.toLLMContext());
+      }
+    }
+
+    return sb.toString();
   }
 }

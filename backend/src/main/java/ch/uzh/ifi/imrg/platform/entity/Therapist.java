@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "therapists")
 public class Therapist implements Serializable {
 
+  @LLMContextField(label = "Therapist ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -27,6 +30,7 @@ public class Therapist implements Serializable {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Therapist email", order = 2)
   @Column(unique = true)
   private String email;
 
@@ -53,4 +57,17 @@ public class Therapist implements Serializable {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
+
+  public String toLLMContext() {
+    StringBuilder sb = new StringBuilder(LLMContextBuilder.build(this));
+
+    if (!this.patients.isEmpty()) {
+      sb.append("\n--- Patients ---\n");
+      for (Patient patient : this.patients) {
+        sb.append(patient.toLLMContext());
+      }
+    }
+
+    return sb.toString();
+  }
 }
