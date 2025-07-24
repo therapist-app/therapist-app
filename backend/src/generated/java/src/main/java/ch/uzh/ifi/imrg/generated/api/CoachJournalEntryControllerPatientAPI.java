@@ -138,11 +138,11 @@ public class CoachJournalEntryControllerPatientAPI {
      * @return List&lt;CoachGetAllJournalEntriesDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    private ResponseSpec listAll1RequestCreation(String patientId) throws WebClientResponseException {
+    private ResponseSpec listAll2RequestCreation(String patientId) throws WebClientResponseException {
         Object postBody = null;
         // verify the required parameter 'patientId' is set
         if (patientId == null) {
-            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling listAll1", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling listAll2", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
         }
         // create path and map variables
         final Map<String, Object> pathParams = new HashMap<String, Object>();
@@ -175,9 +175,9 @@ public class CoachJournalEntryControllerPatientAPI {
      * @return List&lt;CoachGetAllJournalEntriesDTOPatientAPI&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Flux<CoachGetAllJournalEntriesDTOPatientAPI> listAll1(String patientId) throws WebClientResponseException {
+    public Flux<CoachGetAllJournalEntriesDTOPatientAPI> listAll2(String patientId) throws WebClientResponseException {
         ParameterizedTypeReference<CoachGetAllJournalEntriesDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CoachGetAllJournalEntriesDTOPatientAPI>() {};
-        return listAll1RequestCreation(patientId).bodyToFlux(localVarReturnType);
+        return listAll2RequestCreation(patientId).bodyToFlux(localVarReturnType);
     }
 
     /**
@@ -188,9 +188,9 @@ public class CoachJournalEntryControllerPatientAPI {
      * @return ResponseEntity&lt;List&lt;CoachGetAllJournalEntriesDTOPatientAPI&gt;&gt;
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public Mono<ResponseEntity<List<CoachGetAllJournalEntriesDTOPatientAPI>>> listAll1WithHttpInfo(String patientId) throws WebClientResponseException {
+    public Mono<ResponseEntity<List<CoachGetAllJournalEntriesDTOPatientAPI>>> listAll2WithHttpInfo(String patientId) throws WebClientResponseException {
         ParameterizedTypeReference<CoachGetAllJournalEntriesDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<CoachGetAllJournalEntriesDTOPatientAPI>() {};
-        return listAll1RequestCreation(patientId).toEntityList(localVarReturnType);
+        return listAll2RequestCreation(patientId).toEntityList(localVarReturnType);
     }
 
     /**
@@ -201,7 +201,7 @@ public class CoachJournalEntryControllerPatientAPI {
      * @return ResponseSpec
      * @throws WebClientResponseException if an error occurs while attempting to invoke the API
      */
-    public ResponseSpec listAll1WithResponseSpec(String patientId) throws WebClientResponseException {
-        return listAll1RequestCreation(patientId);
+    public ResponseSpec listAll2WithResponseSpec(String patientId) throws WebClientResponseException {
+        return listAll2RequestCreation(patientId);
     }
 }
