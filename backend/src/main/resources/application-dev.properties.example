@@ -6,9 +6,16 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 JWT_SECRET_KEY=ThisIsTheDevelopmentJWTSecretKeyItDoesNotHaveToBeSuperSecretButLongEnough
 
+# Options are: UZH or AZURE
+LLM_PROVIDER=AZURE
+
 LOCAL_LLM_MODEL=Qwen/Qwen3-1.7B
 LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
 LOCAL_LLM_API_KEY=ReplaceWithYourLocalLLMAPIKey
+
+AZURE_OPENAI_ENDPOINT=https://nimos-mcivqhow-swedencentral.cognitiveservices.azure.com
+AZURE_OPENAI_API_KEY=ReplaceWithYourAzureOpenAIAPIKey
+AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
 
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
 

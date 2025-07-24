@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
-import ch.uzh.ifi.imrg.platform.LLM.LLMUZH;
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -41,7 +41,8 @@ public class TherapistChatbotService {
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());
 
-    String responseMessage = LLMUZH.callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
+    String responseMessage =
+        LLMFactory.getInstance().callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
     TherapistChatbotOutputDTO therapistChatbotOutputDTO = new TherapistChatbotOutputDTO();
     therapistChatbotOutputDTO.setContent(responseMessage);
     return therapistChatbotOutputDTO;

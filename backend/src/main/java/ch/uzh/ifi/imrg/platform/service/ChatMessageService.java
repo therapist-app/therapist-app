@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
-import ch.uzh.ifi.imrg.platform.LLM.LLMUZH;
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
@@ -27,7 +27,6 @@ public class ChatMessageService {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
   }
 
-  /** Main entry point called by the controller. */
   public ChatCompletionResponseDTO chat(
       ChatCompletionWithConfigRequestDTO req, String therapistId) {
 
@@ -43,7 +42,7 @@ public class ChatMessageService {
     if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
-    String responseMessage = LLMUZH.callLLM(msgs, req.getLanguage());
+    String responseMessage = LLMFactory.getInstance().callLLM(msgs, req.getLanguage());
     return new ChatCompletionResponseDTO(responseMessage);
   }
 
