@@ -1,7 +1,8 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
-import { Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
-import { ReactElement, useEffect, useRef } from 'react'
+import { Alert, Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
+import { isAxiosError } from 'axios'
+import { ReactElement, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
@@ -10,19 +11,31 @@ import Layout from '../../generalComponents/Layout'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
 import { clearMessages } from '../../store/therapistChatbotSlice'
+import { handleError } from '../../utils/handleError'
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
-
   const navigate = useNavigate()
   const { patientId } = useParams()
   const location = useLocation()
 
   const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
+  const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+  if (chatbotError) {
+    const msg = isAxiosError(chatbotError)
+      ? handleError(chatbotError)
+      : String(chatbotError)
+    setErrorMessage(msg)
+  }
+}, [chatbotError])
 
   const currentPage = getPageFromPath(location.pathname)
   const closePage =
@@ -31,7 +44,6 @@ const TherapistChatbot = (): ReactElement => {
       : getPathFromPage(PAGES.HOME_PAGE)
 
   const lastAssistant = messages.at(-1)
-
   const listRef = useRef<HTMLUListElement>(null)
   useEffect(() => {
     listRef.current?.scrollTo(0, listRef.current.scrollHeight)
@@ -45,13 +57,13 @@ const TherapistChatbot = (): ReactElement => {
 
   return (
     <Layout>
-      {' '}
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        {errorMessage && (
+          <Alert severity='error' sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
+
         <IconButton
           sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
           onClick={() => {
@@ -61,6 +73,7 @@ const TherapistChatbot = (): ReactElement => {
         >
           <CloseIcon sx={{ color: 'red' }} />
         </IconButton>
+
         <List
           ref={listRef}
           sx={{

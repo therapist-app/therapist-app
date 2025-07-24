@@ -1,4 +1,5 @@
-import { Button, Container, TextField, Typography } from '@mui/material'
+import { Button, Container, Snackbar, Alert, TextField, Typography } from '@mui/material'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { LoginTherapistDTO } from '../../api'
 import { loginTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -18,22 +20,34 @@ const Login = (): ReactElement => {
     email: '',
     password: '',
   })
-  const [error, setError] = useState<string | null>(null)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('error')
+
+  const openSnackbar = (
+    msg: string,
+    sev: 'info' | 'success' | 'error' | 'warning' = 'error'
+  ): void => {
+    setSnackbarMessage(msg)
+    setSnackbarSeverity(sev)
+    setSnackbarOpen(true)
+  }
 
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-    setError(null)
 
     if (!formData.email || !formData.password) {
-      setError('Both fields are required.')
+      openSnackbar(t('login.fields_required') || 'Both fields are required.', 'warning')
       return
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
+      openSnackbar(t('login.success') || 'Login successful.', 'success')
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (e) {
-      setError(`Failed to login, please try again`)
-      console.error('Failed to login', e)
+      openSnackbar(handleError(e as AxiosError), 'error')
     }
   }
 
@@ -43,7 +57,6 @@ const Login = (): ReactElement => {
 
   return (
     <>
-      {' '}
       <div
         style={{
           display: 'flex',
@@ -53,7 +66,7 @@ const Login = (): ReactElement => {
           gap: '32px',
         }}
       >
-        <Typography variant='h2'> {t('login.welcome')}</Typography>
+        <Typography variant='h2'>{t('login.welcome')}</Typography>
         <Typography variant='h4' gutterBottom>
           {t('login.login_therapist')}
         </Typography>
@@ -82,7 +95,6 @@ const Login = (): ReactElement => {
             required
             autoComplete='current-password'
           />
-          {error && <Typography color='error'>{error}</Typography>}
           <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '380px', mt: 2 }}>
             {t('login.login')}
           </Button>
@@ -96,6 +108,17 @@ const Login = (): ReactElement => {
           {t('login.go_registration')}
         </Button>
       </div>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
