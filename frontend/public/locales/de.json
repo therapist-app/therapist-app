@@ -396,6 +396,7 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
+    "date": "Datum",
     "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
     "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
     "question2": "Nicht aufhören oder aufhören können zu sorgen.",

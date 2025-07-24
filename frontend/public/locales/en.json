@@ -396,6 +396,7 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
+    "date": "Date",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
     "question2": "Not being able to stop or control worrying.",

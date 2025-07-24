@@ -397,6 +397,7 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
+      "date": "Datum",
       "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
       "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
       "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -851,6 +852,7 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
+      "date": "Date",
       "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
       "question1": "Feeling nervous, anxious or on edge.",
       "question2": "Not being able to stop or control worrying.",
@@ -1305,6 +1307,7 @@ interface Resources {
     "gad7test": {
       "title": "Опитування GAD-7",
       "gad7tests": "Тести GAD-7",
+      "date": "Дата",
       "description": "Як часто вас турбували наступні проблеми протягом останніх 2 тижнів?",
       "question1": "Нервозність, тривога або напруга.",
       "question2": "Неможливість припинити або контролювати занепокоєння.",
