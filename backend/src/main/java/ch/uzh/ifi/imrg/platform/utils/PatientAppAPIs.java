@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.generated.api.CoachChatbotControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachDocumentControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachExerciseControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachJournalEntryControllerPatientAPI;
+import ch.uzh.ifi.imrg.generated.api.CoachLogControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachMeetingControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachPatientControllerPatientAPI;
 import ch.uzh.ifi.imrg.generated.api.CoachPsychologicalTestControllerPatientAPI;
@@ -23,6 +24,7 @@ public class PatientAppAPIs {
   public static CoachPatientControllerPatientAPI coachPatientControllerPatientAPI;
   public static CoachPsychologicalTestControllerPatientAPI
       coachPsychologicalTestControllerPatientAPI;
+  public static CoachLogControllerPatientAPI coachLogControllerPatientAPI;
   public static String COACH_ACCESS_KEY;
   public static String PATIENT_APP_URL;
 
@@ -45,5 +47,6 @@ public class PatientAppAPIs {
     coachPatientControllerPatientAPI = new CoachPatientControllerPatientAPI(apiClient);
     coachPsychologicalTestControllerPatientAPI =
         new CoachPsychologicalTestControllerPatientAPI(apiClient);
+    coachLogControllerPatientAPI = new CoachLogControllerPatientAPI(apiClient);
   }
 }
