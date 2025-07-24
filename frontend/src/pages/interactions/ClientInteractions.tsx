@@ -1,16 +1,29 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 
 import Layout from '../../generalComponents/Layout'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { showError } from '../../store/errorSlice'
+import { useAppDispatch } from '../../utils/hooks'
+import { handleError } from '../../utils/handleError'
 
-// Mock data interface
 interface InteractionData {
   hour: number
   date: string
@@ -23,7 +36,6 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-// Mock data generator
 const generateMockData = (days: number): InteractionData[] => {
   const data: InteractionData[] = []
   const interactionTypes = [
@@ -38,36 +50,31 @@ const generateMockData = (days: number): InteractionData[] => {
 
   for (let i = 0; i < days; i++) {
     const date = subDays(new Date(), i)
-    // Generate 0-5 interactions for each day
     const dailyInteractions = Math.floor(Math.random() * 6)
 
-    // For each interaction in this day
     for (let j = 0; j < dailyInteractions; j++) {
       const hour = Math.floor(Math.random() * 24)
       const type = interactionTypes[Math.floor(Math.random() * interactionTypes.length)]
 
       data.push({
         date: format(date, 'yyyy-MM-dd'),
-        hour: hour,
+        hour,
         value: 1,
-        type: type,
+        type,
       })
     }
   }
   return data
 }
 
-// Transform data for heatmap
 const transformDataForHeatmap = (
   data: InteractionData[],
   startDate: Date | null,
   endDate: Date | null
 ): HeatMapData[] => {
-  // Create array of hours (0-23)
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const daysMap = new Map<string, number[]>()
 
-  // If we have both dates, generate all dates in between
   if (startDate && endDate) {
     const allDates = eachDayOfInterval({ start: startDate, end: endDate })
     allDates.forEach((date) => {
@@ -76,7 +83,6 @@ const transformDataForHeatmap = (
     })
   }
 
-  // Add interaction data
   data.forEach((item) => {
     const shortDate = format(new Date(item.date), 'MM-dd')
     if (!daysMap.has(shortDate)) {
@@ -86,7 +92,6 @@ const transformDataForHeatmap = (
     dayData[item.hour] += item.value
   })
 
-  // Sort dates in ascending order
   const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
     const findYear = (shortDate: string): string => {
       const match = data.find((item) => format(new Date(item.date), 'MM-dd') === shortDate)
@@ -97,7 +102,6 @@ const transformDataForHeatmap = (
     return dateA.getTime() - dateB.getTime()
   })
 
-  // Transform into Nivo heatmap format with hours as rows
   return hours.map((hour) => ({
     id: `${hour.toString().padStart(2, '0')}`,
     data: sortedDates.map((date) => ({
@@ -109,36 +113,63 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
+
   const [interactionType, setInteractionType] = useState<string>('all')
-  const [data] = useState<InteractionData[]>(() => generateMockData(15))
+  const [data] = useState<InteractionData[]>(() => {
+    try {
+      return generateMockData(15)
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      dispatch(showError({ message: msg, severity: 'error' }))
+      return []
+    }
+  })
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-  // Memoize filtered data with date range
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
+  useEffect(() => {
+    if (startDate && endDate && startDate > endDate) {
+      showMessage(t('patient_interactions.invalid_date_range'), 'error')
+    }
+  }, [startDate, endDate, t])
+
   const filteredData = useMemo(() => {
-    let filtered = data
+    try {
+      let filtered = data
 
-    // Filter by interaction type
-    if (interactionType !== 'all') {
-      filtered = filtered.filter((d) => d.type === interactionType)
+      if (interactionType !== 'all') {
+        filtered = filtered.filter((d) => d.type === interactionType)
+      }
+
+      if (startDate && endDate) {
+        filtered = filtered.filter((d) => {
+          const date = new Date(d.date)
+          return isWithinInterval(date, { start: startDate, end: endDate })
+        })
+      }
+
+      return filtered
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+      return []
     }
-
-    // Filter by date range
-    if (startDate && endDate) {
-      filtered = filtered.filter((d) => {
-        const date = new Date(d.date)
-        return isWithinInterval(date, { start: startDate, end: endDate })
-      })
-    }
-
-    return filtered
   }, [data, interactionType, startDate, endDate])
 
-  // Memoize heatmap data transformation
-  const heatmapData = useMemo(
-    () => transformDataForHeatmap(filteredData, startDate, endDate),
-    [filteredData, startDate, endDate]
-  )
+  const heatmapData = useMemo(() => {
+    try {
+      return transformDataForHeatmap(filteredData, startDate, endDate)
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+      return []
+    }
+  }, [filteredData, startDate, endDate])
 
   return (
     <Layout>
