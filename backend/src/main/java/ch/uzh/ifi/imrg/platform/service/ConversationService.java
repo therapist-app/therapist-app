@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.GetConversationSummaryInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.platform.exceptions.PrivateConversationException;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ConversationSummaryOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
@@ -26,17 +27,25 @@ public class ConversationService {
     }
 
     GetConversationSummaryInputDTOPatientAPI body = new GetConversationSummaryInputDTOPatientAPI();
-
     body.setStart(start);
     body.setEnd(end);
 
-    var patientResp =
-        PatientAppAPIs.coachChatbotControllerPatientAPI
-            .getConversationSummary(body, patientId)
-            .block();
+    try {
+      var patientResp =
+          PatientAppAPIs.coachChatbotControllerPatientAPI
+              .getConversationSummary(body, patientId)
+              .block();
 
-    ConversationSummaryOutputDTO dto = new ConversationSummaryOutputDTO();
-    dto.setConversationSummary(patientResp.getConversationSummary());
-    return dto;
+      ConversationSummaryOutputDTO dto = new ConversationSummaryOutputDTO();
+      dto.setConversationSummary(patientResp.getConversationSummary());
+      return dto;
+
+    } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
+      if (e.getStatusCode().is5xxServerError()) {
+        throw new PrivateConversationException(
+            "The conversation of the client with the chatbot is private.");
+      }
+      throw e;
+    }
   }
 }
