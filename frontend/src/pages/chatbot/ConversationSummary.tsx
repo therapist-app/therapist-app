@@ -16,12 +16,10 @@ const ConversationSummary = (): ReactElement => {
   const error = useAppSelector((s) => s.conversation.error)
 
   useEffect(() => {
-    if (!patientId) {
-      return
-    }
+    if (!patientId) return
     dispatch(
       fetchConversationSummary({
-        patientId: patientId,
+        patientId,
         start: dayjs().subtract(7, 'day').toISOString(),
         end: dayjs().toISOString(),
       })
@@ -40,18 +38,26 @@ const ConversationSummary = (): ReactElement => {
 
     if (status === 'failed') {
       if (error === PRIVATE_MESSAGE) {
-        return <Alert severity='info'>{PRIVATE_MESSAGE}</Alert>
+        return (
+          <Typography sx={{ mt: 2 }} whiteSpace="pre-line">
+            {PRIVATE_MESSAGE}
+          </Typography>
+        )
       }
-      return <Alert severity='error'>{error}</Alert>
+      return <Alert severity="error">{error}</Alert>
     }
 
-    return <Typography whiteSpace='pre-line'>{summary}</Typography>
+    return (
+      <Typography sx={{ mt: 2 }} whiteSpace="pre-line">
+        {summary}
+      </Typography>
+    )
   }
 
   return (
     <Layout>
       <Box sx={{ maxWidth: 800 }}>
-        <Typography variant='h4' gutterBottom>
+        <Typography variant="h4" gutterBottom>
           Conversations from&nbsp;
           {dayjs().subtract(7, 'day').format('DD MMM YYYY')}–{dayjs().format('DD MMM YYYY')}
         </Typography>
