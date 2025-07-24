@@ -233,6 +233,10 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       sb.append(counselingPlan.toLLMContext(level + 1));
     }
 
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, chatbotTemplates, "Chatbot", level);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, patientDocuments, "Client Document", level);
+
     return sb.toString();
   }
 }

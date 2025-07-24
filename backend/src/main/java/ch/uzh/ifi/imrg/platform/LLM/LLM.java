@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.platform.LLM;
 import ch.uzh.ifi.imrg.platform.enums.Language;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
+import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
 import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,17 +79,18 @@ public abstract class LLM {
   }
 
   protected List<ChatMessageDTO> truncateMessages(List<ChatMessageDTO> allMessages) {
-    final int MAX_CHARACTERS = 150000;
     int allCharacters = allMessages.stream().mapToInt(m -> m.getContent().length()).sum();
 
-    if (allCharacters < MAX_CHARACTERS) {
+    if (allCharacters < EnvironmentVariables.LLM_MAX_CHARACTERS) {
       return allMessages;
     }
-    logger.warn("Message list exceeds max characters ({}), truncating...", MAX_CHARACTERS);
+    logger.warn(
+        "Message list exceeds max characters ({}), truncating...",
+        EnvironmentVariables.LLM_MAX_CHARACTERS);
 
     final double LAST_MESSAGE_PERCENTAGE = 0.4;
     final double FIRST_MESSAGE_PERCENTAGE = 0.8;
-    int remainingCharacters = MAX_CHARACTERS;
+    int remainingCharacters = EnvironmentVariables.LLM_MAX_CHARACTERS;
 
     ChatMessageDTO lastMessage = allMessages.remove(allMessages.size() - 1);
     lastMessage.setContent(
