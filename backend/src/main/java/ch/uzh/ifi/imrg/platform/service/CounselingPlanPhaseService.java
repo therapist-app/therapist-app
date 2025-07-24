@@ -1,14 +1,13 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
-import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanExerciseAIGeneratedDTO;
@@ -20,8 +19,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
-import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
+import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +36,15 @@ public class CounselingPlanPhaseService {
   private final CounselingPlanRepository counselingPlanRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
   private final ExerciseRepository exerciseRepository;
-  private final TherapistRepository therapistRepository;
 
   public CounselingPlanPhaseService(
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
     this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
-    this.therapistRepository = therapistRepository;
   }
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
@@ -83,28 +78,29 @@ public class CounselingPlanPhaseService {
                         "Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
-    Therapist therapist = therapistRepository.getReferenceById(therapistId);
-
-    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
 
-    systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
-
     String userPrompt =
-        "Based on the counseling plan context provided, generate the *next* phase. "
-            + "If there are no existing phases, create the very first one (e.g., 'Introduction and Goal Setting'). "
+        "Based on the counseling plan context provided, generate the next phase. "
+            + "If there are no existing phases, create the very first phase. "
             + "Determine a suitable phase name, and a duration in weeks. "
             + "A typical phase duration is between 1 and 4 weeks. "
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
 
+    userPrompt +=
+        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
+            + counselingPlan.getPatient().toLLMContext(0);
+
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
+        LLMFactory.getInstance()
+            .callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
     return generatedDto;
   }
@@ -121,30 +117,32 @@ public class CounselingPlanPhaseService {
                         "Counseling plan phase not found with id: "
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
-    String systemPrompt = LLMContextUtil.getCounselingPlanContext(counselingPlan);
+    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
     List<Patient> patientList = new ArrayList<>();
     patientList.add(counselingPlan.getPatient());
 
-    systemPrompt += LLMContextUtil.getCoachAndClientContext(therapist, patientList);
-
     String userPrompt =
-        "Based on the counseling plan provided, generate one new, relevant exercise that would be a good next step for the patient. "
+        "Based on the counseling plan provided, generate one new exercise that would be a good next step for the patient. "
             + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
             + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
+
+    userPrompt +=
+        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
+            + counselingPlan.getPatient().toLLMContext(0);
 
     List<ChatMessageDTO> messages = new ArrayList<>();
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
     CreateExerciseDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
+        LLMFactory.getInstance()
+            .callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
     CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
         getOutputDto(counselingPlanPhase, counselingPlan);
     generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());
