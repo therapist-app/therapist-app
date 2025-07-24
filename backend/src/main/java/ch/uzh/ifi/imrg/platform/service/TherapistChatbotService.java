@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -7,7 +8,6 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,7 +41,8 @@ public class TherapistChatbotService {
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());
 
-    String responseMessage = LLMUZH.callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
+    String responseMessage =
+        LLMFactory.getInstance().callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
     TherapistChatbotOutputDTO therapistChatbotOutputDTO = new TherapistChatbotOutputDTO();
     therapistChatbotOutputDTO.setContent(responseMessage);
     return therapistChatbotOutputDTO;

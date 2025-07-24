@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
@@ -19,7 +20,6 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
 import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +94,8 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
+        LLMFactory.getInstance()
+            .callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
     return generatedDto;
   }
@@ -134,7 +135,8 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
     CreateExerciseDTO generatedDto =
-        LLMUZH.callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
+        LLMFactory.getInstance()
+            .callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
     CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
         getOutputDto(counselingPlanPhase, counselingPlan);
     generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());

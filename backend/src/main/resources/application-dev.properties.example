@@ -4,14 +4,19 @@ spring.datasource.password=therapy-password
 spring.jpa.hibernate.ddl-auto=create
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
+APP_ENVIRONMENT=dev
 JWT_SECRET_KEY=ThisIsTheDevelopmentJWTSecretKeyItDoesNotHaveToBeSuperSecretButLongEnough
+PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
+COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough
+
+# Options are: UZH or AZURE
+LLM_PROVIDER=AZURE
+LLM_MAX_CHARACTERS=150000
 
 LOCAL_LLM_MODEL=Qwen/Qwen3-1.7B
 LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
 LOCAL_LLM_API_KEY=ReplaceWithYourLocalLLMAPIKey
 
-PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
-
-APP_ENVIRONMENT=dev
-
-COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough
+AZURE_OPENAI_ENDPOINT=https://nimos-mcivqhow-swedencentral.cognitiveservices.azure.com
+AZURE_OPENAI_API_KEY=ReplaceWithYourAzureOpenAIAPIKey
+AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1

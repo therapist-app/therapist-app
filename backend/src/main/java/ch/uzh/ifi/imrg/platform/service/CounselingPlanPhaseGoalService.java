@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseGoalRepository;
@@ -11,7 +12,6 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.ExampleCounselingPlans;
-import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +85,8 @@ public class CounselingPlanPhaseGoalService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseGoalDTO generatedDto =
-        LLMUZH.callLLMForObject(
-            messages, CreateCounselingPlanPhaseGoalDTO.class, dto.getLanguage());
+        LLMFactory.getInstance()
+            .callLLMForObject(messages, CreateCounselingPlanPhaseGoalDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanPhaseId(dto.getCounselingPlanPhaseId());
     return generatedDto;
   }

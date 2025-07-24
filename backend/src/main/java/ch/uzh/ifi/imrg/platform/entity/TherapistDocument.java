@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
-import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -29,9 +30,11 @@ public class TherapistDocument implements OwnedByTherapist, HasLLMContext {
   @JoinColumn(name = "therapist_id")
   private Therapist therapist;
 
+  @LLMContextField(label = "Coach Document file name", order = 1)
   @Column(nullable = false)
   private String fileName;
 
+  @LLMContextField(label = "Coach Document file type", order = 2)
   @Column(nullable = false)
   private String fileType;
 
@@ -39,7 +42,10 @@ public class TherapistDocument implements OwnedByTherapist, HasLLMContext {
   @Column(nullable = false)
   private byte[] fileData;
 
-  @Lob @Column private String extractedText;
+  @LLMContextField(label = "Coach Document extracted text", order = 3)
+  @Lob
+  @Column
+  private String extractedText;
 
   @Override
   public String getOwningTherapistId() {

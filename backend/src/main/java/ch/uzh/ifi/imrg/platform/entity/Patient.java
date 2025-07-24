@@ -1,8 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
 import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
-import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
-import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -232,6 +232,10 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       sb.append(FormatUtil.indentBlock("\n--- Counseling Plan ---\n", level, false));
       sb.append(counselingPlan.toLLMContext(level + 1));
     }
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, chatbotTemplates, "Chatbot", level);
+
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, patientDocuments, "Client Document", level);
 
     return sb.toString();
   }
