@@ -19,6 +19,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/api/CoachChatbotControllerPatientAPI.jav
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachDocumentControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachExerciseControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/api/CoachLogControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachMeetingControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java
@@ -83,6 +84,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/JournalChatbotOutputDTOPatientAPI.
 src/main/java/ch/uzh/ifi/imrg/generated/model/JournalConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/JournalEntryRequestDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/LogOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/LoginPatientDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MeetingOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
@@ -102,5 +104,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutLanguageDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutSharingDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateChatbotDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java

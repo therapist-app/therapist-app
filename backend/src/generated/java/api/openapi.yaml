@@ -781,6 +781,32 @@ paths:
       - coach-exercise-controller
       x-content-type: application/json
       x-accepts: application/json
+  /coach/patients/{patientId}/coach-email:
+    put:
+      operationId: setCoachEmail
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCoachEmailDTO'
+        required: true
+      responses:
+        "204":
+          description: No Content
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /coach/patients/{patientId}/chatbot:
     get:
       operationId: getChatbotConfigurations
@@ -888,6 +914,22 @@ paths:
           description: Created
       tags:
       - psychological-test-controller
+      x-content-type: application/json
+      x-accepts: application/json
+  /patients/reset-password:
+    post:
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordDTO'
+        required: true
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - patient-controller
       x-content-type: application/json
       x-accepts: application/json
   /patients/register:
@@ -1854,9 +1896,41 @@ paths:
       tags:
       - coach-psychological-test-controller
       x-accepts: '*/*'
-  /coach/patients/{patientId}/journal-entries:
+  /coach/patients/{patientId}/logs/{logType}:
     get:
       operationId: listAll_1
+      parameters:
+      - explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: logType
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/LogOutputDTO'
+                type: array
+          description: OK
+      security:
+      - X-Coach-Key: []
+      tags:
+      - coach-log-controller
+      x-accepts: '*/*'
+  /coach/patients/{patientId}/journal-entries:
+    get:
+      operationId: listAll_2
       parameters:
       - explode: false
         in: path
@@ -2363,6 +2437,11 @@ components:
           format: int32
           type: integer
       type: object
+    UpdateCoachEmailDTO:
+      properties:
+        coachEmail:
+          type: string
+      type: object
     UpdateChatbotDTO:
       properties:
         id:
@@ -2397,6 +2476,13 @@ components:
           format: int32
           type: integer
       type: object
+    ResetPasswordDTO:
+      properties:
+        email:
+          type: string
+      required:
+      - email
+      type: object
     CreatePatientDTO:
       properties:
         id:
@@ -2409,6 +2495,8 @@ components:
           pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
           type: string
         coachAccessKey:
+          type: string
+        coachEmail:
           type: string
       required:
       - coachAccessKey
@@ -2973,6 +3061,42 @@ components:
         name: name
       properties:
         name:
+          type: string
+      type: object
+    LogOutputDTO:
+      example:
+        logType: JOURNAL_CREATION
+        patientId: patientId
+        id: id
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        uniqueIdentifier: uniqueIdentifier
+      properties:
+        id:
+          type: string
+        patientId:
+          type: string
+        logType:
+          enum:
+          - JOURNAL_CREATION
+          - JOURNAL_UPDATE
+          - EXERCISE_START
+          - EXERCISE_COMPLETION
+          - EXERCISE_UPDATE
+          - GENERAL_CONVERSATION_CREATION
+          - GENERAL_CONVERSATION_NAME_UPDATE
+          - GENERAL_CONVERSATION_MESSAGE_CREATION
+          - DOCUMENT_CONVERSATION_MESSAGE_CREATION
+          - EXERCISE_CONVERSATION_MESSAGE_CREATION
+          - JOURNAL_CONVERSATION_MESSAGE_CREATION
+          - CHATBOT_ICON_UPDATE
+          - HARMFUL_CONTENT_DETECTED
+          - DOCUMENT_READ
+          - PSYCHOLOGICAL_TEST_COMPLETED
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        uniqueIdentifier:
           type: string
       type: object
     CoachGetAllJournalEntriesDTO:

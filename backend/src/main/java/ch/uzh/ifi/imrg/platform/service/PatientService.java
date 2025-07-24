@@ -72,7 +72,8 @@ public class PatientService {
             .id(createdPatient.getId())
             .email(createdPatient.getEmail())
             .password(createdPatient.getInitialPassword())
-            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY);
+            .coachAccessKey(PatientAppAPIs.COACH_ACCESS_KEY)
+            .coachEmail(therapist.getEmail());
 
     PatientAppAPIs.coachPatientControllerPatientAPI
         .registerPatient1(createPatientDTOPatientAPI)
