@@ -4,12 +4,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Alert,
   Box,
   Button,
   Grid,
   MenuItem,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
@@ -21,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import Layout from '../../generalComponents/Layout'
+import { showError } from '../../store/errorSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import {
@@ -31,6 +30,7 @@ import {
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
+import { AlertColor } from '@mui/material'
 
 type Complaint = {
   id: string
@@ -129,13 +129,11 @@ const PatientCreate = (): ReactElement => {
   const [personalMarital, setPersonalMarital] = useState('')
   const [personalPremorbid, setPersonalPremorbid] = useState('')
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
-
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const handleChange = (index: number, field: keyof Complaint, value: string): void => {
     const updated = [...complaints]
@@ -171,9 +169,13 @@ const PatientCreate = (): ReactElement => {
 
   useEffect(() => {
     const fetchTherapist = async (): Promise<void> => {
-      await dispatch(getCurrentlyLoggedInTherapist())
+      try {
+        await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
+      } catch (error) {
+        const msg = handleError(error as AxiosError)
+        showMessage(msg, 'error')
+      }
     }
-
     fetchTherapist()
   }, [dispatch, refreshTherapistCounter])
 
@@ -215,10 +217,7 @@ const PatientCreate = (): ReactElement => {
 
       if (registerPatient.fulfilled.match(resultAction)) {
         const newPatient = resultAction.payload
-
-        setSnackbarMessage(t('patient_create.patient_register_success'))
-        setSnackbarSeverity('success')
-        setSnackbarOpen(true)
+        showMessage(t('patient_create.patient_register_success'), 'success')
         setRefreshTherapistCounter((prev) => prev + 1)
         navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id! }))
       } else {
@@ -226,9 +225,7 @@ const PatientCreate = (): ReactElement => {
       }
     } catch (error) {
       const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      showMessage(errorMessage, 'error')
     }
   }
 
@@ -328,7 +325,6 @@ const PatientCreate = (): ReactElement => {
               type='tel'
             />
           </Grid>
-
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -350,6 +346,7 @@ const PatientCreate = (): ReactElement => {
             />
           </Grid>
         </Grid>
+
         <Box mt={4} display='flex' justifyContent='flex-end'>
           <Button
             onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
@@ -366,13 +363,6 @@ const PatientCreate = (): ReactElement => {
             {t('patient_create.register')}
           </Button>
         </Box>
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={() => setSnackbarOpen(false)}
-        >
-          <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
-        </Snackbar>
       </Box>
 
       <Box mt={6}>

@@ -15,11 +15,14 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { AxiosError } from 'axios'
+import { AlertColor } from '@mui/material'
 
 import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { showError } from '../../store/errorSlice'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
@@ -33,6 +36,7 @@ import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { patientDocumentApi } from '../../utils/api'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ChatbotOverview from '../chatbot/ChatbotOverview'
@@ -69,12 +73,18 @@ const PatientDetail = (): ReactElement => {
   const [openChatbotDialog, setOpenChatbotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   useEffect(() => {
-    dispatch(getCurrentlyLoggedInTherapist())
+    dispatch(getCurrentlyLoggedInTherapist()).catch((error: unknown) => {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    })
   }, [dispatch])
 
   useEffect(() => {
-    console.log(counselingPlan)
     setCurrentCounselingPlanPhase(
       counselingPlan?.counselingPlanPhasesOutputDTO?.find(
         (phase) =>
@@ -85,47 +95,80 @@ const PatientDetail = (): ReactElement => {
   }, [counselingPlan?.counselingPlanPhasesOutputDTO, counselingPlan])
 
   useEffect(() => {
-    dispatch(getAllPatientsOfTherapist())
-    dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
-    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
-    dispatch(getAllExercisesOfPatient(patientId ?? ''))
-    dispatch(getCounselingPlanByPatientId(patientId ?? ''))
+    ;(async () => {
+      try {
+        await Promise.all([
+          dispatch(getAllPatientsOfTherapist()).unwrap(),
+          dispatch(getAllPatientDocumentsOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getAllExercisesOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getCounselingPlanByPatientId(patientId ?? '')).unwrap(),
+        ])
+      } catch (error) {
+        const msg = handleError(error as AxiosError)
+        showMessage(msg, 'error')
+      }
+    })()
   }, [dispatch, patientId, refreshPatientDocumentsCounter])
 
   const handleFileUploadNotSharedWithPatient = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForPatient({
-        file: file,
-        patientId: patientId ?? '',
-        isSharedWithPatient: false,
-      })
-    )
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(
+        createDocumentForPatient({
+          file,
+          patientId: patientId ?? '',
+          isSharedWithPatient: false,
+        })
+      ).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      showMessage(t('patient_detail.file_upload_success'), 'success')
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   const handleFileUploadSharedWithPatient = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForPatient({
-        file: file,
-        patientId: patientId ?? '',
-        isSharedWithPatient: true,
-      })
-    )
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(
+        createDocumentForPatient({
+          file,
+          patientId: patientId ?? '',
+          isSharedWithPatient: true,
+        })
+      ).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      showMessage(t('patient_detail.file_upload_success'), 'success')
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
-    await dispatch(deleteDocumentOfPatient(fileId))
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(deleteDocumentOfPatient(fileId)).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      showMessage(t('patient_detail.file_delete_success'), 'success')
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   const downloadFile = async (fileId: string): Promise<string> => {
-    const response = await patientDocumentApi.downloadPatientDocument(fileId, {
-      responseType: 'blob',
-    })
-    const file = response.data
-    const url = window.URL.createObjectURL(file)
-    return url
+    try {
+      const response = await patientDocumentApi.downloadPatientDocument(fileId, {
+        responseType: 'blob',
+      })
+      const file = response.data
+      const url = window.URL.createObjectURL(file)
+      return url
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+      throw error
+    }
   }
 
   const handleCloseChatbotDialog = (): void => {
@@ -134,14 +177,11 @@ const PatientDetail = (): ReactElement => {
   }
 
   const handleCreateNewChatbot = (): void => {
-    console.log('Chatbot created with name:', chatbotName)
-
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
         chatbotTemplateId: 'newBot',
       })
     )
-
     handleCloseChatbotDialog()
   }
 
