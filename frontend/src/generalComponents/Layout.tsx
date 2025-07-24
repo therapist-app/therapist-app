@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/Therapist-App.png'
-import { chatWithTherapistChatbot } from '../store/therapistChatbotSlice'
+import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
@@ -101,6 +101,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         language: getCurrentLanguage(),
       })
     )
+  }
+
+  const handleChatbotInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void => {
+    if (
+      !input &&
+      currentPage !== PAGES.THERAPIST_CHATBOT_PAGE &&
+      currentPage !== PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
+    ) {
+      dispatch(clearMessages())
+    }
+    setInput(e.target.value)
   }
 
   return (
@@ -225,7 +238,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <TextField
             fullWidth
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleChatbotInput}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault()
