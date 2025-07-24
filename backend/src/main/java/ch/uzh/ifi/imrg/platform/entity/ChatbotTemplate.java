@@ -17,8 +17,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "chatbot_templates")
 public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMContext {
 
-  public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
-
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -71,10 +69,10 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMCo
   }
 
   @Override
-  public String toLLMContext() {
-    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
     LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, chatbotTemplateDocuments, "Chatbot Document", HIERARCHY_LEVEL);
+        sb, chatbotTemplateDocuments, "Chatbot Document", level);
     return sb.toString();
   }
 }

@@ -18,8 +18,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "meetings")
 public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
 
-  public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
-
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -65,10 +63,9 @@ public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
   }
 
   @Override
-  public String toLLMContext() {
-    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
-    LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, meetingNotes, "Meeting Note", HIERARCHY_LEVEL);
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, meetingNotes, "Meeting Note", level);
     return sb.toString();
   }
 }

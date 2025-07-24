@@ -31,7 +31,7 @@ public class TherapistService {
 
   public TherapistOutputDTO getTherapistById(String therapistId) {
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
-    System.out.println(therapist.toLLMContext());
+    System.out.println(therapist.toLLMContext(0));
     return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist).sortDTO();
   }
 

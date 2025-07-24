@@ -16,8 +16,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "counseling_plan_phases")
 public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
 
-  public static final Integer HIERARCHY_LEVEL = CounselingPlan.HIERARCHY_LEVEL + 1;
-
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -68,12 +66,12 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
   }
 
   @Override
-  public String toLLMContext() {
-    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
     LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, phaseGoals, "Counseling Plan Phase Goal", HIERARCHY_LEVEL);
+        sb, phaseGoals, "Counseling Plan Phase Goal", level);
     LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, phaseExercises, "Counseling Plan Exercise", HIERARCHY_LEVEL);
+        sb, phaseExercises, "Counseling Plan Exercise", level);
 
     return sb.toString();
   }
