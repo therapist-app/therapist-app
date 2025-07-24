@@ -41,7 +41,9 @@ const CounselingPlanDetails = (): ReactElement => {
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
 
     const load = async (): Promise<void> => {
       try {
@@ -58,7 +60,9 @@ const CounselingPlanDetails = (): ReactElement => {
   }, [patientId, dispatch, notifyError])
 
   const refresh = (): void => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })

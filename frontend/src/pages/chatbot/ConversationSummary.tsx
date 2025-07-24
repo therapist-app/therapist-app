@@ -26,7 +26,7 @@ const ConversationSummary = (): ReactElement => {
       try {
         await dispatch(
           fetchConversationSummary({
-            patientId,
+            patientId: patientId,
             start: dayjs().subtract(7, 'day').toISOString(),
             end: dayjs().toISOString(),
           })

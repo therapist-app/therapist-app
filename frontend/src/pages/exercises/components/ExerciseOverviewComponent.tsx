@@ -60,7 +60,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
       }
     }
     void load()
-  }, [dispatch, patientId, notifyError]) 
+  }, [dispatch, patientId, notifyError])
 
   return (
     <>

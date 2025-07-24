@@ -22,7 +22,7 @@ export const useNotify = (): UseNotifyReturn => {
 
   const notify: Notify = useCallback(
     (message: string, severity: AlertColor = 'error'): void => {
-      dispatch(showError({ message, severity }))
+      dispatch(showError({ message: message, severity: severity }))
     },
     [dispatch]
   )
