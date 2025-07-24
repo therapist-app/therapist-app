@@ -4,6 +4,7 @@ import chatbotTemplateDocumentReducer from './chatbotTemplateDocumentSlice'
 import chatbotTemplateReducer from './chatbotTemplateSlice'
 import conversationReducer from './conversationSlice'
 import counselingPlanReducer from './counselingPlanSlice'
+import errorReducer from './errorSlice'
 import exerciseReducer from './exerciseSlice'
 import meetingReducer from './meetingSlice'
 import patientDocumentReducer from './patientDocumentSlice'
@@ -11,7 +12,6 @@ import patientReducer from './patientSlice'
 import therapistChatbotReducer from './therapistChatbotSlice'
 import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
-import errorReducer from './errorSlice'
 
 const store = configureStore({
   reducer: {

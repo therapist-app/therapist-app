@@ -1,17 +1,18 @@
-import React from 'react'
 import { Alert, Snackbar } from '@mui/material'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../store/store'
+
 import { hideError } from '../store/errorSlice'
+import { RootState } from '../store/store'
 
 const GlobalErrorSnackbar: React.FC = () => {
   const dispatch = useDispatch()
-  const { open, message, severity } = useSelector(
-    (state: RootState) => state.globalError
-  )
+  const { open, message, severity } = useSelector((state: RootState) => state.globalError)
 
   const handleClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
+    if (reason === 'clickaway') {
+      return
+    }
     dispatch(hideError())
   }
 

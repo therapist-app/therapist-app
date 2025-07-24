@@ -1,6 +1,7 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
   Alert,
+  AlertColor,
   Box,
   Button,
   Card,
@@ -17,7 +18,6 @@ import {
   Snackbar,
   TextField,
   Typography,
-  AlertColor,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
 import { AxiosError } from 'axios'
@@ -36,6 +36,7 @@ import {
   createChatbotTemplate,
   deleteChatbotTemplate,
 } from '../../store/chatbotTemplateSlice'
+import { showError } from '../../store/errorSlice'
 import { RootState } from '../../store/store'
 import {
   createDocumentForTherapist,
@@ -52,7 +53,6 @@ import { therapistDocumentApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { showError } from '../../store/errorSlice'
 
 const Home = (): ReactElement => {
   const navigate = useNavigate()
@@ -90,8 +90,8 @@ const Home = (): ReactElement => {
   }
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-  dispatch(showError({ message, severity }))
-}
+    dispatch(showError({ message: message, severity: severity }))
+  }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     await dispatch(deleteDocumentOfTherapist(fileId))

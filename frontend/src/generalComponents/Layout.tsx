@@ -3,7 +3,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SendIcon from '@mui/icons-material/Send'
 import SettingsIcon from '@mui/icons-material/Settings'
-import GlobalErrorSnackbar from './GlobalErrorSnackbar'
 import {
   AppBar,
   Box,
@@ -30,6 +29,7 @@ import {
   getPathFromPage,
   PAGES,
 } from '../utils/routes'
+import GlobalErrorSnackbar from './GlobalErrorSnackbar'
 
 interface LayoutProps {
   children: ReactNode
