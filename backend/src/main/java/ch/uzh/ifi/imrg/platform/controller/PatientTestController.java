@@ -23,5 +23,4 @@ public class PatientTestController {
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     return patientTestService.getTestsByPatient(patientId, therapistId);
   }
-
 }

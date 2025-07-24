@@ -8,11 +8,9 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.PatientPsychologicalTestMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,7 +31,8 @@ public class PatientTestService {
     SecurityUtil.checkOwnership(patient, therapistId);
 
     try {
-      List<PsychologicalTestOutputDTOPatientAPI> apiResults = PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+      List<PsychologicalTestOutputDTOPatientAPI> apiResults =
+          PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
               .getPsychologicalTestResults1(patientId, GAD7_TEST_NAME)
               .collectList()
               .block();
@@ -44,16 +43,18 @@ public class PatientTestService {
       }
 
       return apiResults.stream()
-              .map(apiDto -> {
+          .map(
+              apiDto -> {
                 try {
-                  return PatientPsychologicalTestMapper.INSTANCE.toPsychologicalTestOutputDTO(apiDto);
+                  return PatientPsychologicalTestMapper.INSTANCE.toPsychologicalTestOutputDTO(
+                      apiDto);
                 } catch (Exception e) {
                   logger.error("Error mapping test result for patient {}", patientId, e);
                   return null;
                 }
               })
-              .filter(Objects::nonNull)
-              .toList();
+          .filter(Objects::nonNull)
+          .toList();
     } catch (Exception e) {
       logger.error("Error fetching test results for patient {}", patientId, e);
       throw new RuntimeException("Failed to retrieve test results", e);

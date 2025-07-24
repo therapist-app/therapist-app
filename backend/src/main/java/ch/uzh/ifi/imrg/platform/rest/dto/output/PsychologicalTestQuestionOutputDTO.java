@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class PsychologicalTestQuestionOutputDTO {
 
-    private String question;
-    private int score;
-
+  private String question;
+  private int score;
 }
