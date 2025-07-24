@@ -16,11 +16,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "therapists")
-public class Therapist implements Serializable {
+public class Therapist implements Serializable, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = 0;
 
-  @LLMContextField(label = "Therapist ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -63,11 +62,22 @@ public class Therapist implements Serializable {
 
   public String toLLMContext() {
     StringBuilder sb =
-        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
+        new StringBuilder(
+            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
 
     if (!this.patients.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patients ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Patients ---\n", HIERARCHY_LEVEL, false));
+      Boolean first = true;
       for (Patient patient : this.patients) {
+        if (first) {
+          first = false;
+        } else {
+          sb.append(
+              FormatUtil.indentBlock(
+                  "\n------------------------------------", HIERARCHY_LEVEL, true));
+        }
+        sb.append(FormatUtil.indentBlock("\nPatient: " + patient.getId(), HIERARCHY_LEVEL, true));
+
         sb.append(patient.toLLMContext());
       }
     }

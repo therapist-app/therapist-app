@@ -1,6 +1,8 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -14,7 +16,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meetings")
-public class Meeting implements Serializable, OwnedByTherapist {
+public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
 
@@ -55,5 +57,10 @@ public class Meeting implements Serializable, OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext() {
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
   }
 }

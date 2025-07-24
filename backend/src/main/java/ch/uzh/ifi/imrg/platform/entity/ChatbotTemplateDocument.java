@@ -13,11 +13,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Data
 @Table(name = "chatbot_template_documents")
-public class ChatbotTemplateDocument implements OwnedByTherapist {
+public class ChatbotTemplateDocument implements OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = ChatbotTemplate.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Chatbot Document", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -57,6 +56,6 @@ public class ChatbotTemplateDocument implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false);
   }
 }

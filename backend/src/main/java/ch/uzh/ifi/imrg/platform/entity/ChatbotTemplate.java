@@ -16,11 +16,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "chatbot_templates")
-public class ChatbotTemplate implements Serializable, OwnedByTherapist {
+public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Chatbot ID", order = 1)
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -74,11 +73,13 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist {
 
   public String toLLMContext() {
     StringBuilder sb =
-        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
+        new StringBuilder(
+            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
 
     if (!this.chatbotTemplateDocuments.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Chatbot documents ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Chatbot documents ---\n", HIERARCHY_LEVEL, false));
       for (ChatbotTemplateDocument document : this.chatbotTemplateDocuments) {
+        sb.append(FormatUtil.indentBlock("\nDocument: " + document.getId(), HIERARCHY_LEVEL, true));
         sb.append(document.toLLMContext());
       }
     }

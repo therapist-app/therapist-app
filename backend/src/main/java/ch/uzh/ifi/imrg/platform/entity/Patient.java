@@ -20,11 +20,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "patients")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-public class Patient implements Serializable, OwnedByTherapist {
+public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
 
   public static final Integer HIERARCHY_LEVEL = Therapist.HIERARCHY_LEVEL + 1;
 
-  @LLMContextField(label = "Patient ID", order = 1)
   @Id
   @Column(unique = true)
   @EqualsAndHashCode.Include
@@ -226,25 +225,31 @@ public class Patient implements Serializable, OwnedByTherapist {
 
   public String toLLMContext() {
     StringBuilder sb =
-        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
+        new StringBuilder(
+            FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL, false));
 
     if (!this.complaints.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Complaints ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Patient Complaints ---\n", HIERARCHY_LEVEL, false));
       for (Complaint complaint : this.complaints) {
+        sb.append(
+            FormatUtil.indentBlock("\nComplaint: " + complaint.getId(), HIERARCHY_LEVEL, true));
         sb.append(complaint.toLLMContext());
       }
     }
 
     if (!this.chatbotTemplates.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Chatbots ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Patient Chatbots ---\n", HIERARCHY_LEVEL, false));
       for (ChatbotTemplate chatbotTemplate : this.chatbotTemplates) {
+        sb.append(
+            FormatUtil.indentBlock("\nChatbot: " + chatbotTemplate.getId(), HIERARCHY_LEVEL, true));
         sb.append(chatbotTemplate.toLLMContext());
       }
     }
 
     if (!this.exercises.isEmpty()) {
-      sb.append(FormatUtil.indentBlock("\n--- Patient Exercises ---\n", HIERARCHY_LEVEL));
+      sb.append(FormatUtil.indentBlock("\n--- Patient Exercises ---\n", HIERARCHY_LEVEL, false));
       for (Exercise exercise : this.exercises) {
+        sb.append(FormatUtil.indentBlock("\nExercise: " + exercise.getId(), HIERARCHY_LEVEL, true));
         sb.append(exercise.toLLMContext());
       }
     }
