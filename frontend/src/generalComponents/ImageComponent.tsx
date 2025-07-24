@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useNotify } from '../hooks/useNotify'
 import { useTranslation } from 'react-i18next'
+
+import { useNotify } from '../hooks/useNotify'
 
 interface ImageComponentProps {
   imageFile: File | undefined
@@ -33,7 +34,9 @@ const ImageComponent: React.FC<ImageComponentProps> = ({ imageFile }) => {
     }
 
     return (): void => {
-      if (url) URL.revokeObjectURL(url)
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
     }
   }, [imageFile, notifyWarning, notifyError, t])
 

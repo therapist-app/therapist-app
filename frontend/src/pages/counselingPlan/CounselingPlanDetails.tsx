@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom'
 import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
@@ -23,7 +24,6 @@ import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
-import { useNotify } from '../../hooks/useNotify'
 
 interface FormValues {
   startOfTherapy: Date | null

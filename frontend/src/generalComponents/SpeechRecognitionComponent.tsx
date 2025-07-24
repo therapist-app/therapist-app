@@ -2,8 +2,8 @@ import { Button } from '@mui/material'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { deleteButtonStyles, successButtonStyles } from '../styles/buttonStyles'
 import { useNotify } from '../hooks/useNotify'
+import { deleteButtonStyles, successButtonStyles } from '../styles/buttonStyles'
 
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number

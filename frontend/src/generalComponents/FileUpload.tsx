@@ -2,8 +2,8 @@ import { Button } from '@mui/material'
 import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { commonButtonStyles } from '../styles/buttonStyles'
 import { useNotify } from '../hooks/useNotify'
+import { commonButtonStyles } from '../styles/buttonStyles'
 
 interface FileUploadProps {
   onUpload: (file: File) => void
@@ -19,7 +19,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonS
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file) {
+      return
+    }
 
     if (accept && !file.type.match(accept.replace('*', '.*'))) {
       notifyWarning(t('errors.unsupported_file_type'))

@@ -1,9 +1,10 @@
 import DownloadIcon from '@mui/icons-material/Download'
 import { IconButton } from '@mui/material'
+import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
+
 import { useNotify } from '../hooks/useNotify'
 import { handleError } from '../utils/handleError'
-import { AxiosError } from 'axios'
 
 interface FileDownloadProps {
   download(): Promise<string>
