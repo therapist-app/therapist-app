@@ -114,7 +114,6 @@ const CreateCounselingPlanExercise = ({
 
       setOpen(false)
       setFormData(initialFormData)
-        
       onSuccess()
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
