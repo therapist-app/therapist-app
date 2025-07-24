@@ -11,19 +11,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AxiosError } from 'axios'
-import { AlertColor } from '@mui/material'
 
 import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
-import { showError } from '../../store/errorSlice'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
+import { showError } from '../../store/errorSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
@@ -74,7 +74,7 @@ const PatientDetail = (): ReactElement => {
   const [chatbotName, setChatbotName] = useState('')
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const PatientDetail = (): ReactElement => {
     try {
       await dispatch(
         createDocumentForPatient({
-          file,
+          file: file,
           patientId: patientId ?? '',
           isSharedWithPatient: false,
         })
@@ -132,7 +132,7 @@ const PatientDetail = (): ReactElement => {
     try {
       await dispatch(
         createDocumentForPatient({
-          file,
+          file: file,
           patientId: patientId ?? '',
           isSharedWithPatient: true,
         })

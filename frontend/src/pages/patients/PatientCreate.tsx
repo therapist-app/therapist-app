@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -30,7 +31,6 @@ import {
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import { AlertColor } from '@mui/material'
 
 type Complaint = {
   id: string
@@ -132,7 +132,7 @@ const PatientCreate = (): ReactElement => {
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
   const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message, severity }))
+    dispatch(showError({ message: message, severity: severity }))
   }
 
   const handleChange = (index: number, field: keyof Complaint, value: string): void => {
