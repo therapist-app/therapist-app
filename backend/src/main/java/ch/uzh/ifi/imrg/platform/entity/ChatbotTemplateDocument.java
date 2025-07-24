@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -13,6 +14,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Table(name = "chatbot_template_documents")
 public class ChatbotTemplateDocument implements OwnedByTherapist {
+
+  public static final Integer HIERARCHY_LEVEL = ChatbotTemplate.HIERARCHY_LEVEL + 1;
 
   @LLMContextField(label = "Chatbot Document", order = 1)
   @Id
@@ -54,6 +57,6 @@ public class ChatbotTemplateDocument implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return LLMContextBuilder.build(this);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
   }
 }

@@ -11,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "gad7_tests")
 public class GAD7Test implements OwnedByTherapist {
 
+  public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
+
   @Id
   @Column(name = "test_id", unique = true)
   private String testId = UUID.randomUUID().toString();

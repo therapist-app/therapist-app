@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -10,6 +11,8 @@ import lombok.Data;
 @Entity
 @Table(name = "complaints")
 public class Complaint implements OwnedByTherapist {
+
+  public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
 
   @LLMContextField(label = "Complaint ID", order = 1)
   @Id
@@ -56,6 +59,6 @@ public class Complaint implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return LLMContextBuilder.build(this);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
   }
 }

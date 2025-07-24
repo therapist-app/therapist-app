@@ -7,7 +7,6 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
-import ch.uzh.ifi.imrg.platform.utils.LLMContextUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMUZH;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +30,13 @@ public class TherapistChatbotService {
   public TherapistChatbotOutputDTO chat(
       TherapistChatbotInputDTO therapistChatbotInputDTO, String therapistId) {
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
-    List<Patient> patients;
+    Patient patient = null;
 
     if (therapistChatbotInputDTO.getPatientId() != null) {
-      patients = new ArrayList<>();
-      patients.add(patientRepository.getReferenceById(therapistChatbotInputDTO.getPatientId()));
-    } else {
-      patients = therapist.getPatients();
+      patient = patientRepository.getReferenceById(therapistChatbotInputDTO.getPatientId());
     }
 
-    String systemPrompt = getSystemPrompt(therapist, patients);
+    String systemPrompt = getSystemPrompt(therapist, patient);
     List<ChatMessageDTO> chatMessages = new ArrayList<>();
     chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());
@@ -53,7 +49,7 @@ public class TherapistChatbotService {
     return therapistChatbotOutputDTO;
   }
 
-  private String getSystemPrompt(Therapist loggedInTherapist, List<Patient> patients) {
+  private String getSystemPrompt(Therapist loggedInTherapist, Patient patient) {
     StringBuilder promptBuilder = new StringBuilder();
 
     promptBuilder.append("# AI Assistant Directives\n\n");
@@ -68,7 +64,11 @@ public class TherapistChatbotService {
     promptBuilder.append(
         "4.  **Be concise and to the point.** Provide the information requested without unnecessary conversational filler.\n\n");
 
-    promptBuilder.append(LLMContextUtil.getCoachAndClientContext(loggedInTherapist, patients));
+    if (patient == null) {
+      promptBuilder.append(loggedInTherapist.toLLMContext());
+    } else {
+      promptBuilder.append(patient.toLLMContext());
+    }
 
     return promptBuilder.toString();
   }

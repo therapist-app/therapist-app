@@ -16,6 +16,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "meetings")
 public class Meeting implements Serializable, OwnedByTherapist {
 
+  public static final Integer HIERARCHY_LEVEL = Patient.HIERARCHY_LEVEL + 1;
+
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
