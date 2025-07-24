@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -57,7 +59,8 @@ public class PatientTestService {
           .toList();
     } catch (Exception e) {
       logger.error("Error fetching test results for patient {}", patientId, e);
-      throw new RuntimeException("Failed to retrieve test results", e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test results", e);
     }
   }
 }
