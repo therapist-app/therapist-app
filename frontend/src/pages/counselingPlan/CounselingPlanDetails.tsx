@@ -2,7 +2,6 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import { IconButton, Typography } from '@mui/material'
-import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -17,7 +16,6 @@ import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
-import { showError } from '../../store/errorSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { formatDateNicely } from '../../utils/dateUtil'
@@ -25,6 +23,7 @@ import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import CounselingPlanPhaseDetail from './components/CounselingPlanPhaseDetail'
 import CreateCounselingPlanePhase from './components/CreateCounselingPlanePhase'
+import { useNotify } from '../../hooks/useNotify'
 
 interface FormValues {
   startOfTherapy: Date | null
@@ -36,15 +35,12 @@ const CounselingPlanDetails = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
   const [isEditing, setIsEditing] = useState(false)
+  const { notifyError, notifySuccess } = useNotify()
   const [formData, setFormData] = useState<FormValues>({
     startOfTherapy: new Date(),
   })
 
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
-
-  const showMessage = (message: string, severity: AlertColor = 'error') => {
-    dispatch(showError({ message: message, severity: severity }))
-  }
 
   useEffect(() => {
     if (!patientId) {
@@ -58,7 +54,7 @@ const CounselingPlanDetails = (): ReactElement => {
         ])
       } catch (error) {
         const msg = handleError(error as AxiosError)
-        showMessage(msg, 'error')
+        notifyError(msg)
       }
     })()
   }, [patientId, dispatch])
@@ -69,7 +65,7 @@ const CounselingPlanDetails = (): ReactElement => {
     }
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     })
   }
 
@@ -81,11 +77,11 @@ const CounselingPlanDetails = (): ReactElement => {
       }
       await dispatch(updateCounselingPlan(dto)).unwrap()
       setIsEditing(false)
-      showMessage(t('counseling_plan.updated_successfully'), 'success')
+      notifySuccess(t('counseling_plan.updated_successfully'))
       refresh()
     } catch (error) {
       const msg = handleError(error as AxiosError)
-      showMessage(msg, 'error')
+      notifyError(msg)
     }
   }
 

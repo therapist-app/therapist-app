@@ -3,35 +3,31 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { deleteButtonStyles, successButtonStyles } from '../styles/buttonStyles'
+import { useNotify } from '../hooks/useNotify'
 
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
   readonly results: SpeechRecognitionResultList
 }
-
 interface SpeechRecognitionResultList {
   readonly length: number
   item(index: number): SpeechRecognitionResult
   [index: number]: SpeechRecognitionResult
 }
-
 interface SpeechRecognitionResult {
   readonly isFinal: boolean
   readonly length: number
   item(index: number): SpeechRecognitionAlternative
   [index: number]: SpeechRecognitionAlternative
 }
-
 interface SpeechRecognitionAlternative {
   readonly transcript: string
   readonly confidence: number
 }
-
 interface SpeechRecognitionErrorEvent extends Event {
   readonly error: string
   readonly message: string
 }
-
 interface ISpeechRecognition {
   continuous: boolean
   interimResults: boolean
@@ -216,6 +212,8 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   placeholder = '',
 }) => {
   const { t } = useTranslation()
+  const { notify, notifyWarning } = useNotify()
+
   const [isListening, setIsListening] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState<string>(language)
@@ -246,7 +244,9 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
   useEffect(() => {
     if (!BrowserSpeechRecognition) {
-      setError('Web Speech API is not supported in this browser. Please try Chrome or Edge.')
+      const msg = 'Web Speech API is not supported in this browser. Please try Chrome or Edge.'
+      setError(msg)
+      notifyWarning(msg)
       return (): void => {
         if (recognitionRef.current) {
           recognitionRef.current.stop()
@@ -315,6 +315,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         errorMessage = `${errorMessage} (${event.message})`
       }
       setError(errorMessage)
+      notify(errorMessage)
       setIsListening(false)
     }
 
@@ -332,13 +333,12 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         recognitionRef.current = null
       }
     }
-  }, [selectedLanguage, t])
+  }, [selectedLanguage, t, notify, notifyWarning])
 
   useEffect(() => {
     if (startDirectlyState && !value && recognitionRef.current && !isListening) {
       try {
         let textToStartWith = valueRef.current
-
         if (!initialStartRef.current && textToStartWith.trim() !== '') {
           textToStartWith += '\n'
           onChangeRef.current(textToStartWith)
@@ -350,13 +350,15 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         initialStartRef.current = false
       } catch (e: unknown) {
         const typedError = e as { message?: string }
-        setError(`Could not start recognition: ${typedError.message || 'Unknown error'}`)
+        const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
+        setError(msg)
+        notify(msg)
         setIsListening(false)
       } finally {
         setStartDirectlyState(false)
       }
     }
-  }, [isListening, startDirectlyState, value])
+  }, [isListening, startDirectlyState, value, notify])
 
   const handleStartListening = (event?: React.MouseEvent<HTMLButtonElement>): void => {
     if (event) {
@@ -365,7 +367,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     if (recognitionRef.current && !isListening) {
       try {
         let textToStartWith = valueRef.current
-
         if (!initialStartRef.current && textToStartWith.trim() !== '') {
           textToStartWith += '\n'
           onChangeRef.current(textToStartWith)
@@ -377,7 +378,9 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         initialStartRef.current = false
       } catch (e: unknown) {
         const typedError = e as { message?: string }
-        setError(`Could not start recognition: ${typedError.message || 'Unknown error'}`)
+        const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
+        setError(msg)
+        notify(msg)
         setIsListening(false)
       }
     }
@@ -460,10 +463,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           placeholder={
             isListening ? t('meetings.listening') : placeholder || t('meetings.speak_or_type_here')
           }
-          style={{
-            ...styles.textarea,
-            ...(isListening ? styles.textareaListening : {}),
-          }}
+          style={{ ...styles.textarea, ...(isListening ? styles.textareaListening : {}) }}
           rows={6}
         />
 

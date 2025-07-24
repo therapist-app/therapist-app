@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useNotify } from '../hooks/useNotify'
+import { useTranslation } from 'react-i18next'
 
 interface ImageComponentProps {
   imageFile: File | undefined
@@ -6,18 +8,34 @@ interface ImageComponentProps {
 
 const ImageComponent: React.FC<ImageComponentProps> = ({ imageFile }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const { notifyWarning, notifyError } = useNotify()
+  const { t } = useTranslation()
 
   useEffect(() => {
-    if (!(imageFile instanceof Blob)) {
+    if (!imageFile) {
       setImageUrl(null)
       return
     }
 
-    const url = URL.createObjectURL(imageFile)
-    setImageUrl(url)
+    if (!(imageFile instanceof Blob)) {
+      setImageUrl(null)
+      notifyWarning(t('errors.invalid_image_file'))
+      return
+    }
 
-    return (): void => URL.revokeObjectURL(url)
-  }, [imageFile])
+    let url: string | undefined
+    try {
+      url = URL.createObjectURL(imageFile)
+      setImageUrl(url)
+    } catch (err) {
+      notifyError(t('errors.could_not_preview_image'))
+      setImageUrl(null)
+    }
+
+    return (): void => {
+      if (url) URL.revokeObjectURL(url)
+    }
+  }, [imageFile, notifyWarning, notifyError, t])
 
   return <div>{imageUrl && <img src={imageUrl} alt='Uploaded' style={{ maxWidth: '100%' }} />}</div>
 }
