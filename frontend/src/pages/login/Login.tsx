@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { LoginTherapistDTO } from '../../api'
+import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
+import { useNotify } from '../../hooks/useNotify'
 import { loginTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
-import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 
 const Login = (): ReactElement => {
   const dispatch = useAppDispatch()

@@ -8,10 +8,10 @@ import { t } from 'i18next'
 import { useState } from 'react'
 
 import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
+import { useNotify } from '../../hooks/useNotify'
 import { updateMeeting } from '../../store/meetingSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
-import { useNotify } from '../../hooks/useNotify'
 
 interface MeetingEditingProps {
   save(): void

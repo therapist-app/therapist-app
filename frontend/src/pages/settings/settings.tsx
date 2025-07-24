@@ -15,12 +15,12 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
 
 const Settings = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -33,7 +33,9 @@ const Settings = (): ReactElement => {
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
-    i18n.changeLanguage(selectedLanguage).catch((err) => notifyError(handleError(err as AxiosError)))
+    i18n
+      .changeLanguage(selectedLanguage)
+      .catch((err) => notifyError(handleError(err as AxiosError)))
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {

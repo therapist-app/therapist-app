@@ -17,13 +17,13 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { useNotify } from '../../../hooks/useNotify'
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
-import { useNotify } from '../../../hooks/useNotify'
 
 const MeetingOverviewComponent = (): ReactElement => {
   const { patientId } = useParams()

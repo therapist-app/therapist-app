@@ -5,10 +5,10 @@ import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
-import { useNotify } from '../../hooks/useNotify'
 
 const ConversationSummary = (): ReactElement => {
   const { patientId } = useParams<{ patientId: string }>()

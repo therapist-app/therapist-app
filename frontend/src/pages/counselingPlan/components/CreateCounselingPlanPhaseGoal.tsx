@@ -4,6 +4,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CreateCounselingPlanPhaseGoalDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   createCounselingPlanPhaseGoal,
   createCounselingPlanPhaseGoalAIGenerated,
@@ -16,7 +17,6 @@ import {
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface CreateCounselingPlanPhaseGoalProps {
   counselingPlanPhaseId: string

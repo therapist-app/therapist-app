@@ -34,6 +34,7 @@ import {
 } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -47,7 +48,6 @@ import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
-import { useNotify } from '../../hooks/useNotify'
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -87,11 +87,14 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   useEffect(() => {
-    if (chatbotConfig) return
+    if (chatbotConfig) {
+      return
+    }
 
     const id = chatbotTemplateId ?? sessionStorage.getItem('chatbotTemplateId')
-    if (!id) return
-
+    if (!id) {
+      return
+    }
     ;(async (): Promise<void> => {
       try {
         const { data } = await chatbotTemplateApi.getTemplate(id)
@@ -109,7 +112,9 @@ const ChatBotTemplateEdit: React.FC = () => {
   }, [state])
 
   useEffect(() => {
-    if (!chatbotConfig) return
+    if (!chatbotConfig) {
+      return
+    }
 
     setChatbotName(chatbotConfig.chatbotName || '')
     setChatbotRole(chatbotConfig.chatbotRole || '')
@@ -139,7 +144,9 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
-      if (!chatbotConfig?.patientId) return
+      if (!chatbotConfig?.patientId) {
+        return
+      }
       try {
         const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
         setIsOnlyTemplateForClient(data.length === 1)
@@ -152,7 +159,9 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const handleActiveChange = (next: boolean): void => {
     if (isOnlyTemplateForClient && isActive && !next) {
-      notifyWarning(t('chatbot.cannot_deactivate_last_template') || 'Cannot deactivate last template')
+      notifyWarning(
+        t('chatbot.cannot_deactivate_last_template') || 'Cannot deactivate last template'
+      )
       return
     }
     setIsActive(next)
@@ -169,7 +178,9 @@ const ChatBotTemplateEdit: React.FC = () => {
       return
     }
     const userPrompt = question.trim()
-    if (!userPrompt) return
+    if (!userPrompt) {
+      return
+    }
 
     setChat((prev) => [...prev, { question: userPrompt, response: null }])
     setQuestion('')
@@ -180,20 +191,23 @@ const ChatBotTemplateEdit: React.FC = () => {
     try {
       const history: ChatMessageDTO[] = chat.flatMap((msg) => {
         const out: ChatMessageDTO[] = []
-        if (msg.question) out.push({ chatRole: ChatMessageDTOChatRoleEnum.User, content: msg.question })
-        if (typeof msg.response === 'string')
+        if (msg.question) {
+          out.push({ chatRole: ChatMessageDTOChatRoleEnum.User, content: msg.question })
+        }
+        if (typeof msg.response === 'string') {
           out.push({ chatRole: ChatMessageDTOChatRoleEnum.Assistant, content: msg.response })
+        }
         return out
       })
 
       const payload: ChatCompletionWithTemplate = {
         templateId: chatbotConfig.id,
         config: {
-          chatbotRole,
-          chatbotTone,
-          welcomeMessage,
+          chatbotRole: chatbotRole,
+          chatbotTone: chatbotTone,
+          welcomeMessage: welcomeMessage,
         },
-        history,
+        history: history,
         message: userPrompt,
         language: getCurrentLanguage(),
       }
@@ -252,15 +266,17 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const handleSaveConfiguration = async (): Promise<void> => {
-    if (!chatbotConfig) return
+    if (!chatbotConfig) {
+      return
+    }
 
     try {
       const dto = {
-        chatbotName,
-        chatbotRole,
-        chatbotTone,
-        welcomeMessage,
-        isActive,
+        chatbotName: chatbotName,
+        chatbotRole: chatbotRole,
+        chatbotTone: chatbotTone,
+        welcomeMessage: welcomeMessage,
+        isActive: isActive,
       }
 
       await dispatch(
@@ -332,10 +348,12 @@ const ChatBotTemplateEdit: React.FC = () => {
   } as const
 
   const handleFileUpload = async (file: File): Promise<void> => {
-    if (!chatbotConfig?.id) return
+    if (!chatbotConfig?.id) {
+      return
+    }
     try {
       await dispatch(
-        createDocumentForTemplate({ file, templateId: chatbotConfig.id })
+        createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
       ).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
       notifySuccess(t('files.file_uploaded_successfully') || 'File uploaded successfully')
@@ -345,7 +363,9 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
-    if (!chatbotConfig?.id) return
+    if (!chatbotConfig?.id) {
+      return
+    }
     try {
       await dispatch(deleteDocumentOfTemplate(fileId)).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))

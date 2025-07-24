@@ -13,11 +13,11 @@ import { AxiosError } from 'axios'
 import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
+import { useNotify } from '../hooks/useNotify'
 import DeleteIcon from '../icons/DeleteIcon'
 import { handleError } from '../utils/handleError'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
-import { useNotify } from '../hooks/useNotify'
 
 interface FilesTableProps {
   title: string

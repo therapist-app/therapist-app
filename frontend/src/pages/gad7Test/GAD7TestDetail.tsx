@@ -14,11 +14,11 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
+import { useNotify } from '../../hooks/useNotify'
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { patientTestApi } from '../../utils/api'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
-import { useNotify } from '../../hooks/useNotify'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()

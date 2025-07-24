@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import {
@@ -24,7 +25,6 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
 import MeetingEditing from './MeetingEditing'
-import { useNotify } from '../../hooks/useNotify'
 
 const MeetingDetail = (): ReactElement => {
   const navigate = useNavigate()

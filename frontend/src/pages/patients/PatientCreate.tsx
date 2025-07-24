@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify.ts'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import {
@@ -29,7 +30,6 @@ import {
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import { useNotify } from '../../hooks/useNotify.ts'
 
 type Complaint = {
   id: string

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { CounselingPlanPhaseOutputDTO, CreateExerciseDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   addExerciseToCounselingPlanPhase,
   createCounselingPlanExerciseAIGenerated,
@@ -22,7 +23,6 @@ import {
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
-import { useNotify } from '../../../hooks/useNotify'
 
 type ExerciseFormData = Omit<CreateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null

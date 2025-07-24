@@ -18,11 +18,11 @@ import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
+import { useNotify } from '../../../hooks/useNotify'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface MeetingNoteComponentProps {
   meetingNote: MeetingNoteOutputDTO

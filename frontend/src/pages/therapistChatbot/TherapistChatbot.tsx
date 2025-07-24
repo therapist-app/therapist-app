@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { ChatMessageDTOChatRoleEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
 import { clearMessages } from '../../store/therapistChatbotSlice'
@@ -15,7 +16,6 @@ import { formatResponse } from '../../utils/formatResponse'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()

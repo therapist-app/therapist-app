@@ -4,6 +4,7 @@ import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { formatDateNicely } from '../../../utils/dateUtil'
@@ -14,7 +15,6 @@ import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
 import CounselingPlanPhaseGoalDetail from './CounselingPlanPhaseGoalDetail'
 import CreateCounselingPlanExercise from './CreateCounselingPlanExercise'
 import CreateCounselingPlanPhaseGoal from './CreateCounselingPlanPhaseGoal'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface CounselingPlanPhaseDetailProps {
   phase: CounselingPlanPhaseOutputDTO

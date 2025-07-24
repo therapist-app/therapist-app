@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
+import { useNotify } from '../../hooks/useNotify'
 import {
   cloneChatbotTemplate,
   clonePatientChatbotTemplate,
@@ -35,7 +36,6 @@ import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
-import { useNotify } from '../../hooks/useNotify'
 
 const ChatbotOverview = (): ReactElement => {
   const { t } = useTranslation()

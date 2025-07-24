@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { RootState } from '../../../store/store'
 import {
@@ -14,7 +15,6 @@ import {
 } from '../../../styles/buttonStyles'
 import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
-import { useNotify } from '../../../hooks/useNotify'
 
 interface AddCounselingPlanExerciseProps {
   counselingPlanPhaseId: string
