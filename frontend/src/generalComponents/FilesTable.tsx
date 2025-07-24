@@ -9,22 +9,62 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
+import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
 import DeleteIcon from '../icons/DeleteIcon'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
+import { useAppDispatch } from '../utils/hooks'
+import { showError } from '../store/errorSlice'
+import { handleError } from '../utils/handleError'
 
 interface FilesTableProps {
   title: string
   allDocuments: PatientDocumentOutputDTO[]
-  handleFileUpload: (file: File) => void
-  handleDeleteFile: (fileId: string) => void
+  handleFileUpload: (file: File) => Promise<void> | void
+  handleDeleteFile: (fileId: string) => Promise<void> | void
   downloadFile: (fileId: string) => Promise<string>
 }
 
-const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
+const FilesTable: React.FC<FilesTableProps> = (props) => {
   const { allDocuments, handleFileUpload, handleDeleteFile, downloadFile, title } = props
+  const dispatch = useAppDispatch()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
+
+  const wrappedUpload = async (file: File): Promise<void> => {
+    try {
+      await handleFileUpload(file)
+      showMessage('File uploaded successfully.', 'success')
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
+    }
+  }
+
+  const wrappedDelete = async (fileId: string): Promise<void> => {
+    try {
+      await handleDeleteFile(fileId)
+      showMessage('File deleted successfully.', 'success')
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
+    }
+  }
+
+  const wrappedDownload = async (fileId: string): Promise<string> => {
+    try {
+      return await downloadFile(fileId)
+    } catch (err) {
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
+      return ''
+    }
+  }
 
   return (
     <>
@@ -37,7 +77,7 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
         }}
       >
         <Typography variant='h2'>{title}</Typography>
-        <FileUpload onUpload={handleFileUpload} />
+        <FileUpload onUpload={wrappedUpload} />
       </div>
 
       <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
@@ -72,13 +112,10 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
                 </TableCell>
                 <TableCell align='right'>
                   <FileDownload
-                    download={() => downloadFile(document.id ?? '')}
+                    download={() => wrappedDownload(document.id ?? '')}
                     fileName={document.fileName ?? ''}
                   />
-                  <IconButton
-                    aria-label='delete'
-                    onClick={() => handleDeleteFile(document.id ?? '')}
-                  >
+                  <IconButton aria-label='delete' onClick={() => wrappedDelete(document.id ?? '')}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

@@ -8,41 +8,55 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
+import { showError } from '../../store/errorSlice'
 import { patientTestApi } from '../../utils/api'
+import { handleError } from '../../utils/handleError'
+import { useAppDispatch } from '../../utils/hooks'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams()
+  const dispatch = useAppDispatch()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 
   useEffect(() => {
     const fetchTests = async (): Promise<void> => {
-      const response = await patientTestApi.getTestsForPatient(patientId!)
-      const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
-        id: apiDto.id!,
-        name: apiDto.name || '',
-        description: apiDto.description || '',
-        patientId: apiDto.patientId || '',
-        completedAt: apiDto.completedAt || '',
-        questions:
-          apiDto.questions?.map((q) => ({
-            question: q.question || '',
-            score: q.score || 0,
-          })) || [],
-      }))
-      setGad7Tests(normalized)
+      try {
+        const response = await patientTestApi.getTestsForPatient(patientId!)
+        const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
+          id: apiDto.id!,
+          name: apiDto.name || '',
+          description: apiDto.description || '',
+          patientId: apiDto.patientId || '',
+          completedAt: apiDto.completedAt || '',
+          questions:
+            apiDto.questions?.map((q) => ({
+              question: q.question || '',
+              score: q.score || 0,
+            })) || [],
+        }))
+        setGad7Tests(normalized)
+      } catch (err) {
+        const msg = handleError(err as AxiosError)
+        showMessage(msg, 'error')
+      }
     }
     if (patientId) {
       fetchTests()
     }
-  }, [patientId])
+  }, [patientId, dispatch])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>

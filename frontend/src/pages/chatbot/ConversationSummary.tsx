@@ -1,10 +1,14 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import dayjs from 'dayjs'
 import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
 import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
+import { showError } from '../../store/errorSlice'
+import { handleError } from '../../utils/handleError'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
@@ -15,17 +19,27 @@ const ConversationSummary = (): ReactElement => {
   const status = useAppSelector((s) => s.conversation.status)
   const error = useAppSelector((s) => s.conversation.error)
 
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
+
   useEffect(() => {
     if (!patientId) {
       return
     }
-    dispatch(
-      fetchConversationSummary({
-        patientId: patientId,
-        start: dayjs().subtract(7, 'day').toISOString(),
-        end: dayjs().toISOString(),
-      })
-    )
+    ;(async () => {
+      try {
+        await dispatch(
+          fetchConversationSummary({
+            patientId: patientId,
+            start: dayjs().subtract(7, 'day').toISOString(),
+            end: dayjs().toISOString(),
+          })
+        ).unwrap()
+      } catch (err) {
+        const msg = handleError(err as AxiosError)
+        showMessage(msg, 'error')
+      }
+    })()
   }, [dispatch, patientId])
 
   const renderContent = (): ReactElement => {

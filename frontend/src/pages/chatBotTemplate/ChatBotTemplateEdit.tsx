@@ -92,21 +92,27 @@ const ChatBotTemplateEdit: React.FC = () => {
     templateId: string
   }
 
+  const openSnackbar = (
+    message: string,
+    severity: 'info' | 'success' | 'error' | 'warning' = 'error'
+  ): void => {
+    setSnackbarMessage(message)
+    setSnackbarSeverity(severity)
+    setSnackbarOpen(true)
+  }
+
   useEffect(() => {
-    if (chatbotConfig) {
-      return
-    }
+    if (chatbotConfig) return
 
     const id = chatbotTemplateId ?? sessionStorage.getItem('chatbotTemplateId')
-    if (!id) {
-      return
-    }
+    if (!id) return
+
     ;(async (): Promise<void> => {
       try {
         const { data } = await chatbotTemplateApi.getTemplate(id)
         setChatbotConfig(data)
       } catch (e) {
-        console.error('Failed to load template', e)
+        openSnackbar(handleError(e as AxiosError), 'error')
       }
     })()
   }, [chatbotConfig, chatbotTemplateId])
@@ -119,8 +125,6 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   useEffect(() => {
     if (chatbotConfig) {
-      console.log('Setting config fields with:', chatbotConfig)
-
       setChatbotName(chatbotConfig.chatbotName || '')
       setChatbotRole(chatbotConfig.chatbotRole || '')
       setChatbotIcon(chatbotConfig.chatbotIcon || '')
@@ -142,20 +146,20 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   useEffect(() => {
     if (chatbotConfig?.id && selectedTab === 'sources') {
-      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id)).catch((err: AxiosError) =>
+        openSnackbar(handleError(err), 'error')
+      )
     }
   }, [dispatch, chatbotConfig?.id, selectedTab])
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
-      if (!chatbotConfig?.patientId) {
-        return
-      }
+      if (!chatbotConfig?.patientId) return
       try {
         const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
         setIsOnlyTemplateForClient(data.length === 1)
       } catch (e) {
-        console.error('Cannot load templates for patient', e)
+        openSnackbar(handleError(e as AxiosError), 'error')
       }
     }
     load()
@@ -163,9 +167,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const handleActiveChange = (next: boolean): void => {
     if (isOnlyTemplateForClient && isActive && !next) {
-      setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
-      setSnackbarSeverity('warning')
-      setSnackbarOpen(true)
+      openSnackbar('You cannot deactivate the only chatbot template for this client.', 'warning')
       return
     }
     setIsActive(next)
@@ -178,15 +180,11 @@ const ChatBotTemplateEdit: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     if (!chatbotConfig?.id) {
-      setSnackbarMessage('Template not loaded yet.')
-      setSnackbarSeverity('warning')
-      setSnackbarOpen(true)
+      openSnackbar('Template not loaded yet.', 'warning')
       return
     }
     const userPrompt = question.trim()
-    if (!userPrompt) {
-      return
-    }
+    if (!userPrompt) return
 
     setChat((prev) => [...prev, { question: userPrompt, response: null }])
     setQuestion('')
@@ -254,16 +252,14 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       typeChunk()
     } catch (err) {
-      console.error(err)
-      setSnackbarMessage('Chat service unavailable.')
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      const msg = handleError(err as AxiosError)
+      openSnackbar(msg, 'error')
 
       setChat((prev) => {
         const copy = [...prev]
         copy[copy.length - 1] = {
           ...copy[copy.length - 1],
-          response: 'An error occurred.',
+          response: t('chatbot.error_occurred') || 'An error occurred.',
         }
         return copy
       })
@@ -275,9 +271,7 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   const handleSaveConfiguration = async (): Promise<void> => {
     try {
-      if (!chatbotConfig) {
-        return
-      }
+      if (!chatbotConfig) return
 
       const updateChatbotTemplateDTO = {
         chatbotName: chatbotName,
@@ -290,25 +284,18 @@ const ChatBotTemplateEdit: React.FC = () => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: chatbotConfig.id ?? '',
-          updateChatbotTemplateDTO: updateChatbotTemplateDTO,
+          updateChatbotTemplateDTO,
         })
-      )
+      ).unwrap()
 
-      setSnackbarMessage(t('chatbot.chatbot_updated_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      openSnackbar(t('chatbot.chatbot_updated_success'), 'success')
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      openSnackbar(handleError(error as AxiosError), 'error')
     }
   }
 
   const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return
-    }
+    if (reason === 'clickaway') return
     setSnackbarOpen(false)
   }
 
@@ -370,30 +357,37 @@ const ChatBotTemplateEdit: React.FC = () => {
   } as const
 
   const handleFileUpload = async (file: File): Promise<void> => {
-    if (!chatbotConfig?.id) {
-      return
+    if (!chatbotConfig?.id) return
+    try {
+      await dispatch(createDocumentForTemplate({ file, templateId: chatbotConfig.id })).unwrap()
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      openSnackbar(t('files.file_uploaded_successfully') || 'File uploaded successfully', 'success')
+    } catch (err) {
+      openSnackbar(handleError(err as AxiosError), 'error')
     }
-
-    await dispatch(createDocumentForTemplate({ file: file, templateId: chatbotConfig.id }))
-
-    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
-    if (!chatbotConfig?.id) {
-      return
+    if (!chatbotConfig?.id) return
+    try {
+      await dispatch(deleteDocumentOfTemplate(fileId)).unwrap()
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      openSnackbar(t('files.file_deleted_successfully') || 'File deleted successfully', 'success')
+    } catch (err) {
+      openSnackbar(handleError(err as AxiosError), 'error')
     }
-
-    await dispatch(deleteDocumentOfTemplate(fileId))
-
-    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
   }
 
   const downloadFile = async (fileId: string): Promise<string> => {
-    const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
-      responseType: 'blob',
-    })
-    return URL.createObjectURL(data)
+    try {
+      const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
+        responseType: 'blob',
+      })
+      return URL.createObjectURL(data)
+    } catch (err) {
+      openSnackbar(handleError(err as AxiosError), 'error')
+      throw err
+    }
   }
 
   return (

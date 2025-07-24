@@ -1,6 +1,5 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -10,10 +9,10 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Snackbar,
   Tooltip,
   Typography,
 } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,6 +32,7 @@ import {
 import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
+import { showError } from '../../store/errorSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
@@ -53,13 +53,9 @@ const ChatbotOverview = (): ReactElement => {
   const therapistTemplates: ChatbotTemplateOutputDTO[] = (
     therapist?.chatbotTemplatesOutputDTO ?? []
   ).filter((tpl) => tpl.patientId == null)
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'info' as 'info' | 'success' | 'error' | 'warning',
-  })
-  const openSnackbar = (msg: string, sev: typeof snackbar.severity = 'info'): void =>
-    setSnackbar({ open: true, message: msg, severity: sev })
+
+  const showMessage = (message: string, severity: AlertColor = 'error') =>
+    dispatch(showError({ message, severity }))
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
@@ -115,6 +111,8 @@ const ChatbotOverview = (): ReactElement => {
         dispatch(getCurrentlyLoggedInTherapist())
       }
 
+      showMessage(t('chatbot.chatbot_created_success'), 'success')
+
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
           chatbotTemplateId: created.id!,
@@ -124,7 +122,7 @@ const ChatbotOverview = (): ReactElement => {
         }
       )
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      showMessage(handleError(err as AxiosError), 'error')
     }
   }
 
@@ -144,6 +142,7 @@ const ChatbotOverview = (): ReactElement => {
       ).unwrap()
 
       dispatch(getAllPatientsOfTherapist())
+      showMessage(t('chatbot.chatbot_created_success'), 'success')
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -152,7 +151,7 @@ const ChatbotOverview = (): ReactElement => {
         { state: { patientId: patientId, chatbotConfig: created } }
       )
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      showMessage(handleError(err as AxiosError), 'error')
     }
   }
 
@@ -179,9 +178,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(cloneChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('chatbot.chatbot_cloned_success'), 'success')
+      showMessage(t('chatbot.chatbot_cloned_success'), 'success')
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      showMessage(handleError(err as AxiosError), 'error')
     } finally {
       closeMenu()
     }
@@ -201,9 +200,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(deleteChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('chatbot.chatbot_deleted_success'), 'success')
+      showMessage(t('chatbot.chatbot_deleted_success'), 'success')
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      showMessage(handleError(err as AxiosError), 'error')
     } finally {
       closeMenu()
     }
@@ -385,21 +384,6 @@ const ChatbotOverview = (): ReactElement => {
           <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
         )}
       </Menu>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   )
 }
