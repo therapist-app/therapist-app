@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 
 import { CreateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
+import { useNotify } from '../../../hooks/useNotify'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
@@ -21,6 +22,7 @@ interface CreateMeetingNoteComponentProps {
 const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (props) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
@@ -40,11 +42,11 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
       await dispatch(createMeetingNote(formData)).unwrap()
+      notifySuccess(t('meetings.note_created_successfully'))
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       props.save()
     }
@@ -81,7 +83,6 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
             display: 'flex',
             width: '100%',
             gap: '10px',
-
             justifyContent: 'center',
           }}
         >

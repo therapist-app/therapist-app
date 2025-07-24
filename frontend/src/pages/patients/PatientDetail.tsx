@@ -20,6 +20,7 @@ import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
@@ -43,6 +44,7 @@ import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComp
 const PatientDetail = (): ReactElement => {
   const { patientId } = useParams()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -70,11 +72,12 @@ const PatientDetail = (): ReactElement => {
   const [chatbotName, setChatbotName] = useState('')
 
   useEffect(() => {
-    dispatch(getCurrentlyLoggedInTherapist())
-  }, [dispatch])
+    dispatch(getCurrentlyLoggedInTherapist()).catch((error: unknown) => {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    })
+  }, [dispatch, notifyError])
 
   useEffect(() => {
-    console.log(counselingPlan)
     setCurrentCounselingPlanPhase(
       counselingPlan?.counselingPlanPhasesOutputDTO?.find(
         (phase) =>
@@ -84,48 +87,77 @@ const PatientDetail = (): ReactElement => {
     )
   }, [counselingPlan?.counselingPlanPhasesOutputDTO, counselingPlan])
 
-  useEffect(() => {
-    dispatch(getAllPatientsOfTherapist())
-    dispatch(getAllPatientDocumentsOfPatient(patientId ?? ''))
-    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
-    dispatch(getAllExercisesOfPatient(patientId ?? ''))
-    dispatch(getCounselingPlanByPatientId(patientId ?? ''))
-  }, [dispatch, patientId, refreshPatientDocumentsCounter])
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      try {
+        await Promise.all([
+          dispatch(getAllPatientsOfTherapist()).unwrap(),
+          dispatch(getAllPatientDocumentsOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getAllExercisesOfPatient(patientId ?? '')).unwrap(),
+          dispatch(getCounselingPlanByPatientId(patientId ?? '')).unwrap(),
+        ])
+      } catch (error) {
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      }
+    }
+    void load()
+  }, [dispatch, patientId, refreshPatientDocumentsCounter, notifyError])
 
   const handleFileUploadNotSharedWithPatient = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForPatient({
-        file: file,
-        patientId: patientId ?? '',
-        isSharedWithPatient: false,
-      })
-    )
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(
+        createDocumentForPatient({
+          file: file,
+          patientId: patientId ?? '',
+          isSharedWithPatient: false,
+        })
+      ).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      notifySuccess(t('patient_detail.file_upload_success'))
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleFileUploadSharedWithPatient = async (file: File): Promise<void> => {
-    await dispatch(
-      createDocumentForPatient({
-        file: file,
-        patientId: patientId ?? '',
-        isSharedWithPatient: true,
-      })
-    )
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(
+        createDocumentForPatient({
+          file: file,
+          patientId: patientId ?? '',
+          isSharedWithPatient: true,
+        })
+      ).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      notifySuccess(t('patient_detail.file_upload_success'))
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
-    await dispatch(deleteDocumentOfPatient(fileId))
-    setRefreshPatientDocumentsCounter((prev) => prev + 1)
+    try {
+      await dispatch(deleteDocumentOfPatient(fileId)).unwrap()
+      setRefreshPatientDocumentsCounter((prev) => prev + 1)
+      notifySuccess(t('patient_detail.file_delete_success'))
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const downloadFile = async (fileId: string): Promise<string> => {
-    const response = await patientDocumentApi.downloadPatientDocument(fileId, {
-      responseType: 'blob',
-    })
-    const file = response.data
-    const url = window.URL.createObjectURL(file)
-    return url
+    try {
+      const response = await patientDocumentApi.downloadPatientDocument(fileId, {
+        responseType: 'blob',
+      })
+      const file = response.data
+      const url = window.URL.createObjectURL(file)
+      return url
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      throw error
+    }
   }
 
   const handleCloseChatbotDialog = (): void => {
@@ -134,14 +166,11 @@ const PatientDetail = (): ReactElement => {
   }
 
   const handleCreateNewChatbot = (): void => {
-    console.log('Chatbot created with name:', chatbotName)
-
     navigate(
       getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
         chatbotTemplateId: 'newBot',
       })
     )
-
     handleCloseChatbotDialog()
   }
 

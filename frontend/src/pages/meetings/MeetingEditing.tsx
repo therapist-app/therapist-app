@@ -7,6 +7,7 @@ import { t } from 'i18next'
 import { useState } from 'react'
 
 import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
+import { useNotify } from '../../hooks/useNotify'
 import { updateMeeting } from '../../store/meetingSlice'
 import { useAppDispatch } from '../../utils/hooks'
 
@@ -25,6 +26,7 @@ interface FormValues {
 
 const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [meetingFormData, setMeetingFormData] = useState<FormValues>({
     meetingStart: new Date(props.meeting?.meetingStart ?? ''),
@@ -38,19 +40,30 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
   }
 
   const handleSubmit = async (): Promise<void> => {
-    const dto: UpdateMeetingDTO = {
-      id: props.meeting?.id ?? '',
-      meetingStart: meetingFormData.meetingStart?.toISOString(),
-      meetingEnd: meetingFormData.meetingEnd?.toISOString(),
-      location: meetingFormData.location,
-      meetingStatus: meetingFormData.meetingStatus,
+    try {
+      const dto: UpdateMeetingDTO = {
+        id: props.meeting?.id ?? '',
+        meetingStart: meetingFormData.meetingStart?.toISOString(),
+        meetingEnd: meetingFormData.meetingEnd?.toISOString(),
+        location: meetingFormData.location,
+        meetingStatus: meetingFormData.meetingStatus,
+      }
+      await dispatch(updateMeeting(dto)).unwrap()
+      notifySuccess(t('meetings.meeting_updated_successfully'))
+      props.save()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
-    await dispatch(updateMeeting(dto))
-    props.save()
   }
 
   return (
-    <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
+    <form
+      style={{ maxWidth: '500px' }}
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit()
+      }}
+    >
       <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
         <DateTimePicker
           label={t('meetings.meeting_start')}

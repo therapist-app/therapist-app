@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateExerciseDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { createExercise } from '../../store/exerciseSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -24,6 +25,7 @@ const ExerciseCreate = (): ReactElement => {
   const navigate = useNavigate()
   const { patientId, meetingId } = useParams()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: '',
@@ -41,14 +43,14 @@ const ExerciseCreate = (): ReactElement => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseDTO: CreateExerciseDTO = {
+      const dto: CreateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
         durationInWeeks: formData.durationInWeeks,
       }
-      const createdExercise = await dispatch(createExercise(createExerciseDTO)).unwrap()
+      const createdExercise = await dispatch(createExercise(dto)).unwrap()
+      notifySuccess(t('exercise.exercise_created_successfully'))
       navigate(
         getPathFromPage(PAGES.EXERCISES_DETAILS_PAGE, {
           exerciseId: createdExercise.id ?? '',
@@ -57,7 +59,7 @@ const ExerciseCreate = (): ReactElement => {
         })
       )
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

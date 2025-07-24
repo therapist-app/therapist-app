@@ -4,23 +4,21 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Alert,
   Box,
   Button,
   Grid,
   MenuItem,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify.ts'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import {
@@ -28,7 +26,6 @@ import {
   commonButtonStyles,
   disabledButtonStyles,
 } from '../../styles/buttonStyles.ts'
-import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
 
@@ -128,12 +125,7 @@ const PatientCreate = (): ReactElement => {
   const [personalOccupational, setPersonalOccupational] = useState('')
   const [personalMarital, setPersonalMarital] = useState('')
   const [personalPremorbid, setPersonalPremorbid] = useState('')
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
+  const { notifyError, notifySuccess } = useNotify()
 
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
@@ -171,11 +163,14 @@ const PatientCreate = (): ReactElement => {
 
   useEffect(() => {
     const fetchTherapist = async (): Promise<void> => {
-      await dispatch(getCurrentlyLoggedInTherapist())
+      try {
+        await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
+      } catch (error) {
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      }
     }
-
     fetchTherapist()
-  }, [dispatch, refreshTherapistCounter])
+  }, [dispatch, refreshTherapistCounter, notifyError])
 
   const handleSubmit = async (): Promise<void> => {
     try {
@@ -215,20 +210,14 @@ const PatientCreate = (): ReactElement => {
 
       if (registerPatient.fulfilled.match(resultAction)) {
         const newPatient = resultAction.payload
-
-        setSnackbarMessage(t('patient_create.patient_register_success'))
-        setSnackbarSeverity('success')
-        setSnackbarOpen(true)
+        notifySuccess(t('patient_create.patient_register_success'))
         setRefreshTherapistCounter((prev) => prev + 1)
         navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id! }))
       } else {
         throw new Error('Patient registration failed')
       }
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
@@ -328,7 +317,6 @@ const PatientCreate = (): ReactElement => {
               type='tel'
             />
           </Grid>
-
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -350,6 +338,7 @@ const PatientCreate = (): ReactElement => {
             />
           </Grid>
         </Grid>
+
         <Box mt={4} display='flex' justifyContent='flex-end'>
           <Button
             onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
@@ -366,13 +355,6 @@ const PatientCreate = (): ReactElement => {
             {t('patient_create.register')}
           </Button>
         </Box>
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={() => setSnackbarOpen(false)}
-        >
-          <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
-        </Snackbar>
       </Box>
 
       <Box mt={6}>

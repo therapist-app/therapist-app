@@ -9,8 +9,10 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import React from 'react'
 
 import { PatientDocumentOutputDTO } from '../api'
+import { useNotify } from '../hooks/useNotify'
 import DeleteIcon from '../icons/DeleteIcon'
 import FileDownload from './FileDownload'
 import FileUpload from './FileUpload'
@@ -18,13 +20,41 @@ import FileUpload from './FileUpload'
 interface FilesTableProps {
   title: string
   allDocuments: PatientDocumentOutputDTO[]
-  handleFileUpload: (file: File) => void
-  handleDeleteFile: (fileId: string) => void
+  handleFileUpload: (file: File) => Promise<void> | void
+  handleDeleteFile: (fileId: string) => Promise<void> | void
   downloadFile: (fileId: string) => Promise<string>
 }
 
-const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
+const FilesTable: React.FC<FilesTableProps> = (props) => {
   const { allDocuments, handleFileUpload, handleDeleteFile, downloadFile, title } = props
+  const { notifySuccess, notifyError } = useNotify()
+
+  const wrappedUpload = async (file: File): Promise<void> => {
+    try {
+      await handleFileUpload(file)
+      notifySuccess('File uploaded successfully.')
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
+  }
+
+  const wrappedDelete = async (fileId: string): Promise<void> => {
+    try {
+      await handleDeleteFile(fileId)
+      notifySuccess('File deleted successfully.')
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
+  }
+
+  const wrappedDownload = async (fileId: string): Promise<string> => {
+    try {
+      return await downloadFile(fileId)
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      return ''
+    }
+  }
 
   return (
     <>
@@ -37,7 +67,7 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
         }}
       >
         <Typography variant='h2'>{title}</Typography>
-        <FileUpload onUpload={handleFileUpload} />
+        <FileUpload onUpload={wrappedUpload} />
       </div>
 
       <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
@@ -72,13 +102,10 @@ const FilesTable: React.FC<FilesTableProps> = (props: FilesTableProps) => {
                 </TableCell>
                 <TableCell align='right'>
                   <FileDownload
-                    download={() => downloadFile(document.id ?? '')}
+                    download={() => wrappedDownload(document.id ?? '')}
                     fileName={document.fileName ?? ''}
                   />
-                  <IconButton
-                    aria-label='delete'
-                    onClick={() => handleDeleteFile(document.id ?? '')}
-                  >
+                  <IconButton aria-label='delete' onClick={() => wrappedDelete(document.id ?? '')}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

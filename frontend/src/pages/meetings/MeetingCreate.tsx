@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateMeetingDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { createMeeting } from '../../store/meetingSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -25,6 +26,7 @@ const MeetingCreate = (): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [meetingFormData, setMeetingFormData] = useState<MeetingFormData>({
     meetingStart: new Date(),
@@ -37,7 +39,7 @@ const MeetingCreate = (): ReactElement => {
     e.preventDefault()
 
     if (!meetingFormData.meetingStart) {
-      console.error('Start date is required')
+      notifyError(t('meetings.error_start_date_required'))
       return
     }
 
@@ -51,6 +53,7 @@ const MeetingCreate = (): ReactElement => {
         location: meetingFormData.location,
       }
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
+      notifySuccess(t('meetings.meeting_created_successfully'))
       navigate(
         getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
           patientId: patientId ?? '',
@@ -58,7 +61,7 @@ const MeetingCreate = (): ReactElement => {
         })
       )
     } catch (err) {
-      console.error('Creating meetings error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

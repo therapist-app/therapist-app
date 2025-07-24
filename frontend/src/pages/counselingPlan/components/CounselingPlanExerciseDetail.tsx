@@ -3,6 +3,7 @@ import { ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ExerciseOutputDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { removeExerciseFromCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -21,15 +22,21 @@ const CounselingPlanExerciseDetail = ({
 }: CounselingPlanExerciseDetailProps): ReactElement => {
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const handleRemoveExercise = async (): Promise<void> => {
-    await dispatch(
-      removeExerciseFromCounselingPlanPhase({
-        exerciseId: exercise.id ?? '',
-        counselingPlanPhaseId: counselingPlanPhaseId,
-      })
-    )
-    refresh()
+    try {
+      await dispatch(
+        removeExerciseFromCounselingPlanPhase({
+          exerciseId: exercise.id ?? '',
+          counselingPlanPhaseId: counselingPlanPhaseId,
+        })
+      ).unwrap()
+      notifySuccess('Exercise removed successfully')
+      refresh()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   return (

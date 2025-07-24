@@ -29,6 +29,7 @@ import {
   getPathFromPage,
   PAGES,
 } from '../utils/routes'
+import GlobalErrorSnackbar from './GlobalErrorSnackbar'
 
 interface LayoutProps {
   children: ReactNode
@@ -267,6 +268,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </IconButton>
         </Box>
       </Box>
+      <GlobalErrorSnackbar />
     </>
   )
 }

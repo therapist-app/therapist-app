@@ -1,6 +1,5 @@
 import SendIcon from '@mui/icons-material/Send'
 import {
-  Alert,
   Avatar,
   Box,
   Button,
@@ -14,7 +13,6 @@ import {
   MenuItem,
   Paper,
   Select,
-  Snackbar,
   Switch,
   Tab,
   Tabs,
@@ -36,6 +34,7 @@ import {
 } from '../../api'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -46,7 +45,6 @@ import { RootState } from '../../store/store'
 import { commonButtonStyles, disabledButtonStyles } from '../../styles/buttonStyles'
 import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../utils/api'
 import { formatResponse } from '../../utils/formatResponse'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
 
@@ -54,6 +52,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
   const { chatbotTemplateId } = useParams<{ chatbotTemplateId: string }>()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess, notifyWarning } = useNotify()
 
   const { state } = useLocation() as { state?: { chatbotConfig?: ChatbotTemplateOutputDTO } }
 
@@ -70,12 +69,6 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
 
   const chatListRef = useRef<HTMLUListElement>(null)
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
 
   const [question, setQuestion] = useState('')
   const templateDocuments = useSelector(
@@ -106,10 +99,10 @@ const ChatBotTemplateEdit: React.FC = () => {
         const { data } = await chatbotTemplateApi.getTemplate(id)
         setChatbotConfig(data)
       } catch (e) {
-        console.error('Failed to load template', e)
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     })()
-  }, [chatbotConfig, chatbotTemplateId])
+  }, [chatbotConfig, chatbotTemplateId, notifyError])
 
   useEffect(() => {
     if (state?.chatbotConfig) {
@@ -118,19 +111,19 @@ const ChatBotTemplateEdit: React.FC = () => {
   }, [state])
 
   useEffect(() => {
-    if (chatbotConfig) {
-      console.log('Setting config fields with:', chatbotConfig)
+    if (!chatbotConfig) {
+      return
+    }
 
-      setChatbotName(chatbotConfig.chatbotName || '')
-      setChatbotRole(chatbotConfig.chatbotRole || '')
-      setChatbotIcon(chatbotConfig.chatbotIcon || '')
-      setChatbotTone(chatbotConfig.chatbotTone || '')
-      setWelcomeMessage(chatbotConfig.welcomeMessage || '')
-      setIsActive(chatbotConfig.isActive || false)
+    setChatbotName(chatbotConfig.chatbotName || '')
+    setChatbotRole(chatbotConfig.chatbotRole || '')
+    setChatbotIcon(chatbotConfig.chatbotIcon || '')
+    setChatbotTone(chatbotConfig.chatbotTone || '')
+    setWelcomeMessage(chatbotConfig.welcomeMessage || '')
+    setIsActive(chatbotConfig.isActive || false)
 
-      if (chatbotConfig.welcomeMessage) {
-        setChat([{ response: chatbotConfig.welcomeMessage }])
-      }
+    if (chatbotConfig.welcomeMessage) {
+      setChat([{ response: chatbotConfig.welcomeMessage }])
     }
   }, [chatbotConfig])
 
@@ -142,9 +135,11 @@ const ChatBotTemplateEdit: React.FC = () => {
 
   useEffect(() => {
     if (chatbotConfig?.id && selectedTab === 'sources') {
-      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id)).catch((err: AxiosError) =>
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      )
     }
-  }, [dispatch, chatbotConfig?.id, selectedTab])
+  }, [dispatch, chatbotConfig?.id, selectedTab, notifyError])
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
@@ -155,17 +150,17 @@ const ChatBotTemplateEdit: React.FC = () => {
         const { data } = await chatbotTemplateApi.getTemplatesForPatient(chatbotConfig.patientId)
         setIsOnlyTemplateForClient(data.length === 1)
       } catch (e) {
-        console.error('Cannot load templates for patient', e)
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     }
     load()
-  }, [chatbotConfig?.patientId])
+  }, [chatbotConfig?.patientId, notifyError])
 
   const handleActiveChange = (next: boolean): void => {
     if (isOnlyTemplateForClient && isActive && !next) {
-      setSnackbarMessage('You cannot deactivate the only chatbot template for this client.')
-      setSnackbarSeverity('warning')
-      setSnackbarOpen(true)
+      notifyWarning(
+        t('chatbot.cannot_deactivate_last_template') || 'Cannot deactivate last template'
+      )
       return
     }
     setIsActive(next)
@@ -178,9 +173,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     if (!chatbotConfig?.id) {
-      setSnackbarMessage('Template not loaded yet.')
-      setSnackbarSeverity('warning')
-      setSnackbarOpen(true)
+      notifyWarning(t('chatbot.template_not_loaded') || 'Template not loaded yet.')
       return
     }
     const userPrompt = question.trim()
@@ -207,7 +200,7 @@ const ChatBotTemplateEdit: React.FC = () => {
       })
 
       const payload: ChatCompletionWithTemplate = {
-        templateId: chatbotConfig?.id ?? '',
+        templateId: chatbotConfig.id,
         config: {
           chatbotRole: chatbotRole,
           chatbotTone: chatbotTone,
@@ -254,16 +247,13 @@ const ChatBotTemplateEdit: React.FC = () => {
 
       typeChunk()
     } catch (err) {
-      console.error(err)
-      setSnackbarMessage('Chat service unavailable.')
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
 
       setChat((prev) => {
         const copy = [...prev]
         copy[copy.length - 1] = {
           ...copy[copy.length - 1],
-          response: 'An error occurred.',
+          response: t('chatbot.error_occurred') || 'An error occurred.',
         }
         return copy
       })
@@ -274,12 +264,12 @@ const ChatBotTemplateEdit: React.FC = () => {
   }
 
   const handleSaveConfiguration = async (): Promise<void> => {
-    try {
-      if (!chatbotConfig) {
-        return
-      }
+    if (!chatbotConfig) {
+      return
+    }
 
-      const updateChatbotTemplateDTO = {
+    try {
+      const dto = {
         chatbotName: chatbotName,
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
@@ -290,31 +280,17 @@ const ChatBotTemplateEdit: React.FC = () => {
       await dispatch(
         updateChatbotTemplate({
           chatbotTemplateId: chatbotConfig.id ?? '',
-          updateChatbotTemplateDTO: updateChatbotTemplateDTO,
+          updateChatbotTemplateDTO: dto,
         })
-      )
+      ).unwrap()
 
-      setSnackbarMessage(t('chatbot.chatbot_updated_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      notifySuccess(t('chatbot.chatbot_updated_success') || 'Chatbot updated successfully')
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setSnackbarOpen(false)
-  }
-
-  const getIconComponent = (): ReactElement => {
-    return <TbMessageChatbot size='1.2em' color='black' />
-  }
+  const getIconComponent = (): ReactElement => <TbMessageChatbot size='1.2em' color='black' />
 
   const renderMessage = (
     chatItem: { question?: string; response: ReactNode | null },
@@ -373,27 +349,40 @@ const ChatBotTemplateEdit: React.FC = () => {
     if (!chatbotConfig?.id) {
       return
     }
-
-    await dispatch(createDocumentForTemplate({ file: file, templateId: chatbotConfig.id }))
-
-    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+    try {
+      await dispatch(
+        createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
+      ).unwrap()
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      notifySuccess(t('files.file_uploaded_successfully') || 'File uploaded successfully')
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     if (!chatbotConfig?.id) {
       return
     }
-
-    await dispatch(deleteDocumentOfTemplate(fileId))
-
-    dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+    try {
+      await dispatch(deleteDocumentOfTemplate(fileId)).unwrap()
+      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+      notifySuccess(t('files.file_deleted_successfully') || 'File deleted successfully')
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
   }
 
   const downloadFile = async (fileId: string): Promise<string> => {
-    const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
-      responseType: 'blob',
-    })
-    return URL.createObjectURL(data)
+    try {
+      const { data } = await chatbotTemplateDocumentApi.downloadChatbotTemplateDocument(fileId, {
+        responseType: 'blob',
+      })
+      return URL.createObjectURL(data)
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      throw err
+    }
   }
 
   return (
@@ -504,15 +493,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                   label='Active (visible to patient)'
                 />
 
-                <Box
-                  sx={{
-                    mt: 1,
-                    ml: -1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'left',
-                  }}
-                >
+                <Box sx={{ mt: 1, ml: -1, display: 'flex', justifyContent: 'left' }}>
                   <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
                     Save
                   </Button>
@@ -666,17 +647,6 @@ const ChatBotTemplateEdit: React.FC = () => {
             />
           </Box>
         )}
-
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
       </Layout>
     </>
   )

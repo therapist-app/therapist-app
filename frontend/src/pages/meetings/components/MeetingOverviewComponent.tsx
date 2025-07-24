@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { useNotify } from '../../../hooks/useNotify'
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
@@ -27,10 +28,18 @@ const MeetingOverviewComponent = (): ReactElement => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { notifyError } = useNotify()
 
-  useEffect(() => {
-    dispatch(getAllMeetingsOfPatient(patientId ?? ''))
-  }, [dispatch, patientId])
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      try {
+        await dispatch(getAllMeetingsOfPatient(patientId ?? '')).unwrap()
+      } catch (error) {
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      }
+    }
+    void load()
+  }, [dispatch, patientId, notifyError])
 
   const allMeetingsOfPatient = useSelector((state: RootState) => state.meeting.allMeetingsOfPatient)
 

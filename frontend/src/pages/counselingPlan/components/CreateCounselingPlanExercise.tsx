@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { CounselingPlanPhaseOutputDTO, CreateExerciseDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   addExerciseToCounselingPlanPhase,
   createCounselingPlanExerciseAIGenerated,
@@ -38,6 +39,7 @@ const CreateCounselingPlanExercise = ({
   const [open, setOpen] = useState(false)
   const { patientId } = useParams()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
   const initialFormData: ExerciseFormData = {
@@ -98,23 +100,25 @@ const CreateCounselingPlanExercise = ({
         exerciseStart: formData.exerciseStart?.toISOString(),
         durationInWeeks: formData.durationInWeeks,
       }
+
       const response = await dispatch(createExercise(createExerciseDTO)).unwrap()
+
       await dispatch(
         addExerciseToCounselingPlanPhase({
           exerciseId: response.id ?? '',
           counselingPlanPhaseId: counselingPlanPhase.id ?? '',
         })
-      )
+      ).unwrap()
+
+      notifySuccess(t('counseling_plan.exercise_created_success'))
 
       setOpen(false)
       setFormData(initialFormData)
-
       onSuccess()
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
-
   return (
     <div>
       {!open ? (

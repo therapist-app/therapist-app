@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
 import { RootState } from '../../../store/store'
 import {
@@ -27,6 +28,7 @@ const AddCounselingPlanExercise = ({
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { allExercisesOfPatient } = useSelector((state: RootState) => state.exercise)
+  const { notifyError, notifySuccess } = useNotify()
 
   const exercisesToSelect = allExercisesOfPatient.filter(
     (exercise) =>
@@ -36,7 +38,7 @@ const AddCounselingPlanExercise = ({
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('')
   const [open, setOpen] = useState(false)
 
-  const handleSelectExerciseChange = async (event: SelectChangeEvent): Promise<void> => {
+  const handleSelectExerciseChange = (event: SelectChangeEvent): void => {
     setSelectedExerciseId(event.target.value)
   }
 
@@ -45,14 +47,18 @@ const AddCounselingPlanExercise = ({
       return
     }
 
-    const addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO = {
-      exerciseId: selectedExerciseId,
-      counselingPlanPhaseId: counselingPlanPhaseId,
+    try {
+      const dto: AddExerciseToCounselingPlanPhaseDTO = {
+        exerciseId: selectedExerciseId,
+        counselingPlanPhaseId: counselingPlanPhaseId,
+      }
+      await dispatch(addExerciseToCounselingPlanPhase(dto)).unwrap()
+      setOpen(false)
+      notifySuccess(t('counseling_plan.exercise_added_success'))
+      onSuccess()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
-    await dispatch(addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO))
-    setOpen(false)
-
-    onSuccess()
   }
 
   const handleCancel = (): void => {
@@ -78,13 +84,15 @@ const AddCounselingPlanExercise = ({
             <FormControl sx={{ minWidth: '200px' }}>
               <InputLabel>Exercise</InputLabel>
               <Select
-                id='demo-simple-select'
+                id='exercise-select'
                 value={selectedExerciseId}
                 label={t('exercise.exercise')}
                 onChange={handleSelectExerciseChange}
               >
                 {exercisesToSelect.map((exercise) => (
-                  <MenuItem value={exercise.id}>{exercise.exerciseTitle}</MenuItem>
+                  <MenuItem key={exercise.id} value={exercise.id}>
+                    {exercise.exerciseTitle}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>

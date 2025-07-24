@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
 import FileDownload from '../../../generalComponents/FileDownload'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   deleteExerciseComponent,
   downloadExerciseComponent,
@@ -23,23 +24,27 @@ interface ShowExerciseFileComponentProps {
   refresh(): void
 }
 
-const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
-  props: ShowExerciseFileComponentProps
-) => {
+const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (props) => {
   const { exerciseComponent, isImageComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [imageFileUrl, setImageFileUrl] = useState<string | undefined>(undefined)
+  const [imageFileUrl, setImageFileUrl] = useState<string>()
+  const [isEditing, setIsEditing] = useState(false)
+  const { notifyError, notifySuccess } = useNotify()
 
-  useEffect(() => {
-    const downloadImageFile = async (): Promise<void> => {
-      console.log('Downloading Image file')
-      const fileUrl = await dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-      setImageFileUrl(fileUrl)
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      try {
+        const fileUrl = await dispatch(
+          downloadExerciseComponent(exerciseComponent.id ?? '')
+        ).unwrap()
+        setImageFileUrl(fileUrl)
+      } catch (err) {
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      }
     }
-    console.log('Fired')
-    downloadImageFile()
-  }, [dispatch, exerciseComponent.id])
+    void load()
+  }, [dispatch, exerciseComponent.id, notifyError])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
@@ -47,18 +52,9 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
     orderNumber: exerciseComponent.orderNumber,
   }
 
-  const [formData, setFormData] = useState<UpdateExerciseComponentDTO>({
-    id: exerciseComponent.id ?? '',
-    exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
-    orderNumber: exerciseComponent.orderNumber,
-  })
+  const [formData, setFormData] = useState<UpdateExerciseComponentDTO>(originalFormData)
 
-  const [isEditing, setIsEditing] = useState(false)
-
-  const arrayOfNumbers: number[] = Array.from(
-    { length: props.numberOfExercises },
-    (value, index) => index + 1
-  )
+  const arrayOfNumbers: number[] = Array.from({ length: props.numberOfExercises }, (_, i) => i + 1)
 
   const clickCancel = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation()
@@ -77,27 +73,27 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
   const handleSubmit = async (): Promise<void> => {
     try {
       await dispatch(updateExerciseComponent(formData)).unwrap()
+      notifySuccess(t('exercise.component_updated_successfully'))
       setIsEditing(false)
       props.refresh()
     } catch (err) {
-      console.error(err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
   const clickDelete = async (): Promise<void> => {
-    await dispatch(deleteExerciseComponent(exerciseComponent.id ?? ''))
-
-    props.refresh()
+    try {
+      await dispatch(deleteExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+      notifySuccess(t('exercise.component_deleted_successfully'))
+      props.refresh()
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    }
   }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '20px',
-        flexDirection: 'column',
-      }}
-    >
-      {isEditing === false ? (
+    <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+      {!isEditing ? (
         <>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
@@ -132,11 +128,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
 
-          <Typography
-            sx={{
-              whiteSpace: 'pre-line',
-            }}
-          >
+          <Typography sx={{ whiteSpace: 'pre-line' }}>
             {exerciseComponent.exerciseComponentDescription}
           </Typography>
         </>
@@ -146,12 +138,12 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (
             <TextField
               select
               sx={{ fontWeight: 'bold', width: '75px' }}
-              label='Order'
+              label={t('exercise.order')}
               name='orderNumber'
               value={formData.orderNumber}
               onChange={handleChange}
             >
-              {arrayOfNumbers.map((option: number) => (
+              {arrayOfNumbers.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>

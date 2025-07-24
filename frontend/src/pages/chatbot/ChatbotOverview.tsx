@@ -1,6 +1,5 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -10,11 +9,9 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Snackbar,
   Tooltip,
   Typography,
 } from '@mui/material'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
@@ -22,6 +19,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
+import { useNotify } from '../../hooks/useNotify'
 import {
   cloneChatbotTemplate,
   clonePatientChatbotTemplate,
@@ -34,7 +32,6 @@ import { getAllPatientsOfTherapist } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -43,6 +40,7 @@ const ChatbotOverview = (): ReactElement => {
   const { patientId } = useParams<{ patientId: string }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { notifySuccess, notifyError } = useNotify()
 
   const therapist = useSelector((s: RootState) => s.therapist.loggedInTherapist)
   const patient = useSelector((s: RootState) =>
@@ -53,13 +51,6 @@ const ChatbotOverview = (): ReactElement => {
   const therapistTemplates: ChatbotTemplateOutputDTO[] = (
     therapist?.chatbotTemplatesOutputDTO ?? []
   ).filter((tpl) => tpl.patientId == null)
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'info' as 'info' | 'success' | 'error' | 'warning',
-  })
-  const openSnackbar = (msg: string, sev: typeof snackbar.severity = 'info'): void =>
-    setSnackbar({ open: true, message: msg, severity: sev })
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currentChatbot, setCurrentChatbot] = useState<ChatbotTemplateOutputDTO | null>(null)
@@ -115,6 +106,8 @@ const ChatbotOverview = (): ReactElement => {
         dispatch(getCurrentlyLoggedInTherapist())
       }
 
+      notifySuccess(t('chatbot.chatbot_created_success'))
+
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
           chatbotTemplateId: created.id!,
@@ -124,7 +117,7 @@ const ChatbotOverview = (): ReactElement => {
         }
       )
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -144,6 +137,7 @@ const ChatbotOverview = (): ReactElement => {
       ).unwrap()
 
       dispatch(getAllPatientsOfTherapist())
+      notifySuccess(t('chatbot.chatbot_created_success'))
 
       navigate(
         getPathFromPage(PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE, {
@@ -152,7 +146,7 @@ const ChatbotOverview = (): ReactElement => {
         { state: { patientId: patientId, chatbotConfig: created } }
       )
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -179,9 +173,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(cloneChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('chatbot.chatbot_cloned_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_cloned_success'))
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       closeMenu()
     }
@@ -201,9 +195,9 @@ const ChatbotOverview = (): ReactElement => {
         await dispatch(deleteChatbotTemplate(currentChatbot.id!)).unwrap()
         dispatch(getCurrentlyLoggedInTherapist())
       }
-      openSnackbar(t('chatbot.chatbot_deleted_success'), 'success')
+      notifySuccess(t('chatbot.chatbot_deleted_success'))
     } catch (err) {
-      openSnackbar(handleError(err as AxiosError), 'error')
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     } finally {
       closeMenu()
     }
@@ -385,21 +379,6 @@ const ChatbotOverview = (): ReactElement => {
           <MenuItem onClick={handleDelete}>{t('dashboard.delete')}</MenuItem>
         )}
       </Menu>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   )
 }

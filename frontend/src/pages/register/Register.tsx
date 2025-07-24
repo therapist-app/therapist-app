@@ -1,9 +1,11 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { Button, Container, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { CreateTherapistDTO } from '../../api'
+import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
+import { useNotify } from '../../hooks/useNotify'
 import { registerTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -13,12 +15,12 @@ const Register = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess, notifyWarning } = useNotify()
 
   const [formData, setFormData] = useState<CreateTherapistDTO>({
     email: '',
     password: '',
   })
-  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -26,19 +28,18 @@ const Register = (): ReactElement => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-    setError(null)
 
     if (!formData.email || !formData.password) {
-      setError('Both fields are required.')
+      notifyWarning(t('register.fields_required') || 'Both fields are required.')
       return
     }
 
     try {
       await dispatch(registerTherapist(formData)).unwrap()
+      notifySuccess(t('register.success') || 'Registration successful.')
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (err) {
-      setError('Failed to register therapist. Please try again.')
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -59,7 +60,6 @@ const Register = (): ReactElement => {
         </Typography>
       </div>
       <Container maxWidth='xs'>
-        <Box sx={{ textAlign: 'center' }}></Box>
         <form onSubmit={handleSubmit}>
           <TextField
             label={t('register.email')}
@@ -83,7 +83,6 @@ const Register = (): ReactElement => {
             required
             autoComplete='current-password'
           />
-          {error && <Typography color='error'>{error}</Typography>}
           <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '380px', mt: 2 }}>
             {t('register.register')}
           </Button>
@@ -97,6 +96,7 @@ const Register = (): ReactElement => {
           {t('register.go_login')}
         </Button>
       </div>
+      <GlobalErrorSnackbar />
     </>
   )
 }

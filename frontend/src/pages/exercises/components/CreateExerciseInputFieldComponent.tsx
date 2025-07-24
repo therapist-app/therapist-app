@@ -9,6 +9,7 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -20,7 +21,7 @@ interface CreateExerciseInputFieldComponentProps {
 }
 
 const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldComponentProps> = (
-  props: CreateExerciseInputFieldComponentProps
+  props
 ) => {
   const inputFieldTranslationKey = props.isPrivateField
     ? 'exercise.addPrivateInput'
@@ -29,11 +30,12 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   const exerciseComponentType = props.isPrivateField
     ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
     : ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
+
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const [description, setDescription] = useState('')
-
+  const { notifyError, notifySuccess } = useNotify()
   const [isCreatingExerciseInputField, setIsCreatingExerciseInputField] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -42,7 +44,6 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 
   const showExerciseInputField = (): void => {
     dispatch(setAddingExerciseComponent(exerciseComponentType))
-
     setIsCreatingExerciseInputField(true)
   }
 
@@ -54,24 +55,20 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
         exerciseComponentDescription: description,
       }
       await dispatch(
-        createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
-          file: undefined,
-        })
-      )
+        createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })
+      ).unwrap()
+      notifySuccess(t('exercise.component_created_successfully'))
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdInputField()
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -95,7 +92,7 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
             label={t('exercise.description_of_input')}
             value={description}
             onChange={handleChange}
-          ></TextField>
+          />
           <div
             style={{
               display: 'flex',

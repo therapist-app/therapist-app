@@ -2,6 +2,7 @@ import { IconButton, Typography } from '@mui/material'
 import { ReactElement } from 'react'
 
 import { CounselingPlanPhaseGoalOutputDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhaseGoal } from '../../../store/counselingPlanSlice'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -16,10 +17,18 @@ const CounselingPlanPhaseGoalDetail = ({
   refresh,
 }: CounselingPlanPhaseGoalDetailProps): ReactElement => {
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
+
   const handleDeleteGoal = async (): Promise<void> => {
-    await dispatch(deleteCounselingPlanPhaseGoal(goal.id ?? ''))
-    refresh()
+    try {
+      await dispatch(deleteCounselingPlanPhaseGoal(goal.id ?? '')).unwrap()
+      notifySuccess('Goal removed successfully')
+      refresh()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

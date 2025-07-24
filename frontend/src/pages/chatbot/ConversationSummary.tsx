@@ -4,12 +4,14 @@ import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversationSlice'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
   const { patientId } = useParams<{ patientId: string }>()
   const dispatch = useAppDispatch()
+  const { notifyError } = useNotify()
 
   const summary = useAppSelector((s) => (patientId ? s.conversation.byPatient[patientId] : ''))
   const status = useAppSelector((s) => s.conversation.status)
@@ -19,14 +21,23 @@ const ConversationSummary = (): ReactElement => {
     if (!patientId) {
       return
     }
-    dispatch(
-      fetchConversationSummary({
-        patientId: patientId,
-        start: dayjs().subtract(7, 'day').toISOString(),
-        end: dayjs().toISOString(),
-      })
-    )
-  }, [dispatch, patientId])
+
+    const load = async (): Promise<void> => {
+      try {
+        await dispatch(
+          fetchConversationSummary({
+            patientId: patientId,
+            start: dayjs().subtract(7, 'day').toISOString(),
+            end: dayjs().toISOString(),
+          })
+        ).unwrap()
+      } catch (err) {
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      }
+    }
+
+    void load()
+  }, [dispatch, patientId, notifyError])
 
   const renderContent = (): ReactElement => {
     if (status === 'loading' || status === 'idle') {

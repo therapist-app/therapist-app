@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { LoginTherapistDTO } from '../../api'
+import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
+import { useNotify } from '../../hooks/useNotify'
 import { loginTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -13,27 +15,25 @@ const Login = (): ReactElement => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess, notifyWarning } = useNotify()
 
   const [formData, setFormData] = useState<LoginTherapistDTO>({
     email: '',
     password: '',
   })
-  const [error, setError] = useState<string | null>(null)
 
   const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-    setError(null)
-
     if (!formData.email || !formData.password) {
-      setError('Both fields are required.')
+      notifyWarning(t('login.fields_required') || 'Both fields are required.')
       return
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
+      notifySuccess(t('login.success') || 'Login successful.')
       navigate(getPathFromPage(PAGES.HOME_PAGE))
-    } catch (e) {
-      setError(`Failed to login, please try again`)
-      console.error('Failed to login', e)
+    } catch (msg) {
+      notifyError(typeof msg === 'string' ? msg : 'An unknown error occurred')
     }
   }
 
@@ -43,7 +43,6 @@ const Login = (): ReactElement => {
 
   return (
     <>
-      {' '}
       <div
         style={{
           display: 'flex',
@@ -82,7 +81,6 @@ const Login = (): ReactElement => {
             required
             autoComplete='current-password'
           />
-          {error && <Typography color='error'>{error}</Typography>}
           <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '380px', mt: 2 }}>
             {t('login.login')}
           </Button>
@@ -96,6 +94,7 @@ const Login = (): ReactElement => {
           {t('login.go_registration')}
         </Button>
       </div>
+      <GlobalErrorSnackbar />
     </>
   )
 }

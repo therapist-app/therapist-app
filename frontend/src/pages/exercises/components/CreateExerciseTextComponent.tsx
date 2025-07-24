@@ -9,6 +9,7 @@ import {
   CreateExerciseComponentDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
 } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -18,13 +19,12 @@ interface CreateExerciseTextComponentProps {
   active: boolean
 }
 
-const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (
-  props: CreateExerciseTextComponentProps
-) => {
+const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = (props) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const [exerciseText, setExerciseText] = useState('')
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [isCreatingExerciseText, setIsCreatingExerciseText] = useState(false)
 
@@ -45,24 +45,20 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text,
         exerciseComponentDescription: exerciseText,
       }
       await dispatch(
-        createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
-          file: undefined,
-        })
-      )
+        createExerciseComponent({ createExerciseComponentDTO: dto, file: undefined })
+      ).unwrap()
+      notifySuccess(t('exercise.component_created_successfully'))
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdExercise()
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -86,13 +82,12 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
             label={t('exercise.text')}
             value={exerciseText}
             onChange={handleChange}
-          ></TextField>
+          />
           <div
             style={{
               display: 'flex',
               width: '100%',
               gap: '10px',
-
               justifyContent: 'center',
             }}
           >

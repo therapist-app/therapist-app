@@ -1,6 +1,5 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -14,12 +13,10 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import CardActions from '@mui/material/CardActions'
-import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
@@ -30,6 +27,7 @@ import { ChatbotTemplateOutputDTO, CreateChatbotTemplateDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import {
   cloneChatbotTemplate,
   createChatbotTemplate,
@@ -48,7 +46,6 @@ import {
   disabledButtonStyles,
 } from '../../styles/buttonStyles'
 import { therapistDocumentApi } from '../../utils/api'
-import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 
@@ -56,6 +53,7 @@ const Home = (): ReactElement => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
   const ownTemplates: ChatbotTemplateOutputDTO[] = (
@@ -64,12 +62,6 @@ const Home = (): ReactElement => {
   const allTherapistDocuments = useSelector(
     (state: RootState) => state.therapistDocument.allTherapistDocumentsOfTherapist
   )
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarSeverity, setSnackbarSeverity] = useState<
-    'info' | 'success' | 'error' | 'warning'
-  >('info')
 
   const [openBotDialog, setOpenBotDialog] = useState(false)
   const [chatbotName, setChatbotName] = useState('')
@@ -107,12 +99,6 @@ const Home = (): ReactElement => {
     return url
   }
 
-  const handleCloseSnackbar = (_event?: React.SyntheticEvent | Event, reason?: string): void => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setSnackbarOpen(false)
-  }
   const handlePatientClick = (patientId: string): void => {
     navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId }))
   }
@@ -140,10 +126,7 @@ const Home = (): ReactElement => {
         })
       )
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleMenuClick = (
@@ -164,15 +147,10 @@ const Home = (): ReactElement => {
     try {
       await dispatch(cloneChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      setSnackbarMessage(t('dashboard.chatbot_cloned_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      notifySuccess(t('dashboard.chatbot_cloned_success'))
       handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleDelete = async (): Promise<void> => {
@@ -182,15 +160,10 @@ const Home = (): ReactElement => {
       }
       await dispatch(deleteChatbotTemplate(currentChatbot.id ?? ''))
       setRefreshTherapistCounter((prev) => prev + 1)
-      setSnackbarMessage(t('dashboard.chatbot_deleted_success'))
-      setSnackbarSeverity('success')
-      setSnackbarOpen(true)
+      notifySuccess(t('dashboard.chatbot_deleted_success'))
       handleMenuClose()
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
-      setSnackbarMessage(errorMessage)
-      setSnackbarSeverity('error')
-      setSnackbarOpen(true)
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
   }
   const handleChatbotTemplateClick = (chatbotTemplateId: string): void => {
@@ -430,17 +403,6 @@ const Home = (): ReactElement => {
           />
         </DialogContent>
       </Dialog>
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Layout>
   )
 }
