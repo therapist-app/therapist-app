@@ -1,8 +1,10 @@
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -13,11 +15,13 @@ import {
   createCounselingPlanExerciseAIGenerated,
 } from '../../../store/counselingPlanSlice'
 import { createExercise } from '../../../store/exerciseSlice'
+import { showError } from '../../../store/errorSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
   successButtonStyles,
 } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 
@@ -39,6 +43,10 @@ const CreateCounselingPlanExercise = ({
   const { patientId } = useParams()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
 
   const [formData, setFormData] = useState<ExerciseFormData>({
     exerciseTitle: '',
@@ -63,25 +71,28 @@ const CreateCounselingPlanExercise = ({
   }
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
-    const createExerciseDTO = await dispatch(
-      createCounselingPlanExerciseAIGenerated({
-        counselingPlanPhaseId: counselingPlanPhase.id ?? '',
-        language: getCurrentLanguage(),
+    try {
+      const aiDto = await dispatch(
+        createCounselingPlanExerciseAIGenerated({
+          counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+          language: getCurrentLanguage(),
+        })
+      ).unwrap()
+
+      setFormData({
+        exerciseTitle: aiDto.exerciseTitle,
+        exerciseDescription: aiDto.exerciseDescription,
+        exerciseExplanation: aiDto.exerciseExplanation,
+        exerciseStart: aiDto.exerciseStart ? new Date(aiDto.exerciseStart) : new Date(),
+        durationInWeeks: aiDto.durationInWeeks ?? 2,
+        doEveryNDays: aiDto.doEveryNDays,
+        patientId: patientId,
       })
-    ).unwrap()
-
-    const newExerciseFormData: ExerciseFormData = {
-      exerciseTitle: createExerciseDTO.exerciseTitle,
-      exerciseDescription: createExerciseDTO.exerciseDescription,
-      exerciseExplanation: createExerciseDTO.exerciseExplanation,
-      exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
-      durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
-      doEveryNDays: createExerciseDTO.doEveryNDays,
-      patientId: patientId,
+      setOpen(true)
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
     }
-
-    setFormData(newExerciseFormData)
-    setOpen(true)
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -93,19 +104,22 @@ const CreateCounselingPlanExercise = ({
         exerciseStart: formData.exerciseStart?.toISOString(),
         durationInWeeks: formData.durationInWeeks,
       }
+
       const response = await dispatch(createExercise(createExerciseDTO)).unwrap()
+
       await dispatch(
         addExerciseToCounselingPlanPhase({
           exerciseId: response.id ?? '',
           counselingPlanPhaseId: counselingPlanPhase.id ?? '',
         })
-      )
+      ).unwrap()
 
+      showMessage(t('counseling_plan.exercise_created_success'), 'success')
       setOpen(false)
-
       onSuccess()
     } catch (err) {
-      console.error('Registration error:', err)
+      const msg = handleError(err as AxiosError)
+      showMessage(msg, 'error')
     }
   }
 

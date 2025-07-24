@@ -1,11 +1,15 @@
 import { IconButton, Typography } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CounselingPlanPhaseOutputDTO } from '../../../api'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import { deleteCounselingPlanPhase } from '../../../store/counselingPlanSlice'
+import { showError } from '../../../store/errorSlice'
 import { formatDateNicely } from '../../../utils/dateUtil'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import AddCounselingPlanExercise from './AddCounselingPlanExercise'
 import CounselingPlanExerciseDetail from './CounselingPlanExerciseDetail'
@@ -28,13 +32,24 @@ const CounselingPlanPhaseDetail = ({
 }: CounselingPlanPhaseDetailProps): ReactElement => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
   }
 
   const handleDeletePhase = async (): Promise<void> => {
-    await dispatch(deleteCounselingPlanPhase(phase.id ?? ''))
-    onSuccess()
+    try {
+      await dispatch(deleteCounselingPlanPhase(phase.id ?? '')).unwrap()
+      showMessage(t('counseling_plan.phase_deleted_success'), 'success')
+      onSuccess()
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   return (
@@ -61,7 +76,7 @@ const CounselingPlanPhaseDetail = ({
           {t('counseling_plan.duration')}: <strong>{phase.durationInWeeks}</strong>{' '}
           {t('counseling_plan.weeks')}
         </Typography>
-        <div></div>
+
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
           {t('counseling_plan.goals')}:
         </Typography>
@@ -72,12 +87,11 @@ const CounselingPlanPhaseDetail = ({
             </li>
           ))}
         </ul>
-        <div>
-          <CreateCounselingPlanPhaseGoal
-            counselingPlanPhaseId={phase.id || ''}
-            onSuccess={handleCreateCounselingPlanPhaseGoal}
-          />
-        </div>
+        <CreateCounselingPlanPhaseGoal
+          counselingPlanPhaseId={phase.id || ''}
+          onSuccess={handleCreateCounselingPlanPhaseGoal}
+        />
+
         <Typography sx={{ marginTop: '20px', marginBottom: '10px' }} variant='h4'>
           {t('counseling_plan.exercises')}:
         </Typography>
@@ -92,6 +106,7 @@ const CounselingPlanPhaseDetail = ({
             </li>
           ))}
         </ul>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <AddCounselingPlanExercise
             counselingPlanPhaseId={phase.id || ''}

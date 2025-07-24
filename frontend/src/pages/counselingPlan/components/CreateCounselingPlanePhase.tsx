@@ -1,4 +1,6 @@
 import { Button, TextField } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -7,11 +9,13 @@ import {
   createCounselingPlanPhase,
   createCounselingPlanPhaseAIGenerated,
 } from '../../../store/counselingPlanSlice'
+import { showError } from '../../../store/errorSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
   successButtonStyles,
 } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getCurrentLanguage } from '../../../utils/languageUtil'
 
@@ -22,7 +26,6 @@ interface CreateCounselingPlanePhaseProps {
 
 const initialFormValues: CreateCounselingPlanPhaseDTO = {
   phaseName: '',
-
   durationInWeeks: 3,
 }
 
@@ -36,34 +39,47 @@ const CreateCounselingPlanePhase = ({
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-
-    const createCounselingPlanPhaseDTO: CreateCounselingPlanPhaseDTO = {
-      counselingPlanId: counselingPlanId,
-      phaseName: formValues.phaseName,
-      durationInWeeks: formValues.durationInWeeks,
+    try {
+      const dto: CreateCounselingPlanPhaseDTO = {
+        counselingPlanId,
+        phaseName: formValues.phaseName,
+        durationInWeeks: formValues.durationInWeeks,
+      }
+      await dispatch(createCounselingPlanPhase(dto)).unwrap()
+      showMessage(t('counseling_plan.phase_created_success'), 'success')
+      onSuccess()
+      setOpen(false)
+      setFormValues(initialFormValues)
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
     }
-    await dispatch(createCounselingPlanPhase(createCounselingPlanPhaseDTO))
-    onSuccess()
-    setOpen(false)
-    setFormValues(initialFormValues)
   }
 
   const handleAIGeneration = async (): Promise<void> => {
-    const createCounselingPlanPhaseDTO = await dispatch(
-      createCounselingPlanPhaseAIGenerated({
-        counselingPlanId: counselingPlanId,
-        language: getCurrentLanguage(),
-      })
-    ).unwrap()
-    const newFormValue: CreateCounselingPlanPhaseDTO = {
-      phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
-      durationInWeeks: createCounselingPlanPhaseDTO.durationInWeeks ?? 2,
-    }
+    try {
+      const aiDto = await dispatch(
+        createCounselingPlanPhaseAIGenerated({
+          counselingPlanId,
+          language: getCurrentLanguage(),
+        })
+      ).unwrap()
 
-    setFormValues(newFormValue)
-    setOpen(true)
+      setFormValues({
+        phaseName: aiDto.phaseName ?? '',
+        durationInWeeks: aiDto.durationInWeeks ?? 2,
+      })
+      setOpen(true)
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
+    }
   }
 
   const handleCancel = (): void => {

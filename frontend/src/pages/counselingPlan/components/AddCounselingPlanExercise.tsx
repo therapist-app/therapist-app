@@ -1,16 +1,20 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { AlertColor } from '@mui/material'
+import { AxiosError } from 'axios'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { AddExerciseToCounselingPlanPhaseDTO, CounselingPlanPhaseOutputDTO } from '../../../api'
 import { addExerciseToCounselingPlanPhase } from '../../../store/counselingPlanSlice'
+import { showError } from '../../../store/errorSlice'
 import { RootState } from '../../../store/store'
 import {
   cancelButtonStyles,
   commonButtonStyles,
   successButtonStyles,
 } from '../../../styles/buttonStyles'
+import { handleError } from '../../../utils/handleError'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface AddCounselingPlanExerciseProps {
@@ -36,23 +40,30 @@ const AddCounselingPlanExercise = ({
   const [selectedExerciseId, setSelectedExerciseId] = useState<string>('')
   const [open, setOpen] = useState(false)
 
-  const handleSelectExerciseChange = async (event: SelectChangeEvent): Promise<void> => {
+  const showMessage = (message: string, severity: AlertColor = 'error') => {
+    dispatch(showError({ message, severity }))
+  }
+
+  const handleSelectExerciseChange = (event: SelectChangeEvent): void => {
     setSelectedExerciseId(event.target.value)
   }
 
   const handleAddExercise = async (): Promise<void> => {
-    if (!selectedExerciseId) {
-      return
-    }
+    if (!selectedExerciseId) return
 
-    const addExerciseToCounselingPlanPhaseDTO: AddExerciseToCounselingPlanPhaseDTO = {
-      exerciseId: selectedExerciseId,
-      counselingPlanPhaseId: counselingPlanPhaseId,
+    try {
+      const dto: AddExerciseToCounselingPlanPhaseDTO = {
+        exerciseId: selectedExerciseId,
+        counselingPlanPhaseId: counselingPlanPhaseId,
+      }
+      await dispatch(addExerciseToCounselingPlanPhase(dto)).unwrap()
+      setOpen(false)
+      showMessage(t('counseling_plan.exercise_added_success'), 'success')
+      onSuccess()
+    } catch (error) {
+      const msg = handleError(error as AxiosError)
+      showMessage(msg, 'error')
     }
-    await dispatch(addExerciseToCounselingPlanPhase(addExerciseToCounselingPlanPhaseDTO))
-    setOpen(false)
-
-    onSuccess()
   }
 
   const handleCancel = (): void => {
@@ -78,13 +89,15 @@ const AddCounselingPlanExercise = ({
             <FormControl sx={{ minWidth: '200px' }}>
               <InputLabel>Exercise</InputLabel>
               <Select
-                id='demo-simple-select'
+                id='exercise-select'
                 value={selectedExerciseId}
                 label={t('exercise.exercise')}
                 onChange={handleSelectExerciseChange}
               >
                 {exercisesToSelect.map((exercise) => (
-                  <MenuItem value={exercise.id}>{exercise.exerciseTitle}</MenuItem>
+                  <MenuItem key={exercise.id} value={exercise.id}>
+                    {exercise.exerciseTitle}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
