@@ -20,16 +20,16 @@ public class EnvironmentVariables {
 
   @Autowired
   public EnvironmentVariables(
-      @Value("${JWT_SECRET_KEY}") String JWT_SECRET_KEY,
-      @Value("${LOCAL_LLM_MODEL}") String LOCAL_LLM_MODEL,
-      @Value("${LOCAL_LLM_URL}") String LOCAL_LLM_URL,
-      @Value("${LOCAL_LLM_API_KEY}") String LOCAL_LLM_API_KEY,
       @Value("${PATIENT_APP_URL}") String PATIENT_APP_URL,
+      @Value("${JWT_SECRET_KEY}") String JWT_SECRET_KEY,
+      @Value("${LOCAL_LLM_MODEL:}") String LOCAL_LLM_MODEL,
+      @Value("${LOCAL_LLM_URL:}") String LOCAL_LLM_URL,
+      @Value("${LOCAL_LLM_API_KEY:}") String LOCAL_LLM_API_KEY,
       @Value("${APP_ENVIRONMENT:dev}") String APP_ENVIRONMENT,
-      @Value("${AZURE_OPENAI_ENDPOINT}") String AZURE_OPENAI_ENDPOINT,
-      @Value("${AZURE_OPENAI_API_KEY}") String AZURE_OPENAI_API_KEY,
-      @Value("${AZURE_OPENAI_DEPLOYMENT_NAME}") String AZURE_OPENAI_DEPLOYMENT_NAME,
-      @Value("${LLM_PROVIDER}") String LLM_PROVIDER) {
+      @Value("${AZURE_OPENAI_ENDPOINT:}") String AZURE_OPENAI_ENDPOINT,
+      @Value("${AZURE_OPENAI_API_KEY:}") String AZURE_OPENAI_API_KEY,
+      @Value("${AZURE_OPENAI_DEPLOYMENT_NAME:}") String AZURE_OPENAI_DEPLOYMENT_NAME,
+      @Value("${LLM_PROVIDER:}") String LLM_PROVIDER) {
     EnvironmentVariables.JWT_SECRET_KEY = JWT_SECRET_KEY;
     EnvironmentVariables.LOCAL_LLM_MODEL = LOCAL_LLM_MODEL;
     EnvironmentVariables.LOCAL_LLM_URL = LOCAL_LLM_URL;

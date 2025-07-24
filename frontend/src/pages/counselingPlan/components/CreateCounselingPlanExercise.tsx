@@ -40,7 +40,7 @@ const CreateCounselingPlanExercise = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const [formData, setFormData] = useState<ExerciseFormData>({
+  const initialFormData: ExerciseFormData = {
     exerciseTitle: '',
     exerciseDescription: '',
     exerciseExplanation: '',
@@ -48,7 +48,9 @@ const CreateCounselingPlanExercise = ({
     durationInWeeks: counselingPlanPhase.durationInWeeks ?? 2,
     patientId: patientId,
     doEveryNDays: 1,
-  })
+  }
+
+  const [formData, setFormData] = useState<ExerciseFormData>(initialFormData)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -56,13 +58,16 @@ const CreateCounselingPlanExercise = ({
 
   const handleCancel = (): void => {
     setOpen(false)
+    setFormData(initialFormData)
   }
 
   const handleCreateExercise = (): void => {
+    setFormData(initialFormData)
     setOpen(true)
   }
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
+    setFormData(initialFormData)
     const createExerciseDTO = await dispatch(
       createCounselingPlanExerciseAIGenerated({
         counselingPlanPhaseId: counselingPlanPhase.id ?? '',
@@ -102,6 +107,7 @@ const CreateCounselingPlanExercise = ({
       )
 
       setOpen(false)
+      setFormData(initialFormData)
 
       onSuccess()
     } catch (err) {
