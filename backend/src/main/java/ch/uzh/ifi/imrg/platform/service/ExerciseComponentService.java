@@ -14,8 +14,10 @@ import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -89,7 +91,7 @@ public class ExerciseComponentService {
     try {
       exerciseComponent.setFileData(file.getBytes());
     } catch (IOException e) {
-      throw new RuntimeException("Failed to read file bytes", e);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to read file bytes", e);
     }
 
     exerciseComponent = exerciseComponentRepository.save(exerciseComponent);

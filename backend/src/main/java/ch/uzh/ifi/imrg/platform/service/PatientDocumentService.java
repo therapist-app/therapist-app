@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -45,7 +47,8 @@ public class PatientDocumentService {
     Patient patient =
         patientRepository
             .findById(patientId)
-            .orElseThrow(() -> new RuntimeException("Patient not found"));
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
     SecurityUtil.checkOwnership(patient, therapistId);
 
     String extractedText = DocumentParserUtil.extractText(file);
@@ -57,7 +60,7 @@ public class PatientDocumentService {
     try {
       patientDocument.setFileData(file.getBytes());
     } catch (IOException e) {
-      throw new RuntimeException("Failed to read file bytes", e);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to read file bytes", e);
     }
     patientDocument.setExtractedText(extractedText);
 
@@ -73,7 +76,10 @@ public class PatientDocumentService {
     TherapistDocument therapistDocument =
         therapistDocumentRepository
             .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
-            .orElseThrow(() -> new RuntimeException("Therapist document not found"));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Therapist document not found"));
 
     SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
@@ -81,7 +87,8 @@ public class PatientDocumentService {
     patientDocument.setPatient(
         patientRepository
             .findById(createPatientDocumentFromTherapistDocumentDTO.getPatientId())
-            .orElseThrow(() -> new RuntimeException("Patient not found")));
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found")));
     patientDocument.setFileName(therapistDocument.getFileName());
     patientDocument.setFileType(therapistDocument.getFileType());
     patientDocument.setFileData(therapistDocument.getFileData());
@@ -106,7 +113,10 @@ public class PatientDocumentService {
     PatientDocument patientDocument =
         patientDocumentRepository
             .findById(patientDocumentId)
-            .orElseThrow(() -> new RuntimeException("Patient document not found"));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Patient document not found"));
     SecurityUtil.checkOwnership(patientDocument, therapistId);
 
     return patientDocument;

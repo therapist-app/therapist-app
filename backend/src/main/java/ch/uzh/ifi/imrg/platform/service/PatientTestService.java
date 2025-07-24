@@ -10,7 +10,9 @@ import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -83,7 +85,9 @@ public class PatientTestService {
         gad7Repository
             .findById(testId)
             .orElseThrow(
-                () -> new IllegalArgumentException("GAD7 test not found with id: " + testId));
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "GAD7 test not found with id: " + testId));
     SecurityUtil.checkOwnership(test, therapistId);
 
     GAD7TestOutputDTO outputDTO = new GAD7TestOutputDTO();

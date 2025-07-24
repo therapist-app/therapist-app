@@ -26,8 +26,10 @@ import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -75,7 +77,10 @@ public class CounselingPlanPhaseService {
         counselingPlanRepository
             .findById(dto.getCounselingPlanId())
             .orElseThrow(
-                () -> new Error("Counseling plan not found with id: " + dto.getCounselingPlanId()));
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
 
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
@@ -111,7 +116,8 @@ public class CounselingPlanPhaseService {
             .findById(dto.getCounselingPlanPhaseId())
             .orElseThrow(
                 () ->
-                    new Error(
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Counseling plan phase not found with id: "
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
@@ -188,7 +194,10 @@ public class CounselingPlanPhaseService {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
             .findById(id)
-            .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Counseling plan phase not found with id: " + id));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
 
     return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());
@@ -201,7 +210,9 @@ public class CounselingPlanPhaseService {
             .findById(counselingPlanPhaseId)
             .orElseThrow(
                 () ->
-                    new Error("Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Counseling plan phase not found with id: " + counselingPlanPhaseId));
 
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     if (updateDto.getPhaseName() != null) {
@@ -218,7 +229,10 @@ public class CounselingPlanPhaseService {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
             .findById(id)
-            .orElseThrow(() -> new Error("Counseling plan phase not found with id: " + id));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Counseling plan phase not found with id: " + id));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     counselingPlanPhase.getCounselingPlan().getCounselingPlanPhases().remove(counselingPlanPhase);
     counselingPlanRepository.save(counselingPlanPhase.getCounselingPlan());

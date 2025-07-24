@@ -27,7 +27,6 @@ public class ChatMessageService {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
   }
 
-  /** Main entry point called by the controller. */
   public ChatCompletionResponseDTO chat(
       ChatCompletionWithConfigRequestDTO req, String therapistId) {
 
