@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.UpdateCoachEmailDTOPatientAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -189,5 +190,84 @@ public class CoachPatientControllerPatientAPI {
      */
     public ResponseSpec registerPatient1WithResponseSpec(CreatePatientDTOPatientAPI createPatientDTOPatientAPI) throws WebClientResponseException {
         return registerPatient1RequestCreation(createPatientDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param updateCoachEmailDTOPatientAPI The updateCoachEmailDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec setCoachEmailRequestCreation(String patientId, UpdateCoachEmailDTOPatientAPI updateCoachEmailDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = updateCoachEmailDTOPatientAPI;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling setCoachEmail", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'updateCoachEmailDTOPatientAPI' is set
+        if (updateCoachEmailDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'updateCoachEmailDTOPatientAPI' when calling setCoachEmail", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/coach-email", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param updateCoachEmailDTOPatientAPI The updateCoachEmailDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> setCoachEmail(String patientId, UpdateCoachEmailDTOPatientAPI updateCoachEmailDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setCoachEmailRequestCreation(patientId, updateCoachEmailDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param updateCoachEmailDTOPatientAPI The updateCoachEmailDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> setCoachEmailWithHttpInfo(String patientId, UpdateCoachEmailDTOPatientAPI updateCoachEmailDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setCoachEmailRequestCreation(patientId, updateCoachEmailDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param patientId The patientId parameter
+     * @param updateCoachEmailDTOPatientAPI The updateCoachEmailDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec setCoachEmailWithResponseSpec(String patientId, UpdateCoachEmailDTOPatientAPI updateCoachEmailDTOPatientAPI) throws WebClientResponseException {
+        return setCoachEmailRequestCreation(patientId, updateCoachEmailDTOPatientAPI);
     }
 }

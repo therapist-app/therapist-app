@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.generated.model.PutAvatarDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutNameDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.ResetPasswordDTOPatientAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -648,6 +649,75 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec registerPatientWithResponseSpec(CreatePatientDTOPatientAPI createPatientDTOPatientAPI) throws WebClientResponseException {
         return registerPatientRequestCreation(createPatientDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param resetPasswordDTOPatientAPI The resetPasswordDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec resetPasswordRequestCreation(ResetPasswordDTOPatientAPI resetPasswordDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = resetPasswordDTOPatientAPI;
+        // verify the required parameter 'resetPasswordDTOPatientAPI' is set
+        if (resetPasswordDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'resetPasswordDTOPatientAPI' when calling resetPassword", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/reset-password", HttpMethod.POST, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param resetPasswordDTOPatientAPI The resetPasswordDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> resetPassword(ResetPasswordDTOPatientAPI resetPasswordDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return resetPasswordRequestCreation(resetPasswordDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param resetPasswordDTOPatientAPI The resetPasswordDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> resetPasswordWithHttpInfo(ResetPasswordDTOPatientAPI resetPasswordDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return resetPasswordRequestCreation(resetPasswordDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param resetPasswordDTOPatientAPI The resetPasswordDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec resetPasswordWithResponseSpec(ResetPasswordDTOPatientAPI resetPasswordDTOPatientAPI) throws WebClientResponseException {
+        return resetPasswordRequestCreation(resetPasswordDTOPatientAPI);
     }
     /**
      * 
