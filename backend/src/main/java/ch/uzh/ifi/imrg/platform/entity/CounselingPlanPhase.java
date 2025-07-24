@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -29,11 +30,17 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String phaseName;
+  @LLMContextField(label = "Counseling Plan phase name", order = 1)
+  @Column()
+  private String phaseName;
 
-  @Column() private int durationInWeeks;
+  @LLMContextField(label = "Counseling Plan phase duration in weeks", order = 2)
+  @Column()
+  private int durationInWeeks;
 
-  @Column() private int phaseNumber;
+  @LLMContextField(label = "Counseling Plan phase number", order = 3)
+  @Column()
+  private int phaseNumber;
 
   @OneToMany(
       mappedBy = "counselingPlanPhase",

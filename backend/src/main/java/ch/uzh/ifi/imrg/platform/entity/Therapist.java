@@ -31,7 +31,7 @@ public class Therapist implements Serializable, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @LLMContextField(label = "Therapist email", order = 2)
+  @LLMContextField(label = "Coach email", order = 2)
   @Column(unique = true)
   private String email;
 
@@ -63,10 +63,10 @@ public class Therapist implements Serializable, HasLLMContext {
   public String toLLMContext() {
     StringBuilder sb = LLMContextBuilder.getOwnProperties(this, HIERARCHY_LEVEL);
 
-    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Patient", HIERARCHY_LEVEL);
+    LLMContextBuilder.addLLMContextOfListOfEntities(sb, this.patients, "Client", HIERARCHY_LEVEL);
 
     LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, this.therapistDocuments, "Document", HIERARCHY_LEVEL);
+        sb, this.therapistDocuments, "Coach Document", HIERARCHY_LEVEL);
 
     return sb.toString();
   }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class CounselingPlan implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @LLMContextField(label = "Counseling start", order = 1)
   private Instant startOfTherapy;
 
   @OneToMany(

@@ -30,34 +30,34 @@ public class Exercise implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @LLMContextField(label = "Exercise Title", order = 2)
+  @LLMContextField(label = "Exercise Title", order = 1)
   @Column()
   private String exerciseTitle;
 
-  @LLMContextField(label = "Exercise Description", order = 3)
+  @LLMContextField(label = "Exercise Description", order = 2)
   @Lob
   @Column()
   private String exerciseDescription;
 
   // used in the system prompt
-  @LLMContextField(label = "Exercise Explanation", order = 4)
+  @LLMContextField(label = "Exercise Explanation", order = 3)
   @Lob
   @Column()
   private String exerciseExplanation;
 
-  @LLMContextField(label = "Exercise Start", order = 5)
+  @LLMContextField(label = "Exercise Start", order = 4)
   @Column(name = "exercise_start")
   private Instant exerciseStart;
 
-  @LLMContextField(label = "Exercise End", order = 6)
+  @LLMContextField(label = "Exercise End", order = 5)
   @Column(name = "exercise_end")
   private Instant exerciseEnd;
 
-  @LLMContextField(label = "Exercise is Paused", order = 7)
+  @LLMContextField(label = "Exercise is currently paused", order = 6)
   @Column()
   private Boolean isPaused;
 
-  @LLMContextField(label = "Exercise do every N Days", order = 8)
+  @LLMContextField(label = "Exercise do once every following days", order = 7)
   @Column()
   private Integer doEveryNDays;
 

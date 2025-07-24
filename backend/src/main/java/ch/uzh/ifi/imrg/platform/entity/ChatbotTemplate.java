@@ -31,22 +31,22 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMCo
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @LLMContextField(label = "Chatbot name", order = 2)
+  @LLMContextField(label = "Chatbot name", order = 1)
   @Column(nullable = false)
   private String chatbotName;
 
   private String chatbotIcon;
 
-  @LLMContextField(label = "Chatbot role", order = 3)
+  @LLMContextField(label = "Chatbot role", order = 2)
   private String chatbotRole;
 
-  @LLMContextField(label = "Chatbot tone", order = 4)
+  @LLMContextField(label = "Chatbot tone", order = 3)
   private String chatbotTone;
 
-  @LLMContextField(label = "Chatbot welcome message", order = 5)
+  @LLMContextField(label = "Chatbot welcome message", order = 4)
   private String welcomeMessage;
 
-  @LLMContextField(label = "Chatbot is active", order = 6)
+  @LLMContextField(label = "Chatbot is active", order = 5)
   @Column(name = "is_active")
   private boolean isActive = false;
 
