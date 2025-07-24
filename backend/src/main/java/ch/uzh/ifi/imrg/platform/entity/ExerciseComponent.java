@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.enums.ExerciseComponentType;
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -14,6 +15,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "exercise_components")
 public class ExerciseComponent implements OwnedByTherapist {
+
+  public static final Integer HIERARCHY_LEVEL = Exercise.HIERARCHY_LEVEL + 1;
 
   @LLMContextField(label = "Exercise Component ID", order = 1)
   @Id
@@ -64,6 +67,6 @@ public class ExerciseComponent implements OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    return LLMContextBuilder.build(this);
+    return FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL);
   }
 }

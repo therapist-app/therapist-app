@@ -14,6 +14,14 @@ public class FormatUtil {
     return FORMATTER.format(date);
   }
 
+  public static String indentBlock(String textBlock, Integer level) {
+    if (textBlock == null || textBlock.isBlank()) {
+      return "";
+    }
+
+    return textBlock.indent(level * 2);
+  }
+
   public static void appendDetail(StringBuilder sb, String label, Object value) {
     if (isPresent(value)) {
       sb.append("- **").append(label).append(":** ").append(value).append("\n");

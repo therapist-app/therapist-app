@@ -11,6 +11,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "meeting_notes")
 public class MeetingNote implements OwnedByTherapist {
+
+  public static final Integer HIERARCHY_LEVEL = Meeting.HIERARCHY_LEVEL + 1;
+
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();

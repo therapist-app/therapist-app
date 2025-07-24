@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -20,6 +21,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 public class Patient implements Serializable, OwnedByTherapist {
+
+  public static final Integer HIERARCHY_LEVEL = Therapist.HIERARCHY_LEVEL + 1;
 
   @LLMContextField(label = "Patient ID", order = 1)
   @Id
@@ -222,24 +225,25 @@ public class Patient implements Serializable, OwnedByTherapist {
   }
 
   public String toLLMContext() {
-    StringBuilder sb = new StringBuilder(LLMContextBuilder.build(this));
+    StringBuilder sb =
+        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
 
     if (!this.complaints.isEmpty()) {
-      sb.append("\n--- Patient Complaints ---\n");
+      sb.append(FormatUtil.indentBlock("\n--- Patient Complaints ---\n", HIERARCHY_LEVEL));
       for (Complaint complaint : this.complaints) {
         sb.append(complaint.toLLMContext());
       }
     }
 
-    if (!this.complaints.isEmpty()) {
-      sb.append("\n--- Patient Chatbots ---\n");
+    if (!this.chatbotTemplates.isEmpty()) {
+      sb.append(FormatUtil.indentBlock("\n--- Patient Chatbots ---\n", HIERARCHY_LEVEL));
       for (ChatbotTemplate chatbotTemplate : this.chatbotTemplates) {
         sb.append(chatbotTemplate.toLLMContext());
       }
     }
 
-    if (!this.complaints.isEmpty()) {
-      sb.append("\n--- Patient Exercises ---\n");
+    if (!this.exercises.isEmpty()) {
+      sb.append(FormatUtil.indentBlock("\n--- Patient Exercises ---\n", HIERARCHY_LEVEL));
       for (Exercise exercise : this.exercises) {
         sb.append(exercise.toLLMContext());
       }

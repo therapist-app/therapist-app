@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.utils.FormatUtil;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.utils.LLMContextField;
 import jakarta.persistence.*;
@@ -16,6 +17,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "therapists")
 public class Therapist implements Serializable {
+
+  public static final Integer HIERARCHY_LEVEL = 0;
 
   @LLMContextField(label = "Therapist ID", order = 1)
   @Id
@@ -59,10 +62,11 @@ public class Therapist implements Serializable {
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 
   public String toLLMContext() {
-    StringBuilder sb = new StringBuilder(LLMContextBuilder.build(this));
+    StringBuilder sb =
+        new StringBuilder(FormatUtil.indentBlock(LLMContextBuilder.build(this), HIERARCHY_LEVEL));
 
     if (!this.patients.isEmpty()) {
-      sb.append("\n--- Patients ---\n");
+      sb.append(FormatUtil.indentBlock("\n--- Patients ---\n", HIERARCHY_LEVEL));
       for (Patient patient : this.patients) {
         sb.append(patient.toLLMContext());
       }
