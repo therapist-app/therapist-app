@@ -10,20 +10,38 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { LogType } from 'vite'
 import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
 import { LOG_TYPES } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
+import { LOG_TYPES } from '../../store/logTypes.ts'
+import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { patientLogApi } from '../../utils/api.ts'
 import { patientLogApi } from '../../utils/api.ts'
 
 interface InteractionData {
@@ -36,6 +54,22 @@ interface InteractionData {
 interface HeatMapData {
   id: string
   data: { x: string; y: number }[]
+}
+
+const transformLogsToInteractionData = (
+  logs: LogOutputDTO[] | undefined | null
+): InteractionData[] => {
+  // Handle cases where logs might be undefined or null
+  if (!logs || !Array.isArray(logs)) {
+    return []
+  }
+
+  return logs.map((log) => ({
+    date: format(new Date(log.timestamp), 'yyyy-MM-dd'),
+    hour: new Date(log.timestamp).getHours(),
+    value: 1,
+    type: log.logType,
+  }))
 }
 
 const transformLogsToInteractionData = (
@@ -203,6 +237,7 @@ const ClientInteractions = (): ReactElement => {
     }
 
     return filtered
+  }, [interactionData, activeLogType, startDate, endDate])
   }, [interactionData, activeLogType, startDate, endDate])
 
   // Memoize heatmap data transformation
