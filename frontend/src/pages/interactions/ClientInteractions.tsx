@@ -21,7 +21,8 @@ import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
-import { useNotify } from '../../hooks/useNotify'
+import { LOG_TYPES } from '../../store/logTypes.ts'
+import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientLogApi } from '../../utils/api.ts'
 
@@ -37,33 +38,12 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-const generateMockData = (days: number): InteractionData[] => {
-  const data: InteractionData[] = []
-  const interactionTypes = [
-    'Journal Creation',
-    'Journal Update',
-    'Exercise Start',
-    'Exercise Completion',
-    'Chatbot Creation',
-    'Message Sent',
-    'Chatbot Interaction',
-  ]
-
-  for (let i = 0; i < days; i++) {
-    const date = subDays(new Date(), i)
-    const dailyInteractions = Math.floor(Math.random() * 6)
-
-    for (let j = 0; j < dailyInteractions; j++) {
-      const hour = Math.floor(Math.random() * 24)
-      const type = interactionTypes[Math.floor(Math.random() * interactionTypes.length)]
-
-      data.push({
-        date: format(date, 'yyyy-MM-dd'),
-        hour: hour,
-        value: 1,
-        type: type,
-      })
-    }
+const transformLogsToInteractionData = (
+  logs: LogOutputDTO[] | undefined | null
+): InteractionData[] => {
+  // Handle cases where logs might be undefined or null
+  if (!logs || !Array.isArray(logs)) {
+    return []
   }
 
   return logs.map((log) => ({
@@ -120,17 +100,8 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
-  const { notifyError } = useNotify()
-
-  const [interactionType, setInteractionType] = useState<string>('all')
-  const [data] = useState<InteractionData[]>(() => {
-    try {
-      return generateMockData(15)
-    } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-      return []
-    }
-  })
+  const { patientId } = useParams()
+  const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
@@ -205,28 +176,31 @@ const ClientInteractions = (): ReactElement => {
   }
 
   // Transform logs to interaction data
-  const interactionData = useMemo(() => transformLogsToInteractionData(logs), [logs])
+  const interactionData = useMemo(() => {
+    const logsToUse = activeLogType
+      ? logsByType[activeLogType] || []
+      : Object.entries(logsByType)
+          .filter(([type]) => !loadingStates[type as LogType]) // Only use loaded types
+          .flatMap(([_, logs]) => logs)
 
-  useEffect(() => {
-    if (startDate && endDate && startDate > endDate) {
-      notifyError(t('patient_interactions.invalid_date_range'))
-    }
-  }, [startDate, endDate, t, notifyError])
+    return transformLogsToInteractionData(logsToUse)
+  }, [logsByType, activeLogType, loadingStates])
 
+  // Memoize filtered data with date range
   const filteredData = useMemo(() => {
-    try {
-      let filtered = data
+    let filtered = interactionData
 
-      if (interactionType !== 'all') {
-        filtered = filtered.filter((d) => d.type === interactionType)
-      }
+    if (activeLogType) {
+      // Filter by activeLogType if one is selected
+      filtered = filtered.filter((d) => d.type === activeLogType)
+    }
 
-      if (startDate && endDate) {
-        filtered = filtered.filter((d) => {
-          const date = new Date(d.date)
-          return isWithinInterval(date, { start: startDate, end: endDate })
-        })
-      }
+    if (startDate && endDate) {
+      filtered = filtered.filter((d) => {
+        const date = new Date(d.date)
+        return isWithinInterval(date, { start: startDate, end: endDate })
+      })
+    }
 
     return filtered
   }, [interactionData, activeLogType, startDate, endDate])
@@ -237,7 +211,28 @@ const ClientInteractions = (): ReactElement => {
     [filteredData, startDate, endDate]
   )
 
-  if (loading) {
+  const refreshLogType = async (logType: LogType): Promise<void> => {
+    setLoadingStates((prev) => ({ ...prev, [logType]: true }))
+    try {
+      const response = await patientLogApi.listLogs(patientId!, logType)
+      setLogsByType((prev) => ({
+        ...prev,
+        [logType]: response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        })),
+      }))
+    } catch (err) {
+      console.error(`Error refreshing ${logType} logs:`, err)
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [logType]: false }))
+    }
+  }
+
+  if (isLoading) {
     return (
       <Layout>
         <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
