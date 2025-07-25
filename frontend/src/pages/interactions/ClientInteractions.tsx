@@ -21,6 +21,7 @@ import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { LOG_TYPES } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
@@ -101,6 +102,8 @@ const transformDataForHeatmap = (
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams()
+  const { notifyError } = useNotify()
+
   const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
@@ -143,6 +146,7 @@ const ClientInteractions = (): ReactElement => {
       })
       .catch((_) => {
         setLogsByType((prev) => ({ ...prev, JOURNAL_CREATION: [] }))
+        notifyError('Failed to fetch client interactions')
       })
       .finally(() => {
         // 2) As soon as JOURNAL_CREATION is back, drop the initial spinner
@@ -167,13 +171,14 @@ const ClientInteractions = (): ReactElement => {
             })
             .catch((_) => {
               setLogsByType((prev) => ({ ...prev, [logType]: [] }))
+              notifyError('Failed to fetch client interactions')
             })
             .finally(() => {
               setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
             })
         })
       })
-  }, [patientId, t])
+  }, [patientId, notifyError, t])
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
