@@ -245,7 +245,9 @@
     "chatbot_name": "Назва чат-бота",
     "create_bot": "Створити бота",
     "files_visible_to_client": "Файли, видимі клієнту",
-    "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
+    "files_visible_only_to_coach": "Файли, видимі тільки тренеру",
+    "edit": "Редагувати",
+    "save_changes": "Зберегти зміни"
   },
   "patient_interactions": {
     "interaction_type": "Тип взаємодії",
@@ -446,7 +448,8 @@
       "create": "Зареєструвати нового клієнта",
       "details": "Деталі клієнта",
       "conversations": "Підсумок бесід",
-      "interactions": "Взаємодії з клієнтом"
+      "interactions": "Взаємодії з клієнтом",
+      "details_update": "Дані клієнта оновлюються"
     },
     "chatbot": {
       "create": "Створити нового чат-бота",

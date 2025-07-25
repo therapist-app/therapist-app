@@ -235,6 +235,7 @@ interface Resources {
       "phone": "Telefon",
       "address": "Adresse",
       "date_of_admission": "Aufnahmedatum",
+      "view_more_details": "Weitere Details anzeigen",
       "loading_patient_data": "Lade Klientendaten...",
       "counseling_plan": "Beratungsplan",
       "go_to_counseling_plan": "Zum Beratungsplan",
@@ -245,7 +246,9 @@ interface Resources {
       "chatbot_name": "Chatbot-Name",
       "create_bot": "Bot erstellen",
       "files_visible_to_client": "Für Klienten sichtbare Dateien",
-      "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien"
+      "files_visible_only_to_coach": "Nur für Coach sichtbare Dateien",
+      "edit": "Bearbeiten",
+      "save_changes": "Änderungen speichern"
     },
     "patient_interactions": {
       "interaction_type": "Interaktionstyp",
@@ -446,7 +449,8 @@ interface Resources {
         "create": "Neuen Klienten registrieren",
         "details": "Klientendetails",
         "conversations": "Gesprächszusammenfassung",
-        "interactions": "Klienteninteraktionen"
+        "interactions": "Klienteninteraktionen",
+        "details_update": "Daten werden aktualisiert"
       },
       "chatbot": {
         "create": "Neuen Chatbot erstellen",
@@ -1200,7 +1204,9 @@ interface Resources {
       "chatbot_name": "Назва чат-бота",
       "create_bot": "Створити бота",
       "files_visible_to_client": "Файли, видимі клієнту",
-      "files_visible_only_to_coach": "Файли, видимі тільки тренеру"
+      "files_visible_only_to_coach": "Файли, видимі тільки тренеру",
+      "edit": "Редагувати",
+      "save_changes": "Зберегти зміни"
     },
     "patient_interactions": {
       "interaction_type": "Тип взаємодії",
@@ -1401,7 +1407,8 @@ interface Resources {
         "create": "Зареєструвати нового клієнта",
         "details": "Деталі клієнта",
         "conversations": "Підсумок бесід",
-        "interactions": "Взаємодії з клієнтом"
+        "interactions": "Взаємодії з клієнтом",
+        "details_update": "Дані клієнта оновлюються"
       },
       "chatbot": {
         "create": "Створити нового чат-бота",
