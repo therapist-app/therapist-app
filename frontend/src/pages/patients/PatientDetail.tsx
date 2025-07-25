@@ -282,6 +282,7 @@ const PatientDetail = (): ReactElement => {
                       })
                     )
                   }
+                  sx={{ ...commonButtonStyles, minWidth: '180px' }}
                 >
                   {t('patient_detail.view_more_details')}
                 </Button>
