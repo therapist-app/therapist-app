@@ -21,7 +21,6 @@ import {
   TherapistControllerApiFactory,
   TherapistDocumentControllerApiFactory,
 } from '../api'
-import { LogOutputDTO } from '../store/patientLogData.ts'
 
 const baseURL: string = import.meta.env.VITE_BACKEND_BASE_URL
 

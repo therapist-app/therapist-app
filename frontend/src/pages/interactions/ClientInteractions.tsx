@@ -193,7 +193,7 @@ const ClientInteractions = (): ReactElement => {
     }
 
     fetchInitialData()
-  }, [patientId])
+  }, [patientId, t])
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
@@ -229,27 +229,6 @@ const ClientInteractions = (): ReactElement => {
     () => transformDataForHeatmap(filteredData, startDate, endDate),
     [filteredData, startDate, endDate]
   )
-
-  const refreshLogType = async (logType: LogType): Promise<void> => {
-    setLoadingStates((prev) => ({ ...prev, [logType]: true }))
-    try {
-      const response = await patientLogApi.listLogs(patientId!, logType)
-      setLogsByType((prev) => ({
-        ...prev,
-        [logType]: response.data.map((apiDto) => ({
-          id: apiDto.id || '',
-          patientId: apiDto.patientId || '',
-          logType: apiDto.logType || '',
-          timestamp: apiDto.timestamp || '',
-          uniqueIdentifier: apiDto.uniqueIdentifier || '',
-        })),
-      }))
-    } catch (err) {
-      console.error(`Error refreshing ${logType} logs:`, err)
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [logType]: false }))
-    }
-  }
 
   if (isLoadingInitialData) {
     return (

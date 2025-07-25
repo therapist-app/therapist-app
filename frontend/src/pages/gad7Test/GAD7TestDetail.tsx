@@ -12,8 +12,8 @@ import { format } from 'date-fns'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useNotify } from '../../hooks/useNotify'
 
+import { useNotify } from '../../hooks/useNotify'
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { patientTestApi } from '../../utils/api'
 
@@ -26,26 +26,28 @@ export const GAD7TestDetail = (): ReactElement => {
   useEffect(() => {
     const fetchTests = async (): Promise<void> => {
       try {
-      const response = await patientTestApi.getTestsForPatient(patientId!)
-      const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
-        id: apiDto.id!,
-        name: apiDto.name || '',
-        description: apiDto.description || '',
-        patientId: apiDto.patientId || '',
-        completedAt: apiDto.completedAt || '',
-        questions:
-          apiDto.questions?.map((q) => ({
-            question: q.question || '',
-            score: q.score || 0,
-          })) || [],
-      }))
-      setGad7Tests(normalized)
-    } catch {
-      notifyError('Failed to fetch GAD7 tests')
+        const response = await patientTestApi.getTestsForPatient(patientId!)
+        const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
+          id: apiDto.id!,
+          name: apiDto.name || '',
+          description: apiDto.description || '',
+          patientId: apiDto.patientId || '',
+          completedAt: apiDto.completedAt || '',
+          questions:
+            apiDto.questions?.map((q) => ({
+              question: q.question || '',
+              score: q.score || 0,
+            })) || [],
+        }))
+        setGad7Tests(normalized)
+      } catch {
+        notifyError('Failed to fetch GAD7 tests')
+      }
     }
+
     if (patientId) {
       fetchTests()
-    }}
+    }
   }, [patientId, notifyError])
 
   return (
