@@ -54,9 +54,11 @@ const ChatBotTemplateEdit: React.FC = () => {
   const dispatch = useAppDispatch()
   const { notifyError, notifySuccess, notifyWarning } = useNotify()
 
-  const { state } = useLocation() as { state?: { chatbotConfig?: ChatbotTemplateOutputDTO } }
+  const { state } = useLocation() as {
+  state?: { chatbotConfig?: ChatbotTemplateOutputDTO; patientId?: string };
+};
 
-  const [chatbotConfig, setChatbotConfig] = useState<ChatbotTemplateOutputDTO | null>(null)
+  const [chatbotConfig, setChatbotConfig] = useState<ChatbotTemplateOutputDTO | null>(null);
 
   const [selectedTab, setSelectedTab] = useState<'config' | 'sources'>('config')
 
@@ -67,6 +69,8 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false)
   const [isActive, setIsActive] = useState<boolean>(false)
   const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
+  const isPatientTemplate = Boolean(chatbotConfig?.patientId && chatbotConfig.patientId.trim() !== '')
+
 
   const chatListRef = useRef<HTMLUListElement>(null)
 
@@ -111,21 +115,20 @@ const ChatBotTemplateEdit: React.FC = () => {
   }, [state])
 
   useEffect(() => {
-    if (!chatbotConfig) {
-      return
-    }
+  if (!chatbotConfig) return;
 
-    setChatbotName(chatbotConfig.chatbotName || '')
-    setChatbotRole(chatbotConfig.chatbotRole || '')
-    setChatbotIcon(chatbotConfig.chatbotIcon || '')
-    setChatbotTone(chatbotConfig.chatbotTone || '')
-    setWelcomeMessage(chatbotConfig.welcomeMessage || '')
-    setIsActive(chatbotConfig.isActive || false)
+  setChatbotName(chatbotConfig.chatbotName || '');
+  setChatbotRole(chatbotConfig.chatbotRole || '');
+  setChatbotIcon(chatbotConfig.chatbotIcon || '');
+  setChatbotTone(chatbotConfig.chatbotTone || '');
+  setWelcomeMessage(chatbotConfig.welcomeMessage || '');
 
-    if (chatbotConfig.welcomeMessage) {
-      setChat([{ response: chatbotConfig.welcomeMessage }])
-    }
-  }, [chatbotConfig])
+  setIsActive(isPatientTemplate ? chatbotConfig.isActive ?? false : false);
+
+  if (chatbotConfig.welcomeMessage) {
+    setChat([{ response: chatbotConfig.welcomeMessage }]);
+  }
+}, [chatbotConfig, isPatientTemplate]);
 
   useEffect(() => {
     if (chatListRef.current) {
@@ -274,7 +277,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         chatbotRole: chatbotRole,
         chatbotTone: chatbotTone,
         welcomeMessage: welcomeMessage,
-        isActive: isActive,
+        ...(isPatientTemplate ? { isActive } : {}),
       }
 
       await dispatch(
@@ -481,17 +484,21 @@ const ChatBotTemplateEdit: React.FC = () => {
                   margin='normal'
                 />
 
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isActive}
-                      onChange={(e) => handleActiveChange(e.target.checked)}
-                      color='success'
-                      disabled={isOnlyTemplateForClient && isActive}
-                    />
-                  }
-                  label='Active (visible to patient)'
-                />
+                {isPatientTemplate && (
+  <FormControlLabel
+    control={
+      <Switch
+        checked={isActive}
+        onChange={(e) => handleActiveChange(e.target.checked)}
+        color="success"
+        disabled={isOnlyTemplateForClient && isActive}
+      />
+    }
+    label="Active (visible to patient)"
+  />
+)}
+
+
 
                 <Box sx={{ mt: 1, ml: -1, display: 'flex', justifyContent: 'left' }}>
                   <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
