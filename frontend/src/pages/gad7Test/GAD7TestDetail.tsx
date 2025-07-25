@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
+import { useNotify } from '../../hooks/useNotify'
 
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
 import { patientTestApi } from '../../utils/api'
@@ -19,11 +20,12 @@ import { patientTestApi } from '../../utils/api'
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams()
-
+  const { notifyError } = useNotify()
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 
   useEffect(() => {
     const fetchTests = async (): Promise<void> => {
+      try {
       const response = await patientTestApi.getTestsForPatient(patientId!)
       const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
         id: apiDto.id!,
@@ -38,11 +40,13 @@ export const GAD7TestDetail = (): ReactElement => {
           })) || [],
       }))
       setGad7Tests(normalized)
+    } catch {
+      notifyError('Failed to fetch GAD7 tests')
     }
     if (patientId) {
       fetchTests()
-    }
-  }, [patientId])
+    }}
+  }, [patientId, notifyError])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
