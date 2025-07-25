@@ -449,7 +449,7 @@
       "details": "Klientendetails",
       "conversations": "Gesprächszusammenfassung",
       "interactions": "Klienteninteraktionen",
-      "details_update": "Daten werden aktualisiert"
+      "details_update": "Klientendetails bearbeiten"
     },
     "chatbot": {
       "create": "Neuen Chatbot erstellen",

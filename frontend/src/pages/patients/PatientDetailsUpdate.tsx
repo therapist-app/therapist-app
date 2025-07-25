@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Layout from '../../generalComponents/Layout'
 import { updatePatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
+import { commonButtonStyles } from '../../styles/buttonStyles'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -241,11 +242,20 @@ const PatientDetailsUpdate = (): JSX.Element => {
       <Box sx={{ maxWidth: 800, mx: 'auto' }}>
         <Box display='flex' justifyContent='flex-end' mb={2}>
           {!isEditing ? (
-            <Button variant='contained' onClick={() => setIsEditing(true)}>
+            <Button
+              variant='contained'
+              onClick={() => setIsEditing(true)}
+              sx={{ ...commonButtonStyles }}
+            >
               {t('patient_detail.edit')}
             </Button>
           ) : (
-            <Button variant='contained' color='success' onClick={handleUpdateSubmit}>
+            <Button
+              variant='contained'
+              color='success'
+              onClick={handleUpdateSubmit}
+              sx={{ ...commonButtonStyles }}
+            >
               {t('patient_detail.save_changes')}
             </Button>
           )}

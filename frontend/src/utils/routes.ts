@@ -136,7 +136,7 @@ export const PAGE_NAMES: Record<PAGES, string> = {
 
   [PAGES.PATIENTS_CREATE_PAGE]: 'pages.patients.create',
   [PAGES.PATIENTS_DETAILS_PAGE]: 'pages.patients.details',
-  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: 'pages.patients.details-update',
+  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: 'pages.patients.details_update',
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: 'pages.patients.interactions',
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: 'pages.patients.conversations',

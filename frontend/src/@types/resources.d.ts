@@ -450,7 +450,7 @@ interface Resources {
         "details": "Klientendetails",
         "conversations": "Gesprächszusammenfassung",
         "interactions": "Klienteninteraktionen",
-        "details_update": "Daten werden aktualisiert"
+        "details_update": "Klientendetails bearbeiten"
       },
       "chatbot": {
         "create": "Neuen Chatbot erstellen",
@@ -1408,7 +1408,7 @@ interface Resources {
         "details": "Деталі клієнта",
         "conversations": "Підсумок бесід",
         "interactions": "Взаємодії з клієнтом",
-        "details_update": "Дані клієнта оновлюються"
+        "details_update": "Редагувати деталі клієнта"
       },
       "chatbot": {
         "create": "Створити нового чат-бота",
