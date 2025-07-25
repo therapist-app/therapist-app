@@ -20,10 +20,11 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
+import { CreateChatbotTemplateDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { createPatientChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
-import { createPatientChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import {
   cancelButtonStyles,
   commonButtonStyles,
@@ -32,7 +33,6 @@ import {
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
-import {CreateChatbotTemplateDTO} from "../../api";
 
 type Complaint = {
   id: string
@@ -218,25 +218,26 @@ const PatientCreate = (): ReactElement => {
       if (registerPatient.fulfilled.match(resultAction)) {
         const newPatient = resultAction.payload
 
-          const chatbotTemplate: CreateChatbotTemplateDTO = {
-            chatbotName: `Chatbot for ${newPatient.name}`,
-            chatbotIcon: '🤖',
-            chatbotRole: 'Your supportive virtual assistant',
-            chatbotTone: 'Empathetic and professional',
-            welcomeMessage: `Hello ${newPatient.name}, I'm here to support you.`,
-            isActive: true, }
-          const chatbotResult = await dispatch(
-            createPatientChatbotTemplate({
-              patientId: newPatient.id!,
-              dto: chatbotTemplate,
-            })
-          )
-          if (createPatientChatbotTemplate.rejected.match(chatbotResult)) {
-            console.warn('Chatbot creation failed:', chatbotResult.payload)
-            setSnackbarMessage('Patient created, but chatbot creation failed.')
-            setSnackbarSeverity('warning')
-            setSnackbarOpen(true)
-          }
+        const chatbotTemplate: CreateChatbotTemplateDTO = {
+          chatbotName: `Chatbot for ${newPatient.name}`,
+          chatbotIcon: '🤖',
+          chatbotRole: 'Your supportive virtual assistant',
+          chatbotTone: 'Empathetic and professional',
+          welcomeMessage: `Hello ${newPatient.name}, I'm here to support you.`,
+          isActive: true,
+        }
+        const chatbotResult = await dispatch(
+          createPatientChatbotTemplate({
+            patientId: newPatient.id!,
+            dto: chatbotTemplate,
+          })
+        )
+        if (createPatientChatbotTemplate.rejected.match(chatbotResult)) {
+          console.warn('Chatbot creation failed:', chatbotResult.payload)
+          setSnackbarMessage('Patient created, but chatbot creation failed.')
+          setSnackbarSeverity('warning')
+          setSnackbarOpen(true)
+        }
 
         setSnackbarMessage(t('patient_create.patient_register_success'))
         setSnackbarSeverity('success')

@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachLogControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachLogControllerPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LogOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LogOutputDTOPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +96,7 @@
       <workItem from="1741013527678" duration="734000" />
       <workItem from="1750856052585" duration="8469000" />
       <workItem from="1751372491577" duration="1761000" />
-      <workItem from="1753435261136" duration="2979000" />
+      <workItem from="1753435261136" duration="3325000" />
     </task>
     <servers />
   </component>
@@ -131,7 +119,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx</url>
-          <line>304</line>
+          <line>310</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
