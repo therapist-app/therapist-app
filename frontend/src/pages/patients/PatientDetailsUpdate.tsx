@@ -201,7 +201,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
         replace: true,
       })
     } catch (error) {
-      const errorMessage = handleError(error as AxiosError)
+      const errorMessage = await handleError(error as AxiosError)
       setSnackbarMessage(errorMessage)
       setSnackbarSeverity('error')
       setSnackbarOpen(true)

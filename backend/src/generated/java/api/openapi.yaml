@@ -2311,6 +2311,7 @@ components:
         exerciseExecutionId:
           type: string
         executionTitle:
+          format: date-time
           type: string
       type: object
     PutSharingDTO:
@@ -2378,6 +2379,8 @@ components:
           type: string
         fileType:
           type: string
+        youtubeUrl:
+          type: string
         fileData:
           description: File data encoded in Base64
           format: byte
@@ -2428,6 +2431,8 @@ components:
         fileName:
           type: string
         fileType:
+          type: string
+        youtubeUrl:
           type: string
         fileData:
           description: File data encoded in Base64
@@ -2831,10 +2836,11 @@ components:
       type: object
     ExecutionOverviewOutputDTO:
       example:
-        executionTitle: executionTitle
+        executionTitle: 2000-01-23T04:56:07.000+00:00
         exerciseExecutionId: exerciseExecutionId
       properties:
         executionTitle:
+          format: date-time
           type: string
         exerciseExecutionId:
           type: string

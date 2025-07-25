@@ -7,7 +7,11 @@
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExecutionOverviewOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExecutionOverviewOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseCompletionNameInputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseCompletionNameInputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentInputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentInputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentUpdateInputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentUpdateInputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +100,7 @@
       <workItem from="1741013527678" duration="734000" />
       <workItem from="1750856052585" duration="8469000" />
       <workItem from="1751372491577" duration="1761000" />
-      <workItem from="1753435261136" duration="3325000" />
+      <workItem from="1753435261136" duration="4155000" />
     </task>
     <servers />
   </component>
@@ -113,18 +117,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx</url>
-          <line>310</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +38,7 @@ public class ExerciseCompletionNameInputDTOPatientAPI {
   private String exerciseExecutionId;
 
   public static final String JSON_PROPERTY_EXECUTION_TITLE = "executionTitle";
-  private String executionTitle;
+  private Instant executionTitle;
 
   public ExerciseCompletionNameInputDTOPatientAPI() {
   }
@@ -68,7 +69,7 @@ public class ExerciseCompletionNameInputDTOPatientAPI {
   }
 
 
-  public ExerciseCompletionNameInputDTOPatientAPI executionTitle(String executionTitle) {
+  public ExerciseCompletionNameInputDTOPatientAPI executionTitle(Instant executionTitle) {
     
     this.executionTitle = executionTitle;
     return this;
@@ -82,14 +83,14 @@ public class ExerciseCompletionNameInputDTOPatientAPI {
   @JsonProperty(JSON_PROPERTY_EXECUTION_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getExecutionTitle() {
+  public Instant getExecutionTitle() {
     return executionTitle;
   }
 
 
   @JsonProperty(JSON_PROPERTY_EXECUTION_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExecutionTitle(String executionTitle) {
+  public void setExecutionTitle(Instant executionTitle) {
     this.executionTitle = executionTitle;
   }
 
