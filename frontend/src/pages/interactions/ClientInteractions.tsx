@@ -1,4 +1,15 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -6,10 +17,15 @@ import { ResponsiveHeatMap } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
+import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
+import { LOG_TYPES } from '../../store/logTypes.ts'
+import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { patientLogApi } from '../../utils/api.ts'
 
 interface InteractionData {
   hour: number
@@ -23,35 +39,20 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-const generateMockData = (days: number): InteractionData[] => {
-  const data: InteractionData[] = []
-  const interactionTypes = [
-    'Journal Creation',
-    'Journal Update',
-    'Exercise Start',
-    'Exercise Completion',
-    'Chatbot Creation',
-    'Message Sent',
-    'Chatbot Interaction',
-  ]
-
-  for (let i = 0; i < days; i++) {
-    const date = subDays(new Date(), i)
-    const dailyInteractions = Math.floor(Math.random() * 6)
-
-    for (let j = 0; j < dailyInteractions; j++) {
-      const hour = Math.floor(Math.random() * 24)
-      const type = interactionTypes[Math.floor(Math.random() * interactionTypes.length)]
-
-      data.push({
-        date: format(date, 'yyyy-MM-dd'),
-        hour: hour,
-        value: 1,
-        type: type,
-      })
-    }
+const transformLogsToInteractionData = (
+  logs: LogOutputDTO[] | undefined | null
+): InteractionData[] => {
+  // Handle cases where logs might be undefined or null
+  if (!logs || !Array.isArray(logs)) {
+    return []
   }
-  return data
+
+  return logs.map((log) => ({
+    date: format(new Date(log.timestamp), 'yyyy-MM-dd'),
+    hour: new Date(log.timestamp).getHours(),
+    value: 1,
+    type: log.logType,
+  }))
 }
 
 const transformDataForHeatmap = (
@@ -100,56 +101,142 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
+  const { patientId } = useParams()
   const { notifyError } = useNotify()
 
-  const [interactionType, setInteractionType] = useState<string>('all')
-  const [data] = useState<InteractionData[]>(() => {
-    try {
-      return generateMockData(15)
-    } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-      return []
-    }
-  })
+  const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
+  const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
+
+  // Separate states for initial loading vs background loading
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [backgroundLoadingStates, setBackgroundLoadingStates] = useState<Record<LogType, boolean>>(
+    LOG_TYPES.reduce(
+      (acc, type) => ({ ...acc, [type]: false }), // Start all as false since we'll handle them separately
+      {} as Record<LogType, boolean>
+    )
+  )
+
+  const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
+    {} as Record<LogType, LogOutputDTO[]>
+  )
 
   useEffect(() => {
-    if (startDate && endDate && startDate > endDate) {
-      notifyError(t('patient_interactions.invalid_date_range'))
+    if (!patientId) {
+      return
     }
-  }, [startDate, endDate, t, notifyError])
+    setError(null)
+    setIsInitialLoading(true)
 
-  const filteredData = useMemo(() => {
-    try {
-      let filtered = data
+    patientLogApi
+      .listLogs(patientId, 'JOURNAL_CREATION')
+      .then((response) => {
+        const normalized = response.data.map((apiDto) => ({
+          id: apiDto.id ?? '',
+          patientId: apiDto.patientId ?? '',
+          logType: apiDto.logType ?? '',
+          timestamp: apiDto.timestamp ?? '',
+          uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
+        }))
+        setLogsByType((prev) => ({
+          ...prev,
+          JOURNAL_CREATION: normalized,
+        }))
+      })
+      .catch((_) => {
+        setLogsByType((prev) => ({ ...prev, JOURNAL_CREATION: [] }))
+        notifyError('Failed to fetch client interactions')
+      })
+      .finally(() => {
+        // 2) As soon as JOURNAL_CREATION is back, drop the initial spinner
+        setIsInitialLoading(false)
 
-      if (interactionType !== 'all') {
-        filtered = filtered.filter((d) => d.type === interactionType)
-      }
+        // 3) …and *then* kick off every other log‐type, but do *not* await these
+        LOG_TYPES.filter((t) => t !== 'JOURNAL_CREATION').forEach((logType) => {
+          // mark it “loading” so your dropdown spinner can still show if the user clicks
+          setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: true }))
 
-      if (startDate && endDate) {
-        filtered = filtered.filter((d) => {
-          const date = new Date(d.date)
-          return isWithinInterval(date, { start: startDate, end: endDate })
+          patientLogApi
+            .listLogs(patientId, logType)
+            .then((response) => {
+              const normalized = response.data.map((apiDto) => ({
+                id: apiDto.id ?? '',
+                patientId: apiDto.patientId ?? '',
+                logType: apiDto.logType ?? '',
+                timestamp: apiDto.timestamp ?? '',
+                uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
+              }))
+              setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
+            })
+            .catch((_) => {
+              setLogsByType((prev) => ({ ...prev, [logType]: [] }))
+              notifyError('Failed to fetch client interactions')
+            })
+            .finally(() => {
+              setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
+            })
         })
-      }
+      })
+  }, [patientId, notifyError, t])
 
-      return filtered
-    } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-      return []
-    }
-  }, [data, interactionType, startDate, endDate, notifyError])
+  // Transform logs to interaction data
+  const interactionData = useMemo(() => {
+    const logsToUse = activeLogType
+      ? logsByType[activeLogType] || []
+      : Object.entries(logsByType)
+          .filter(
+            ([type]) => type === 'JOURNAL_CREATION' || !backgroundLoadingStates[type as LogType]
+          ) // Only use loaded types
+          .flatMap(([_, logs]) => logs)
 
-  const heatmapData = useMemo(() => {
-    try {
-      return transformDataForHeatmap(filteredData, startDate, endDate)
-    } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-      return []
+    return transformLogsToInteractionData(logsToUse)
+  }, [logsByType, activeLogType, backgroundLoadingStates])
+
+  // Memoize filtered data with date range
+  const filteredData = useMemo(() => {
+    let filtered = interactionData
+
+    if (activeLogType) {
+      filtered = filtered.filter((d) => d.type === activeLogType)
     }
-  }, [filteredData, startDate, endDate, notifyError])
+
+    if (startDate && endDate) {
+      filtered = filtered.filter((d) => {
+        const date = new Date(d.date)
+        return isWithinInterval(date, { start: startDate, end: endDate })
+      })
+    }
+
+    return filtered
+  }, [interactionData, activeLogType, startDate, endDate])
+
+  // Memoize heatmap data transformation
+  const heatmapData = useMemo(
+    () => transformDataForHeatmap(filteredData, startDate, endDate),
+    [filteredData, startDate, endDate]
+  )
+
+  if (isInitialLoading) {
+    return (
+      <Layout>
+        <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
+          <Typography>{t('patient_interactions.loading')}</Typography>
+          <CircularProgress />
+        </Box>
+      </Layout>
+    )
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
+          <Typography color='error'>{error}</Typography>
+        </Box>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
@@ -162,20 +249,22 @@ const ClientInteractions = (): ReactElement => {
                   {t('patient_interactions.interaction_type')}
                 </InputLabel>
                 <Select
-                  labelId='interaction-type-label'
-                  value={interactionType}
-                  label={t('patient_interactions.interaction_type')}
-                  onChange={(e) => setInteractionType(e.target.value)}
-                  size='small'
+                  value={activeLogType || ''}
+                  onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                  label={t('patient_interactions.log_types')}
                 >
-                  <MenuItem value='all'>{t('All Interactions')}</MenuItem>
-                  <MenuItem value='Journal Creation'>{t('Journal Creation')}</MenuItem>
-                  <MenuItem value='Journal Update'>{t('Journal Update')}</MenuItem>
-                  <MenuItem value='Exercise Start'>{t('Exercise Start')}</MenuItem>
-                  <MenuItem value='Exercise Completion'>{t('Exercise Completion')}</MenuItem>
-                  <MenuItem value='Chatbot Creation'>{t('Chatbot Creation')}</MenuItem>
-                  <MenuItem value='Message Sent'>{t('Number of Messages')}</MenuItem>
-                  <MenuItem value='Chatbot Interaction'>{t('Chatbot Interaction')}</MenuItem>
+                  <MenuItem value=''>All Log Types</MenuItem>
+                  {LOG_TYPES.map((logType) => (
+                    <MenuItem key={logType} value={logType}>
+                      <Box display='flex' alignItems='center'>
+                        {logType !== 'JOURNAL_CREATION' &&
+                          backgroundLoadingStates[logType as LogType] && (
+                            <CircularProgress size={16} sx={{ mr: 1 }} />
+                          )}
+                        {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
+                      </Box>
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <DatePicker

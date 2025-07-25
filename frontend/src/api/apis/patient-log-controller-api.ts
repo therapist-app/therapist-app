@@ -22,24 +22,28 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
-import type { PsychologicalTestOutputDTO } from '../models';
+import type { LogOutputDTO } from '../models';
 /**
- * PatientTestControllerApi - axios parameter creator
+ * PatientLogControllerApi - axios parameter creator
  * @export
  */
-export const PatientTestControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+export const PatientLogControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
          * @param {string} patientId 
+         * @param {string} logType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTestsForPatient: async (patientId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listLogs: async (patientId: string, logType: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'patientId' is not null or undefined
-            assertParamExists('getTestsForPatient', 'patientId', patientId)
-            const localVarPath = `/tests/gad7/patient/{patientId}`
-                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
+            assertParamExists('listLogs', 'patientId', patientId)
+            // verify required parameter 'logType' is not null or undefined
+            assertParamExists('listLogs', 'logType', logType)
+            const localVarPath = `/logs/patient/{patientId}/{logType}`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
+                .replace(`{${"logType"}}`, encodeURIComponent(String(logType)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -66,79 +70,83 @@ export const PatientTestControllerApiAxiosParamCreator = function (configuration
 };
 
 /**
- * PatientTestControllerApi - functional programming interface
+ * PatientLogControllerApi - functional programming interface
  * @export
  */
-export const PatientTestControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PatientTestControllerApiAxiosParamCreator(configuration)
+export const PatientLogControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PatientLogControllerApiAxiosParamCreator(configuration)
     return {
         /**
          * 
          * @param {string} patientId 
+         * @param {string} logType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PsychologicalTestOutputDTO>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTestsForPatient(patientId, options);
+        async listLogs(patientId: string, logType: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LogOutputDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listLogs(patientId, logType, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientTestControllerApi.getTestsForPatient']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PatientLogControllerApi.listLogs']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * PatientTestControllerApi - factory interface
+ * PatientLogControllerApi - factory interface
  * @export
  */
-export const PatientTestControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PatientTestControllerApiFp(configuration)
+export const PatientLogControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PatientLogControllerApiFp(configuration)
     return {
         /**
          * 
          * @param {string} patientId 
+         * @param {string} logType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PsychologicalTestOutputDTO>> {
-            return localVarFp.getTestsForPatient(patientId, options).then((request) => request(axios, basePath));
+        listLogs(patientId: string, logType: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<LogOutputDTO>> {
+            return localVarFp.listLogs(patientId, logType, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * PatientTestControllerApi - interface
+ * PatientLogControllerApi - interface
  * @export
- * @interface PatientTestControllerApi
+ * @interface PatientLogControllerApi
  */
-export interface PatientTestControllerApiInterface {
+export interface PatientLogControllerApiInterface {
     /**
      * 
      * @param {string} patientId 
+     * @param {string} logType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientTestControllerApiInterface
+     * @memberof PatientLogControllerApiInterface
      */
-    getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PsychologicalTestOutputDTO>>;
+    listLogs(patientId: string, logType: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<LogOutputDTO>>;
 
 }
 
 /**
- * PatientTestControllerApi - object-oriented interface
+ * PatientLogControllerApi - object-oriented interface
  * @export
- * @class PatientTestControllerApi
+ * @class PatientLogControllerApi
  * @extends {BaseAPI}
  */
-export class PatientTestControllerApi extends BaseAPI implements PatientTestControllerApiInterface {
+export class PatientLogControllerApi extends BaseAPI implements PatientLogControllerApiInterface {
     /**
      * 
      * @param {string} patientId 
+     * @param {string} logType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PatientTestControllerApi
+     * @memberof PatientLogControllerApi
      */
-    public getTestsForPatient(patientId: string, options?: RawAxiosRequestConfig) {
-        return PatientTestControllerApiFp(this.configuration).getTestsForPatient(patientId, options).then((request) => request(this.axios, this.basePath));
+    public listLogs(patientId: string, logType: string, options?: RawAxiosRequestConfig) {
+        return PatientLogControllerApiFp(this.configuration).listLogs(patientId, logType, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

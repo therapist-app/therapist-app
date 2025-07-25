@@ -254,7 +254,27 @@
     "date": "Datum",
     "last_week": "Letzte Woche",
     "last_two_weeks": "Letzte 2 Wochen",
-    "last_three_weeks": "Letzte 3 Wochen"
+    "last_three_weeks": "Letzte 3 Wochen",
+    "loading": "Lade Klientendaten...",
+    "fetch_error": "Fehler beim Abrufen der Klientendaten.",
+    "no_data": "Keine Klienten-Logdaten verfügbar.",
+    "log_types": {
+      "journal_creation": "Journal Erstellung",
+      "journal_update": "Journal Aktualisierung",
+      "exercise_start": "Übungsstart",
+      "exercise_completion": "Übung abgeschlossen",
+      "exercise_update": "Übung aktualisiert",
+      "general_conversation_creation": "Allgemeine Konversation erstellt",
+      "general_conversation_name_update": "Name der allgemeinen Konversation aktualisiert",
+      "general_conversation_message_creation": "Nachricht in allgemeiner Konversation geschrieben",
+      "document_conversation_message_creation": "Nachricht in Dokument-Konversation geschrieben",
+      "exercise_conversation_message_creation": "Nachricht in Übungs-Konversation geschrieben",
+      "journal_conversation_message_creation": "Nachricht in Journal-Konversation geschrieben",
+      "chatbot_icon_update": "Chatbot-Symbol aktualisiert",
+      "harmful_content_detected": "Gefährlicher Inhalt",
+      "document_read": "Dokument gelesen",
+      "psychological_test_completed": "GAD-7 Test abgeschlossen"
+    }
   },
   "patient_create": {
     "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
