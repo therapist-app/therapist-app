@@ -256,7 +256,25 @@
     "last_two_weeks": "Last 2 Weeks",
     "last_three_weeks": "Last 3 Weeks",
     "loading": "Loading patient interactions data...",
-    "no_data": "No client log data available."
+    "fetch_error": "Error fetching patient interactions data.",
+    "no_data": "No client log data available.",
+    "log_types": {
+      "journal_creation": "Journal Creation",
+      "journal_update": "Journal Update",
+      "exercise_start": "Exercise Start",
+      "exercise_completion": "Exercise Completion",
+      "exercise_update": "Exercise Update",
+      "general_conversation_creation": "General Conversation Creation",
+      "general_conversation_name_update": "General Conversation Name Update",
+      "general_conversation_message_creation": "General Conversation Message Creation",
+      "document_conversation_message_creation": "Document Conversation Message Creation",
+      "exercise_conversation_message_creation": "Exercise Conversation Message Creation",
+      "journal_conversation_message_creation": "Journal Conversation Message Creation",
+      "chatbot_icon_update": "Chatbot Icon Update",
+      "harmful_content_detected": "Harmful Content",
+      "document_read": "Document Read",
+      "psychological_test_completed": "Psychological Test Completed"
+    }
   },
   "patient_create": {
     "title": "This is the page to create a new client",

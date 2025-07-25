@@ -106,16 +106,14 @@ const ClientInteractions = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
-  const [loadingStates, setLoadingStates] = useState<Record<LogType, boolean>>(
+  // Separate states for initial loading vs background loading
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
+  const [backgroundLoadingStates, setBackgroundLoadingStates] = useState<Record<LogType, boolean>>(
     LOG_TYPES.reduce(
-      (acc, type) => ({ ...acc, [type]: type === 'JOURNAL_CREATION' }),
+      (acc, type) => ({ ...acc, [type]: false }), // Start all as false since we'll handle them separately
       {} as Record<LogType, boolean>
     )
   )
-
-  const isLoadingInitialData = useMemo(() => {
-    return loadingStates['JOURNAL_CREATION' as LogType]
-  }, [loadingStates])
 
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
@@ -129,6 +127,8 @@ const ClientInteractions = (): ReactElement => {
 
       try {
         setError(null)
+        setIsInitialLoading(true)
+
         // First fetch only JOURNAL_CREATION
         const response = await patientLogApi.listLogs(patientId, 'JOURNAL_CREATION')
         const normalizedData = response.data.map((apiDto) => ({
@@ -144,16 +144,15 @@ const ClientInteractions = (): ReactElement => {
           ['JOURNAL_CREATION']: normalizedData,
         }))
 
+        // At this point, we have enough data to render the visualization
+        setIsInitialLoading(false)
+
         // Then fetch the rest in the background
         fetchOtherLogTypes()
       } catch (err) {
         console.error('Error fetching initial logs:', err)
         setError(t('patient_interactions.fetch_error'))
-      } finally {
-        setLoadingStates((prev) => ({
-          ...prev,
-          ['JOURNAL_CREATION']: false,
-        }))
+        setIsInitialLoading(false)
       }
     }
 
@@ -165,7 +164,7 @@ const ClientInteractions = (): ReactElement => {
       const otherTypes = LOG_TYPES.filter((type) => type !== 'JOURNAL_CREATION')
 
       otherTypes.forEach(async (logType) => {
-        setLoadingStates((prev) => ({ ...prev, [logType]: true }))
+        setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: true }))
         try {
           const response = await patientLogApi.listLogs(patientId, logType)
           const normalizedData = response.data.map((apiDto) => ({
@@ -187,7 +186,7 @@ const ClientInteractions = (): ReactElement => {
             [logType]: [],
           }))
         } finally {
-          setLoadingStates((prev) => ({ ...prev, [logType]: false }))
+          setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
         }
       })
     }
@@ -200,11 +199,13 @@ const ClientInteractions = (): ReactElement => {
     const logsToUse = activeLogType
       ? logsByType[activeLogType] || []
       : Object.entries(logsByType)
-          .filter(([type]) => !loadingStates[type as LogType]) // Only use loaded types
+          .filter(
+            ([type]) => type === 'JOURNAL_CREATION' || !backgroundLoadingStates[type as LogType]
+          ) // Only use loaded types
           .flatMap(([_, logs]) => logs)
 
     return transformLogsToInteractionData(logsToUse)
-  }, [logsByType, activeLogType, loadingStates])
+  }, [logsByType, activeLogType, backgroundLoadingStates])
 
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
@@ -230,11 +231,11 @@ const ClientInteractions = (): ReactElement => {
     [filteredData, startDate, endDate]
   )
 
-  if (isLoadingInitialData) {
+  if (isInitialLoading) {
     return (
       <Layout>
         <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
-          <Typography>{t('patient_interactions.loading_initial')}</Typography>
+          <Typography>{t('patient_interactions.loading')}</Typography>
           <CircularProgress />
         </Box>
       </Layout>
@@ -264,16 +265,18 @@ const ClientInteractions = (): ReactElement => {
                 <Select
                   value={activeLogType || ''}
                   onChange={(e) => setActiveLogType(e.target.value as LogType)}
-                  label={t('patient_interactions.log_type')}
+                  label={t('patient_interactions.log_types')}
                 >
                   <MenuItem value=''>All Log Types</MenuItem>
                   {LOG_TYPES.map((logType) => (
                     <MenuItem key={logType} value={logType}>
                       <Box display='flex' alignItems='center'>
-                        {loadingStates[logType as LogType] && (
-                          <CircularProgress size={16} sx={{ mr: 1 }} />
-                        )}{' '}
-                        {t(`logTypes.${logType.toLowerCase()}`)}
+                        {/* Show loading spinner only for background loading (not initial loading) */}
+                        {logType !== 'JOURNAL_CREATION' &&
+                          backgroundLoadingStates[logType as LogType] && (
+                            <CircularProgress size={16} sx={{ mr: 1 }} />
+                          )}
+                        {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
                       </Box>
                     </MenuItem>
                   ))}
