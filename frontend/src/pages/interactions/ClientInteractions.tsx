@@ -120,78 +120,59 @@ const ClientInteractions = (): ReactElement => {
   )
 
   useEffect(() => {
-    const fetchInitialData = async (): Promise<void> => {
-      if (!patientId) {
-        return
-      }
+    if (!patientId) {
+      return
+    }
+    setError(null)
+    setIsInitialLoading(true)
 
-      try {
-        setError(null)
-        setIsInitialLoading(true)
-
-        // First fetch only JOURNAL_CREATION
-        const response = await patientLogApi.listLogs(patientId, 'JOURNAL_CREATION')
-        const normalizedData = response.data.map((apiDto) => ({
-          id: apiDto.id || '',
-          patientId: apiDto.patientId || '',
-          logType: apiDto.logType || '',
-          timestamp: apiDto.timestamp || '',
-          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+    patientLogApi
+      .listLogs(patientId, 'JOURNAL_CREATION')
+      .then((response) => {
+        const normalized = response.data.map((apiDto) => ({
+          id: apiDto.id ?? '',
+          patientId: apiDto.patientId ?? '',
+          logType: apiDto.logType ?? '',
+          timestamp: apiDto.timestamp ?? '',
+          uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
         }))
-
         setLogsByType((prev) => ({
           ...prev,
-          ['JOURNAL_CREATION']: normalizedData,
+          JOURNAL_CREATION: normalized,
         }))
-
-        // At this point, we have enough data to render the visualization
-        setIsInitialLoading(false)
-
-        // Then fetch the rest in the background
-        fetchOtherLogTypes()
-      } catch (err) {
-        console.error('Error fetching initial logs:', err)
-        setError(t('patient_interactions.fetch_error'))
-        setIsInitialLoading(false)
-      }
-    }
-
-    const fetchOtherLogTypes = async (): Promise<void> => {
-      if (!patientId) {
-        return
-      }
-
-      const otherTypes = LOG_TYPES.filter((type) => type !== 'JOURNAL_CREATION')
-
-      otherTypes.forEach(async (logType) => {
-        setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: true }))
-        try {
-          const response = await patientLogApi.listLogs(patientId, logType)
-          const normalizedData = response.data.map((apiDto) => ({
-            id: apiDto.id || '',
-            patientId: apiDto.patientId || '',
-            logType: apiDto.logType || '',
-            timestamp: apiDto.timestamp || '',
-            uniqueIdentifier: apiDto.uniqueIdentifier || '',
-          }))
-
-          setLogsByType((prev) => ({
-            ...prev,
-            [logType]: normalizedData,
-          }))
-        } catch (err) {
-          console.error(`Error fetching ${logType} logs:`, err)
-          setLogsByType((prev) => ({
-            ...prev,
-            [logType]: [],
-          }))
-        } finally {
-          setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
-        }
       })
-    }
+      .catch((_) => {
+        setLogsByType((prev) => ({ ...prev, JOURNAL_CREATION: [] }))
+      })
+      .finally(() => {
+        // 2) As soon as JOURNAL_CREATION is back, drop the initial spinner
+        setIsInitialLoading(false)
 
-    fetchInitialData()
+        // 3) …and *then* kick off every other log‐type, but do *not* await these
+        LOG_TYPES.filter((t) => t !== 'JOURNAL_CREATION').forEach((logType) => {
+          // mark it “loading” so your dropdown spinner can still show if the user clicks
+          setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: true }))
+
+          patientLogApi
+            .listLogs(patientId, logType)
+            .then((response) => {
+              const normalized = response.data.map((apiDto) => ({
+                id: apiDto.id ?? '',
+                patientId: apiDto.patientId ?? '',
+                logType: apiDto.logType ?? '',
+                timestamp: apiDto.timestamp ?? '',
+                uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
+              }))
+              setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
+            })
+            .catch((_) => {
+              setLogsByType((prev) => ({ ...prev, [logType]: [] }))
+            })
+            .finally(() => {
+              setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
+            })
+        })
+      })
   }, [patientId, t])
 
   // Transform logs to interaction data
@@ -271,7 +252,6 @@ const ClientInteractions = (): ReactElement => {
                   {LOG_TYPES.map((logType) => (
                     <MenuItem key={logType} value={logType}>
                       <Box display='flex' alignItems='center'>
-                        {/* Show loading spinner only for background loading (not initial loading) */}
                         {logType !== 'JOURNAL_CREATION' &&
                           backgroundLoadingStates[logType as LogType] && (
                             <CircularProgress size={16} sx={{ mr: 1 }} />
