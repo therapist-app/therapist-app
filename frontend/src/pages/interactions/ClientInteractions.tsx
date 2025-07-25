@@ -107,11 +107,14 @@ const ClientInteractions = (): ReactElement => {
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
   const [loadingStates, setLoadingStates] = useState<Record<LogType, boolean>>(
-    LOG_TYPES.reduce((acc, type) => ({ ...acc, [type]: true }), {} as Record<LogType, boolean>)
+    LOG_TYPES.reduce(
+      (acc, type) => ({ ...acc, [type]: type === 'JOURNAL_CREATION' }),
+      {} as Record<LogType, boolean>
+    )
   )
 
-  const isLoading = useMemo(() => {
-    return Object.values(loadingStates).some(Boolean)
+  const isLoadingInitialData = useMemo(() => {
+    return loadingStates['JOURNAL_CREATION' as LogType]
   }, [loadingStates])
 
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
@@ -119,22 +122,50 @@ const ClientInteractions = (): ReactElement => {
   )
 
   useEffect(() => {
-    fetchAllLogTypes()
-  }, [patientId])
+    const fetchInitialData = async (): Promise<void> => {
+      if (!patientId) {
+        return
+      }
 
-  const fetchAllLogTypes = async (): Promise<void> => {
-    if (!patientId) {
-      return
+      try {
+        setError(null)
+        // First fetch only JOURNAL_CREATION
+        const response = await patientLogApi.listLogs(patientId, 'JOURNAL_CREATION')
+        const normalizedData = response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        }))
+
+        setLogsByType((prev) => ({
+          ...prev,
+          ['JOURNAL_CREATION']: normalizedData,
+        }))
+
+        // Then fetch the rest in the background
+        fetchOtherLogTypes()
+      } catch (err) {
+        console.error('Error fetching initial logs:', err)
+        setError(t('patient_interactions.fetch_error'))
+      } finally {
+        setLoadingStates((prev) => ({
+          ...prev,
+          ['JOURNAL_CREATION']: false,
+        }))
+      }
     }
 
-    try {
-      setError(null)
-      // Reset loading states to true for all types
-      setLoadingStates(
-        LOG_TYPES.reduce((acc, type) => ({ ...acc, [type]: true }), {} as Record<LogType, boolean>)
-      )
+    const fetchOtherLogTypes = async (): Promise<void> => {
+      if (!patientId) {
+        return
+      }
 
-      const fetchPromises = LOG_TYPES.map(async (logType) => {
+      const otherTypes = LOG_TYPES.filter((type) => type !== 'JOURNAL_CREATION')
+
+      otherTypes.forEach(async (logType) => {
+        setLoadingStates((prev) => ({ ...prev, [logType]: true }))
         try {
           const response = await patientLogApi.listLogs(patientId, logType)
           const normalizedData = response.data.map((apiDto) => ({
@@ -145,35 +176,24 @@ const ClientInteractions = (): ReactElement => {
             uniqueIdentifier: apiDto.uniqueIdentifier || '',
           }))
 
-          // Update state immediately for this log type
           setLogsByType((prev) => ({
             ...prev,
             [logType]: normalizedData,
           }))
-
-          return true
         } catch (err) {
           console.error(`Error fetching ${logType} logs:`, err)
           setLogsByType((prev) => ({
             ...prev,
             [logType]: [],
           }))
-          return false
         } finally {
-          // Mark this type as loaded
-          setLoadingStates((prev) => ({
-            ...prev,
-            [logType]: false,
-          }))
+          setLoadingStates((prev) => ({ ...prev, [logType]: false }))
         }
       })
-
-      await Promise.all(fetchPromises)
-    } catch (err) {
-      console.error('Error in fetchAllLogTypes:', err)
-      setError(t('patient_interactions.fetch_error'))
     }
-  }
+
+    fetchInitialData()
+  }, [patientId])
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
@@ -191,7 +211,6 @@ const ClientInteractions = (): ReactElement => {
     let filtered = interactionData
 
     if (activeLogType) {
-      // Filter by activeLogType if one is selected
       filtered = filtered.filter((d) => d.type === activeLogType)
     }
 
@@ -232,16 +251,12 @@ const ClientInteractions = (): ReactElement => {
     }
   }
 
-  if (isLoading) {
+  if (isLoadingInitialData) {
     return (
       <Layout>
         <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
-          <Typography>{t('patient_interactions.loading')}</Typography>
+          <Typography>{t('patient_interactions.loading_initial')}</Typography>
           <CircularProgress />
-          <Typography variant='caption'>
-            Loaded: {LOG_TYPES.filter((t) => !loadingStates[t as LogType]).length}/
-            {LOG_TYPES.length} log types
-          </Typography>
         </Box>
       </Layout>
     )
