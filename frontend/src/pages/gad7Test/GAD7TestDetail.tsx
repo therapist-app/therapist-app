@@ -14,31 +14,35 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
-import { useNotify } from '../../hooks/useNotify'
 import { patientTestApi } from '../../utils/api'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
   const { patientId } = useParams()
-  const { notifyError } = useNotify()
 
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 
-  useEffect((): void => {
+  useEffect(() => {
     const fetchTests = async (): Promise<void> => {
-      try {
-        const response = await patientTestApi.getTestsForPatient(patientId ?? '')
-        setGad7Tests(response.data)
-      } catch {
-        notifyError('Failed to fetch GAD7 tests')
-      }
+      const response = await patientTestApi.getTestsForPatient(patientId!)
+      const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
+        id: apiDto.id!,
+        name: apiDto.name || '',
+        description: apiDto.description || '',
+        patientId: apiDto.patientId || '',
+        completedAt: apiDto.completedAt || '',
+        questions:
+          apiDto.questions?.map((q) => ({
+            question: q.question || '',
+            score: q.score || 0,
+          })) || [],
+      }))
+      setGad7Tests(normalized)
     }
     if (patientId) {
-      void fetchTests()
-    } else {
-      notifyError('Patient ID is not defined')
+      fetchTests()
     }
-  }, [patientId, notifyError])
+  }, [patientId])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
@@ -54,7 +58,7 @@ export const GAD7TestDetail = (): ReactElement => {
         </div>
         {gad7Tests.length > 0 ? (
           <>
-                        <TableContainer component={Paper}>
+            <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -77,7 +81,7 @@ export const GAD7TestDetail = (): ReactElement => {
                       {test.questions.map((question, qIndex) => (
                         <TableCell key={qIndex} align='right'>
                           {question.score}
-                          </TableCell>
+                        </TableCell>
                       ))}
                       <TableCell align='right'>
                         {test.questions.reduce((acc, curr) => acc + curr.score, 0)}
