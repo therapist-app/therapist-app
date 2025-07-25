@@ -710,7 +710,8 @@ interface Resources {
       "phone": "Phone",
       "address": "Address",
       "date_of_admission": "Date of Admission",
-      "loading_patient_data": "Loading Client Data...",
+      "view_more_details": "View more Details",
+      "loading_patient_data": "Loading Patient Data...",
       "counseling_plan": "Counseling Plan",
       "go_to_counseling_plan": "Go to Counseling Plan",
       "current_phase": "Current Phase",
@@ -720,7 +721,9 @@ interface Resources {
       "chatbot_name": "Chabot Name",
       "create_bot": "Create Bot",
       "files_visible_to_client": "Files visible to Client",
-      "files_visible_only_to_coach": "Files visible only to Coach"
+      "files_visible_only_to_coach": "Files visible only to Coach",
+      "edit": "Edit",
+      "save_changes": "Save"
     },
     "patient_interactions": {
       "interaction_type": "Interaction Type",
@@ -921,7 +924,8 @@ interface Resources {
         "create": "Register new Client",
         "details": "Client Details",
         "conversations": "Conversation Summary",
-        "interactions": "Client Interactions"
+        "interactions": "Client Interactions",
+        "details-update": "Updating Client"
       },
       "chatbot": {
         "create": "Create new Chatbot",
@@ -1185,6 +1189,7 @@ interface Resources {
       "phone": "Телефон",
       "address": "Адреса",
       "date_of_admission": "Дата прийому",
+      "view_more_details": "Переглянути більше деталей",
       "loading_patient_data": "Завантаження даних пацієнта...",
       "counseling_plan": "План консультування",
       "go_to_counseling_plan": "Перейти до плану консультування",

@@ -4,21 +4,25 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   Grid,
   MenuItem,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
+import { AxiosError } from 'axios'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
+import { CreateChatbotTemplateDTO } from '../../api'
 import Layout from '../../generalComponents/Layout'
-import { useNotify } from '../../hooks/useNotify.ts'
+import { createPatientChatbotTemplate } from '../../store/chatbotTemplateSlice'
 import { registerPatient } from '../../store/patientSlice'
 import { getCurrentlyLoggedInTherapist } from '../../store/therapistSlice'
 import {
@@ -26,6 +30,7 @@ import {
   commonButtonStyles,
   disabledButtonStyles,
 } from '../../styles/buttonStyles.ts'
+import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
 
@@ -125,7 +130,12 @@ const PatientCreate = (): ReactElement => {
   const [personalOccupational, setPersonalOccupational] = useState('')
   const [personalMarital, setPersonalMarital] = useState('')
   const [personalPremorbid, setPersonalPremorbid] = useState('')
-  const { notifyError, notifySuccess } = useNotify()
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    'info' | 'success' | 'error' | 'warning'
+  >('info')
 
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
 
@@ -163,14 +173,11 @@ const PatientCreate = (): ReactElement => {
 
   useEffect(() => {
     const fetchTherapist = async (): Promise<void> => {
-      try {
-        await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
-      } catch (error) {
-        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-      }
+      await dispatch(getCurrentlyLoggedInTherapist())
     }
+
     fetchTherapist()
-  }, [dispatch, refreshTherapistCounter, notifyError])
+  }, [dispatch, refreshTherapistCounter])
 
   const handleSubmit = async (): Promise<void> => {
     try {
@@ -210,14 +217,41 @@ const PatientCreate = (): ReactElement => {
 
       if (registerPatient.fulfilled.match(resultAction)) {
         const newPatient = resultAction.payload
-        notifySuccess(t('patient_create.patient_register_success'))
+
+        const chatbotTemplate: CreateChatbotTemplateDTO = {
+          chatbotName: `Chatbot for ${newPatient.name}`,
+          chatbotIcon: '🤖',
+          chatbotRole: 'Your supportive virtual assistant',
+          chatbotTone: 'Empathetic and professional',
+          welcomeMessage: `Hello ${newPatient.name}, I'm here to support you.`,
+          isActive: true,
+        }
+        const chatbotResult = await dispatch(
+          createPatientChatbotTemplate({
+            patientId: newPatient.id!,
+            dto: chatbotTemplate,
+          })
+        )
+        if (createPatientChatbotTemplate.rejected.match(chatbotResult)) {
+          console.warn('Chatbot creation failed:', chatbotResult.payload)
+          setSnackbarMessage('Patient created, but chatbot creation failed.')
+          setSnackbarSeverity('warning')
+          setSnackbarOpen(true)
+        }
+
+        setSnackbarMessage(t('patient_create.patient_register_success'))
+        setSnackbarSeverity('success')
+        setSnackbarOpen(true)
         setRefreshTherapistCounter((prev) => prev + 1)
         navigate(getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: newPatient.id! }))
       } else {
         throw new Error('Patient registration failed')
       }
     } catch (error) {
-      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      const errorMessage = await handleError(error as AxiosError)
+      setSnackbarMessage(errorMessage)
+      setSnackbarSeverity('error')
+      setSnackbarOpen(true)
     }
   }
 
@@ -317,6 +351,7 @@ const PatientCreate = (): ReactElement => {
               type='tel'
             />
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -338,7 +373,6 @@ const PatientCreate = (): ReactElement => {
             />
           </Grid>
         </Grid>
-
         <Box mt={4} display='flex' justifyContent='flex-end'>
           <Button
             onClick={() => navigate(getPathFromPage(PAGES.HOME_PAGE))}
@@ -355,6 +389,13 @@ const PatientCreate = (): ReactElement => {
             {t('patient_create.register')}
           </Button>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+        >
+          <Alert severity={snackbarSeverity}>{snackbarMessage}</Alert>
+        </Snackbar>
       </Box>
 
       <Box mt={6}>

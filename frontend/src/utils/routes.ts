@@ -8,6 +8,7 @@ export enum PAGES {
 
   PATIENTS_CREATE_PAGE = 'PATIENTS_CREATE_PAGE',
   PATIENTS_DETAILS_PAGE = 'PATIENTS_DETAILS_PAGE',
+  PATIENTS_DETAILS_UPDATE_PAGE = 'PATIENTS_DETAILS_UPDATE_PAGE',
 
   CHATBOT_CREATE_PAGE = 'CHATBOT_CREATE_PAGE',
   CHATBOT_DETAILS_PAGE = 'CHATBOT_DETAILS_PAGE',
@@ -60,6 +61,7 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
     PAGES.COUNSELING_PLAN_DETAILS_PAGE,
     PAGES.GAD7_TEST_CREATE_PAGE,
     PAGES.PATIENT_CONVERSATIONS_PAGE,
+    PAGES.PATIENTS_DETAILS_UPDATE_PAGE,
     PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT,
   ],
 
@@ -83,6 +85,8 @@ const PAGE_HIERARCHY: Record<PAGES, PAGES[]> = {
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: [],
 
+  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: [],
+
   [PAGES.NOT_FOUND_PAGE]: [],
 
   [PAGES.THERAPIST_CHATBOT_PAGE]: [],
@@ -95,8 +99,9 @@ export const ROUTES: Record<PAGES, string> = {
   [PAGES.REGISTRATION_PAGE]: '/register',
   [PAGES.SETTINGS_PAGE]: '/settings',
 
-  [PAGES.PATIENTS_CREATE_PAGE]: '/clients/create',
   [PAGES.PATIENTS_DETAILS_PAGE]: '/clients/:patientId',
+  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: '/clients/:patientId/updatClientDetail',
+  [PAGES.PATIENTS_CREATE_PAGE]: '/clients/create',
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: '/clients/:patientId/interactions',
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: '/clients/:patientId/conversations-summary',
@@ -131,6 +136,7 @@ export const PAGE_NAMES: Record<PAGES, string> = {
 
   [PAGES.PATIENTS_CREATE_PAGE]: 'pages.patients.create',
   [PAGES.PATIENTS_DETAILS_PAGE]: 'pages.patients.details',
+  [PAGES.PATIENTS_DETAILS_UPDATE_PAGE]: 'pages.patients.details-update',
 
   [PAGES.CLIENT_INTERACTIONS_PAGE]: 'pages.patients.interactions',
   [PAGES.PATIENT_CONVERSATIONS_PAGE]: 'pages.patients.conversations',

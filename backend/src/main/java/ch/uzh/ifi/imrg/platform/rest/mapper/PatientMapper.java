@@ -6,6 +6,7 @@ import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ComplaintDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdatePatientDetailDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -99,14 +101,28 @@ public interface PatientMapper {
   @Mapping(target = "counselingPlan", ignore = true)
   Patient convertCreatePatientDtoToEntity(CreatePatientDTO createPatientDTO);
 
-  ComplaintDTO complaintToComplaintDto(Complaint complaint);
+  // Update entity in-place
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "initialPassword", ignore = true)
+  @Mapping(target = "therapist", ignore = true)
+  @Mapping(target = "meetings", ignore = true)
+  @Mapping(target = "patientDocuments", ignore = true)
+  @Mapping(target = "chatbotTemplates", ignore = true)
+  @Mapping(target = "exercises", ignore = true)
+  @Mapping(target = "GAD7Tests", ignore = true)
+  @Mapping(target = "counselingPlan", ignore = true)
+  void updatePatientFromDto(UpdatePatientDetailDTO dto, @MappingTarget Patient patient);
 
+  // Complaint mapping
   @Mapping(target = "patient", ignore = true)
   Complaint complaintDtoToComplaint(ComplaintDTO complaintDTO);
 
-  List<ComplaintDTO> complaintListToComplaintDtoList(List<Complaint> complaints);
+  ComplaintDTO complaintToComplaintDto(Complaint complaint);
 
   List<Complaint> complaintDtoListToComplaintList(List<ComplaintDTO> complaintDTOs);
+
+  List<ComplaintDTO> complaintListToComplaintDtoList(List<Complaint> complaints);
 
   default List<MeetingOutputDTO> mapMeetings(List<Meeting> meetings) {
     if (meetings == null) {

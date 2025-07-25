@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_EXERCISE_COMPONENT_DESCRIPTION,
   ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_FILE_NAME,
   ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_FILE_TYPE,
+  ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_YOUTUBE_URL,
   ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_FILE_DATA,
   ExerciseComponentInputDTOPatientAPI.JSON_PROPERTY_ORDER_NUMBER
 })
@@ -95,6 +96,9 @@ public class ExerciseComponentInputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_FILE_TYPE = "fileType";
   private String fileType;
+
+  public static final String JSON_PROPERTY_YOUTUBE_URL = "youtubeUrl";
+  private String youtubeUrl;
 
   public static final String JSON_PROPERTY_FILE_DATA = "fileData";
   private byte[] fileData;
@@ -235,6 +239,32 @@ public class ExerciseComponentInputDTOPatientAPI {
   }
 
 
+  public ExerciseComponentInputDTOPatientAPI youtubeUrl(String youtubeUrl) {
+    
+    this.youtubeUrl = youtubeUrl;
+    return this;
+  }
+
+   /**
+   * Get youtubeUrl
+   * @return youtubeUrl
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_YOUTUBE_URL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getYoutubeUrl() {
+    return youtubeUrl;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_YOUTUBE_URL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setYoutubeUrl(String youtubeUrl) {
+    this.youtubeUrl = youtubeUrl;
+  }
+
+
   public ExerciseComponentInputDTOPatientAPI fileData(byte[] fileData) {
     
     this.fileData = fileData;
@@ -300,13 +330,14 @@ public class ExerciseComponentInputDTOPatientAPI {
         Objects.equals(this.exerciseComponentDescription, exerciseComponentInputDTO.exerciseComponentDescription) &&
         Objects.equals(this.fileName, exerciseComponentInputDTO.fileName) &&
         Objects.equals(this.fileType, exerciseComponentInputDTO.fileType) &&
+        Objects.equals(this.youtubeUrl, exerciseComponentInputDTO.youtubeUrl) &&
         Arrays.equals(this.fileData, exerciseComponentInputDTO.fileData) &&
         Objects.equals(this.orderNumber, exerciseComponentInputDTO.orderNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, exerciseComponentType, exerciseComponentDescription, fileName, fileType, Arrays.hashCode(fileData), orderNumber);
+    return Objects.hash(id, exerciseComponentType, exerciseComponentDescription, fileName, fileType, youtubeUrl, Arrays.hashCode(fileData), orderNumber);
   }
 
   @Override
@@ -318,6 +349,7 @@ public class ExerciseComponentInputDTOPatientAPI {
     sb.append("    exerciseComponentDescription: ").append(toIndentedString(exerciseComponentDescription)).append("\n");
     sb.append("    fileName: ").append(toIndentedString(fileName)).append("\n");
     sb.append("    fileType: ").append(toIndentedString(fileType)).append("\n");
+    sb.append("    youtubeUrl: ").append(toIndentedString(youtubeUrl)).append("\n");
     sb.append("    fileData: ").append(toIndentedString(fileData)).append("\n");
     sb.append("    orderNumber: ").append(toIndentedString(orderNumber)).append("\n");
     sb.append("}");

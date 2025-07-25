@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdatePatientDetailDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientService;
@@ -36,6 +37,15 @@ public class PatientController {
   public PatientOutputDTO getPatientById(
       @PathVariable String id, @CurrentTherapistId String therapistId) {
     return patientService.getPatientById(id, therapistId);
+  }
+
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public PatientOutputDTO updatePatientDetails(
+      @PathVariable String id,
+      @RequestBody UpdatePatientDetailDTO updateDTO,
+      @CurrentTherapistId String therapistId) {
+    return patientService.updatePatientDetails(id, updateDTO, therapistId);
   }
 
   @DeleteMapping("/{id}")
