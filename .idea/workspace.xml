@@ -5,10 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="314abde8-26e1-4859-a6c5-d7576a15e3b6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/.openapi-generator/FILES" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/generated/java/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/api/openapi.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachJournalEntryControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachLogControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachLogControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPatientControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/CoachPsychologicalTestControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/api/PatientControllerPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/CreatePatientDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ExerciseComponentOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LogOutputDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/LogOutputDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/generated/java/src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/@types/resources.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,27 +72,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;patient-create-page&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/therapist-app&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Administrator\\therapist-app\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "android.gradle.sync.needed": "true",
+    "git-widget-placeholder": "patient__detail__branch",
+    "last_opened_file_path": "C:/Users/Administrator/therapist-app",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "terminal",
+    "ts.external.directory.path": "C:\\Users\\Administrator\\therapist-app\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -96,6 +108,7 @@
       <workItem from="1741013527678" duration="734000" />
       <workItem from="1750856052585" duration="8469000" />
       <workItem from="1751372491577" duration="1761000" />
+      <workItem from="1753435261136" duration="2979000" />
     </task>
     <servers />
   </component>
@@ -112,6 +125,18 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/pages/patients/PatientCreate.tsx</url>
+          <line>304</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
