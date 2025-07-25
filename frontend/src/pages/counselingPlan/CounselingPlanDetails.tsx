@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
@@ -32,6 +33,7 @@ const CounselingPlanDetails = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
   const [isEditing, setIsEditing] = useState(false)
+  const { notifyError, notifySuccess } = useNotify()
   const [formData, setFormData] = useState<FormValues>({
     startOfTherapy: new Date(),
   })
@@ -39,23 +41,46 @@ const CounselingPlanDetails = (): ReactElement => {
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
   useEffect(() => {
-    if (patientId) {
-      dispatch(getCounselingPlanByPatientId(patientId))
-      dispatch(getAllExercisesOfPatient(patientId))
+    if (!patientId) {
+      return
     }
-  }, [patientId, dispatch])
+
+    const load = async (): Promise<void> => {
+      try {
+        await Promise.all([
+          dispatch(getCounselingPlanByPatientId(patientId)).unwrap(),
+          dispatch(getAllExercisesOfPatient(patientId)).unwrap(),
+        ])
+      } catch (error) {
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      }
+    }
+
+    void load()
+  }, [patientId, dispatch, notifyError])
 
   const refresh = (): void => {
-    dispatch(getCounselingPlanByPatientId(patientId || ''))
+    if (!patientId) {
+      return
+    }
+    dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    })
   }
 
-  const handleUpdate = (): void => {
-    const dto: UpdateCounselingPlanDTO = {
-      counselingPlanId: counselingPlan?.id ?? '',
-      startOfTherapy: formData.startOfTherapy?.toISOString(),
+  const handleUpdate = async (): Promise<void> => {
+    try {
+      const dto: UpdateCounselingPlanDTO = {
+        counselingPlanId: counselingPlan?.id ?? '',
+        startOfTherapy: formData.startOfTherapy?.toISOString(),
+      }
+      await dispatch(updateCounselingPlan(dto)).unwrap()
+      setIsEditing(false)
+      notifySuccess(t('counseling_plan.updated_successfully'))
+      refresh()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
-    dispatch(updateCounselingPlan(dto))
-    setIsEditing(false)
   }
 
   return (
@@ -75,7 +100,7 @@ const CounselingPlanDetails = (): ReactElement => {
               <strong>{formatDateNicely(counselingPlan?.startOfTherapy)}</strong>
             </Typography>
             <IconButton onClick={() => setIsEditing(true)}>
-              <EditIcon sx={{ height: '25px' }}></EditIcon>
+              <EditIcon sx={{ height: '25px' }} />
             </IconButton>
           </div>
         ) : (
@@ -84,19 +109,19 @@ const CounselingPlanDetails = (): ReactElement => {
               <DateTimePicker
                 label={t('counseling_plan.counseling_start_date')}
                 value={formData.startOfTherapy}
-                onChange={(newValue: Date | null) => {
-                  setFormData({
-                    ...formData,
+                onChange={(newValue: Date | null): void => {
+                  setFormData((prev) => ({
+                    ...prev,
                     startOfTherapy: newValue,
-                  })
+                  }))
                 }}
               />
             </LocalizationProvider>
             <IconButton onClick={handleUpdate}>
-              <CheckIcon sx={{ height: '25px', color: 'green' }}></CheckIcon>
+              <CheckIcon sx={{ height: '25px', color: 'green' }} />
             </IconButton>
             <IconButton onClick={() => setIsEditing(false)}>
-              <ClearIcon sx={{ height: '25px', color: 'red' }}></ClearIcon>
+              <ClearIcon sx={{ height: '25px', color: 'red' }} />
             </IconButton>
           </div>
         )}
@@ -117,7 +142,6 @@ const CounselingPlanDetails = (): ReactElement => {
                   onSuccess={refresh}
                   isLastPhase={idx + 1 === counselingPlan?.counselingPlanPhasesOutputDTO?.length}
                 />
-
                 {idx !== amountOfPhases - 1 && <CustomizedDivider />}
               </li>
             ))}

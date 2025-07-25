@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CreateCounselingPlanPhaseDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   createCounselingPlanPhase,
   createCounselingPlanPhaseAIGenerated,
@@ -22,7 +23,6 @@ interface CreateCounselingPlanePhaseProps {
 
 const initialFormValues: CreateCounselingPlanPhaseDTO = {
   phaseName: '',
-
   durationInWeeks: 3,
 }
 
@@ -35,35 +35,43 @@ const CreateCounselingPlanePhase = ({
 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-
-    const createCounselingPlanPhaseDTO: CreateCounselingPlanPhaseDTO = {
-      counselingPlanId: counselingPlanId,
-      phaseName: formValues.phaseName,
-      durationInWeeks: formValues.durationInWeeks,
+    try {
+      const dto: CreateCounselingPlanPhaseDTO = {
+        counselingPlanId: counselingPlanId,
+        phaseName: formValues.phaseName,
+        durationInWeeks: formValues.durationInWeeks,
+      }
+      await dispatch(createCounselingPlanPhase(dto)).unwrap()
+      notifySuccess(t('counseling_plan.phase_created_success'))
+      onSuccess()
+      setOpen(false)
+      setFormValues(initialFormValues)
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
-    await dispatch(createCounselingPlanPhase(createCounselingPlanPhaseDTO))
-    onSuccess()
-    setOpen(false)
-    setFormValues(initialFormValues)
   }
 
   const handleAIGeneration = async (): Promise<void> => {
-    const createCounselingPlanPhaseDTO = await dispatch(
-      createCounselingPlanPhaseAIGenerated({
-        counselingPlanId: counselingPlanId,
-        language: getCurrentLanguage(),
-      })
-    ).unwrap()
-    const newFormValue: CreateCounselingPlanPhaseDTO = {
-      phaseName: createCounselingPlanPhaseDTO.phaseName ?? '',
-      durationInWeeks: createCounselingPlanPhaseDTO.durationInWeeks ?? 2,
-    }
+    try {
+      const aiDto = await dispatch(
+        createCounselingPlanPhaseAIGenerated({
+          counselingPlanId: counselingPlanId,
+          language: getCurrentLanguage(),
+        })
+      ).unwrap()
 
-    setFormValues(newFormValue)
-    setOpen(true)
+      setFormValues({
+        phaseName: aiDto.phaseName ?? '',
+        durationInWeeks: aiDto.durationInWeeks ?? 2,
+      })
+      setOpen(true)
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleCancel = (): void => {

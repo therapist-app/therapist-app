@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 
 import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
+import { useNotify } from '../../../hooks/useNotify'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -29,6 +30,7 @@ interface MeetingNoteComponentProps {
 const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false)
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
   const [originalFormData, setOriginalFormData] = useState<UpdateMeetingNoteDTO>({
@@ -45,11 +47,12 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      setIsEditing(false)
       const updatedMeeting = await dispatch(updateMeetingNote(formData)).unwrap()
       setOriginalFormData(updatedMeeting)
+      notifySuccess(t('meetings.note_updated_successfully'))
+      setIsEditing(false)
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
@@ -75,9 +78,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   const deleteNote = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     event.stopPropagation()
     try {
-      await dispatch(deleteMeetingNote(formData.id ?? ''))
+      await dispatch(deleteMeetingNote(formData.id ?? '')).unwrap()
+      notifySuccess(t('meetings.note_deleted_successfully'))
     } catch (e) {
-      console.error(e)
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
     } finally {
       props.delete()
     }
@@ -85,7 +89,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
 
   return (
     <div>
-      {isEditing === false ? (
+      {!isEditing ? (
         <Accordion sx={{ maxWidth: '600px' }}>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
@@ -125,13 +129,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
           <Divider />
           <AccordionDetails sx={{ padding: '16px' }}>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', minHeight: '40px' }}>
-              <Typography
-                sx={{
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {formData.content}
-              </Typography>
+              <Typography sx={{ whiteSpace: 'pre-line' }}>{formData.content}</Typography>
             </div>
           </AccordionDetails>
         </Accordion>
@@ -139,7 +137,10 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <form
             style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSubmit()
+            }}
           >
             <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
 
@@ -154,7 +155,6 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
                 display: 'flex',
                 width: '100%',
                 gap: '10px',
-
                 justifyContent: 'center',
               }}
             >

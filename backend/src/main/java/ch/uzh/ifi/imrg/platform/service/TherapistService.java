@@ -49,22 +49,26 @@ public class TherapistService {
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     if (therapist.getEmail() == null) {
-      throw new Error("Creating therapist failed because no email was specified");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Creating therapist failed because no email was specified");
     }
     if (therapist.getPassword() == null) {
-      throw new Error("Creating therapist failed because no password was specified");
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Creating therapist failed because no password was specified");
     }
     if (therapist.getId() != null && this.therapistRepository.existsById(therapist.getId())) {
-      throw new Error(
+      throw new ResponseStatusException(
+          HttpStatus.CONFLICT,
           "Creating therapist failed because therapist with ID "
               + therapist.getId()
-              + "already exists");
+              + " already exists");
     }
     if (therapist.getEmail() != null && therapistRepository.existsByEmail(therapist.getEmail())) {
-      throw new Error(
+      throw new ResponseStatusException(
+          HttpStatus.CONFLICT,
           "Creating therapist failed because therapist with email "
               + therapist.getEmail()
-              + "already exists");
+              + " already exists");
     }
 
     therapist.setPassword(PasswordUtil.encryptPassword(therapist.getPassword()));
@@ -94,12 +98,14 @@ public class TherapistService {
     Therapist foundTherapist =
         therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
-      throw new Error("No therapist with email: " + loginTherapistDTO.getEmail() + " exists");
+      throw new ResponseStatusException(
+          HttpStatus.UNAUTHORIZED, "No therapist with that email exists");
     }
 
     if (!PasswordUtil.checkPassword(
         loginTherapistDTO.getPassword(), foundTherapist.getPassword())) {
-      throw new Error("The password you entered is wrong!");
+      throw new ResponseStatusException(
+          HttpStatus.UNAUTHORIZED, "The password you entered is wrong!");
     }
 
     String jwt = JwtUtil.createJWT(loginTherapistDTO.getEmail());

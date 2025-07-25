@@ -56,7 +56,7 @@ export const updateExercise = createAsyncThunk(
   }
 )
 
-export const deleteExcercise = createAsyncThunk('deleteExcercise', async (exerciseId: string) => {
+export const deleteExercise = createAsyncThunk('deleteExcercise', async (exerciseId: string) => {
   const response = await exerciseApi.deleteExercise(exerciseId)
   return response.data
 })
@@ -190,15 +190,15 @@ const exerciseSlice = createSlice({
         console.log(action)
       })
 
-      .addCase(deleteExcercise.pending, (state) => {
+      .addCase(deleteExercise.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })
-      .addCase(deleteExcercise.fulfilled, (state, action) => {
+      .addCase(deleteExercise.fulfilled, (state, action) => {
         state.status = 'succeeded'
         console.log(action)
       })
-      .addCase(deleteExcercise.rejected, (state, action) => {
+      .addCase(deleteExercise.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)

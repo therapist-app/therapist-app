@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { AxiosError } from 'axios'
 
 import { conversationApi } from '../utils/api'
+
+export const PRIVATE_MESSAGE = 'The conversation of the client with the chatbot is private.'
 
 interface ConversationState {
   byPatient: Record<string, string>
@@ -14,6 +17,11 @@ const initialState: ConversationState = {
   error: null,
 }
 
+function getStatus(e: unknown): number | undefined {
+  const err = e as Partial<{ response: { status?: number } }>
+  return err.response?.status
+}
+
 export const fetchConversationSummary = createAsyncThunk<
   { patientId: string; summary: string },
   { patientId: string; start: string; end: string },
@@ -23,7 +31,17 @@ export const fetchConversationSummary = createAsyncThunk<
     const { data } = await conversationApi.getConversationSummary(patientId, start, end)
     return { patientId: patientId, summary: data.conversationSummary ?? '' }
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'error fetching summary'
+    const status = getStatus(err)
+    if (status === 500) {
+      return thunkAPI.rejectWithValue(PRIVATE_MESSAGE)
+    }
+
+    const axiosErr = err as AxiosError<{ message?: string }>
+    const message =
+      axiosErr.response?.data?.message ??
+      axiosErr.message ??
+      (err instanceof Error ? err.message : 'error fetching summary')
+
     return thunkAPI.rejectWithValue(message)
   }
 })

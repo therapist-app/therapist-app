@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { ChatMessageDTOChatRoleEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
 import { clearMessages } from '../../store/therapistChatbotSlice'
@@ -16,13 +17,20 @@ import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
-
   const navigate = useNavigate()
   const { patientId } = useParams()
   const location = useLocation()
+  const { notifyError } = useNotify()
 
   const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
+  const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
+
+  useEffect(() => {
+    if (chatbotError) {
+      notifyError(typeof chatbotError === 'string' ? chatbotError : 'An unknown error occurred')
+    }
+  }, [chatbotError, notifyError])
 
   const currentPage = getPageFromPath(location.pathname)
   const closePage =
@@ -31,7 +39,6 @@ const TherapistChatbot = (): ReactElement => {
       : getPathFromPage(PAGES.HOME_PAGE)
 
   const lastAssistant = messages.at(-1)
-
   const listRef = useRef<HTMLUListElement>(null)
   useEffect(() => {
     listRef.current?.scrollTo(0, listRef.current.scrollHeight)
@@ -45,13 +52,7 @@ const TherapistChatbot = (): ReactElement => {
 
   return (
     <Layout>
-      {' '}
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <IconButton
           sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
           onClick={() => {
@@ -61,6 +62,7 @@ const TherapistChatbot = (): ReactElement => {
         >
           <CloseIcon sx={{ color: 'red' }} />
         </IconButton>
+
         <List
           ref={listRef}
           sx={{

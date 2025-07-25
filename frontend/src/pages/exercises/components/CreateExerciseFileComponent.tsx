@@ -12,6 +12,7 @@ import {
 } from '../../../api'
 import FileUpload from '../../../generalComponents/FileUpload'
 import ImageComponent from '../../../generalComponents/ImageComponent'
+import { useNotify } from '../../../hooks/useNotify'
 import { createExerciseComponent, setAddingExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -22,9 +23,7 @@ interface CreateExerciseFileComponentProps {
   active: boolean
 }
 
-const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = (
-  props: CreateExerciseFileComponentProps
-) => {
+const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = (props) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -32,6 +31,8 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
   const [isCreatingFile, setIsCreatingFile] = useState(false)
   const [description, setDescription] = useState('')
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined)
+
+  const { notifyError, notifySuccess } = useNotify()
 
   const saveSelectedFile = (file: File): void => {
     setSelectedFile(file)
@@ -63,22 +64,25 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       if (props.isImageComponent) {
         exerciseComponentType = CreateExerciseComponentDTOExerciseComponentTypeEnum.Image
       }
-      const createExerciseComponentDTO: CreateExerciseComponentDTO = {
+
+      const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
         exerciseComponentType: exerciseComponentType,
         exerciseComponentDescription: description,
       }
+
       await dispatch(
         createExerciseComponent({
-          createExerciseComponentDTO: createExerciseComponentDTO,
+          createExerciseComponentDTO: dto,
           file: selectedFile,
         })
-      )
+      ).unwrap()
+
+      notifySuccess(t('exercise.component_created_successfully'))
       cancel()
-    } catch (err) {
-      console.error('Registration error:', err)
-    } finally {
       props.createdExerciseFile()
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 

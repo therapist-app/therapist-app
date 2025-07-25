@@ -255,7 +255,27 @@ interface Resources {
       "date": "Datum",
       "last_week": "Letzte Woche",
       "last_two_weeks": "Letzte 2 Wochen",
-      "last_three_weeks": "Letzte 3 Wochen"
+      "last_three_weeks": "Letzte 3 Wochen",
+      "loading": "Lade Klientendaten...",
+      "fetch_error": "Fehler beim Abrufen der Klientendaten.",
+      "no_data": "Keine Klienten-Logdaten verfügbar.",
+      "log_types": {
+        "journal_creation": "Journal Erstellung",
+        "journal_update": "Journal Aktualisierung",
+        "exercise_start": "Übungsstart",
+        "exercise_completion": "Übung abgeschlossen",
+        "exercise_update": "Übung aktualisiert",
+        "general_conversation_creation": "Allgemeine Konversation erstellt",
+        "general_conversation_name_update": "Name der allgemeinen Konversation aktualisiert",
+        "general_conversation_message_creation": "Nachricht in allgemeiner Konversation geschrieben",
+        "document_conversation_message_creation": "Nachricht in Dokument-Konversation geschrieben",
+        "exercise_conversation_message_creation": "Nachricht in Übungs-Konversation geschrieben",
+        "journal_conversation_message_creation": "Nachricht in Journal-Konversation geschrieben",
+        "chatbot_icon_update": "Chatbot-Symbol aktualisiert",
+        "harmful_content_detected": "Gefährlicher Inhalt",
+        "document_read": "Dokument gelesen",
+        "psychological_test_completed": "GAD-7 Test abgeschlossen"
+      }
     },
     "patient_create": {
       "title": "Dies ist die Seite zur Erstellung eines neuen Klienten",
@@ -397,6 +417,7 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
+      "date": "Datum",
       "description": "In den letzten 2 Wochen, wie oft wurdest du durch folgende Probleme beeinträchtigt?",
       "question1": "Dich nervös, ängstlich oder gereizt gefühlt.",
       "question2": "Nicht aufhören oder aufhören können zu sorgen.",
@@ -712,7 +733,27 @@ interface Resources {
       "date": "Date",
       "last_week": "Last Week",
       "last_two_weeks": "Last 2 Weeks",
-      "last_three_weeks": "Last 3 Weeks"
+      "last_three_weeks": "Last 3 Weeks",
+      "loading": "Loading patient interactions data...",
+      "fetch_error": "Error fetching patient interactions data.",
+      "no_data": "No client log data available.",
+      "log_types": {
+        "journal_creation": "Journal Creation",
+        "journal_update": "Journal Update",
+        "exercise_start": "Exercise Start",
+        "exercise_completion": "Exercise Completion",
+        "exercise_update": "Exercise Update",
+        "general_conversation_creation": "General Conversation Creation",
+        "general_conversation_name_update": "General Conversation Name Update",
+        "general_conversation_message_creation": "General Conversation Message Creation",
+        "document_conversation_message_creation": "Document Conversation Message Creation",
+        "exercise_conversation_message_creation": "Exercise Conversation Message Creation",
+        "journal_conversation_message_creation": "Journal Conversation Message Creation",
+        "chatbot_icon_update": "Chatbot Icon Update",
+        "harmful_content_detected": "Harmful Content",
+        "document_read": "Document Read",
+        "psychological_test_completed": "Psychological Test Completed"
+      }
     },
     "patient_create": {
       "title": "This is the page to create a new client",
@@ -854,6 +895,7 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
+      "date": "Date",
       "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
       "question1": "Feeling nervous, anxious or on edge.",
       "question2": "Not being able to stop or control worrying.",
@@ -1168,7 +1210,27 @@ interface Resources {
       "date": "Дата",
       "last_week": "Останній тиждень",
       "last_two_weeks": "Останні 2 тижні",
-      "last_three_weeks": "Останні 3 тижні"
+      "last_three_weeks": "Останні 3 тижні",
+      "loading": "Завантаження даних взаємодій пацієнта...",
+      "fetch_error": "Помилка при отриманні даних взаємодій пацієнта.",
+      "no_data": "Дані клієнтського журналу не доступні.",
+      "log_types": {
+        "journal_creation": "Створення щоденника",
+        "journal_update": "Оновлення щоденника",
+        "exercise_start": "Початок вправи",
+        "exercise_completion": "Завершення вправи",
+        "exercise_update": "Оновлення вправи",
+        "general_conversation_creation": "Створення загальної бесіди",
+        "general_conversation_name_update": "Оновлення назви загальної бесіди",
+        "general_conversation_message_creation": "Створення повідомлення в загальній бесіді",
+        "document_conversation_message_creation": "Створення повідомлення в бесіді про документ",
+        "exercise_conversation_message_creation": "Створення повідомлення в бесіді про вправу",
+        "journal_conversation_message_creation": "Створення повідомлення в бесіді про щоденник",
+        "chatbot_icon_update": "Оновлення іконки чат-бота",
+        "harmful_content_detected": "Шкідливий вміст",
+        "document_read": "Прочитано документ",
+        "psychological_test_completed": "Психологічний тест завершено"
+      }
     },
     "patient_create": {
       "title": "Це сторінка створення нового клієнта",
@@ -1310,6 +1372,7 @@ interface Resources {
     "gad7test": {
       "title": "Опитування GAD-7",
       "gad7tests": "Тести GAD-7",
+      "date": "Дата",
       "description": "Як часто вас турбували наступні проблеми протягом останніх 2 тижнів?",
       "question1": "Нервозність, тривога або напруга.",
       "question2": "Неможливість припинити або контролювати занепокоєння.",

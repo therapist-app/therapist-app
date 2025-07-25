@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.entity;
 
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -10,7 +12,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Data
 @Entity
 @Table(name = "meeting_notes")
-public class MeetingNote implements OwnedByTherapist {
+public class MeetingNote implements OwnedByTherapist, HasLLMContext {
+
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
@@ -23,9 +26,14 @@ public class MeetingNote implements OwnedByTherapist {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @Column() private String title;
+  @LLMContextField(label = "Meeting Note title", order = 1)
+  @Column()
+  private String title;
 
-  @Lob @Column() private String content;
+  @LLMContextField(label = "Meeting Note content", order = 2)
+  @Lob
+  @Column()
+  private String content;
 
   @ManyToOne
   @JoinColumn(name = "meeting_id", referencedColumnName = "id")
@@ -34,5 +42,11 @@ public class MeetingNote implements OwnedByTherapist {
   @Override
   public String getOwningTherapistId() {
     return this.getMeeting().getPatient().getTherapist().getId();
+  }
+
+  @Override
+  public String toLLMContext(Integer level) {
+    StringBuilder sb = LLMContextBuilder.getOwnProperties(this, level);
+    return sb.toString();
   }
 }

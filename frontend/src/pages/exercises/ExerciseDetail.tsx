@@ -14,7 +14,8 @@ import { ExerciseComponentOutputDTOExerciseComponentTypeEnum, UpdateExerciseDTO 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
-import { deleteExcercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
+import { useNotify } from '../../hooks/useNotify'
+import { deleteExercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import {
   cancelButtonStyles,
@@ -41,11 +42,10 @@ const ExerciseDetail = (): ReactElement => {
   const { patientId, exerciseId } = useParams()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const { notifyError, notifySuccess } = useNotify()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
-
   const exerciseStatus = useSelector((state: RootState) => state.exercise.status)
-
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
   )
@@ -85,53 +85,59 @@ const ExerciseDetail = (): ReactElement => {
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-
     try {
-      const UpdateExerciseDTO: UpdateExerciseDTO = {
+      const dto: UpdateExerciseDTO = {
         ...formData,
         exerciseStart: formData.exerciseStart?.toISOString(),
         exerciseEnd: formData.exerciseEnd?.toISOString(),
         id: exerciseId ?? '',
       }
-      await dispatch(updateExercise(UpdateExerciseDTO))
+      await dispatch(updateExercise(dto)).unwrap()
+      notifySuccess(t('exercise.exercise_updated_successfully'))
       setIsEditingExercise(false)
+      await refreshExercise()
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
   const refreshExercise = async (): Promise<void> => {
     try {
-      await dispatch(getExerciseById(exerciseId ?? ''))
+      await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
     } catch (e) {
-      console.error(e)
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
     }
   }
 
   const handleDeleteExercise = async (): Promise<void> => {
-    await dispatch(deleteExcercise(exerciseId ?? ''))
-    navigate(
-      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
-        patientId: patientId ?? '',
-      })
-    )
+    try {
+      await dispatch(deleteExercise(exerciseId ?? '')).unwrap()
+      notifySuccess(t('exercise.exercise_deleted_successfully'))
+      navigate(
+        getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+        })
+      )
+    } catch (e) {
+      notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
+    }
   }
 
   useEffect(() => {
-    const refreshExercise = async (): Promise<void> => {
+    const load = async (): Promise<void> => {
       try {
-        await dispatch(getExerciseById(exerciseId ?? ''))
+        await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
       } catch (e) {
-        console.error(e)
+        notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
     }
-    refreshExercise()
-  }, [exerciseId, dispatch])
+    void load()
+  }, [exerciseId, dispatch, notifyError])
 
   if (exerciseStatus === 'loading') {
     return (
       <Layout>
-        <LoadingSpinner />{' '}
+        <LoadingSpinner />
       </Layout>
     )
   }
@@ -139,9 +145,8 @@ const ExerciseDetail = (): ReactElement => {
   return (
     <Layout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {isEditingExercise === false ? (
+        {!isEditingExercise ? (
           <>
-            {' '}
             <Typography variant='h4'>
               {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
             </Typography>
@@ -279,16 +284,15 @@ const ExerciseDetail = (): ReactElement => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-
             maxWidth: '600px',
           }}
         >
           {selectedExercise?.exerciseComponentsOutputDTO &&
           selectedExercise.exerciseComponentsOutputDTO.length > 0 ? (
-            <Typography variant='h5'>{t('exercise.exercise_components')}: </Typography>
+            <Typography variant='h5'>{t('exercise.exercise_components')}:</Typography>
           ) : (
             <Typography sx={{ marginBottom: '20px' }} variant='h5'>
-              {t('exercise.no_exercise_components_yet')}{' '}
+              {t('exercise.no_exercise_components_yet')}
             </Typography>
           )}
 
@@ -351,13 +355,8 @@ const ExerciseDetail = (): ReactElement => {
               </div>
             ))}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: '15px',
-            marginTop: '20px',
-          }}
-        >
+
+        <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
           <CreateExerciseTextComponent
             createdExercise={refreshExercise}
             active={
@@ -365,7 +364,6 @@ const ExerciseDetail = (): ReactElement => {
               addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
             }
           />
-
           <CreateExerciseFileComponent
             createdExerciseFile={refreshExercise}
             isImageComponent
@@ -374,7 +372,6 @@ const ExerciseDetail = (): ReactElement => {
               addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
             }
           />
-
           <CreateExerciseFileComponent
             createdExerciseFile={refreshExercise}
             isImageComponent={false}
@@ -383,7 +380,6 @@ const ExerciseDetail = (): ReactElement => {
               addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
             }
           />
-
           <CreateExerciseInputFieldComponent
             createdInputField={refreshExercise}
             isPrivateField
@@ -393,7 +389,6 @@ const ExerciseDetail = (): ReactElement => {
                 ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
             }
           />
-
           <CreateExerciseInputFieldComponent
             createdInputField={refreshExercise}
             isPrivateField={false}

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { CounselingPlanPhaseOutputDTO, CreateExerciseDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   addExerciseToCounselingPlanPhase,
   createCounselingPlanExerciseAIGenerated,
@@ -38,9 +39,10 @@ const CreateCounselingPlanExercise = ({
   const [open, setOpen] = useState(false)
   const { patientId } = useParams()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
-  const [formData, setFormData] = useState<ExerciseFormData>({
+  const initialFormData: ExerciseFormData = {
     exerciseTitle: '',
     exerciseDescription: '',
     exerciseExplanation: '',
@@ -48,7 +50,9 @@ const CreateCounselingPlanExercise = ({
     durationInWeeks: counselingPlanPhase.durationInWeeks ?? 2,
     patientId: patientId,
     doEveryNDays: 1,
-  })
+  }
+
+  const [formData, setFormData] = useState<ExerciseFormData>(initialFormData)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -56,13 +60,16 @@ const CreateCounselingPlanExercise = ({
 
   const handleCancel = (): void => {
     setOpen(false)
+    setFormData(initialFormData)
   }
 
   const handleCreateExercise = (): void => {
+    setFormData(initialFormData)
     setOpen(true)
   }
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
+    setFormData(initialFormData)
     const createExerciseDTO = await dispatch(
       createCounselingPlanExerciseAIGenerated({
         counselingPlanPhaseId: counselingPlanPhase.id ?? '',
@@ -93,22 +100,25 @@ const CreateCounselingPlanExercise = ({
         exerciseStart: formData.exerciseStart?.toISOString(),
         durationInWeeks: formData.durationInWeeks,
       }
+
       const response = await dispatch(createExercise(createExerciseDTO)).unwrap()
+
       await dispatch(
         addExerciseToCounselingPlanPhase({
           exerciseId: response.id ?? '',
           counselingPlanPhaseId: counselingPlanPhase.id ?? '',
         })
-      )
+      ).unwrap()
+
+      notifySuccess(t('counseling_plan.exercise_created_success'))
 
       setOpen(false)
-
+      setFormData(initialFormData)
       onSuccess()
     } catch (err) {
-      console.error('Registration error:', err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
-
   return (
     <div>
       {!open ? (

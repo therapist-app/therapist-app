@@ -15,6 +15,7 @@ import {
   MeetingNoteControllerApiFactory,
   PatientControllerApiFactory,
   PatientDocumentControllerApiFactory,
+  PatientLogControllerApiFactory,
   PatientTestControllerApiFactory,
   TherapistChatbotControllerApiFactory,
   TherapistControllerApiFactory,
@@ -61,6 +62,7 @@ export const chatbotTemplateDocumentApi = ChatbotTemplateDocumentControllerApiFa
 export const patientApi = PatientControllerApiFactory(undefined, baseURL, api)
 export const patientDocumentApi = PatientDocumentControllerApiFactory(undefined, baseURL, api)
 export const patientTestApi = PatientTestControllerApiFactory(undefined, baseURL, api)
+export const patientLogApi = PatientLogControllerApiFactory(undefined, baseURL, api)
 export const therapistApi = TherapistControllerApiFactory(undefined, baseURL, api)
 export const therapistDocumentApi = TherapistDocumentControllerApiFactory(undefined, baseURL, api)
 export const therapistChatbotApi = TherapistChatbotControllerApiFactory(undefined, baseURL, api)

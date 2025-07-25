@@ -255,7 +255,27 @@
     "date": "Дата",
     "last_week": "Останній тиждень",
     "last_two_weeks": "Останні 2 тижні",
-    "last_three_weeks": "Останні 3 тижні"
+    "last_three_weeks": "Останні 3 тижні",
+    "loading": "Завантаження даних взаємодій пацієнта...",
+    "fetch_error": "Помилка при отриманні даних взаємодій пацієнта.",
+    "no_data": "Дані клієнтського журналу не доступні.",
+    "log_types": {
+      "journal_creation": "Створення щоденника",
+      "journal_update": "Оновлення щоденника",
+      "exercise_start": "Початок вправи",
+      "exercise_completion": "Завершення вправи",
+      "exercise_update": "Оновлення вправи",
+      "general_conversation_creation": "Створення загальної бесіди",
+      "general_conversation_name_update": "Оновлення назви загальної бесіди",
+      "general_conversation_message_creation": "Створення повідомлення в загальній бесіді",
+      "document_conversation_message_creation": "Створення повідомлення в бесіді про документ",
+      "exercise_conversation_message_creation": "Створення повідомлення в бесіді про вправу",
+      "journal_conversation_message_creation": "Створення повідомлення в бесіді про щоденник",
+      "chatbot_icon_update": "Оновлення іконки чат-бота",
+      "harmful_content_detected": "Шкідливий вміст",
+      "document_read": "Прочитано документ",
+      "psychological_test_completed": "Психологічний тест завершено"
+    }
   },
   "patient_create": {
     "title": "Це сторінка створення нового клієнта",
@@ -397,6 +417,7 @@
   "gad7test": {
     "title": "Опитування GAD-7",
     "gad7tests": "Тести GAD-7",
+    "date": "Дата",
     "description": "Як часто вас турбували наступні проблеми протягом останніх 2 тижнів?",
     "question1": "Нервозність, тривога або напруга.",
     "question2": "Неможливість припинити або контролювати занепокоєння.",

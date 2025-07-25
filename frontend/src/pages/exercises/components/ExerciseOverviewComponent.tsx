@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { useNotify } from '../../../hooks/useNotify'
 import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
@@ -27,6 +28,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { notifyError } = useNotify()
 
   const handleCreateNewExercise = (): void => {
     navigate(
@@ -49,9 +51,16 @@ const ExerciseOverviewComponent = (): ReactElement => {
     (state: RootState) => state.exercise.allExercisesOfPatient
   )
 
-  useEffect(() => {
-    dispatch(getAllExercisesOfPatient(patientId ?? ''))
-  }, [dispatch, patientId])
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      try {
+        await dispatch(getAllExercisesOfPatient(patientId ?? '')).unwrap()
+      } catch (err) {
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      }
+    }
+    void load()
+  }, [dispatch, patientId, notifyError])
 
   return (
     <>

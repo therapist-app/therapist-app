@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import {
@@ -28,6 +29,7 @@ const MeetingDetail = (): ReactElement => {
   const { patientId, meetingId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const [isEditing, setIsEditing] = useState(false)
 
   const [showCreateMeetingNote, setShowCreateMeetingNote] = useState(false)
@@ -35,24 +37,40 @@ const MeetingDetail = (): ReactElement => {
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
 
-  useEffect(() => {
-    dispatch(getMeeting(meetingId ?? ''))
-  }, [dispatch, meetingId])
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      try {
+        await dispatch(getMeeting(meetingId ?? '')).unwrap()
+      } catch (error) {
+        notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+      }
+    }
+    void load()
+  }, [dispatch, meetingId, notifyError])
 
   const cancelCreateMeetingNote = (): void => setShowCreateMeetingNote(false)
 
   const refreshMeeting = async (): Promise<void> => {
-    await dispatch(getMeeting(meetingId ?? ''))
-    setShowCreateMeetingNote(false)
+    try {
+      await dispatch(getMeeting(meetingId ?? '')).unwrap()
+      setShowCreateMeetingNote(false)
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleDeleteMeeting = async (): Promise<void> => {
-    await dispatch(deleteMeeting(meetingId ?? ''))
-    navigate(
-      getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
-        patientId: patientId ?? '',
-      })
-    )
+    try {
+      await dispatch(deleteMeeting(meetingId ?? '')).unwrap()
+      notifySuccess(t('meetings.meeting_deleted_successfully'))
+      navigate(
+        getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, {
+          patientId: patientId ?? '',
+        })
+      )
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleCreateNewNote = (withTranscription: boolean): void => {

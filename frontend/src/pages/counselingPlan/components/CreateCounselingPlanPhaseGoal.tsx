@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CreateCounselingPlanPhaseGoalDTO } from '../../../api'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   createCounselingPlanPhaseGoal,
   createCounselingPlanPhaseGoalAIGenerated,
@@ -26,6 +27,7 @@ const CreateCounselingPlanPhaseGoal = ({
 }: CreateCounselingPlanPhaseGoalProps): ReactElement => {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
 
   const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseGoalDTO>({
@@ -36,29 +38,38 @@ const CreateCounselingPlanPhaseGoal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
-    await dispatch(createCounselingPlanPhaseGoal(formValues))
-    onSuccess()
-    setOpen(false)
-    setFormValues({
-      counselingPlanPhaseId: counselingPlanPhaseId,
-      goalName: '',
-      goalDescription: '',
-    })
+    try {
+      await dispatch(createCounselingPlanPhaseGoal(formValues)).unwrap()
+      notifySuccess(t('counseling_plan.goal_created_success'))
+      onSuccess()
+      setOpen(false)
+      setFormValues({
+        counselingPlanPhaseId: counselingPlanPhaseId,
+        goalName: '',
+        goalDescription: '',
+      })
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
   }
 
   const handleGenrateAI = async (): Promise<void> => {
-    const aiGeneratedPhaseGoal: CreateCounselingPlanPhaseGoalDTO = await dispatch(
-      createCounselingPlanPhaseGoalAIGenerated({
+    try {
+      const aiGenerated: CreateCounselingPlanPhaseGoalDTO = await dispatch(
+        createCounselingPlanPhaseGoalAIGenerated({
+          counselingPlanPhaseId: counselingPlanPhaseId,
+          language: getCurrentLanguage(),
+        })
+      ).unwrap()
+
+      setFormValues({
+        ...aiGenerated,
         counselingPlanPhaseId: counselingPlanPhaseId,
-        language: getCurrentLanguage(),
       })
-    ).unwrap()
-    const newFormValues: CreateCounselingPlanPhaseGoalDTO = {
-      ...aiGeneratedPhaseGoal,
-      counselingPlanPhaseId: counselingPlanPhaseId,
+      setOpen(true)
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
-    setFormValues(newFormValues)
-    setOpen(true)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

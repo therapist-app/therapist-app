@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -23,30 +24,41 @@ const Settings = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const { notifyError, notifySuccess } = useNotify()
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
-    i18n.changeLanguage(selectedLanguage).then(() => {})
+    i18n
+      .changeLanguage(selectedLanguage)
+      .catch((err) => notifyError(typeof err === 'string' ? err : 'An unknown error occurred'))
   }
 
   const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
+
     if (!newPassword || !confirmPassword) {
+      notifyError(t('settings.fill_all_fields') || 'Please fill all fields.')
       return
     }
     if (newPassword !== confirmPassword) {
+      notifyError(t('settings.passwords_not_match') || 'Passwords do not match.')
       return
     }
 
-    await dispatch(updateTherapist({ password: newPassword }))
-    await dispatch(logoutTherapist())
-    navigate(getPathFromPage(PAGES.LOGIN_PAGE))
-
-    setNewPassword('')
-    setConfirmPassword('')
+    try {
+      await dispatch(updateTherapist({ password: newPassword })).unwrap()
+      await dispatch(logoutTherapist()).unwrap()
+      notifySuccess(t('settings.password_changed_success') || 'Password changed.')
+      navigate(getPathFromPage(PAGES.LOGIN_PAGE))
+    } catch (err) {
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+    } finally {
+      setNewPassword('')
+      setConfirmPassword('')
+    }
   }
 
   return (
