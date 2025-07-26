@@ -25,7 +25,10 @@
     "changePasswordTitle": "Change password",
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password",
-    "changePasswordButton": "Submit"
+    "changePasswordButton": "Change password",
+    "LOCAL_UZH": "UZH LLM (Private Server)",
+    "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
+    "llmModel": "LLM Model"
   },
   "layout": {
     "dashboard": "Dashboard",

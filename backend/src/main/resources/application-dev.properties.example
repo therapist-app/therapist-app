@@ -9,8 +9,6 @@ JWT_SECRET_KEY=ThisIsTheDevelopmentJWTSecretKeyItDoesNotHaveToBeSuperSecretButLo
 PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
 COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough
 
-# Options are: UZH or AZURE
-LLM_PROVIDER=AZURE
 LLM_MAX_CHARACTERS=150000
 
 LOCAL_LLM_MODEL=gemma3:12b

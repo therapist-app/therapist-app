@@ -15,7 +15,6 @@ configMapGenerator:
       - LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
       - PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
       - AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
-      - LLM_PROVIDER=AZURE
       - LLM_MAX_CHARACTERS=150000
 
 secretGenerator:

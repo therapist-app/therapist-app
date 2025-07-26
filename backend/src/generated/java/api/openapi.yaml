@@ -2169,7 +2169,7 @@ components:
         newPassword:
           maxLength: 2147483647
           minLength: 8
-          pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
+          pattern: "^(?=.*\\p{Lu})(?=.*\\p{Ll})(?=.*\\d).*$"
           type: string
       required:
       - currentPassword
@@ -2497,7 +2497,7 @@ components:
         password:
           maxLength: 2147483647
           minLength: 8
-          pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).*$"
+          pattern: "^(?=.*\\p{Lu})(?=.*\\p{Ll})(?=.*\\d).*$"
           type: string
         coachAccessKey:
           type: string

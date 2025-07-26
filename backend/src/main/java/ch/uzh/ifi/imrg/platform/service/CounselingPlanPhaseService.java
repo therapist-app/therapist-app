@@ -5,9 +5,11 @@ import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
 import ch.uzh.ifi.imrg.platform.repository.ExerciseRepository;
+import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.AddExerciseToCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanExerciseAIGeneratedDTO;
@@ -36,15 +38,18 @@ public class CounselingPlanPhaseService {
   private final CounselingPlanRepository counselingPlanRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
   private final ExerciseRepository exerciseRepository;
+  private final TherapistRepository therapistRepository;
 
   public CounselingPlanPhaseService(
       @Qualifier("counselingPlanPhaseRepository")
           CounselingPlanPhaseRepository counselingPlanPhaseRepository,
       @Qualifier("exerciseRepository") ExerciseRepository exerciseRepository,
-      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository) {
+      @Qualifier("counselingPlanRepository") CounselingPlanRepository counselingPlanRepository,
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
     this.counselingPlanRepository = counselingPlanRepository;
     this.exerciseRepository = exerciseRepository;
+    this.therapistRepository = therapistRepository;
   }
 
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
@@ -77,6 +82,7 @@ public class CounselingPlanPhaseService {
                         HttpStatus.NOT_FOUND,
                         "Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
@@ -99,7 +105,7 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseDTO generatedDto =
-        LLMFactory.getInstance()
+        LLMFactory.getInstance(therapist.getLlmModel())
             .callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
     return generatedDto;
@@ -117,6 +123,7 @@ public class CounselingPlanPhaseService {
                         "Counseling plan phase not found with id: "
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
 
@@ -141,7 +148,7 @@ public class CounselingPlanPhaseService {
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
     CreateExerciseDTO generatedDto =
-        LLMFactory.getInstance()
+        LLMFactory.getInstance(therapist.getLlmModel())
             .callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
     CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
         getOutputDto(counselingPlanPhase, counselingPlan);

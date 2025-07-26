@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.entity;
 
 import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
+import ch.uzh.ifi.imrg.platform.enums.LLMModel;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -35,6 +36,9 @@ public class Therapist implements Serializable, HasLLMContext {
 
   @Column(nullable = false)
   private String password;
+
+  @Column(nullable = false)
+  private LLMModel llmModel;
 
   @OneToMany(
       mappedBy = "therapist",

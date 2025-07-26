@@ -25,6 +25,20 @@ export interface UpdateTherapistDTO {
      * @type {string}
      * @memberof UpdateTherapistDTO
      */
+    'llmModel'?: UpdateTherapistDTOLlmModelEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateTherapistDTO
+     */
     'password'?: string;
 }
+
+export const UpdateTherapistDTOLlmModelEnum = {
+    LocalUzh: 'LOCAL_UZH',
+    AzureOpenai: 'AZURE_OPENAI'
+} as const;
+
+export type UpdateTherapistDTOLlmModelEnum = typeof UpdateTherapistDTOLlmModelEnum[keyof typeof UpdateTherapistDTOLlmModelEnum];
+
 

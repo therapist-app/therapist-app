@@ -20,6 +20,7 @@ public interface TherapistMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "email", target = "email")
+  @Mapping(source = "llmModel", target = "llmModel")
   @Mapping(source = "chatbotTemplates", target = "chatbotTemplatesOutputDTO")
   @Mapping(source = "patients", target = "patientsOutputDTO")
   TherapistOutputDTO convertEntityToTherapistOutputDTO(Therapist therapist);

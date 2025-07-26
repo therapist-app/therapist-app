@@ -25,7 +25,7 @@
     "changePasswordTitle": "Passwort ändern",
     "newPassword": "Neues Passwort",
     "confirmNewPassword": "Neues Passwort bestätigen",
-    "changePasswordButton": "Absenden"
+    "changePasswordButton": "Passwort ändern"
   },
   "layout": {
     "dashboard": "Dashboard",
@@ -358,7 +358,7 @@
     "personal_premorbid": "Prämorbide Persönlichkeit",
     "patient_register_success": "Klient erfolgreich registriert.",
     "patient_register_failed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
-},
+  },
   "register": {
     "welcome": "Willkommen bei der Therapeut:innen-App",
     "register_therapist": "Als neue:r Therapeut:in registrieren",

@@ -1,6 +1,6 @@
 package ch.uzh.ifi.imrg.platform.LLM;
 
-import ch.uzh.ifi.imrg.platform.utils.EnvironmentVariables;
+import ch.uzh.ifi.imrg.platform.enums.LLMModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,22 +12,21 @@ public class LLMFactory {
 
   private LLMFactory() {}
 
-  public static LLM getInstance() {
+  public static LLM getInstance(LLMModel llmModel) {
     if (instance == null) {
       synchronized (LLMFactory.class) {
         if (instance == null) {
-          String provider = EnvironmentVariables.LLM_PROVIDER;
-          logger.info("Initializing LLM provider: {}", provider);
+          logger.info("Initializing LLM model: {}", llmModel);
 
-          switch (provider.toUpperCase()) {
-            case "AZURE":
+          switch (llmModel) {
+            case LLMModel.AZURE_OPENAI:
               instance = new LLMAzureOpenai();
               break;
-            case "UZH":
+            case LLMModel.LOCAL_UZH:
               instance = new LLMUZH();
               break;
             default:
-              logger.error("Invalid LLM_PROVIDER: '{}'. Defaulting to UZH.", provider);
+              logger.error("Invalid LLM Model: '{}'. Defaulting to LOCAL_UZH.", llmModel);
               instance = new LLMUZH();
           }
         }
