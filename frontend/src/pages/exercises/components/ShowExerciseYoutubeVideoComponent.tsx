@@ -17,6 +17,7 @@ interface ShowExerciseYoutubeVideoComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
+  isViewMode: boolean
 }
 
 const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoComponentProps> = (
@@ -72,6 +73,17 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
+  }
+
+  if (props.isViewMode) {
+    return (
+      <div>
+        <YoutubeIframe youtubeUrl={props.exerciseComponent.youtubeUrl} />
+        <Typography sx={{ whiteSpace: 'pre-line' }}>
+          {exerciseComponent.exerciseComponentDescription}
+        </Typography>
+      </div>
+    )
   }
 
   return (

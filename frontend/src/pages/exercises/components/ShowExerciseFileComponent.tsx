@@ -22,6 +22,7 @@ interface ShowExerciseFileComponentProps {
   numberOfExercises: number
   isImageComponent: boolean
   refresh(): void
+  isViewMode: boolean
 }
 
 const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (props) => {
@@ -89,6 +90,29 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
+  }
+
+  if (props.isViewMode) {
+    return (
+      <div>
+        {props.isImageComponent ? (
+          <img src={imageFileUrl} alt='Exercise' style={{ width: '300px', objectFit: 'contain' }} />
+        ) : (
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
+            <FileDownload
+              download={() =>
+                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+              }
+              fileName={exerciseComponent.fileName ?? ''}
+            />
+          </div>
+        )}
+        <Typography sx={{ whiteSpace: 'pre-line' }}>
+          {exerciseComponent.exerciseComponentDescription}
+        </Typography>
+      </div>
+    )
   }
 
   return (

@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, FormControlLabel, Switch, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -72,6 +72,7 @@ const ExerciseDetail = (): ReactElement => {
   })
 
   const [isEditingExercise, setIsEditingExercise] = useState(false)
+  const [isViewMode, setIsViewMode] = useState(false)
 
   const toggleIsEditingExercise = (isEditing: boolean): void => {
     if (isEditing) {
@@ -138,7 +139,7 @@ const ExerciseDetail = (): ReactElement => {
     const load = async (): Promise<void> => {
       try {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
-        await dispatch(getExerciseInformation(exerciseId ?? '')).unwrap()
+        // await dispatch(getExerciseInformation(exerciseId ?? '')).unwrap()
       } catch (e) {
         notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
@@ -306,75 +307,96 @@ const ExerciseDetail = (): ReactElement => {
               {t('exercise.no_exercise_components_yet')}
             </Typography>
           )}
+          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+            <Typography>Edit Mode</Typography>
+            <Switch onClick={() => setIsViewMode(!isViewMode)} />
+            <Typography>View Mode</Typography>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              border: isViewMode ? '1px solid black' : '',
+              borderRadius: '5px',
+              padding: isViewMode ? '20px' : '',
+            }}
+          >
+            {selectedExercise?.exerciseComponentsOutputDTO &&
+              selectedExercise.exerciseComponentsOutputDTO.map((exerciseComponent) => (
+                <div
+                  key={exerciseComponent.id}
+                  style={{
+                    border: isViewMode ? '' : '1px solid black',
+                    borderRadius: '5px',
+                    padding: isViewMode ? '' : '20px',
+                  }}
+                >
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image && (
+                    <ShowExerciseFileComponent
+                      isViewMode={isViewMode}
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                      isImageComponent
+                    />
+                  )}
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.File && (
+                    <ShowExerciseFileComponent
+                      isViewMode={isViewMode}
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                      isImageComponent={false}
+                    />
+                  )}
 
-          {selectedExercise?.exerciseComponentsOutputDTO &&
-            selectedExercise.exerciseComponentsOutputDTO.map((exerciseComponent) => (
-              <div
-                key={exerciseComponent.id}
-                style={{
-                  border: '1px solid black',
-                  borderRadius: '5px',
-                  padding: '20px',
-                }}
-              >
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image && (
-                  <ShowExerciseFileComponent
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                    isImageComponent
-                  />
-                )}
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.File && (
-                  <ShowExerciseFileComponent
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                    isImageComponent={false}
-                  />
-                )}
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo && (
+                    <ShowExerciseYoutubeVideoComponent
+                      isViewMode={isViewMode}
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                    />
+                  )}
 
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo && (
-                  <ShowExerciseYoutubeVideoComponent
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                  />
-                )}
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text && (
+                    <ShowExerciseTextComponent
+                      isViewMode={isViewMode}
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                    />
+                  )}
 
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text && (
-                  <ShowExerciseTextComponent
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                  />
-                )}
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate && (
+                    <ShowExerciseInputFieldComponent
+                      isViewMode={isViewMode}
+                      isPrivateField
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                    />
+                  )}
 
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate && (
-                  <ShowExerciseInputFieldComponent
-                    isPrivateField
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                  />
-                )}
-
-                {exerciseComponent.exerciseComponentType ===
-                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared && (
-                  <ShowExerciseInputFieldComponent
-                    isPrivateField={false}
-                    exerciseComponent={exerciseComponent}
-                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
-                    refresh={refreshExercise}
-                  />
-                )}
-              </div>
-            ))}
+                  {exerciseComponent.exerciseComponentType ===
+                    ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared && (
+                    <ShowExerciseInputFieldComponent
+                      isViewMode={isViewMode}
+                      isPrivateField={false}
+                      exerciseComponent={exerciseComponent}
+                      numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                      refresh={refreshExercise}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>

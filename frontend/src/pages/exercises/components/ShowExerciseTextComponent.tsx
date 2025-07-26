@@ -16,6 +16,7 @@ interface ShowExerciseTextComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
+  isViewMode: boolean
 }
 
 const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (props) => {
@@ -68,6 +69,10 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
+  }
+
+  if (props.isViewMode) {
+    return <Typography>{exerciseComponent.exerciseComponentDescription}</Typography>
   }
 
   return (
