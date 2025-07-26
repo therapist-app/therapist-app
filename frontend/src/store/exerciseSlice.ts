@@ -23,7 +23,34 @@ interface ExerciseState {
 
 const initialState: ExerciseState = {
   selectedExercise: null,
-  selectedExerciseInformation: [],
+  selectedExerciseInformation: [
+    // {
+    //   feedback:
+    //     'This is some very very very very very very very very very very very very long feedback the client might have',
+    //   startTime: new Date().toISOString(),
+    //   endTime: new Date().toISOString(),
+    //   moodsBefore: [
+    //     {
+    //       moodName: 'First Test Mood Before',
+    //       moodScore: 6,
+    //     },
+    //     {
+    //       moodName: 'Second Mood Before',
+    //       moodScore: 7,
+    //     },
+    //   ],
+    //   moodsAfter: [
+    //     {
+    //       moodName: 'First Test Mood After',
+    //       moodScore: 8,
+    //     },
+    //     {
+    //       moodName: 'Second Test Mood After',
+    //       moodScore: 9,
+    //     },
+    //   ],
+    // },
+  ],
   allExercisesOfPatient: [],
   addingExerciseComponent: null,
   status: 'idle',

@@ -44,7 +44,7 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {exerciseInfo.moodsBefore?.map((mood) => (
                       <div>
-                        {mood.moodName}: {mood.moodScore}
+                        {mood.moodName} ({mood.moodScore}/10)
                       </div>
                     ))}
                   </div>
@@ -53,7 +53,7 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {exerciseInfo.moodsAfter?.map((mood) => (
                       <div>
-                        {mood.moodName}: {mood.moodScore}
+                        {mood.moodName} ({mood.moodScore}/10)
                       </div>
                     ))}
                   </div>
