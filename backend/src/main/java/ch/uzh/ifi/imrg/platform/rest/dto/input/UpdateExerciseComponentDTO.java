@@ -6,5 +6,6 @@ import lombok.Data;
 public class UpdateExerciseComponentDTO {
   private String id;
   private String exerciseComponentDescription;
+  private String youtubeUrl;
   private Integer orderNumber;
 }

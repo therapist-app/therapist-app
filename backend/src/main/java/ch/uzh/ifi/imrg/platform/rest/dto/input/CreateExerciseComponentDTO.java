@@ -7,5 +7,6 @@ import lombok.Data;
 public class CreateExerciseComponentDTO {
   private String exerciseId;
   private String exerciseComponentDescription;
+  private String youtubeUrl;
   private ExerciseComponentType exerciseComponentType;
 }
