@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInformationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
@@ -46,6 +47,13 @@ public class ExerciseController {
   public List<ExerciseOutputDTO> getAllExercisesOfPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
     return exerciseService.getAllExercisesOfPatient(patientId, therapistId);
+  }
+
+  @GetMapping("/exercise-information/{exerciseId}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<ExerciseInformationOutputDTOPatientAPI> getExerciseInformation(
+      @PathVariable String exerciseId, @CurrentTherapistId String therapistId) {
+    return exerciseService.getExerciseInformation(exerciseId, therapistId);
   }
 
   @PutMapping("/")

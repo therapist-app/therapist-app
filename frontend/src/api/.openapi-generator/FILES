@@ -52,6 +52,8 @@ models/create-patient-document-from-therapist-document-dto.ts
 models/create-patient-dto.ts
 models/create-therapist-dto.ts
 models/exercise-component-output-dto.ts
+models/exercise-information-output-dtopatient-api.ts
+models/exercise-mood-output-dtopatient-api.ts
 models/exercise-output-dto.ts
 models/index.ts
 models/log-output-dto.ts
