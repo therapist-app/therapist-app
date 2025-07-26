@@ -47,6 +47,7 @@ public class ExerciseComponentService {
     exerciseComponent.setOrderNumber(exercise.getExerciseComponents().size() + 1);
     exerciseComponent.setExerciseComponentDescription(
         createExerciseComponentDTO.getExerciseComponentDescription());
+    exerciseComponent.setYoutubeUrl(createExerciseComponentDTO.getYoutubeUrl());
 
     exerciseComponent = exerciseComponentRepository.save(exerciseComponent);
 
@@ -57,7 +58,8 @@ public class ExerciseComponentService {
                 ExerciseComponentInputDTOPatientAPI.ExerciseComponentTypeEnum.fromValue(
                     exerciseComponent.getExerciseComponentType().toString()))
             .exerciseComponentDescription(exerciseComponent.getExerciseComponentDescription())
-            .orderNumber(exerciseComponent.getOrderNumber());
+            .orderNumber(exerciseComponent.getOrderNumber())
+            .youtubeUrl(exerciseComponent.getYoutubeUrl());
 
     PatientAppAPIs.coachExerciseControllerPatientAPI
         .createExerciseComponent(
@@ -144,6 +146,11 @@ public class ExerciseComponentService {
       target.setExerciseComponentDescription(dto.getExerciseComponentDescription());
       exerciseComponentUpdateInputDTOPatientAPI.exerciseComponentDescription(
           dto.getExerciseComponentDescription());
+    }
+
+    if (dto.getYoutubeUrl() != null) {
+      target.setYoutubeUrl(dto.getYoutubeUrl());
+      exerciseComponentUpdateInputDTOPatientAPI.youtubeUrl(dto.getYoutubeUrl());
     }
 
     if (dto.getOrderNumber() != null) {

@@ -16,6 +16,7 @@ interface ShowExerciseTextComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
   refresh(): void
+  isViewMode: boolean
 }
 
 const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (props) => {
@@ -70,6 +71,10 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
     }
   }
 
+  if (props.isViewMode) {
+    return <Typography>{exerciseComponent.exerciseComponentDescription}</Typography>
+  }
+
   return (
     <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
       {!isEditing ? (
@@ -110,15 +115,12 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
               ))}
             </TextField>
 
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
-              onClick={clickCancel}
-            >
-              <ClearIcon style={{ color: 'red' }} />
+            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+              <ClearIcon />
             </Button>
 
-            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
-              <CheckIcon style={{ color: 'green' }} />
+            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+              <CheckIcon />
             </Button>
           </div>
 

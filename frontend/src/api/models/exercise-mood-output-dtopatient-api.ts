@@ -17,32 +17,20 @@
 /**
  * 
  * @export
- * @interface UpdateExerciseComponentDTO
+ * @interface ExerciseMoodOutputDTOPatientAPI
  */
-export interface UpdateExerciseComponentDTO {
+export interface ExerciseMoodOutputDTOPatientAPI {
     /**
      * 
      * @type {string}
-     * @memberof UpdateExerciseComponentDTO
+     * @memberof ExerciseMoodOutputDTOPatientAPI
      */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateExerciseComponentDTO
-     */
-    'exerciseComponentDescription'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateExerciseComponentDTO
-     */
-    'youtubeUrl'?: string;
+    'moodName'?: string;
     /**
      * 
      * @type {number}
-     * @memberof UpdateExerciseComponentDTO
+     * @memberof ExerciseMoodOutputDTOPatientAPI
      */
-    'orderNumber'?: number;
+    'moodScore'?: number;
 }
 

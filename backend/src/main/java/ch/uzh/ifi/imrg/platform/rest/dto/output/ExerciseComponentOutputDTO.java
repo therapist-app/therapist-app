@@ -8,6 +8,7 @@ public class ExerciseComponentOutputDTO {
   private String id;
   private ExerciseComponentType exerciseComponentType;
   private String exerciseComponentDescription;
+  private String youtubeUrl;
   private String fileName;
   private String fileType;
   private String extractedText;

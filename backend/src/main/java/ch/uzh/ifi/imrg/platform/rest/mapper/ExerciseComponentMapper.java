@@ -12,6 +12,7 @@ public interface ExerciseComponentMapper {
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "exerciseComponentDescription", target = "exerciseComponentDescription")
+  @Mapping(source = "youtubeUrl", target = "youtubeUrl")
   @Mapping(source = "exerciseComponentType", target = "exerciseComponentType")
   @Mapping(source = "fileName", target = "fileName")
   @Mapping(source = "fileType", target = "fileType")

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.ExerciseInformationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ExerciseUpdateInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
@@ -89,6 +90,16 @@ public class ExerciseService {
     return exercises.stream()
         .map(exerciseMapper::convertEntityToExerciseOutputDTO)
         .collect(Collectors.toList());
+  }
+
+  public List<ExerciseInformationOutputDTOPatientAPI> getExerciseInformation(
+      String exerciseId, String therapistId) {
+    Exercise exercise = exerciseRepository.getReferenceById(exerciseId);
+    SecurityUtil.checkOwnership(exercise, therapistId);
+    return PatientAppAPIs.coachExerciseControllerPatientAPI
+        .getExerciseInformation(exercise.getPatient().getId(), exerciseId)
+        .collectList()
+        .block();
   }
 
   public ExerciseOutputDTO updateExercise(UpdateExerciseDTO updateExerciseDTO, String therapistId) {

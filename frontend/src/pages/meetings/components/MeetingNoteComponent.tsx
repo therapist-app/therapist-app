@@ -162,7 +162,6 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
                 type='submit'
                 sx={{
                   ...commonButtonStyles,
-                  minWidth: '280px',
                 }}
               >
                 <CheckIcon />
@@ -172,7 +171,6 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
                 onClick={clickCancel}
                 sx={{
                   ...deleteButtonStyles,
-                  minWidth: '280px',
                 }}
               >
                 <ClearIcon />

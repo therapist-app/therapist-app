@@ -3,7 +3,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
@@ -17,6 +17,7 @@ interface ShowExerciseInputFieldComponentProps {
   numberOfExercises: number
   refresh(): void
   isPrivateField: boolean
+  isViewMode: boolean
 }
 
 const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentProps> = (props) => {
@@ -36,6 +37,7 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>(originalFormData)
   const [isEditing, setIsEditing] = useState(false)
+  const [viewModeInput, setViewModeInput] = useState('')
 
   const arrayOfNumbers: number[] = Array.from({ length: props.numberOfExercises }, (_, i) => i + 1)
 
@@ -74,6 +76,24 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
     }
   }
 
+  useEffect(() => {
+    if (props.isViewMode) {
+      setViewModeInput('')
+    }
+  }, [props.isViewMode])
+
+  if (props.isViewMode) {
+    return (
+      <TextField
+        multiline
+        value={viewModeInput}
+        sx={{ width: '100%' }}
+        onChange={(e) => setViewModeInput(e.target.value)}
+        label={`${props.exerciseComponent.exerciseComponentDescription} (${t(inputFieldTranslationKey)})`}
+      />
+    )
+  }
+
   return (
     <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
       {!isEditing ? (
@@ -92,9 +112,14 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
             </Button>
           </div>
 
-          <Typography sx={{ whiteSpace: 'pre-line' }}>
-            {exerciseComponent.exerciseComponentDescription}
-          </Typography>
+          <div style={{ display: 'flex', gap: '5px' }}>
+            <Typography>
+              <strong>{t('exercise.description')}:</strong>
+            </Typography>
+            <Typography sx={{ whiteSpace: 'pre-line' }}>
+              {exerciseComponent.exerciseComponentDescription}
+            </Typography>
+          </div>
         </>
       ) : (
         <>
@@ -114,15 +139,12 @@ const ShowExerciseInputFieldComponent: React.FC<ShowExerciseInputFieldComponentP
               ))}
             </TextField>
 
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
-              onClick={clickCancel}
-            >
-              <ClearIcon style={{ color: 'red' }} />
+            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+              <ClearIcon />
             </Button>
 
-            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
-              <CheckIcon style={{ color: 'green' }} />
+            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+              <CheckIcon />
             </Button>
           </div>
 

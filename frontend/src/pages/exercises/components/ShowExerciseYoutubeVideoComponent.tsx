@@ -2,58 +2,41 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Button, Link, MenuItem, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
-import FileDownload from '../../../generalComponents/FileDownload'
+import YoutubeIframe from '../../../generalComponents/YoutubeIframe'
 import { useNotify } from '../../../hooks/useNotify'
-import {
-  deleteExerciseComponent,
-  downloadExerciseComponent,
-  updateExerciseComponent,
-} from '../../../store/exerciseSlice'
+import { deleteExerciseComponent, updateExerciseComponent } from '../../../store/exerciseSlice'
 import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
-interface ShowExerciseFileComponentProps {
+interface ShowExerciseYoutubeVideoComponentProps {
   exerciseComponent: ExerciseComponentOutputDTO
   numberOfExercises: number
-  isImageComponent: boolean
   refresh(): void
   isViewMode: boolean
 }
 
-const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (props) => {
-  const { exerciseComponent, isImageComponent } = props
+const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoComponentProps> = (
+  props
+) => {
+  const { exerciseComponent } = props
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [imageFileUrl, setImageFileUrl] = useState<string>()
-  const [isEditing, setIsEditing] = useState(false)
   const { notifyError, notifySuccess } = useNotify()
-
-  useEffect((): void => {
-    const load = async (): Promise<void> => {
-      try {
-        const fileUrl = await dispatch(
-          downloadExerciseComponent(exerciseComponent.id ?? '')
-        ).unwrap()
-        setImageFileUrl(fileUrl)
-      } catch (err) {
-        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-      }
-    }
-    void load()
-  }, [dispatch, exerciseComponent.id, notifyError])
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
     exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
+    youtubeUrl: exerciseComponent.youtubeUrl,
     orderNumber: exerciseComponent.orderNumber,
   }
 
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>(originalFormData)
+  const [isEditing, setIsEditing] = useState(false)
 
   const arrayOfNumbers: number[] = Array.from({ length: props.numberOfExercises }, (_, i) => i + 1)
 
@@ -95,19 +78,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
   if (props.isViewMode) {
     return (
       <div>
-        {props.isImageComponent ? (
-          <img src={imageFileUrl} alt='Exercise' style={{ width: '560px', objectFit: 'contain' }} />
-        ) : (
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-            <FileDownload
-              download={() =>
-                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-              }
-              fileName={exerciseComponent.fileName ?? ''}
-            />
-          </div>
-        )}
+        <YoutubeIframe youtubeUrl={props.exerciseComponent.youtubeUrl} />
         <Typography sx={{ whiteSpace: 'pre-line' }}>
           {exerciseComponent.exerciseComponentDescription}
         </Typography>
@@ -122,26 +93,16 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
 
-            <Typography variant='h6'>
-              {isImageComponent ? t('exercise.image') : t('exercise.file')}
-            </Typography>
+            <Typography variant='h6'>{t('exercise.youtubeVideo')}</Typography>
 
             <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
               <EditIcon style={{ color: 'blue' }} />
             </Button>
 
-            <FileDownload
-              download={() =>
-                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-              }
-              fileName={exerciseComponent.fileName ?? ''}
-            />
-
             <Button sx={{ minWidth: '10px' }} onClick={clickDelete}>
               <DeleteIcon style={{ color: 'red' }} />
             </Button>
           </div>
-
           <div style={{ display: 'flex', gap: '5px' }}>
             <Typography>
               <strong>{t('exercise.description')}:</strong>
@@ -151,15 +112,19 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
             </Typography>
           </div>
 
-          {isImageComponent ? (
-            <img
-              src={imageFileUrl}
-              alt='Exercise'
-              style={{ width: '560px', objectFit: 'contain' }}
-            />
-          ) : (
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-          )}
+          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+            <Typography>
+              <strong>{t('exercise.youtubeVideoUrl')}:</strong>
+            </Typography>
+            <Link
+              target='_blank'
+              href={exerciseComponent.youtubeUrl}
+              sx={{ whiteSpace: 'pre-line', fontFamily: 'Roboto' }}
+            >
+              {exerciseComponent.youtubeUrl}
+            </Link>
+          </div>
+          <YoutubeIframe youtubeUrl={formData.youtubeUrl} />
         </>
       ) : (
         <>
@@ -196,19 +161,18 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
             label={t('exercise.description')}
           />
 
-          {isImageComponent ? (
-            <img
-              src={imageFileUrl}
-              alt='Exercise'
-              style={{ width: '560px', objectFit: 'contain' }}
-            />
-          ) : (
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-          )}
+          <TextField
+            required
+            name='youtubeUrl'
+            value={formData.youtubeUrl}
+            onChange={handleChange}
+            label={t('exercise.youtubeVideoUrl')}
+          />
+          <YoutubeIframe youtubeUrl={formData.youtubeUrl} />
         </>
       )}
     </div>
   )
 }
 
-export default ShowExerciseFileComponent
+export default ShowExerciseYoutubeVideoComponent
