@@ -134,8 +134,9 @@ public class CounselingPlanPhaseService {
     patientList.add(counselingPlan.getPatient());
 
     String userPrompt =
-        "Based on the counseling plan provided, generate one new exercise that would be a good next step for the patient. "
-            + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
+        "Based on the counseling plan provided, generate one new exercise for phase with ID: "
+            + counselingPlanPhase.getId()
+            + "\nThe exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
             + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
