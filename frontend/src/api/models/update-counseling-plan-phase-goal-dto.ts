@@ -17,25 +17,25 @@
 /**
  * 
  * @export
- * @interface UpdateCounselingPlanPhaseGoal
+ * @interface UpdateCounselingPlanPhaseGoalDTO
  */
-export interface UpdateCounselingPlanPhaseGoal {
+export interface UpdateCounselingPlanPhaseGoalDTO {
     /**
      * 
      * @type {string}
-     * @memberof UpdateCounselingPlanPhaseGoal
+     * @memberof UpdateCounselingPlanPhaseGoalDTO
      */
     'counselingPlanPhaseGoalId'?: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateCounselingPlanPhaseGoal
+     * @memberof UpdateCounselingPlanPhaseGoalDTO
      */
     'goalName'?: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateCounselingPlanPhaseGoal
+     * @memberof UpdateCounselingPlanPhaseGoalDTO
      */
     'goalDescription'?: string;
 }

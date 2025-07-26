@@ -10,8 +10,8 @@ import {
   CreateCounselingPlanPhaseGoalDTO,
   RemoveExerciseFromCounselingPlanPhaseDTO,
   UpdateCounselingPlanDTO,
-  UpdateCounselingPlanPhase,
-  UpdateCounselingPlanPhaseGoal,
+  UpdateCounselingPlanPhaseDTO,
+  UpdateCounselingPlanPhaseGoalDTO,
 } from '../api'
 import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi } from '../utils/api'
 
@@ -55,7 +55,7 @@ export const createCounselingPlanPhase = createAsyncThunk(
 
 export const updateCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/updateCounselingPlanPhase',
-  async (dto: UpdateCounselingPlanPhase) => {
+  async (dto: UpdateCounselingPlanPhaseDTO) => {
     const response = await counselingPlanPhaseApi.updateCounselingPlanPhase(dto)
     return response.data
   }
@@ -87,7 +87,7 @@ export const createCounselingPlanPhaseGoal = createAsyncThunk(
 
 export const updateCounselingPlanPhaseGoal = createAsyncThunk(
   'counselingPlan/updateCounselingPlanPhaseGoal',
-  async (dto: UpdateCounselingPlanPhaseGoal) => {
+  async (dto: UpdateCounselingPlanPhaseGoalDTO) => {
     const response = await counselingPlanPhaseGoalApi.updateCounselingPlanPhaseGoal(dto)
     return response.data
   }

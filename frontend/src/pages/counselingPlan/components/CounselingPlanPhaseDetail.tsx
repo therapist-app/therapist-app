@@ -3,7 +3,7 @@ import { Button, IconButton, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { CounselingPlanPhaseOutputDTO, UpdateCounselingPlanPhase } from '../../../api'
+import { CounselingPlanPhaseOutputDTO, UpdateCounselingPlanPhaseDTO } from '../../../api'
 import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import {
@@ -58,7 +58,7 @@ const CounselingPlanPhaseDetail = ({
 
   const handleSubmitUpdate = async (): Promise<void> => {
     try {
-      const dto: UpdateCounselingPlanPhase = {
+      const dto: UpdateCounselingPlanPhaseDTO = {
         counselingPlanPhaseId: phase.id,
         phaseName: updatePhaseName,
         durationInWeeks: updateDurationInWeeks,
@@ -88,10 +88,13 @@ const CounselingPlanPhaseDetail = ({
         <Typography variant='h3'>
           {phaseNumber}. {phase.phaseName}
         </Typography>
-        <IconButton onClick={handleClickEditPhase}>
-          {' '}
-          <EditIcon sx={{ height: '25px', color: 'blue' }} />
-        </IconButton>
+        {!isEditing && (
+          <IconButton onClick={handleClickEditPhase}>
+            {' '}
+            <EditIcon sx={{ height: '25px', color: 'blue' }} />
+          </IconButton>
+        )}
+
         {isLastPhase && (
           <IconButton onClick={handleDeletePhase} sx={{ width: 'fit-content' }}>
             <DeleteIcon />

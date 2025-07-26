@@ -17,7 +17,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGenera
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhase;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -210,7 +210,7 @@ public class CounselingPlanPhaseService {
   }
 
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
-      UpdateCounselingPlanPhase dto, String therapistId) {
+      UpdateCounselingPlanPhaseDTO dto, String therapistId) {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
             .findById(dto.getCounselingPlanPhaseId())

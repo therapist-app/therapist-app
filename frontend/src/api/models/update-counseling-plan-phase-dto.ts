@@ -17,25 +17,25 @@
 /**
  * 
  * @export
- * @interface UpdateCounselingPlanPhase
+ * @interface UpdateCounselingPlanPhaseDTO
  */
-export interface UpdateCounselingPlanPhase {
+export interface UpdateCounselingPlanPhaseDTO {
     /**
      * 
      * @type {string}
-     * @memberof UpdateCounselingPlanPhase
+     * @memberof UpdateCounselingPlanPhaseDTO
      */
     'counselingPlanPhaseId'?: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateCounselingPlanPhase
+     * @memberof UpdateCounselingPlanPhaseDTO
      */
     'phaseName'?: string;
     /**
      * 
      * @type {number}
-     * @memberof UpdateCounselingPlanPhase
+     * @memberof UpdateCounselingPlanPhaseDTO
      */
     'durationInWeeks'?: number;
 }

@@ -6,7 +6,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGenera
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
-import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhase;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
@@ -77,7 +77,7 @@ public class CounselingPlanPhaseController {
 
   @PutMapping("/")
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
-      @RequestBody UpdateCounselingPlanPhase dto, @CurrentTherapistId String therapistId) {
+      @RequestBody UpdateCounselingPlanPhaseDTO dto, @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.updateCounselingPlanPhase(dto, therapistId);
   }
 
