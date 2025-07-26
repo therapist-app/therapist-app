@@ -26,8 +26,6 @@ services:
   database:
     container_name: coach-app-database
     image: postgres:17
-    ports:
-      - 5434:5432
     environment:
       POSTGRES_USER: coach-user
       POSTGRES_PASSWORD: coach-password
