@@ -12,7 +12,7 @@ configMapGenerator:
       - DB_NAME=therapist_app_main_db
       - DB_USERNAME=therapist-user
       - DB_CREATE_OR_UPDATE=create
-      - LOCAL_LLM_MODEL=Qwen/Qwen3-1.7B
+      - LOCAL_LLM_MODEL=gemma3:12b
       - LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
       - PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
       - AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
