@@ -34,6 +34,12 @@ export interface UpdateExerciseComponentDTO {
     'exerciseComponentDescription'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof UpdateExerciseComponentDTO
+     */
+    'youtubeUrl'?: string;
+    /**
+     * 
      * @type {number}
      * @memberof UpdateExerciseComponentDTO
      */

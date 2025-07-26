@@ -696,7 +696,10 @@ interface Resources {
       "cancel": "Cancel",
       "edit_exercise": "Edit Exercise",
       "exercise_components": "Exercise Components",
-      "delete_exercise": "Delete Exercise"
+      "delete_exercise": "Delete Exercise",
+      "addYoutubeVideo": "Add Youtube Video",
+      "youtubeVideoUrl": "Youtube Video URL",
+      "youtubeVideo": "Youtube Video"
     },
     "not_found": {
       "title": "404 - Page Not Found",

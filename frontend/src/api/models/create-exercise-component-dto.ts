@@ -37,6 +37,12 @@ export interface CreateExerciseComponentDTO {
      * @type {string}
      * @memberof CreateExerciseComponentDTO
      */
+    'youtubeUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateExerciseComponentDTO
+     */
     'exerciseComponentType'?: CreateExerciseComponentDTOExerciseComponentTypeEnum;
 }
 

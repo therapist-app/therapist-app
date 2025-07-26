@@ -33,10 +33,12 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateExerciseFileComponent from './components/CreateExerciseFileComponent'
 import CreateExerciseInputFieldComponent from './components/CreateExerciseInputFieldComponent'
 import CreateExerciseTextComponent from './components/CreateExerciseTextComponent'
+import CreateExerciseYoutubeVideoComponent from './components/CreateExerciseYoutubeVideoComponent'
 import ExerciseInformation from './components/ExerciseInformation'
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
+import ShowExerciseYoutubeVideoComponent from './components/ShowExerciseYoutubeVideoComponent'
 
 type ExerciseFormData = Omit<UpdateExerciseDTO, 'exerciseStart' | 'exerciseEnd'> & {
   exerciseStart: Date | null
@@ -334,6 +336,16 @@ const ExerciseDetail = (): ReactElement => {
                     isImageComponent={false}
                   />
                 )}
+
+                {exerciseComponent.exerciseComponentType ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo && (
+                  <ShowExerciseYoutubeVideoComponent
+                    exerciseComponent={exerciseComponent}
+                    numberOfExercises={selectedExercise.exerciseComponentsOutputDTO?.length ?? 0}
+                    refresh={refreshExercise}
+                  />
+                )}
+
                 {exerciseComponent.exerciseComponentType ===
                   ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text && (
                   <ShowExerciseTextComponent
@@ -388,6 +400,14 @@ const ExerciseDetail = (): ReactElement => {
             active={
               addingExerciseComponent === null ||
               addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+            }
+          />
+          <CreateExerciseYoutubeVideoComponent
+            addedYoutubeVideo={refreshExercise}
+            active={
+              addingExerciseComponent === null ||
+              addingExerciseComponent ===
+                ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo
             }
           />
           <CreateExerciseInputFieldComponent

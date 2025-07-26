@@ -43,6 +43,12 @@ export interface ExerciseComponentOutputDTO {
      * @type {string}
      * @memberof ExerciseComponentOutputDTO
      */
+    'youtubeUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseComponentOutputDTO
+     */
     'fileName'?: string;
     /**
      * 
