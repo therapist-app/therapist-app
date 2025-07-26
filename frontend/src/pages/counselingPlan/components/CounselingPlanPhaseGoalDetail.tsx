@@ -1,6 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, IconButton, TextField, Typography } from '@mui/material'
-import { ReactElement, useState, useTransition } from 'react'
+import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CounselingPlanPhaseGoalOutputDTO, UpdateCounselingPlanPhaseGoalDTO } from '../../../api'
@@ -8,7 +8,6 @@ import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import {
   deleteCounselingPlanPhaseGoal,
-  updateCounselingPlanPhase,
   updateCounselingPlanPhaseGoal,
 } from '../../../store/counselingPlanSlice'
 import { cancelButtonStyles, commonButtonStyles } from '../../../styles/buttonStyles'
