@@ -96,7 +96,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
     return (
       <div>
         {props.isImageComponent ? (
-          <img src={imageFileUrl} alt='Exercise' style={{ width: '300px', objectFit: 'contain' }} />
+          <img src={imageFileUrl} alt='Exercise' style={{ width: '560px', objectFit: 'contain' }} />
         ) : (
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
@@ -155,7 +155,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
             <img
               src={imageFileUrl}
               alt='Exercise'
-              style={{ width: '300px', objectFit: 'contain' }}
+              style={{ width: '560px', objectFit: 'contain' }}
             />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
@@ -200,7 +200,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
             <img
               src={imageFileUrl}
               alt='Exercise'
-              style={{ width: '300px', objectFit: 'contain' }}
+              style={{ width: '560px', objectFit: 'contain' }}
             />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
