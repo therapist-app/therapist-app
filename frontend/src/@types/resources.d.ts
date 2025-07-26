@@ -505,7 +505,9 @@ interface Resources {
       "changePasswordTitle": "Change password",
       "newPassword": "New password",
       "confirmNewPassword": "Confirm new password",
-      "changePasswordButton": "Change password"
+      "changePasswordButton": "Change password",
+      "LOCAL_UZH": "UZH LLM (Private Server)",
+      "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)"
     },
     "layout": {
       "dashboard": "Dashboard",
