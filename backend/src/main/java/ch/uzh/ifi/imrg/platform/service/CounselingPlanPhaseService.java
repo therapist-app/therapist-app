@@ -17,6 +17,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGenera
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -209,22 +210,27 @@ public class CounselingPlanPhaseService {
   }
 
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
-      String counselingPlanPhaseId, CreateCounselingPlanPhaseDTO updateDto, String therapistId) {
+      UpdateCounselingPlanPhase dto, String therapistId) {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
-            .findById(counselingPlanPhaseId)
+            .findById(dto.getCounselingPlanPhaseId())
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                        "Counseling plan phase not found with id: "
+                            + dto.getCounselingPlanPhaseId()));
 
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    if (updateDto.getPhaseName() != null) {
-      counselingPlanPhase.setPhaseName(updateDto.getPhaseName());
+
+    if (dto.getPhaseName() != null) {
+      counselingPlanPhase.setPhaseName(dto.getPhaseName());
     }
 
-    counselingPlanPhase.setDurationInWeeks(updateDto.getDurationInWeeks());
+    if (dto.getDurationInWeeks() != null) {
+      counselingPlanPhase.setDurationInWeeks(dto.getDurationInWeeks());
+    }
+
     counselingPlanPhaseRepository.save(counselingPlanPhase);
 
     return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());

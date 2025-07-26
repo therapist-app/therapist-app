@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseGoal;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseGoalMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -110,16 +111,16 @@ public class CounselingPlanPhaseGoalService {
   }
 
   public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhaseGoal(
-      String phaseGoalId, CreateCounselingPlanPhaseGoalDTO updateDto, String therapistId) {
+      UpdateCounselingPlanPhaseGoal dto, String therapistId) {
     CounselingPlanPhaseGoal counselingPlanPhaseGoal =
-        counselingPlanPhaseGoalRepository.getReferenceById(phaseGoalId);
+        counselingPlanPhaseGoalRepository.getReferenceById(dto.getCounselingPlanPhaseGoalId());
     SecurityUtil.checkOwnership(counselingPlanPhaseGoal, therapistId);
-    if (updateDto.getGoalName() != null) {
-      counselingPlanPhaseGoal.setGoalName(updateDto.getGoalName());
+    if (dto.getGoalName() != null) {
+      counselingPlanPhaseGoal.setGoalName(dto.getGoalName());
     }
 
-    if (updateDto.getGoalDescription() != null) {
-      counselingPlanPhaseGoal.setGoalName(updateDto.getGoalDescription());
+    if (dto.getGoalDescription() != null) {
+      counselingPlanPhaseGoal.setGoalName(dto.getGoalDescription());
     }
 
     counselingPlanPhaseGoalRepository.save(counselingPlanPhaseGoal);

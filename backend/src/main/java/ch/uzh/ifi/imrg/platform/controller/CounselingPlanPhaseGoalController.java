@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseGoal;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
@@ -53,12 +54,10 @@ public class CounselingPlanPhaseGoalController {
     return counselingPlanPhaseGoalService.getCounselingPlanPhaseGoalById(id, therapistId);
   }
 
-  @PutMapping("/{id}")
-  public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhase(
-      @PathVariable String id,
-      @RequestBody CreateCounselingPlanPhaseGoalDTO updateDto,
-      @CurrentTherapistId String therapistId) {
-    return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(id, updateDto, therapistId);
+  @PutMapping("/")
+  public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhaseGoal(
+      @RequestBody UpdateCounselingPlanPhaseGoal dto, @CurrentTherapistId String therapistId) {
+    return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(dto, therapistId);
   }
 
   @DeleteMapping("/{id}")

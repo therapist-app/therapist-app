@@ -31,6 +31,7 @@ public interface TherapistMapper {
   @Mapping(target = "patients", ignore = true)
   @Mapping(target = "chatbotTemplates", ignore = true)
   @Mapping(target = "therapistDocuments", ignore = true)
+  @Mapping(target = "llmModel", ignore = true)
   Therapist convertCreateTherapistDTOtoEntity(CreateTherapistDTO therapistDTO);
 
   @Mapping(target = "id", ignore = true)
@@ -39,6 +40,7 @@ public interface TherapistMapper {
   @Mapping(target = "patients", ignore = true)
   @Mapping(target = "chatbotTemplates", ignore = true)
   @Mapping(target = "therapistDocuments", ignore = true)
+  @Mapping(target = "llmModel", ignore = true)
   Therapist convertLoginTherapistDTOtoEntity(LoginTherapistDTO therapistDTO);
 
   default List<ChatbotTemplateOutputDTO> mapChatbotTemplates(

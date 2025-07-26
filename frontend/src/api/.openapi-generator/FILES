@@ -71,6 +71,8 @@ models/therapist-document-output-dto.ts
 models/therapist-output-dto.ts
 models/update-chatbot-template-dto.ts
 models/update-counseling-plan-dto.ts
+models/update-counseling-plan-phase-goal.ts
+models/update-counseling-plan-phase.ts
 models/update-exercise-component-dto.ts
 models/update-exercise-dto.ts
 models/update-meeting-dto.ts
