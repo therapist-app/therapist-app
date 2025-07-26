@@ -2,7 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, MenuItem, TextField, Typography } from '@mui/material'
+import { Button, Link, MenuItem, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -100,11 +100,17 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
             </Typography>
           </div>
 
-          <div style={{ display: 'flex', gap: '5px' }}>
+          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <Typography>
               <strong>{t('exercise.youtubeVideoUrl')}:</strong>
             </Typography>
-            <Typography sx={{ whiteSpace: 'pre-line' }}>{exerciseComponent.youtubeUrl}</Typography>
+            <Link
+              target='_blank'
+              href={exerciseComponent.youtubeUrl}
+              sx={{ whiteSpace: 'pre-line', fontFamily: 'Roboto' }}
+            >
+              {exerciseComponent.youtubeUrl}
+            </Link>
           </div>
           <YoutubeIframe youtubeUrl={formData.youtubeUrl} />
         </>
@@ -126,15 +132,12 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
               ))}
             </TextField>
 
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
-              onClick={clickCancel}
-            >
-              <ClearIcon style={{ color: 'red' }} />
+            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+              <ClearIcon />
             </Button>
 
-            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
-              <CheckIcon style={{ color: 'green' }} />
+            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+              <CheckIcon />
             </Button>
           </div>
 
@@ -147,7 +150,7 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
           />
 
           <TextField
-            multiline
+            required
             name='youtubeUrl'
             value={formData.youtubeUrl}
             onChange={handleChange}

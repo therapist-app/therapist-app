@@ -118,19 +118,24 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
             </Button>
           </div>
 
+          <div style={{ display: 'flex', gap: '5px' }}>
+            <Typography>
+              <strong>{t('exercise.description')}:</strong>
+            </Typography>
+            <Typography sx={{ whiteSpace: 'pre-line' }}>
+              {exerciseComponent.exerciseComponentDescription}
+            </Typography>
+          </div>
+
           {isImageComponent ? (
             <img
               src={imageFileUrl}
               alt='Exercise'
-              style={{ width: '300px', height: '300px', objectFit: 'contain' }}
+              style={{ width: '300px', objectFit: 'contain' }}
             />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
-
-          <Typography sx={{ whiteSpace: 'pre-line' }}>
-            {exerciseComponent.exerciseComponentDescription}
-          </Typography>
         </>
       ) : (
         <>
@@ -150,31 +155,32 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
               ))}
             </TextField>
 
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
-              onClick={clickCancel}
-            >
-              <ClearIcon style={{ color: 'red' }} />
+            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+              <ClearIcon />
             </Button>
 
-            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
-              <CheckIcon style={{ color: 'green' }} />
+            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+              <CheckIcon />
             </Button>
           </div>
-
-          {isImageComponent ? (
-            <img src={imageFileUrl} alt='Exercise' style={{ maxWidth: '100%' }} />
-          ) : (
-            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
-          )}
 
           <TextField
             multiline
             name='exerciseComponentDescription'
             value={formData.exerciseComponentDescription}
             onChange={handleChange}
-            label={t('exercise.text')}
+            label={t('exercise.description')}
           />
+
+          {isImageComponent ? (
+            <img
+              src={imageFileUrl}
+              alt='Exercise'
+              style={{ width: '300px', objectFit: 'contain' }}
+            />
+          ) : (
+            <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
+          )}
         </>
       )}
     </div>

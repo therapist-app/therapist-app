@@ -276,12 +276,12 @@ const ExerciseDetail = (): ReactElement => {
 
               <div style={{ display: 'flex', gap: '10px' }}>
                 <Button
-                  sx={{ ...cancelButtonStyles, minWidth: '280px', mt: 2 }}
+                  sx={{ ...cancelButtonStyles, mt: 2 }}
                   onClick={() => toggleIsEditingExercise(false)}
                 >
                   {t('exercise.cancel')}
                 </Button>
-                <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '280px', mt: 2 }}>
+                <Button type='submit' sx={{ ...commonButtonStyles, mt: 2 }}>
                   {t('exercise.submit')}
                 </Button>
               </div>
@@ -296,7 +296,6 @@ const ExerciseDetail = (): ReactElement => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            maxWidth: '600px',
           }}
         >
           {selectedExercise?.exerciseComponentsOutputDTO &&

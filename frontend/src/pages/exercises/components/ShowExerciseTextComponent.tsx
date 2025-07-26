@@ -110,15 +110,12 @@ const ShowExerciseTextComponent: React.FC<ShowExerciseTextComponentProps> = (pro
               ))}
             </TextField>
 
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '280px', marginLeft: '20px' }}
-              onClick={clickCancel}
-            >
-              <ClearIcon style={{ color: 'red' }} />
+            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+              <ClearIcon />
             </Button>
 
-            <Button sx={{ ...deleteButtonStyles, minWidth: '280px' }} onClick={handleSubmit}>
-              <CheckIcon style={{ color: 'green' }} />
+            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+              <CheckIcon />
             </Button>
           </div>
 
