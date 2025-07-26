@@ -15,7 +15,12 @@ import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { useNotify } from '../../hooks/useNotify'
-import { deleteExercise, getExerciseById, updateExercise } from '../../store/exerciseSlice'
+import {
+  deleteExercise,
+  getExerciseById,
+  getExerciseInformation,
+  updateExercise,
+} from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import {
   cancelButtonStyles,
@@ -28,6 +33,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateExerciseFileComponent from './components/CreateExerciseFileComponent'
 import CreateExerciseInputFieldComponent from './components/CreateExerciseInputFieldComponent'
 import CreateExerciseTextComponent from './components/CreateExerciseTextComponent'
+import ExerciseInformation from './components/ExerciseInformation'
 import ShowExerciseFileComponent from './components/ShowExerciseFileComponent'
 import ShowExerciseInputFieldComponent from './components/ShowExerciseInputFieldComponent'
 import ShowExerciseTextComponent from './components/ShowExerciseTextComponent'
@@ -45,6 +51,9 @@ const ExerciseDetail = (): ReactElement => {
   const { notifyError, notifySuccess } = useNotify()
 
   const selectedExercise = useSelector((state: RootState) => state.exercise.selectedExercise)
+  const selectedExerciseInformation = useSelector(
+    (state: RootState) => state.exercise.selectedExerciseInformation
+  )
   const exerciseStatus = useSelector((state: RootState) => state.exercise.status)
   const addingExerciseComponent = useSelector(
     (state: RootState) => state.exercise.addingExerciseComponent
@@ -127,6 +136,7 @@ const ExerciseDetail = (): ReactElement => {
     const load = async (): Promise<void> => {
       try {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
+        await dispatch(getExerciseInformation(exerciseId ?? '')).unwrap()
       } catch (e) {
         notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
@@ -400,6 +410,10 @@ const ExerciseDetail = (): ReactElement => {
           />
         </div>
       </div>
+
+      <CustomizedDivider />
+
+      <ExerciseInformation exerciseInformations={selectedExerciseInformation} />
 
       <CustomizedDivider />
 

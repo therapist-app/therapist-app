@@ -4,6 +4,7 @@ import {
   CreateExerciseComponentDTO,
   CreateExerciseDTO,
   ExerciseComponentOutputDTOExerciseComponentTypeEnum,
+  ExerciseInformationOutputDTOPatientAPI,
   ExerciseOutputDTO,
   MeetingOutputDTO,
   UpdateExerciseComponentDTO,
@@ -13,6 +14,7 @@ import { exerciseApi, exerciseComponentApi } from '../utils/api'
 
 interface ExerciseState {
   selectedExercise: ExerciseOutputDTO | null
+  selectedExerciseInformation: ExerciseInformationOutputDTOPatientAPI[]
   allExercisesOfPatient: ExerciseOutputDTO[]
   addingExerciseComponent: ExerciseComponentOutputDTOExerciseComponentTypeEnum | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -21,6 +23,7 @@ interface ExerciseState {
 
 const initialState: ExerciseState = {
   selectedExercise: null,
+  selectedExerciseInformation: [],
   allExercisesOfPatient: [],
   addingExerciseComponent: null,
   status: 'idle',
@@ -44,6 +47,14 @@ export const getAllExercisesOfPatient = createAsyncThunk(
   'getAllExercisesOfPatient',
   async (patientId: string) => {
     const response = await exerciseApi.getAllExercisesOfPatient(patientId)
+    return response.data
+  }
+)
+
+export const getExerciseInformation = createAsyncThunk(
+  'getExerciseInformation',
+  async (exerciseId: string) => {
+    const response = await exerciseApi.getExerciseInformation(exerciseId)
     return response.data
   }
 )
@@ -171,6 +182,20 @@ const exerciseSlice = createSlice({
         state.allExercisesOfPatient = action.payload
       })
       .addCase(getAllExercisesOfPatient.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message || 'Something went wrong'
+        console.log(action)
+      })
+
+      .addCase(getExerciseInformation.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(getExerciseInformation.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.selectedExerciseInformation = action.payload
+      })
+      .addCase(getExerciseInformation.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
         console.log(action)
