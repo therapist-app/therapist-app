@@ -7,7 +7,7 @@ services:
         - ENV_NAME=uzh
     container_name: coach-app-frontend
     ports:
-      - "3001:80"
+      - "127.0.0.1:3001:80"
     restart: unless-stopped
 
   backend:
@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     container_name: coach-app-backend
     ports:
-      - "8081:8081"
+      - "127.0.0.1:8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=uzh
     depends_on:
