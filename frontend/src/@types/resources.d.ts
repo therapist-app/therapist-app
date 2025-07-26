@@ -701,7 +701,14 @@ interface Resources {
       "youtubeVideoUrl": "Youtube Video URL",
       "youtubeVideo": "Youtube Video",
       "noUrlProvided": "No Youtube URL provided",
-      "invalidUrlProvided": "Invalid Youtube URL"
+      "invalidUrlProvided": "Invalid Youtube URL",
+      "feedback": "Feedback",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "moodsBefore": "Moods Before",
+      "moodsAfter": "Moods After",
+      "editMode": "Edit Mode",
+      "viewMode": "View Mode"
     },
     "not_found": {
       "title": "404 - Page Not Found",

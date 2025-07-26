@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import React, { useTransition } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 interface YoutubeIframeProps {
   youtubeUrl: string | undefined

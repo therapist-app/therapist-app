@@ -27,11 +27,11 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
         <Table aria-label='simple table'>
           <TableHead>
             <TableRow>
-              <TableCell>Feedback</TableCell>
-              <TableCell>Start Time</TableCell>
-              <TableCell>End Time</TableCell>
-              <TableCell>Moods Before</TableCell>
-              <TableCell>Moods After</TableCell>
+              <TableCell>{t('exercise.feedback')}</TableCell>
+              <TableCell>{t('exercise.startTime')}</TableCell>
+              <TableCell>{t('exercise.endTime')}</TableCell>
+              <TableCell>{t('exercise.moodsBefore')}</TableCell>
+              <TableCell>{t('exercise.moodsAfter')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

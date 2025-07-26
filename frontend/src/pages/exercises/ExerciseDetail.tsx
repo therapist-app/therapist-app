@@ -139,7 +139,7 @@ const ExerciseDetail = (): ReactElement => {
     const load = async (): Promise<void> => {
       try {
         await dispatch(getExerciseById(exerciseId ?? '')).unwrap()
-        // await dispatch(getExerciseInformation(exerciseId ?? '')).unwrap()
+        await dispatch(getExerciseInformation(exerciseId ?? '')).unwrap()
       } catch (e) {
         notifyError(typeof e === 'string' ? e : 'An unknown error occurred')
       }
@@ -308,9 +308,9 @@ const ExerciseDetail = (): ReactElement => {
             </Typography>
           )}
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <Typography>Edit Mode</Typography>
+            <Typography>{t('exercise.editMode')}</Typography>
             <Switch onClick={() => setIsViewMode(!isViewMode)} />
-            <Typography>View Mode</Typography>
+            <Typography>{t('exercise.viewMode')}</Typography>
           </div>
           <div
             style={{
