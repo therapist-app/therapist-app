@@ -31,15 +31,16 @@ public class CounselingPlan implements OwnedByTherapist, HasLLMContext {
   @LLMContextField(label = "Counseling start", order = 1)
   private Instant startOfTherapy;
 
+  @OneToOne(fetch = FetchType.EAGER, mappedBy = "counselingPlan")
+  private Patient patient;
+
   @OneToMany(
       mappedBy = "counselingPlan",
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("phaseNumber ASC")
   private List<CounselingPlanPhase> counselingPlanPhases = new ArrayList<>();
-
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "counselingPlan")
-  private Patient patient;
 
   @Override
   public String getOwningTherapistId() {

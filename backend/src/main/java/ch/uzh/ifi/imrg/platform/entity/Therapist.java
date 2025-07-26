@@ -45,6 +45,7 @@ public class Therapist implements Serializable, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("name ASC")
   private List<Patient> patients = new ArrayList<>();
 
   @OneToMany(
@@ -52,6 +53,7 @@ public class Therapist implements Serializable, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 
   @OneToMany(
@@ -59,6 +61,7 @@ public class Therapist implements Serializable, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<TherapistDocument> therapistDocuments = new ArrayList<>();
 
   @Override
