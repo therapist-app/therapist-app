@@ -1,4 +1,6 @@
-import React from 'react'
+import { Typography } from '@mui/material'
+import React, { useTransition } from 'react'
+import { useTranslation } from 'react-i18next'
 interface YoutubeIframeProps {
   youtubeUrl: string | undefined
 }
@@ -30,10 +32,14 @@ const getYoutubeEmbedUrl = (urlOrId: string | undefined): string | undefined => 
 }
 
 const YoutubeIframe: React.FC<YoutubeIframeProps> = ({ youtubeUrl }) => {
+  const { t } = useTranslation()
+  if (!youtubeUrl) {
+    return <Typography>{t('exercise.noUrlProvided')}</Typography>
+  }
   const embedUrl = getYoutubeEmbedUrl(youtubeUrl)
 
   if (!embedUrl) {
-    return <div>Invalid YouTube URL provided.</div>
+    return <Typography>{t('exercise.invalidUrlProvided')}</Typography>
   }
 
   return (

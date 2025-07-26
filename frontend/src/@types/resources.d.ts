@@ -699,7 +699,9 @@ interface Resources {
       "delete_exercise": "Delete Exercise",
       "addYoutubeVideo": "Add Youtube Video",
       "youtubeVideoUrl": "Youtube Video URL",
-      "youtubeVideo": "Youtube Video"
+      "youtubeVideo": "Youtube Video",
+      "noUrlProvided": "No Youtube URL provided",
+      "invalidUrlProvided": "Invalid Youtube URL"
     },
     "not_found": {
       "title": "404 - Page Not Found",
