@@ -9,13 +9,20 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
+import { TherapistOutputDTOLlmModelEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { logoutTherapist, updateTherapist } from '../../store/therapistSlice'
+import { RootState } from '../../store/store'
+import {
+  getCurrentlyLoggedInTherapist,
+  logoutTherapist,
+  updateTherapist,
+} from '../../store/therapistSlice'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -26,8 +33,19 @@ const Settings = (): ReactElement => {
   const navigate = useNavigate()
   const { notifyError, notifySuccess } = useNotify()
 
+  const loggedInTherapist = useSelector((state: RootState) => state.therapist.loggedInTherapist)
+
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+
+  useEffect(() => {
+    const getTherapist = async (): Promise<void> => {
+      await dispatch(getCurrentlyLoggedInTherapist()).unwrap()
+    }
+    if (!loggedInTherapist) {
+      getTherapist()
+    }
+  }, [dispatch, loggedInTherapist?.llmModel, loggedInTherapist])
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
@@ -61,28 +79,56 @@ const Settings = (): ReactElement => {
     }
   }
 
+  const handleLLMChange = (event: SelectChangeEvent): void => {
+    dispatch(updateTherapist({ llmModel: event.target.value as TherapistOutputDTOLlmModelEnum }))
+  }
+
   return (
     <Layout>
-      <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '20px',
+          flexDirection: 'column',
+          maxWidth: '600px',
+          margin: 'auto',
+        }}
+      >
         <Typography variant='h4' gutterBottom>
           {t('settings.title')}
         </Typography>
 
-        <Box sx={{ mb: 4, mt: 2 }}>
-          <FormControl fullWidth>
-            <InputLabel id='language-select-label'>{t('settings.language')}</InputLabel>
+        <FormControl fullWidth>
+          <InputLabel id='language-select-label'>{t('settings.language')}</InputLabel>
+          <Select
+            labelId='language-select-label'
+            value={i18n.language}
+            label={t('settings.language')}
+            onChange={changeLanguage}
+          >
+            <MenuItem value='en'>English</MenuItem>
+            <MenuItem value='ua'>Українська</MenuItem>
+            <MenuItem value='de'>Deutsch</MenuItem>
+          </Select>
+        </FormControl>
+
+        {loggedInTherapist?.llmModel && (
+          <FormControl sx={{ minWidth: '200px' }}>
+            <InputLabel>LLM Model</InputLabel>
             <Select
-              labelId='language-select-label'
-              value={i18n.language}
-              label={t('settings.language')}
-              onChange={changeLanguage}
+              id='exercise-select'
+              value={loggedInTherapist?.llmModel}
+              label={t('exercise.exercise')}
+              onChange={handleLLMChange}
             >
-              <MenuItem value='en'>English</MenuItem>
-              <MenuItem value='ua'>Українська</MenuItem>
-              <MenuItem value='de'>Deutsch</MenuItem>
+              {Object.values(TherapistOutputDTOLlmModelEnum).map((llmModel) => (
+                <MenuItem key={llmModel} value={llmModel}>
+                  {llmModel}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-        </Box>
+        )}
 
         <Box component='form' onSubmit={handlePasswordChange} noValidate sx={{ mt: 1 }}>
           <Typography variant='h5' gutterBottom>
@@ -114,7 +160,7 @@ const Settings = (): ReactElement => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '580px', mt: 3, mb: 2 }}>
+          <Button type='submit' sx={{ ...commonButtonStyles, mt: 3, mb: 2 }}>
             {t('settings.changePasswordButton')}
           </Button>
         </Box>

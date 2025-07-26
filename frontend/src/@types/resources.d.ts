@@ -26,7 +26,7 @@ interface Resources {
       "changePasswordTitle": "Passwort ändern",
       "newPassword": "Neues Passwort",
       "confirmNewPassword": "Neues Passwort bestätigen",
-      "changePasswordButton": "Absenden"
+      "changePasswordButton": "Passwort ändern"
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -505,7 +505,7 @@ interface Resources {
       "changePasswordTitle": "Change password",
       "newPassword": "New password",
       "confirmNewPassword": "Confirm new password",
-      "changePasswordButton": "Submit"
+      "changePasswordButton": "Change password"
     },
     "layout": {
       "dashboard": "Dashboard",

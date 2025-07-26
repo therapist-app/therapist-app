@@ -25,7 +25,7 @@
     "changePasswordTitle": "Change password",
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password",
-    "changePasswordButton": "Submit"
+    "changePasswordButton": "Change password"
   },
   "layout": {
     "dashboard": "Dashboard",

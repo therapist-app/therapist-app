@@ -40,6 +40,12 @@ export interface TherapistOutputDTO {
     'email'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof TherapistOutputDTO
+     */
+    'llmModel'?: TherapistOutputDTOLlmModelEnum;
+    /**
+     * 
      * @type {Array<ChatbotTemplateOutputDTO>}
      * @memberof TherapistOutputDTO
      */
@@ -63,4 +69,12 @@ export interface TherapistOutputDTO {
      */
     'updatedAt'?: string;
 }
+
+export const TherapistOutputDTOLlmModelEnum = {
+    LocalUzh: 'LOCAL_UZH',
+    AzureOpenai: 'AZURE_OPENAI'
+} as const;
+
+export type TherapistOutputDTOLlmModelEnum = typeof TherapistOutputDTOLlmModelEnum[keyof typeof TherapistOutputDTOLlmModelEnum];
+
 
