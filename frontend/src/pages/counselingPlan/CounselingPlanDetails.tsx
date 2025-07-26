@@ -100,7 +100,7 @@ const CounselingPlanDetails = (): ReactElement => {
               <strong>{formatDateNicely(counselingPlan?.startOfTherapy)}</strong>
             </Typography>
             <IconButton onClick={() => setIsEditing(true)}>
-              <EditIcon sx={{ height: '25px' }} />
+              <EditIcon sx={{ height: '25px', color: 'blue' }} />
             </IconButton>
           </div>
         ) : (

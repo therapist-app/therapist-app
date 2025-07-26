@@ -27,6 +27,8 @@ import type { CounselingPlanPhaseGoalOutputDTO } from '../models';
 import type { CreateCounselingPlanPhaseGoalAIGeneratedDTO } from '../models';
 // @ts-ignore
 import type { CreateCounselingPlanPhaseGoalDTO } from '../models';
+// @ts-ignore
+import type { UpdateCounselingPlanPhaseGoalDTO } from '../models';
 /**
  * CounselingPlanPhaseGoalControllerApi - axios parameter creator
  * @export
@@ -171,18 +173,14 @@ export const CounselingPlanPhaseGoalControllerApiAxiosParamCreator = function (c
         },
         /**
          * 
-         * @param {string} id 
-         * @param {CreateCounselingPlanPhaseGoalDTO} createCounselingPlanPhaseGoalDTO 
+         * @param {UpdateCounselingPlanPhaseGoalDTO} updateCounselingPlanPhaseGoalDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCounselingPlanPhase1: async (id: string, createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('updateCounselingPlanPhase1', 'id', id)
-            // verify required parameter 'createCounselingPlanPhaseGoalDTO' is not null or undefined
-            assertParamExists('updateCounselingPlanPhase1', 'createCounselingPlanPhaseGoalDTO', createCounselingPlanPhaseGoalDTO)
-            const localVarPath = `/counseling-plan-phase-goals/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+        updateCounselingPlanPhaseGoal: async (updateCounselingPlanPhaseGoalDTO: UpdateCounselingPlanPhaseGoalDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateCounselingPlanPhaseGoalDTO' is not null or undefined
+            assertParamExists('updateCounselingPlanPhaseGoal', 'updateCounselingPlanPhaseGoalDTO', updateCounselingPlanPhaseGoalDTO)
+            const localVarPath = `/counseling-plan-phase-goals/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -201,7 +199,7 @@ export const CounselingPlanPhaseGoalControllerApiAxiosParamCreator = function (c
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createCounselingPlanPhaseGoalDTO, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCounselingPlanPhaseGoalDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -268,15 +266,14 @@ export const CounselingPlanPhaseGoalControllerApiFp = function(configuration?: C
         },
         /**
          * 
-         * @param {string} id 
-         * @param {CreateCounselingPlanPhaseGoalDTO} createCounselingPlanPhaseGoalDTO 
+         * @param {UpdateCounselingPlanPhaseGoalDTO} updateCounselingPlanPhaseGoalDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCounselingPlanPhase1(id: string, createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseGoalOutputDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCounselingPlanPhase1(id, createCounselingPlanPhaseGoalDTO, options);
+        async updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO: UpdateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CounselingPlanPhaseGoalOutputDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseGoalControllerApi.updateCounselingPlanPhase1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CounselingPlanPhaseGoalControllerApi.updateCounselingPlanPhaseGoal']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -327,13 +324,12 @@ export const CounselingPlanPhaseGoalControllerApiFactory = function (configurati
         },
         /**
          * 
-         * @param {string} id 
-         * @param {CreateCounselingPlanPhaseGoalDTO} createCounselingPlanPhaseGoalDTO 
+         * @param {UpdateCounselingPlanPhaseGoalDTO} updateCounselingPlanPhaseGoalDTO 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCounselingPlanPhase1(id: string, createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseGoalOutputDTO> {
-            return localVarFp.updateCounselingPlanPhase1(id, createCounselingPlanPhaseGoalDTO, options).then((request) => request(axios, basePath));
+        updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO: UpdateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseGoalOutputDTO> {
+            return localVarFp.updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -382,13 +378,12 @@ export interface CounselingPlanPhaseGoalControllerApiInterface {
 
     /**
      * 
-     * @param {string} id 
-     * @param {CreateCounselingPlanPhaseGoalDTO} createCounselingPlanPhaseGoalDTO 
+     * @param {UpdateCounselingPlanPhaseGoalDTO} updateCounselingPlanPhaseGoalDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseGoalControllerApiInterface
      */
-    updateCounselingPlanPhase1(id: string, createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseGoalOutputDTO>;
+    updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO: UpdateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig): AxiosPromise<CounselingPlanPhaseGoalOutputDTO>;
 
 }
 
@@ -445,14 +440,13 @@ export class CounselingPlanPhaseGoalControllerApi extends BaseAPI implements Cou
 
     /**
      * 
-     * @param {string} id 
-     * @param {CreateCounselingPlanPhaseGoalDTO} createCounselingPlanPhaseGoalDTO 
+     * @param {UpdateCounselingPlanPhaseGoalDTO} updateCounselingPlanPhaseGoalDTO 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CounselingPlanPhaseGoalControllerApi
      */
-    public updateCounselingPlanPhase1(id: string, createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig) {
-        return CounselingPlanPhaseGoalControllerApiFp(this.configuration).updateCounselingPlanPhase1(id, createCounselingPlanPhaseGoalDTO, options).then((request) => request(this.axios, this.basePath));
+    public updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO: UpdateCounselingPlanPhaseGoalDTO, options?: RawAxiosRequestConfig) {
+        return CounselingPlanPhaseGoalControllerApiFp(this.configuration).updateCounselingPlanPhaseGoal(updateCounselingPlanPhaseGoalDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -32,7 +32,7 @@ public class TherapistService {
 
   public TherapistOutputDTO getTherapistById(String therapistId) {
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist).sortDTO();
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(therapist);
   }
 
   public String getTherapistIdBasedOnRequest(HttpServletRequest httpServletRequest) {
@@ -78,7 +78,7 @@ public class TherapistService {
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist).sortDTO();
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(createdTherapist);
   }
 
   public TherapistOutputDTO updateTherapist(UpdateTherapistDTO dto, String therapistId) {
@@ -116,7 +116,7 @@ public class TherapistService {
 
     String jwt = JwtUtil.createJWT(loginTherapistDTO.getEmail());
     JwtUtil.addJwtCookie(httpServletResponse, httpServletRequest, jwt);
-    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(foundTherapist).sortDTO();
+    return TherapistMapper.INSTANCE.convertEntityToTherapistOutputDTO(foundTherapist);
   }
 
   public void logoutTherapist(HttpServletResponse httpServletResponse) {

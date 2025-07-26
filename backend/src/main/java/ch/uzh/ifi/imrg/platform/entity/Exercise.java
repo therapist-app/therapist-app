@@ -59,19 +59,21 @@ public class Exercise implements OwnedByTherapist, HasLLMContext {
   @Column()
   private Integer doEveryNDays;
 
-  @OneToMany(
-      mappedBy = "exercise",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
-
   @ManyToOne(optional = false)
   @JoinColumn(name = "patient_id", referencedColumnName = "id")
   private Patient patient;
 
   @ManyToMany(mappedBy = "phaseExercises")
+  @OrderBy("phaseNumber ASC")
   private List<CounselingPlanPhase> counselingPlanPhases;
+
+  @OneToMany(
+      mappedBy = "exercise",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  @OrderBy("orderNumber ASC")
+  private List<ExerciseComponent> exerciseComponents = new ArrayList<>();
 
   @Override
   public String getOwningTherapistId() {

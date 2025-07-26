@@ -166,22 +166,24 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   @Column
   private String personalPremorbid;
 
-  @OneToMany(
-      mappedBy = "patient",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.EAGER)
-  private List<Complaint> complaints = new ArrayList<>();
-
   @ManyToOne
   @JoinColumn(name = "therapist_id")
   private Therapist therapist;
 
   @OneToMany(
       mappedBy = "patient",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
+  @OrderBy("createdAt DESC")
+  private List<Complaint> complaints = new ArrayList<>();
+
+  @OneToMany(
+      mappedBy = "patient",
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("meetingStart DESC")
   private List<Meeting> meetings = new ArrayList<>();
 
   @OneToMany(
@@ -189,6 +191,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<PatientDocument> patientDocuments = new ArrayList<>();
 
   @OneToMany(
@@ -196,6 +199,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<ChatbotTemplate> chatbotTemplates = new ArrayList<>();
 
   @OneToMany(
@@ -203,6 +207,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("exerciseStart DESC")
   private List<Exercise> exercises = new ArrayList<>();
 
   @OneToMany(
@@ -210,6 +215,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<GAD7Test> GAD7Tests = new ArrayList<>();
 
   @OneToOne(optional = false)

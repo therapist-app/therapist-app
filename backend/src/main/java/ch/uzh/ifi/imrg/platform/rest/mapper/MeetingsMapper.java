@@ -4,7 +4,6 @@ import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.MeetingNote;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -32,10 +31,6 @@ public interface MeetingsMapper {
         meetingNotes.stream()
             .map(MeetingNoteMapper.INSTANCE::convertEntityToMeetingNoteOutputDTO)
             .collect(Collectors.toList());
-
-    meetingNotesOutputDTO.sort(
-        Comparator.comparing(
-            MeetingNoteOutputDTO::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())));
 
     return meetingNotesOutputDTO;
   }

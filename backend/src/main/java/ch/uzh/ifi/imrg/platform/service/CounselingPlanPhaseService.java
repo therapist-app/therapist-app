@@ -17,6 +17,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseAIGenera
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.RemoveExerciseFromCounselingPlanPhaseDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.CounselingPlanPhaseMapper;
 import ch.uzh.ifi.imrg.platform.utils.ChatRole;
@@ -133,8 +134,9 @@ public class CounselingPlanPhaseService {
     patientList.add(counselingPlan.getPatient());
 
     String userPrompt =
-        "Based on the counseling plan provided, generate one new exercise that would be a good next step for the patient. "
-            + "The exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
+        "Based on the counseling plan provided, generate one new exercise for phase with ID: "
+            + counselingPlanPhase.getId()
+            + "\nThe exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
             + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
             + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
             + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
@@ -209,22 +211,27 @@ public class CounselingPlanPhaseService {
   }
 
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
-      String counselingPlanPhaseId, CreateCounselingPlanPhaseDTO updateDto, String therapistId) {
+      UpdateCounselingPlanPhaseDTO dto, String therapistId) {
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
-            .findById(counselingPlanPhaseId)
+            .findById(dto.getCounselingPlanPhaseId())
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Counseling plan phase not found with id: " + counselingPlanPhaseId));
+                        "Counseling plan phase not found with id: "
+                            + dto.getCounselingPlanPhaseId()));
 
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
-    if (updateDto.getPhaseName() != null) {
-      counselingPlanPhase.setPhaseName(updateDto.getPhaseName());
+
+    if (dto.getPhaseName() != null) {
+      counselingPlanPhase.setPhaseName(dto.getPhaseName());
     }
 
-    counselingPlanPhase.setDurationInWeeks(updateDto.getDurationInWeeks());
+    if (dto.getDurationInWeeks() != null) {
+      counselingPlanPhase.setDurationInWeeks(dto.getDurationInWeeks());
+    }
+
     counselingPlanPhaseRepository.save(counselingPlanPhase);
 
     return getOutputDto(counselingPlanPhase, counselingPlanPhase.getCounselingPlan());

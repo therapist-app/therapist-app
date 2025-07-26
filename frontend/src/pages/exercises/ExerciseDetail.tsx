@@ -26,6 +26,7 @@ import {
   cancelButtonStyles,
   commonButtonStyles,
   deleteButtonStyles,
+  successButtonStyles,
 } from '../../styles/buttonStyles'
 import { formatDateNicely } from '../../utils/dateUtil'
 import { useAppDispatch } from '../../utils/hooks'
@@ -161,30 +162,31 @@ const ExerciseDetail = (): ReactElement => {
         {!isEditingExercise ? (
           <>
             <Typography variant='h4'>
-              {t('exercise.title')}: <strong>{selectedExercise?.exerciseTitle}</strong>
+              {t('exercise.title')}: {selectedExercise?.exerciseTitle}
             </Typography>
             <Typography>
-              {t('exercise.exerciseDescription')}:{' '}
-              <strong>{selectedExercise?.exerciseDescription}</strong>
+              <strong>{t('exercise.exerciseDescription')}: </strong>
+              {selectedExercise?.exerciseDescription}
             </Typography>
             <Typography>
-              {t('exercise.exerciseExplanation')}:{' '}
-              <strong>{selectedExercise?.exerciseExplanation}</strong>
+              <strong>{t('exercise.exerciseExplanation')}: </strong>
+              {selectedExercise?.exerciseExplanation}
             </Typography>
             <Typography>
-              {t('exercise.exercise_start')}:{' '}
-              <strong>{formatDateNicely(selectedExercise?.exerciseStart)}</strong>
+              <strong>{t('exercise.exercise_start')}: </strong>
+              {formatDateNicely(selectedExercise?.exerciseStart)}
             </Typography>
             <Typography>
-              {t('exercise.exercise_end')}:{' '}
-              <strong>{formatDateNicely(selectedExercise?.exerciseEnd)}</strong>
+              <strong>{t('exercise.exercise_end')}: </strong>
+              {formatDateNicely(selectedExercise?.exerciseEnd)}
             </Typography>
             <Typography>
-              {t('exercise.is_currently_paused')}:{' '}
-              <strong>{selectedExercise?.isPaused ? t('yes') : t('no')}</strong>
+              <strong>{t('exercise.is_currently_paused')}: </strong>
+              {selectedExercise?.isPaused ? t('yes') : t('no')}
             </Typography>
             <Typography>
-              {t('exercise.doEveryNDays')}: <strong>{selectedExercise?.doEveryNDays}</strong>
+              <strong>{t('exercise.doEveryNDays')}: </strong>
+              {selectedExercise?.doEveryNDays}
             </Typography>
             <Button
               onClick={() => toggleIsEditingExercise(true)}
@@ -282,7 +284,7 @@ const ExerciseDetail = (): ReactElement => {
                 >
                   {t('exercise.cancel')}
                 </Button>
-                <Button type='submit' sx={{ ...commonButtonStyles, mt: 2 }}>
+                <Button type='submit' sx={{ ...successButtonStyles, mt: 2 }}>
                   {t('exercise.submit')}
                 </Button>
               </div>

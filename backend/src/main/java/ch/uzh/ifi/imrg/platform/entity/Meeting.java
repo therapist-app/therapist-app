@@ -55,6 +55,7 @@ public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<MeetingNote> meetingNotes = new ArrayList<>();
 
   @Override

@@ -3,8 +3,11 @@ package ch.uzh.ifi.imrg.platform.entity;
 import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.LLM.LLMContextField;
 import jakarta.persistence.*;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
@@ -14,6 +17,14 @@ public class Complaint implements OwnedByTherapist, HasLLMContext {
   @Id
   @Column(unique = true)
   private String id = UUID.randomUUID().toString();
+
+  @Column(name = "created_at", updatable = false)
+  @CreationTimestamp
+  private Instant createdAt;
+
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private Instant updatedAt;
 
   @LLMContextField(label = "Complaint main complaint", order = 1)
   private String mainComplaint;

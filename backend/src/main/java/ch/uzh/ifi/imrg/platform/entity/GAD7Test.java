@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
@@ -15,9 +16,13 @@ public class GAD7Test implements OwnedByTherapist {
   @Column(name = "test_id", unique = true)
   private String testId = UUID.randomUUID().toString();
 
+  @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  @Column(name = "creation_date", updatable = false)
-  private Instant creationDate;
+  private Instant createdAt;
+
+  @Column(name = "updated_at")
+  @UpdateTimestamp
+  private Instant updatedAt;
 
   @ManyToOne
   @JoinColumn(name = "patient_id", nullable = false)

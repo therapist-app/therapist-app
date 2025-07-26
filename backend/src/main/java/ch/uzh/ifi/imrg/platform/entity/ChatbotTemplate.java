@@ -61,6 +61,7 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMCo
       fetch = FetchType.EAGER,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt DESC")
   private List<ChatbotTemplateDocument> chatbotTemplateDocuments = new ArrayList<>();
 
   @Override

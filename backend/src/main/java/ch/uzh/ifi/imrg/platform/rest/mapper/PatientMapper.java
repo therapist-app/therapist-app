@@ -116,6 +116,8 @@ public interface PatientMapper {
 
   // Complaint mapping
   @Mapping(target = "patient", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   Complaint complaintDtoToComplaint(ComplaintDTO complaintDTO);
 
   ComplaintDTO complaintToComplaintDto(Complaint complaint);

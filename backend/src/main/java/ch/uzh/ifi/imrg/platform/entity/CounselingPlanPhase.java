@@ -40,16 +40,17 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
   @Column()
   private int phaseNumber;
 
+  @ManyToOne
+  @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
+  private CounselingPlan counselingPlan;
+
   @OneToMany(
       mappedBy = "counselingPlanPhase",
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
+  @OrderBy("createdAt ASC")
   private List<CounselingPlanPhaseGoal> phaseGoals = new ArrayList<>();
-
-  @ManyToOne
-  @JoinColumn(name = "counseling_plan_id", referencedColumnName = "id")
-  private CounselingPlan counselingPlan;
 
   @ManyToMany()
   @JoinTable(
@@ -58,6 +59,7 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
       inverseJoinColumns = @JoinColumn(name = "exercise_id"),
       uniqueConstraints =
           @UniqueConstraint(columnNames = {"counseling_plan_phase_id", "exercise_id"}))
+  @OrderBy("exerciseStart DESC")
   private List<Exercise> phaseExercises = new ArrayList<>();
 
   @Override
