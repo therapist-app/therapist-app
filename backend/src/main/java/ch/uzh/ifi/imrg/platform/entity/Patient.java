@@ -52,7 +52,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   private String phoneNumber;
 
   @LLMContextField(label = "Client email", order = 5)
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false)
