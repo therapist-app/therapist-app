@@ -113,17 +113,17 @@ const Settings = (): ReactElement => {
         </FormControl>
 
         {loggedInTherapist?.llmModel && (
-          <FormControl sx={{ minWidth: '200px' }}>
-            <InputLabel>LLM Model</InputLabel>
+          <FormControl>
+            <InputLabel>{t('settings.llmModel')}</InputLabel>
             <Select
-              id='exercise-select'
-              value={loggedInTherapist?.llmModel}
-              label={t('exercise.exercise')}
+              id='llm-select'
+              value={loggedInTherapist.llmModel}
+              label={t(`settings.${loggedInTherapist.llmModel}`)}
               onChange={handleLLMChange}
             >
               {Object.values(TherapistOutputDTOLlmModelEnum).map((llmModel) => (
                 <MenuItem key={llmModel} value={llmModel}>
-                  {llmModel}
+                  {t(`settings.${llmModel}`)}
                 </MenuItem>
               ))}
             </Select>

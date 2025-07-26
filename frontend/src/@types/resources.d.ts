@@ -507,7 +507,8 @@ interface Resources {
       "confirmNewPassword": "Confirm new password",
       "changePasswordButton": "Change password",
       "LOCAL_UZH": "UZH LLM (Private Server)",
-      "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)"
+      "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
+      "llmModel": "LLM Model"
     },
     "layout": {
       "dashboard": "Dashboard",
