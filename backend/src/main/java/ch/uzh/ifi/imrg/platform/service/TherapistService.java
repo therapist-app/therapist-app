@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
+import ch.uzh.ifi.imrg.platform.enums.LLMModel;
 import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.LoginTherapistDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateTherapistDTO;
@@ -72,6 +73,7 @@ public class TherapistService {
     }
 
     therapist.setPassword(PasswordUtil.encryptPassword(therapist.getPassword()));
+    therapist.setLlmModel(LLMModel.LOCAL_UZH);
 
     Therapist createdTherapist = this.therapistRepository.save(therapist);
     String jwt = JwtUtil.createJWT(therapist.getEmail());
@@ -84,6 +86,10 @@ public class TherapistService {
 
     if (dto.getPassword() != null) {
       therapist.setPassword(PasswordUtil.encryptPassword(dto.getPassword()));
+    }
+
+    if (dto.getLlmModel() != null) {
+      therapist.setLlmModel(dto.getLlmModel());
     }
 
     therapistRepository.save(therapist);

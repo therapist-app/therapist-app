@@ -3,7 +3,9 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateRepository;
+import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatCompletionWithConfigRequestDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatbotConfigDTO;
@@ -22,9 +24,13 @@ import org.springframework.stereotype.Service;
 public class ChatMessageService {
 
   private final ChatbotTemplateRepository chatbotTemplateRepository;
+  private final TherapistRepository therapistRepository;
 
-  public ChatMessageService(ChatbotTemplateRepository chatbotTemplateRepository) {
+  public ChatMessageService(
+      ChatbotTemplateRepository chatbotTemplateRepository,
+      TherapistRepository therapistRepository) {
     this.chatbotTemplateRepository = chatbotTemplateRepository;
+    this.therapistRepository = therapistRepository;
   }
 
   public ChatCompletionResponseDTO chat(
@@ -34,7 +40,7 @@ public class ChatMessageService {
         chatbotTemplateRepository
             .findByIdAndTherapistId(req.getTemplateId(), therapistId)
             .orElseThrow(() -> new EntityNotFoundException("Chatbot template not found"));
-
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
     String systemPrompt = buildSystemPrompt(req.getConfig(), template);
 
     List<ChatMessageDTO> msgs = new ArrayList<>();
@@ -42,7 +48,8 @@ public class ChatMessageService {
     if (req.getHistory() != null && !req.getHistory().isEmpty()) msgs.addAll(req.getHistory());
     msgs.add(new ChatMessageDTO(ChatRole.USER, req.getMessage()));
 
-    String responseMessage = LLMFactory.getInstance().callLLM(msgs, req.getLanguage());
+    String responseMessage =
+        LLMFactory.getInstance(therapist.getLlmModel()).callLLM(msgs, req.getLanguage());
     return new ChatCompletionResponseDTO(responseMessage);
   }
 

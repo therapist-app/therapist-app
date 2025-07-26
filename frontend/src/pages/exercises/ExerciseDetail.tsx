@@ -399,57 +399,60 @@ const ExerciseDetail = (): ReactElement => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
-          <CreateExerciseTextComponent
-            createdExercise={refreshExercise}
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
-            }
-          />
-          <CreateExerciseFileComponent
-            createdExerciseFile={refreshExercise}
-            isImageComponent
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
-            }
-          />
-          <CreateExerciseFileComponent
-            createdExerciseFile={refreshExercise}
-            isImageComponent={false}
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
-            }
-          />
-          <CreateExerciseYoutubeVideoComponent
-            addedYoutubeVideo={refreshExercise}
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent ===
-                ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo
-            }
-          />
-          <CreateExerciseInputFieldComponent
-            createdInputField={refreshExercise}
-            isPrivateField
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent ===
-                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
-            }
-          />
-          <CreateExerciseInputFieldComponent
-            createdInputField={refreshExercise}
-            isPrivateField={false}
-            active={
-              addingExerciseComponent === null ||
-              addingExerciseComponent ===
-                ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
-            }
-          />
-        </div>
+        {!isViewMode && (
+          <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+            <CreateExerciseTextComponent
+              createdExercise={refreshExercise}
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.Text
+              }
+            />
+            <CreateExerciseFileComponent
+              createdExerciseFile={refreshExercise}
+              isImageComponent
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
+              }
+            />
+            <CreateExerciseFileComponent
+              createdExerciseFile={refreshExercise}
+              isImageComponent={false}
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent === ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+              }
+            />
+            <CreateExerciseYoutubeVideoComponent
+              addedYoutubeVideo={refreshExercise}
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.YoutubeVideo
+              }
+            />
+            <CreateExerciseInputFieldComponent
+              createdInputField={refreshExercise}
+              isPrivateField
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
+              }
+            />
+            <CreateExerciseInputFieldComponent
+              createdInputField={refreshExercise}
+              isPrivateField={false}
+              active={
+                addingExerciseComponent === null ||
+                addingExerciseComponent ===
+                  ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldShared
+              }
+            />
+          </div>
+        )}
       </div>
 
       <CustomizedDivider />

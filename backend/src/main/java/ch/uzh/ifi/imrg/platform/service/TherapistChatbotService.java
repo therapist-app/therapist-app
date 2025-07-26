@@ -42,7 +42,8 @@ public class TherapistChatbotService {
     chatMessages.addAll(therapistChatbotInputDTO.getChatMessages());
 
     String responseMessage =
-        LLMFactory.getInstance().callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
+        LLMFactory.getInstance(therapist.getLlmModel())
+            .callLLM(chatMessages, therapistChatbotInputDTO.getLanguage());
     TherapistChatbotOutputDTO therapistChatbotOutputDTO = new TherapistChatbotOutputDTO();
     therapistChatbotOutputDTO.setContent(responseMessage);
     return therapistChatbotOutputDTO;

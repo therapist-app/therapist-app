@@ -3,8 +3,10 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhaseGoal;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseGoalRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
+import ch.uzh.ifi.imrg.platform.repository.TherapistRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalAIGeneratedDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateCounselingPlanPhaseGoalDTO;
@@ -27,14 +29,17 @@ public class CounselingPlanPhaseGoalService {
 
   private final CounselingPlanPhaseGoalRepository counselingPlanPhaseGoalRepository;
   private final CounselingPlanPhaseRepository counselingPlanPhaseRepository;
+  private final TherapistRepository therapistRepository;
 
   public CounselingPlanPhaseGoalService(
       @Qualifier("counselingPlanPhaseGoalRepository")
           CounselingPlanPhaseGoalRepository counselingPlanPhaseGoalRepository,
       @Qualifier("counselingPlanPhaseRepository")
-          CounselingPlanPhaseRepository counselingPlanPhaseRepository) {
+          CounselingPlanPhaseRepository counselingPlanPhaseRepository,
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
     this.counselingPlanPhaseGoalRepository = counselingPlanPhaseGoalRepository;
     this.counselingPlanPhaseRepository = counselingPlanPhaseRepository;
+    this.therapistRepository = therapistRepository;
   }
 
   public CounselingPlanPhaseGoalOutputDTO createCounselingPlanPhaseGoal(
@@ -68,6 +73,7 @@ public class CounselingPlanPhaseGoalService {
                         "Counseling plan phase not found with id: "
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(phase, therapistId);
+    Therapist therapist = therapistRepository.getReferenceById(therapistId);
 
     String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
 
@@ -88,7 +94,7 @@ public class CounselingPlanPhaseGoalService {
     messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseGoalDTO generatedDto =
-        LLMFactory.getInstance()
+        LLMFactory.getInstance(therapist.getLlmModel())
             .callLLMForObject(messages, CreateCounselingPlanPhaseGoalDTO.class, dto.getLanguage());
     generatedDto.setCounselingPlanPhaseId(dto.getCounselingPlanPhaseId());
     return generatedDto;
