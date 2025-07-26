@@ -45,7 +45,7 @@ const Settings = (): ReactElement => {
     if (!loggedInTherapist) {
       getTherapist()
     }
-  }, [dispatch, loggedInTherapist?.llmModel, loggedInTherapist])
+  }, [dispatch, loggedInTherapist])
 
   const changeLanguage = (event: SelectChangeEvent): void => {
     const selectedLanguage = event.target.value
