@@ -664,7 +664,12 @@ interface Resources {
       "make_ai_generated_suggestion_for_exercise": "Make AI generated suggestion for exercise",
       "create_goal": "Create Goal",
       "counseling_start_date": "Counseling Start Date",
-      "counseling_plan_phases": "Counseling Plan Phases"
+      "counseling_plan_phases": "Counseling Plan Phases",
+      "phase_updated_success": "Successfully updated phase",
+      "update_phase": "Update phase",
+      "phase_goal_updated_success": "Successfully update phase goal",
+      "updateGoal": "Update goal",
+      "phase_created_success": "Successfully created phase"
     },
     "exercise": {
       "upload_image": "Upload Image",

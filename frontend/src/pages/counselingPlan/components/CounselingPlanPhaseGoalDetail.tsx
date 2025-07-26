@@ -61,7 +61,7 @@ const CounselingPlanPhaseGoalDetail = ({
       }
       await dispatch(updateCounselingPlanPhaseGoal(dto)).unwrap()
       setIsEditing(false)
-      notifySuccess(t('counseling_plan.phase_updated_success'))
+      notifySuccess(t('counseling_plan.phase_goal_updated_success'))
       refresh()
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
