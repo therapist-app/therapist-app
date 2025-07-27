@@ -684,6 +684,7 @@ interface Resources {
       "duration_in_weeks": "Duration in Weeks",
       "exercise_end": "Exercise End",
       "is_paused": "Is Paused",
+      "is_active": "Is Active",
       "is_currently_paused": "Is Currently Paused",
       "is_exercise_paused": "Is Exercise Paused",
       "no_exercises_yet": "You haven't added any exercises yet.",
@@ -716,7 +717,8 @@ interface Resources {
       "moodsBefore": "Moods Before",
       "moodsAfter": "Moods After",
       "editMode": "Edit Mode",
-      "viewMode": "View Mode"
+      "viewMode": "View Mode",
+      "youtubeDescription": "Description of Video"
     },
     "not_found": {
       "title": "404 - Page Not Found",
@@ -901,6 +903,7 @@ interface Resources {
       "delete_meeting": "Delete Meeting",
       "browser_compatibility": "Browser Compatibility",
       "web_search_api_not_supported": "Web Speech API is not supported in your browser. Please try Chrome or Edge for the best experience.",
+      "is_past": "Is in the Past",
       "error": {
         "error": "Error",
         "no_speech_detected": "No speech detected. Please try speaking a bit louder or clearer.",

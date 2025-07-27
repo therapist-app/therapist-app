@@ -82,7 +82,7 @@ const CreateExerciseYoutubeVideoComponent: React.FC<CreateExerciseYoutubeVideoCo
         >
           <TextField
             multiline
-            label={t('exercise.description_of_input')}
+            label={t('exercise.youtubeDescription')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
