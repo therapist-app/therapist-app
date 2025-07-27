@@ -105,7 +105,7 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
           </div>
           <div style={{ display: 'flex', gap: '5px' }}>
             <Typography>
-              <strong>{t('exercise.description')}:</strong>
+              <strong>{t('exercise.youtubeDescription')}:</strong>
             </Typography>
             <Typography sx={{ whiteSpace: 'pre-line' }}>
               {exerciseComponent.exerciseComponentDescription}
@@ -158,7 +158,7 @@ const ShowExerciseYoutubeVideoComponent: React.FC<ShowExerciseYoutubeVideoCompon
             name='exerciseComponentDescription'
             value={formData.exerciseComponentDescription}
             onChange={handleChange}
-            label={t('exercise.description')}
+            label={t('exercise.youtubeDescription')}
           />
 
           <TextField

@@ -36,7 +36,7 @@ const Register = (): ReactElement => {
 
     try {
       await dispatch(registerTherapist(formData)).unwrap()
-      notifySuccess(t('register.success') || 'Registration successful.')
+      notifySuccess(t('register.success'))
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')

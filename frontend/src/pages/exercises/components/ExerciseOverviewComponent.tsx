@@ -19,7 +19,7 @@ import { useNotify } from '../../../hooks/useNotify'
 import { getAllExercisesOfPatient } from '../../../store/exerciseSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
-import { formatDateNicely } from '../../../utils/dateUtil'
+import { formatDateNicely, isNowBetweenDates } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 
@@ -73,7 +73,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'> Exercises</Typography>
-        <Button sx={{ ...commonButtonStyles, minWidth: '200px' }} onClick={handleCreateNewExercise}>
+        <Button sx={{ ...commonButtonStyles }} onClick={handleCreateNewExercise}>
           {t('exercise.create_new_exercise')}
         </Button>
       </div>
@@ -89,7 +89,7 @@ const ExerciseOverviewComponent = (): ReactElement => {
                 </TableCell>
                 <TableCell>{t('exercise.exercise_start')}</TableCell>
                 <TableCell>{t('exercise.exercise_end')}</TableCell>
-                <TableCell>{t('exercise.is_paused')}</TableCell>
+                <TableCell align='center'>{t('exercise.is_active')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -100,6 +100,11 @@ const ExerciseOverviewComponent = (): ReactElement => {
                   sx={{
                     '&:last-child td, &:last-child th': { border: 0 },
                     cursor: 'pointer',
+                    backgroundColor:
+                      isNowBetweenDates(exercise.exerciseStart, exercise.exerciseEnd) &&
+                      !exercise.isPaused
+                        ? '#a7f5a2'
+                        : '',
                   }}
                 >
                   <TableCell
@@ -116,7 +121,10 @@ const ExerciseOverviewComponent = (): ReactElement => {
                   </TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseStart)}</TableCell>
                   <TableCell>{formatDateNicely(exercise.exerciseEnd)}</TableCell>
-                  <TableCell>{exercise.isPaused && <CheckIcon />}</TableCell>
+                  <TableCell align='center'>
+                    {isNowBetweenDates(exercise.exerciseStart, exercise.exerciseEnd) &&
+                      !exercise.isPaused && <CheckIcon />}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

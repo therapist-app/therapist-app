@@ -1,3 +1,4 @@
+import CheckIcon from '@mui/icons-material/Check'
 import {
   Button,
   Paper,
@@ -20,6 +21,7 @@ import { useNotify } from '../../../hooks/useNotify'
 import { getAllMeetingsOfPatient } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
 import { commonButtonStyles } from '../../../styles/buttonStyles'
+import { isDateInThePast } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../../utils/routes'
 
@@ -71,7 +73,7 @@ const MeetingOverviewComponent = (): ReactElement => {
         }}
       >
         <Typography variant='h2'>{t('meetings.meetings')}</Typography>
-        <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={handleCreateNewMeeting}>
+        <Button sx={{ ...commonButtonStyles }} onClick={handleCreateNewMeeting}>
           {t('meetings.create_meeting')}
         </Button>
       </div>
@@ -82,6 +84,7 @@ const MeetingOverviewComponent = (): ReactElement => {
               <TableCell>{t('meetings.meeting_start')}</TableCell>
               <TableCell>{t('meetings.meeting_end')}</TableCell>
               <TableCell>{t('meetings.meeting_location')}</TableCell>
+              <TableCell align='center'>{t('meetings.is_past')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -89,7 +92,11 @@ const MeetingOverviewComponent = (): ReactElement => {
               <TableRow
                 onClick={() => handleClickOnMeeting(meeting.id ?? '')}
                 key={meeting.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  cursor: 'pointer',
+                  backgroundColor: isDateInThePast(meeting.meetingEnd) ? '#e0e0e0' : '',
+                }}
               >
                 <TableCell component='th' scope='row'>
                   {meeting?.meetingStart
@@ -106,6 +113,9 @@ const MeetingOverviewComponent = (): ReactElement => {
                     : '-'}
                 </TableCell>
                 <TableCell>{meeting.location}</TableCell>
+                <TableCell align='center'>
+                  {isDateInThePast(meeting.meetingEnd) && <CheckIcon />}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -19,3 +19,28 @@ export const getMinutesBetweenDates = (
   }
   return Math.floor((new Date(endDate).getTime() - new Date(startDate).getTime()) / 60000)
 }
+
+export const isNowBetweenDates = (
+  startDate: Date | string | undefined,
+  endDate: Date | string | undefined
+): boolean => {
+  if (!startDate || !endDate) {
+    return false
+  }
+  startDate = new Date(startDate)
+  endDate = new Date(endDate)
+  const now = new Date()
+  return (
+    now.getTime() > startDate.getTime() &&
+    now.getTime() < endDate.getTime() &&
+    startDate.getTime() < endDate.getTime()
+  )
+}
+
+export const isDateInThePast = (date: Date | string | undefined): boolean => {
+  if (!date) {
+    return true
+  }
+  date = new Date(date)
+  return date.getTime() < new Date().getTime()
+}

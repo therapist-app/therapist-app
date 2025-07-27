@@ -290,7 +290,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         })
       ).unwrap()
 
-      notifySuccess(t('chatbot.chatbot_updated_success') || 'Chatbot updated successfully')
+      notifySuccess(t('chatbot.chatbot_updated_success'))
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
@@ -360,7 +360,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
       ).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-      notifySuccess(t('files.file_uploaded_successfully') || 'File uploaded successfully')
+      notifySuccess(t('files.file_uploaded_successfully'))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
@@ -373,7 +373,7 @@ const ChatBotTemplateEdit: React.FC = () => {
     try {
       await dispatch(deleteDocumentOfTemplate(fileId)).unwrap()
       dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-      notifySuccess(t('files.file_deleted_successfully') || 'File deleted successfully')
+      notifySuccess(t('files.file_deleted_successfully'))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
