@@ -30,7 +30,7 @@ const Login = (): ReactElement => {
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
-      notifySuccess(t('login.success') || 'Login successful.')
+      notifySuccess(t('login.success'))
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (msg) {
       notifyError(typeof msg === 'string' ? msg : 'An unknown error occurred')

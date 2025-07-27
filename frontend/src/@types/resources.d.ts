@@ -508,7 +508,8 @@ interface Resources {
       "changePasswordButton": "Change password",
       "LOCAL_UZH": "UZH LLM (Private Server)",
       "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
-      "llmModel": "LLM Model"
+      "llmModel": "LLM Model",
+      "password_changed_success": "Successfully changed password"
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -669,7 +670,12 @@ interface Resources {
       "update_phase": "Update phase",
       "phase_goal_updated_success": "Successfully update phase goal",
       "updateGoal": "Update goal",
-      "phase_created_success": "Successfully created phase"
+      "phase_created_success": "Successfully created phase",
+      "updated_successfully": "Successfully updated",
+      "exercise_added_success": "Successfully added exercise",
+      "phase_deleted_success": "Successfully deleted phase",
+      "exercise_created_success": "Successfully created exercise",
+      "goal_created_success": "Successfully created goal"
     },
     "exercise": {
       "upload_image": "Upload Image",
@@ -718,7 +724,13 @@ interface Resources {
       "moodsAfter": "Moods After",
       "editMode": "Edit Mode",
       "viewMode": "View Mode",
-      "youtubeDescription": "Description of Video"
+      "youtubeDescription": "Description of Video",
+      "exercise_created_successfully": "Successfully created exercise",
+      "exercise_updated_successfully": "Successfully updated exercise",
+      "exercise_deleted_successfully": "Successfully deleted exercise",
+      "component_created_successfully": "Successfully created exercise component",
+      "component_updated_successfully": "Successfully updated exercise component",
+      "component_deleted_successfully": "Successfully deleted exercise component"
     },
     "not_found": {
       "title": "404 - Page Not Found",
@@ -749,7 +761,9 @@ interface Resources {
       "files_visible_to_client": "Files visible to Client",
       "files_visible_only_to_coach": "Files visible only to Coach",
       "edit": "Edit",
-      "save_changes": "Save"
+      "save_changes": "Save",
+      "file_upload_success": "Successfully uploaded file",
+      "file_delete_success": "Successfully deleted file"
     },
     "patient_interactions": {
       "interaction_type": "Interaction Type",
@@ -867,7 +881,8 @@ interface Resources {
       "email": "Email",
       "password": "Password",
       "register": "Register",
-      "go_login": "Go to the Login instead"
+      "go_login": "Go to the Login instead",
+      "success": "Successfully registered"
     },
     "login": {
       "welcome": "Welcome to the Therapist App",
@@ -875,7 +890,8 @@ interface Resources {
       "email": "Email",
       "password": "Password",
       "login": "Login",
-      "go_registration": "Go to Registration instead"
+      "go_registration": "Go to Registration instead",
+      "success": "Successful login"
     },
     "meetings": {
       "meetings": "Meetings",
@@ -917,7 +933,13 @@ interface Resources {
       "PENDING": "Pending",
       "editMeeting": "Edit Meeting",
       "meetingStatus": "Meeting Status",
-      "yourNotes": "Your Notes"
+      "yourNotes": "Your Notes",
+      "meeting_created_successfully": "Successfully created meeting",
+      "meeting_deleted_successfully": "Successfully deleted meeting",
+      "meeting_updated_successfully": "Successfully updated meeting",
+      "note_created_successfully": "Successfully created meeting note",
+      "note_updated_successfully": "Successfully updated meeting note",
+      "note_deleted_successfully": "Successfully deleted meeting note"
     },
     "gad7test": {
       "title": "GAD-7 Assessment",
@@ -978,6 +1000,9 @@ interface Resources {
       },
       "not_found": "Not Found",
       "therapist_chatbot": "Coach Chatbot"
+    },
+    "files": {
+      "download_success": "Successfully downloaded file"
     }
   },
   "ua": {

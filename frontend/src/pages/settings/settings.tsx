@@ -69,7 +69,7 @@ const Settings = (): ReactElement => {
     try {
       await dispatch(updateTherapist({ password: newPassword })).unwrap()
       await dispatch(logoutTherapist()).unwrap()
-      notifySuccess(t('settings.password_changed_success') || 'Password changed.')
+      notifySuccess(t('settings.password_changed_success'))
       navigate(getPathFromPage(PAGES.LOGIN_PAGE))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
