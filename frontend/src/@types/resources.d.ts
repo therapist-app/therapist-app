@@ -974,7 +974,7 @@ interface Resources {
         "details": "Client Details",
         "conversations": "Conversation Summary",
         "interactions": "Client Interactions",
-        "details-update": "Updating Client"
+        "details_update": "Updating Client"
       },
       "chatbot": {
         "create": "Create new Chatbot",
