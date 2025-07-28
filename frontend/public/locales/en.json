@@ -421,6 +421,7 @@
     "meeting_start": "Meeting Start",
     "meeting_end": "Meeting End",
     "meeting_location": "Meeting Location",
+    "no_meetings_yet": "You don't have any client meetings scheduled yet.",
     "duration": "Duration",
     "duration_in_minutes": "Duration in Minutes",
     "minutes": "minutes",

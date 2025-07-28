@@ -421,6 +421,7 @@
     "meeting_start": "Beginn des Termins",
     "meeting_end": "Ende des Termins",
     "meeting_location": "Ort des Termins",
+    "no_meetings_yet": "Sie haben noch keine geplanten Termine.",
     "duration": "Dauer",
     "duration_in_minutes": "Dauer in Minuten",
     "minutes": "Minuten",

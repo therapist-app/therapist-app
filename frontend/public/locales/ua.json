@@ -421,6 +421,7 @@
     "meeting_start": "Початок зустрічі",
     "meeting_end": "Кінець зустрічі",
     "meeting_location": "Місце зустрічі",
+    "no_meetings_yet": "У вас ще немає запланованих зустрічей з клієнтами.",
     "duration": "Тривалість",
     "duration_in_minutes": "Тривалість у хвилинах",
     "minutes": "хвилини",
