@@ -86,6 +86,8 @@
     "chatbot_created_success": "Chatbot erfolgreich erstellt.",
     "chatbot_updated_success": "Chatbot erfolgreich aktualisiert.",
     "chatbot_named_success": "Chatbot erfolgreich umbenannt.",
+    "chatbot_cloned_success": "Chatbot erfolgreich geklont.",
+    "chatbot_deleted_success": "Chatbot erfolgreich gelöscht.",
     "create_new_chatbot_template": "Neue Chatbot-Vorlage erstellen",
     "create_chatbot_from_template": "Chatbot aus Vorlage erstellen",
     "create_new_chatbot": "Neuen Chatbot erstellen",
@@ -297,6 +299,7 @@
     "loading": "Lade Daten der Klienteninteraktionen...",
     "fetch_error": "Fehler beim Abrufen der Klienteninteraktionsdaten.",
     "no_data": "Keine Klienten-Protokolldaten verfügbar.",
+    "interactions": "Interaktionen",
     "log_types": {
       "journal_creation": "Tagebucherstellung",
       "journal_update": "Tagebuchaktualisierung",

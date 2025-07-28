@@ -39,6 +39,37 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
+// eslint-disable-next-line
+const HeatmapTooltip = ({ cell }: { cell: any }) => {
+  const { t } = useTranslation()
+  const [hourPart, datePart] = cell.id.split('.')
+  const [month, day] = datePart.split('-')
+
+  const formattedDate = `${day}.${month}.${new Date().getFullYear()}`
+  const paddedHour = hourPart.padStart(2, '0')
+  const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
+
+  return (
+    <div
+      style={{
+        fontFamily: 'Roboto, sans-serif',
+        padding: '8px 12px',
+        background: 'white',
+        borderRadius: '4px',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+        color: '#333',
+        width: '120px',
+      }}
+    >
+      <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
+      <div style={{ marginBottom: '4px' }}>{timeRange}</div>
+      <div>
+        {t('patient_interactions.interactions')}: {cell.value}
+      </div>
+    </div>
+  )
+}
+
 const transformLogsToInteractionData = (
   logs: LogOutputDTO[] | undefined | null
 ): InteractionData[] => {
@@ -352,6 +383,7 @@ const ClientInteractions = (): ReactElement => {
               enableLabels={false}
               animate={false}
               motionConfig='gentle'
+              tooltip={HeatmapTooltip}
             />
           </div>
         </Stack>

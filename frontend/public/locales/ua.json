@@ -86,6 +86,8 @@
     "chatbot_created_success": "Чат-бота успішно створено.",
     "chatbot_updated_success": "Чат-бота успішно оновлено.",
     "chatbot_named_success": "Чат-бота успішно перейменовано.",
+    "chatbot_cloned_success": "Чат-бота успішно клоновано.",
+    "chatbot_deleted_success": "Чат-бота успішно видалено.",
     "create_new_chatbot_template": "Створити новий шаблон чат-бота",
     "create_chatbot_from_template": "Створити чат-бота з шаблону",
     "create_new_chatbot": "Створити нового чат-бота",
@@ -297,6 +299,7 @@
     "loading": "Завантаження даних про взаємодії з клієнтом...",
     "fetch_error": "Помилка отримання даних про взаємодії з клієнтом.",
     "no_data": "Немає доступних даних журналу клієнта.",
+    "interactions": "Взаємодії",
     "log_types": {
       "journal_creation": "Створення щоденника",
       "journal_update": "Оновлення щоденника",

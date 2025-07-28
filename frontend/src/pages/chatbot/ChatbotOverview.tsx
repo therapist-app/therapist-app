@@ -219,8 +219,27 @@ const ChatbotOverview = (): ReactElement => {
         border: '1px solid #e0e0e0',
         boxShadow: 'none',
         borderRadius: 2,
+        position: 'relative',
       }}
     >
+      {showMenu && (
+        <IconButton
+          size='small'
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            zIndex: 1,
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleMenu(e, bot)
+          }}
+        >
+          <MoreVertIcon fontSize='small' />
+        </IconButton>
+      )}
+
       <CardActionArea
         onClick={
           onClick ??
@@ -260,18 +279,6 @@ const ChatbotOverview = (): ReactElement => {
                 ) : (
                   <Chip size='small' variant='outlined' label='Inactive' />
                 ))}
-
-              {showMenu && (
-                <IconButton
-                  size='small'
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleMenu(e, bot)
-                  }}
-                >
-                  <MoreVertIcon fontSize='small' />
-                </IconButton>
-              )}
             </Box>
           </Box>
 
