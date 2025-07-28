@@ -17,7 +17,7 @@ interface Resources {
       "settings": "Einstellungsseite"
     },
     "footer": {
-      "title": "Dies ist die Fußzeile",
+      "title": "Dies ist die Fusszeile",
       "note": "Fragen Sie Ihren persönlichen Assistenten..."
     },
     "settings": {
@@ -43,7 +43,10 @@ interface Resources {
       "patient_details": "Klientendetails",
       "logout": "Abmelden",
       "overview": "Übersicht",
-      "account": "Konto"
+      "account": "Konto",
+      "send": "Senden",
+      "expand_AI_assistant": "KI-Assistent aufklappen",
+      "close": "Schliessen"
     },
     "dashboard": {
       "patient_register_success": "Klient erfolgreich registriert.",
@@ -494,7 +497,8 @@ interface Resources {
     },
     "pages": {
       "home": "Startseite",
-      "login": "Anmeldung",
+      "login": "Anmelden",
+      "logout": "Abmelden",
       "registration": "Registrierung",
       "settings": "Einstellungen",
       "patients": {
@@ -577,7 +581,10 @@ interface Resources {
       "patient_details": "Client Details",
       "logout": "Log Out",
       "overview": "Overview",
-      "account": "Account"
+      "account": "Account",
+      "send": "Send",
+      "expand_AI_assistant": "Expand AI Assistant",
+      "close": "Close"
     },
     "dashboard": {
       "patient_register_success": "Client registered successfully.",
@@ -1029,6 +1036,7 @@ interface Resources {
     "pages": {
       "home": "Home",
       "login": "Login",
+      "logout": "Logout",
       "registration": "Registration",
       "settings": "Settings",
       "patients": {
@@ -1111,7 +1119,10 @@ interface Resources {
       "patient_details": "Деталі клієнта",
       "logout": "Вийти",
       "overview": "Огляд",
-      "account": "Акаунт"
+      "account": "Акаунт",
+      "send": "Надіслати",
+      "expand_AI_assistant": "Розгорнути AI асистента",
+      "close": "Закрити"
     },
     "dashboard": {
       "patient_register_success": "Клієнта успішно зареєстровано.",
@@ -1563,6 +1574,7 @@ interface Resources {
     "pages": {
       "home": "Головна",
       "login": "Вхід",
+      "logout": "Вихід",
       "registration": "Реєстрація",
       "settings": "Налаштування",
       "patients": {

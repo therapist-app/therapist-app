@@ -1,7 +1,8 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
-import { Avatar, Box, IconButton, List, ListItem, Paper, Typography } from '@mui/material'
+import { Avatar, Box, IconButton, List, ListItem, Paper, Tooltip, Typography } from '@mui/material'
 import { ReactElement, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
@@ -17,6 +18,7 @@ import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { patientId } = useParams()
   const location = useLocation()
@@ -53,15 +55,17 @@ const TherapistChatbot = (): ReactElement => {
   return (
     <Layout>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <IconButton
-          sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
-          onClick={() => {
-            dispatch(clearMessages())
-            navigate(closePage)
-          }}
-        >
-          <CloseIcon sx={{ color: 'red' }} />
-        </IconButton>
+        <Tooltip title={t('layout.close')}>
+          <IconButton
+            sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
+            onClick={() => {
+              dispatch(clearMessages())
+              navigate(closePage)
+            }}
+          >
+            <CloseIcon sx={{ color: 'red' }} />
+          </IconButton>
+        </Tooltip>
 
         <List
           ref={listRef}

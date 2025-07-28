@@ -42,7 +42,10 @@
     "patient_details": "Client Details",
     "logout": "Log Out",
     "overview": "Overview",
-    "account": "Account"
+    "account": "Account",
+    "send": "Send",
+    "expand_AI_assistant": "Expand AI Assistant",
+    "close": "Close"
   },
   "dashboard": {
     "patient_register_success": "Client registered successfully.",
@@ -494,6 +497,7 @@
   "pages": {
     "home": "Home",
     "login": "Login",
+    "logout": "Logout",
     "registration": "Registration",
     "settings": "Settings",
     "patients": {

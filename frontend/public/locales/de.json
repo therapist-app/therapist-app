@@ -16,7 +16,7 @@
     "settings": "Einstellungsseite"
   },
   "footer": {
-    "title": "Dies ist die Fußzeile",
+    "title": "Dies ist die Fusszeile",
     "note": "Fragen Sie Ihren persönlichen Assistenten..."
   },
   "settings": {
@@ -42,7 +42,10 @@
     "patient_details": "Klientendetails",
     "logout": "Abmelden",
     "overview": "Übersicht",
-    "account": "Konto"
+    "account": "Konto",
+    "send": "Senden",
+    "expand_AI_assistant": "KI-Assistent aufklappen",
+    "close": "Schliessen"
   },
   "dashboard": {
     "patient_register_success": "Klient erfolgreich registriert.",
@@ -493,7 +496,8 @@
   },
   "pages": {
     "home": "Startseite",
-    "login": "Anmeldung",
+    "login": "Anmelden",
+    "logout": "Abmelden",
     "registration": "Registrierung",
     "settings": "Einstellungen",
     "patients": {

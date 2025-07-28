@@ -42,7 +42,10 @@
     "patient_details": "Деталі клієнта",
     "logout": "Вийти",
     "overview": "Огляд",
-    "account": "Акаунт"
+    "account": "Акаунт",
+    "send": "Надіслати",
+    "expand_AI_assistant": "Розгорнути AI асистента",
+    "close": "Закрити"
   },
   "dashboard": {
     "patient_register_success": "Клієнта успішно зареєстровано.",
@@ -494,6 +497,7 @@
   "pages": {
     "home": "Головна",
     "login": "Вхід",
+    "logout": "Вихід",
     "registration": "Реєстрація",
     "settings": "Налаштування",
     "patients": {
