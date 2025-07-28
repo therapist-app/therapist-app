@@ -297,6 +297,7 @@
     "loading": "Loading client interactions data...",
     "fetch_error": "Error fetching client interactions data.",
     "no_data": "No client log data available.",
+    "interactions": "Interactions",
     "log_types": {
       "journal_creation": "Journal Creation",
       "journal_update": "Journal Update",

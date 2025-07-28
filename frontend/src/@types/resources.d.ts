@@ -298,6 +298,7 @@ interface Resources {
       "loading": "Lade Daten der Klienteninteraktionen...",
       "fetch_error": "Fehler beim Abrufen der Klienteninteraktionsdaten.",
       "no_data": "Keine Klienten-Protokolldaten verfügbar.",
+      "interactions": "Interaktionen",
       "log_types": {
         "journal_creation": "Tagebucherstellung",
         "journal_update": "Tagebuchaktualisierung",
@@ -825,6 +826,7 @@ interface Resources {
       "loading": "Loading client interactions data...",
       "fetch_error": "Error fetching client interactions data.",
       "no_data": "No client log data available.",
+      "interactions": "Interactions",
       "log_types": {
         "journal_creation": "Journal Creation",
         "journal_update": "Journal Update",
@@ -1352,6 +1354,7 @@ interface Resources {
       "loading": "Завантаження даних про взаємодії з клієнтом...",
       "fetch_error": "Помилка отримання даних про взаємодії з клієнтом.",
       "no_data": "Немає доступних даних журналу клієнта.",
+      "interactions": "Взаємодії",
       "log_types": {
         "journal_creation": "Створення щоденника",
         "journal_update": "Оновлення щоденника",
