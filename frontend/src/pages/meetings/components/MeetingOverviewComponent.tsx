@@ -77,50 +77,55 @@ const MeetingOverviewComponent = (): ReactElement => {
           {t('meetings.create_meeting')}
         </Button>
       </div>
-      <TableContainer component={Paper}>
-        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('meetings.meeting_start')}</TableCell>
-              <TableCell>{t('meetings.meeting_end')}</TableCell>
-              <TableCell>{t('meetings.meeting_location')}</TableCell>
-              <TableCell align='center'>{t('meetings.is_past')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allMeetingsOfPatient.map((meeting) => (
-              <TableRow
-                onClick={() => handleClickOnMeeting(meeting.id ?? '')}
-                key={meeting.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                  cursor: 'pointer',
-                  backgroundColor: isDateInThePast(meeting.meetingEnd) ? '#e0e0e0' : '',
-                }}
-              >
-                <TableCell component='th' scope='row'>
-                  {meeting?.meetingStart
-                    ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
-                        locale: de,
-                      })
-                    : '-'}
-                </TableCell>
-                <TableCell>
-                  {meeting?.meetingEnd
-                    ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
-                        locale: de,
-                      })
-                    : '-'}
-                </TableCell>
-                <TableCell>{meeting.location}</TableCell>
-                <TableCell align='center'>
-                  {isDateInThePast(meeting.meetingEnd) && <CheckIcon />}
-                </TableCell>
+
+      {allMeetingsOfPatient.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t('meetings.meeting_start')}</TableCell>
+                <TableCell>{t('meetings.meeting_end')}</TableCell>
+                <TableCell>{t('meetings.meeting_location')}</TableCell>
+                <TableCell align='center'>{t('meetings.is_past')}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {allMeetingsOfPatient.map((meeting) => (
+                <TableRow
+                  onClick={() => handleClickOnMeeting(meeting.id ?? '')}
+                  key={meeting.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    cursor: 'pointer',
+                    backgroundColor: isDateInThePast(meeting.meetingEnd) ? '#e0e0e0' : '',
+                  }}
+                >
+                  <TableCell component='th' scope='row'>
+                    {meeting?.meetingStart
+                      ? format(new Date(meeting.meetingStart), 'dd.MM.yyyy HH:mm', {
+                          locale: de,
+                        })
+                      : '-'}
+                  </TableCell>
+                  <TableCell>
+                    {meeting?.meetingEnd
+                      ? format(new Date(meeting.meetingEnd), 'dd.MM.yyyy HH:mm', {
+                          locale: de,
+                        })
+                      : '-'}
+                  </TableCell>
+                  <TableCell>{meeting.location}</TableCell>
+                  <TableCell align='center'>
+                    {isDateInThePast(meeting.meetingEnd) && <CheckIcon />}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant='body1'>{t('meetings.no_meetings_yet')}</Typography>
+      )}
     </>
   )
 }

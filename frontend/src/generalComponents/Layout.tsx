@@ -11,6 +11,7 @@ import {
   IconButton,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
@@ -146,20 +147,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Typography variant='h1' sx={{ flexGrow: 1 }}>
               {currentPageName}
             </Typography>
-            <IconButton
-              sx={{ mr: 1 }}
-              onClick={() => navigate(getPathFromPage(PAGES.SETTINGS_PAGE))}
-            >
-              <SettingsIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                dispatch(logoutTherapist())
-                navigate(getPathFromPage(PAGES.LOGIN_PAGE))
-              }}
-            >
-              <LogoutIcon fontSize='small' />
-            </IconButton>
+            <Tooltip title={t('layout.settings')}>
+              <IconButton
+                sx={{ mr: 1 }}
+                onClick={() => navigate(getPathFromPage(PAGES.SETTINGS_PAGE))}
+              >
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={t('layout.logout')}>
+              <IconButton
+                onClick={() => {
+                  dispatch(logoutTherapist())
+                  navigate(getPathFromPage(PAGES.LOGIN_PAGE))
+                }}
+              >
+                <LogoutIcon fontSize='small' />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
 
@@ -253,19 +258,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               '& .MuiOutlinedInput-root': { height: '60px' },
             }}
           />
-          <IconButton
-            onClick={sendMessage}
-            sx={{ position: 'absolute', right: '30px', bottom: '27px' }}
-          >
-            <SendIcon sx={{ color: 'black' }} />
-          </IconButton>
+          <Tooltip title={t('layout.send')}>
+            <IconButton
+              onClick={sendMessage}
+              sx={{ position: 'absolute', right: '30px', bottom: '27px' }}
+            >
+              <SendIcon sx={{ color: 'black' }} />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            sx={{ position: 'absolute', right: '5px', bottom: '60px' }}
-            onClick={() => navigate(therapistChatbotExpandedPage)}
-          >
-            <ExpandLessIcon sx={{ color: 'black' }} />
-          </IconButton>
+          <Tooltip title={t('layout.expand_AI_assistant')}>
+            <IconButton
+              sx={{ position: 'absolute', right: '5px', bottom: '60px' }}
+              onClick={() => navigate(therapistChatbotExpandedPage)}
+            >
+              <ExpandLessIcon sx={{ color: 'black' }} />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
       <GlobalErrorSnackbar />

@@ -42,7 +42,10 @@
     "patient_details": "Client Details",
     "logout": "Log Out",
     "overview": "Overview",
-    "account": "Account"
+    "account": "Account",
+    "send": "Send",
+    "expand_AI_assistant": "Expand AI Assistant",
+    "close": "Close"
   },
   "dashboard": {
     "patient_register_success": "Client registered successfully.",
@@ -282,6 +285,9 @@
     "create_bot": "Create Bot",
     "files_visible_to_client": "Files visible to client",
     "files_visible_only_to_coach": "Files visible only to coach",
+    "no_files_uploaded_yet": "You haven't uploaded any files yet.",
+    "file_name": "File Name",
+    "actions": "Actions",
     "edit": "Edit",
     "save_changes": "Save",
     "file_upload_success": "Successfully uploaded file",
@@ -421,6 +427,7 @@
     "meeting_start": "Meeting Start",
     "meeting_end": "Meeting End",
     "meeting_location": "Meeting Location",
+    "no_meetings_yet": "You don't have any client meetings scheduled yet.",
     "duration": "Duration",
     "duration_in_minutes": "Duration in Minutes",
     "minutes": "minutes",
@@ -490,6 +497,7 @@
   "pages": {
     "home": "Home",
     "login": "Login",
+    "logout": "Logout",
     "registration": "Registration",
     "settings": "Settings",
     "patients": {

@@ -17,7 +17,7 @@ interface Resources {
       "settings": "Einstellungsseite"
     },
     "footer": {
-      "title": "Dies ist die Fußzeile",
+      "title": "Dies ist die Fusszeile",
       "note": "Fragen Sie Ihren persönlichen Assistenten..."
     },
     "settings": {
@@ -43,7 +43,10 @@ interface Resources {
       "patient_details": "Klientendetails",
       "logout": "Abmelden",
       "overview": "Übersicht",
-      "account": "Konto"
+      "account": "Konto",
+      "send": "Senden",
+      "expand_AI_assistant": "KI-Assistent aufklappen",
+      "close": "Schliessen"
     },
     "dashboard": {
       "patient_register_success": "Klient erfolgreich registriert.",
@@ -283,6 +286,9 @@ interface Resources {
       "create_bot": "Bot erstellen",
       "files_visible_to_client": "Für den Klienten sichtbare Dateien",
       "files_visible_only_to_coach": "Nur für den Coach sichtbare Dateien",
+      "no_files_uploaded_yet": "Sie haben noch keine Dateien hochgeladen.",
+      "file_name": "Dateiname",
+      "actions": "Aktionen",
       "edit": "Bearbeiten",
       "save_changes": "Änderungen speichern",
       "file_upload_success": "Datei erfolgreich hochgeladen",
@@ -422,6 +428,7 @@ interface Resources {
       "meeting_start": "Beginn des Termins",
       "meeting_end": "Ende des Termins",
       "meeting_location": "Ort des Termins",
+      "no_meetings_yet": "Sie haben noch keine geplanten Termine.",
       "duration": "Dauer",
       "duration_in_minutes": "Dauer in Minuten",
       "minutes": "Minuten",
@@ -490,7 +497,8 @@ interface Resources {
     },
     "pages": {
       "home": "Startseite",
-      "login": "Anmeldung",
+      "login": "Anmelden",
+      "logout": "Abmelden",
       "registration": "Registrierung",
       "settings": "Einstellungen",
       "patients": {
@@ -573,7 +581,10 @@ interface Resources {
       "patient_details": "Client Details",
       "logout": "Log Out",
       "overview": "Overview",
-      "account": "Account"
+      "account": "Account",
+      "send": "Send",
+      "expand_AI_assistant": "Expand AI Assistant",
+      "close": "Close"
     },
     "dashboard": {
       "patient_register_success": "Client registered successfully.",
@@ -813,6 +824,9 @@ interface Resources {
       "create_bot": "Create Bot",
       "files_visible_to_client": "Files visible to client",
       "files_visible_only_to_coach": "Files visible only to coach",
+      "no_files_uploaded_yet": "You haven't uploaded any files yet.",
+      "file_name": "File Name",
+      "actions": "Actions",
       "edit": "Edit",
       "save_changes": "Save",
       "file_upload_success": "Successfully uploaded file",
@@ -952,6 +966,7 @@ interface Resources {
       "meeting_start": "Meeting Start",
       "meeting_end": "Meeting End",
       "meeting_location": "Meeting Location",
+      "no_meetings_yet": "You don't have any client meetings scheduled yet.",
       "duration": "Duration",
       "duration_in_minutes": "Duration in Minutes",
       "minutes": "minutes",
@@ -1021,6 +1036,7 @@ interface Resources {
     "pages": {
       "home": "Home",
       "login": "Login",
+      "logout": "Logout",
       "registration": "Registration",
       "settings": "Settings",
       "patients": {
@@ -1103,7 +1119,10 @@ interface Resources {
       "patient_details": "Деталі клієнта",
       "logout": "Вийти",
       "overview": "Огляд",
-      "account": "Акаунт"
+      "account": "Акаунт",
+      "send": "Надіслати",
+      "expand_AI_assistant": "Розгорнути AI асистента",
+      "close": "Закрити"
     },
     "dashboard": {
       "patient_register_success": "Клієнта успішно зареєстровано.",
@@ -1343,6 +1362,9 @@ interface Resources {
       "create_bot": "Створити бота",
       "files_visible_to_client": "Файли, видимі для клієнта",
       "files_visible_only_to_coach": "Файли, видимі лише для коуча",
+      "no_files_uploaded_yet": "Ви ще не завантажили жодних файлів.",
+      "file_name": "Назва файлу",
+      "actions": "Дії",
       "edit": "Редагувати",
       "save_changes": "Зберегти зміни",
       "file_upload_success": "Файл успішно завантажено",
@@ -1482,6 +1504,7 @@ interface Resources {
       "meeting_start": "Початок зустрічі",
       "meeting_end": "Кінець зустрічі",
       "meeting_location": "Місце зустрічі",
+      "no_meetings_yet": "У вас ще немає запланованих зустрічей з клієнтами.",
       "duration": "Тривалість",
       "duration_in_minutes": "Тривалість у хвилинах",
       "minutes": "хвилини",
@@ -1551,6 +1574,7 @@ interface Resources {
     "pages": {
       "home": "Головна",
       "login": "Вхід",
+      "logout": "Вихід",
       "registration": "Реєстрація",
       "settings": "Налаштування",
       "patients": {

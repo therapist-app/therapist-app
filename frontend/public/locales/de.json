@@ -16,7 +16,7 @@
     "settings": "Einstellungsseite"
   },
   "footer": {
-    "title": "Dies ist die Fußzeile",
+    "title": "Dies ist die Fusszeile",
     "note": "Fragen Sie Ihren persönlichen Assistenten..."
   },
   "settings": {
@@ -42,7 +42,10 @@
     "patient_details": "Klientendetails",
     "logout": "Abmelden",
     "overview": "Übersicht",
-    "account": "Konto"
+    "account": "Konto",
+    "send": "Senden",
+    "expand_AI_assistant": "KI-Assistent aufklappen",
+    "close": "Schliessen"
   },
   "dashboard": {
     "patient_register_success": "Klient erfolgreich registriert.",
@@ -282,6 +285,9 @@
     "create_bot": "Bot erstellen",
     "files_visible_to_client": "Für den Klienten sichtbare Dateien",
     "files_visible_only_to_coach": "Nur für den Coach sichtbare Dateien",
+    "no_files_uploaded_yet": "Sie haben noch keine Dateien hochgeladen.",
+    "file_name": "Dateiname",
+    "actions": "Aktionen",
     "edit": "Bearbeiten",
     "save_changes": "Änderungen speichern",
     "file_upload_success": "Datei erfolgreich hochgeladen",
@@ -421,6 +427,7 @@
     "meeting_start": "Beginn des Termins",
     "meeting_end": "Ende des Termins",
     "meeting_location": "Ort des Termins",
+    "no_meetings_yet": "Sie haben noch keine geplanten Termine.",
     "duration": "Dauer",
     "duration_in_minutes": "Dauer in Minuten",
     "minutes": "Minuten",
@@ -489,7 +496,8 @@
   },
   "pages": {
     "home": "Startseite",
-    "login": "Anmeldung",
+    "login": "Anmelden",
+    "logout": "Abmelden",
     "registration": "Registrierung",
     "settings": "Einstellungen",
     "patients": {
