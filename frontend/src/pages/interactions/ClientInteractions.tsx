@@ -5,7 +5,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   Stack,
   Typography,
@@ -296,116 +295,114 @@ const ClientInteractions = (): ReactElement => {
 
   return (
     <Layout>
-      <Paper sx={{ p: 3, height: '800px' }}>
-        <Stack spacing={2}>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <FormControl sx={{ minWidth: 250 }}>
-                <InputLabel id='interaction-type-label'>
-                  {t('patient_interactions.interaction_type')}
-                </InputLabel>
-                <Select
-                  value={activeLogType || ''}
-                  onChange={(e) => setActiveLogType(e.target.value as LogType)}
-                  label={t('patient_interactions.log_types')}
-                >
-                  {LOG_TYPES.map((logType) => (
-                    <MenuItem key={logType} value={logType}>
-                      {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <DatePicker
-                label={t('patient_interactions.start_date')}
-                value={startDate}
-                onChange={(newValue) => setStartDate(newValue)}
-                slotProps={{ textField: { size: 'small' } }}
-                maxDate={endDate || undefined}
-              />
-              <DatePicker
-                label={t('patient_interactions.end_date')}
-                value={endDate}
-                onChange={(newValue) => setEndDate(newValue)}
-                slotProps={{ textField: { size: 'small' } }}
-                minDate={startDate || undefined}
-              />
-            </LocalizationProvider>
-          </Box>
-
-          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '160px' }}
-              size='small'
-              onClick={() => {
-                setStartDate(subDays(new Date(), 7))
-                setEndDate(new Date())
-              }}
-            >
-              {t('patient_interactions.last_week')}
-            </Button>
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '160px' }}
-              size='small'
-              onClick={() => {
-                setStartDate(subDays(new Date(), 14))
-                setEndDate(new Date())
-              }}
-            >
-              {t('patient_interactions.last_two_weeks')}
-            </Button>
-            <Button
-              sx={{ ...commonButtonStyles, minWidth: '160px' }}
-              size='small'
-              onClick={() => {
-                setStartDate(subDays(new Date(), 21))
-                setEndDate(new Date())
-              }}
-            >
-              {t('patient_interactions.last_three_weeks')}
-            </Button>
-          </Box>
-
-          <div style={{ height: '650px' }}>
-            <ResponsiveHeatMap
-              data={heatmapData}
-              margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
-              valueFormat='>-.0f'
-              axisTop={null}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: t('patient_interactions.date'),
-                legendPosition: 'middle',
-                legendOffset: 50,
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: t('patient_interactions.time'),
-                legendPosition: 'middle',
-                legendOffset: -70,
-                format: (value) => `${value}:00`,
-              }}
-              colors={{
-                type: 'sequential',
-                scheme: 'purples',
-                minValue: 0,
-                maxValue: maxValue,
-              }}
-              emptyColor='#f8f9fa'
-              borderColor='#ffffff'
-              borderWidth={1}
-              enableLabels={false}
-              animate={false}
-              motionConfig='gentle'
-              tooltip={HeatmapTooltip}
+      <Stack spacing={2}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <FormControl sx={{ minWidth: 250 }}>
+              <InputLabel id='interaction-type-label'>
+                {t('patient_interactions.interaction_type')}
+              </InputLabel>
+              <Select
+                value={activeLogType || ''}
+                onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                label={t('patient_interactions.log_types')}
+              >
+                {LOG_TYPES.map((logType) => (
+                  <MenuItem key={logType} value={logType}>
+                    {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <DatePicker
+              label={t('patient_interactions.start_date')}
+              value={startDate}
+              onChange={(newValue) => setStartDate(newValue)}
+              slotProps={{ textField: { size: 'small' } }}
+              maxDate={endDate || undefined}
             />
-          </div>
-        </Stack>
-      </Paper>
+            <DatePicker
+              label={t('patient_interactions.end_date')}
+              value={endDate}
+              onChange={(newValue) => setEndDate(newValue)}
+              slotProps={{ textField: { size: 'small' } }}
+              minDate={startDate || undefined}
+            />
+          </LocalizationProvider>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+          <Button
+            sx={{ ...commonButtonStyles, minWidth: '160px' }}
+            size='small'
+            onClick={() => {
+              setStartDate(subDays(new Date(), 7))
+              setEndDate(new Date())
+            }}
+          >
+            {t('patient_interactions.last_week')}
+          </Button>
+          <Button
+            sx={{ ...commonButtonStyles, minWidth: '160px' }}
+            size='small'
+            onClick={() => {
+              setStartDate(subDays(new Date(), 14))
+              setEndDate(new Date())
+            }}
+          >
+            {t('patient_interactions.last_two_weeks')}
+          </Button>
+          <Button
+            sx={{ ...commonButtonStyles, minWidth: '160px' }}
+            size='small'
+            onClick={() => {
+              setStartDate(subDays(new Date(), 21))
+              setEndDate(new Date())
+            }}
+          >
+            {t('patient_interactions.last_three_weeks')}
+          </Button>
+        </Box>
+
+        <div style={{ height: '650px' }}>
+          <ResponsiveHeatMap
+            data={heatmapData}
+            margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
+            valueFormat='>-.0f'
+            axisTop={null}
+            axisBottom={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: t('patient_interactions.date'),
+              legendPosition: 'middle',
+              legendOffset: 50,
+            }}
+            axisLeft={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: t('patient_interactions.time'),
+              legendPosition: 'middle',
+              legendOffset: -70,
+              format: (value) => `${value}:00`,
+            }}
+            colors={{
+              type: 'sequential',
+              scheme: 'purples',
+              minValue: 0,
+              maxValue: maxValue,
+            }}
+            emptyColor='#f8f9fa'
+            borderColor='#ffffff'
+            borderWidth={1}
+            enableLabels={false}
+            animate={false}
+            motionConfig='gentle'
+            tooltip={HeatmapTooltip}
+          />
+        </div>
+      </Stack>
     </Layout>
   )
 }
