@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { PatientDocumentOutputDTO } from '../api'
 import { useNotify } from '../hooks/useNotify'
@@ -26,6 +27,7 @@ interface FilesTableProps {
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props) => {
+  const { t } = useTranslation()
   const { allDocuments, handleFileUpload, handleDeleteFile, downloadFile, title } = props
   const { notifySuccess, notifyError } = useNotify()
 
@@ -70,50 +72,59 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
         <FileUpload onUpload={wrappedUpload} />
       </div>
 
-      <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
-        <Table aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>File name</div>
-              </TableCell>
-              <TableCell align='right'>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allDocuments.map((document) => (
-              <TableRow
-                key={document.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                }}
-              >
-                <TableCell
-                  sx={{
-                    maxWidth: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                  component='th'
-                  scope='row'
-                >
-                  {document.fileName}
+      {allDocuments.length > 0 ? (
+        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+          <Table aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    {t('patient_detail.file_name')}
+                  </div>
                 </TableCell>
-                <TableCell align='right'>
-                  <FileDownload
-                    download={() => wrappedDownload(document.id ?? '')}
-                    fileName={document.fileName ?? ''}
-                  />
-                  <IconButton aria-label='delete' onClick={() => wrappedDelete(document.id ?? '')}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                <TableCell align='right'>{t('patient_detail.actions')}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {allDocuments.map((document) => (
+                <TableRow
+                  key={document.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                  }}
+                >
+                  <TableCell
+                    sx={{
+                      maxWidth: 400,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                    component='th'
+                    scope='row'
+                  >
+                    {document.fileName}
+                  </TableCell>
+                  <TableCell align='right'>
+                    <FileDownload
+                      download={() => wrappedDownload(document.id ?? '')}
+                      fileName={document.fileName ?? ''}
+                    />
+                    <IconButton
+                      aria-label='delete'
+                      onClick={() => wrappedDelete(document.id ?? '')}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography>{t('patient_detail.no_files_uploaded_yet')}</Typography>
+      )}
     </>
   )
 }
