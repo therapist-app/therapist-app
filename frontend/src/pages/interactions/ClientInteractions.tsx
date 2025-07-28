@@ -64,7 +64,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
       <div>
-        {t('patient_interactions.interactions')}: {cell.value}
+        {t('patient_interactions.interactions')}: <strong>{cell.value}</strong>
       </div>
     </div>
   )
@@ -132,22 +132,20 @@ const transformDataForHeatmap = (
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
-  const { patientId } = useParams()
   const { notifyError } = useNotify()
-
+  const { patientId } = useParams()
   const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
-  // Separate states for initial loading vs background loading
-  const [isInitialLoading, setIsInitialLoading] = useState(true)
-  const [backgroundLoadingStates, setBackgroundLoadingStates] = useState<Record<LogType, boolean>>(
-    LOG_TYPES.reduce(
-      (acc, type) => ({ ...acc, [type]: false }), // Start all as false since we'll handle them separately
-      {} as Record<LogType, boolean>
-    )
+  const [loadingStates, setLoadingStates] = useState<Record<LogType, boolean>>(
+    LOG_TYPES.reduce((acc, type) => ({ ...acc, [type]: true }), {} as Record<LogType, boolean>)
   )
+
+  const isLoading = useMemo(() => {
+    return Object.values(loadingStates).some(Boolean)
+  }, [loadingStates])
 
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
@@ -157,72 +155,87 @@ const ClientInteractions = (): ReactElement => {
     if (!patientId) {
       return
     }
-    setError(null)
-    setIsInitialLoading(true)
 
-    patientLogApi
-      .listLogs(patientId, 'JOURNAL_CREATION')
-      .then((response) => {
-        const normalized = response.data.map((apiDto) => ({
-          id: apiDto.id ?? '',
-          patientId: apiDto.patientId ?? '',
-          logType: apiDto.logType ?? '',
-          timestamp: apiDto.timestamp ?? '',
-          uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
-        }))
-        setLogsByType((prev) => ({
-          ...prev,
-          JOURNAL_CREATION: normalized,
-        }))
-      })
-      .catch((_) => {
-        setLogsByType((prev) => ({ ...prev, JOURNAL_CREATION: [] }))
-        notifyError('Failed to fetch client interactions')
-      })
-      .finally(() => {
-        // 2) As soon as JOURNAL_CREATION is back, drop the initial spinner
-        setIsInitialLoading(false)
+    const abortController = new AbortController()
 
-        // 3) …and *then* kick off every other log‐type, but do *not* await these
-        LOG_TYPES.filter((t) => t !== 'JOURNAL_CREATION').forEach((logType) => {
-          // mark it “loading” so your dropdown spinner can still show if the user clicks
-          setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: true }))
+    const fetchData = async (): Promise<void> => {
+      try {
+        setError(null)
+        setLoadingStates(
+          LOG_TYPES.reduce(
+            (acc, type) => ({ ...acc, [type]: true }),
+            {} as Record<LogType, boolean>
+          )
+        )
 
-          patientLogApi
-            .listLogs(patientId, logType)
-            .then((response) => {
-              const normalized = response.data.map((apiDto) => ({
-                id: apiDto.id ?? '',
-                patientId: apiDto.patientId ?? '',
-                logType: apiDto.logType ?? '',
-                timestamp: apiDto.timestamp ?? '',
-                uniqueIdentifier: apiDto.uniqueIdentifier ?? '',
+        const fetchPromises = LOG_TYPES.map(async (logType) => {
+          try {
+            const response = await patientLogApi.listLogs(patientId, logType, {
+              signal: abortController.signal,
+            })
+
+            const normalizedData = response.data.map((apiDto) => ({
+              id: apiDto.id || '',
+              patientId: apiDto.patientId || '',
+              logType: apiDto.logType || '',
+              timestamp: apiDto.timestamp || '',
+              uniqueIdentifier: apiDto.uniqueIdentifier || '',
+            }))
+
+            if (!abortController.signal.aborted) {
+              setLogsByType((prev) => ({
+                ...prev,
+                [logType]: normalizedData,
               }))
-              setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
-            })
-            .catch((_) => {
-              setLogsByType((prev) => ({ ...prev, [logType]: [] }))
-              notifyError('Failed to fetch client interactions')
-            })
-            .finally(() => {
-              setBackgroundLoadingStates((prev) => ({ ...prev, [logType]: false }))
-            })
+            }
+          } catch (err) {
+            if (abortController.signal.aborted) {
+              return
+            }
+
+            console.error(`Error fetching ${logType} logs:`, err)
+            if (!abortController.signal.aborted) {
+              setLogsByType((prev) => ({
+                ...prev,
+                [logType]: [],
+              }))
+              notifyError('Failed to fetch client interactions.')
+            }
+          } finally {
+            if (!abortController.signal.aborted) {
+              setLoadingStates((prev) => ({
+                ...prev,
+                [logType]: false,
+              }))
+            }
+          }
         })
-      })
-  }, [patientId, notifyError, t])
+
+        await Promise.all(fetchPromises)
+      } catch (err) {
+        if (abortController.signal.aborted) {
+          return
+        }
+        console.error('Error in fetchAllLogTypes:', err)
+        setError(t('patient_interactions.fetch_error'))
+      }
+    }
+
+    fetchData()
+
+    return (): void => {
+      abortController.abort()
+    }
+  }, [patientId, t, notifyError])
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
     const logsToUse = activeLogType
       ? logsByType[activeLogType] || []
-      : Object.entries(logsByType)
-          .filter(
-            ([type]) => type === 'JOURNAL_CREATION' || !backgroundLoadingStates[type as LogType]
-          ) // Only use loaded types
-          .flatMap(([_, logs]) => logs)
+      : Object.values(logsByType).flatMap((logs) => logs)
 
     return transformLogsToInteractionData(logsToUse)
-  }, [logsByType, activeLogType, backgroundLoadingStates])
+  }, [logsByType, activeLogType])
 
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
@@ -248,12 +261,24 @@ const ClientInteractions = (): ReactElement => {
     [filteredData, startDate, endDate]
   )
 
-  if (isInitialLoading) {
+  const maxValue = useMemo(() => {
+    if (!heatmapData || heatmapData.length === 0) {
+      return 3
+    }
+    const calculatedMax = Math.max(
+      ...heatmapData.flatMap((hourData) => hourData.data.map((d) => d.y))
+    )
+    return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
+  }, [heatmapData])
+
+  if (isLoading) {
     return (
       <Layout>
         <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
           <Typography>{t('patient_interactions.loading')}</Typography>
-          <CircularProgress />
+          <div style={{ marginTop: '20px' }}>
+            <CircularProgress />
+          </div>
         </Box>
       </Layout>
     )
@@ -284,16 +309,9 @@ const ClientInteractions = (): ReactElement => {
                   onChange={(e) => setActiveLogType(e.target.value as LogType)}
                   label={t('patient_interactions.log_types')}
                 >
-                  <MenuItem value=''>All Log Types</MenuItem>
                   {LOG_TYPES.map((logType) => (
                     <MenuItem key={logType} value={logType}>
-                      <Box display='flex' alignItems='center'>
-                        {logType !== 'JOURNAL_CREATION' &&
-                          backgroundLoadingStates[logType as LogType] && (
-                            <CircularProgress size={16} sx={{ mr: 1 }} />
-                          )}
-                        {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
-                      </Box>
+                      {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
                     </MenuItem>
                   ))}
                 </Select>
@@ -375,7 +393,7 @@ const ClientInteractions = (): ReactElement => {
                 type: 'sequential',
                 scheme: 'purples',
                 minValue: 0,
-                maxValue: 3,
+                maxValue: maxValue,
               }}
               emptyColor='#f8f9fa'
               borderColor='#ffffff'
