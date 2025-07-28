@@ -39,15 +39,8 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-interface HeatmapCell {
-  id: string
-  value: number
-  serieId: string
-  x: number
-  y: number
-}
-
-const HeatmapTooltip: React.FC<{ cell: HeatmapCell }> = ({ cell }) => {
+// eslint-disable-next-line
+const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const { t } = useTranslation()
   const [hourPart, datePart] = cell.id.split('.')
   const [month, day] = datePart.split('-')
@@ -70,7 +63,9 @@ const HeatmapTooltip: React.FC<{ cell: HeatmapCell }> = ({ cell }) => {
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
-      <div>{t('patient_interactions.interactions')}: {cell.value}</div>
+      <div>
+        {t('patient_interactions.interactions')}: {cell.value}
+      </div>
     </div>
   )
 }
