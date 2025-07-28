@@ -86,6 +86,8 @@
     "chatbot_created_success": "Chatbot created successfully.",
     "chatbot_updated_success": "Chatbot updated successfully.",
     "chatbot_named_success": "Chatbot renamed successfully.",
+    "chatbot_cloned_success": "Chatbot cloned successfully.",
+    "chatbot_deleted_success": "Chatbot deleted successfully.",
     "create_new_chatbot_template": "Create new chatbot template",
     "create_chatbot_from_template": "Create Chatbot from Template",
     "create_new_chatbot": "Create New Chatbot",
