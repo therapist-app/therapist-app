@@ -200,7 +200,12 @@
     "exercise_added_success": "Вправу успішно додано",
     "phase_deleted_success": "Фазу успішно видалено",
     "exercise_created_success": "Вправу успішно створено",
-    "goal_created_success": "Ціль успішно створено"
+    "goal_created_success": "Ціль успішно створено",
+    "amountOfPhases": "Кількість фаз",
+    "goalsCompleted": "Цілей досягнуто",
+    "goalsCompleted2": "цілей досягнуто",
+    "phase": "Фаза",
+    "completed": "завершено"
   },
   "exercise": {
     "upload_image": "Завантажити зображення",

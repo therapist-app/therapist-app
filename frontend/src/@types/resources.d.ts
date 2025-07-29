@@ -201,7 +201,12 @@ interface Resources {
       "exercise_added_success": "Übung erfolgreich hinzugefügt",
       "phase_deleted_success": "Phase erfolgreich gelöscht",
       "exercise_created_success": "Übung erfolgreich erstellt",
-      "goal_created_success": "Ziel erfolgreich erstellt"
+      "goal_created_success": "Ziel erfolgreich erstellt",
+      "amountOfPhases": "Anzahl der Phasen",
+      "goalsCompleted": "Ziele abgeschlossen",
+      "goalsCompleted2": "ziele abgeschlossen",
+      "phase": "Phase",
+      "completed": "abgeschlossen"
     },
     "exercise": {
       "upload_image": "Bild hochladen",
@@ -1282,7 +1287,12 @@ interface Resources {
       "exercise_added_success": "Вправу успішно додано",
       "phase_deleted_success": "Фазу успішно видалено",
       "exercise_created_success": "Вправу успішно створено",
-      "goal_created_success": "Ціль успішно створено"
+      "goal_created_success": "Ціль успішно створено",
+      "amountOfPhases": "Кількість фаз",
+      "goalsCompleted": "Цілей досягнуто",
+      "goalsCompleted2": "цілей досягнуто",
+      "phase": "Фаза",
+      "completed": "завершено"
     },
     "exercise": {
       "upload_image": "Завантажити зображення",
