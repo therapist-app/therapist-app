@@ -15,7 +15,11 @@ import { UpdateCounselingPlanDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { getCounselingPlanByPatientId, updateCounselingPlan } from '../../store/counselingPlanSlice'
+import {
+  getCounselingPlanByPatientId,
+  getGoalCounts,
+  updateCounselingPlan,
+} from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { RootState } from '../../store/store'
 import { formatDateNicely } from '../../utils/dateUtil'
@@ -31,12 +35,15 @@ const CounselingPlanDetails = (): ReactElement => {
   const { patientId } = useParams()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { counselingPlan } = useSelector((state: RootState) => state.counselingPlan)
+  const counselingPlanState = useSelector((state: RootState) => state.counselingPlan)
+  const { counselingPlan } = counselingPlanState
   const [isEditing, setIsEditing] = useState(false)
   const { notifyError, notifySuccess } = useNotify()
   const [formData, setFormData] = useState<FormValues>({
     startOfTherapy: new Date(),
   })
+
+  const { totalGoals, completedGoals } = getGoalCounts({ counselingPlan: counselingPlanState })
 
   const amountOfPhases = counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0
 
@@ -126,7 +133,15 @@ const CounselingPlanDetails = (): ReactElement => {
           </div>
         )}
 
-        <Typography variant='h2'>{t('counseling_plan.counseling_plan_phases')}</Typography>
+        <div>
+          <Typography variant='h2'>{t('counseling_plan.counseling_plan')}</Typography>
+          <Typography>
+            {counselingPlan?.counselingPlanPhasesOutputDTO?.length ?? 0} phases
+          </Typography>
+          <Typography>
+            {completedGoals}/{totalGoals} goals completed
+          </Typography>
+        </div>
         {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (
           <ul
             style={{

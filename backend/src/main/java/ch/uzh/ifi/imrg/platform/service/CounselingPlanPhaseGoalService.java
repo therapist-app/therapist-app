@@ -55,6 +55,8 @@ public class CounselingPlanPhaseGoalService {
     counselingPlanPhaseGoal.setGoalName(createCounselingPlanPhaseGoalDTO.getGoalName());
     counselingPlanPhaseGoal.setGoalDescription(
         createCounselingPlanPhaseGoalDTO.getGoalDescription());
+    counselingPlanPhaseGoal.setIsCompleted(false);
+
     counselingPlanPhaseGoalRepository.save(counselingPlanPhaseGoal);
     counselingPlanPhaseGoalRepository.flush();
     return CounselingPlanPhaseGoalMapper.INSTANCE.convertEntityToCounselingPlanPhaseGoalOutputDTO(
@@ -121,6 +123,10 @@ public class CounselingPlanPhaseGoalService {
 
     if (dto.getGoalDescription() != null) {
       counselingPlanPhaseGoal.setGoalDescription(dto.getGoalDescription());
+    }
+
+    if (dto.getIsCompleted() != null) {
+      counselingPlanPhaseGoal.setIsCompleted(dto.getIsCompleted());
     }
 
     counselingPlanPhaseGoalRepository.save(counselingPlanPhaseGoal);

@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   AddExerciseToCounselingPlanPhaseDTO,
   CounselingPlanOutputDTO,
+  CounselingPlanPhaseGoalOutputDTO,
   CreateCounselingPlanExerciseAIGeneratedDTO,
   CreateCounselingPlanPhaseAIGeneratedDTO,
   CreateCounselingPlanPhaseDTO,
@@ -157,6 +158,24 @@ const counselingPlanSlice = createSlice({
       state.counselingPlan = action.payload
     },
   },
+  selectors: {
+    getGoalCounts: (state) => {
+      if (!state.counselingPlan?.counselingPlanPhasesOutputDTO) {
+        return { totalGoals: 0, completedGoals: 0 }
+      }
+
+      const allGoals: CounselingPlanPhaseGoalOutputDTO[] =
+        state.counselingPlan.counselingPlanPhasesOutputDTO.flatMap(
+          (phase) => phase.phaseGoalsOutputDTO || []
+        )
+
+      const totalGoals = allGoals.length
+
+      const completedGoals = allGoals.filter((goal) => goal.isCompleted).length
+
+      return { totalGoals: totalGoals, completedGoals: completedGoals }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCounselingPlanByPatientId.pending, (state) => {
@@ -188,4 +207,5 @@ const counselingPlanSlice = createSlice({
 })
 
 export const { setCounselingPlan } = counselingPlanSlice.actions
+export const { getGoalCounts } = counselingPlanSlice.selectors
 export default counselingPlanSlice.reducer

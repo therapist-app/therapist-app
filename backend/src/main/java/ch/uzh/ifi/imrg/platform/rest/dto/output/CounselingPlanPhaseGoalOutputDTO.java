@@ -7,4 +7,5 @@ public class CounselingPlanPhaseGoalOutputDTO {
   private String id;
   private String goalName;
   private String goalDescription;
+  private Boolean isCompleted;
 }

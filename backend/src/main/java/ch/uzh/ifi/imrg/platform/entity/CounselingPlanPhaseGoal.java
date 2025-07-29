@@ -35,6 +35,8 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist, HasLLMContext 
   @Column()
   private String goalDescription;
 
+  @Column() private Boolean isCompleted;
+
   @ManyToOne
   @JoinColumn(name = "counseling_plan_phase_id", referencedColumnName = "id")
   private CounselingPlanPhase counselingPlanPhase;
