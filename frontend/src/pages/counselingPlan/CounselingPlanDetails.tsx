@@ -135,9 +135,11 @@ const CounselingPlanDetails = (): ReactElement => {
 
         <div>
           <Typography variant='h2'>{t('counseling_plan.counseling_plan')}</Typography>
-          <Typography>Amount of phases: {amountOfPhases}</Typography>
           <Typography>
-            Goals completed: {completedGoals}/{totalGoals}
+            {t('counseling_plan.amountOfPhases')}: {amountOfPhases}
+          </Typography>
+          <Typography>
+            {t('counseling_plan.goalsCompleted')}: {completedGoals}/{totalGoals}
           </Typography>
         </div>
         {!!counselingPlan?.counselingPlanPhasesOutputDTO?.length && (

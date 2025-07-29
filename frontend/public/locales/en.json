@@ -200,7 +200,12 @@
     "exercise_added_success": "Successfully added exercise",
     "phase_deleted_success": "Successfully deleted phase",
     "exercise_created_success": "Successfully created exercise",
-    "goal_created_success": "Successfully created goal"
+    "goal_created_success": "Successfully created goal",
+    "amountOfPhases": "Amount of phases",
+    "goalsCompleted": "Goals completed",
+    "goalsCompleted2": "goals completed",
+    "phase": "Phase",
+    "completed": "completed"
   },
   "exercise": {
     "upload_image": "Upload Image",

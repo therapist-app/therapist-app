@@ -85,14 +85,14 @@ const CounselingPlanPhaseGoalDetail = ({
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Typography style={{ fontWeight: 'bold' }}>{goal.goalName}</Typography>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
           <Checkbox
-            sx={{ width: 'fit-content' }}
+            sx={{ width: 'fit-content', padding: 0 }}
             name='isCompleted'
             checked={goal.isCompleted}
             onChange={handleToggleIsCompleted}
           />
-          <Typography>Is completed?</Typography>
+          <Typography>{t('counseling_plan.completed')}?</Typography>
         </div>
         <Typography> |</Typography>
         {!isEditing && (

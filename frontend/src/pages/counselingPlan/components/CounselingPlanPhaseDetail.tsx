@@ -90,7 +90,8 @@ const CounselingPlanPhaseDetail = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
       <div style={{ display: ' flex', gap: '10px', alignItems: 'center' }}>
         <Typography variant='h3'>
-          Phase {phaseNumber}: {phase.phaseName} ({completedGoals}/{amountOfGoals} goals completed)
+          {t('counseling_plan.phase')} {phaseNumber}: {phase.phaseName} ({completedGoals}/
+          {amountOfGoals} {t('counseling_plan.goalsCompleted2')})
         </Typography>
         {!isEditing && (
           <IconButton onClick={handleClickEditPhase}>
