@@ -101,12 +101,10 @@ api.interceptors.response.use(
       } catch (err) {
         console.error(err)
       } finally {
-        window.location.href =
-          import.meta.env.VITE_FRONTEND_PREFIX + 'login'
+        window.location.href = import.meta.env.VITE_FRONTEND_PREFIX + 'login'
       }
     }
 
     return Promise.reject(error)
   }
 )
-
