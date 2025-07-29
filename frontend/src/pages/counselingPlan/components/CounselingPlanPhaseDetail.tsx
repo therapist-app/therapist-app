@@ -40,6 +40,10 @@ const CounselingPlanPhaseDetail = ({
   const [updatePhaseName, setUpdatePhaseName] = useState(phase.phaseName)
   const [updateDurationInWeeks, setUpdateDurationInWeeks] = useState(phase.durationInWeeks)
 
+  const allGoals = phase.phaseGoalsOutputDTO?.flat()
+  const amountOfGoals = allGoals?.length ?? 0
+  const completedGoals = allGoals?.filter((g) => g.isCompleted).length ?? 0
+
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
   }
@@ -86,7 +90,7 @@ const CounselingPlanPhaseDetail = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
       <div style={{ display: ' flex', gap: '10px', alignItems: 'center' }}>
         <Typography variant='h3'>
-          {phaseNumber}. {phase.phaseName}
+          Phase {phaseNumber}: {phase.phaseName} ({completedGoals}/{amountOfGoals} goals completed)
         </Typography>
         {!isEditing && (
           <IconButton onClick={handleClickEditPhase}>

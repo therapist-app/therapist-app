@@ -1,5 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, IconButton, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, IconButton, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -67,18 +67,42 @@ const CounselingPlanPhaseGoalDetail = ({
     }
   }
 
+  const handleToggleIsCompleted = async (): Promise<void> => {
+    try {
+      const dto: UpdateCounselingPlanPhaseGoalDTO = {
+        counselingPlanPhaseGoalId: goal.id,
+        isCompleted: !goal.isCompleted,
+      }
+      await dispatch(updateCounselingPlanPhaseGoal(dto)).unwrap()
+      notifySuccess(t('counseling_plan.phase_goal_updated_success'))
+      refresh()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
+  }
+
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Typography style={{ fontWeight: 'bold' }}>{goal.goalName}</Typography>
-        <IconButton onClick={handleDeleteGoal} sx={{ width: 'fit-content' }}>
-          <DeleteIcon />
-        </IconButton>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Checkbox
+            sx={{ width: 'fit-content' }}
+            name='isCompleted'
+            checked={goal.isCompleted}
+            onChange={handleToggleIsCompleted}
+          />
+          <Typography>Is completed?</Typography>
+        </div>
+        <Typography> |</Typography>
         {!isEditing && (
           <IconButton onClick={handleClickEditPhaseGoal} sx={{ width: 'fit-content' }}>
             <EditIcon sx={{ color: 'blue' }} />
           </IconButton>
         )}
+        <IconButton onClick={handleDeleteGoal} sx={{ width: 'fit-content' }}>
+          <DeleteIcon />
+        </IconButton>
       </div>
       {!isEditing ? (
         <Typography>{goal.goalDescription}</Typography>
