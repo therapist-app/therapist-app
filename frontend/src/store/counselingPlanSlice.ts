@@ -175,6 +175,13 @@ const counselingPlanSlice = createSlice({
 
       return { totalGoals: totalGoals, completedGoals: completedGoals }
     },
+    getCurrentPhase: (state) => {
+      return state.counselingPlan?.counselingPlanPhasesOutputDTO?.find(
+        (phase) =>
+          new Date(phase.startDate ?? '').getTime() < new Date().getTime() &&
+          new Date(phase.endDate ?? '').getTime() > new Date().getTime()
+      )
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -207,5 +214,5 @@ const counselingPlanSlice = createSlice({
 })
 
 export const { setCounselingPlan } = counselingPlanSlice.actions
-export const { getGoalCounts } = counselingPlanSlice.selectors
+export const { getGoalCounts, getCurrentPhase } = counselingPlanSlice.selectors
 export default counselingPlanSlice.reducer

@@ -2,14 +2,17 @@ import EditIcon from '@mui/icons-material/Edit'
 import { Button, IconButton, TextField, Typography } from '@mui/material'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 import { CounselingPlanPhaseOutputDTO, UpdateCounselingPlanPhaseDTO } from '../../../api'
 import { useNotify } from '../../../hooks/useNotify'
 import DeleteIcon from '../../../icons/DeleteIcon'
 import {
   deleteCounselingPlanPhase,
+  getCurrentPhase,
   updateCounselingPlanPhase,
 } from '../../../store/counselingPlanSlice'
+import { RootState } from '../../../store/store'
 import { cancelButtonStyles, commonButtonStyles } from '../../../styles/buttonStyles'
 import { formatDateNicely } from '../../../utils/dateUtil'
 import { useAppDispatch } from '../../../utils/hooks'
@@ -43,6 +46,9 @@ const CounselingPlanPhaseDetail = ({
   const allGoals = phase.phaseGoalsOutputDTO?.flat()
   const amountOfGoals = allGoals?.length ?? 0
   const completedGoals = allGoals?.filter((g) => g.isCompleted).length ?? 0
+
+  const counselingPlanState = useSelector((state: RootState) => state.counselingPlan)
+  const currentPhase = getCurrentPhase({ counselingPlan: counselingPlanState })
 
   const handleCreateCounselingPlanPhaseGoal = (): void => {
     onSuccess()
@@ -89,7 +95,13 @@ const CounselingPlanPhaseDetail = ({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
       <div style={{ display: ' flex', gap: '10px', alignItems: 'center' }}>
-        <Typography variant='h3'>
+        <Typography
+          variant='h3'
+          sx={{
+            color: completedGoals === amountOfGoals ? 'green' : '#C76E00',
+          }}
+        >
+          {currentPhase?.id === phase.id ? '-> ' : ''}
           {t('counseling_plan.phase')} {phaseNumber}: {phase.phaseName} ({completedGoals}/
           {amountOfGoals} {t('counseling_plan.goalsCompleted2')})
         </Typography>
