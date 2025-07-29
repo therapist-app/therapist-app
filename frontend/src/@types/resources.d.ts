@@ -204,7 +204,7 @@ interface Resources {
       "goal_created_success": "Ziel erfolgreich erstellt",
       "amountOfPhases": "Anzahl der Phasen",
       "goalsCompleted": "Ziele abgeschlossen",
-      "goalsCompleted2": "ziele abgeschlossen",
+      "goalsCompleted2": "Ziele abgeschlossen",
       "phase": "Phase",
       "completed": "abgeschlossen"
     },
