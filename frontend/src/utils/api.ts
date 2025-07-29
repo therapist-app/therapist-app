@@ -87,15 +87,26 @@ export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFa
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response && error.response.status === 401) {
+    const { response, config } = error
+
+    if (response?.status === 401) {
+      const isLoginRequest = config?.url?.endsWith('/therapists/login')
+
+      if (isLoginRequest) {
+        return Promise.reject(error)
+      }
+
       try {
         await therapistApi.logoutTherapist()
       } catch (err) {
         console.error(err)
       } finally {
-        window.location.href = import.meta.env.VITE_FRONTEND_PREFIX + 'register'
+        window.location.href =
+          import.meta.env.VITE_FRONTEND_PREFIX + 'login'
       }
     }
+
     return Promise.reject(error)
   }
 )
+
