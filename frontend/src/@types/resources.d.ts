@@ -201,7 +201,12 @@ interface Resources {
       "exercise_added_success": "Übung erfolgreich hinzugefügt",
       "phase_deleted_success": "Phase erfolgreich gelöscht",
       "exercise_created_success": "Übung erfolgreich erstellt",
-      "goal_created_success": "Ziel erfolgreich erstellt"
+      "goal_created_success": "Ziel erfolgreich erstellt",
+      "amountOfPhases": "Anzahl der Phasen",
+      "goalsCompleted": "Ziele abgeschlossen",
+      "goalsCompleted2": "Ziele abgeschlossen",
+      "phase": "Phase",
+      "completed": "abgeschlossen"
     },
     "exercise": {
       "upload_image": "Bild hochladen",
@@ -729,7 +734,7 @@ interface Resources {
       "make_ai_generated_suggestion_for_exercise": "Make AI-generated suggestion for exercise",
       "create_goal": "Create Goal",
       "counseling_start_date": "Counseling Start Date",
-      "counseling_plan_phases": "Counseling Plan Phases",
+      "counseling_plan": "Counseling Plan",
       "phase_updated_success": "Successfully updated phase",
       "update_phase": "Update phase",
       "phase_goal_updated_success": "Successfully updated phase goal",
@@ -739,7 +744,12 @@ interface Resources {
       "exercise_added_success": "Successfully added exercise",
       "phase_deleted_success": "Successfully deleted phase",
       "exercise_created_success": "Successfully created exercise",
-      "goal_created_success": "Successfully created goal"
+      "goal_created_success": "Successfully created goal",
+      "amountOfPhases": "Amount of phases",
+      "goalsCompleted": "Goals completed",
+      "goalsCompleted2": "goals completed",
+      "phase": "Phase",
+      "completed": "completed"
     },
     "exercise": {
       "upload_image": "Upload Image",
@@ -1277,7 +1287,12 @@ interface Resources {
       "exercise_added_success": "Вправу успішно додано",
       "phase_deleted_success": "Фазу успішно видалено",
       "exercise_created_success": "Вправу успішно створено",
-      "goal_created_success": "Ціль успішно створено"
+      "goal_created_success": "Ціль успішно створено",
+      "amountOfPhases": "Кількість фаз",
+      "goalsCompleted": "Цілей досягнуто",
+      "goalsCompleted2": "цілей досягнуто",
+      "phase": "Фаза",
+      "completed": "завершено"
     },
     "exercise": {
       "upload_image": "Завантажити зображення",

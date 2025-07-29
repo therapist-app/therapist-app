@@ -13,6 +13,7 @@ public interface CounselingPlanPhaseGoalMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "goalName", target = "goalName")
   @Mapping(source = "goalDescription", target = "goalDescription")
+  @Mapping(source = "isCompleted", target = "isCompleted")
   CounselingPlanPhaseGoalOutputDTO convertEntityToCounselingPlanPhaseGoalOutputDTO(
       CounselingPlanPhaseGoal counselingPlanPhaseGoal);
 }

@@ -16,12 +16,11 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { CounselingPlanPhaseOutputDTO } from '../../api'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { getCounselingPlanByPatientId } from '../../store/counselingPlanSlice'
+import { getCounselingPlanByPatientId, getCurrentPhase } from '../../store/counselingPlanSlice'
 import { getAllExercisesOfPatient } from '../../store/exerciseSlice'
 import { getAllMeetingsOfPatient } from '../../store/meetingSlice'
 import {
@@ -60,11 +59,8 @@ const PatientDetail = (): ReactElement => {
     state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
   )
 
-  const counselingPlan = useSelector((state: RootState) => state.counselingPlan).counselingPlan
-
-  const [currentCounselingPlanPhase, setCurrentCounselingPlanPhase] = useState<
-    CounselingPlanPhaseOutputDTO | undefined
-  >(undefined)
+  const counselingPlanState = useSelector((state: RootState) => state.counselingPlan)
+  const currentPhase = getCurrentPhase({ counselingPlan: counselingPlanState })
 
   const [refreshPatientDocumentsCounter, setRefreshPatientDocumentsCounter] = useState(0)
 
@@ -76,16 +72,6 @@ const PatientDetail = (): ReactElement => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
   }, [dispatch, notifyError])
-
-  useEffect(() => {
-    setCurrentCounselingPlanPhase(
-      counselingPlan?.counselingPlanPhasesOutputDTO?.find(
-        (phase) =>
-          new Date(phase.startDate ?? '').getTime() < new Date().getTime() &&
-          new Date(phase.endDate ?? '').getTime() > new Date().getTime()
-      )
-    )
-  }, [counselingPlan?.counselingPlanPhasesOutputDTO, counselingPlan])
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
@@ -315,10 +301,9 @@ const PatientDetail = (): ReactElement => {
             {t('patient_detail.go_to_counseling_plan')}
           </Button>
         </div>
-        {currentCounselingPlanPhase ? (
+        {currentPhase ? (
           <Typography>
-            {t('patient_detail.current_phase')}:{' '}
-            <strong>{currentCounselingPlanPhase.phaseName}</strong>
+            {t('patient_detail.current_phase')}: <strong>{currentPhase.phaseName}</strong>
           </Typography>
         ) : (
           <Typography>{t('patient_detail.currently_no_phase_is_active')}</Typography>

@@ -200,7 +200,12 @@
     "exercise_added_success": "Übung erfolgreich hinzugefügt",
     "phase_deleted_success": "Phase erfolgreich gelöscht",
     "exercise_created_success": "Übung erfolgreich erstellt",
-    "goal_created_success": "Ziel erfolgreich erstellt"
+    "goal_created_success": "Ziel erfolgreich erstellt",
+    "amountOfPhases": "Anzahl der Phasen",
+    "goalsCompleted": "Ziele abgeschlossen",
+    "goalsCompleted2": "Ziele abgeschlossen",
+    "phase": "Phase",
+    "completed": "abgeschlossen"
   },
   "exercise": {
     "upload_image": "Bild hochladen",

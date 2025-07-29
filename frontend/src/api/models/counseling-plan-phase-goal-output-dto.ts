@@ -38,5 +38,11 @@ export interface CounselingPlanPhaseGoalOutputDTO {
      * @memberof CounselingPlanPhaseGoalOutputDTO
      */
     'goalDescription'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CounselingPlanPhaseGoalOutputDTO
+     */
+    'isCompleted'?: boolean;
 }
 
