@@ -298,7 +298,8 @@
     "edit": "Bearbeiten",
     "save_changes": "Änderungen speichern",
     "file_upload_success": "Datei erfolgreich hochgeladen",
-    "file_delete_success": "Datei erfolgreich gelöscht"
+    "file_delete_success": "Datei erfolgreich gelöscht",
+    "manage_tests": "GAD7-Tests verwalten"
   },
   "patient_interactions": {
     "interaction_type": "Interaktionstyp",
@@ -481,6 +482,9 @@
   "gad7test": {
     "title": "GAD-7-Bewertung",
     "gad7tests": "GAD-7-Tests",
+    "completed_gad7tests": "Abgeschlossene GAD-7-Tests",
+    "manage_description": "Legen Sie fest, wie oft der Klient den GAD-7-Test durchführen soll (in Tagen):",
+    "doEveryNDays": "Alle ... Tage",
     "date": "Datum",
     "description": "Wie oft fühlten Sie sich während der letzten 2 Wochen durch die folgenden Probleme belästigt?",
     "question1": "Nervosität, Ängstlichkeit oder Anspannung.",
@@ -523,7 +527,7 @@
       "details": "Termindetails"
     },
     "gad7": {
-      "create": "GAD-7-Bewertung"
+      "manage": "GAD-7 Tests verwalten"
     },
     "exercises": {
       "create": "Übung erstellen",

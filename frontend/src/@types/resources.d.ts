@@ -299,7 +299,8 @@ interface Resources {
       "edit": "Bearbeiten",
       "save_changes": "Änderungen speichern",
       "file_upload_success": "Datei erfolgreich hochgeladen",
-      "file_delete_success": "Datei erfolgreich gelöscht"
+      "file_delete_success": "Datei erfolgreich gelöscht",
+      "manage_tests": "GAD7-Tests verwalten"
     },
     "patient_interactions": {
       "interaction_type": "Interaktionstyp",
@@ -482,6 +483,9 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7-Bewertung",
       "gad7tests": "GAD-7-Tests",
+      "completed_gad7tests": "Abgeschlossene GAD-7-Tests",
+      "manage_description": "Legen Sie fest, wie oft der Klient den GAD-7-Test durchführen soll (in Tagen):",
+      "doEveryNDays": "Alle ... Tage",
       "date": "Datum",
       "description": "Wie oft fühlten Sie sich während der letzten 2 Wochen durch die folgenden Probleme belästigt?",
       "question1": "Nervosität, Ängstlichkeit oder Anspannung.",
@@ -524,7 +528,7 @@ interface Resources {
         "details": "Termindetails"
       },
       "gad7": {
-        "create": "GAD-7-Bewertung"
+        "manage": "GAD-7 Tests verwalten"
       },
       "exercises": {
         "create": "Übung erstellen",
@@ -726,7 +730,7 @@ interface Resources {
       "exercise_title": "Exercise Title",
       "exerciseDescription": "Description",
       "exerciseExplanation": "Explanation (for AI context)",
-      "doEveryNDays": "Repeat every... days",
+      "doEveryNDays": "Repeat every ... days",
       "exercise_start": "Exercise Start",
       "add_a_goal": "Add a Goal",
       "goal_name": "Goal Name",
@@ -773,7 +777,7 @@ interface Resources {
       "no_exercise_components_yet": "You haven't added any exercise components yet.",
       "image": "Image",
       "file": "File",
-      "doEveryNDays": "Repeat every... days",
+      "doEveryNDays": "Repeat every ... days",
       "privateInput": "Private Input Field",
       "sharedInput": "Shared Input Field",
       "addPrivateInput": "Add Private Input Field",
@@ -844,7 +848,8 @@ interface Resources {
       "edit": "Edit",
       "save_changes": "Save",
       "file_upload_success": "Successfully uploaded file",
-      "file_delete_success": "Successfully deleted file"
+      "file_delete_success": "Successfully deleted file",
+      "manage_tests": "Manage GAD7 Tests"
     },
     "patient_interactions": {
       "interaction_type": "Interaction Type",
@@ -1027,6 +1032,9 @@ interface Resources {
     "gad7test": {
       "title": "GAD-7 Assessment",
       "gad7tests": "GAD-7 Tests",
+      "completed_gad7tests": "Completed GAD-7 Tests",
+      "manage_description": "Set how often the patient should complete the GAD-7 test (in days):",
+      "doEveryNDays": "Every ... days",
       "date": "Date",
       "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
       "question1": "Feeling nervous, anxious or on edge.",
@@ -1069,7 +1077,7 @@ interface Resources {
         "details": "Meeting Details"
       },
       "gad7": {
-        "create": "GAD-7 Assessment"
+        "manage": "Manage GAD-7 Tests"
       },
       "exercises": {
         "create": "Create Exercise",
@@ -1271,7 +1279,7 @@ interface Resources {
       "exercise_title": "Назва вправи",
       "exerciseDescription": "Опис",
       "exerciseExplanation": "Пояснення (для контексту ШІ)",
-      "doEveryNDays": "Повторювати кожні... дні",
+      "doEveryNDays": "Повторювати кожні ... дні",
       "exercise_start": "Початок вправи",
       "add_a_goal": "Додати ціль",
       "goal_name": "Назва цілі",
@@ -1318,7 +1326,7 @@ interface Resources {
       "no_exercise_components_yet": "Ви ще не додали жодних компонентів вправи.",
       "image": "Зображення",
       "file": "Файл",
-      "doEveryNDays": "Повторювати кожні... дні",
+      "doEveryNDays": "Повторювати кожні ... дні",
       "privateInput": "Приватне поле для введення",
       "sharedInput": "Спільне поле для введення",
       "addPrivateInput": "Додати приватне поле для введення",
@@ -1389,7 +1397,8 @@ interface Resources {
       "edit": "Редагувати",
       "save_changes": "Зберегти зміни",
       "file_upload_success": "Файл успішно завантажено",
-      "file_delete_success": "Файл успішно видалено"
+      "file_delete_success": "Файл успішно видалено",
+      "manage_tests": "Керувати GAD7 тестами"
     },
     "patient_interactions": {
       "interaction_type": "Тип взаємодії",
@@ -1572,6 +1581,9 @@ interface Resources {
     "gad7test": {
       "title": "Оцінка за шкалою GAD-7",
       "gad7tests": "Тести GAD-7",
+      "completed_gad7tests": "Завершені тести GAD-7",
+      "manage_description": "Вкажіть, як часто клієнт повинен проходити тест GAD-7 (у днях):",
+      "doEveryNDays": "Кожні ... днів",
       "date": "Дата",
       "description": "Протягом останніх 2 тижнів, як часто вас турбували наступні проблеми?",
       "question1": "Відчуття нервозності, тривоги або напруженості.",
@@ -1614,7 +1626,7 @@ interface Resources {
         "details": "Деталі зустрічі"
       },
       "gad7": {
-        "create": "Оцінка GAD-7"
+        "manage": "Керувати тестами GAD-7"
       },
       "exercises": {
         "create": "Створити вправу",

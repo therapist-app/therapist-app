@@ -180,7 +180,7 @@
     "exercise_title": "Назва вправи",
     "exerciseDescription": "Опис",
     "exerciseExplanation": "Пояснення (для контексту ШІ)",
-    "doEveryNDays": "Повторювати кожні... дні",
+    "doEveryNDays": "Повторювати кожні ... дні",
     "exercise_start": "Початок вправи",
     "add_a_goal": "Додати ціль",
     "goal_name": "Назва цілі",
@@ -227,7 +227,7 @@
     "no_exercise_components_yet": "Ви ще не додали жодних компонентів вправи.",
     "image": "Зображення",
     "file": "Файл",
-    "doEveryNDays": "Повторювати кожні... дні",
+    "doEveryNDays": "Повторювати кожні ... дні",
     "privateInput": "Приватне поле для введення",
     "sharedInput": "Спільне поле для введення",
     "addPrivateInput": "Додати приватне поле для введення",
@@ -298,7 +298,8 @@
     "edit": "Редагувати",
     "save_changes": "Зберегти зміни",
     "file_upload_success": "Файл успішно завантажено",
-    "file_delete_success": "Файл успішно видалено"
+    "file_delete_success": "Файл успішно видалено",
+    "manage_tests": "Керувати GAD7 тестами"
   },
   "patient_interactions": {
     "interaction_type": "Тип взаємодії",
@@ -481,6 +482,9 @@
   "gad7test": {
     "title": "Оцінка за шкалою GAD-7",
     "gad7tests": "Тести GAD-7",
+    "completed_gad7tests": "Завершені тести GAD-7",
+    "manage_description": "Вкажіть, як часто клієнт повинен проходити тест GAD-7 (у днях):",
+    "doEveryNDays": "Кожні ... днів",
     "date": "Дата",
     "description": "Протягом останніх 2 тижнів, як часто вас турбували наступні проблеми?",
     "question1": "Відчуття нервозності, тривоги або напруженості.",
@@ -523,7 +527,7 @@
       "details": "Деталі зустрічі"
     },
     "gad7": {
-      "create": "Оцінка GAD-7"
+      "manage": "Керувати тестами GAD-7"
     },
     "exercises": {
       "create": "Створити вправу",

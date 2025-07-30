@@ -37,7 +37,7 @@ import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
-import GAD7TestDetail from '../gad7Test/GAD7TestDetail'
+import GAD7TestTable from '../gad7Test/GAD7TestTable'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
@@ -352,7 +352,24 @@ const PatientDetail = (): ReactElement => {
         </DialogActions>
       </Dialog>
 
-      <GAD7TestDetail />
+      <div style={{ display: 'flex', gap: '30px', alignItems: 'center', marginBottom: '10px' }}>
+        <Typography variant='h2'>{t('gad7test.gad7tests')}</Typography>
+        <Button
+          sx={{ ...commonButtonStyles, minWidth: '200px' }}
+          variant='contained'
+          onClick={() =>
+            navigate(
+              getPathFromPage(PAGES.GAD7_TEST_DETAIL_PAGE, {
+                patientId: patientId ?? '',
+              })
+            )
+          }
+        >
+          {t('patient_detail.manage_tests')}
+        </Button>
+      </div>
+
+      <GAD7TestTable />
 
       <CustomizedDivider />
 
