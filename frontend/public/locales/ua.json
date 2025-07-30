@@ -260,7 +260,9 @@
     "exercise_deleted_successfully": "Вправу успішно видалено",
     "component_created_successfully": "Компонент вправи успішно створено",
     "component_updated_successfully": "Компонент вправи успішно оновлено",
-    "component_deleted_successfully": "Компонент вправи успішно видалено"
+    "component_deleted_successfully": "Компонент вправи успішно видалено",
+    "client_feedback": "Відгук клієнта",
+    "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи."
   },
   "not_found": {
     "title": "404 - Сторінку не знайдено",

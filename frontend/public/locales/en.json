@@ -260,7 +260,9 @@
     "exercise_deleted_successfully": "Successfully deleted exercise",
     "component_created_successfully": "Successfully created exercise component",
     "component_updated_successfully": "Successfully updated exercise component",
-    "component_deleted_successfully": "Successfully deleted exercise component"
+    "component_deleted_successfully": "Successfully deleted exercise component",
+    "client_feedback": "Client Feedback",
+    "no_client_feedback": "The client has not provided any feedback for this exercise yet."
   },
   "not_found": {
     "title": "404 - Page Not Found",
