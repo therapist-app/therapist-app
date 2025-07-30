@@ -260,7 +260,9 @@
     "exercise_deleted_successfully": "Übung erfolgreich gelöscht",
     "component_created_successfully": "Übungskomponente erfolgreich erstellt",
     "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
-    "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht"
+    "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
+    "client_feedback": "Klienten-Feedback",
+    "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
   },
   "not_found": {
     "title": "404 - Seite nicht gefunden",
@@ -439,8 +441,8 @@
     "location": "Ort",
     "create_meeting": "Termin erstellen",
     "create_new_note": "Neue Notiz erstellen",
-    "transcribe_meeting": "Termin transkribieren",
-    "meeting_transcription": "Termin-Transkription",
+    "transcribe_meeting": "Gespräch transkribieren",
+    "meeting_transcription": "Gesprächstranskription",
     "new_note": "Neue Notiz",
     "title": "Titel",
     "language": "Sprache",

@@ -261,7 +261,9 @@ interface Resources {
       "exercise_deleted_successfully": "Übung erfolgreich gelöscht",
       "component_created_successfully": "Übungskomponente erfolgreich erstellt",
       "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
-      "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht"
+      "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
+      "client_feedback": "Klienten-Feedback",
+      "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
     },
     "not_found": {
       "title": "404 - Seite nicht gefunden",
@@ -440,8 +442,8 @@ interface Resources {
       "location": "Ort",
       "create_meeting": "Termin erstellen",
       "create_new_note": "Neue Notiz erstellen",
-      "transcribe_meeting": "Termin transkribieren",
-      "meeting_transcription": "Termin-Transkription",
+      "transcribe_meeting": "Gespräch transkribieren",
+      "meeting_transcription": "Gesprächstranskription",
       "new_note": "Neue Notiz",
       "title": "Titel",
       "language": "Sprache",
@@ -804,7 +806,9 @@ interface Resources {
       "exercise_deleted_successfully": "Successfully deleted exercise",
       "component_created_successfully": "Successfully created exercise component",
       "component_updated_successfully": "Successfully updated exercise component",
-      "component_deleted_successfully": "Successfully deleted exercise component"
+      "component_deleted_successfully": "Successfully deleted exercise component",
+      "client_feedback": "Client Feedback",
+      "no_client_feedback": "The client has not provided any feedback for this exercise yet."
     },
     "not_found": {
       "title": "404 - Page Not Found",
@@ -1347,7 +1351,9 @@ interface Resources {
       "exercise_deleted_successfully": "Вправу успішно видалено",
       "component_created_successfully": "Компонент вправи успішно створено",
       "component_updated_successfully": "Компонент вправи успішно оновлено",
-      "component_deleted_successfully": "Компонент вправи успішно видалено"
+      "component_deleted_successfully": "Компонент вправи успішно видалено",
+      "client_feedback": "Відгук клієнта",
+      "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи."
     },
     "not_found": {
       "title": "404 - Сторінку не знайдено",
