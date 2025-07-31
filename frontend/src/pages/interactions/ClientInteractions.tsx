@@ -12,9 +12,9 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { ResponsiveHeatMapCanvas  } from '@nivo/heatmap'
+import { ResponsiveHeatMapCanvas } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
@@ -38,6 +38,7 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
+// eslint-disable-next-line
 const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const { t } = useTranslation()
   const [hourPart, datePart] = cell.id.split('.')
@@ -114,7 +115,6 @@ const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const { notifyError } = useNotify()
   const { patientId } = useParams()
-  const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
@@ -133,50 +133,44 @@ const ClientInteractions = (): ReactElement => {
   }, [startDate, endDate])
 
   // Fetch data for a specific log type
-  const fetchLogTypeData = async (logType: LogType): Promise<void> => {
-    if (!patientId || loadedLogTypes.has(logType)) {
-      return
-    }
+  const fetchLogTypeData = useCallback(
+    async (logType: LogType) => {
+      if (!patientId || loadedLogTypes.has(logType)) {
+        return
+      }
 
-    try {
-      setLoading(true)
-      const response = await patientLogApi.listLogs(patientId, logType)
+      try {
+        setLoading(true)
+        const response = await patientLogApi.listLogs(patientId, logType)
+        const normalized = response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        }))
 
-      const normalizedData = response.data.map((apiDto) => ({
-        id: apiDto.id || '',
-        patientId: apiDto.patientId || '',
-        logType: apiDto.logType || '',
-        timestamp: apiDto.timestamp || '',
-        uniqueIdentifier: apiDto.uniqueIdentifier || '',
-      }))
-
-      setLogsByType((prev) => ({
-        ...prev,
-        [logType]: normalizedData,
-      }))
-
-      setLoadedLogTypes((prev) => new Set(prev).add(logType))
-    } catch (err) {
-      console.error(`Error fetching ${logType} logs:`, err)
-      notifyError('Failed to fetch client interactions.')
-      setLogsByType((prev) => ({
-        ...prev,
-        [logType]: [],
-      }))
-    } finally {
-      setLoading(false)
-    }
-  }
+        setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
+        setLoadedLogTypes((prev) => new Set(prev).add(logType))
+      } catch (err) {
+        console.error(err)
+        notifyError('Failed to fetch client interactions.')
+        setLogsByType((prev) => ({ ...prev, [logType]: [] }))
+      } finally {
+        setLoading(false)
+      }
+    },
+    [patientId, loadedLogTypes, notifyError]
+  )
 
   // Initial load - fetch only JOURNAL_CREATION data
   useEffect(() => {
     if (patientId) {
       fetchLogTypeData('JOURNAL_CREATION' as LogType)
     }
-  }, [patientId])
+  }, [patientId, fetchLogTypeData])
 
-  // Handle log type change
-  const handleLogTypeChange = async (logType: LogType) => {
+  const handleLogTypeChange = async (logType: LogType): Promise<void> => {
     setActiveLogType(logType)
     if (!loadedLogTypes.has(logType)) {
       await fetchLogTypeData(logType)
@@ -210,8 +204,6 @@ const ClientInteractions = (): ReactElement => {
     [filteredData, dateRange]
   )
 
-  // console.log('Heatmap Data:', heatmapData)
-
   const maxValue = useMemo(() => {
     if (!heatmapData || heatmapData.length === 0) {
       return 3
@@ -230,16 +222,6 @@ const ClientInteractions = (): ReactElement => {
           <div style={{ marginTop: '20px' }}>
             <CircularProgress />
           </div>
-        </Box>
-      </Layout>
-    )
-  }
-
-  if (error) {
-    return (
-      <Layout>
-        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
-          <Typography color='error'>{error}</Typography>
         </Box>
       </Layout>
     )
