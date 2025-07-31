@@ -466,8 +466,8 @@ const ChatBotTemplateEdit: React.FC = () => {
       <Layout>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={selectedTab} onChange={handleTabChange}>
-            <Tab label='Configuration' value='config' />
-            <Tab label='Sources' value='sources' />
+            <Tab label={t('chatbot.configuration')} value='config' />
+            <Tab label={t('chatbot.sources')} value='sources' />
           </Tabs>
         </Box>
 
@@ -475,13 +475,13 @@ const ChatBotTemplateEdit: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <Typography variant='h6' gutterBottom sx={{ mt: 2 }}>
-                Chatbot Configuration
+                {t('chatbot.chatbot_configuration')}
               </Typography>
 
               <Box sx={{ mb: 2 }}>
                 <TextField
                   fullWidth
-                  label='Name'
+                  label={t('chatbot.name')}
                   variant='outlined'
                   value={chatbotName}
                   onChange={(e) => setChatbotName(e.target.value)}
@@ -489,7 +489,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 />
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-role-label'>Role</InputLabel>
+                  <InputLabel id='chatbot-role-label'>{t('chatbot.role')}</InputLabel>
                   <Select
                     labelId='chatbot-role-label'
                     id='chatbot-role-select'
@@ -497,34 +497,34 @@ const ChatBotTemplateEdit: React.FC = () => {
                     label='Role'
                     onChange={(e) => setChatbotRole(e.target.value)}
                   >
-                    <MenuItem value='FAQ'>FAQ</MenuItem>
-                    <MenuItem value='Supportive'>Supportive</MenuItem>
-                    <MenuItem value='Counseling'>Counseling</MenuItem>
-                    <MenuItem value='Self-Help'>Self-Help</MenuItem>
-                    <MenuItem value='Undefined'>Undefined</MenuItem>
+                    <MenuItem value='FAQ'>{t('chatbot.faq')}</MenuItem>
+                    <MenuItem value='Supportive'>{t('chatbot.supportive')}</MenuItem>
+                    <MenuItem value='Counseling'>{t('chatbot.counseling')}</MenuItem>
+                    <MenuItem value='Self-Help'>{t('chatbot.self_help')}</MenuItem>
+                    <MenuItem value='Undefined'>{t('chatbot.undefined')}</MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-tone-label'>Conversation Tone</InputLabel>
+                  <InputLabel id='chatbot-tone-label'>{t('chatbot.conversation_tone')}</InputLabel>
                   <Select
                     labelId='chatbot-tone-label'
                     id='chatbot-tone-select'
                     value={chatbotTone}
-                    label='Conversation Tone'
+                    label={t('chatbot.conversation_tone')}
                     onChange={(e) => setChatbotTone(e.target.value)}
                   >
-                    <MenuItem value='friendly'>Friendly</MenuItem>
-                    <MenuItem value='formal'>Formal</MenuItem>
-                    <MenuItem value='informal'>Informal</MenuItem>
-                    <MenuItem value='professional'>Professional</MenuItem>
-                    <MenuItem value='supportive'>Supportive</MenuItem>
+                    <MenuItem value='friendly'>{t('chatbot.friendly')}</MenuItem>
+                    <MenuItem value='formal'>{t('chatbot.formal')}</MenuItem>
+                    <MenuItem value='informal'>{t('chatbot.casual')}</MenuItem>
+                    <MenuItem value='professional'>{t('chatbot.professional')}</MenuItem>
+                    <MenuItem value='supportive'>{t('chatbot.supportive')}</MenuItem>
                   </Select>
                 </FormControl>
 
                 <TextField
                   fullWidth
-                  label='Welcome Message'
+                  label={t('chatbot.welcome_message')}
                   variant='outlined'
                   value={welcomeMessage}
                   onChange={(e) => setWelcomeMessage(e.target.value)}
@@ -541,13 +541,13 @@ const ChatBotTemplateEdit: React.FC = () => {
                         disabled={isOnlyTemplateForClient && isActive}
                       />
                     }
-                    label='Active (visible to patient)'
+                    label={t('chatbot.active_visiable_to_client')}
                   />
                 )}
 
                 <Box sx={{ mt: 1, ml: -1, display: 'flex', justifyContent: 'left' }}>
                   <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
-                    Save
+                    {t('chatbot.save')}
                   </Button>
                 </Box>
               </Box>
@@ -585,7 +585,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                       {getIconComponent()}
                     </Avatar>
                   )}
-                  <Typography variant='h4'>{chatbotName || 'Chatbot'} Simulation</Typography>
+                  <Typography variant='h4'>
+                    {chatbotName || 'Chatbot'} {t('chatbot.simulation')}
+                  </Typography>
                 </Box>
 
                 <List ref={chatListRef} sx={{ overflow: 'auto', flexGrow: 1 }}>
@@ -595,7 +597,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                         <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                           <Box sx={{ maxWidth: '80%', marginLeft: 'auto' }}>
                             <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                              You
+                              {t('chatbot.you')}
                             </Typography>
                             <Box
                               sx={{
@@ -664,7 +666,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 >
                   <TextField
                     fullWidth
-                    label='Type a message...'
+                    label={t('chatbot.type_your_message')}
                     variant='outlined'
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
