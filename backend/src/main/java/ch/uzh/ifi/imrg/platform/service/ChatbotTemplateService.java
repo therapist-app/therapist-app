@@ -133,6 +133,7 @@ public class ChatbotTemplateService {
       throw new IllegalStateException(
           "Cannot deactivate the only chatbot template for this patient.");
     }
+
     existing.setActive(requestedActive);
 
     if (requestedActive) {
