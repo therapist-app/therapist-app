@@ -86,31 +86,31 @@ const transformLogsToInteractionData = (
 }
 
 const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
-  const hourMap = new Map<number, Map<string, number>>();
-  
+  const hourMap = new Map<number, Map<string, number>>()
+
   // Initialize hour structure
   Array.from({ length: 24 }).forEach((_, hour) => {
-    hourMap.set(hour, new Map());
-  });
+    hourMap.set(hour, new Map())
+  })
 
   // Process data
   data.forEach((item) => {
-    const shortDate = format(new Date(item.date), 'MM-dd');
-    const hourData = hourMap.get(item.hour);
+    const shortDate = format(new Date(item.date), 'MM-dd')
+    const hourData = hourMap.get(item.hour)
     if (hourData) {
-      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value);
+      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value)
     }
-  });
+  })
 
   // Convert to final format
   return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
     id: hour.toString().padStart(2, '0'),
-    data: dateRange.map(date => ({
+    data: dateRange.map((date) => ({
       x: format(date, 'MM-dd'),
       y: dateCounts.get(format(date, 'MM-dd')) || 0,
     })),
-  }));
-};
+  }))
+}
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
@@ -133,11 +133,10 @@ const ClientInteractions = (): ReactElement => {
     {} as Record<LogType, LogOutputDTO[]>
   )
 
-
   // Memoize the date range calculation
   const dateRange = useMemo(() => {
-    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : [];
-  }, [startDate, endDate]);
+    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : []
+  }, [startDate, endDate])
 
   useEffect(() => {
     if (!patientId) {
