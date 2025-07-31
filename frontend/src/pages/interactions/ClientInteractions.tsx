@@ -85,49 +85,32 @@ const transformLogsToInteractionData = (
   }))
 }
 
-const transformDataForHeatmap = (
-  data: InteractionData[],
-  startDate: Date | null,
-  endDate: Date | null
-): HeatMapData[] => {
-  const hours = Array.from({ length: 24 }, (_, i) => i)
-  const daysMap = new Map<string, number[]>()
+const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
+  const hourMap = new Map<number, Map<string, number>>();
+  
+  // Initialize hour structure
+  Array.from({ length: 24 }).forEach((_, hour) => {
+    hourMap.set(hour, new Map());
+  });
 
-  if (startDate && endDate) {
-    const allDates = eachDayOfInterval({ start: startDate, end: endDate })
-    allDates.forEach((date) => {
-      const shortDate = format(date, 'MM-dd')
-      daysMap.set(shortDate, Array(24).fill(0))
-    })
-  }
-
+  // Process data
   data.forEach((item) => {
-    const shortDate = format(new Date(item.date), 'MM-dd')
-    if (!daysMap.has(shortDate)) {
-      daysMap.set(shortDate, Array(24).fill(0))
+    const shortDate = format(new Date(item.date), 'MM-dd');
+    const hourData = hourMap.get(item.hour);
+    if (hourData) {
+      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value);
     }
-    const dayData = daysMap.get(shortDate)!
-    dayData[item.hour] += item.value
-  })
+  });
 
-  const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
-    const findYear = (shortDate: string): string => {
-      const match = data.find((item) => format(new Date(item.date), 'MM-dd') === shortDate)
-      return match ? format(new Date(match.date), 'yyyy') : String(new Date().getFullYear())
-    }
-    const dateA = new Date(`${findYear(a)}-${a}`)
-    const dateB = new Date(`${findYear(b)}-${b}`)
-    return dateA.getTime() - dateB.getTime()
-  })
-
-  return hours.map((hour) => ({
-    id: `${hour.toString().padStart(2, '0')}`,
-    data: sortedDates.map((date) => ({
-      x: date,
-      y: daysMap.get(date)![hour],
+  // Convert to final format
+  return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
+    id: hour.toString().padStart(2, '0'),
+    data: dateRange.map(date => ({
+      x: format(date, 'MM-dd'),
+      y: dateCounts.get(format(date, 'MM-dd')) || 0,
     })),
-  }))
-}
+  }));
+};
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
@@ -149,6 +132,12 @@ const ClientInteractions = (): ReactElement => {
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
   )
+
+
+  // Memoize the date range calculation
+  const dateRange = useMemo(() => {
+    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : [];
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (!patientId) {
@@ -256,7 +245,7 @@ const ClientInteractions = (): ReactElement => {
 
   // Memoize heatmap data transformation
   const heatmapData = useMemo(
-    () => transformDataForHeatmap(filteredData, startDate, endDate),
+    () => transformDataForHeatmap(filteredData, dateRange),
     [filteredData, startDate, endDate]
   )
 
