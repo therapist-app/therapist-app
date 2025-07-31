@@ -677,18 +677,17 @@ const ChatBotTemplateEdit: React.FC = () => {
                     }}
                   />
                   <Button
-  type='submit'
-  variant='contained'
-  sx={
-    !question || isChatbotTyping || isStreaming
-      ? smallDisabledButtonStyles
-      : sendButtonStyles
-  }
-  disabled={!question || isChatbotTyping || isStreaming || isLoading}
->
-  <SendIcon />
-</Button>
-
+                    type='submit'
+                    variant='contained'
+                    sx={
+                      !question || isChatbotTyping || isStreaming
+                        ? smallDisabledButtonStyles
+                        : sendButtonStyles
+                    }
+                    disabled={!question || isChatbotTyping || isStreaming || isLoading}
+                  >
+                    <SendIcon />
+                  </Button>
                 </Box>
               </Paper>
             </Grid>

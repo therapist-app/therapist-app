@@ -16,11 +16,14 @@ import {
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/uzh-logo.png'
+import { RootState } from '../store/store'
 import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
+import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
 import {
@@ -31,9 +34,6 @@ import {
   PAGES,
 } from '../utils/routes'
 import GlobalErrorSnackbar from './GlobalErrorSnackbar'
-import { useSelector } from 'react-redux'
-import { RootState } from '../store/store'
-import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
 
 interface LayoutProps {
   children: ReactNode
@@ -91,37 +91,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const [input, setInput] = useState('')
 
-  const chatbotStatus = useSelector(
-  (s: RootState) => s.therapistChatbot.status
-)
+  const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
 
   const sendMessage = async (): Promise<void> => {
-  if (!input.trim() || chatbotStatus === 'loading') return;
-  setInput('');
+    if (!input.trim() || chatbotStatus === 'loading') {
+      return
+    }
+    setInput('')
 
-  navigate(therapistChatbotExpandedPage);
-  await dispatch(
-    chatWithTherapistChatbot({
-      newMessage: input.trim(),
-      patientId: forwardPatientId,
-      language: getCurrentLanguage(),
-    })
-  );
-};
+    navigate(therapistChatbotExpandedPage)
+    await dispatch(
+      chatWithTherapistChatbot({
+        newMessage: input.trim(),
+        patientId: forwardPatientId,
+        language: getCurrentLanguage(),
+      })
+    )
+  }
 
-const sendButtonStyles = {
-  ...commonButtonStyles,
-  height: '55px',
-  minWidth: '80px',
-  maxWidth: '80px',
-} as const
+  const sendButtonStyles = {
+    ...commonButtonStyles,
+    height: '55px',
+    minWidth: '80px',
+    maxWidth: '80px',
+  } as const
 
-const smallDisabledButtonStyles = {
-  ...disabledButtonStyles,
-  height: '55px',
-  minWidth: '80px',
-  maxWidth: '80px',
-} as const
+  const smallDisabledButtonStyles = {
+    ...disabledButtonStyles,
+    height: '55px',
+    minWidth: '80px',
+    maxWidth: '80px',
+  } as const
 
   const handleChatbotInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -279,11 +279,13 @@ const smallDisabledButtonStyles = {
             value={input}
             onChange={handleChatbotInput}
             onKeyDown={(e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      if (chatbotStatus !== 'loading') sendMessage();
-    }
-  }}
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                if (chatbotStatus !== 'loading') {
+                  sendMessage()
+                }
+              }
+            }}
             placeholder={t('footer.note')}
             sx={{
               bgcolor: 'white',
@@ -292,24 +294,23 @@ const smallDisabledButtonStyles = {
             }}
           />
           <Tooltip title={t('layout.send')}>
-  <Button
-    onClick={sendMessage}
-    variant='contained'
-    disabled={!input.trim() || chatbotStatus === 'loading'}
-    sx={{
-      position: 'absolute',
-      right: 10,
-      bottom: 27,
-      top: 10,
-      ...( !input.trim() || chatbotStatus === 'loading'
-          ? smallDisabledButtonStyles
-          : sendButtonStyles ),
-    }}
-  >
-    <SendIcon />
-  </Button>
-</Tooltip>
-
+            <Button
+              onClick={sendMessage}
+              variant='contained'
+              disabled={!input.trim() || chatbotStatus === 'loading'}
+              sx={{
+                position: 'absolute',
+                right: 10,
+                bottom: 27,
+                top: 10,
+                ...(!input.trim() || chatbotStatus === 'loading'
+                  ? smallDisabledButtonStyles
+                  : sendButtonStyles),
+              }}
+            >
+              <SendIcon />
+            </Button>
+          </Tooltip>
 
           <Tooltip title={t('layout.expand_AI_assistant')}>
             <IconButton
