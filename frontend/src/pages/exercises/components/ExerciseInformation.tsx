@@ -30,18 +30,18 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>{t('exercise.feedback')}</TableCell>
-                <TableCell>{t('exercise.startTime')}</TableCell>
-                <TableCell>{t('exercise.endTime')}</TableCell>
                 <TableCell>{t('exercise.moodsBefore')}</TableCell>
                 <TableCell>{t('exercise.moodsAfter')}</TableCell>
+                <TableCell>Shared Input Field</TableCell>
+                <TableCell>{t('exercise.startTime')}</TableCell>
+                <TableCell>{t('exercise.endTime')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {props.exerciseInformations.map((exerciseInfo) => (
                 <TableRow>
                   <TableCell>{exerciseInfo.feedback}</TableCell>
-                  <TableCell>{formatDateNicely(exerciseInfo.startTime)}</TableCell>
-                  <TableCell>{formatDateNicely(exerciseInfo.endTime)}</TableCell>
+
                   <TableCell>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {exerciseInfo.moodsBefore?.map((mood) => (
@@ -60,6 +60,15 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
                       ))}
                     </div>
                   </TableCell>
+                  <TableCell>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {exerciseInfo.sharedInputFields?.map((sharedField) => (
+                        <div>{sharedField.userInput} </div>
+                      ))}
+                    </div>
+                  </TableCell>
+                  <TableCell>{formatDateNicely(exerciseInfo.startTime)}</TableCell>
+                  <TableCell>{formatDateNicely(exerciseInfo.endTime)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -263,7 +263,9 @@ interface Resources {
       "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
       "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
       "client_feedback": "Klienten-Feedback",
-      "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
+      "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
+      "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
+      "sharedInputTooltip": "Dieses geteilte Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die für den Coach sichtbar sein werden."
     },
     "not_found": {
       "title": "404 - Seite nicht gefunden",
@@ -814,7 +816,9 @@ interface Resources {
       "component_updated_successfully": "Successfully updated exercise component",
       "component_deleted_successfully": "Successfully deleted exercise component",
       "client_feedback": "Client Feedback",
-      "no_client_feedback": "The client has not provided any feedback for this exercise yet."
+      "no_client_feedback": "The client has not provided any feedback for this exercise yet.",
+      "privateInputTooltip": "This private input field components lets the client write down their own thoughts which will not be shared with the coach.",
+      "sharedInputTooltip": "This shared input field component lets the client write down their own thoughts which will be visible for the coach."
     },
     "not_found": {
       "title": "404 - Page Not Found",
@@ -1365,7 +1369,9 @@ interface Resources {
       "component_updated_successfully": "Компонент вправи успішно оновлено",
       "component_deleted_successfully": "Компонент вправи успішно видалено",
       "client_feedback": "Відгук клієнта",
-      "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи."
+      "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи.",
+      "privateInputTooltip": "Це приватне поле для введення дозволяє клієнту записувати власні думки, які не будуть передані коучу.",
+      "sharedInputTooltip": "Це спільне поле для введення дозволяє клієнту записувати власні думки, які будуть видимі для коуча."
     },
     "not_found": {
       "title": "404 - Сторінку не знайдено",

@@ -262,7 +262,9 @@
     "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
     "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
     "client_feedback": "Klienten-Feedback",
-    "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
+    "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
+    "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
+    "sharedInputTooltip": "Dieses geteilte Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die für den Coach sichtbar sein werden."
   },
   "not_found": {
     "title": "404 - Seite nicht gefunden",
