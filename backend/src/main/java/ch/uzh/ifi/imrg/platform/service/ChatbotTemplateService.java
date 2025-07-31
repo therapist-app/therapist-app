@@ -98,76 +98,77 @@ public class ChatbotTemplateService {
     return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
   }
 
+  @Transactional
   public ChatbotTemplateOutputDTO updateTemplate(
       String templateId, ChatbotTemplate template, String therapistId) {
 
-    ChatbotTemplate existingTemplate =
+    ChatbotTemplate existing =
         chatbotTemplateRepository
             .findByIdAndTherapistId(templateId, therapistId)
             .orElseThrow(() -> new Error("Template not found with id: " + templateId));
-    SecurityUtil.checkOwnership(existingTemplate, therapistId);
 
-    existingTemplate.setChatbotName(template.getChatbotName());
-    existingTemplate.setChatbotRole(template.getChatbotRole());
-    existingTemplate.setChatbotTone(template.getChatbotTone());
-    existingTemplate.setWelcomeMessage(template.getWelcomeMessage());
+    SecurityUtil.checkOwnership(existing, therapistId);
+
+    existing.setChatbotName(template.getChatbotName());
+    existing.setChatbotRole(template.getChatbotRole());
+    existing.setChatbotTone(template.getChatbotTone());
+    existing.setWelcomeMessage(template.getWelcomeMessage());
 
     boolean requestedActive = template.isActive();
-    Patient patient = existingTemplate.getPatient();
+    boolean wasActiveBefore = existing.isActive();
+    Patient patient = existing.getPatient();
 
-    if (patient != null) {
-      var all = chatbotTemplateRepository.findByPatientId(patient.getId());
-      boolean onlyTemplate = all.size() == 1 && all.get(0).getId().equals(existingTemplate.getId());
-
-      if (onlyTemplate && existingTemplate.isActive() && !requestedActive) {
-        throw new IllegalStateException(
-            "Cannot deactivate the only chatbot template for this patient.");
-      }
+    if (patient == null) {
+      ChatbotTemplate saved = chatbotTemplateRepository.save(existing);
+      chatbotTemplateRepository.flush();
+      return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(saved);
     }
 
-    existingTemplate.setActive(requestedActive);
+    String patientId = patient.getId();
+    List<ChatbotTemplate> allOfPatient = chatbotTemplateRepository.findByPatientId(patientId);
 
-    if (patient != null && requestedActive) {
-      String patientId = patient.getId();
-      var allPatientTemplates = chatbotTemplateRepository.findByPatientId(patientId);
-      for (ChatbotTemplate other : allPatientTemplates) {
-        if (!other.getId().equals(existingTemplate.getId()) && other.isActive()) {
+    boolean onlyTemplateForPatient = allOfPatient.size() == 1;
+
+    if (onlyTemplateForPatient && wasActiveBefore && !requestedActive) {
+      throw new IllegalStateException(
+          "Cannot deactivate the only chatbot template for this patient.");
+    }
+    existing.setActive(requestedActive);
+
+    if (requestedActive) {
+      for (ChatbotTemplate other : allOfPatient) {
+        if (!other.getId().equals(existing.getId()) && other.isActive()) {
           other.setActive(false);
         }
       }
     }
 
-    ChatbotTemplate updated = chatbotTemplateRepository.save(existingTemplate);
-    chatbotTemplateRepository.flush();
+    ChatbotTemplate newActive = null;
+    if (wasActiveBefore && !requestedActive) {
+      newActive =
+          allOfPatient.stream()
+              .filter(t -> !t.getId().equals(existing.getId()))
+              .sorted((a, b) -> b.getUpdatedAt().compareTo(a.getUpdatedAt()))
+              .findFirst()
+              .orElse(null);
 
-    String chatbotContext =
-        updated.getChatbotTemplateDocuments().stream()
-            .map(ChatbotTemplateDocument::getExtractedText)
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining("\n\n"));
-
-    if (patient != null && requestedActive) {
-      String patientId = patient.getId();
-      var firstConfig =
-          PatientAppAPIs.coachChatbotControllerPatientAPI
-              .getChatbotConfigurations(patientId)
-              .blockFirst();
-
-      if (firstConfig != null) {
-        var updateDto =
-            new UpdateChatbotDTOPatientAPI()
-                .id(firstConfig.getId())
-                .active(updated.isActive())
-                .chatbotRole(updated.getChatbotRole())
-                .chatbotTone(updated.getChatbotTone())
-                .welcomeMessage(updated.getWelcomeMessage())
-                .chatbotContext(chatbotContext);
-
-        PatientAppAPIs.coachChatbotControllerPatientAPI.updateChatbot(patientId, updateDto).block();
+      if (newActive != null) {
+        newActive.setActive(true);
       }
     }
 
-    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(updated);
+    chatbotTemplateRepository.save(existing);
+    if (newActive != null) {
+      chatbotTemplateRepository.save(newActive);
+    }
+    chatbotTemplateRepository.flush();
+
+    ChatbotTemplate activeNow =
+        allOfPatient.stream().filter(ChatbotTemplate::isActive).findFirst().orElse(null);
+
+    pushPatientAppUpdate(patientId, activeNow);
+
+    return chatbotTemplateMapper.convertEntityToChatbotTemplateOutputDTO(existing);
   }
 
   public void deleteTemplate(String templateId, String therapistId) {
