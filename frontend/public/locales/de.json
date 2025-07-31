@@ -265,6 +265,7 @@
     "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
     "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
     "sharedInputTooltip": "Dieses geteilte Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die für den Coach sichtbar sein werden.",
+    "completions": "Übungsabschlüsse",
     "moodtracking": {
       "very_unpleasant": "sehr unangenehm",
       "unpleasant": "unangenehm",

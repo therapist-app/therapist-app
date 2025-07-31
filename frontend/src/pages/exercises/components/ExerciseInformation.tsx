@@ -34,7 +34,7 @@ const ExerciseInformation: React.FC<ExerciseInformationProps> = (props) => {
                 <TableCell>{t('exercise.moodsBefore')}</TableCell>
                 <TableCell>{t('exercise.moodsAfter')}</TableCell>
                 <TableCell>{t('exercise.feedback')}</TableCell>
-                <TableCell>Shared Input Field</TableCell>
+                <TableCell>{t('exercise.sharedInput')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
