@@ -484,7 +484,9 @@
     "gad7tests": "GAD-7 Tests",
     "completed_gad7tests": "Completed GAD-7 Tests",
     "manage_description": "Set how often the patient should complete the GAD-7 test (in days):",
+    "start_date": "Start Date",
     "doEveryNDays": "Every ... days",
+    "schedule_summary": "With these settings, the patient will fill out the GAD7 test every {{days}} days starting from {{date}}.",
     "date": "Date",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
@@ -496,7 +498,7 @@
     "question7": "Feeling afraid as if something awful might happen.",
     "total_score": "Total Score",
     "cancel": "Cancel",
-    "submit": "Submit",
+    "save_changes": "Save Changes",
     "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
     "answers": {
       "not_at_all": "Not at all",
