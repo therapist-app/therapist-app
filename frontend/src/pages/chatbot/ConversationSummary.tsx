@@ -62,6 +62,14 @@ const ConversationSummary = (): ReactElement => {
       return <Alert severity='error'>{error}</Alert>
     }
 
+    if (!summary?.trim()) {
+      return (
+        <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
+          {t('chatbot.no_conversations_exist')}
+        </Typography>
+      )
+    }
+
     return (
       <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
         {summary}

@@ -108,6 +108,7 @@
     "conversation_summary": "Підсумок розмови",
     "conversations_from": "Розмови з",
     "conversation_private": "Ця розмова клієнта з чат-ботом є приватною.",
+    "no_conversations_exist": "Немає розмов.",
     "loading_conversation_summary": "Завантаження підсумку розмови...",
     "what_would_you_like_to_name_your_bot": "Як би ви хотіли назвати свого бота?",
     "enter_bot_name": "Введіть ім'я бота",
