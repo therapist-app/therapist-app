@@ -38,7 +38,6 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-// eslint-disable-next-line
 const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const { t } = useTranslation()
   const [hourPart, datePart] = cell.id.split('.')
@@ -72,7 +71,6 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
 const transformLogsToInteractionData = (
   logs: LogOutputDTO[] | undefined | null
 ): InteractionData[] => {
-  // Handle cases where logs might be undefined or null
   if (!logs || !Array.isArray(logs)) {
     return []
   }
@@ -86,31 +84,31 @@ const transformLogsToInteractionData = (
 }
 
 const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
-  const hourMap = new Map<number, Map<string, number>>()
-
+  const hourMap = new Map<number, Map<string, number>>();
+  
   // Initialize hour structure
   Array.from({ length: 24 }).forEach((_, hour) => {
-    hourMap.set(hour, new Map())
-  })
+    hourMap.set(hour, new Map());
+  });
 
   // Process data
   data.forEach((item) => {
-    const shortDate = format(new Date(item.date), 'MM-dd')
-    const hourData = hourMap.get(item.hour)
+    const shortDate = format(new Date(item.date), 'MM-dd');
+    const hourData = hourMap.get(item.hour);
     if (hourData) {
-      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value)
+      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value);
     }
-  })
+  });
 
   // Convert to final format
   return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
     id: hour.toString().padStart(2, '0'),
-    data: dateRange.map((date) => ({
+    data: dateRange.map(date => ({
       x: format(date, 'MM-dd'),
       y: dateCounts.get(format(date, 'MM-dd')) || 0,
     })),
-  }))
-}
+  }));
+};
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
@@ -121,116 +119,78 @@ const ClientInteractions = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
-  const [loadingStates, setLoadingStates] = useState<Record<LogType, boolean>>(
-    LOG_TYPES.reduce((acc, type) => ({ ...acc, [type]: true }), {} as Record<LogType, boolean>)
-  )
-
-  const isLoading = useMemo(() => {
-    return Object.values(loadingStates).some(Boolean)
-  }, [loadingStates])
-
+  const [loading, setLoading] = useState<boolean>(true)
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
   )
 
+  // Track which log types have been loaded
+  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
+
   // Memoize the date range calculation
   const dateRange = useMemo(() => {
-    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : []
-  }, [startDate, endDate])
+    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : [];
+  }, [startDate, endDate]);
 
+  // Fetch data for a specific log type
+  const fetchLogTypeData = async (logType: LogType): Promise<void> => {
+    if (!patientId || loadedLogTypes.has(logType)) return;
+
+    try {
+      setLoading(true)
+      const response = await patientLogApi.listLogs(patientId, logType)
+      
+      const normalizedData = response.data.map((apiDto) => ({
+        id: apiDto.id || '',
+        patientId: apiDto.patientId || '',
+        logType: apiDto.logType || '',
+        timestamp: apiDto.timestamp || '',
+        uniqueIdentifier: apiDto.uniqueIdentifier || '',
+      }))
+
+      setLogsByType((prev) => ({
+        ...prev,
+        [logType]: normalizedData,
+      }))
+
+      setLoadedLogTypes((prev) => new Set(prev).add(logType))
+    } catch (err) {
+      console.error(`Error fetching ${logType} logs:`, err)
+      notifyError('Failed to fetch client interactions.')
+      setLogsByType((prev) => ({
+        ...prev,
+        [logType]: [],
+      }))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Initial load - fetch only JOURNAL_CREATION data
   useEffect(() => {
-    if (!patientId) {
-      return
+    if (patientId) {
+      fetchLogTypeData('JOURNAL_CREATION' as LogType)
     }
+  }, [patientId])
 
-    const abortController = new AbortController()
-
-    const fetchData = async (): Promise<void> => {
-      try {
-        setError(null)
-        setLoadingStates(
-          LOG_TYPES.reduce(
-            (acc, type) => ({ ...acc, [type]: true }),
-            {} as Record<LogType, boolean>
-          )
-        )
-
-        const fetchPromises = LOG_TYPES.map(async (logType) => {
-          try {
-            const response = await patientLogApi.listLogs(patientId, logType, {
-              signal: abortController.signal,
-            })
-
-            const normalizedData = response.data.map((apiDto) => ({
-              id: apiDto.id || '',
-              patientId: apiDto.patientId || '',
-              logType: apiDto.logType || '',
-              timestamp: apiDto.timestamp || '',
-              uniqueIdentifier: apiDto.uniqueIdentifier || '',
-            }))
-
-            if (!abortController.signal.aborted) {
-              setLogsByType((prev) => ({
-                ...prev,
-                [logType]: normalizedData,
-              }))
-            }
-          } catch (err) {
-            if (abortController.signal.aborted) {
-              return
-            }
-
-            console.error(`Error fetching ${logType} logs:`, err)
-            if (!abortController.signal.aborted) {
-              setLogsByType((prev) => ({
-                ...prev,
-                [logType]: [],
-              }))
-              notifyError('Failed to fetch client interactions.')
-            }
-          } finally {
-            if (!abortController.signal.aborted) {
-              setLoadingStates((prev) => ({
-                ...prev,
-                [logType]: false,
-              }))
-            }
-          }
-        })
-
-        await Promise.all(fetchPromises)
-      } catch (err) {
-        if (abortController.signal.aborted) {
-          return
-        }
-        console.error('Error in fetchAllLogTypes:', err)
-        setError(t('patient_interactions.fetch_error'))
-      }
+  // Handle log type change
+  const handleLogTypeChange = async (logType: LogType) => {
+    setActiveLogType(logType)
+    if (!loadedLogTypes.has(logType)) {
+      await fetchLogTypeData(logType)
     }
-
-    fetchData()
-
-    return (): void => {
-      abortController.abort()
-    }
-  }, [patientId, t, notifyError])
+    console.log('Heatmap data for:', logType, heatmapData)
+  }
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
-    const logsToUse = activeLogType
-      ? logsByType[activeLogType] || []
-      : Object.values(logsByType).flatMap((logs) => logs)
-
+    const logsToUse = logsByType[activeLogType] || []
     return transformLogsToInteractionData(logsToUse)
   }, [logsByType, activeLogType])
 
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
     let filtered = interactionData
-
-    if (activeLogType) {
-      filtered = filtered.filter((d) => d.type === activeLogType)
-    }
 
     if (startDate && endDate) {
       filtered = filtered.filter((d) => {
@@ -240,25 +200,25 @@ const ClientInteractions = (): ReactElement => {
     }
 
     return filtered
-  }, [interactionData, activeLogType, startDate, endDate])
+  }, [interactionData, startDate, endDate])
 
   // Memoize heatmap data transformation
   const heatmapData = useMemo(
     () => transformDataForHeatmap(filteredData, dateRange),
-    [filteredData, startDate, endDate]
+    [filteredData, dateRange]
   )
 
+  // console.log('Heatmap Data:', heatmapData)
+
   const maxValue = useMemo(() => {
-    if (!heatmapData || heatmapData.length === 0) {
-      return 3
-    }
+    if (!heatmapData || heatmapData.length === 0) return 3
     const calculatedMax = Math.max(
       ...heatmapData.flatMap((hourData) => hourData.data.map((d) => d.y))
     )
     return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
   }, [heatmapData])
 
-  if (isLoading) {
+  if (loading) {
     return (
       <Layout>
         <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
@@ -292,7 +252,7 @@ const ClientInteractions = (): ReactElement => {
               </InputLabel>
               <Select
                 value={activeLogType || ''}
-                onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
                 label={t('patient_interactions.log_types')}
               >
                 {LOG_TYPES.map((logType) => (
