@@ -28,6 +28,7 @@ import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { RootState } from '../../store/store.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientLogApi } from '../../utils/api.ts'
+import { getCurrentLocale } from '../../utils/dateUtil.ts'
 
 interface InteractionData {
   hour: number
@@ -115,6 +116,7 @@ const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const { notifyError } = useNotify()
   const { patientId } = useParams()
+  const currentLocale = getCurrentLocale()
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
@@ -247,7 +249,7 @@ const ClientInteractions = (): ReactElement => {
     <Layout>
       <Stack spacing={2}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
             <FormControl sx={{ minWidth: 250 }}>
               <InputLabel id='interaction-type-label'>
                 {t('patient_interactions.interaction_type')}
