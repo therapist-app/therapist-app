@@ -230,7 +230,9 @@ const Home = (): ReactElement => {
             >
               <CardActionArea onClick={() => handlePatientClick(patient.id ?? '')}>
                 <CardContent>
-                  <Typography variant='h6'>{patient.name ?? 'Unnamed Patient'}</Typography>
+                  <Typography variant='h6'>
+                    {patient.name ?? t('dashboard.unnamed_patient')}
+                  </Typography>
                   <Typography variant='body2' color='textSecondary'>
                     {t('dashboard.patient_id')}: {patient.id}
                   </Typography>
@@ -293,9 +295,9 @@ const Home = (): ReactElement => {
                     {bot.welcomeMessage || t('dashboard.no_welcome_message_set')}
                   </Typography>
                   <Typography variant='body1' sx={{ mt: 1 }}>
-                    {t('dashboard.role')}: {bot.chatbotRole}
+                    {t('chatbot.role')}: {bot.chatbotRole}
                   </Typography>
-                  <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+                  <Typography variant='body1'>{`${t('chatbot.conversation_tone')}: ${bot.chatbotTone}`}</Typography>
                   <Typography variant='body1' sx={{ fontSize: '48px', textAlign: 'center' }}>
                     {getIconComponent()}
                   </Typography>

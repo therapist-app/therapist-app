@@ -30,7 +30,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Privater Server)",
       "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
       "llmModel": "LLM-Modell",
-      "password_changed_success": "Passwort erfolgreich geändert"
+      "password_changed_success": "Passwort erfolgreich geändert",
+      "description": {
+        "LOCAL_UZH": "Das UZH LLM ist ein selbst-gehostetes Modell, das auf einem privaten Server betrieben wird. Ihr Gesprächsverlauf wird nicht gespeichert, was ein hohes Maß an Datenschutz und Sicherheit gewährleistet. Der Nachteil dieser erhöhten Privatsphäre ist, dass dieses Modell nicht so leistungsstark ist wie die cloud-gehostete Alternative. Daher können die Antworten weniger detailliert oder präzise sein.",
+        "AZURE_OPENAI": "Das OpenAI LLM wird auf der Cloud-Infrastruktur von Microsoft Azure gehostet, wobei sich die Server in Schweden befinden. Obwohl diese Konfiguration sicher ist, unterscheidet sich das Datenschutzniveau von dem des selbst-gehosteten UZH-Modells. Der Hauptvorteil dieses Modells ist seine höhere Leistungsfähigkeit, was in der Regel zu umfassenderen und genaueren Antworten führt."
+      }
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -49,11 +53,13 @@ interface Resources {
       "close": "Schliessen"
     },
     "dashboard": {
+      "home": "Startseite",
       "patient_register_success": "Klient erfolgreich registriert.",
       "register_new_patient": "Einen neuen Klienten registrieren",
       "add_patient": "Klient hinzufügen",
       "patients": "Klienten",
       "patient_id": "Klienten-ID",
+      "unnamed_patient": "Unbenannter Klient",
       "no_patients_found": "Keine Klienten gefunden",
       "new_patient": "Neuer Klient",
       "enter_information_register_new_patient": "Geben Sie Informationen ein, um einen neuen Klienten zu registrieren.",
@@ -94,12 +100,16 @@ interface Resources {
       "chatbot_deleted_success": "Chatbot erfolgreich gelöscht.",
       "create_new_chatbot_template": "Neue Chatbot-Vorlage erstellen",
       "create_chatbot_from_template": "Chatbot aus Vorlage erstellen",
+      "cannot_delete_last_template": "Letzte Vorlage kann nicht gelöscht werden.",
       "create_new_chatbot": "Neuen Chatbot erstellen",
       "new_bot": "Neuer Bot",
       "no_chatbots_created_yet": "Sie haben noch keine Chatbots erstellt.",
       "client_chatbot": "Klienten-Chatbot",
       "client_chatbots": "Klienten-Chatbots",
       "conversation_summary": "Gesprächszusammenfassung",
+      "conversations_from": "Gespräche von",
+      "conversation_private": "Dieses Gespräch des Klienten mit dem Chatbot ist privat.",
+      "loading_conversation_summary": "Lade Gesprächszusammenfassung...",
       "what_would_you_like_to_name_your_bot": "Wie möchten Sie Ihren Bot nennen?",
       "enter_bot_name": "Bot-Namen eingeben",
       "rename_bot": "Bot umbenennen",
@@ -138,7 +148,7 @@ interface Resources {
       "conversation_tone": "Gesprächston",
       "friendly": "Freundlich",
       "formal": "Formell",
-      "casual": "Zwanglos",
+      "casual": "Lässig",
       "professional": "Professionell",
       "preconfigured_exercise": "Vorkonfigurierte Übung",
       "breathing_exercise": "Atemübung",
@@ -159,9 +169,17 @@ interface Resources {
       "total_chats": "Gesamtzahl der Chats (Threads)",
       "thread_id": "Thread-ID",
       "no_threads_found": "Keine Threads gefunden.",
-      "template_files": "Vorlagendateien"
+      "template_files": "Vorlagendateien",
+      "active_visiable_to_client": "Aktiv (für Klient sichtbar)",
+      "save": "Speichern",
+      "send": "Senden",
+      "configuration": "Konfiguration",
+      "sources": "Dokumente",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
     },
     "counseling_plan": {
+      "counseling_plan": "Beratungsplan",
       "add_existing_exercise": "Bestehende Übung hinzufügen",
       "create_new_exercise": "Neue Übung erstellen",
       "exercise": "Übung",
@@ -217,6 +235,7 @@ interface Resources {
       "text": "Text",
       "create_new_exercise": "Neue Übung erstellen",
       "exercise": "Übung",
+      "exercises": "Übungen",
       "exercise_start": "Übungsbeginn",
       "duration_in_weeks": "Dauer in Wochen",
       "exercise_end": "Ende der Übung",
@@ -262,6 +281,8 @@ interface Resources {
       "component_created_successfully": "Übungskomponente erfolgreich erstellt",
       "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
       "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
+      "exercise_removed_successfully": "Übung erfolgreich entfernt",
+      "goal_removed_successfully": "Ziel erfolgreich entfernt",
       "client_feedback": "Klienten-Feedback",
       "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
       "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
@@ -284,7 +305,7 @@ interface Resources {
       "view_client_interactions": "Klienteninteraktionen anzeigen",
       "client": "Klient",
       "email_client_app": "E-Mail (für Login in der Klienten-App)",
-      "initial_password_client_app": "Anfangspasswort (für Login in der Klienten-App)",
+      "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
       "client_app_link": "Link zur Klienten-App",
       "age": "Alter",
       "gender": "Geschlecht",
@@ -306,6 +327,8 @@ interface Resources {
       "no_files_uploaded_yet": "Sie haben noch keine Dateien hochgeladen.",
       "file_name": "Dateiname",
       "actions": "Aktionen",
+      "download": "Herunterladen",
+      "delete": "Löschen",
       "edit": "Bearbeiten",
       "save_changes": "Änderungen speichern",
       "file_upload_success": "Datei erfolgreich hochgeladen",
@@ -490,7 +513,7 @@ interface Resources {
       "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
       "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
       "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
-      "notes_summary": "Besprechungszusammenfassung"
+      "notes_summary": "Zusammenfassung der Notizen"
     },
     "gad7test": {
       "title": "GAD-7-Bewertung",
@@ -593,7 +616,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Private Server)",
       "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
       "llmModel": "LLM Model",
-      "password_changed_success": "Successfully changed password"
+      "password_changed_success": "Successfully changed password",
+      "description": {
+        "LOCAL_UZH": "The UZH LLM is a self-hosted model running on a private server. Your conversation history is not stored, ensuring a high level of data privacy and security. The trade-off for this enhanced privacy is that this model is not as powerful as the cloud-hosted alternative. As a result, its answers may be less detailed or accurate.",
+        "AZURE_OPENAI": "The OpenAI LLM is hosted on Microsoft Azure's cloud infrastructure, with servers located in Sweden. While this setup is secure, the data privacy level differs from the self-hosted UZH model. The primary advantage of this model is its superior performance, which generally results in more comprehensive and accurate answers."
+      }
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -612,11 +639,13 @@ interface Resources {
       "close": "Close"
     },
     "dashboard": {
+      "home": "Home",
       "patient_register_success": "Client registered successfully.",
       "register_new_patient": "Register a new client",
       "add_patient": "Add Client",
       "patients": "Clients",
       "patient_id": "Client ID",
+      "unnamed_patient": "Unnamed Client",
       "no_patients_found": "No clients found",
       "new_patient": "New Client",
       "enter_information_register_new_patient": "Enter information to register a new client.",
@@ -657,12 +686,16 @@ interface Resources {
       "chatbot_deleted_success": "Chatbot deleted successfully.",
       "create_new_chatbot_template": "Create new chatbot template",
       "create_chatbot_from_template": "Create Chatbot from Template",
+      "cannot_delete_last_template": "Last template cannot be deleted.",
       "create_new_chatbot": "Create New Chatbot",
       "new_bot": "New Bot",
       "no_chatbots_created_yet": "You haven't created any chatbots yet.",
       "client_chatbot": "Client Chatbot",
       "client_chatbots": "Client Chatbots",
       "conversation_summary": "Conversation Summary",
+      "conversations_from": "Conversations from",
+      "conversation_private": "This conversation of the client with the chatbot is private",
+      "loading_conversation_summary": "Loading conversation summary...",
       "what_would_you_like_to_name_your_bot": "What would you like to name your bot?",
       "enter_bot_name": "Enter bot name",
       "rename_bot": "Rename Bot",
@@ -722,9 +755,17 @@ interface Resources {
       "total_chats": "Total Chats (Threads)",
       "thread_id": "Thread ID",
       "no_threads_found": "No threads found.",
-      "template_files": "Template Files"
+      "template_files": "Template Files",
+      "active_visiable_to_client": "Active (Visible to Client)",
+      "save": "Save",
+      "send": "Send",
+      "configuration": "Configuration",
+      "sources": "Sources",
+      "active": "Active",
+      "inactive": "Inactive"
     },
     "counseling_plan": {
+      "counseling_plan": "Counseling Plan",
       "add_existing_exercise": "Add Existing Exercise",
       "create_new_exercise": "Create New Exercise",
       "exercise": "Exercise",
@@ -754,7 +795,7 @@ interface Resources {
       "make_ai_generated_suggestion_for_exercise": "Make AI-generated suggestion for exercise",
       "create_goal": "Create Goal",
       "counseling_start_date": "Counseling Start Date",
-      "counseling_plan": "Counseling Plan",
+      "counseling_plan_phases": "Counseling Plan Phases",
       "phase_updated_success": "Successfully updated phase",
       "update_phase": "Update phase",
       "phase_goal_updated_success": "Successfully updated phase goal",
@@ -780,6 +821,7 @@ interface Resources {
       "text": "Text",
       "create_new_exercise": "Create New Exercise",
       "exercise": "Exercise",
+      "exercises": "Exercises",
       "exercise_start": "Exercise Start",
       "duration_in_weeks": "Duration in Weeks",
       "exercise_end": "Exercise End",
@@ -825,6 +867,8 @@ interface Resources {
       "component_created_successfully": "Successfully created exercise component",
       "component_updated_successfully": "Successfully updated exercise component",
       "component_deleted_successfully": "Successfully deleted exercise component",
+      "exercise_removed_successfully": "Successfully removed exercise",
+      "goal_removed_successfully": "Successfully removed goal",
       "client_feedback": "Client Feedback",
       "no_client_feedback": "The client has not provided any feedback for this exercise yet.",
       "privateInputTooltip": "This private input field components lets the client write down their own thoughts which will not be shared with the coach.",
@@ -869,6 +913,8 @@ interface Resources {
       "no_files_uploaded_yet": "You haven't uploaded any files yet.",
       "file_name": "File Name",
       "actions": "Actions",
+      "download": "Download",
+      "delete": "Delete",
       "edit": "Edit",
       "save_changes": "Save",
       "file_upload_success": "Successfully uploaded file",
@@ -1156,7 +1202,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Приватний сервер)",
       "AZURE_OPENAI": "OpenAI LLM (Хмара Azure)",
       "llmModel": "Модель LLM",
-      "password_changed_success": "Пароль успішно змінено"
+      "password_changed_success": "Пароль успішно змінено",
+      "description": {
+        "LOCAL_UZH": "Модель UZH LLM розміщена на приватному сервері. Історія вашої розмови не зберігається, що забезпечує високий рівень конфіденційності та безпеки даних. Недоліком такої підвищеної конфіденційності є те, що ця модель не така потужна, як хмарна альтернатива. В результаті її відповіді можуть бути менш детальними або точними.",
+        "AZURE_OPENAI": "Модель OpenAI LLM розміщена на хмарній інфраструктурі Microsoft Azure, сервери якої знаходяться у Швеції. Хоча ця система є безпечною, рівень конфіденційності даних відрізняється від самостійно розміщеної моделі UZH. Основною перевагою цієї моделі є її вища продуктивність, що зазвичай призводить до більш вичерпних і точних відповідей."
+      }
     },
     "layout": {
       "dashboard": "Панель керування",
@@ -1175,11 +1225,13 @@ interface Resources {
       "close": "Закрити"
     },
     "dashboard": {
+      "home": "Головна",
       "patient_register_success": "Клієнта успішно зареєстровано.",
       "register_new_patient": "Зареєструвати нового клієнта",
       "add_patient": "Додати клієнта",
       "patients": "Клієнти",
       "patient_id": "ID клієнта",
+      "unnamed_patient": "Клієнт без назви",
       "no_patients_found": "Клієнтів не знайдено",
       "new_patient": "Новий клієнт",
       "enter_information_register_new_patient": "Введіть інформацію для реєстрації нового клієнта.",
@@ -1220,12 +1272,16 @@ interface Resources {
       "chatbot_deleted_success": "Чат-бота успішно видалено.",
       "create_new_chatbot_template": "Створити новий шаблон чат-бота",
       "create_chatbot_from_template": "Створити чат-бота з шаблону",
+      "cannot_delete_last_template": "Останній шаблон не може бути видалено.",
       "create_new_chatbot": "Створити нового чат-бота",
       "new_bot": "Новий бот",
       "no_chatbots_created_yet": "Ви ще не створили жодного чат-бота.",
       "client_chatbot": "Чат-бот клієнта",
       "client_chatbots": "Чат-боти клієнта",
       "conversation_summary": "Підсумок розмови",
+      "conversations_from": "Розмови з",
+      "conversation_private": "Ця розмова клієнта з чат-ботом є приватною.",
+      "loading_conversation_summary": "Завантаження підсумку розмови...",
       "what_would_you_like_to_name_your_bot": "Як би ви хотіли назвати свого бота?",
       "enter_bot_name": "Введіть ім'я бота",
       "rename_bot": "Перейменувати бота",
@@ -1285,9 +1341,17 @@ interface Resources {
       "total_chats": "Загальна кількість чатів (Потоків)",
       "thread_id": "ID потоку",
       "no_threads_found": "Потоків не знайдено.",
-      "template_files": "Файли шаблонів"
+      "template_files": "Файли шаблонів",
+      "active_visiable_to_client": "Активний (видимий для клієнта)",
+      "save": "Зберегти",
+      "send": "Надіслати",
+      "configuration": "Конфігурація",
+      "sources": "Джерела",
+      "active": "Активний",
+      "inactive": "Неактивний"
     },
     "counseling_plan": {
+      "counseling_plan": "План консультування",
       "add_existing_exercise": "Додати існуючу вправу",
       "create_new_exercise": "Створити нову вправу",
       "exercise": "Вправа",
@@ -1343,6 +1407,7 @@ interface Resources {
       "text": "Текст",
       "create_new_exercise": "Створити нову вправу",
       "exercise": "Вправа",
+      "exercises": "Вправи",
       "exercise_start": "Початок вправи",
       "duration_in_weeks": "Тривалість у тижнях",
       "exercise_end": "Кінець вправи",
@@ -1388,6 +1453,8 @@ interface Resources {
       "component_created_successfully": "Компонент вправи успішно створено",
       "component_updated_successfully": "Компонент вправи успішно оновлено",
       "component_deleted_successfully": "Компонент вправи успішно видалено",
+      "exercise_removed_successfully": "Вправу успішно видалено",
+      "goal_removed_successfully": "Ціль успішно видалено",
       "client_feedback": "Відгук клієнта",
       "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи.",
       "privateInputTooltip": "Це приватне поле для введення дозволяє клієнту записувати власні думки, які не будуть передані коучу.",
@@ -1432,6 +1499,8 @@ interface Resources {
       "no_files_uploaded_yet": "Ви ще не завантажили жодних файлів.",
       "file_name": "Назва файлу",
       "actions": "Дії",
+      "download": "Завантажити",
+      "delete": "Видалити",
       "edit": "Редагувати",
       "save_changes": "Зберегти зміни",
       "file_upload_success": "Файл успішно завантажено",
@@ -1616,7 +1685,7 @@ interface Resources {
       "note_created_successfully": "Нотатку до зустрічі успішно створено",
       "note_updated_successfully": "Нотатку до зустрічі успішно оновлено",
       "note_deleted_successfully": "Нотатку до зустрічі успішно видалено",
-      "notes_summary": "Підсумок нотаток зустрічі"
+      "notes_summary": "Підсумок нотаток"
     },
     "gad7test": {
       "title": "Оцінка за шкалою GAD-7",
