@@ -2,20 +2,13 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { format } from 'date-fns'
-import { de, enUS, uk } from 'date-fns/locale'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Layout from '../../generalComponents/Layout'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { formatDateWithLocale, getCurrentLocale } from '../../utils/dateUtil'
 import GAD7TestTable from './GAD7TestTable'
-
-const localeMap: Record<string, Locale> = {
-  de: de,
-  en: enUS,
-  ua: uk,
-}
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
@@ -30,9 +23,8 @@ export const GAD7TestDetail = (): ReactElement => {
     console.log('Submitting interval:', intervalDays, 'Start date:', startDate)
   }
 
-  const local = localStorage.getItem('i18nextLng') || 'en'
-  const currentLocale = localeMap[local.split('-')[0]] || enUS
-  const formattedDate = startDate ? format(startDate, 'PPPp', { locale: currentLocale }) : ''
+  const currentLocale = getCurrentLocale()
+  const formattedDate = formatDateWithLocale(startDate)
 
   return (
     <Layout>
