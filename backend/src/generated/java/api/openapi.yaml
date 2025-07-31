@@ -2571,9 +2571,9 @@ components:
       properties:
         message:
           type: string
-        journalEntryTitle:
+        journalTitle:
           type: string
-        journalEntryContent:
+        journalContent:
           type: string
       type: object
     MessageOutputDTO:
