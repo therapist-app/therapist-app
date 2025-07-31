@@ -28,7 +28,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { ReactElement, ReactNode, useEffect, useRef, useState, useCallback } from 'react'
+import React, { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
@@ -363,33 +363,35 @@ const ChatBotTemplateEdit: React.FC = () => {
   } as const
 
   const handleFileUpload = useCallback(
-  async (file: File): Promise<void> => {
-    if (!chatbotConfig?.id) return
+    async (file: File): Promise<void> => {
+      if (!chatbotConfig?.id) {
+        return
+      }
 
-    setIsUploadingFile(true)
+      setIsUploadingFile(true)
 
-    try {
-      await dispatch(
-        createDocumentForTemplate({ file, templateId: chatbotConfig.id })
-      ).unwrap()
+      try {
+        await dispatch(
+          createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
+        ).unwrap()
 
-      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-      notifySuccess(t('files.file_uploaded_successfully'))
-    } catch (err) {
-      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-    } finally {
-      setIsUploadingFile(false)
-    }
-  },
-  [chatbotConfig?.id, dispatch, notifyError, notifySuccess, t]
-)
+        dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+        notifySuccess(t('files.file_uploaded_successfully'))
+      } catch (err) {
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      } finally {
+        setIsUploadingFile(false)
+      }
+    },
+    [chatbotConfig?.id, dispatch, notifyError, notifySuccess, t]
+  )
 
- const onDrop = useCallback(
-  (acceptedFiles: File[]) => {
-    acceptedFiles.forEach(handleFileUpload)
-  },
-  [handleFileUpload]
-)
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(handleFileUpload)
+    },
+    [handleFileUpload]
+  )
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onDrop })
 
