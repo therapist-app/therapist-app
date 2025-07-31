@@ -1,6 +1,7 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { ReactElement, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
@@ -9,9 +10,10 @@ import { fetchConversationSummary, PRIVATE_MESSAGE } from '../../store/conversat
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 const ConversationSummary = (): ReactElement => {
+  const { t } = useTranslation()
   const { patientId } = useParams<{ patientId: string }>()
-  const dispatch = useAppDispatch()
   const { notifyError } = useNotify()
+  const dispatch = useAppDispatch()
 
   const summary = useAppSelector((s) => (patientId ? s.conversation.byPatient[patientId] : ''))
   const status = useAppSelector((s) => s.conversation.status)
@@ -44,7 +46,7 @@ const ConversationSummary = (): ReactElement => {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
           <CircularProgress size={24} />
-          <Typography>Loading conversation summary…</Typography>
+          <Typography>{t('chatbot.loading_conversation_summary')}</Typography>
         </Box>
       )
     }
@@ -53,7 +55,7 @@ const ConversationSummary = (): ReactElement => {
       if (error === PRIVATE_MESSAGE) {
         return (
           <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
-            {PRIVATE_MESSAGE}
+            {t('chatbot.conversation_private')}
           </Typography>
         )
       }
@@ -71,7 +73,7 @@ const ConversationSummary = (): ReactElement => {
     <Layout>
       <Box sx={{ maxWidth: 800 }}>
         <Typography variant='h4' gutterBottom>
-          Conversations from&nbsp;
+          {t('chatbot.conversations_from')}&nbsp;
           {dayjs().subtract(7, 'day').format('DD MMM YYYY')}–{dayjs().format('DD MMM YYYY')}
         </Typography>
 

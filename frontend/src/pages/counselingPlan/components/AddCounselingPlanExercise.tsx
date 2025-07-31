@@ -82,7 +82,7 @@ const AddCounselingPlanExercise = ({
         <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
           <div style={{ display: 'flex', gap: '10px' }}>
             <FormControl sx={{ minWidth: '200px' }}>
-              <InputLabel>Exercise</InputLabel>
+              <InputLabel>{t('exercise.exercise')}</InputLabel>
               <Select
                 id='exercise-select'
                 value={selectedExerciseId}

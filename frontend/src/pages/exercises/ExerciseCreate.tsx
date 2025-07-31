@@ -84,6 +84,7 @@ const ExerciseCreate = (): ReactElement => {
           value={formData.exerciseDescription}
           onChange={handleChange}
           fullWidth
+          multiline
         />
 
         <TextField
@@ -92,6 +93,7 @@ const ExerciseCreate = (): ReactElement => {
           value={formData.exerciseExplanation}
           onChange={handleChange}
           fullWidth
+          multiline
         />
 
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>

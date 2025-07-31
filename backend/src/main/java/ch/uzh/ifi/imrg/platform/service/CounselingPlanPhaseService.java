@@ -91,11 +91,12 @@ public class CounselingPlanPhaseService {
     patientList.add(counselingPlan.getPatient());
 
     String userPrompt =
-        "Based on the counseling plan context provided, generate the next phase. "
-            + "If there are no existing phases, create the very first phase. "
-            + "Determine a suitable phase name, and a duration in weeks. "
-            + "A typical phase duration is between 1 and 4 weeks. "
-            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
+        "Based on the counseling plan context provided, generate the next phase.\n"
+            + "If there are no existing phases, create the very first phase.\n"
+            + "Determine a suitable phase name, and a duration in weeks.\n"
+            + "The phase name should only include the phase name itself not a number (e.g. not: 'Phase 1: Introduction and Initial Assessment' but instead only 'Introduction and Initial Assessment')\n"
+            + "A typical phase duration is between 1 and 4 weeks.\n"
+            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations.\n"
             + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
 
     userPrompt +=

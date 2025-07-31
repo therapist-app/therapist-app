@@ -90,7 +90,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   return (
     <div>
       {!isEditing ? (
-        <Accordion>
+        <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls='panel2-content'
@@ -142,7 +142,12 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
               handleSubmit()
             }}
           >
-            <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
+            <TextField
+              name='title'
+              value={formData.title}
+              onChange={handleChange}
+              label={t('meetings.title')}
+            />
 
             <SpeechToTextComponent
               placeholder={t('meetings.content')}

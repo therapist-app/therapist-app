@@ -29,7 +29,11 @@
     "LOCAL_UZH": "UZH LLM (Privater Server)",
     "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
     "llmModel": "LLM-Modell",
-    "password_changed_success": "Passwort erfolgreich geändert"
+    "password_changed_success": "Passwort erfolgreich geändert",
+    "description": {
+      "LOCAL_UZH": "Das UZH LLM ist ein selbst-gehostetes Modell, das auf einem privaten Server betrieben wird. Ihr Gesprächsverlauf wird nicht gespeichert, was ein hohes Maß an Datenschutz und Sicherheit gewährleistet. Der Nachteil dieser erhöhten Privatsphäre ist, dass dieses Modell nicht so leistungsstark ist wie die cloud-gehostete Alternative. Daher können die Antworten weniger detailliert oder präzise sein.",
+      "AZURE_OPENAI": "Das OpenAI LLM wird auf der Cloud-Infrastruktur von Microsoft Azure gehostet, wobei sich die Server in Schweden befinden. Obwohl diese Konfiguration sicher ist, unterscheidet sich das Datenschutzniveau von dem des selbst-gehosteten UZH-Modells. Der Hauptvorteil dieses Modells ist seine höhere Leistungsfähigkeit, was in der Regel zu umfassenderen und genaueren Antworten führt."
+    }
   },
   "layout": {
     "dashboard": "Dashboard",
@@ -48,11 +52,13 @@
     "close": "Schliessen"
   },
   "dashboard": {
+    "home": "Startseite",
     "patient_register_success": "Klient erfolgreich registriert.",
     "register_new_patient": "Einen neuen Klienten registrieren",
     "add_patient": "Klient hinzufügen",
     "patients": "Klienten",
     "patient_id": "Klienten-ID",
+    "unnamed_patient": "Unbenannter Klient",
     "no_patients_found": "Keine Klienten gefunden",
     "new_patient": "Neuer Klient",
     "enter_information_register_new_patient": "Geben Sie Informationen ein, um einen neuen Klienten zu registrieren.",
@@ -93,12 +99,16 @@
     "chatbot_deleted_success": "Chatbot erfolgreich gelöscht.",
     "create_new_chatbot_template": "Neue Chatbot-Vorlage erstellen",
     "create_chatbot_from_template": "Chatbot aus Vorlage erstellen",
+    "cannot_delete_last_template": "Letzte Vorlage kann nicht gelöscht werden.",
     "create_new_chatbot": "Neuen Chatbot erstellen",
     "new_bot": "Neuer Bot",
     "no_chatbots_created_yet": "Sie haben noch keine Chatbots erstellt.",
     "client_chatbot": "Klienten-Chatbot",
     "client_chatbots": "Klienten-Chatbots",
     "conversation_summary": "Gesprächszusammenfassung",
+    "conversations_from": "Gespräche von",
+    "conversation_private": "Dieses Gespräch des Klienten mit dem Chatbot ist privat.",
+    "loading_conversation_summary": "Lade Gesprächszusammenfassung...",
     "what_would_you_like_to_name_your_bot": "Wie möchten Sie Ihren Bot nennen?",
     "enter_bot_name": "Bot-Namen eingeben",
     "rename_bot": "Bot umbenennen",
@@ -137,7 +147,7 @@
     "conversation_tone": "Gesprächston",
     "friendly": "Freundlich",
     "formal": "Formell",
-    "casual": "Zwanglos",
+    "casual": "Lässig",
     "professional": "Professionell",
     "preconfigured_exercise": "Vorkonfigurierte Übung",
     "breathing_exercise": "Atemübung",
@@ -158,9 +168,17 @@
     "total_chats": "Gesamtzahl der Chats (Threads)",
     "thread_id": "Thread-ID",
     "no_threads_found": "Keine Threads gefunden.",
-    "template_files": "Vorlagendateien"
+    "template_files": "Vorlagendateien",
+    "active_visiable_to_client": "Aktiv (für Klient sichtbar)",
+    "save": "Speichern",
+    "send": "Senden",
+    "configuration": "Konfiguration",
+    "sources": "Dokumente",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "counseling_plan": {
+    "counseling_plan": "Beratungsplan",
     "add_existing_exercise": "Bestehende Übung hinzufügen",
     "create_new_exercise": "Neue Übung erstellen",
     "exercise": "Übung",
@@ -216,6 +234,7 @@
     "text": "Text",
     "create_new_exercise": "Neue Übung erstellen",
     "exercise": "Übung",
+    "exercises": "Übungen",
     "exercise_start": "Übungsbeginn",
     "duration_in_weeks": "Dauer in Wochen",
     "exercise_end": "Ende der Übung",
@@ -261,6 +280,8 @@
     "component_created_successfully": "Übungskomponente erfolgreich erstellt",
     "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
     "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
+    "exercise_removed_successfully": "Übung erfolgreich entfernt",
+    "goal_removed_successfully": "Ziel erfolgreich entfernt",
     "client_feedback": "Klienten-Feedback",
     "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
     "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
@@ -283,7 +304,7 @@
     "view_client_interactions": "Klienteninteraktionen anzeigen",
     "client": "Klient",
     "email_client_app": "E-Mail (für Login in der Klienten-App)",
-    "initial_password_client_app": "Anfangspasswort (für Login in der Klienten-App)",
+    "initial_password_client_app": "Initialpasswort (für Login in der Klienten-App)",
     "client_app_link": "Link zur Klienten-App",
     "age": "Alter",
     "gender": "Geschlecht",
@@ -305,6 +326,8 @@
     "no_files_uploaded_yet": "Sie haben noch keine Dateien hochgeladen.",
     "file_name": "Dateiname",
     "actions": "Aktionen",
+    "download": "Herunterladen",
+    "delete": "Löschen",
     "edit": "Bearbeiten",
     "save_changes": "Änderungen speichern",
     "file_upload_success": "Datei erfolgreich hochgeladen",
@@ -489,7 +512,7 @@
     "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
     "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
     "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
-    "notes_summary": "Besprechungszusammenfassung"
+    "notes_summary": "Zusammenfassung der Notizen"
   },
   "gad7test": {
     "title": "GAD-7-Bewertung",

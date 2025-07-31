@@ -1,5 +1,6 @@
 import { IconButton } from '@mui/material'
 import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 
 import { ExerciseOutputDTO } from '../../../api'
@@ -20,6 +21,7 @@ const CounselingPlanExerciseDetail = ({
   counselingPlanPhaseId,
   refresh,
 }: CounselingPlanExerciseDetailProps): ReactElement => {
+  const { t } = useTranslation()
   const { patientId } = useParams()
   const dispatch = useAppDispatch()
   const { notifyError, notifySuccess } = useNotify()
@@ -32,7 +34,7 @@ const CounselingPlanExerciseDetail = ({
           counselingPlanPhaseId: counselingPlanPhaseId,
         })
       ).unwrap()
-      notifySuccess('Exercise removed successfully')
+      notifySuccess(t('exercise.exercise_removed_successfully'))
       refresh()
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')

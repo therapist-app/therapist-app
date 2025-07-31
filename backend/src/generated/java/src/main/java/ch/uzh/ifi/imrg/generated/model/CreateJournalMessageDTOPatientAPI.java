@@ -28,8 +28,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonPropertyOrder({
   CreateJournalMessageDTOPatientAPI.JSON_PROPERTY_MESSAGE,
-  CreateJournalMessageDTOPatientAPI.JSON_PROPERTY_JOURNAL_ENTRY_TITLE,
-  CreateJournalMessageDTOPatientAPI.JSON_PROPERTY_JOURNAL_ENTRY_CONTENT
+  CreateJournalMessageDTOPatientAPI.JSON_PROPERTY_JOURNAL_TITLE,
+  CreateJournalMessageDTOPatientAPI.JSON_PROPERTY_JOURNAL_CONTENT
 })
 @JsonTypeName("CreateJournalMessageDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -37,11 +37,11 @@ public class CreateJournalMessageDTOPatientAPI {
   public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
 
-  public static final String JSON_PROPERTY_JOURNAL_ENTRY_TITLE = "journalEntryTitle";
-  private String journalEntryTitle;
+  public static final String JSON_PROPERTY_JOURNAL_TITLE = "journalTitle";
+  private String journalTitle;
 
-  public static final String JSON_PROPERTY_JOURNAL_ENTRY_CONTENT = "journalEntryContent";
-  private String journalEntryContent;
+  public static final String JSON_PROPERTY_JOURNAL_CONTENT = "journalContent";
+  private String journalContent;
 
   public CreateJournalMessageDTOPatientAPI() {
   }
@@ -72,55 +72,55 @@ public class CreateJournalMessageDTOPatientAPI {
   }
 
 
-  public CreateJournalMessageDTOPatientAPI journalEntryTitle(String journalEntryTitle) {
+  public CreateJournalMessageDTOPatientAPI journalTitle(String journalTitle) {
     
-    this.journalEntryTitle = journalEntryTitle;
+    this.journalTitle = journalTitle;
     return this;
   }
 
    /**
-   * Get journalEntryTitle
-   * @return journalEntryTitle
+   * Get journalTitle
+   * @return journalTitle
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_JOURNAL_ENTRY_TITLE)
+  @JsonProperty(JSON_PROPERTY_JOURNAL_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getJournalEntryTitle() {
-    return journalEntryTitle;
+  public String getJournalTitle() {
+    return journalTitle;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_JOURNAL_ENTRY_TITLE)
+  @JsonProperty(JSON_PROPERTY_JOURNAL_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setJournalEntryTitle(String journalEntryTitle) {
-    this.journalEntryTitle = journalEntryTitle;
+  public void setJournalTitle(String journalTitle) {
+    this.journalTitle = journalTitle;
   }
 
 
-  public CreateJournalMessageDTOPatientAPI journalEntryContent(String journalEntryContent) {
+  public CreateJournalMessageDTOPatientAPI journalContent(String journalContent) {
     
-    this.journalEntryContent = journalEntryContent;
+    this.journalContent = journalContent;
     return this;
   }
 
    /**
-   * Get journalEntryContent
-   * @return journalEntryContent
+   * Get journalContent
+   * @return journalContent
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_JOURNAL_ENTRY_CONTENT)
+  @JsonProperty(JSON_PROPERTY_JOURNAL_CONTENT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getJournalEntryContent() {
-    return journalEntryContent;
+  public String getJournalContent() {
+    return journalContent;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_JOURNAL_ENTRY_CONTENT)
+  @JsonProperty(JSON_PROPERTY_JOURNAL_CONTENT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setJournalEntryContent(String journalEntryContent) {
-    this.journalEntryContent = journalEntryContent;
+  public void setJournalContent(String journalContent) {
+    this.journalContent = journalContent;
   }
 
   @Override
@@ -133,13 +133,13 @@ public class CreateJournalMessageDTOPatientAPI {
     }
     CreateJournalMessageDTOPatientAPI createJournalMessageDTO = (CreateJournalMessageDTOPatientAPI) o;
     return Objects.equals(this.message, createJournalMessageDTO.message) &&
-        Objects.equals(this.journalEntryTitle, createJournalMessageDTO.journalEntryTitle) &&
-        Objects.equals(this.journalEntryContent, createJournalMessageDTO.journalEntryContent);
+        Objects.equals(this.journalTitle, createJournalMessageDTO.journalTitle) &&
+        Objects.equals(this.journalContent, createJournalMessageDTO.journalContent);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message, journalEntryTitle, journalEntryContent);
+    return Objects.hash(message, journalTitle, journalContent);
   }
 
   @Override
@@ -147,8 +147,8 @@ public class CreateJournalMessageDTOPatientAPI {
     StringBuilder sb = new StringBuilder();
     sb.append("class CreateJournalMessageDTOPatientAPI {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    sb.append("    journalEntryTitle: ").append(toIndentedString(journalEntryTitle)).append("\n");
-    sb.append("    journalEntryContent: ").append(toIndentedString(journalEntryContent)).append("\n");
+    sb.append("    journalTitle: ").append(toIndentedString(journalTitle)).append("\n");
+    sb.append("    journalContent: ").append(toIndentedString(journalContent)).append("\n");
     sb.append("}");
     return sb.toString();
   }
