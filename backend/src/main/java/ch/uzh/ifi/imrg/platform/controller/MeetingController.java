@@ -2,6 +2,7 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteSummaryDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
@@ -38,6 +39,13 @@ public class MeetingController {
 
     Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO, therapistId);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdMeeting);
+  }
+
+  @PostMapping("/meeting-note-summary")
+  @ResponseStatus(HttpStatus.CREATED)
+  public String createMeetingNoteSummary(
+      @Valid @RequestBody CreateMeetingNoteSummaryDTO dto, @CurrentTherapistId String therapistId) {
+    return meetingService.createMeetingNoteSummary(dto, therapistId);
   }
 
   @GetMapping("/{meetingId}")

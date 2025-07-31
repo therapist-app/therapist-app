@@ -20,6 +20,7 @@ export * from './create-exercise-component-dto';
 export * from './create-exercise-dto';
 export * from './create-meeting-dto';
 export * from './create-meeting-note-dto';
+export * from './create-meeting-note-summary-dto';
 export * from './create-patient-dto';
 export * from './create-patient-document-from-therapist-document-dto';
 export * from './create-therapist-dto';
