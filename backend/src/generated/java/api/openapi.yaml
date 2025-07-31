@@ -3168,6 +3168,11 @@ components:
     ExerciseInformationOutputDTO:
       example:
         feedback: feedback
+        sharedInputFields:
+        - userInput: userInput
+          exerciseComponentId: exerciseComponentId
+        - userInput: userInput
+          exerciseComponentId: exerciseComponentId
         moodsAfter:
         - moodName: moodName
           moodScore: 0
@@ -3189,6 +3194,10 @@ components:
           type: string
         feedback:
           type: string
+        sharedInputFields:
+          items:
+            $ref: '#/components/schemas/SharedInputFieldOutputDTO'
+          type: array
         moodsBefore:
           items:
             $ref: '#/components/schemas/ExerciseMoodOutputDTO'
@@ -3208,6 +3217,16 @@ components:
         moodScore:
           format: int32
           type: integer
+      type: object
+    SharedInputFieldOutputDTO:
+      example:
+        userInput: userInput
+        exerciseComponentId: exerciseComponentId
+      properties:
+        exerciseComponentId:
+          type: string
+        userInput:
+          type: string
       type: object
     ExerciseComponentOverviewOutputDTO:
       example:

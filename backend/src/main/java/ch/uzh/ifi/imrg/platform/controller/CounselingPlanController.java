@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class CounselingPlanController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public CounselingPlanOutputDTO updateCounselingPlan(
-      @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO,
+      @Valid @RequestBody UpdateCounselingPlanDTO updateCounselingPlanDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanService.updateCounselingPlan(updateCounselingPlanDTO, therapistId);
   }

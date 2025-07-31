@@ -17,6 +17,7 @@ configMapGenerator:
       - PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
       - AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
       - LLM_MAX_CHARACTERS=150000
+      - MAX_CHARACTERS_PER_PDF=20000
 
 secretGenerator:
   - name: therapist-app-backend-secret

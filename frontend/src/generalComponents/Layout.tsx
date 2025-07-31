@@ -18,7 +18,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
-import logo from '../../public/Therapist-App.png'
+import logo from '../../public/uzh-logo.png'
 import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { useAppDispatch } from '../utils/hooks'
@@ -180,11 +180,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             },
           }}
         >
-          <img
-            src={logo}
-            alt='UZH Chatbot'
-            style={{ width: '100%', marginTop: '-95px', marginLeft: '-20px' }}
-          />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+              marginTop: '30px',
+              marginBottom: '70px',
+            }}
+          >
+            <img src={logo} alt='UZH Chatbot' style={{ width: '80%' }} />
+          </div>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, pl: 2 }}>
             {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, idx) => {
               const pathParams =
@@ -195,7 +201,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               const active = currentPage === page
               return (
                 <React.Fragment key={page}>
-                  {idx !== 0 && <KeyboardArrowDownIcon sx={{ ml: 1 }} />}
+                  {idx !== 0 && <KeyboardArrowDownIcon sx={{ ml: '30px' }} />}
                   <Button
                     variant={active ? 'contained' : 'text'}
                     onClick={() =>
@@ -210,8 +216,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       fontWeight: active ? 600 : 400,
                       fontSize: '18px',
                       justifyContent: 'flex-start',
-                      width: '200px',
+                      width: 'fit-content',
                       px: 1.5,
+                      padding: '20px 15px',
                     }}
                   >
                     {labelFor(page)}

@@ -5,6 +5,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseComponentDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseComponentService;
+import jakarta.validation.Valid;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +36,7 @@ public class ExerciseComponentController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public void createExerciseComponent(
-      @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO,
+      @Valid @RequestBody CreateExerciseComponentDTO createExerciseComponentDTO,
       @CurrentTherapistId String therapistId) {
     exerciseComponentService.createExerciseComponent(createExerciseComponentDTO, therapistId);
   }
@@ -69,7 +70,7 @@ public class ExerciseComponentController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public void updateExerciseComponent(
-      @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO,
+      @Valid @RequestBody UpdateExerciseComponentDTO updateExerciseComponentDTO,
       @CurrentTherapistId String therapistId) {
     exerciseComponentService.updateExerciseComponent(updateExerciseComponentDTO, therapistId);
   }

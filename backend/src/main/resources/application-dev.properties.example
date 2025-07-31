@@ -10,6 +10,7 @@ PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
 COACH_ACCESS_KEY=ThisIsTheDevelopmentCoachAccessKeyItDoesNotHaveToBeSuperSecretButLongEnough
 
 LLM_MAX_CHARACTERS=150000
+MAX_CHARACTERS_PER_PDF=20000
 
 LOCAL_LLM_MODEL=gemma3:12b
 LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions

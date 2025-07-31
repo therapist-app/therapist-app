@@ -65,6 +65,7 @@ models/patient-output-dto.ts
 models/psychological-test-output-dto.ts
 models/psychological-test-question-output-dto.ts
 models/remove-exercise-from-counseling-plan-phase-dto.ts
+models/shared-input-field-output-dtopatient-api.ts
 models/therapist-chatbot-input-dto.ts
 models/therapist-chatbot-output-dto.ts
 models/therapist-document-output-dto.ts

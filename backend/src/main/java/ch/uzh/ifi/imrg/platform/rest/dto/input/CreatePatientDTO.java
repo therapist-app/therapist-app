@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.input;
 
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 import lombok.Data;
 
@@ -7,7 +8,10 @@ import lombok.Data;
 public class CreatePatientDTO {
   private String name;
   private String gender;
-  private int age;
+
+  @PositiveOrZero(message = "The age cannot be negative.")
+  private Integer age;
+
   private String phoneNumber;
   private String email;
   private String address;
