@@ -11,7 +11,7 @@ configMapGenerator:
       - DB_PORT=5432
       - DB_NAME=therapist_app_production_db
       - DB_USERNAME=therapist-user
-      - DB_CREATE_OR_UPDATE=create
+      - DB_CREATE_OR_UPDATE=update
       - LOCAL_LLM_MODEL=gemma3:12b
       - LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
       - PATIENT_APP_URL=https://backend-patient-app-production.jonas-blum.ch

@@ -1,7 +1,7 @@
 spring.datasource.url=jdbc:postgresql://localhost:5433/therapy-db
 spring.datasource.username=therapy-user
 spring.datasource.password=therapy-password
-spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 APP_ENVIRONMENT=dev
