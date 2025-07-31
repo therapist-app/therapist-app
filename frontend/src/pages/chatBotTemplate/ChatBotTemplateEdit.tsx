@@ -144,12 +144,11 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }, [chatbotConfig, isPatientTemplate])
 
-  const listEndRef = useRef<HTMLDivElement>(null);
+  const listEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-  listEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-}, [chat, isChatbotTyping, isStreaming]);
-
+    listEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [chat, isChatbotTyping, isStreaming])
 
   useEffect(() => {
     if (chatbotConfig?.id && selectedTab === 'sources') {

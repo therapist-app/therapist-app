@@ -1,11 +1,12 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
 import { Avatar, Box, IconButton, List, ListItem, Paper, Tooltip, Typography } from '@mui/material'
-import { ReactElement, useEffect, useRef, useLayoutEffect } from 'react'
+import { ReactElement, useEffect, useLayoutEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
+import AssistantImage from '../../../public/AssistantImage.png'
 import { ChatMessageDTOChatRoleEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
@@ -15,7 +16,6 @@ import { clearMessages } from '../../store/therapistChatbotSlice'
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
-import AssistantImage from '../../../public/AssistantImage.png'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
@@ -28,7 +28,7 @@ const TherapistChatbot = (): ReactElement => {
   const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
   const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
-  const compactBubble = { py: 0.1, px: 1.5 };
+  const compactBubble = { py: 0.1, px: 1.5 }
 
   useEffect(() => {
     if (chatbotError) {
@@ -46,12 +46,6 @@ const TherapistChatbot = (): ReactElement => {
   const listRef = useRef<HTMLUListElement>(null)
   const listEndRef = useRef<HTMLDivElement>(null)
 
- 
-
-
-
-
-
   const { stream: typingStream, running: isStreaming } = useTypewriter(
     lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant
       ? lastAssistant.content
@@ -59,20 +53,20 @@ const TherapistChatbot = (): ReactElement => {
   )
 
   useLayoutEffect(() => {
-  listEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-}, [messages, typingStream, chatbotStatus])
+    listEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, typingStream, chatbotStatus])
 
+  const scrollToBottom = (): void => {
+    const list = listRef.current
+    if (list) {
+      list.scrollTop = list.scrollHeight
+    }
+  }
 
-const scrollToBottom = (): void => {
-  const list = listRef.current;
-  if (list) list.scrollTop = list.scrollHeight;
-};
-
-useEffect(() => {
-  const id = requestAnimationFrame(scrollToBottom);
-  return () => cancelAnimationFrame(id);
-}, [messages, typingStream, chatbotStatus]);
-
+  useEffect(() => {
+    const id = requestAnimationFrame(scrollToBottom)
+    return () => cancelAnimationFrame(id)
+  }, [messages, typingStream, chatbotStatus])
 
   return (
     <Layout>
@@ -114,7 +108,12 @@ useEffect(() => {
                     You
                   </Typography>
                   <Paper
-                    sx={{ ...compactBubble, bgcolor: 'primary.main', color: 'white', borderRadius: '20px' }}
+                    sx={{
+                      ...compactBubble,
+                      bgcolor: 'primary.main',
+                      color: 'white',
+                      borderRadius: '20px',
+                    }}
                   >
                     <Typography variant='body1'>{body}</Typography>
                   </Paper>
@@ -122,7 +121,11 @@ useEffect(() => {
               </ListItem>
             ) : (
               <ListItem key={i} sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-                <Avatar src={AssistantImage} alt='Chatbot avatar' sx={{ bgcolor: 'transparent', mr: 1, mt: 3 }}>
+                <Avatar
+                  src={AssistantImage}
+                  alt='Chatbot avatar'
+                  sx={{ bgcolor: 'transparent', mr: 1, mt: 3 }}
+                >
                   <AssistantIcon sx={{ color: 'black' }} />
                 </Avatar>
                 <Box sx={{ maxWidth: '80%' }}>
@@ -130,7 +133,12 @@ useEffect(() => {
                     Chatbot
                   </Typography>
                   <Paper
-                    sx={{ ...compactBubble, bgcolor: '#E5E5E5', borderRadius: '20px', display: 'inline-block' }}
+                    sx={{
+                      ...compactBubble,
+                      bgcolor: '#E5E5E5',
+                      borderRadius: '20px',
+                      display: 'inline-block',
+                    }}
                   >
                     <Typography variant='body1'>{body}</Typography>
                   </Paper>
@@ -141,7 +149,11 @@ useEffect(() => {
 
           {chatbotStatus === 'loading' && (
             <ListItem sx={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-              <Avatar src={AssistantImage} alt='Chatbot avatar' sx={{ bgcolor: 'transparent', mr: 1, mt: 3 }}>
+              <Avatar
+                src={AssistantImage}
+                alt='Chatbot avatar'
+                sx={{ bgcolor: 'transparent', mr: 1, mt: 3 }}
+              >
                 <AssistantIcon sx={{ color: 'black' }} />
               </Avatar>
               <Box sx={{ maxWidth: '80%' }}>
