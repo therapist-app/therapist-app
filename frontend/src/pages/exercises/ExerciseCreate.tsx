@@ -125,6 +125,7 @@ const ExerciseCreate = (): ReactElement => {
           label={t('exercise.doEveryNDays')}
           type='number'
           value={formData.doEveryNDays}
+          inputProps={{ min: 1 }}
           onChange={(e) => {
             setFormData({
               ...formData,

@@ -180,7 +180,7 @@
     "exercise_title": "Exercise Title",
     "exerciseDescription": "Description",
     "exerciseExplanation": "Explanation (for AI context)",
-    "doEveryNDays": "Repeat every... days",
+    "doEveryNDays": "Repeat every ... days",
     "exercise_start": "Exercise Start",
     "add_a_goal": "Add a Goal",
     "goal_name": "Goal Name",
@@ -227,7 +227,7 @@
     "no_exercise_components_yet": "You haven't added any exercise components yet.",
     "image": "Image",
     "file": "File",
-    "doEveryNDays": "Repeat every... days",
+    "doEveryNDays": "Repeat every ... days",
     "privateInput": "Private Input Field",
     "sharedInput": "Shared Input Field",
     "addPrivateInput": "Add Private Input Field",
@@ -298,7 +298,8 @@
     "edit": "Edit",
     "save_changes": "Save",
     "file_upload_success": "Successfully uploaded file",
-    "file_delete_success": "Successfully deleted file"
+    "file_delete_success": "Successfully deleted file",
+    "manage_tests": "Manage GAD7 Tests"
   },
   "patient_interactions": {
     "interaction_type": "Interaction Type",
@@ -481,6 +482,11 @@
   "gad7test": {
     "title": "GAD-7 Assessment",
     "gad7tests": "GAD-7 Tests",
+    "completed_gad7tests": "Completed GAD-7 Tests",
+    "manage_description": "Set how often the patient should complete the GAD-7 test (in days):",
+    "start_date": "Start Date",
+    "doEveryNDays": "Every ... days",
+    "schedule_summary": "With these settings, the patient will fill out the GAD7 test every {{days}} days starting from {{date}}.",
     "date": "Date",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
@@ -492,7 +498,7 @@
     "question7": "Feeling afraid as if something awful might happen.",
     "total_score": "Total Score",
     "cancel": "Cancel",
-    "submit": "Submit",
+    "save_changes": "Save Changes",
     "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
     "answers": {
       "not_at_all": "Not at all",
@@ -523,7 +529,7 @@
       "details": "Meeting Details"
     },
     "gad7": {
-      "create": "GAD-7 Assessment"
+      "manage": "Manage GAD-7 Tests"
     },
     "exercises": {
       "create": "Create Exercise",

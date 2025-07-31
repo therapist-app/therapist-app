@@ -1,109 +1,105 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { format } from 'date-fns'
-import { ReactElement, useEffect, useState } from 'react'
+import { de, enUS, uk } from 'date-fns/locale'
+import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 
-import { useNotify } from '../../hooks/useNotify'
-import { PsychologicalTestOutputDTO } from '../../store/psychologicalTest'
-import { patientTestApi } from '../../utils/api'
+import Layout from '../../generalComponents/Layout'
+import { commonButtonStyles } from '../../styles/buttonStyles'
+import GAD7TestTable from './GAD7TestTable'
+
+const localeMap: Record<string, Locale> = {
+  de: de,
+  en: enUS,
+  ua: uk,
+}
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
-  const { patientId } = useParams()
-  const { notifyError } = useNotify()
-  const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
+  const [intervalDays, setIntervalDays] = useState<number>(14) // default value
+  const [startDate, setStartDate] = useState<Date | null>(new Date())
 
-  useEffect(() => {
-    const fetchTests = async (): Promise<void> => {
-      try {
-        const response = await patientTestApi.getTestsForPatient(patientId!)
-        const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
-          id: apiDto.id!,
-          name: apiDto.name || '',
-          description: apiDto.description || '',
-          patientId: apiDto.patientId || '',
-          completedAt: apiDto.completedAt || '',
-          questions:
-            apiDto.questions?.map((q) => ({
-              question: q.question || '',
-              score: q.score || 0,
-            })) || [],
-        }))
-        setGad7Tests(normalized)
-      } catch {
-        notifyError('Failed to fetch GAD7 tests')
-      }
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+    if (intervalDays < 1 || !startDate) {
+      return
     }
+    console.log('Submitting interval:', intervalDays, 'Start date:', startDate)
+  }
 
-    if (patientId) {
-      fetchTests()
-    }
-  }, [patientId, notifyError])
+  const local = localStorage.getItem('i18nextLng') || 'en'
+  const currentLocale = localeMap[local.split('-')[0]] || enUS
+  const formattedDate = startDate ? format(startDate, 'PPPp', { locale: currentLocale }) : ''
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div
-          style={{
+    <Layout>
+      <Box sx={{ maxWidth: '500px' }}>
+        <Typography variant='body1' sx={{ marginBottom: '20px' }}>
+          {t('gad7test.manage_description')}
+        </Typography>
+
+        <Box
+          component='form'
+          sx={{
             display: 'flex',
-            gap: '30px',
-            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '20px',
+            maxWidth: '400px',
           }}
+          onSubmit={handleSubmit}
         >
-          <Typography variant='h2'>{t('gad7test.gad7tests')}</Typography>
-        </div>
-        {gad7Tests.length > 0 ? (
-          <>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{t('gad7test.date')}</TableCell>
-                    {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-                      <TableCell key={num} align='right'>
-                        Q{num}
-                        <Typography variant='caption' display='block'>
-                          {t(`gad7test.question${num}`)}
-                        </Typography>
-                      </TableCell>
-                    ))}
-                    <TableCell align='right'>{t('gad7test.total_score')}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {gad7Tests.map((test, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{format(new Date(test.completedAt), 'dd.MM.yyyy')}</TableCell>
-                      {test.questions.map((question, qIndex) => (
-                        <TableCell key={qIndex} align='right'>
-                          {question.score}
-                        </TableCell>
-                      ))}
-                      <TableCell align='right'>
-                        {test.questions.reduce((acc, curr) => acc + curr.score, 0)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        ) : (
-          <Typography>{t('gad7test.no_tests_yet')}</Typography>
-        )}
+          <Box>
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                value={startDate}
+                label={t('gad7test.start_date')}
+                onChange={(newValue) => setStartDate(newValue)}
+                sx={{ width: '100%' }}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          <Box>
+            <TextField
+              label={t('gad7test.doEveryNDays')}
+              type='number'
+              value={intervalDays}
+              onChange={(e) => setIntervalDays(Number(e.target.value))}
+              sx={{ width: '100%' }}
+              inputProps={{ min: 1 }}
+              fullWidth
+            />
+          </Box>
+
+          <Typography variant='body2' sx={{ mt: 1, color: 'text.secondary' }}>
+            {t('gad7test.schedule_summary', {
+              days: intervalDays,
+              date: formattedDate,
+            })}
+          </Typography>
+
+          <Button
+            type='submit'
+            variant='contained'
+            sx={{
+              ...commonButtonStyles,
+              height: '40px',
+              width: '200px',
+              mt: 2,
+            }}
+          >
+            {t('gad7test.save_changes')}
+          </Button>
+        </Box>
+      </Box>
+
+      <div style={{ marginTop: '40px' }}>
+        <Typography variant='h2'>{t('gad7test.completed_gad7tests')}</Typography>
+        <GAD7TestTable />
       </div>
-    </div>
+    </Layout>
   )
 }
-
-export default GAD7TestDetail

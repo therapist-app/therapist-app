@@ -7,6 +7,7 @@ import ChatBotTemplateEdit from './pages/chatBotTemplate/ChatBotTemplateEdit'
 import CounselingPlanDetails from './pages/counselingPlan/CounselingPlanDetails.tsx'
 import ExerciseCreate from './pages/exercises/ExerciseCreate.tsx'
 import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
+import { GAD7TestDetail } from './pages/gad7Test/GAD7TestDetail.tsx'
 import Home from './pages/home/Home.tsx'
 import ClientInteractions from './pages/interactions/ClientInteractions.tsx'
 import Login from './pages/login/Login'
@@ -59,6 +60,8 @@ const App = (): ReactElement => {
 
             <Route path={ROUTES[PAGES.EXERCISES_CREATE_PAGE]} element={<ExerciseCreate />} />
             <Route path={ROUTES[PAGES.EXERCISES_DETAILS_PAGE]} element={<ExerciseDetail />} />
+
+            <Route path={ROUTES[PAGES.GAD7_TEST_DETAIL_PAGE]} element={<GAD7TestDetail />} />
 
             <Route
               path={ROUTES[PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]}
