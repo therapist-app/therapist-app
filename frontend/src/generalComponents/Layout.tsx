@@ -31,6 +31,9 @@ import {
   PAGES,
 } from '../utils/routes'
 import GlobalErrorSnackbar from './GlobalErrorSnackbar'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/store'
+import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
 
 interface LayoutProps {
   children: ReactNode
@@ -88,22 +91,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const [input, setInput] = useState('')
 
-  const sendMessage = async (): Promise<void> => {
-    const msg = input.trim()
-    if (!msg) {
-      return
-    }
-    setInput('')
+  const chatbotStatus = useSelector(
+  (s: RootState) => s.therapistChatbot.status
+)
 
-    navigate(therapistChatbotExpandedPage)
-    await dispatch(
-      chatWithTherapistChatbot({
-        newMessage: msg,
-        patientId: forwardPatientId,
-        language: getCurrentLanguage(),
-      })
-    )
-  }
+  const sendMessage = async (): Promise<void> => {
+  if (!input.trim() || chatbotStatus === 'loading') return;
+  setInput('');
+
+  navigate(therapistChatbotExpandedPage);
+  await dispatch(
+    chatWithTherapistChatbot({
+      newMessage: input.trim(),
+      patientId: forwardPatientId,
+      language: getCurrentLanguage(),
+    })
+  );
+};
+
+const sendButtonStyles = {
+  ...commonButtonStyles,
+  height: '55px',
+  minWidth: '80px',
+  maxWidth: '80px',
+} as const
+
+const smallDisabledButtonStyles = {
+  ...disabledButtonStyles,
+  height: '55px',
+  minWidth: '80px',
+  maxWidth: '80px',
+} as const
 
   const handleChatbotInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -261,11 +279,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             value={input}
             onChange={handleChatbotInput}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault()
-                sendMessage()
-              }
-            }}
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (chatbotStatus !== 'loading') sendMessage();
+    }
+  }}
             placeholder={t('footer.note')}
             sx={{
               bgcolor: 'white',
@@ -274,13 +292,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             }}
           />
           <Tooltip title={t('layout.send')}>
-            <IconButton
-              onClick={sendMessage}
-              sx={{ position: 'absolute', right: '30px', bottom: '27px' }}
-            >
-              <SendIcon sx={{ color: 'black' }} />
-            </IconButton>
-          </Tooltip>
+  <Button
+    onClick={sendMessage}
+    variant='contained'
+    disabled={!input.trim() || chatbotStatus === 'loading'}
+    sx={{
+      position: 'absolute',
+      right: 10,
+      bottom: 27,
+      top: 10,
+      ...( !input.trim() || chatbotStatus === 'loading'
+          ? smallDisabledButtonStyles
+          : sendButtonStyles ),
+    }}
+  >
+    <SendIcon />
+  </Button>
+</Tooltip>
+
 
           <Tooltip title={t('layout.expand_AI_assistant')}>
             <IconButton
