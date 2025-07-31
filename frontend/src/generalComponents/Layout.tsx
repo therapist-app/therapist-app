@@ -16,11 +16,14 @@ import {
 } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/uzh-logo.png'
+import { RootState } from '../store/store'
 import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
+import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
 import {
@@ -88,9 +91,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const [input, setInput] = useState('')
 
+  const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
+
   const sendMessage = async (): Promise<void> => {
-    const msg = input.trim()
-    if (!msg) {
+    if (!input.trim() || chatbotStatus === 'loading') {
       return
     }
     setInput('')
@@ -98,12 +102,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     navigate(therapistChatbotExpandedPage)
     await dispatch(
       chatWithTherapistChatbot({
-        newMessage: msg,
+        newMessage: input.trim(),
         patientId: forwardPatientId,
         language: getCurrentLanguage(),
       })
     )
   }
+
+  const sendButtonStyles = {
+    ...commonButtonStyles,
+    height: '55px',
+    minWidth: '80px',
+    maxWidth: '80px',
+  } as const
+
+  const smallDisabledButtonStyles = {
+    ...disabledButtonStyles,
+    height: '55px',
+    minWidth: '80px',
+    maxWidth: '80px',
+  } as const
 
   const handleChatbotInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -263,7 +281,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault()
-                sendMessage()
+                if (chatbotStatus !== 'loading') {
+                  sendMessage()
+                }
               }
             }}
             placeholder={t('footer.note')}
@@ -274,12 +294,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             }}
           />
           <Tooltip title={t('layout.send')}>
-            <IconButton
+            <Button
               onClick={sendMessage}
-              sx={{ position: 'absolute', right: '30px', bottom: '27px' }}
+              variant='contained'
+              disabled={!input.trim() || chatbotStatus === 'loading'}
+              sx={{
+                position: 'absolute',
+                right: 10,
+                bottom: 27,
+                top: 10,
+                ...(!input.trim() || chatbotStatus === 'loading'
+                  ? smallDisabledButtonStyles
+                  : sendButtonStyles),
+              }}
             >
-              <SendIcon sx={{ color: 'black' }} />
-            </IconButton>
+              <SendIcon />
+            </Button>
           </Tooltip>
 
           <Tooltip title={t('layout.expand_AI_assistant')}>
