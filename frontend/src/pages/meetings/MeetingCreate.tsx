@@ -97,6 +97,7 @@ const MeetingCreate = (): ReactElement => {
           <TextField
             label={t('meetings.location')}
             name='location'
+            multiline
             value={meetingFormData.location}
             onChange={(e) =>
               setMeetingFormData({

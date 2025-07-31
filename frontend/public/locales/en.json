@@ -29,7 +29,11 @@
     "LOCAL_UZH": "UZH LLM (Private Server)",
     "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
     "llmModel": "LLM Model",
-    "password_changed_success": "Successfully changed password"
+    "password_changed_success": "Successfully changed password",
+    "description": {
+      "LOCAL_UZH": "The UZH LLM is a self-hosted model running on a private server. Your conversation history is not stored, ensuring a high level of data privacy and security. The trade-off for this enhanced privacy is that this model is not as powerful as the cloud-hosted alternative. As a result, its answers may be less detailed or accurate.",
+      "AZURE_OPENAI": "The OpenAI LLM is hosted on Microsoft Azure's cloud infrastructure, with servers located in Sweden. While this setup is secure, the data privacy level differs from the self-hosted UZH model. The primary advantage of this model is its superior performance, which generally results in more comprehensive and accurate answers."
+    }
   },
   "layout": {
     "dashboard": "Dashboard",

@@ -90,7 +90,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   return (
     <div>
       {!isEditing ? (
-        <Accordion>
+        <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls='panel2-content'
