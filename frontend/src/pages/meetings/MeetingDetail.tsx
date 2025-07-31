@@ -110,7 +110,7 @@ const MeetingDetail = (): ReactElement => {
 
               <Button
                 onClick={() => setIsEditing(true)}
-                sx={{ ...commonButtonStyles, minWidth: '170px', marginTop: '20px' }}
+                sx={{ ...commonButtonStyles, marginTop: '20px' }}
               >
                 <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
                 {t('meetings.editMeeting')}
@@ -133,7 +133,6 @@ const MeetingDetail = (): ReactElement => {
               disabled={showCreateMeetingNote}
               sx={{
                 ...(showCreateMeetingNote ? disabledButtonStyles : commonButtonStyles),
-                minWidth: '170px',
               }}
             >
               {t('meetings.create_new_note')}
@@ -144,7 +143,6 @@ const MeetingDetail = (): ReactElement => {
               disabled={showCreateMeetingNote}
               sx={{
                 ...(showCreateMeetingNote ? successDisabledButtonStyles : successButtonStyles),
-                minWidth: '190px',
               }}
             >
               {t('meetings.transcribe_meeting')}
@@ -179,10 +177,7 @@ const MeetingDetail = (): ReactElement => {
 
         <CustomizedDivider />
 
-        <Button
-          onClick={handleDeleteMeeting}
-          sx={{ ...deleteButtonStyles, minWidth: '160px', width: 'fit-content' }}
-        >
+        <Button onClick={handleDeleteMeeting} sx={{ ...deleteButtonStyles }}>
           {t('meetings.delete_meeting')}
         </Button>
       </div>
