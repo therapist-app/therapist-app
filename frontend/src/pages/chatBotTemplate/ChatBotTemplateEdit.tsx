@@ -1,3 +1,4 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import SendIcon from '@mui/icons-material/Send'
 import {
   Avatar,
@@ -7,6 +8,7 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -15,13 +17,19 @@ import {
   Select,
   Switch,
   Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Tabs,
   TextField,
-  Tooltip,
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
-import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
@@ -33,9 +41,10 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
-import FilesTable from '../../generalComponents/FilesTable'
+import FileDownload from '../../generalComponents/FileDownload'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
+import DeleteIcon from '../../icons/DeleteIcon'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -70,6 +79,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false)
   const [isActive, setIsActive] = useState<boolean>(false)
   const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
+  const [isUploadingFile, setIsUploadingFile] = useState(false)
   const isPatientTemplate = Boolean(
     chatbotConfig?.patientId && chatbotConfig.patientId.trim() !== ''
   )
@@ -352,19 +362,52 @@ const ChatBotTemplateEdit: React.FC = () => {
     maxWidth: '80px',
   } as const
 
-  const handleFileUpload = async (file: File): Promise<void> => {
-    if (!chatbotConfig?.id) {
-      return
-    }
-    try {
-      await dispatch(
-        createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
-      ).unwrap()
-      dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
-      notifySuccess(t('files.file_uploaded_successfully'))
-    } catch (err) {
-      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-    }
+  const handleFileUpload = useCallback(
+    async (file: File): Promise<void> => {
+      if (!chatbotConfig?.id) {
+        return
+      }
+
+      setIsUploadingFile(true)
+
+      try {
+        await dispatch(
+          createDocumentForTemplate({ file: file, templateId: chatbotConfig.id })
+        ).unwrap()
+
+        dispatch(getAllDocumentsOfTemplate(chatbotConfig.id))
+        notifySuccess(t('files.file_uploaded_successfully'))
+      } catch (err) {
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      } finally {
+        setIsUploadingFile(false)
+      }
+    },
+    [chatbotConfig?.id, dispatch, notifyError, notifySuccess, t]
+  )
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(handleFileUpload)
+    },
+    [handleFileUpload]
+  )
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop: onDrop })
+
+  const dropzoneStyles: React.CSSProperties = {
+    border: '2px dashed #B4B4B4',
+    borderRadius: '12px',
+    padding: '32px',
+    textAlign: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '200px',
+    backgroundColor: '#FFFFFF',
+    color: '#5B5B5B',
   }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
@@ -423,8 +466,8 @@ const ChatBotTemplateEdit: React.FC = () => {
       <Layout>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={selectedTab} onChange={handleTabChange}>
-            <Tab label={t('chatbot.configuration')} value='config' />
-            <Tab label={t('chatbot.sources')} value='sources' />
+            <Tab label='Configuration' value='config' />
+            <Tab label='Sources' value='sources' />
           </Tabs>
         </Box>
 
@@ -432,13 +475,13 @@ const ChatBotTemplateEdit: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <Typography variant='h6' gutterBottom sx={{ mt: 2 }}>
-                {t('chatbot.chatbot_configuration')}
+                Chatbot Configuration
               </Typography>
 
               <Box sx={{ mb: 2 }}>
                 <TextField
                   fullWidth
-                  label={t('chatbot.name')}
+                  label='Name'
                   variant='outlined'
                   value={chatbotName}
                   onChange={(e) => setChatbotName(e.target.value)}
@@ -446,7 +489,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 />
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-role-label'>{t('chatbot.role')}</InputLabel>
+                  <InputLabel id='chatbot-role-label'>Role</InputLabel>
                   <Select
                     labelId='chatbot-role-label'
                     id='chatbot-role-select'
@@ -454,34 +497,34 @@ const ChatBotTemplateEdit: React.FC = () => {
                     label='Role'
                     onChange={(e) => setChatbotRole(e.target.value)}
                   >
-                    <MenuItem value='FAQ'>{t('chatbot.faq')}</MenuItem>
-                    <MenuItem value='Supportive'>{t('chatbot.supportive')}</MenuItem>
-                    <MenuItem value='Counseling'>{t('chatbot.counseling')}</MenuItem>
-                    <MenuItem value='Self-Help'>{t('chatbot.self_help')}</MenuItem>
-                    <MenuItem value='Undefined'>{t('chatbot.undefined')}</MenuItem>
+                    <MenuItem value='FAQ'>FAQ</MenuItem>
+                    <MenuItem value='Supportive'>Supportive</MenuItem>
+                    <MenuItem value='Counseling'>Counseling</MenuItem>
+                    <MenuItem value='Self-Help'>Self-Help</MenuItem>
+                    <MenuItem value='Undefined'>Undefined</MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl fullWidth margin='normal'>
-                  <InputLabel id='chatbot-tone-label'>{t('chatbot.conversation_tone')}</InputLabel>
+                  <InputLabel id='chatbot-tone-label'>Conversation Tone</InputLabel>
                   <Select
                     labelId='chatbot-tone-label'
                     id='chatbot-tone-select'
                     value={chatbotTone}
-                    label={t('chatbot.conversation_tone')}
+                    label='Conversation Tone'
                     onChange={(e) => setChatbotTone(e.target.value)}
                   >
-                    <MenuItem value='friendly'>{t('chatbot.friendly')}</MenuItem>
-                    <MenuItem value='formal'>{t('chatbot.formal')}</MenuItem>
-                    <MenuItem value='informal'>{t('chatbot.casual')}</MenuItem>
-                    <MenuItem value='professional'>{t('chatbot.professional')}</MenuItem>
-                    <MenuItem value='supportive'>{t('chatbot.supportive')}</MenuItem>
+                    <MenuItem value='friendly'>Friendly</MenuItem>
+                    <MenuItem value='formal'>Formal</MenuItem>
+                    <MenuItem value='informal'>Informal</MenuItem>
+                    <MenuItem value='professional'>Professional</MenuItem>
+                    <MenuItem value='supportive'>Supportive</MenuItem>
                   </Select>
                 </FormControl>
 
                 <TextField
                   fullWidth
-                  label={t('chatbot.welcome_message')}
+                  label='Welcome Message'
                   variant='outlined'
                   value={welcomeMessage}
                   onChange={(e) => setWelcomeMessage(e.target.value)}
@@ -498,13 +541,13 @@ const ChatBotTemplateEdit: React.FC = () => {
                         disabled={isOnlyTemplateForClient && isActive}
                       />
                     }
-                    label={t('chatbot.active_visiable_to_client')}
+                    label='Active (visible to patient)'
                   />
                 )}
 
                 <Box sx={{ mt: 1, ml: -1, display: 'flex', justifyContent: 'left' }}>
                   <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
-                    {t('chatbot.save')}
+                    Save
                   </Button>
                 </Box>
               </Box>
@@ -542,9 +585,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                       {getIconComponent()}
                     </Avatar>
                   )}
-                  <Typography variant='h4'>
-                    {chatbotName || 'Chatbot'} {t('chatbot.simulation')}
-                  </Typography>
+                  <Typography variant='h4'>{chatbotName || 'Chatbot'} Simulation</Typography>
                 </Box>
 
                 <List ref={chatListRef} sx={{ overflow: 'auto', flexGrow: 1 }}>
@@ -554,7 +595,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                         <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                           <Box sx={{ maxWidth: '80%', marginLeft: 'auto' }}>
                             <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                              {t('chatbot.you')}
+                              You
                             </Typography>
                             <Box
                               sx={{
@@ -623,7 +664,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 >
                   <TextField
                     fullWidth
-                    label={t('chatbot.type_your_message')}
+                    label='Type a message...'
                     variant='outlined'
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
@@ -633,33 +674,93 @@ const ChatBotTemplateEdit: React.FC = () => {
                       },
                     }}
                   />
-                  <Tooltip title={t('chatbot.send')} arrow>
-                    <Button
-                      type='submit'
-                      variant='contained'
-                      sx={
-                        !question || isChatbotTyping ? smallDisabledButtonStyles : sendButtonStyles
-                      }
-                      disabled={!question || isChatbotTyping || isLoading}
-                    >
-                      {isChatbotTyping ? <CircularProgress size={24} /> : <SendIcon />}
-                    </Button>
-                  </Tooltip>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    sx={!question || isChatbotTyping ? smallDisabledButtonStyles : sendButtonStyles}
+                    disabled={!question || isChatbotTyping || isLoading}
+                  >
+                    {isChatbotTyping ? <CircularProgress size={24} /> : <SendIcon />}
+                  </Button>
                 </Box>
               </Paper>
             </Grid>
           </Grid>
         )}
-
         {selectedTab === 'sources' && (
           <Box sx={{ mt: 3 }}>
-            <FilesTable
-              title={t('chatbot.template_files')}
-              allDocuments={templateDocuments}
-              handleFileUpload={handleFileUpload}
-              handleDeleteFile={handleDeleteFile}
-              downloadFile={downloadFile}
-            />
+            <Typography variant='h6' sx={{ mb: 2 }}>
+              Chatbot Documents
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+              <Paper elevation={0} sx={{ width: 400 }}>
+                <div {...getRootProps()} style={dropzoneStyles}>
+                  <input
+                    {...getInputProps({
+                      accept: '.pdf,.doc,.docx,.txt',
+                    })}
+                  />
+                  {isUploadingFile ? (
+                    <CircularProgress />
+                  ) : (
+                    <>
+                      <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
+                      <Typography variant='subtitle1' sx={{ mt: 1 }}>
+                        Click to upload a file or drag and drop it here
+                      </Typography>
+                      <Typography variant='caption' display='block' sx={{ mt: 1 }}>
+                        Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
+                      </Typography>
+                    </>
+                  )}
+                </div>
+              </Paper>
+            </Box>
+
+            <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>File name</TableCell>
+                    <TableCell align='right'>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {templateDocuments.length ? (
+                    templateDocuments.map((doc) => (
+                      <TableRow key={doc.id}>
+                        <TableCell
+                          sx={{
+                            maxWidth: 400,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {doc.fileName}
+                        </TableCell>
+                        <TableCell align='right'>
+                          <FileDownload
+                            download={() => downloadFile(doc.id ?? '')}
+                            fileName={doc.fileName ?? ''}
+                          />
+                          <IconButton
+                            aria-label='delete'
+                            onClick={() => handleDeleteFile(doc.id ?? '')}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={2}>No files uploaded yet.</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Box>
         )}
       </Layout>
