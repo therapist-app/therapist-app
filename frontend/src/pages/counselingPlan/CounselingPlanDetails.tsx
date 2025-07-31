@@ -73,6 +73,9 @@ const CounselingPlanDetails = (): ReactElement => {
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
+    dispatch(getAllExercisesOfPatient(patientId)).catch((error: unknown) => {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    })
   }
 
   const handleUpdate = async (): Promise<void> => {

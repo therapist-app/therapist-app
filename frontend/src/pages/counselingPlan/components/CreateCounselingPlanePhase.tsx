@@ -36,6 +36,7 @@ const CreateCounselingPlanePhase = ({
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { notifyError, notifySuccess } = useNotify()
+  const [isAIAnswerLoading, setIsAIAnswerLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -57,6 +58,7 @@ const CreateCounselingPlanePhase = ({
 
   const handleAIGeneration = async (): Promise<void> => {
     try {
+      setIsAIAnswerLoading(true)
       const aiDto = await dispatch(
         createCounselingPlanPhaseAIGenerated({
           counselingPlanId: counselingPlanId,
@@ -71,6 +73,8 @@ const CreateCounselingPlanePhase = ({
       setOpen(true)
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    } finally {
+      setIsAIAnswerLoading(false)
     }
   }
 
@@ -109,7 +113,11 @@ const CreateCounselingPlanePhase = ({
             <Button sx={{ ...commonButtonStyles, minWidth: '150px' }} type='submit'>
               {t('counseling_plan.create_phase')}
             </Button>
-            <Button sx={{ ...successButtonStyles, minWidth: '340px' }} onClick={handleAIGeneration}>
+            <Button
+              sx={{ ...successButtonStyles, minWidth: '340px' }}
+              onClick={handleAIGeneration}
+              loading={isAIAnswerLoading}
+            >
               {t('counseling_plan.make_ai_generated_suggestion_for_phase')}
             </Button>
             <Button sx={{ ...cancelButtonStyles, minWidth: '100px' }} onClick={handleCancel}>

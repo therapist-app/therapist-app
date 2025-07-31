@@ -191,7 +191,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           >
             <img src={logo} alt='UZH Chatbot' style={{ width: '80%' }} />
           </div>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, pl: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              pl: 2,
+              pr: 2,
+              alignItems: 'center',
+            }}
+          >
             {[PAGES.HOME_PAGE, ...pageTrace.slice(1)].map((page, idx) => {
               const pathParams =
                 page === PAGES.PATIENTS_DETAILS_PAGE && forwardPatientId
@@ -201,7 +209,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               const active = currentPage === page
               return (
                 <React.Fragment key={page}>
-                  {idx !== 0 && <KeyboardArrowDownIcon sx={{ ml: '30px' }} />}
+                  {idx !== 0 && <KeyboardArrowDownIcon sx={{ paddingBottom: '20px' }} />}
                   <Button
                     variant={active ? 'contained' : 'text'}
                     onClick={() =>
@@ -215,8 +223,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       textTransform: 'none',
                       fontWeight: active ? 600 : 400,
                       fontSize: '18px',
-                      justifyContent: 'flex-start',
-                      width: 'fit-content',
+                      justifyContent: 'center',
+                      width: '100%',
                       px: 1.5,
                       padding: '20px 15px',
                     }}
