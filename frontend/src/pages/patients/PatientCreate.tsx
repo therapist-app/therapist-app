@@ -14,7 +14,11 @@ import {
   Typography,
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
+import { DatePicker } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AxiosError } from 'axios'
+import { format, parseISO } from 'date-fns'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -30,6 +34,7 @@ import {
   commonButtonStyles,
   disabledButtonStyles,
 } from '../../styles/buttonStyles.ts'
+import { getCurrentLocale } from '../../utils/dateUtil.ts'
 import { handleError } from '../../utils/handleError.ts'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes.ts'
@@ -84,6 +89,7 @@ const PatientCreate = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const currentLocale = getCurrentLocale()
 
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
@@ -169,6 +175,12 @@ const PatientCreate = (): ReactElement => {
 
   const handleRemoveComplaint = (id: string): void => {
     setComplaints((prev) => prev.filter((c) => c.id !== id))
+  }
+
+  const dateValue = dateOfAdmission ? parseISO(dateOfAdmission) : null
+  const handleDateChange = (newValue: Date | null): void => {
+    const formattedDate = newValue ? format(newValue, 'yyyy-MM-dd') : ''
+    setDateOfAdmission(formattedDate)
   }
 
   useEffect(() => {
@@ -363,14 +375,20 @@ const PatientCreate = (): ReactElement => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              type='date'
-              label={t('patient_create.patient_date_of_admission')}
-              InputLabelProps={{ shrink: true }}
-              value={dateOfAdmission}
-              onChange={(e) => setDateOfAdmission(e.target.value)}
-            />
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={t('patient_create.patient_date_of_admission')}
+                value={dateValue}
+                onChange={handleDateChange}
+                format='yyyy-MM-dd'
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    InputLabelProps: { shrink: true },
+                  },
+                }}
+              />
+            </LocalizationProvider>
           </Grid>
         </Grid>
         <Box mt={4} display='flex' justifyContent='flex-end'>

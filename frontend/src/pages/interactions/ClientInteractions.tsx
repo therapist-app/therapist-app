@@ -13,9 +13,11 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMapCanvas } from '@nivo/heatmap'
+import { AxiosResponse } from 'axios'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
 
@@ -23,8 +25,10 @@ import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { LOG_TYPES } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
+import { RootState } from '../../store/store.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientLogApi } from '../../utils/api.ts'
+import { getCurrentLocale } from '../../utils/dateUtil.ts'
 
 interface InteractionData {
   hour: number
@@ -112,6 +116,7 @@ const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const { notifyError } = useNotify()
   const { patientId } = useParams()
+  const currentLocale = getCurrentLocale()
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
@@ -120,6 +125,10 @@ const ClientInteractions = (): ReactElement => {
   const [loading, setLoading] = useState<boolean>(true)
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
+  )
+
+  const patient = useSelector((state: RootState) =>
+    state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
   )
 
   // Memoize the date range calculation
@@ -159,12 +168,29 @@ const ClientInteractions = (): ReactElement => {
   )
 
   const exportToCSV = async (): Promise<void> => {
-    if (patientId) {
-      try {
-        await patientLogApi.exportAllLogsCsv(patientId)
-      } catch {
-        notifyError('Failed to export logs to CSV.')
-      }
+    if (!patientId) {
+      return
+    }
+
+    try {
+      const response = (await patientLogApi.exportAllLogsCsv(patientId, {
+        responseType: 'blob',
+      })) as unknown as AxiosResponse<Blob>
+      const blob = response.data
+      const url = window.URL.createObjectURL(blob)
+
+      const link = document.createElement('a')
+      link.href = url
+
+      const today = new Date().toISOString().slice(0, 10)
+      link.download = `${patient?.name}-client-logs-${today}.csv`
+
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch {
+      notifyError('Failed to export logs to CSV.')
     }
   }
 
@@ -223,7 +249,7 @@ const ClientInteractions = (): ReactElement => {
     <Layout>
       <Stack spacing={2}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
             <FormControl sx={{ minWidth: 250 }}>
               <InputLabel id='interaction-type-label'>
                 {t('patient_interactions.interaction_type')}

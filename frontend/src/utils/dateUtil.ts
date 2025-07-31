@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
+import { de, enUS, ru, uk } from 'date-fns/locale'
 
 export const formatDateNicely = (date: Date | null | undefined | string): string => {
   if (!date) {
@@ -43,4 +43,28 @@ export const isDateInThePast = (date: Date | string | undefined): boolean => {
   }
   date = new Date(date)
   return date.getTime() < new Date().getTime()
+}
+
+export const getCurrentLocale = (): Locale => {
+  const localeMap: Record<string, Locale> = {
+    de: de,
+    en: enUS,
+    ua: uk,
+    ru: ru,
+  }
+
+  const local = localStorage.getItem('i18nextLng') || 'en'
+  return localeMap[local.split('-')[0]] || enUS
+}
+
+export const formatDateWithLocale = (
+  date: Date | null | undefined | string,
+  formatString: string = 'PPPp'
+): string => {
+  if (!date) {
+    return ''
+  }
+  return format(new Date(date), formatString, {
+    locale: getCurrentLocale(),
+  })
 }
