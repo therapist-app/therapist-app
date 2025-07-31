@@ -263,7 +263,17 @@ interface Resources {
       "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
       "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
       "client_feedback": "Klienten-Feedback",
-      "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
+      "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
+      "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
+      "sharedInputTooltip": "Dieses geteilte Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die für den Coach sichtbar sein werden.",
+      "completions": "Übungsabschlüsse",
+      "moodtracking": {
+        "very_unpleasant": "sehr unangenehm",
+        "unpleasant": "unangenehm",
+        "neutral": "neutral",
+        "pleasant": "angenehm",
+        "very_pleasant": "sehr angenehm"
+      }
     },
     "not_found": {
       "title": "404 - Seite nicht gefunden",
@@ -479,7 +489,8 @@ interface Resources {
       "meeting_updated_successfully": "Termin erfolgreich aktualisiert",
       "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
       "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
-      "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht"
+      "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
+      "notes_summary": "Besprechungszusammenfassung"
     },
     "gad7test": {
       "title": "GAD-7-Bewertung",
@@ -803,8 +814,8 @@ interface Resources {
       "feedback": "Feedback",
       "startTime": "Start Time",
       "endTime": "End Time",
-      "moodsBefore": "Moods Before",
-      "moodsAfter": "Moods After",
+      "moodsBefore": "Mood Before",
+      "moodsAfter": "Mood After",
       "editMode": "Edit Mode",
       "viewMode": "View Mode",
       "youtubeDescription": "Description of Video",
@@ -815,7 +826,17 @@ interface Resources {
       "component_updated_successfully": "Successfully updated exercise component",
       "component_deleted_successfully": "Successfully deleted exercise component",
       "client_feedback": "Client Feedback",
-      "no_client_feedback": "The client has not provided any feedback for this exercise yet."
+      "no_client_feedback": "The client has not provided any feedback for this exercise yet.",
+      "privateInputTooltip": "This private input field components lets the client write down their own thoughts which will not be shared with the coach.",
+      "sharedInputTooltip": "This shared input field component lets the client write down their own thoughts which will be visible for the coach.",
+      "completions": "Exercise Completions",
+      "moodtracking": {
+        "very_unpleasant": "very unpleasant",
+        "unpleasant": "unpleasant",
+        "neutral": "neutral",
+        "pleasant": "pleasant",
+        "very_pleasant": "very pleasant"
+      }
     },
     "not_found": {
       "title": "404 - Page Not Found",
@@ -1031,7 +1052,8 @@ interface Resources {
       "meeting_updated_successfully": "Successfully updated meeting",
       "note_created_successfully": "Successfully created meeting note",
       "note_updated_successfully": "Successfully updated meeting note",
-      "note_deleted_successfully": "Successfully deleted meeting note"
+      "note_deleted_successfully": "Successfully deleted meeting note",
+      "notes_summary": "Meeting Notes Summary"
     },
     "gad7test": {
       "title": "GAD-7 Assessment",
@@ -1367,7 +1389,17 @@ interface Resources {
       "component_updated_successfully": "Компонент вправи успішно оновлено",
       "component_deleted_successfully": "Компонент вправи успішно видалено",
       "client_feedback": "Відгук клієнта",
-      "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи."
+      "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи.",
+      "privateInputTooltip": "Це приватне поле для введення дозволяє клієнту записувати власні думки, які не будуть передані коучу.",
+      "sharedInputTooltip": "Це спільне поле для введення дозволяє клієнту записувати власні думки, які будуть видимі для коуча.",
+      "completions": "Виконані вправи",
+      "moodtracking": {
+        "very_unpleasant": "дуже неприємно",
+        "unpleasant": "неприємний",
+        "neutral": "нейтральний",
+        "pleasant": "приємний",
+        "very_pleasant": "дуже приємно"
+      }
     },
     "not_found": {
       "title": "404 - Сторінку не знайдено",
@@ -1583,7 +1615,8 @@ interface Resources {
       "meeting_updated_successfully": "Зустріч успішно оновлено",
       "note_created_successfully": "Нотатку до зустрічі успішно створено",
       "note_updated_successfully": "Нотатку до зустрічі успішно оновлено",
-      "note_deleted_successfully": "Нотатку до зустрічі успішно видалено"
+      "note_deleted_successfully": "Нотатку до зустрічі успішно видалено",
+      "notes_summary": "Підсумок нотаток зустрічі"
     },
     "gad7test": {
       "title": "Оцінка за шкалою GAD-7",

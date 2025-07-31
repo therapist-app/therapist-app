@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import CustomizedDivider from '../../generalComponents/CustomizedDivider'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { deleteMeeting, getMeeting } from '../../store/meetingSlice'
+import { createMeetingNoteSummary, deleteMeeting, getMeeting } from '../../store/meetingSlice'
 import { RootState } from '../../store/store'
 import {
   commonButtonStyles,
@@ -18,7 +18,9 @@ import {
   successDisabledButtonStyles,
 } from '../../styles/buttonStyles'
 import { formatDateNicely, getMinutesBetweenDates } from '../../utils/dateUtil'
+import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
+import { getCurrentLanguage } from '../../utils/languageUtil'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateMeetingNoteComponent from './components/CreateMeetingNoteComponent'
 import MeetingNoteComponent from './components/MeetingNoteComponent'
@@ -34,8 +36,25 @@ const MeetingDetail = (): ReactElement => {
 
   const [showCreateMeetingNote, setShowCreateMeetingNote] = useState(false)
   const [isTranscription, setIsTranscription] = useState(false)
+  const [meetingNoteSummary, setMeetingNoteSummary] = useState('')
 
   const selectedMeeting = useSelector((state: RootState) => state.meeting.selectedMeeting)
+
+  useEffect((): void => {
+    const load = async (): Promise<void> => {
+      if (selectedMeeting?.meetingNotesOutputDTO?.length !== 0) {
+        setMeetingNoteSummary(
+          await dispatch(
+            createMeetingNoteSummary({
+              meetingId: meetingId ?? '',
+              language: getCurrentLanguage(),
+            })
+          ).unwrap()
+        )
+      }
+    }
+    load()
+  }, [dispatch, selectedMeeting?.meetingNotesOutputDTO, meetingId])
 
   useEffect((): void => {
     const load = async (): Promise<void> => {
@@ -54,6 +73,16 @@ const MeetingDetail = (): ReactElement => {
     try {
       await dispatch(getMeeting(meetingId ?? '')).unwrap()
       setShowCreateMeetingNote(false)
+      if (selectedMeeting?.meetingNotesOutputDTO?.length !== 0) {
+        setMeetingNoteSummary(
+          await dispatch(
+            createMeetingNoteSummary({
+              meetingId: meetingId ?? '',
+              language: getCurrentLanguage(),
+            })
+          ).unwrap()
+        )
+      }
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
@@ -80,7 +109,7 @@ const MeetingDetail = (): ReactElement => {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div>
           {!isEditing ? (
             <>
@@ -110,7 +139,7 @@ const MeetingDetail = (): ReactElement => {
 
               <Button
                 onClick={() => setIsEditing(true)}
-                sx={{ ...commonButtonStyles, minWidth: '170px', marginTop: '20px' }}
+                sx={{ ...commonButtonStyles, marginTop: '20px' }}
               >
                 <EditIcon sx={{ width: '15px', height: '15px', marginRight: '10px' }} />{' '}
                 {t('meetings.editMeeting')}
@@ -125,6 +154,8 @@ const MeetingDetail = (): ReactElement => {
           )}
         </div>
 
+        <CustomizedDivider />
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <Typography variant='h2'>{t('meetings.yourNotes')}:</Typography>
@@ -133,7 +164,6 @@ const MeetingDetail = (): ReactElement => {
               disabled={showCreateMeetingNote}
               sx={{
                 ...(showCreateMeetingNote ? disabledButtonStyles : commonButtonStyles),
-                minWidth: '170px',
               }}
             >
               {t('meetings.create_new_note')}
@@ -144,7 +174,6 @@ const MeetingDetail = (): ReactElement => {
               disabled={showCreateMeetingNote}
               sx={{
                 ...(showCreateMeetingNote ? successDisabledButtonStyles : successButtonStyles),
-                minWidth: '190px',
               }}
             >
               {t('meetings.transcribe_meeting')}
@@ -177,12 +206,17 @@ const MeetingDetail = (): ReactElement => {
           )}
         </div>
 
+        {selectedMeeting?.meetingNotesOutputDTO?.length !== 0 && (
+          <>
+            <CustomizedDivider />
+            <Typography variant='h2'>{t('meetings.notes_summary')}:</Typography>
+            <Typography>{formatResponse(meetingNoteSummary)}</Typography>
+          </>
+        )}
+
         <CustomizedDivider />
 
-        <Button
-          onClick={handleDeleteMeeting}
-          sx={{ ...deleteButtonStyles, minWidth: '160px', width: 'fit-content' }}
-        >
+        <Button onClick={handleDeleteMeeting} sx={{ ...deleteButtonStyles }}>
           {t('meetings.delete_meeting')}
         </Button>
       </div>

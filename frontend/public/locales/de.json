@@ -262,7 +262,17 @@
     "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
     "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
     "client_feedback": "Klienten-Feedback",
-    "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben."
+    "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
+    "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
+    "sharedInputTooltip": "Dieses geteilte Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die für den Coach sichtbar sein werden.",
+    "completions": "Übungsabschlüsse",
+    "moodtracking": {
+      "very_unpleasant": "sehr unangenehm",
+      "unpleasant": "unangenehm",
+      "neutral": "neutral",
+      "pleasant": "angenehm",
+      "very_pleasant": "sehr angenehm"
+    }
   },
   "not_found": {
     "title": "404 - Seite nicht gefunden",
@@ -478,7 +488,8 @@
     "meeting_updated_successfully": "Termin erfolgreich aktualisiert",
     "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
     "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
-    "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht"
+    "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
+    "notes_summary": "Besprechungszusammenfassung"
   },
   "gad7test": {
     "title": "GAD-7-Bewertung",

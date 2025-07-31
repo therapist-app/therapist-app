@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.TherapistChatbotInputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.TherapistChatbotOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistChatbotService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class TherapistChatbotController {
   @PostMapping("/chat")
   @ResponseStatus(HttpStatus.OK)
   public TherapistChatbotOutputDTO chatWithTherapistChatbot(
-      @RequestBody TherapistChatbotInputDTO therapistChatbotInputDTO,
+      @Valid @RequestBody TherapistChatbotInputDTO therapistChatbotInputDTO,
       @CurrentTherapistId String therapistId) {
     return therapistChatbotService.chat(therapistChatbotInputDTO, therapistId);
   }

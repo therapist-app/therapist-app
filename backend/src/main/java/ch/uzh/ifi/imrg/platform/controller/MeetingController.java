@@ -2,11 +2,13 @@ package ch.uzh.ifi.imrg.platform.controller;
 
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteSummaryDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,10 +34,18 @@ public class MeetingController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public MeetingOutputDTO createMeeting(
-      @RequestBody CreateMeetingDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody CreateMeetingDTO createMeetingDTO,
+      @CurrentTherapistId String therapistId) {
 
     Meeting createdMeeting = meetingService.createMeeting(createMeetingDTO, therapistId);
     return MeetingsMapper.INSTANCE.convertEntityToMeetingOutputDTO(createdMeeting);
+  }
+
+  @PostMapping("/meeting-note-summary")
+  @ResponseStatus(HttpStatus.CREATED)
+  public String createMeetingNoteSummary(
+      @Valid @RequestBody CreateMeetingNoteSummaryDTO dto, @CurrentTherapistId String therapistId) {
+    return meetingService.createMeetingNoteSummary(dto, therapistId);
   }
 
   @GetMapping("/{meetingId}")
@@ -60,7 +70,7 @@ public class MeetingController {
   @PutMapping()
   @ResponseStatus(HttpStatus.OK)
   public MeetingOutputDTO updateMeeting(
-      @RequestBody UpdateMeetingDTO dto, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody UpdateMeetingDTO dto, @CurrentTherapistId String therapistId) {
     return meetingService.updateMeeting(dto, therapistId);
   }
 

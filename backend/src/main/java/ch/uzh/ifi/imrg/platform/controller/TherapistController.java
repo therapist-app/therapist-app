@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.TherapistService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class TherapistController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public TherapistOutputDTO createTherapist(
-      @RequestBody CreateTherapistDTO therapistInputDTO,
+      @Valid @RequestBody CreateTherapistDTO therapistInputDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     Therapist therapist =
@@ -49,14 +50,14 @@ public class TherapistController {
   @PutMapping()
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO updateTherapist(
-      @RequestBody UpdateTherapistDTO dto, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody UpdateTherapistDTO dto, @CurrentTherapistId String therapistId) {
     return therapistService.updateTherapist(dto, therapistId);
   }
 
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.OK)
   public TherapistOutputDTO loginTherapist(
-      @RequestBody LoginTherapistDTO loginTherapistDTO,
+      @Valid @RequestBody LoginTherapistDTO loginTherapistDTO,
       HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse) {
     return therapistService.loginTherapist(

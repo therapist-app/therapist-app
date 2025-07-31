@@ -5,6 +5,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapis
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientDocumentService;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.core.io.ByteArrayResource;
@@ -40,7 +41,7 @@ public class PatientDocumentController {
 
   @PostMapping("/from-therapist-document")
   public void createPatientDocumentFromTherapistDocument(
-      @RequestBody
+      @Valid @RequestBody
           CreatePatientDocumentFromTherapistDocumentDTO
               createPatientDocumentFromTherapistDocumentDTO,
       @CurrentTherapistId String therapistId) {

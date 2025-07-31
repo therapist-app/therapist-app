@@ -41,6 +41,7 @@ const CreateCounselingPlanExercise = ({
   const { t } = useTranslation()
   const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
+  const [isAIAnswerLoading, setIsAIAnswerLoading] = useState(false)
 
   const initialFormData: ExerciseFormData = {
     exerciseTitle: '',
@@ -69,26 +70,33 @@ const CreateCounselingPlanExercise = ({
   }
 
   const handleCreateExerciseWithAI = async (): Promise<void> => {
-    setFormData(initialFormData)
-    const createExerciseDTO = await dispatch(
-      createCounselingPlanExerciseAIGenerated({
-        counselingPlanPhaseId: counselingPlanPhase.id ?? '',
-        language: getCurrentLanguage(),
-      })
-    ).unwrap()
+    try {
+      setIsAIAnswerLoading(true)
+      setFormData(initialFormData)
+      const createExerciseDTO = await dispatch(
+        createCounselingPlanExerciseAIGenerated({
+          counselingPlanPhaseId: counselingPlanPhase.id ?? '',
+          language: getCurrentLanguage(),
+        })
+      ).unwrap()
 
-    const newExerciseFormData: ExerciseFormData = {
-      exerciseTitle: createExerciseDTO.exerciseTitle,
-      exerciseDescription: createExerciseDTO.exerciseDescription,
-      exerciseExplanation: createExerciseDTO.exerciseExplanation,
-      exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
-      durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
-      doEveryNDays: createExerciseDTO.doEveryNDays,
-      patientId: patientId,
+      const newExerciseFormData: ExerciseFormData = {
+        exerciseTitle: createExerciseDTO.exerciseTitle,
+        exerciseDescription: createExerciseDTO.exerciseDescription,
+        exerciseExplanation: createExerciseDTO.exerciseExplanation,
+        exerciseStart: new Date(createExerciseDTO.exerciseStart ?? ''),
+        durationInWeeks: createExerciseDTO.durationInWeeks ?? 2,
+        doEveryNDays: createExerciseDTO.doEveryNDays,
+        patientId: patientId,
+      }
+
+      setFormData(newExerciseFormData)
+      setOpen(true)
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    } finally {
+      setIsAIAnswerLoading(false)
     }
-
-    setFormData(newExerciseFormData)
-    setOpen(true)
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -202,6 +210,7 @@ const CreateCounselingPlanExercise = ({
             <Button
               sx={{ ...successButtonStyles, minWidth: '360px' }}
               onClick={handleCreateExerciseWithAI}
+              loading={isAIAnswerLoading}
             >
               {t('counseling_plan.make_ai_generated_suggestion_for_exercise')}
             </Button>

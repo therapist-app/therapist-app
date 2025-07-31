@@ -19,7 +19,7 @@ import { MeetingNoteOutputDTO, UpdateMeetingNoteDTO } from '../../../api'
 import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionComponent'
 import { useNotify } from '../../../hooks/useNotify'
 import { deleteMeetingNote, updateMeetingNote } from '../../../store/meetingSlice'
-import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { deleteButtonStyles, successButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface MeetingNoteComponentProps {
@@ -90,7 +90,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
   return (
     <div>
       {!isEditing ? (
-        <Accordion sx={{ maxWidth: '600px' }}>
+        <Accordion>
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
             aria-controls='panel2-content'
@@ -136,7 +136,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <form
-            style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '600px' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
             onSubmit={(e) => {
               e.preventDefault()
               handleSubmit()
@@ -161,7 +161,7 @@ const MeetingNoteComponent: React.FC<MeetingNoteComponentProps> = (props) => {
               <Button
                 type='submit'
                 sx={{
-                  ...commonButtonStyles,
+                  ...successButtonStyles,
                 }}
               >
                 <CheckIcon />

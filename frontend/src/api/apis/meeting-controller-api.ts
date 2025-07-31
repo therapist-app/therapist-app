@@ -24,6 +24,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { CreateMeetingDTO } from '../models';
 // @ts-ignore
+import type { CreateMeetingNoteSummaryDTO } from '../models';
+// @ts-ignore
 import type { MeetingOutputDTO } from '../models';
 // @ts-ignore
 import type { UpdateMeetingDTO } from '../models';
@@ -62,6 +64,41 @@ export const MeetingControllerApiAxiosParamCreator = function (configuration?: C
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createMeetingDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {CreateMeetingNoteSummaryDTO} createMeetingNoteSummaryDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createMeetingNoteSummary: async (createMeetingNoteSummaryDTO: CreateMeetingNoteSummaryDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createMeetingNoteSummaryDTO' is not null or undefined
+            assertParamExists('createMeetingNoteSummary', 'createMeetingNoteSummaryDTO', createMeetingNoteSummaryDTO)
+            const localVarPath = `/meetings/meeting-note-summary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createMeetingNoteSummaryDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -226,6 +263,18 @@ export const MeetingControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {CreateMeetingNoteSummaryDTO} createMeetingNoteSummaryDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createMeetingNoteSummary(createMeetingNoteSummaryDTO: CreateMeetingNoteSummaryDTO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createMeetingNoteSummary(createMeetingNoteSummaryDTO, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MeetingControllerApi.createMeetingNoteSummary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} meetingId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -293,6 +342,15 @@ export const MeetingControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {CreateMeetingNoteSummaryDTO} createMeetingNoteSummaryDTO 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createMeetingNoteSummary(createMeetingNoteSummaryDTO: CreateMeetingNoteSummaryDTO, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.createMeetingNoteSummary(createMeetingNoteSummaryDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} meetingId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -344,6 +402,15 @@ export interface MeetingControllerApiInterface {
      * @memberof MeetingControllerApiInterface
      */
     createMeeting(createMeetingDTO: CreateMeetingDTO, options?: RawAxiosRequestConfig): AxiosPromise<MeetingOutputDTO>;
+
+    /**
+     * 
+     * @param {CreateMeetingNoteSummaryDTO} createMeetingNoteSummaryDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MeetingControllerApiInterface
+     */
+    createMeetingNoteSummary(createMeetingNoteSummaryDTO: CreateMeetingNoteSummaryDTO, options?: RawAxiosRequestConfig): AxiosPromise<string>;
 
     /**
      * 
@@ -399,6 +466,17 @@ export class MeetingControllerApi extends BaseAPI implements MeetingControllerAp
      */
     public createMeeting(createMeetingDTO: CreateMeetingDTO, options?: RawAxiosRequestConfig) {
         return MeetingControllerApiFp(this.configuration).createMeeting(createMeetingDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CreateMeetingNoteSummaryDTO} createMeetingNoteSummaryDTO 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MeetingControllerApi
+     */
+    public createMeetingNoteSummary(createMeetingNoteSummaryDTO: CreateMeetingNoteSummaryDTO, options?: RawAxiosRequestConfig) {
+        return MeetingControllerApiFp(this.configuration).createMeetingNoteSummary(createMeetingNoteSummaryDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

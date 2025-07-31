@@ -11,12 +11,13 @@ configMapGenerator:
       - DB_PORT=5432
       - DB_NAME=therapist_app_main_db
       - DB_USERNAME=therapist-user
-      - DB_CREATE_OR_UPDATE=create
+      - DB_CREATE_OR_UPDATE=update
       - LOCAL_LLM_MODEL=gemma3:12b
       - LOCAL_LLM_URL=https://vllm-imrg.ifi.uzh.ch/vllm/v1/chat/completions
       - PATIENT_APP_URL=https://backend-patient-app-main.jonas-blum.ch
       - AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4.1
       - LLM_MAX_CHARACTERS=150000
+      - MAX_CHARACTERS_PER_PDF=20000
 
 secretGenerator:
   - name: therapist-app-backend-secret

@@ -58,7 +58,6 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
 
   return (
     <form
-      style={{ maxWidth: '500px' }}
       onSubmit={(e) => {
         e.preventDefault()
         handleSubmit()

@@ -5,6 +5,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdatePatientDetailDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PatientController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public PatientOutputDTO createPatientForTherapist(
-      @RequestBody CreatePatientDTO inputDTO, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody CreatePatientDTO inputDTO, @CurrentTherapistId String therapistId) {
     return patientService.registerPatient(inputDTO, therapistId);
   }
 
@@ -43,7 +44,7 @@ public class PatientController {
   @ResponseStatus(HttpStatus.OK)
   public PatientOutputDTO updatePatientDetails(
       @PathVariable String id,
-      @RequestBody UpdatePatientDetailDTO updateDTO,
+      @Valid @RequestBody UpdatePatientDetailDTO updateDTO,
       @CurrentTherapistId String therapistId) {
     return patientService.updatePatientDetails(id, updateDTO, therapistId);
   }
