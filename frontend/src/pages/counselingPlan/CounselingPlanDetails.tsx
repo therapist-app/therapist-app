@@ -141,7 +141,11 @@ const CounselingPlanDetails = (): ReactElement => {
           <Typography>
             {t('counseling_plan.amountOfPhases')}: {amountOfPhases}
           </Typography>
-          <Typography>
+          <Typography
+            sx={{
+              color: completedGoals === totalGoals ? 'green' : '#C76E00',
+            }}
+          >
             {t('counseling_plan.goalsCompleted')}: {completedGoals}/{totalGoals}
           </Typography>
         </div>
