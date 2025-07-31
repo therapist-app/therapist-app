@@ -324,6 +324,7 @@
     "fetch_error": "Fehler beim Abrufen der Klienteninteraktionsdaten.",
     "no_data": "Keine Klienten-Protokolldaten verfügbar.",
     "interactions": "Interaktionen",
+    "export_to_csv": "Nach CSV exportieren",
     "log_types": {
       "journal_creation": "Tagebucherstellung",
       "journal_update": "Tagebuchaktualisierung",

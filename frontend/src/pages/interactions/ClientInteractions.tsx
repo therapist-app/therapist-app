@@ -158,6 +158,16 @@ const ClientInteractions = (): ReactElement => {
     [patientId, loadedLogTypes, notifyError]
   )
 
+  const exportToCSV = async (): Promise<void> => {
+    if (patientId) {
+      try {
+        await patientLogApi.exportAllLogsCsv(patientId)
+      } catch {
+        notifyError('Failed to export logs to CSV.')
+      }
+    }
+  }
+
   // Initial load - fetch only JOURNAL_CREATION data
   useEffect(() => {
     if (patientId) {
@@ -244,6 +254,17 @@ const ClientInteractions = (): ReactElement => {
               slotProps={{ textField: { size: 'small' } }}
               minDate={startDate || undefined}
             />
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              component='a'
+              onClick={exportToCSV}
+              target='_blank'
+              rel='noopener noreferrer'
+              sx={{ ...commonButtonStyles }}
+              size='small'
+            >
+              {t('patient_interactions.export_to_csv')}
+            </Button>
           </LocalizationProvider>
         </Box>
 

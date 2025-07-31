@@ -324,6 +324,7 @@
     "fetch_error": "Error fetching client interactions data.",
     "no_data": "No client log data available.",
     "interactions": "Interactions",
+    "export_to_csv": "Export to CSV",
     "log_types": {
       "journal_creation": "Journal Creation",
       "journal_update": "Journal Update",
