@@ -144,11 +144,12 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }, [chatbotConfig, isPatientTemplate])
 
+  const listEndRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (chatListRef.current) {
-      chatListRef.current.scrollTop = chatListRef.current.scrollHeight
-    }
-  }, [chat])
+  listEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+}, [chat, isChatbotTyping, isStreaming]);
+
 
   useEffect(() => {
     if (chatbotConfig?.id && selectedTab === 'sources') {
@@ -599,7 +600,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                             <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
                               {t('chatbot.you')}
                             </Typography>
-                            <Box
+                            <Paper
                               sx={{
                                 py: 1,
                                 px: 2,
@@ -609,7 +610,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                               }}
                             >
                               <Typography variant='body1'>{chatItem.question}</Typography>
-                            </Box>
+                            </Paper>
                           </Box>
                         </ListItem>
                       )}
@@ -636,9 +637,9 @@ const ChatBotTemplateEdit: React.FC = () => {
                             <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
                               {chatbotName || 'Chatbot'}
                             </Typography>
-                            <Box
+                            <Paper
                               sx={{
-                                px: 2,
+                                px: 1.5,
                                 bgcolor: '#E5E5E5',
                                 borderRadius: '20px',
                                 minHeight: '40px',
@@ -651,12 +652,13 @@ const ChatBotTemplateEdit: React.FC = () => {
                                 <span>.</span>
                                 <span>.</span>
                               </div>
-                            </Box>
+                            </Paper>
                           </Box>
                         </ListItem>
                       )}
                     </React.Fragment>
                   ))}
+                  <div ref={listEndRef} />
                 </List>
 
                 <Box
