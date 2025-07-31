@@ -18,6 +18,7 @@ import {
   Tabs,
   TextField,
   Typography,
+  TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton
 } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
@@ -25,6 +26,10 @@ import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import FileDownload from '../../generalComponents/FileDownload'
+import DeleteIcon from '../../icons/DeleteIcon'
 
 import {
   ChatbotTemplateOutputDTO,
@@ -32,7 +37,6 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
-import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import {
@@ -47,6 +51,8 @@ import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../u
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -69,6 +75,7 @@ const ChatBotTemplateEdit: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false)
   const [isActive, setIsActive] = useState<boolean>(false)
   const [isOnlyTemplateForClient, setIsOnlyTemplateForClient] = useState(false)
+  const [isUploadingFile, setIsUploadingFile] = useState(false)
   const isPatientTemplate = Boolean(
     chatbotConfig?.patientId && chatbotConfig.patientId.trim() !== ''
   )
@@ -366,6 +373,27 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }
 
+   const onDrop = useCallback((acceptedFiles: File[]) => {
+  acceptedFiles.forEach(handleFileUpload)          // re-use your upload helper
+}, [handleFileUpload])
+
+const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
+const dropzoneStyles: React.CSSProperties = {
+  border: '2px dashed #B4B4B4',
+  borderRadius: '12px',
+  padding: '32px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '200px',
+  backgroundColor: '#FFFFFF',
+  color: '#5B5B5B',
+}
+
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     if (!chatbotConfig?.id) {
       return
@@ -643,18 +671,82 @@ const ChatBotTemplateEdit: React.FC = () => {
             </Grid>
           </Grid>
         )}
+{selectedTab === 'sources' && (
+  <Box sx={{ mt: 3 }}>
+    <Typography variant="h6" sx={{ mb: 2 }}>
+      Chatbot Documents
+    </Typography>
+    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+      <Paper elevation={0} sx={{ width: 400 }}>
+        <div {...getRootProps()} style={dropzoneStyles}>
+          <input
+            {...getInputProps({
+              accept: '.pdf,.doc,.docx,.txt',
+            })}
+          />
+          {isUploadingFile ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
+              <Typography variant="subtitle1" sx={{ mt: 1 }}>
+                Click to upload a file or drag and drop it here
+              </Typography>
+              <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
+              </Typography>
+            </>
+          )}
+        </div>
+      </Paper>
+    </Box>
 
-        {selectedTab === 'sources' && (
-          <Box sx={{ mt: 3 }}>
-            <FilesTable
-              title='Template Files'
-              allDocuments={templateDocuments}
-              handleFileUpload={handleFileUpload}
-              handleDeleteFile={handleDeleteFile}
-              downloadFile={downloadFile}
-            />
-          </Box>
-        )}
+    <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>File name</TableCell>
+            <TableCell align="right">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {templateDocuments.length ? (
+            templateDocuments.map((doc) => (
+              <TableRow key={doc.id}>
+                <TableCell
+                  sx={{
+                    maxWidth: 400,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {doc.fileName}
+                </TableCell>
+                <TableCell align="right">
+                  <FileDownload
+                    download={() => downloadFile(doc.id ?? '')}
+                    fileName={doc.fileName ?? ''}
+                  />
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => handleDeleteFile(doc.id ?? '')}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={2}>No files uploaded yet.</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Box>
+)}
       </Layout>
     </>
   )
