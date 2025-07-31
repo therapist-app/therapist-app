@@ -1,3 +1,4 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import SendIcon from '@mui/icons-material/Send'
 import {
   Avatar,
@@ -7,6 +8,7 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -15,21 +17,24 @@ import {
   Select,
   Switch,
   Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Tabs,
   TextField,
   Typography,
-  TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton
 } from '@mui/material'
 import { AxiosError } from 'axios'
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { TbMessageChatbot } from 'react-icons/tb'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
-import { useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
-import FileDownload from '../../generalComponents/FileDownload'
-import DeleteIcon from '../../icons/DeleteIcon'
 
 import {
   ChatbotTemplateOutputDTO,
@@ -37,8 +42,10 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
+import FileDownload from '../../generalComponents/FileDownload'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
+import DeleteIcon from '../../icons/DeleteIcon'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -51,8 +58,6 @@ import { chatApi, chatbotTemplateApi, chatbotTemplateDocumentApi } from '../../u
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
 import { getCurrentLanguage } from '../../utils/languageUtil'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-
 
 const ChatBotTemplateEdit: React.FC = () => {
   const { t } = useTranslation()
@@ -373,26 +378,29 @@ const ChatBotTemplateEdit: React.FC = () => {
     }
   }
 
-   const onDrop = useCallback((acceptedFiles: File[]) => {
-  acceptedFiles.forEach(handleFileUpload)          // re-use your upload helper
-}, [handleFileUpload])
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach(handleFileUpload) // re-use your upload helper
+    },
+    [handleFileUpload]
+  )
 
-const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps } = useDropzone({ onDrop: onDrop })
 
-const dropzoneStyles: React.CSSProperties = {
-  border: '2px dashed #B4B4B4',
-  borderRadius: '12px',
-  padding: '32px',
-  textAlign: 'center',
-  cursor: 'pointer',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '200px',
-  backgroundColor: '#FFFFFF',
-  color: '#5B5B5B',
-}
+  const dropzoneStyles: React.CSSProperties = {
+    border: '2px dashed #B4B4B4',
+    borderRadius: '12px',
+    padding: '32px',
+    textAlign: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '200px',
+    backgroundColor: '#FFFFFF',
+    color: '#5B5B5B',
+  }
 
   const handleDeleteFile = async (fileId: string): Promise<void> => {
     if (!chatbotConfig?.id) {
@@ -671,82 +679,82 @@ const dropzoneStyles: React.CSSProperties = {
             </Grid>
           </Grid>
         )}
-{selectedTab === 'sources' && (
-  <Box sx={{ mt: 3 }}>
-    <Typography variant="h6" sx={{ mb: 2 }}>
-      Chatbot Documents
-    </Typography>
-    <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-      <Paper elevation={0} sx={{ width: 400 }}>
-        <div {...getRootProps()} style={dropzoneStyles}>
-          <input
-            {...getInputProps({
-              accept: '.pdf,.doc,.docx,.txt',
-            })}
-          />
-          {isUploadingFile ? (
-            <CircularProgress />
-          ) : (
-            <>
-              <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
-              <Typography variant="subtitle1" sx={{ mt: 1 }}>
-                Click to upload a file or drag and drop it here
-              </Typography>
-              <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
-              </Typography>
-            </>
-          )}
-        </div>
-      </Paper>
-    </Box>
-
-    <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>File name</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {templateDocuments.length ? (
-            templateDocuments.map((doc) => (
-              <TableRow key={doc.id}>
-                <TableCell
-                  sx={{
-                    maxWidth: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {doc.fileName}
-                </TableCell>
-                <TableCell align="right">
-                  <FileDownload
-                    download={() => downloadFile(doc.id ?? '')}
-                    fileName={doc.fileName ?? ''}
+        {selectedTab === 'sources' && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant='h6' sx={{ mb: 2 }}>
+              Chatbot Documents
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+              <Paper elevation={0} sx={{ width: 400 }}>
+                <div {...getRootProps()} style={dropzoneStyles}>
+                  <input
+                    {...getInputProps({
+                      accept: '.pdf,.doc,.docx,.txt',
+                    })}
                   />
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteFile(doc.id ?? '')}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={2}>No files uploaded yet.</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Box>
-)}
+                  {isUploadingFile ? (
+                    <CircularProgress />
+                  ) : (
+                    <>
+                      <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
+                      <Typography variant='subtitle1' sx={{ mt: 1 }}>
+                        Click to upload a file or drag and drop it here
+                      </Typography>
+                      <Typography variant='caption' display='block' sx={{ mt: 1 }}>
+                        Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
+                      </Typography>
+                    </>
+                  )}
+                </div>
+              </Paper>
+            </Box>
+
+            <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>File name</TableCell>
+                    <TableCell align='right'>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {templateDocuments.length ? (
+                    templateDocuments.map((doc) => (
+                      <TableRow key={doc.id}>
+                        <TableCell
+                          sx={{
+                            maxWidth: 400,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {doc.fileName}
+                        </TableCell>
+                        <TableCell align='right'>
+                          <FileDownload
+                            download={() => downloadFile(doc.id ?? '')}
+                            fileName={doc.fileName ?? ''}
+                          />
+                          <IconButton
+                            aria-label='delete'
+                            onClick={() => handleDeleteFile(doc.id ?? '')}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={2}>No files uploaded yet.</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
       </Layout>
     </>
   )
