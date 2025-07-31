@@ -52,22 +52,30 @@ const ConversationSummary = (): ReactElement => {
     }
 
     if (status === 'failed') {
-      if (error === PRIVATE_MESSAGE) {
-        return (
-          <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
-            {t('chatbot.conversation_private')}
-          </Typography>
-        )
-      }
-      return <Alert severity='error'>{error}</Alert>
+    if (error === PRIVATE_MESSAGE) {
+      return (
+        <Typography sx={{ mt: 2 }} whiteSpace="pre-line">
+          {t('chatbot.conversation_private')}
+        </Typography>
+      );
     }
-
-    return (
-      <Typography sx={{ mt: 2 }} whiteSpace='pre-line'>
-        {summary}
-      </Typography>
-    )
+    return <Alert severity="error">{error}</Alert>;
   }
+
+  if (!summary?.trim()) {
+    return (
+      <Typography sx={{ mt: 2 }} whiteSpace="pre-line">
+        {t('chatbot.no_conversations_exist')}
+      </Typography>
+    );
+  }
+
+  return (
+    <Typography sx={{ mt: 2 }} whiteSpace="pre-line">
+      {summary}
+    </Typography>
+  );
+};
 
   return (
     <Layout>

@@ -108,6 +108,7 @@
     "conversation_summary": "Conversation Summary",
     "conversations_from": "Conversations from",
     "conversation_private": "This conversation of the client with the chatbot is private",
+    "no_conversations_exist": "No Conversations Exist",
     "loading_conversation_summary": "Loading conversation summary...",
     "what_would_you_like_to_name_your_bot": "What would you like to name your bot?",
     "enter_bot_name": "Enter bot name",

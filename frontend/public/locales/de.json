@@ -108,6 +108,7 @@
     "conversation_summary": "Gesprächszusammenfassung",
     "conversations_from": "Gespräche von",
     "conversation_private": "Dieses Gespräch des Klienten mit dem Chatbot ist privat.",
+    "no_conversations_exist": "Keine Gespräche vorhanden.",
     "loading_conversation_summary": "Lade Gesprächszusammenfassung...",
     "what_would_you_like_to_name_your_bot": "Wie möchten Sie Ihren Bot nennen?",
     "enter_bot_name": "Bot-Namen eingeben",

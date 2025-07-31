@@ -1,10 +1,8 @@
-// chatbotTemplateDocumentSlice.ts
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { ChatbotTemplateDocumentOutputDTO } from '../api'
 import { chatbotTemplateDocumentApi } from '../utils/api'
 
-/** Slice state --------------------------------------------------------------*/
 interface ChatbotTemplateDocumentState {
   allDocumentsOfTemplate: ChatbotTemplateDocumentOutputDTO[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -17,9 +15,8 @@ const initialState: ChatbotTemplateDocumentState = {
   error: null,
 }
 
-/** Thunks -------------------------------------------------------------------*/
 export const createDocumentForTemplate = createAsyncThunk<
-  void, // ⬅️ no payload expected
+  void,
   { file: File; templateId: string }
 >('chatbotTemplateDocument/create', async ({ file, templateId }) => {
   await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
@@ -41,27 +38,23 @@ export const deleteDocumentOfTemplate = createAsyncThunk(
   }
 )
 
-/** Slice --------------------------------------------------------------------*/
 const chatbotTemplateDocumentSlice = createSlice({
   name: 'chatbotTemplateDocument',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    /* ───────── create ───────── */
     builder.addCase(createDocumentForTemplate.pending, (state) => {
       state.status = 'loading'
       state.error = null
     })
     builder.addCase(createDocumentForTemplate.fulfilled, (state) => {
       state.status = 'succeeded'
-      // we don’t push a payload any more; the UI reloads list afterward
     })
     builder.addCase(createDocumentForTemplate.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.error.message ?? 'Something went wrong'
     })
 
-    /* ───────── list ───────── */
     builder.addCase(getAllDocumentsOfTemplate.pending, (state) => {
       state.status = 'loading'
       state.error = null
@@ -75,7 +68,6 @@ const chatbotTemplateDocumentSlice = createSlice({
       state.error = action.error.message ?? 'Something went wrong'
     })
 
-    /* ───────── delete ───────── */
     builder.addCase(deleteDocumentOfTemplate.pending, (state) => {
       state.status = 'loading'
       state.error = null
