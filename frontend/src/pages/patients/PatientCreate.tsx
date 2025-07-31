@@ -89,6 +89,7 @@ const PatientCreate = (): ReactElement => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const currentLocale = getCurrentLocale()
 
   const [name, setName] = useState('')
   const [age, setAge] = useState('')
@@ -143,7 +144,6 @@ const PatientCreate = (): ReactElement => {
   >('info')
 
   const [refreshTherapistCounter, setRefreshTherapistCounter] = useState(0)
-  const currentLocale = getCurrentLocale()
 
   const handleChange = (index: number, field: keyof Complaint, value: string): void => {
     const updated = [...complaints]

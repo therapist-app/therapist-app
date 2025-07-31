@@ -12,7 +12,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AxiosError } from 'axios'
+import { format, parseISO } from 'date-fns'
 import React, { JSX, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -23,6 +27,7 @@ import Layout from '../../generalComponents/Layout'
 import { updatePatient } from '../../store/patientSlice'
 import { RootState } from '../../store/store'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { getCurrentLocale } from '../../utils/dateUtil'
 import { handleError } from '../../utils/handleError'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
@@ -46,6 +51,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const currentLocale = getCurrentLocale()
 
   const patient = useSelector((state: RootState) =>
     state.patient.allPatientsOfTherapist.find((p) => p.id === patientId?.toString())
@@ -218,6 +224,12 @@ const PatientDetailsUpdate = (): JSX.Element => {
     setComplaints(updated)
   }
 
+  const dateValue = dateOfAdmission ? parseISO(dateOfAdmission) : null
+  const handleDateChange = (newValue: Date | null): void => {
+    const formattedDate = newValue ? format(newValue, 'yyyy-MM-dd') : ''
+    setDateOfAdmission(formattedDate)
+  }
+
   const handleAddComplaint = (): void => {
     setComplaints([
       ...complaints,
@@ -375,15 +387,21 @@ const PatientDetailsUpdate = (): JSX.Element => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              type='date'
-              label={t('patient_create.patient_date_of_admission')}
-              InputLabelProps={{ shrink: true }}
-              value={dateOfAdmission}
-              onChange={(e) => setDateOfAdmission(e.target.value)}
-              disabled={!isEditing}
-            />
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label={t('patient_create.patient_date_of_admission')}
+                value={dateValue}
+                onChange={handleDateChange}
+                disabled={!isEditing}
+                format='yyyy-MM-dd'
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    InputLabelProps: { shrink: true },
+                  },
+                }}
+              />
+            </LocalizationProvider>
           </Grid>
         </Grid>
 
