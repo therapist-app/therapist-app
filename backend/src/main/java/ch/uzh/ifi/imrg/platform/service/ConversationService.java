@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.ConversationSummaryOutputDTO;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,7 +42,14 @@ public class ConversationService {
       return dto;
 
     } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {
-      if (e.getStatusCode().is5xxServerError()) {
+
+      if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+        ConversationSummaryOutputDTO dto = new ConversationSummaryOutputDTO();
+        dto.setConversationSummary("");
+        return dto;
+      }
+
+      if (e.getStatusCode() == HttpStatus.FORBIDDEN) {
         throw new PrivateConversationException(
             "The conversation of the client with the chatbot is private.");
       }
