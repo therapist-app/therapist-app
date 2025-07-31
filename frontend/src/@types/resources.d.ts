@@ -30,7 +30,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Privater Server)",
       "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
       "llmModel": "LLM-Modell",
-      "password_changed_success": "Passwort erfolgreich geändert"
+      "password_changed_success": "Passwort erfolgreich geändert",
+      "description": {
+        "LOCAL_UZH": "Das UZH LLM ist ein selbst-gehostetes Modell, das auf einem privaten Server betrieben wird. Ihr Gesprächsverlauf wird nicht gespeichert, was ein hohes Maß an Datenschutz und Sicherheit gewährleistet. Der Nachteil dieser erhöhten Privatsphäre ist, dass dieses Modell nicht so leistungsstark ist wie die cloud-gehostete Alternative. Daher können die Antworten weniger detailliert oder präzise sein.",
+        "AZURE_OPENAI": "Das OpenAI LLM wird auf der Cloud-Infrastruktur von Microsoft Azure gehostet, wobei sich die Server in Schweden befinden. Obwohl diese Konfiguration sicher ist, unterscheidet sich das Datenschutzniveau von dem des selbst-gehosteten UZH-Modells. Der Hauptvorteil dieses Modells ist seine höhere Leistungsfähigkeit, was in der Regel zu umfassenderen und genaueren Antworten führt."
+      }
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -593,7 +597,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Private Server)",
       "AZURE_OPENAI": "OpenAI LLM (Azure Cloud)",
       "llmModel": "LLM Model",
-      "password_changed_success": "Successfully changed password"
+      "password_changed_success": "Successfully changed password",
+      "description": {
+        "LOCAL_UZH": "The UZH LLM is a self-hosted model running on a private server. Your conversation history is not stored, ensuring a high level of data privacy and security. The trade-off for this enhanced privacy is that this model is not as powerful as the cloud-hosted alternative. As a result, its answers may be less detailed or accurate.",
+        "AZURE_OPENAI": "The OpenAI LLM is hosted on Microsoft Azure's cloud infrastructure, with servers located in Sweden. While this setup is secure, the data privacy level differs from the self-hosted UZH model. The primary advantage of this model is its superior performance, which generally results in more comprehensive and accurate answers."
+      }
     },
     "layout": {
       "dashboard": "Dashboard",
@@ -1156,7 +1164,11 @@ interface Resources {
       "LOCAL_UZH": "UZH LLM (Приватний сервер)",
       "AZURE_OPENAI": "OpenAI LLM (Хмара Azure)",
       "llmModel": "Модель LLM",
-      "password_changed_success": "Пароль успішно змінено"
+      "password_changed_success": "Пароль успішно змінено",
+      "description": {
+        "LOCAL_UZH": "Модель UZH LLM розміщена на приватному сервері. Історія вашої розмови не зберігається, що забезпечує високий рівень конфіденційності та безпеки даних. Недоліком такої підвищеної конфіденційності є те, що ця модель не така потужна, як хмарна альтернатива. В результаті її відповіді можуть бути менш детальними або точними.",
+        "AZURE_OPENAI": "Модель OpenAI LLM розміщена на хмарній інфраструктурі Microsoft Azure, сервери якої знаходяться у Швеції. Хоча ця система є безпечною, рівень конфіденційності даних відрізняється від самостійно розміщеної моделі UZH. Основною перевагою цієї моделі є її вища продуктивність, що зазвичай призводить до більш вичерпних і точних відповідей."
+      }
     },
     "layout": {
       "dashboard": "Панель керування",

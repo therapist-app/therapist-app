@@ -108,6 +108,7 @@ const CreateCounselingPlanPhaseGoal = ({
             onChange={handleChange}
           />
           <TextField
+            multiline
             label={t('counseling_plan.goal_description')}
             name='goalDescription'
             value={formValues.goalDescription}
