@@ -87,12 +87,10 @@ const transformLogsToInteractionData = (
 const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
   const hourMap = new Map<number, Map<string, number>>()
 
-  // Initialize hour structure
   Array.from({ length: 24 }).forEach((_, hour) => {
     hourMap.set(hour, new Map())
   })
 
-  // Process data
   data.forEach((item) => {
     const shortDate = format(new Date(item.date), 'MM-dd')
     const hourData = hourMap.get(item.hour)
@@ -101,7 +99,6 @@ const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): He
     }
   })
 
-  // Convert to final format
   return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
     id: hour.toString().padStart(2, '0'),
     data: dateRange.map((date) => ({
@@ -119,13 +116,11 @@ const ClientInteractions = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
+  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
   const [loading, setLoading] = useState<boolean>(true)
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
   )
-
-  // Track which log types have been loaded
-  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
 
   // Memoize the date range calculation
   const dateRange = useMemo(() => {
@@ -214,19 +209,6 @@ const ClientInteractions = (): ReactElement => {
     return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
   }, [heatmapData])
 
-  if (loading) {
-    return (
-      <Layout>
-        <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
-          <Typography>{t('patient_interactions.loading')}</Typography>
-          <div style={{ marginTop: '20px' }}>
-            <CircularProgress />
-          </div>
-        </Box>
-      </Layout>
-    )
-  }
-
   return (
     <Layout>
       <Stack spacing={2}>
@@ -298,44 +280,60 @@ const ClientInteractions = (): ReactElement => {
           </Button>
         </Box>
 
-        <div style={{ height: '650px' }}>
-          <ResponsiveHeatMapCanvas
-            data={heatmapData}
-            margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
-            valueFormat='>-.0f'
-            axisTop={null}
-            axisBottom={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: t('patient_interactions.date'),
-              legendPosition: 'middle',
-              legendOffset: 50,
+        {loading ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '50px',
             }}
-            axisLeft={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: t('patient_interactions.time'),
-              legendPosition: 'middle',
-              legendOffset: -70,
-              format: (value) => `${value}:00`,
-            }}
-            colors={{
-              type: 'sequential',
-              scheme: 'purples',
-              minValue: 0,
-              maxValue: maxValue,
-            }}
-            emptyColor='#f8f9fa'
-            borderColor='#ffffff'
-            borderWidth={1}
-            enableLabels={false}
-            animate={false}
-            motionConfig='gentle'
-            tooltip={HeatmapTooltip}
-          />
-        </div>
+          >
+            <Typography>{t('patient_interactions.loading')}</Typography>
+            <div style={{ marginTop: '20px' }}>
+              <CircularProgress />
+            </div>
+          </div>
+        ) : (
+          <div style={{ height: '650px' }}>
+            <ResponsiveHeatMapCanvas
+              data={heatmapData}
+              margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
+              valueFormat='>-.0f'
+              axisTop={null}
+              axisBottom={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+                legend: t('patient_interactions.date'),
+                legendPosition: 'middle',
+                legendOffset: 50,
+              }}
+              axisLeft={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+                legend: t('patient_interactions.time'),
+                legendPosition: 'middle',
+                legendOffset: -70,
+                format: (value) => `${value}:00`,
+              }}
+              colors={{
+                type: 'sequential',
+                scheme: 'purples',
+                minValue: 0,
+                maxValue: maxValue,
+              }}
+              emptyColor='#f8f9fa'
+              borderColor='#ffffff'
+              borderWidth={1}
+              enableLabels={false}
+              animate={false}
+              motionConfig='gentle'
+              tooltip={HeatmapTooltip}
+            />
+          </div>
+        )}
       </Stack>
     </Layout>
   )
