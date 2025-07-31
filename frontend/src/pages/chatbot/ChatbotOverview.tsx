@@ -272,12 +272,12 @@ const ChatbotOverview = (): ReactElement => {
               {bot.chatbotName || t('dashboard.unnamed_bot')}
             </Typography>
 
-            <Box display='flex' alignItems='center' gap={1}>
+            <Box display='flex' alignItems='center' gap={1} marginRight={2}>
               {bot.patientId &&
                 (bot.isActive ? (
-                  <Chip size='small' color='success' label='Active' />
+                  <Chip size='small' color='success' label={t('chatbot.active')} />
                 ) : (
-                  <Chip size='small' variant='outlined' label='Inactive' />
+                  <Chip size='small' variant='outlined' label={t('chatbot.inactive')} />
                 ))}
             </Box>
           </Box>
@@ -285,7 +285,7 @@ const ChatbotOverview = (): ReactElement => {
           <Typography variant='body1' sx={{ mt: 0.25 }}>
             {t('dashboard.role')}: {bot.chatbotRole}
           </Typography>
-          <Typography variant='body1'>{`Tone: ${bot.chatbotTone}`}</Typography>
+          <Typography variant='body1'>{`${t('chatbot.conversation_tone')}: ${bot.chatbotTone}`}</Typography>
 
           <Box
             sx={{
@@ -377,7 +377,7 @@ const ChatbotOverview = (): ReactElement => {
         <MenuItem onClick={handleClone}>{t('dashboard.clone')}</MenuItem>
 
         {onlyOnePatientTemplateLeft && currentChatbot?.id === patientTemplates[0]?.id ? (
-          <Tooltip title='Cannot delete the last template'>
+          <Tooltip title={t('chatbot.cannot_delete_last_template')}>
             <span>
               <MenuItem disabled>{t('dashboard.delete')}</MenuItem>
             </span>

@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import React from 'react'
@@ -106,16 +107,21 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
                     {document.fileName}
                   </TableCell>
                   <TableCell align='right'>
-                    <FileDownload
-                      download={() => wrappedDownload(document.id ?? '')}
-                      fileName={document.fileName ?? ''}
-                    />
-                    <IconButton
-                      aria-label='delete'
-                      onClick={() => wrappedDelete(document.id ?? '')}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title={t('patient_detail.download')} arrow>
+                      <FileDownload
+                        download={() => wrappedDownload(document.id ?? '')}
+                        fileName={document.fileName ?? ''}
+                      />
+                    </Tooltip>
+
+                    <Tooltip title={t('patient_detail.delete')} arrow>
+                      <IconButton
+                        aria-label='delete'
+                        onClick={() => wrappedDelete(document.id ?? '')}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
