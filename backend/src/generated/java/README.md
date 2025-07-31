@@ -279,6 +279,7 @@ Class | Method | HTTP request | Description
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
  - [PutSharingDTOPatientAPI](docs/PutSharingDTOPatientAPI.md)
  - [ResetPasswordDTOPatientAPI](docs/ResetPasswordDTOPatientAPI.md)
+ - [SharedInputFieldOutputDTOPatientAPI](docs/SharedInputFieldOutputDTOPatientAPI.md)
  - [UpdateChatbotDTOPatientAPI](docs/UpdateChatbotDTOPatientAPI.md)
  - [UpdateCoachEmailDTOPatientAPI](docs/UpdateCoachEmailDTOPatientAPI.md)
  - [UpdateMeetingDTOPatientAPI](docs/UpdateMeetingDTOPatientAPI.md)

@@ -16,6 +16,7 @@ package ch.uzh.ifi.imrg.generated.model;
 import java.util.Objects;
 import java.util.Arrays;
 import ch.uzh.ifi.imrg.generated.model.ExerciseMoodOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.SharedInputFieldOutputDTOPatientAPI;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_START_TIME,
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_END_TIME,
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_FEEDBACK,
+  ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_SHARED_INPUT_FIELDS,
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_MOODS_BEFORE,
   ExerciseInformationOutputDTOPatientAPI.JSON_PROPERTY_MOODS_AFTER
 })
@@ -49,6 +51,9 @@ public class ExerciseInformationOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_FEEDBACK = "feedback";
   private String feedback;
+
+  public static final String JSON_PROPERTY_SHARED_INPUT_FIELDS = "sharedInputFields";
+  private List<SharedInputFieldOutputDTOPatientAPI> sharedInputFields;
 
   public static final String JSON_PROPERTY_MOODS_BEFORE = "moodsBefore";
   private List<ExerciseMoodOutputDTOPatientAPI> moodsBefore;
@@ -137,6 +142,40 @@ public class ExerciseInformationOutputDTOPatientAPI {
   }
 
 
+  public ExerciseInformationOutputDTOPatientAPI sharedInputFields(List<SharedInputFieldOutputDTOPatientAPI> sharedInputFields) {
+    
+    this.sharedInputFields = sharedInputFields;
+    return this;
+  }
+
+  public ExerciseInformationOutputDTOPatientAPI addSharedInputFieldsItem(SharedInputFieldOutputDTOPatientAPI sharedInputFieldsItem) {
+    if (this.sharedInputFields == null) {
+      this.sharedInputFields = new ArrayList<>();
+    }
+    this.sharedInputFields.add(sharedInputFieldsItem);
+    return this;
+  }
+
+   /**
+   * Get sharedInputFields
+   * @return sharedInputFields
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SHARED_INPUT_FIELDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<SharedInputFieldOutputDTOPatientAPI> getSharedInputFields() {
+    return sharedInputFields;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_SHARED_INPUT_FIELDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSharedInputFields(List<SharedInputFieldOutputDTOPatientAPI> sharedInputFields) {
+    this.sharedInputFields = sharedInputFields;
+  }
+
+
   public ExerciseInformationOutputDTOPatientAPI moodsBefore(List<ExerciseMoodOutputDTOPatientAPI> moodsBefore) {
     
     this.moodsBefore = moodsBefore;
@@ -216,13 +255,14 @@ public class ExerciseInformationOutputDTOPatientAPI {
     return Objects.equals(this.startTime, exerciseInformationOutputDTO.startTime) &&
         Objects.equals(this.endTime, exerciseInformationOutputDTO.endTime) &&
         Objects.equals(this.feedback, exerciseInformationOutputDTO.feedback) &&
+        Objects.equals(this.sharedInputFields, exerciseInformationOutputDTO.sharedInputFields) &&
         Objects.equals(this.moodsBefore, exerciseInformationOutputDTO.moodsBefore) &&
         Objects.equals(this.moodsAfter, exerciseInformationOutputDTO.moodsAfter);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, feedback, moodsBefore, moodsAfter);
+    return Objects.hash(startTime, endTime, feedback, sharedInputFields, moodsBefore, moodsAfter);
   }
 
   @Override
@@ -232,6 +272,7 @@ public class ExerciseInformationOutputDTOPatientAPI {
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    feedback: ").append(toIndentedString(feedback)).append("\n");
+    sb.append("    sharedInputFields: ").append(toIndentedString(sharedInputFields)).append("\n");
     sb.append("    moodsBefore: ").append(toIndentedString(moodsBefore)).append("\n");
     sb.append("    moodsAfter: ").append(toIndentedString(moodsAfter)).append("\n");
     sb.append("}");

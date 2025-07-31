@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.LogOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.LogOutputDTOPatientAPI.LogTypeEnum;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.LogOutputDTO;
@@ -8,6 +9,7 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.CoachLogMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -58,5 +60,15 @@ public class PatientLogService {
       logger.error("Error fetching logs for patient {} and type {}", patientId, logType, e);
       throw new RuntimeException("Failed to retrieve logs", e);
     }
+  }
+
+  public List<LogOutputDTO> listAllForPatient(String patientId, String therapistId) {
+    return allLogTypes().stream()
+        .flatMap(type -> listAll(patientId, type, therapistId).stream())
+        .toList();
+  }
+
+  private List<String> allLogTypes() {
+    return Arrays.stream(LogTypeEnum.values()).map(LogTypeEnum::toString).toList();
   }
 }
