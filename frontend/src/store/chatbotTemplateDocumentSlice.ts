@@ -15,12 +15,12 @@ const initialState: ChatbotTemplateDocumentState = {
   error: null,
 }
 
-export const createDocumentForTemplate = createAsyncThunk<
-  void,
-  { file: File; templateId: string }
->('chatbotTemplateDocument/create', async ({ file, templateId }) => {
-  await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
-})
+export const createDocumentForTemplate = createAsyncThunk<void, { file: File; templateId: string }>(
+  'chatbotTemplateDocument/create',
+  async ({ file, templateId }) => {
+    await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
+  }
+)
 
 export const getAllDocumentsOfTemplate = createAsyncThunk(
   'chatbotTemplateDocument/getAll',
