@@ -12,7 +12,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { ResponsiveHeatMap } from '@nivo/heatmap'
+import { ResponsiveHeatMapCanvas  } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -84,31 +84,31 @@ const transformLogsToInteractionData = (
 }
 
 const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
-  const hourMap = new Map<number, Map<string, number>>();
-  
+  const hourMap = new Map<number, Map<string, number>>()
+
   // Initialize hour structure
   Array.from({ length: 24 }).forEach((_, hour) => {
-    hourMap.set(hour, new Map());
-  });
+    hourMap.set(hour, new Map())
+  })
 
   // Process data
   data.forEach((item) => {
-    const shortDate = format(new Date(item.date), 'MM-dd');
-    const hourData = hourMap.get(item.hour);
+    const shortDate = format(new Date(item.date), 'MM-dd')
+    const hourData = hourMap.get(item.hour)
     if (hourData) {
-      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value);
+      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value)
     }
-  });
+  })
 
   // Convert to final format
   return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
     id: hour.toString().padStart(2, '0'),
-    data: dateRange.map(date => ({
+    data: dateRange.map((date) => ({
       x: format(date, 'MM-dd'),
       y: dateCounts.get(format(date, 'MM-dd')) || 0,
     })),
-  }));
-};
+  }))
+}
 
 const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
@@ -129,17 +129,19 @@ const ClientInteractions = (): ReactElement => {
 
   // Memoize the date range calculation
   const dateRange = useMemo(() => {
-    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : [];
-  }, [startDate, endDate]);
+    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : []
+  }, [startDate, endDate])
 
   // Fetch data for a specific log type
   const fetchLogTypeData = async (logType: LogType): Promise<void> => {
-    if (!patientId || loadedLogTypes.has(logType)) return;
+    if (!patientId || loadedLogTypes.has(logType)) {
+      return
+    }
 
     try {
       setLoading(true)
       const response = await patientLogApi.listLogs(patientId, logType)
-      
+
       const normalizedData = response.data.map((apiDto) => ({
         id: apiDto.id || '',
         patientId: apiDto.patientId || '',
@@ -211,7 +213,9 @@ const ClientInteractions = (): ReactElement => {
   // console.log('Heatmap Data:', heatmapData)
 
   const maxValue = useMemo(() => {
-    if (!heatmapData || heatmapData.length === 0) return 3
+    if (!heatmapData || heatmapData.length === 0) {
+      return 3
+    }
     const calculatedMax = Math.max(
       ...heatmapData.flatMap((hourData) => hourData.data.map((d) => d.y))
     )
@@ -313,7 +317,7 @@ const ClientInteractions = (): ReactElement => {
         </Box>
 
         <div style={{ height: '650px' }}>
-          <ResponsiveHeatMap
+          <ResponsiveHeatMapCanvas
             data={heatmapData}
             margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
             valueFormat='>-.0f'
