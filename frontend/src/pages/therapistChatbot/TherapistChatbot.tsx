@@ -64,9 +64,9 @@ const TherapistChatbot = (): ReactElement => {
   }
 
   useEffect((): (() => void) => {
-  const id = requestAnimationFrame(scrollToBottom)
-  return () => cancelAnimationFrame(id)
-}, [messages, typingStream, chatbotStatus])
+    const id = requestAnimationFrame(scrollToBottom)
+    return () => cancelAnimationFrame(id)
+  }, [messages, typingStream, chatbotStatus])
 
   return (
     <Layout>
