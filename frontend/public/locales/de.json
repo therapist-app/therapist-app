@@ -487,7 +487,8 @@
     "meeting_updated_successfully": "Termin erfolgreich aktualisiert",
     "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
     "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
-    "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht"
+    "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
+    "notes_summary": "Besprechungszusammenfassung"
   },
   "gad7test": {
     "title": "GAD-7-Bewertung",

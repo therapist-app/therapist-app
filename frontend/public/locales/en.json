@@ -487,7 +487,8 @@
     "meeting_updated_successfully": "Successfully updated meeting",
     "note_created_successfully": "Successfully created meeting note",
     "note_updated_successfully": "Successfully updated meeting note",
-    "note_deleted_successfully": "Successfully deleted meeting note"
+    "note_deleted_successfully": "Successfully deleted meeting note",
+    "notes_summary": "Meeting Notes Summary"
   },
   "gad7test": {
     "title": "GAD-7 Assessment",

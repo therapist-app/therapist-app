@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   CreateMeetingDTO,
   CreateMeetingNoteDTO,
+  CreateMeetingNoteSummaryDTO,
   MeetingOutputDTO,
   UpdateMeetingDTO,
   UpdateMeetingNoteDTO,
@@ -27,6 +28,14 @@ export const createMeeting = createAsyncThunk(
   'createMeeting',
   async (createMeetingDTO: CreateMeetingDTO) => {
     const response = await meetingApi.createMeeting(createMeetingDTO)
+    return response.data
+  }
+)
+
+export const createMeetingNoteSummary = createAsyncThunk(
+  'createMeetingNoteSummary',
+  async (dto: CreateMeetingNoteSummaryDTO) => {
+    const response = await meetingApi.createMeetingNoteSummary(dto)
     return response.data
   }
 )

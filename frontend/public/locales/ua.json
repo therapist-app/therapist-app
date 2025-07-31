@@ -487,7 +487,8 @@
     "meeting_updated_successfully": "Зустріч успішно оновлено",
     "note_created_successfully": "Нотатку до зустрічі успішно створено",
     "note_updated_successfully": "Нотатку до зустрічі успішно оновлено",
-    "note_deleted_successfully": "Нотатку до зустрічі успішно видалено"
+    "note_deleted_successfully": "Нотатку до зустрічі успішно видалено",
+    "notes_summary": "Підсумок нотаток зустрічі"
   },
   "gad7test": {
     "title": "Оцінка за шкалою GAD-7",

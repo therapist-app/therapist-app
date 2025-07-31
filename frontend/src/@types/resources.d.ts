@@ -488,7 +488,8 @@ interface Resources {
       "meeting_updated_successfully": "Termin erfolgreich aktualisiert",
       "note_created_successfully": "Notiz zum Termin erfolgreich erstellt",
       "note_updated_successfully": "Notiz zum Termin erfolgreich aktualisiert",
-      "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht"
+      "note_deleted_successfully": "Notiz zum Termin erfolgreich gelöscht",
+      "notes_summary": "Besprechungszusammenfassung"
     },
     "gad7test": {
       "title": "GAD-7-Bewertung",
@@ -1049,7 +1050,8 @@ interface Resources {
       "meeting_updated_successfully": "Successfully updated meeting",
       "note_created_successfully": "Successfully created meeting note",
       "note_updated_successfully": "Successfully updated meeting note",
-      "note_deleted_successfully": "Successfully deleted meeting note"
+      "note_deleted_successfully": "Successfully deleted meeting note",
+      "notes_summary": "Meeting Notes Summary"
     },
     "gad7test": {
       "title": "GAD-7 Assessment",
@@ -1610,7 +1612,8 @@ interface Resources {
       "meeting_updated_successfully": "Зустріч успішно оновлено",
       "note_created_successfully": "Нотатку до зустрічі успішно створено",
       "note_updated_successfully": "Нотатку до зустрічі успішно оновлено",
-      "note_deleted_successfully": "Нотатку до зустрічі успішно видалено"
+      "note_deleted_successfully": "Нотатку до зустрічі успішно видалено",
+      "notes_summary": "Підсумок нотаток зустрічі"
     },
     "gad7test": {
       "title": "Оцінка за шкалою GAD-7",

@@ -2,19 +2,25 @@ package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.CreateMeetingDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.UpdateMeetingDTOPatientAPI;
+import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.Meeting;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
+import ch.uzh.ifi.imrg.platform.enums.LLMModel;
 import ch.uzh.ifi.imrg.platform.enums.MeetingStatus;
 import ch.uzh.ifi.imrg.platform.repository.MeetingRepository;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatMessageDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingDTO;
+import ch.uzh.ifi.imrg.platform.rest.dto.input.CreateMeetingNoteSummaryDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.MeetingsMapper;
+import ch.uzh.ifi.imrg.platform.utils.ChatRole;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +74,26 @@ public class MeetingService {
     entityManager.refresh(createdMeeting);
 
     return createdMeeting;
+  }
+
+  public String createMeetingNoteSummary(CreateMeetingNoteSummaryDTO dto, String therapistId) {
+    Meeting meeting = meetingRepository.getReferenceById(dto.getMeetingId());
+
+    SecurityUtil.checkOwnership(meeting, therapistId);
+    Patient patient = meeting.getPatient();
+    String systemPrompt = patient.toLLMContext(0);
+    String userPrompt =
+        "Create a summary of the following meeting notes (meeting ID: "
+            + dto.getMeetingId()
+            + "). Do not mention that this is a summary, only provide the summary itself.\n\n"
+            + meeting.toLLMContext(0);
+
+    List<ChatMessageDTO> chatMessages = new ArrayList<>();
+    chatMessages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    chatMessages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
+
+    LLMModel llmModel = patient.getTherapist().getLlmModel();
+    return LLMFactory.getInstance(llmModel).callLLM(chatMessages, dto.getLanguage());
   }
 
   public MeetingOutputDTO getMeeting(String meetingId, String therapistId) {

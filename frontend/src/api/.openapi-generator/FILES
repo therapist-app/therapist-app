@@ -48,6 +48,7 @@ models/create-exercise-component-dto.ts
 models/create-exercise-dto.ts
 models/create-meeting-dto.ts
 models/create-meeting-note-dto.ts
+models/create-meeting-note-summary-dto.ts
 models/create-patient-document-from-therapist-document-dto.ts
 models/create-patient-dto.ts
 models/create-therapist-dto.ts
