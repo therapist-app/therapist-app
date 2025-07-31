@@ -12,9 +12,9 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { ResponsiveHeatMap } from '@nivo/heatmap'
+import { ResponsiveHeatMapCanvas } from '@nivo/heatmap'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { LogType } from 'vite'
@@ -72,7 +72,6 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
 const transformLogsToInteractionData = (
   logs: LogOutputDTO[] | undefined | null
 ): InteractionData[] => {
-  // Handle cases where logs might be undefined or null
   if (!logs || !Array.isArray(logs)) {
     return []
   }
@@ -85,46 +84,26 @@ const transformLogsToInteractionData = (
   }))
 }
 
-const transformDataForHeatmap = (
-  data: InteractionData[],
-  startDate: Date | null,
-  endDate: Date | null
-): HeatMapData[] => {
-  const hours = Array.from({ length: 24 }, (_, i) => i)
-  const daysMap = new Map<string, number[]>()
+const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
+  const hourMap = new Map<number, Map<string, number>>()
 
-  if (startDate && endDate) {
-    const allDates = eachDayOfInterval({ start: startDate, end: endDate })
-    allDates.forEach((date) => {
-      const shortDate = format(date, 'MM-dd')
-      daysMap.set(shortDate, Array(24).fill(0))
-    })
-  }
+  Array.from({ length: 24 }).forEach((_, hour) => {
+    hourMap.set(hour, new Map())
+  })
 
   data.forEach((item) => {
     const shortDate = format(new Date(item.date), 'MM-dd')
-    if (!daysMap.has(shortDate)) {
-      daysMap.set(shortDate, Array(24).fill(0))
+    const hourData = hourMap.get(item.hour)
+    if (hourData) {
+      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value)
     }
-    const dayData = daysMap.get(shortDate)!
-    dayData[item.hour] += item.value
   })
 
-  const sortedDates = Array.from(daysMap.keys()).sort((a, b) => {
-    const findYear = (shortDate: string): string => {
-      const match = data.find((item) => format(new Date(item.date), 'MM-dd') === shortDate)
-      return match ? format(new Date(match.date), 'yyyy') : String(new Date().getFullYear())
-    }
-    const dateA = new Date(`${findYear(a)}-${a}`)
-    const dateB = new Date(`${findYear(b)}-${b}`)
-    return dateA.getTime() - dateB.getTime()
-  })
-
-  return hours.map((hour) => ({
-    id: `${hour.toString().padStart(2, '0')}`,
-    data: sortedDates.map((date) => ({
-      x: date,
-      y: daysMap.get(date)![hour],
+  return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
+    id: hour.toString().padStart(2, '0'),
+    data: dateRange.map((date) => ({
+      x: format(date, 'MM-dd'),
+      y: dateCounts.get(format(date, 'MM-dd')) || 0,
     })),
   }))
 }
@@ -133,116 +112,76 @@ const ClientInteractions = (): ReactElement => {
   const { t } = useTranslation()
   const { notifyError } = useNotify()
   const { patientId } = useParams()
-  const [error, setError] = useState<string | null>(null)
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
   const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
 
-  const [loadingStates, setLoadingStates] = useState<Record<LogType, boolean>>(
-    LOG_TYPES.reduce((acc, type) => ({ ...acc, [type]: true }), {} as Record<LogType, boolean>)
-  )
-
-  const isLoading = useMemo(() => {
-    return Object.values(loadingStates).some(Boolean)
-  }, [loadingStates])
-
+  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
+  const [loading, setLoading] = useState<boolean>(true)
   const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
     {} as Record<LogType, LogOutputDTO[]>
   )
 
-  useEffect(() => {
-    if (!patientId) {
-      return
-    }
+  // Memoize the date range calculation
+  const dateRange = useMemo(() => {
+    return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : []
+  }, [startDate, endDate])
 
-    const abortController = new AbortController()
-
-    const fetchData = async (): Promise<void> => {
-      try {
-        setError(null)
-        setLoadingStates(
-          LOG_TYPES.reduce(
-            (acc, type) => ({ ...acc, [type]: true }),
-            {} as Record<LogType, boolean>
-          )
-        )
-
-        const fetchPromises = LOG_TYPES.map(async (logType) => {
-          try {
-            const response = await patientLogApi.listLogs(patientId, logType, {
-              signal: abortController.signal,
-            })
-
-            const normalizedData = response.data.map((apiDto) => ({
-              id: apiDto.id || '',
-              patientId: apiDto.patientId || '',
-              logType: apiDto.logType || '',
-              timestamp: apiDto.timestamp || '',
-              uniqueIdentifier: apiDto.uniqueIdentifier || '',
-            }))
-
-            if (!abortController.signal.aborted) {
-              setLogsByType((prev) => ({
-                ...prev,
-                [logType]: normalizedData,
-              }))
-            }
-          } catch (err) {
-            if (abortController.signal.aborted) {
-              return
-            }
-
-            console.error(`Error fetching ${logType} logs:`, err)
-            if (!abortController.signal.aborted) {
-              setLogsByType((prev) => ({
-                ...prev,
-                [logType]: [],
-              }))
-              notifyError('Failed to fetch client interactions.')
-            }
-          } finally {
-            if (!abortController.signal.aborted) {
-              setLoadingStates((prev) => ({
-                ...prev,
-                [logType]: false,
-              }))
-            }
-          }
-        })
-
-        await Promise.all(fetchPromises)
-      } catch (err) {
-        if (abortController.signal.aborted) {
-          return
-        }
-        console.error('Error in fetchAllLogTypes:', err)
-        setError(t('patient_interactions.fetch_error'))
+  // Fetch data for a specific log type
+  const fetchLogTypeData = useCallback(
+    async (logType: LogType) => {
+      if (!patientId || loadedLogTypes.has(logType)) {
+        return
       }
-    }
 
-    fetchData()
+      try {
+        setLoading(true)
+        const response = await patientLogApi.listLogs(patientId, logType)
+        const normalized = response.data.map((apiDto) => ({
+          id: apiDto.id || '',
+          patientId: apiDto.patientId || '',
+          logType: apiDto.logType || '',
+          timestamp: apiDto.timestamp || '',
+          uniqueIdentifier: apiDto.uniqueIdentifier || '',
+        }))
 
-    return (): void => {
-      abortController.abort()
+        setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
+        setLoadedLogTypes((prev) => new Set(prev).add(logType))
+      } catch (err) {
+        console.error(err)
+        notifyError('Failed to fetch client interactions.')
+        setLogsByType((prev) => ({ ...prev, [logType]: [] }))
+      } finally {
+        setLoading(false)
+      }
+    },
+    [patientId, loadedLogTypes, notifyError]
+  )
+
+  // Initial load - fetch only JOURNAL_CREATION data
+  useEffect(() => {
+    if (patientId) {
+      fetchLogTypeData('JOURNAL_CREATION' as LogType)
     }
-  }, [patientId, t, notifyError])
+  }, [patientId, fetchLogTypeData])
+
+  const handleLogTypeChange = async (logType: LogType): Promise<void> => {
+    setActiveLogType(logType)
+    if (!loadedLogTypes.has(logType)) {
+      await fetchLogTypeData(logType)
+    }
+    console.log('Heatmap data for:', logType, heatmapData)
+  }
 
   // Transform logs to interaction data
   const interactionData = useMemo(() => {
-    const logsToUse = activeLogType
-      ? logsByType[activeLogType] || []
-      : Object.values(logsByType).flatMap((logs) => logs)
-
+    const logsToUse = logsByType[activeLogType] || []
     return transformLogsToInteractionData(logsToUse)
   }, [logsByType, activeLogType])
 
   // Memoize filtered data with date range
   const filteredData = useMemo(() => {
     let filtered = interactionData
-
-    if (activeLogType) {
-      filtered = filtered.filter((d) => d.type === activeLogType)
-    }
 
     if (startDate && endDate) {
       filtered = filtered.filter((d) => {
@@ -252,12 +191,12 @@ const ClientInteractions = (): ReactElement => {
     }
 
     return filtered
-  }, [interactionData, activeLogType, startDate, endDate])
+  }, [interactionData, startDate, endDate])
 
   // Memoize heatmap data transformation
   const heatmapData = useMemo(
-    () => transformDataForHeatmap(filteredData, startDate, endDate),
-    [filteredData, startDate, endDate]
+    () => transformDataForHeatmap(filteredData, dateRange),
+    [filteredData, dateRange]
   )
 
   const maxValue = useMemo(() => {
@@ -270,29 +209,6 @@ const ClientInteractions = (): ReactElement => {
     return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
   }, [heatmapData])
 
-  if (isLoading) {
-    return (
-      <Layout>
-        <Box display='flex' flexDirection='column' alignItems='center' height='200px'>
-          <Typography>{t('patient_interactions.loading')}</Typography>
-          <div style={{ marginTop: '20px' }}>
-            <CircularProgress />
-          </div>
-        </Box>
-      </Layout>
-    )
-  }
-
-  if (error) {
-    return (
-      <Layout>
-        <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
-          <Typography color='error'>{error}</Typography>
-        </Box>
-      </Layout>
-    )
-  }
-
   return (
     <Layout>
       <Stack spacing={2}>
@@ -304,7 +220,7 @@ const ClientInteractions = (): ReactElement => {
               </InputLabel>
               <Select
                 value={activeLogType || ''}
-                onChange={(e) => setActiveLogType(e.target.value as LogType)}
+                onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
                 label={t('patient_interactions.log_types')}
               >
                 {LOG_TYPES.map((logType) => (
@@ -364,44 +280,60 @@ const ClientInteractions = (): ReactElement => {
           </Button>
         </Box>
 
-        <div style={{ height: '650px' }}>
-          <ResponsiveHeatMap
-            data={heatmapData}
-            margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
-            valueFormat='>-.0f'
-            axisTop={null}
-            axisBottom={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: t('patient_interactions.date'),
-              legendPosition: 'middle',
-              legendOffset: 50,
+        {loading ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '50px',
             }}
-            axisLeft={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: t('patient_interactions.time'),
-              legendPosition: 'middle',
-              legendOffset: -70,
-              format: (value) => `${value}:00`,
-            }}
-            colors={{
-              type: 'sequential',
-              scheme: 'purples',
-              minValue: 0,
-              maxValue: maxValue,
-            }}
-            emptyColor='#f8f9fa'
-            borderColor='#ffffff'
-            borderWidth={1}
-            enableLabels={false}
-            animate={false}
-            motionConfig='gentle'
-            tooltip={HeatmapTooltip}
-          />
-        </div>
+          >
+            <Typography>{t('patient_interactions.loading')}</Typography>
+            <div style={{ marginTop: '20px' }}>
+              <CircularProgress />
+            </div>
+          </div>
+        ) : (
+          <div style={{ height: '650px' }}>
+            <ResponsiveHeatMapCanvas
+              data={heatmapData}
+              margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
+              valueFormat='>-.0f'
+              axisTop={null}
+              axisBottom={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+                legend: t('patient_interactions.date'),
+                legendPosition: 'middle',
+                legendOffset: 50,
+              }}
+              axisLeft={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+                legend: t('patient_interactions.time'),
+                legendPosition: 'middle',
+                legendOffset: -70,
+                format: (value) => `${value}:00`,
+              }}
+              colors={{
+                type: 'sequential',
+                scheme: 'purples',
+                minValue: 0,
+                maxValue: maxValue,
+              }}
+              emptyColor='#f8f9fa'
+              borderColor='#ffffff'
+              borderWidth={1}
+              enableLabels={false}
+              animate={false}
+              motionConfig='gentle'
+              tooltip={HeatmapTooltip}
+            />
+          </div>
+        )}
       </Stack>
     </Layout>
   )
