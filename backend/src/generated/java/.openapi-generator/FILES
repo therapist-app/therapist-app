@@ -105,6 +105,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/PutNameDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutOnboardedDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PutSharingDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/ResetPasswordDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/SharedInputFieldOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateChatbotDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateCoachEmailDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/UpdateMeetingDTOPatientAPI.java

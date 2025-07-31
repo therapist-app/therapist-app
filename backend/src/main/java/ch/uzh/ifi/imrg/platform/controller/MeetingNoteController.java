@@ -5,6 +5,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateMeetingNoteDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingNoteOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.MeetingNoteService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,8 @@ public class MeetingNoteController {
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public MeetingNoteOutputDTO createMeetingNote(
-      @RequestBody CreateMeetingNoteDTO createMeetingDTO, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody CreateMeetingNoteDTO createMeetingDTO,
+      @CurrentTherapistId String therapistId) {
 
     MeetingNoteOutputDTO meetingNoteOutputDTO =
         meetingNoteService.createMeetingNote(createMeetingDTO, therapistId);
@@ -49,7 +51,7 @@ public class MeetingNoteController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public MeetingNoteOutputDTO updateMeetingNote(
-      @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
+      @Valid @RequestBody UpdateMeetingNoteDTO updateMeetingNoteDTO,
       @CurrentTherapistId String therapistId) {
 
     MeetingNoteOutputDTO meetingNoteOutputDTO =

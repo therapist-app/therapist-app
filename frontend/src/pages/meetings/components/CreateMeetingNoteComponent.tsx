@@ -10,7 +10,7 @@ import SpeechToTextComponent from '../../../generalComponents/SpeechRecognitionC
 import { useNotify } from '../../../hooks/useNotify'
 import { createMeetingNote } from '../../../store/meetingSlice'
 import { RootState } from '../../../store/store'
-import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { deleteButtonStyles, successButtonStyles } from '../../../styles/buttonStyles'
 import { useAppDispatch } from '../../../utils/hooks'
 
 interface CreateMeetingNoteComponentProps {
@@ -61,12 +61,11 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
         border: '1px solid black',
         padding: '20px',
         borderRadius: '20px',
-        maxWidth: '700px',
       }}
     >
       <Typography variant='h5'>{t('meetings.new_note')}</Typography>
       <form
-        style={{ display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '600px' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}
         onSubmit={handleSubmit}
       >
         <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
@@ -89,7 +88,7 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
           <Button
             type='submit'
             sx={{
-              ...commonButtonStyles,
+              ...successButtonStyles,
             }}
           >
             <CheckIcon />

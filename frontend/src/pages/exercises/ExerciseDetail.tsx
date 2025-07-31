@@ -444,6 +444,7 @@ const ExerciseDetail = (): ReactElement => {
                   ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
               }
             />
+
             <CreateExerciseInputFieldComponent
               createdInputField={refreshExercise}
               isPrivateField={false}

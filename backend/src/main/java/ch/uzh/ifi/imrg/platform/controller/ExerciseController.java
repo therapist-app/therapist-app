@@ -6,6 +6,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateExerciseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ExerciseOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ExerciseService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,8 @@ public class ExerciseController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public ExerciseOutputDTO createExercise(
-      @RequestBody CreateExerciseDTO createExerciseDTO, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody CreateExerciseDTO createExerciseDTO,
+      @CurrentTherapistId String therapistId) {
     return exerciseService.createExercise(createExerciseDTO, therapistId);
   }
 
@@ -59,7 +61,8 @@ public class ExerciseController {
   @PutMapping("/")
   @ResponseStatus(HttpStatus.OK)
   public ExerciseOutputDTO updateExercise(
-      @RequestBody UpdateExerciseDTO updateExerciseDTO, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody UpdateExerciseDTO updateExerciseDTO,
+      @CurrentTherapistId String therapistId) {
     return exerciseService.updateExercise(updateExerciseDTO, therapistId);
   }
 

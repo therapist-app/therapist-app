@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, Tooltip } from '@mui/material'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
@@ -26,6 +26,9 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   const inputFieldTranslationKey = props.isPrivateField
     ? 'exercise.addPrivateInput'
     : 'exercise.addSharedInput'
+  const tooltipTranslationKey = props.isPrivateField
+    ? 'exercise.privateInputTooltip'
+    : 'exercise.sharedInputTooltip'
 
   const exerciseComponentType = props.isPrivateField
     ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.InputFieldPrivate
@@ -79,9 +82,11 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
   return (
     <div>
       {isCreatingExerciseInputField === false ? (
-        <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={showExerciseInputField}>
-          {t(inputFieldTranslationKey)}
-        </Button>
+        <Tooltip title={t(tooltipTranslationKey)} arrow>
+          <Button sx={{ ...commonButtonStyles }} onClick={showExerciseInputField}>
+            {t(inputFieldTranslationKey)}
+          </Button>
+        </Tooltip>
       ) : (
         <form
           style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}

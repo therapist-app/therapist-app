@@ -4,6 +4,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.ChatCompletionWithConfigRequestDT
 import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatCompletionResponseDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ChatMessageService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ChatController {
   @PostMapping("/completions-with-config")
   @ResponseStatus(HttpStatus.OK)
   public ChatCompletionResponseDTO chatWithConfig(
-      @RequestBody ChatCompletionWithConfigRequestDTO request,
+      @Valid @RequestBody ChatCompletionWithConfigRequestDTO request,
       @CurrentTherapistId String therapistId) {
     return chatMessageService.chat(request, therapistId);
   }

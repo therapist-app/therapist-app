@@ -10,6 +10,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/")
   public CounselingPlanPhaseOutputDTO createCounselingPlanPhase(
-      @RequestBody CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO,
+      @Valid @RequestBody CreateCounselingPlanPhaseDTO createCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.createCounselingPlanPhase(
         createCounselingPlanPhaseDTO, therapistId);
@@ -39,14 +40,14 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/ai-generated-phase")
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
-      @RequestBody CreateCounselingPlanPhaseAIGeneratedDTO dto,
+      @Valid @RequestBody CreateCounselingPlanPhaseAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(dto, therapistId);
   }
 
   @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
-      @RequestBody CreateCounselingPlanExerciseAIGeneratedDTO dto,
+      @Valid @RequestBody CreateCounselingPlanExerciseAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {
 
     return counselingPlanPhaseService.createCounselingPlanExerciseAIGenerated(dto, therapistId);
@@ -54,7 +55,7 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/add-exercise")
   public CounselingPlanPhaseOutputDTO addExerciseToCounselingPlanPhase(
-      @RequestBody AddExerciseToCounselingPlanPhaseDTO addExerciseToCounselingPlanPhaseDTO,
+      @Valid @RequestBody AddExerciseToCounselingPlanPhaseDTO addExerciseToCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.addExerciseToCounselingPlanPhase(
         addExerciseToCounselingPlanPhaseDTO, therapistId);
@@ -62,7 +63,7 @@ public class CounselingPlanPhaseController {
 
   @PostMapping("/remove-exercise")
   public CounselingPlanPhaseOutputDTO removeExerciseFromCounselingPlanPhase(
-      @RequestBody
+      @Valid @RequestBody
           RemoveExerciseFromCounselingPlanPhaseDTO removeExerciseFromCounselingPlanPhaseDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.removeExerciseFromCounselingPlanPhase(
@@ -77,7 +78,8 @@ public class CounselingPlanPhaseController {
 
   @PutMapping("/")
   public CounselingPlanPhaseOutputDTO updateCounselingPlanPhase(
-      @RequestBody UpdateCounselingPlanPhaseDTO dto, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody UpdateCounselingPlanPhaseDTO dto,
+      @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseService.updateCounselingPlanPhase(dto, therapistId);
   }
 

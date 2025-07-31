@@ -29,6 +29,7 @@ const CreateCounselingPlanPhaseGoal = ({
   const { t } = useTranslation()
   const { notifyError, notifySuccess } = useNotify()
   const dispatch = useAppDispatch()
+  const [isAIAnswerLoading, setIsAIAnswerLoading] = useState(false)
 
   const [formValues, setFormValues] = useState<CreateCounselingPlanPhaseGoalDTO>({
     counselingPlanPhaseId: counselingPlanPhaseId,
@@ -55,6 +56,7 @@ const CreateCounselingPlanPhaseGoal = ({
 
   const handleGenrateAI = async (): Promise<void> => {
     try {
+      setIsAIAnswerLoading(true)
       const aiGenerated: CreateCounselingPlanPhaseGoalDTO = await dispatch(
         createCounselingPlanPhaseGoalAIGenerated({
           counselingPlanPhaseId: counselingPlanPhaseId,
@@ -69,6 +71,8 @@ const CreateCounselingPlanPhaseGoal = ({
       setOpen(true)
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    } finally {
+      setIsAIAnswerLoading(false)
     }
   }
 
@@ -113,7 +117,11 @@ const CreateCounselingPlanPhaseGoal = ({
             <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '150px' }}>
               {t('counseling_plan.create_goal')}
             </Button>
-            <Button sx={{ ...successButtonStyles, minWidth: '340px' }} onClick={handleGenrateAI}>
+            <Button
+              sx={{ ...successButtonStyles, minWidth: '340px' }}
+              onClick={handleGenrateAI}
+              loading={isAIAnswerLoading}
+            >
               {t('counseling_plan.make_ai_generated_suggestion_for_goal')}
             </Button>
             <Button sx={{ ...cancelButtonStyles, minWidth: '100px' }} onClick={handleCancel}>

@@ -6,6 +6,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.input.UpdateCounselingPlanPhaseGoalDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.CounselingPlanPhaseGoalOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.CounselingPlanPhaseGoalService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class CounselingPlanPhaseGoalController {
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
   public CounselingPlanPhaseGoalOutputDTO createCounselingPlanPhaseGoal(
-      @RequestBody CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO,
+      @Valid @RequestBody CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO,
       @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoal(
         createCounselingPlanPhaseGoalDTO, therapistId);
@@ -40,7 +41,7 @@ public class CounselingPlanPhaseGoalController {
   @PostMapping("/{counselingPlanPhaseId}")
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
-      @RequestBody CreateCounselingPlanPhaseGoalAIGeneratedDTO dto,
+      @Valid @RequestBody CreateCounselingPlanPhaseGoalAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {
 
     return counselingPlanPhaseGoalService.createCounselingPlanPhaseGoalAIGenerated(
@@ -56,7 +57,8 @@ public class CounselingPlanPhaseGoalController {
 
   @PutMapping("/")
   public CounselingPlanPhaseGoalOutputDTO updateCounselingPlanPhaseGoal(
-      @RequestBody UpdateCounselingPlanPhaseGoalDTO dto, @CurrentTherapistId String therapistId) {
+      @Valid @RequestBody UpdateCounselingPlanPhaseGoalDTO dto,
+      @CurrentTherapistId String therapistId) {
     return counselingPlanPhaseGoalService.updateCounselingPlanPhaseGoal(dto, therapistId);
   }
 

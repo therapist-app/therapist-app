@@ -16,6 +16,9 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { ExerciseMoodOutputDTOPatientAPI } from './exercise-mood-output-dtopatient-api';
+// May contain unused imports in some cases
+// @ts-ignore
+import type { SharedInputFieldOutputDTOPatientAPI } from './shared-input-field-output-dtopatient-api';
 
 /**
  * 
@@ -41,6 +44,12 @@ export interface ExerciseInformationOutputDTOPatientAPI {
      * @memberof ExerciseInformationOutputDTOPatientAPI
      */
     'feedback'?: string;
+    /**
+     * 
+     * @type {Array<SharedInputFieldOutputDTOPatientAPI>}
+     * @memberof ExerciseInformationOutputDTOPatientAPI
+     */
+    'sharedInputFields'?: Array<SharedInputFieldOutputDTOPatientAPI>;
     /**
      * 
      * @type {Array<ExerciseMoodOutputDTOPatientAPI>}

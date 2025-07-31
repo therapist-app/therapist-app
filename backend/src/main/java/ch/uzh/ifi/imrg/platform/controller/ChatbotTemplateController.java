@@ -7,6 +7,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.ChatbotTemplateOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.ChatbotTemplateMapper;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.ChatbotTemplateService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ChatbotTemplateController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO createTemplate(
-      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+      @Valid @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
     ChatbotTemplate template =
@@ -44,7 +45,7 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.CREATED)
   public ChatbotTemplateOutputDTO createTemplateForPatient(
       @PathVariable String patientId,
-      @RequestBody CreateChatbotTemplateDTO templateInputDTO,
+      @Valid @RequestBody CreateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
     ChatbotTemplate template =
@@ -57,7 +58,7 @@ public class ChatbotTemplateController {
   @ResponseStatus(HttpStatus.OK)
   public ChatbotTemplateOutputDTO updateTemplate(
       @PathVariable String templateId,
-      @RequestBody UpdateChatbotTemplateDTO templateInputDTO,
+      @Valid @RequestBody UpdateChatbotTemplateDTO templateInputDTO,
       @CurrentTherapistId String therapistId) {
 
     ChatbotTemplate template =

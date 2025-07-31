@@ -56,17 +56,14 @@ interface LanguageOption {
 }
 
 const defaultLanguages: LanguageOption[] = [
-  { code: 'en-US', name: 'English (US)' },
-  { code: 'en-GB', name: 'English (UK)' },
-  { code: 'de-DE', name: 'Deutsch (Deutschland)' },
+  { code: 'en-US', name: 'English' },
   { code: 'uk-UA', name: 'Українська (Україна)' },
+  { code: 'ru-RU', name: 'Русский (Россия)' },
+  { code: 'de-DE', name: 'Deutsch (Deutschland)' },
   { code: 'fr-FR', name: 'Français (France)' },
   { code: 'it-IT', name: 'Italiano (Italia)' },
   { code: 'es-ES', name: 'Español (España)' },
   { code: 'pt-BR', name: 'Português (Brasil)' },
-  { code: 'ja-JP', name: '日本語 (日本)' },
-  { code: 'ko-KR', name: '한국어 (대한민국)' },
-  { code: 'zh-CN', name: '中文 (简体)' },
 ]
 
 interface SpeechToTextProps {
@@ -80,7 +77,6 @@ interface SpeechToTextProps {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    maxWidth: '600px',
     fontFamily: '"Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     backgroundColor: '#ffffff',
     borderRadius: '12px',
@@ -157,7 +153,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: 'center',
     gap: '8px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-    width: '180px',
     textAlign: 'center',
   },
   startButton: {
@@ -223,6 +218,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const finalizedTranscriptUpToLastEventRef = useRef<string>('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [startDirectlyState, setStartDirectlyState] = useState(startDirectly)
+  const userStoppedRef = useRef<boolean>(false)
 
   const valueRef = useRef(value)
   const onChangeRef = useRef(onChange)
@@ -306,7 +302,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     recognition.onerror = (event: SpeechRecognitionErrorEvent): void => {
       let errorMessage = `Error: ${event.error}`
       if (event.error === 'no-speech') {
-        errorMessage = t('meetings.error.no_speech_detected')
+        return
       } else if (event.error === 'audio-capture') {
         errorMessage = t('meetings.error.microphone_not_available')
       } else if (event.error === 'not-allowed') {
@@ -320,11 +316,21 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
 
     recognition.onend = (): void => {
-      setIsListening(false)
+      if (!userStoppedRef.current) {
+        try {
+          recognition.start()
+        } catch (err) {
+          console.error('Error restarting recognition:', err)
+          setIsListening(false)
+        }
+      } else {
+        setIsListening(false)
+      }
     }
 
     return (): void => {
       if (recognitionRef.current) {
+        userStoppedRef.current = true
         recognitionRef.current.stop()
         recognitionRef.current.onstart = null
         recognitionRef.current.onresult = null
@@ -346,6 +352,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         finalizedTranscriptUpToLastEventRef.current = textToStartWith
 
         setError(null)
+        userStoppedRef.current = false
         recognitionRef.current.start()
         initialStartRef.current = false
       } catch (e: unknown) {
@@ -374,6 +381,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         finalizedTranscriptUpToLastEventRef.current = textToStartWith
 
         setError(null)
+        userStoppedRef.current = false
         recognitionRef.current.start()
         initialStartRef.current = false
       } catch (e: unknown) {
@@ -394,6 +402,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     setStartDirectlyState(false)
     event.preventDefault()
     if (recognitionRef.current && isListening) {
+      userStoppedRef.current = true
       const currentText = valueRef.current
       if (currentText.trim() !== '') {
         const textWithNewlines = currentText + '\n'
@@ -471,7 +480,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           <Button
             onClick={handleStartListening}
             disabled={isListening || !BrowserSpeechRecognition}
-            sx={{ ...startBtnSx, width: '180px', minWidth: '180px' }}
+            sx={{ ...startBtnSx }}
             startIcon={
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -490,7 +499,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           <Button
             onClick={handleStopListening}
             disabled={!isListening}
-            sx={{ ...stopBtnSx, width: '180px', minWidth: '180px' }}
+            sx={{ ...stopBtnSx }}
             startIcon={
               <svg
                 xmlns='http://www.w3.org/2000/svg'

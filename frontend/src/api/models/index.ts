@@ -36,6 +36,7 @@ export * from './patient-output-dto';
 export * from './psychological-test-output-dto';
 export * from './psychological-test-question-output-dto';
 export * from './remove-exercise-from-counseling-plan-phase-dto';
+export * from './shared-input-field-output-dtopatient-api';
 export * from './therapist-chatbot-input-dto';
 export * from './therapist-chatbot-output-dto';
 export * from './therapist-document-output-dto';

@@ -73,6 +73,9 @@ const CounselingPlanDetails = (): ReactElement => {
     dispatch(getCounselingPlanByPatientId(patientId)).catch((error: unknown) => {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     })
+    dispatch(getAllExercisesOfPatient(patientId)).catch((error: unknown) => {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    })
   }
 
   const handleUpdate = async (): Promise<void> => {
@@ -138,7 +141,11 @@ const CounselingPlanDetails = (): ReactElement => {
           <Typography>
             {t('counseling_plan.amountOfPhases')}: {amountOfPhases}
           </Typography>
-          <Typography>
+          <Typography
+            sx={{
+              color: completedGoals === totalGoals ? 'green' : '#C76E00',
+            }}
+          >
             {t('counseling_plan.goalsCompleted')}: {completedGoals}/{totalGoals}
           </Typography>
         </div>
