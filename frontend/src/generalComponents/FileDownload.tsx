@@ -1,5 +1,5 @@
 import DownloadIcon from '@mui/icons-material/Download'
-import { IconButton } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import { useNotify } from '../hooks/useNotify'
@@ -30,9 +30,11 @@ const FileDownload: React.FC<FileDownloadProps> = ({ download, fileName }) => {
   }
 
   return (
-    <IconButton aria-label='download' onClick={handleDownloadFile}>
-      <DownloadIcon sx={{ color: 'blue' }} />
-    </IconButton>
+    <Tooltip title={t('patient_detail.download')} arrow>
+      <IconButton aria-label='download' onClick={handleDownloadFile}>
+        <DownloadIcon sx={{ color: 'blue' }} />
+      </IconButton>
+    </Tooltip>
   )
 }
 

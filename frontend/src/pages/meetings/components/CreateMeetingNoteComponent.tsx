@@ -68,7 +68,12 @@ const CreateMeetingNoteComponent: React.FC<CreateMeetingNoteComponentProps> = (p
         style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}
         onSubmit={handleSubmit}
       >
-        <TextField name='title' value={formData.title} onChange={handleChange} label='Title' />
+        <TextField
+          name='title'
+          value={formData.title}
+          onChange={handleChange}
+          label={t('meetings.title')}
+        />
 
         <SpeechToTextComponent
           placeholder={t('meetings.content')}

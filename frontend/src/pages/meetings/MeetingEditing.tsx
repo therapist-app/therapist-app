@@ -58,6 +58,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
 
   return (
     <form
+      style={{ maxWidth: '500px' }}
       onSubmit={(e) => {
         e.preventDefault()
         handleSubmit()
@@ -91,6 +92,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
         <TextField
           label={t('meetings.location')}
           name='location'
+          multiline
           value={meetingFormData.location}
           onChange={(e) =>
             setMeetingFormData({

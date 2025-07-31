@@ -32,7 +32,7 @@ const CounselingPlanPhaseGoalDetail = ({
   const handleDeleteGoal = async (): Promise<void> => {
     try {
       await dispatch(deleteCounselingPlanPhaseGoal(goal.id ?? '')).unwrap()
-      notifySuccess('Goal removed successfully')
+      notifySuccess(t('counseling_plan.goal_removed_successfully'))
       refresh()
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')

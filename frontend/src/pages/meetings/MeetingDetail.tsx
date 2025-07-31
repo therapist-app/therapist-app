@@ -1,5 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit'
-import { Button, Typography } from '@mui/material'
+import { Button, Link, Typography } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -115,25 +115,30 @@ const MeetingDetail = (): ReactElement => {
             <>
               <div>
                 <Typography>
-                  {t('meetings.meeting_start')}:{' '}
-                  <strong>{formatDateNicely(selectedMeeting?.meetingStart)}</strong>
+                  <strong>{t('meetings.meeting_start')}: </strong>
+                  {formatDateNicely(selectedMeeting?.meetingStart)}
                 </Typography>
                 <Typography>
-                  {t('meetings.duration')}:{' '}
-                  <strong>
-                    {getMinutesBetweenDates(
-                      selectedMeeting?.meetingStart,
-                      selectedMeeting?.meetingEnd
-                    )}{' '}
-                    {t('meetings.minutes')}
-                  </strong>
+                  <strong>{t('meetings.duration')}: </strong>{' '}
+                  {getMinutesBetweenDates(
+                    selectedMeeting?.meetingStart,
+                    selectedMeeting?.meetingEnd
+                  )}{' '}
+                  {t('meetings.minutes')}
                 </Typography>
                 <Typography>
-                  {t('meetings.location')}: <strong>{selectedMeeting?.location}</strong>
+                  <strong>{t('meetings.location')}:</strong>{' '}
+                  {selectedMeeting?.location?.startsWith('http') ? (
+                    <Link target='_blank' href={selectedMeeting?.location}>
+                      {selectedMeeting?.location}
+                    </Link>
+                  ) : (
+                    <>{selectedMeeting?.location}</>
+                  )}
                 </Typography>
                 <Typography>
-                  {t('meetings.meetingStatus')}:{' '}
-                  <strong> {t(`meetings.${selectedMeeting?.meetingStatus}`)}</strong>
+                  <strong>{t('meetings.meetingStatus')}: </strong>
+                  {t(`meetings.${selectedMeeting?.meetingStatus}`)}
                 </Typography>
               </div>
 

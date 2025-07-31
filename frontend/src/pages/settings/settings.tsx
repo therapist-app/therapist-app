@@ -7,6 +7,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { ReactElement, useEffect, useState } from 'react'
@@ -123,7 +124,9 @@ const Settings = (): ReactElement => {
             >
               {Object.values(TherapistOutputDTOLlmModelEnum).map((llmModel) => (
                 <MenuItem key={llmModel} value={llmModel}>
-                  {t(`settings.${llmModel}`)}
+                  <Tooltip placement='left' arrow title={t(`settings.description.${llmModel}`)}>
+                    <div style={{ width: '100%' }}>{t(`settings.${llmModel}`)}</div>
+                  </Tooltip>
                 </MenuItem>
               ))}
             </Select>

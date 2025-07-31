@@ -153,6 +153,7 @@ const CreateCounselingPlanExercise = ({
             value={formData.exerciseDescription}
             onChange={handleChange}
             fullWidth
+            multiline
           />
 
           <TextField
@@ -161,6 +162,7 @@ const CreateCounselingPlanExercise = ({
             value={formData.exerciseExplanation}
             onChange={handleChange}
             fullWidth
+            multiline
           />
 
           <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
