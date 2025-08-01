@@ -466,6 +466,8 @@
     "success": "Вхід виконано успішно"
   },
   "meetings": {
+    "duration_must_be_positive": "Тривалість має бути більше 0",
+    "error_start_date_required": "Будь ласка, виберіть дату початку",
     "meetings": "Зустрічі",
     "meeting_start": "Початок зустрічі",
     "meeting_end": "Кінець зустрічі",

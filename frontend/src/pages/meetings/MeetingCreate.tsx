@@ -42,17 +42,23 @@ const MeetingCreate = (): ReactElement => {
       notifyError(t('meetings.error_start_date_required'))
       return
     }
+    if (meetingFormData.durationInMinutes < 1) {
+      notifyError(t('meetings.duration_must_be_positive'))
+      return
+    }
 
     try {
       const createMeetingDTO: CreateMeetingDTO = {
         ...meetingFormData,
         meetingStart: meetingFormData.meetingStart.toISOString(),
         meetingEnd: new Date(
-          meetingFormData.meetingStart.getTime() + meetingFormData.durationInMinutes * 60000
+          meetingFormData.meetingStart.getTime() + meetingFormData.durationInMinutes * 60_000
         ).toISOString(),
         location: meetingFormData.location,
       }
+
       const createdMeeting = await dispatch(createMeeting(createMeetingDTO)).unwrap()
+
       notifySuccess(t('meetings.meeting_created_successfully'))
       navigate(
         getPathFromPage(PAGES.MEETINGS_DETAILS_PAGE, {
@@ -67,49 +73,47 @@ const MeetingCreate = (): ReactElement => {
 
   return (
     <Layout>
-      <form style={{ maxWidth: '500px' }} onSubmit={handleSubmit}>
+      <form style={{ maxWidth: 500 }} onSubmit={handleSubmit}>
         <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
           <DateTimePicker
             label={t('meetings.meeting_start')}
             value={meetingFormData.meetingStart}
-            onChange={(newValue: Date | null) => {
-              setMeetingFormData({
-                ...meetingFormData,
-                meetingStart: newValue,
-              })
-            }}
+            onChange={(newValue) =>
+              setMeetingFormData({ ...meetingFormData, meetingStart: newValue })
+            }
             sx={{ mt: 2, width: '100%' }}
           />
 
           <TextField
             label={t('meetings.duration_in_minutes')}
             type='number'
+            required
             value={meetingFormData.durationInMinutes}
-            onChange={(e) =>
-              setMeetingFormData({
-                ...meetingFormData,
-                durationInMinutes: Number(e.target.value),
-              })
-            }
+            inputProps={{
+              pattern: '[0-9]*',
+              inputMode: 'numeric',
+              min: 1,
+              step: 1,
+            }}
+            onChange={(e) => {
+              const v = Number(e.target.value)
+              if (!Number.isNaN(v) && v >= 1) {
+                setMeetingFormData({ ...meetingFormData, durationInMinutes: v })
+              }
+            }}
             sx={{ mt: 2, width: '100%' }}
           />
 
           <TextField
             label={t('meetings.location')}
-            name='location'
             multiline
             value={meetingFormData.location}
-            onChange={(e) =>
-              setMeetingFormData({
-                ...meetingFormData,
-                location: e.target.value,
-              })
-            }
+            onChange={(e) => setMeetingFormData({ ...meetingFormData, location: e.target.value })}
             sx={{ mt: 2, width: '100%' }}
           />
         </LocalizationProvider>
 
-        <Button type='submit' sx={{ ...commonButtonStyles, minWidth: '200px', mt: 2 }}>
+        <Button type='submit' sx={{ ...commonButtonStyles, minWidth: 200, mt: 2 }}>
           {t('meetings.create_meeting')}
         </Button>
       </form>

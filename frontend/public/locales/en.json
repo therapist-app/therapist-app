@@ -466,6 +466,8 @@
     "success": "Successful login"
   },
   "meetings": {
+    "duration_must_be_positive": "Duration must be greater than 0",
+    "error_start_date_required": "Please select a start date",
     "meetings": "Meetings",
     "meeting_start": "Meeting Start",
     "meeting_end": "Meeting End",

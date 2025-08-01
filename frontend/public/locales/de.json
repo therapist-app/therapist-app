@@ -466,6 +466,8 @@
     "success": "Erfolgreiche Anmeldung"
   },
   "meetings": {
+    "duration_must_be_positive": "Die Dauer muss größer als 0 sein",
+    "error_start_date_required": "Bitte ein Startdatum wählen",
     "meetings": "Termine",
     "meeting_start": "Beginn des Termins",
     "meeting_end": "Ende des Termins",
