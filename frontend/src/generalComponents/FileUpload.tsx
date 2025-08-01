@@ -16,6 +16,22 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonS
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { notifyError, notifyWarning } = useNotify()
+  const mimeAllowed = (file: File): boolean => {
+    if (!accept) {
+      return true
+    }
+    const patterns = accept
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+
+    return patterns.some((p) => {
+      if (p.endsWith('/*')) {
+        return file.type.startsWith(p.slice(0, -1))
+      }
+      return file.type === p
+    })
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0]
@@ -23,7 +39,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonS
       return
     }
 
-    if (accept && !file.type.match(accept.replace('*', '.*'))) {
+    if (!mimeAllowed(file)) {
       notifyWarning(t('errors.unsupported_file_type'))
       e.target.value = ''
       return
