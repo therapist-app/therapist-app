@@ -42,8 +42,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = ({ meeting, save, cancel }
 
   const handleSubmit = async (): Promise<void> => {
     const { meetingStart, meetingEnd } = meetingFormData
-
-    if (meetingStart && meetingEnd && meetingEnd < meetingStart) {
+    if (meetingStart && meetingEnd && meetingEnd <= meetingStart) {
       notifyError(t('meetings.end_must_be_after_start'))
       return
     }
@@ -76,13 +75,14 @@ const MeetingEditing: React.FC<MeetingEditingProps> = ({ meeting, save, cancel }
         <DateTimePicker
           label={t('meetings.meeting_start')}
           value={meetingFormData.meetingStart}
-          maxDateTime={meetingFormData.meetingEnd ?? undefined}
           onChange={(newStart) =>
             setMeetingFormData((prev) => {
-              const newEnd =
-                prev.meetingEnd && newStart && prev.meetingEnd < newStart
-                  ? newStart
-                  : prev.meetingEnd
+              let newEnd = prev.meetingEnd
+              if (newStart) {
+                if (!prev.meetingEnd || prev.meetingEnd <= newStart) {
+                  newEnd = new Date(newStart.getTime() + 60_000)
+                }
+              }
               return { ...prev, meetingStart: newStart, meetingEnd: newEnd }
             })
           }
@@ -92,7 +92,11 @@ const MeetingEditing: React.FC<MeetingEditingProps> = ({ meeting, save, cancel }
         <DateTimePicker
           label={t('meetings.meeting_end')}
           value={meetingFormData.meetingEnd}
-          minDateTime={meetingFormData.meetingStart ?? undefined}
+          minDateTime={
+            meetingFormData.meetingStart
+              ? new Date(meetingFormData.meetingStart.getTime() + 60_000)
+              : undefined
+          }
           onChange={(newEnd) => setMeetingFormData((prev) => ({ ...prev, meetingEnd: newEnd }))}
           sx={{ mt: 2, width: '100%' }}
         />
