@@ -228,6 +228,8 @@
   },
   "exercise": {
     "upload_image": "Bild hochladen",
+    "max_file_size": "Maximale Dateigröße: {{size}}",
+    "file_too_large": "Die Datei ist zu groß (max. {{max}}).",
     "end_must_be_after_start": "Ende muss nach Beginn liegen",
     "description": "Beschreibung",
     "add_input_field": "Eingabefeld hinzufügen",

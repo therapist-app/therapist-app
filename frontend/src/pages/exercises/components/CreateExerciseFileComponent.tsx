@@ -23,7 +23,13 @@ interface CreateExerciseFileComponentProps {
   active: boolean
 }
 
-const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = (props) => {
+const MAX_FILE_SIZE_BYTES = 0.75 * 1024 * 1024
+
+const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = ({
+  createdExerciseFile,
+  isImageComponent,
+  active,
+}) => {
   const { exerciseId } = useParams()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -35,15 +41,21 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
   const { notifyError, notifySuccess } = useNotify()
 
   const saveSelectedFile = (file: File): void => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      notifyError(t('exercise.file_too_large', { max: '750 KB' }))
+      return
+    }
+
     setSelectedFile(file)
     setIsCreatingFile(true)
-    if (props.isImageComponent) {
-      dispatch(
-        setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image)
+
+    dispatch(
+      setAddingExerciseComponent(
+        isImageComponent
+          ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
+          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
       )
-    } else {
-      dispatch(setAddingExerciseComponent(ExerciseComponentOutputDTOExerciseComponentTypeEnum.File))
-    }
+    )
   }
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -59,15 +71,11 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      let exerciseComponentType: CreateExerciseComponentDTOExerciseComponentTypeEnum =
-        CreateExerciseComponentDTOExerciseComponentTypeEnum.File
-      if (props.isImageComponent) {
-        exerciseComponentType = CreateExerciseComponentDTOExerciseComponentTypeEnum.Image
-      }
-
       const dto: CreateExerciseComponentDTO = {
         exerciseId: exerciseId ?? '',
-        exerciseComponentType: exerciseComponentType,
+        exerciseComponentType: isImageComponent
+          ? CreateExerciseComponentDTOExerciseComponentTypeEnum.Image
+          : CreateExerciseComponentDTOExerciseComponentTypeEnum.File,
         exerciseComponentDescription: description,
       }
 
@@ -80,25 +88,30 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
 
       notifySuccess(t('exercise.component_created_successfully'))
       cancel()
-      props.createdExerciseFile()
+      createdExerciseFile()
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
-  if (!props.active) {
+  if (!active) {
     return null
   }
 
   return (
     <div>
       {!isCreatingFile ? (
-        props.isImageComponent ? (
-          <FileUpload
-            onUpload={saveSelectedFile}
-            text={t('exercise.upload_image')}
-            accept='image/*'
-          />
+        isImageComponent ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '200px' }}>
+            <FileUpload
+              onUpload={saveSelectedFile}
+              text={t('exercise.upload_image')}
+              accept='image/*'
+            />
+            <Typography variant='caption' color='textSecondary' sx={{ ml: 1.5 }}>
+              {t('exercise.max_file_size', { size: '750 KB' })}
+            </Typography>
+          </div>
         ) : (
           <FileUpload onUpload={saveSelectedFile} />
         )
@@ -114,7 +127,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             maxWidth: '500px',
           }}
         >
-          {props.isImageComponent ? (
+          {isImageComponent ? (
             <ImageComponent imageFile={selectedFile} />
           ) : (
             <Typography>{selectedFile?.name}</Typography>
@@ -125,6 +138,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             value={description}
             onChange={handleChangeDescription}
           />
+
           <div
             style={{
               display: 'flex',
