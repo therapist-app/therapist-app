@@ -72,7 +72,7 @@ const CreateExerciseYoutubeVideoComponent: React.FC<CreateExerciseYoutubeVideoCo
   return (
     <div>
       {isCreatingExerciseInputField === false ? (
-        <Button sx={{ ...commonButtonStyles, minWidth: '160px' }} onClick={showExerciseInputField}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '190px' }} onClick={showExerciseInputField}>
           {t('exercise.addYoutubeVideo')}
         </Button>
       ) : (
