@@ -19,7 +19,6 @@ public class PatientTestController {
     this.patientTestService = patientTestService;
   }
 
-  //  @GetMapping("/gad7/patient/{patientId}")
   @GetMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}")
   @ResponseStatus(HttpStatus.OK)
   public List<PsychologicalTestOutputDTO> getTestsForPatient(
@@ -29,10 +28,20 @@ public class PatientTestController {
     return patientTestService.getTestsByPatient(patientId, therapistId, psychologicalTestName);
   }
 
-  //  @PostMapping("/gad7/patient/{patientId}/create")
   @PostMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/create")
   @ResponseStatus(HttpStatus.CREATED)
   public PsychologicalTestCreateDTO assignPsychologicalTestToPatient(
+      @PathVariable String patientId,
+      @Valid @RequestBody PsychologicalTestCreateDTO dto,
+      @CurrentTherapistId String therapistId,
+      @PathVariable String psychologicalTestName) {
+    return patientTestService.assignPsychologicalTest(
+        patientId, therapistId, dto, psychologicalTestName);
+  }
+
+  @PutMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public PsychologicalTestCreateDTO updatePsychologicalTestToPatient(
       @PathVariable String patientId,
       @Valid @RequestBody PsychologicalTestCreateDTO dto,
       @CurrentTherapistId String therapistId,

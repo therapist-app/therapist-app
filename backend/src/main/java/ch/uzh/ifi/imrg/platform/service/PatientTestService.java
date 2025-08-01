@@ -77,14 +77,7 @@ public class PatientTestService {
 
     try {
       PsychologicalTestAssignmentInputDTOPatientAPI input =
-          new PsychologicalTestAssignmentInputDTOPatientAPI()
-              .patientId(patientId)
-              .testName(psychologicalTestName)
-              .exerciseStart(dto.getExerciseStart())
-              .exerciseEnd(dto.getExerciseEnd())
-              .isPaused(dto.getIsPaused())
-              .doEveryNDays(dto.getDoEveryNDays());
-
+          toAssignmentInput(patientId, psychologicalTestName, dto);
       PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
           .createPsychologicalTest1(patientId, psychologicalTestName, input)
           .block();
@@ -97,5 +90,42 @@ public class PatientTestService {
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
     }
+  }
+
+  public PsychologicalTestCreateDTO updatePsychologicalTest(
+      String patientId,
+      String therapistId,
+      PsychologicalTestCreateDTO dto,
+      String psychologicalTestName) {
+
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    try {
+      PsychologicalTestAssignmentInputDTOPatientAPI input =
+          toAssignmentInput(patientId, psychologicalTestName, dto);
+      PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+          .updatePsychologicalTest(patientId, psychologicalTestName, input)
+          .block();
+
+      return dto;
+
+    } catch (Exception e) {
+      logger.error(
+          "Error assigning psychological test {} to patient {}", dto.getTestName(), patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
+    }
+  }
+
+  private PsychologicalTestAssignmentInputDTOPatientAPI toAssignmentInput(
+      String patientId, String testName, PsychologicalTestCreateDTO dto) {
+    return new PsychologicalTestAssignmentInputDTOPatientAPI()
+        .patientId(patientId)
+        .testName(testName)
+        .exerciseStart(dto.getExerciseStart())
+        .exerciseEnd(dto.getExerciseEnd())
+        .isPaused(dto.getIsPaused())
+        .doEveryNDays(dto.getDoEveryNDays());
   }
 }
