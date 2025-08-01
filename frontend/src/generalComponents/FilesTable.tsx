@@ -37,7 +37,6 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
     handleDeleteFile,
     downloadFile,
     title,
-    maxFileSizeMessage,
     maxFileSizeBytes,
   } = props
   const { notifySuccess, notifyError } = useNotify()
