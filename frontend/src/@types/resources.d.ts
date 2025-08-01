@@ -469,6 +469,7 @@ interface Resources {
     "meetings": {
       "duration_must_be_positive": "Die Dauer muss größer als 0 sein",
       "error_start_date_required": "Bitte ein Startdatum wählen",
+      "end_must_be_after_start": "Ende muss nach Beginn liegen",
       "meetings": "Termine",
       "meeting_start": "Beginn des Termins",
       "meeting_end": "Ende des Termins",
@@ -1058,6 +1059,7 @@ interface Resources {
     "meetings": {
       "duration_must_be_positive": "Duration must be greater than 0",
       "error_start_date_required": "Please select a start date",
+      "end_must_be_after_start": "End time must be after start time",
       "meetings": "Meetings",
       "meeting_start": "Meeting Start",
       "meeting_end": "Meeting End",
@@ -1647,6 +1649,7 @@ interface Resources {
     "meetings": {
       "duration_must_be_positive": "Тривалість має бути більше 0",
       "error_start_date_required": "Будь ласка, виберіть дату початку",
+      "end_must_be_after_start": "Час завершення має бути пізніше часу початку",
       "meetings": "Зустрічі",
       "meeting_start": "Початок зустрічі",
       "meeting_end": "Кінець зустрічі",
