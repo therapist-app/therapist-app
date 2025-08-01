@@ -1,8 +1,10 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentInputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestCreateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientPsychologicalTestMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
@@ -61,6 +63,40 @@ public class PatientTestService {
       logger.error("Error fetching test results for patient {}", patientId, e);
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test results", e);
+    }
+  }
+
+  public PsychologicalTestCreateDTO assignPsychologicalTest(
+      String patientId, String therapistId, PsychologicalTestCreateDTO dto) {
+
+    // 1. Load & authorize
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId); // throws 403 if invalid
+
+    try {
+      // 2. Build the assignment input for the Patient-API client
+      PsychologicalTestAssignmentInputDTOPatientAPI input =
+          new PsychologicalTestAssignmentInputDTOPatientAPI()
+              .patientId(patientId)
+              .testName(dto.getTestName())
+              .exerciseStart(dto.getExerciseStart())
+              .exerciseEnd(dto.getExerciseEnd())
+              .isPaused(dto.getIsPaused())
+              .doEveryNDays(dto.getDoEveryNDays());
+
+      // 3. Call the remote coach endpoint to create the test
+      PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+          .createPsychologicalTest1(patientId, dto.getTestName(), input)
+          .block();
+
+      // 4. Return the created assignment details
+      return dto;
+
+    } catch (Exception e) {
+      logger.error(
+          "Error assigning psychological test {} to patient {}", dto.getTestName(), patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
     }
   }
 }

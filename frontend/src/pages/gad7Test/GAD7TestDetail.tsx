@@ -1,30 +1,54 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControlLabel, Switch, TextField, Typography } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { addWeeks } from 'date-fns'
 import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import { useNotify } from '../../hooks/useNotify'
 import { commonButtonStyles } from '../../styles/buttonStyles'
+import { patientTestApi } from '../../utils/api'
 import { formatDateWithLocale, getCurrentLocale } from '../../utils/dateUtil'
 import GAD7TestTable from './GAD7TestTable'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
+  const { patientId } = useParams()
+  const { notifyError } = useNotify()
   const [intervalDays, setIntervalDays] = useState<number>(14) // default value
   const [startDate, setStartDate] = useState<Date | null>(new Date())
+  const [endDate, setEndDate] = useState<Date | null>(addWeeks(new Date(), 8)) // default to 8 weeks later
+  const [isPaused, setIsPaused] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault()
-    if (intervalDays < 1 || !startDate) {
-      return
+    try {
+      e.preventDefault()
+      if (!patientId || !startDate || !endDate) {
+        return
+      }
+
+      const dto = {
+        patientId: patientId,
+        testName: 'GAD-7',
+        exerciseStart: startDate.toISOString(),
+        exerciseEnd: endDate.toISOString(),
+        isPaused: isPaused,
+        doEveryNDays: intervalDays,
+      }
+
+      const response = await patientTestApi.assignPsychologicalTestToPatient(patientId, dto)
+      console.log('assignment response', response)
+    } catch {
+      notifyError(t('gad7test.failed_to_assign_tests'))
     }
-    console.log('Submitting interval:', intervalDays, 'Start date:', startDate)
   }
 
   const currentLocale = getCurrentLocale()
-  const formattedDate = formatDateWithLocale(startDate)
+  const formattedStartDate = formatDateWithLocale(startDate)
+  const formattedEndDate = formatDateWithLocale(endDate)
 
   return (
     <Layout>
@@ -55,6 +79,17 @@ export const GAD7TestDetail = (): ReactElement => {
           </Box>
 
           <Box>
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <DateTimePicker
+                value={endDate}
+                label={t('gad7test.end_date')}
+                onChange={(newValue) => setEndDate(newValue)}
+                sx={{ width: '100%' }}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          <Box>
             <TextField
               label={t('gad7test.doEveryNDays')}
               type='number'
@@ -66,10 +101,26 @@ export const GAD7TestDetail = (): ReactElement => {
             />
           </Box>
 
+          <Box>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPaused}
+                  onChange={(e) => setIsPaused(e.target.checked)}
+                  color='primary'
+                />
+              }
+              label={t('gad7test.pause_test_schedule')}
+              labelPlacement='start'
+              sx={{ justifyContent: 'space-between', width: '100%', ml: 0 }}
+            />
+          </Box>
+
           <Typography variant='body2' sx={{ mt: 1, color: 'text.secondary' }}>
             {t('gad7test.schedule_summary', {
               days: intervalDays,
-              date: formattedDate,
+              start_date: formattedStartDate,
+              end_date: formattedEndDate,
             })}
           </Typography>
 
