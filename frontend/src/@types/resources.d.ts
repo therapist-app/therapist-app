@@ -467,6 +467,8 @@ interface Resources {
       "success": "Erfolgreiche Anmeldung"
     },
     "meetings": {
+      "duration_must_be_positive": "Die Dauer muss größer als 0 sein",
+      "error_start_date_required": "Bitte ein Startdatum wählen",
       "meetings": "Termine",
       "meeting_start": "Beginn des Termins",
       "meeting_end": "Ende des Termins",
@@ -1054,6 +1056,8 @@ interface Resources {
       "success": "Successful login"
     },
     "meetings": {
+      "duration_must_be_positive": "Duration must be greater than 0",
+      "error_start_date_required": "Please select a start date",
       "meetings": "Meetings",
       "meeting_start": "Meeting Start",
       "meeting_end": "Meeting End",
@@ -1641,6 +1645,8 @@ interface Resources {
       "success": "Вхід виконано успішно"
     },
     "meetings": {
+      "duration_must_be_positive": "Тривалість має бути більше 0",
+      "error_start_date_required": "Будь ласка, виберіть дату початку",
       "meetings": "Зустрічі",
       "meeting_start": "Початок зустрічі",
       "meeting_end": "Кінець зустрічі",
