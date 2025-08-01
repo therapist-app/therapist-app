@@ -94,7 +94,9 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     }
   }
 
-  if (!active) return null
+  if (!active) {
+    return null
+  }
 
   return (
     <div>
@@ -106,7 +108,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
               text={t('exercise.upload_image')}
               accept='image/*'
             />
-            <Typography variant='caption' color='textSecondary' sx={{ ml: 1.5}}>
+            <Typography variant='caption' color='textSecondary' sx={{ ml: 1.5 }}>
               {t('exercise.max_file_size', { size: '750 KB' })}
             </Typography>
           </div>
