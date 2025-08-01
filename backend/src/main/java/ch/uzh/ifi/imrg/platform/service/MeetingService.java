@@ -20,6 +20,7 @@ import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +47,10 @@ public class MeetingService {
 
   public Meeting createMeeting(CreateMeetingDTO createMeetingDTO, String therapistId) {
 
+    if (!createMeetingDTO.getMeetingEnd().isAfter(createMeetingDTO.getMeetingStart())) {
+      throw new IllegalArgumentException("meetingEnd must be after meetingStart");
+    }
+
     Patient patient = patientRepository.getPatientById(createMeetingDTO.getPatientId());
     SecurityUtil.checkOwnership(patient, therapistId);
 
@@ -55,6 +60,7 @@ public class MeetingService {
     meeting.setLocation(createMeetingDTO.getLocation());
     meeting.setMeetingStatus(MeetingStatus.CONFIRMED);
     meeting.setPatient(patient);
+
     Meeting createdMeeting = meetingRepository.save(meeting);
 
     CreateMeetingDTOPatientAPI createMeetingDTOPatientAPI =
@@ -70,6 +76,7 @@ public class MeetingService {
     PatientAppAPIs.coachMeetingControllerPatientAPI
         .createMeeting1(createMeetingDTO.getPatientId(), createMeetingDTOPatientAPI)
         .block();
+
     meetingRepository.flush();
     entityManager.refresh(createdMeeting);
 
@@ -114,8 +121,19 @@ public class MeetingService {
   }
 
   public MeetingOutputDTO updateMeeting(UpdateMeetingDTO dto, String therapistId) {
+
     Meeting meeting = meetingRepository.getReferenceById(dto.getId());
     SecurityUtil.checkOwnership(meeting, therapistId);
+
+    Instant prospectiveStart =
+        dto.getMeetingStart() != null ? dto.getMeetingStart() : meeting.getMeetingStart();
+
+    Instant prospectiveEnd =
+        dto.getMeetingEnd() != null ? dto.getMeetingEnd() : meeting.getMeetingEnd();
+
+    if (!prospectiveEnd.isAfter(prospectiveStart)) {
+      throw new IllegalArgumentException("meetingEnd must be after meetingStart");
+    }
 
     UpdateMeetingDTOPatientAPI patientAppDto = new UpdateMeetingDTOPatientAPI();
 
@@ -135,7 +153,7 @@ public class MeetingService {
       meeting.setMeetingStatus(dto.getMeetingStatus());
       UpdateMeetingDTOPatientAPI.MeetingStatusEnum updateMeetingStatusEnum =
           UpdateMeetingDTOPatientAPI.MeetingStatusEnum.valueOf(dto.getMeetingStatus().name());
-      patientAppDto = patientAppDto.meetingStatus(updateMeetingStatusEnum);
+      patientAppDto.meetingStatus(updateMeetingStatusEnum);
     }
 
     PatientAppAPIs.coachMeetingControllerPatientAPI
