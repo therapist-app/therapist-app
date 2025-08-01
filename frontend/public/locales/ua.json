@@ -228,6 +228,7 @@
   },
   "exercise": {
     "upload_image": "Завантажити зображення",
+    "end_must_be_after_start": "Час завершення має бути пізніше часу початку",
     "description": "Опис",
     "add_input_field": "Додати поле для введення",
     "description_of_input": "Опис поля для введення",

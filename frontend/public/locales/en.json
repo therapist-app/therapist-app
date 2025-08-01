@@ -228,6 +228,7 @@
   },
   "exercise": {
     "upload_image": "Upload Image",
+    "end_must_be_after_start": "End time must be after start time",
     "description": "Description",
     "add_input_field": "Add Input Field",
     "description_of_input": "Description of Input",

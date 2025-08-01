@@ -228,6 +228,7 @@
   },
   "exercise": {
     "upload_image": "Bild hochladen",
+    "end_must_be_after_start": "Ende muss nach Beginn liegen",
     "description": "Beschreibung",
     "add_input_field": "Eingabefeld hinzufügen",
     "description_of_input": "Beschreibung der Eingabe",

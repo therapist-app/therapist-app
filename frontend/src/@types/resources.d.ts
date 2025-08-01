@@ -229,6 +229,7 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Bild hochladen",
+      "end_must_be_after_start": "Ende muss nach Beginn liegen",
       "description": "Beschreibung",
       "add_input_field": "Eingabefeld hinzufügen",
       "description_of_input": "Beschreibung der Eingabe",
@@ -819,6 +820,7 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Upload Image",
+      "end_must_be_after_start": "End time must be after start time",
       "description": "Description",
       "add_input_field": "Add Input Field",
       "description_of_input": "Description of Input",
@@ -1409,6 +1411,7 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Завантажити зображення",
+      "end_must_be_after_start": "Час завершення має бути пізніше часу початку",
       "description": "Опис",
       "add_input_field": "Додати поле для введення",
       "description_of_input": "Опис поля для введення",

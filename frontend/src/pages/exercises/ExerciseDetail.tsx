@@ -5,7 +5,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { de } from 'date-fns/locale'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -92,27 +92,42 @@ const ExerciseDetail = (): ReactElement => {
     }
   }
 
+  const datesInvalid = useMemo(
+  () =>
+    formData.exerciseStart !== null &&
+    formData.exerciseEnd   !== null &&
+    formData.exerciseEnd  <= formData.exerciseStart,
+  [formData.exerciseStart, formData.exerciseEnd]
+)
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault()
-    try {
-      const dto: UpdateExerciseDTO = {
-        ...formData,
-        exerciseStart: formData.exerciseStart?.toISOString(),
-        exerciseEnd: formData.exerciseEnd?.toISOString(),
-        id: exerciseId ?? '',
-      }
-      await dispatch(updateExercise(dto)).unwrap()
-      notifySuccess(t('exercise.exercise_updated_successfully'))
-      setIsEditingExercise(false)
-      await refreshExercise()
-    } catch (err) {
-      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-    }
+  e.preventDefault()
+
+  if (datesInvalid) {
+    notifyError(t('exercise.end_must_be_after_start'))
+    return
   }
+
+  try {
+    const dto: UpdateExerciseDTO = {
+      ...formData,
+      exerciseStart: formData.exerciseStart?.toISOString(),
+      exerciseEnd: formData.exerciseEnd?.toISOString(),
+      id: exerciseId ?? '',
+    }
+    await dispatch(updateExercise(dto)).unwrap()
+    notifySuccess(t('exercise.exercise_updated_successfully'))
+    setIsEditingExercise(false)
+    await refreshExercise()
+  } catch (err) {
+    notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+  }
+}
 
   const refreshExercise = async (): Promise<void> => {
     try {
@@ -230,30 +245,41 @@ const ExerciseDetail = (): ReactElement => {
               />
 
               <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
-                <DateTimePicker
-                  label={t('exercise.exercise_start')}
-                  value={formData.exerciseStart}
-                  onChange={(newValue: Date | null) => {
-                    setFormData({
-                      ...formData,
-                      exerciseStart: newValue,
-                    })
-                  }}
-                  sx={{ width: '100%' }}
-                />
+  <DateTimePicker
+  label={t('exercise.exercise_start')}
+  value={formData.exerciseStart}
+  onChange={(newStart) =>
+    setFormData((prev) => ({
+      ...prev,
+      exerciseStart: newStart,
+      exerciseEnd:
+        newStart && prev.exerciseEnd && prev.exerciseEnd <= newStart
+          ? new Date(newStart.getTime() + 60_000)
+          : prev.exerciseEnd,
+    }))
+  }
+  sx={{ width: '100%' }}
+/>
 
-                <DateTimePicker
-                  label={t('exercise.exercise_end')}
-                  value={formData.exerciseEnd}
-                  onChange={(newValue: Date | null) => {
-                    setFormData({
-                      ...formData,
-                      exerciseEnd: newValue,
-                    })
-                  }}
-                  sx={{ width: '100%' }}
-                />
-              </LocalizationProvider>
+
+ <DateTimePicker
+  label={t('exercise.exercise_end')}
+  value={formData.exerciseEnd}
+  minDateTime={
+    formData.exerciseStart
+      ? new Date(formData.exerciseStart.getTime() + 60_000)
+      : undefined
+  }
+  onChange={(newEnd) =>
+    setFormData((prev) => ({ ...prev, exerciseEnd: newEnd }))
+  }
+  sx={{ width: '100%' }}
+/>
+
+</LocalizationProvider>
+{datesInvalid && (
+  <Typography color="error">{t('exercise.end_must_be_after_start')}</Typography>
+)}
               <FormControlLabel
                 control={
                   <Checkbox
