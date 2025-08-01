@@ -23,23 +23,27 @@ export const GAD7TestTable = (): ReactElement => {
   const { notifyError } = useNotify()
   const [gad7Tests, setGad7Tests] = useState<PsychologicalTestOutputDTO[]>([])
 
+  const testName = 'GAD-7'
+
   useEffect(() => {
     const fetchTests = async (): Promise<void> => {
       try {
-        const response = await patientTestApi.getTestsForPatient(patientId!)
-        const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
-          id: apiDto.id!,
-          name: apiDto.name || '',
-          description: apiDto.description || '',
-          patientId: apiDto.patientId || '',
-          completedAt: apiDto.completedAt || '',
-          questions:
-            apiDto.questions?.map((q) => ({
-              question: q.question || '',
-              score: q.score || 0,
-            })) || [],
-        }))
-        setGad7Tests(normalized)
+        if (patientId) {
+          const response = await patientTestApi.getTestsForPatient(patientId, testName)
+          const normalized: PsychologicalTestOutputDTO[] = response.data.map((apiDto) => ({
+            id: apiDto.id!,
+            name: apiDto.name || '',
+            description: apiDto.description || '',
+            patientId: apiDto.patientId || '',
+            completedAt: apiDto.completedAt || '',
+            questions:
+              apiDto.questions?.map((q) => ({
+                question: q.question || '',
+                score: q.score || 0,
+              })) || [],
+          }))
+          setGad7Tests(normalized)
+        }
       } catch {
         notifyError('Failed to fetch GAD7 tests')
       }
