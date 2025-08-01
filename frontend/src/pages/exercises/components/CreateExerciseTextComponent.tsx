@@ -69,7 +69,7 @@ const CreateExerciseTextComponent: React.FC<CreateExerciseTextComponentProps> = 
   return (
     <div>
       {isCreatingExerciseText === false ? (
-        <Button sx={commonButtonStyles} onClick={showExerciseTextField}>
+        <Button sx={{ ...commonButtonStyles, minWidth: '120px' }} onClick={showExerciseTextField}>
           {t('exercise.add_text')}
         </Button>
       ) : (

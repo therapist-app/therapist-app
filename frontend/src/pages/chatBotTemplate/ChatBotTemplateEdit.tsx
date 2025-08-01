@@ -546,7 +546,7 @@ const ChatBotTemplateEdit: React.FC = () => {
                 )}
 
                 <Box sx={{ mt: 1, ml: -1, display: 'flex', justifyContent: 'left' }}>
-                  <Button onClick={handleSaveConfiguration} sx={commonButtonStyles}>
+                  <Button onClick={handleSaveConfiguration} sx={{ ...commonButtonStyles, minWidth: 120 }}>
                     {t('chatbot.save')}
                   </Button>
                 </Box>
