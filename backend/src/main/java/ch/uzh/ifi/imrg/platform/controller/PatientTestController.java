@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestCreateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -46,7 +47,14 @@ public class PatientTestController {
       @Valid @RequestBody PsychologicalTestCreateDTO dto,
       @CurrentTherapistId String therapistId,
       @PathVariable String psychologicalTestName) {
-    return patientTestService.assignPsychologicalTest(
+    return patientTestService.updatePsychologicalTest(
         patientId, therapistId, dto, psychologicalTestName);
+  }
+
+  @GetMapping("/patient/{patientId}/psychological-tests/available-tests/")
+  @ResponseStatus(HttpStatus.OK)
+  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesForPatient(
+      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
+    return patientTestService.getPsychologicalTestNamesByPatient(patientId, therapistId);
   }
 }

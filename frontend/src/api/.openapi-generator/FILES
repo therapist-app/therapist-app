@@ -64,6 +64,7 @@ models/meeting-output-dto.ts
 models/patient-document-output-dto.ts
 models/patient-output-dto.ts
 models/psychological-test-create-dto.ts
+models/psychological-test-name-output-dtopatient-api.ts
 models/psychological-test-output-dto.ts
 models/psychological-test-question-output-dto.ts
 models/remove-exercise-from-counseling-plan-phase-dto.ts

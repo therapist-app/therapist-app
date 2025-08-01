@@ -542,9 +542,13 @@
     "question7": "Відчуття страху, ніби може статися щось жахливе.",
     "total_score": "Загальний бал",
     "cancel": "Скасувати",
+    "assign_tests": "Призначити тести GAD-7 клієнту",
+    "assigned_successfully": "Тести GAD-7 успішно призначено клієнту.",
+    "updated_successfully": "Тестова конфігурація успішно оновлена.",
     "save_changes": "Зберегти зміни",
     "no_tests_yet": "Клієнт ще не заповнював жодних тестів GAD-7.",
     "failed_to_assign_tests": "Не вдалося призначити тести GAD-7 клієнту.",
+    "failed_to_update_tests": "Не вдалося оновити тести GAD-7 клієнту.",
     "answers": {
       "not_at_all": "Зовсім ні",
       "several_days": "Кілька днів",

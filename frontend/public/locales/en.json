@@ -542,9 +542,13 @@
     "question7": "Feeling afraid as if something awful might happen.",
     "total_score": "Total Score",
     "cancel": "Cancel",
+    "assign_tests": "Assign GAD-7 Tests",
+    "assigned_successfully": "Successfully assigned GAD-7 tests.",
+    "updated_successfully": "Successfully updated GAD-7 test configuration.",
     "save_changes": "Save Changes",
     "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
     "failed_to_assign_tests": "Failed to assign GAD-7 tests.",
+    "failed_to_update_tests": "Failed to update GAD-7 tests.",
     "answers": {
       "not_at_all": "Not at all",
       "several_days": "Several days",

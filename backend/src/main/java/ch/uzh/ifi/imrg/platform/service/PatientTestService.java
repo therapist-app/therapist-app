@@ -1,6 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -105,7 +106,7 @@ public class PatientTestService {
       PsychologicalTestAssignmentInputDTOPatientAPI input =
           toAssignmentInput(patientId, psychologicalTestName, dto);
       PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-          .updatePsychologicalTest(patientId, psychologicalTestName, input)
+          .updatePsychologicalTestWithHttpInfo(patientId, psychologicalTestName, input)
           .block();
 
       return dto;
@@ -115,6 +116,32 @@ public class PatientTestService {
           "Error assigning psychological test {} to patient {}", dto.getTestName(), patientId, e);
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
+    }
+  }
+
+  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesByPatient(
+      String patientId, String therapistId) {
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    try {
+      List<PsychologicalTestNameOutputDTOPatientAPI> testNames =
+          PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+              .getAvailablePsychologicalTestNames(patientId)
+              .collectList()
+              .block();
+
+      if (testNames == null) {
+        logger.warn("No test names found for patient {}", patientId);
+        return Collections.emptyList();
+      }
+      logger.info("Retrieved {} test names for patient {}", testNames.size(), patientId);
+      return testNames;
+
+    } catch (Exception e) {
+      logger.error("Error fetching test names for patient {}", patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test names", e);
     }
   }
 
