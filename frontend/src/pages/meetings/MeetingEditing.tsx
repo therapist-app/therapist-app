@@ -41,29 +41,27 @@ const MeetingEditing: React.FC<MeetingEditingProps> = ({ meeting, save, cancel }
   }
 
   const handleSubmit = async (): Promise<void> => {
-  const { meetingStart, meetingEnd } = meetingFormData
-if (meetingStart && meetingEnd && meetingEnd <= meetingStart) {
-  notifyError(t('meetings.end_must_be_after_start'))
-  return
-}
-
-
-  try {
-    const dto: UpdateMeetingDTO = {
-      id: meeting.id,
-      meetingStart: meetingStart?.toISOString(),
-      meetingEnd: meetingEnd?.toISOString(),
-      location: meetingFormData.location,
-      meetingStatus: meetingFormData.meetingStatus,
+    const { meetingStart, meetingEnd } = meetingFormData
+    if (meetingStart && meetingEnd && meetingEnd <= meetingStart) {
+      notifyError(t('meetings.end_must_be_after_start'))
+      return
     }
-    await dispatch(updateMeeting(dto)).unwrap()
-    notifySuccess(t('meetings.meeting_updated_successfully'))
-    save()
-  } catch (error) {
-    notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
-  }
-}
 
+    try {
+      const dto: UpdateMeetingDTO = {
+        id: meeting.id,
+        meetingStart: meetingStart?.toISOString(),
+        meetingEnd: meetingEnd?.toISOString(),
+        location: meetingFormData.location,
+        meetingStatus: meetingFormData.meetingStatus,
+      }
+      await dispatch(updateMeeting(dto)).unwrap()
+      notifySuccess(t('meetings.meeting_updated_successfully'))
+      save()
+    } catch (error) {
+      notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
+    }
+  }
 
   return (
     <form
@@ -75,36 +73,33 @@ if (meetingStart && meetingEnd && meetingEnd <= meetingStart) {
     >
       <LocalizationProvider adapterLocale={de} dateAdapter={AdapterDateFns}>
         <DateTimePicker
-  label={t('meetings.meeting_start')}
-  value={meetingFormData.meetingStart}
-  onChange={(newStart) =>
-    setMeetingFormData((prev) => {
-      let newEnd = prev.meetingEnd
-      if (newStart) {
-        if (!prev.meetingEnd || prev.meetingEnd <= newStart) {
-          newEnd = new Date(newStart.getTime() + 60_000)
-        }
-      }
-      return { ...prev, meetingStart: newStart, meetingEnd: newEnd }
-    })
-  }
-  sx={{ mt: 2, width: '100%' }}
-/>
+          label={t('meetings.meeting_start')}
+          value={meetingFormData.meetingStart}
+          onChange={(newStart) =>
+            setMeetingFormData((prev) => {
+              let newEnd = prev.meetingEnd
+              if (newStart) {
+                if (!prev.meetingEnd || prev.meetingEnd <= newStart) {
+                  newEnd = new Date(newStart.getTime() + 60_000)
+                }
+              }
+              return { ...prev, meetingStart: newStart, meetingEnd: newEnd }
+            })
+          }
+          sx={{ mt: 2, width: '100%' }}
+        />
 
-
-
-       <DateTimePicker
-  label={t('meetings.meeting_end')}
-  value={meetingFormData.meetingEnd}
-  minDateTime={
-    meetingFormData.meetingStart
-      ? new Date(meetingFormData.meetingStart.getTime() + 60_000)
-      : undefined
-  }
-  onChange={(newEnd) => setMeetingFormData((prev) => ({ ...prev, meetingEnd: newEnd }))}
-  sx={{ mt: 2, width: '100%' }}
-/>
-
+        <DateTimePicker
+          label={t('meetings.meeting_end')}
+          value={meetingFormData.meetingEnd}
+          minDateTime={
+            meetingFormData.meetingStart
+              ? new Date(meetingFormData.meetingStart.getTime() + 60_000)
+              : undefined
+          }
+          onChange={(newEnd) => setMeetingFormData((prev) => ({ ...prev, meetingEnd: newEnd }))}
+          sx={{ mt: 2, width: '100%' }}
+        />
 
         <TextField
           label={t('meetings.location')}
