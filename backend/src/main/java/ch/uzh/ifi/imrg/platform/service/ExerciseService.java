@@ -14,8 +14,11 @@ import ch.uzh.ifi.imrg.platform.rest.mapper.ExerciseMapper;
 import ch.uzh.ifi.imrg.platform.utils.DateUtil;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
+import ch.uzh.ifi.imrg.platform.utils.ValidationUtil;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,10 +50,14 @@ public class ExerciseService {
     exercise.setExerciseTitle(createExerciseDTO.getExerciseTitle());
     exercise.setExerciseDescription(createExerciseDTO.getExerciseDescription());
     exercise.setExerciseExplanation(createExerciseDTO.getExerciseExplanation());
-    exercise.setExerciseStart(createExerciseDTO.getExerciseStart());
-    exercise.setExerciseEnd(
-        DateUtil.addAmountOfWeeks(
-            createExerciseDTO.getExerciseStart(), createExerciseDTO.getDurationInWeeks()));
+
+    Instant start = createExerciseDTO.getExerciseStart();
+    Instant end = DateUtil.addAmountOfWeeks(start, createExerciseDTO.getDurationInWeeks());
+    ValidationUtil.assertStartBeforeEnd(
+        start != null ? Date.from(start) : null, end != null ? Date.from(end) : null);
+
+    exercise.setExerciseStart(start);
+    exercise.setExerciseEnd(end);
     exercise.setIsPaused(false);
     exercise.setDoEveryNDays(createExerciseDTO.getDoEveryNDays());
 
@@ -103,8 +110,23 @@ public class ExerciseService {
   }
 
   public ExerciseOutputDTO updateExercise(UpdateExerciseDTO updateExerciseDTO, String therapistId) {
+
     Exercise exercise = exerciseRepository.getReferenceById(updateExerciseDTO.getId());
     SecurityUtil.checkOwnership(exercise, therapistId);
+
+    Instant effectiveStart =
+        updateExerciseDTO.getExerciseStart() != null
+            ? updateExerciseDTO.getExerciseStart()
+            : exercise.getExerciseStart();
+
+    Instant effectiveEnd =
+        updateExerciseDTO.getExerciseEnd() != null
+            ? updateExerciseDTO.getExerciseEnd()
+            : exercise.getExerciseEnd();
+
+    ValidationUtil.assertStartBeforeEnd(
+        effectiveStart != null ? Date.from(effectiveStart) : null,
+        effectiveEnd != null ? Date.from(effectiveEnd) : null);
 
     ExerciseUpdateInputDTOPatientAPI exerciseUpdateInputDTOPatientAPI =
         new ExerciseUpdateInputDTOPatientAPI();
