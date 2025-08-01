@@ -374,15 +374,14 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <FilesTable
-  title={t('patient_detail.files_visible_to_client')}
-  allDocuments={patientDocumentsVisibleToPatient}
-  handleFileUpload={handleFileUploadSharedWithPatient}
-  handleDeleteFile={handleDeleteFile}
-  downloadFile={downloadFile}
-  maxFileSizeMessage={t('exercise.max_file_size', { size: '1MB' })}
-  maxFileSizeBytes={1 * 1024 * 1024}
-/>
-
+        title={t('patient_detail.files_visible_to_client')}
+        allDocuments={patientDocumentsVisibleToPatient}
+        handleFileUpload={handleFileUploadSharedWithPatient}
+        handleDeleteFile={handleDeleteFile}
+        downloadFile={downloadFile}
+        maxFileSizeMessage={t('exercise.max_file_size', { size: '1MB' })}
+        maxFileSizeBytes={1 * 1024 * 1024}
+      />
 
       <CustomizedDivider />
 

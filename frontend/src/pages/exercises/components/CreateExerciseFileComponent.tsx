@@ -53,8 +53,8 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       setAddingExerciseComponent(
         isImageComponent
           ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
-          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File,
-      ),
+          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+      )
     )
   }
 
@@ -83,7 +83,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
         createExerciseComponent({
           createExerciseComponentDTO: dto,
           file: selectedFile,
-        }),
+        })
       ).unwrap()
 
       notifySuccess(t('exercise.component_created_successfully'))
@@ -94,7 +94,9 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     }
   }
 
-  if (!active) return null
+  if (!active) {
+    return null
+  }
 
   return (
     <div>

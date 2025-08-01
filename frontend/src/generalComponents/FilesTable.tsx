@@ -74,73 +74,77 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
   }
 
   return (
-  <>
-    <div
-      style={{
-        display: 'flex',
-        gap: '30px',
-        alignItems: 'center',
-        marginBottom: '10px',
-      }}
-    >
-      <Typography variant='h2'>{title}</Typography>
-      <FileUpload onUpload={wrappedUpload} />
-    </div>
+    <>
+      <div
+        style={{
+          display: 'flex',
+          gap: '30px',
+          alignItems: 'center',
+          marginBottom: '10px',
+        }}
+      >
+        <Typography variant='h2'>{title}</Typography>
+        <FileUpload onUpload={wrappedUpload} />
+      </div>
 
-    {allDocuments.length > 0 ? (
-      <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
-        <Table aria-label='files-table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                  {t('patient_detail.file_name')}
-                </div>
-              </TableCell>
-              <TableCell align='right'>{t('patient_detail.actions')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allDocuments.map((document) => (
-              <TableRow key={document.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell
-                  sx={{
-                    maxWidth: 400,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                  component='th'
-                  scope='row'
-                >
-                  {document.fileName}
+      {allDocuments.length > 0 ? (
+        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+          <Table aria-label='files-table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    {t('patient_detail.file_name')}
+                  </div>
                 </TableCell>
-                <TableCell align='right'>
-                  <Tooltip title={t('patient_detail.download')} arrow>
-                    <FileDownload
-                      download={() => wrappedDownload(document.id ?? '')}
-                      fileName={document.fileName ?? ''}
-                    />
-                  </Tooltip>
-
-                  <Tooltip title={t('patient_detail.delete')} arrow>
-                    <IconButton aria-label='delete' onClick={() => wrappedDelete(document.id ?? '')}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
+                <TableCell align='right'>{t('patient_detail.actions')}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    ) : (
-      <Typography sx={{ mt: '10px' }}>
-        {t('patient_detail.no_files_uploaded_yet')}
-      </Typography>
-    )}
-  </>
-)
+            </TableHead>
+            <TableBody>
+              {allDocuments.map((document) => (
+                <TableRow
+                  key={document.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell
+                    sx={{
+                      maxWidth: 400,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                    component='th'
+                    scope='row'
+                  >
+                    {document.fileName}
+                  </TableCell>
+                  <TableCell align='right'>
+                    <Tooltip title={t('patient_detail.download')} arrow>
+                      <FileDownload
+                        download={() => wrappedDownload(document.id ?? '')}
+                        fileName={document.fileName ?? ''}
+                      />
+                    </Tooltip>
+
+                    <Tooltip title={t('patient_detail.delete')} arrow>
+                      <IconButton
+                        aria-label='delete'
+                        onClick={() => wrappedDelete(document.id ?? '')}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography sx={{ mt: '10px' }}>{t('patient_detail.no_files_uploaded_yet')}</Typography>
+      )}
+    </>
+  )
 }
 
 export default FilesTable
