@@ -53,8 +53,8 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       setAddingExerciseComponent(
         isImageComponent
           ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
-          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
-      )
+          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File,
+      ),
     )
   }
 
@@ -83,7 +83,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
         createExerciseComponent({
           createExerciseComponentDTO: dto,
           file: selectedFile,
-        })
+        }),
       ).unwrap()
 
       notifySuccess(t('exercise.component_created_successfully'))
@@ -94,24 +94,17 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     }
   }
 
-  if (!active) {
-    return null
-  }
+  if (!active) return null
 
   return (
     <div>
       {!isCreatingFile ? (
         isImageComponent ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '200px' }}>
-            <FileUpload
-              onUpload={saveSelectedFile}
-              text={t('exercise.upload_image')}
-              accept='image/*'
-            />
-            <Typography variant='caption' color='textSecondary' sx={{ ml: 1.5 }}>
-              {t('exercise.max_file_size', { size: '750 KB' })}
-            </Typography>
-          </div>
+          <FileUpload
+            onUpload={saveSelectedFile}
+            text={t('exercise.upload_image')}
+            accept='image/*'
+          />
         ) : (
           <FileUpload onUpload={saveSelectedFile} />
         )
@@ -137,6 +130,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             label={t('exercise.description')}
             value={description}
             onChange={handleChangeDescription}
+            fullWidth
           />
 
           <div
@@ -153,7 +147,6 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
             <Button
               variant='contained'
               color='error'
-              fullWidth
               sx={{ ...deleteButtonStyles, minWidth: '180px' }}
               onClick={cancel}
             >
