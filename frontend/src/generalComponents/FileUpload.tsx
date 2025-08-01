@@ -7,25 +7,22 @@ import { commonButtonStyles } from '../styles/buttonStyles'
 
 interface FileUploadProps {
   onUpload: (file: File) => void
-  accept?: string     
+  accept?: string
   text?: string
   buttonSx?: object
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({
-  onUpload,
-  accept,
-  text,
-  buttonSx,
-}) => {
+const FileUpload: React.FC<FileUploadProps> = ({ onUpload, accept, text, buttonSx }) => {
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { notifyError, notifyWarning } = useNotify()
   const mimeAllowed = (file: File): boolean => {
-    if (!accept) return true        
+    if (!accept) {
+      return true
+    }
     const patterns = accept
       .split(',')
-      .map((s) => s.trim())         
+      .map((s) => s.trim())
       .filter(Boolean)
 
     return patterns.some((p) => {
@@ -38,7 +35,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file) {
+      return
+    }
 
     if (!mimeAllowed(file)) {
       notifyWarning(t('errors.unsupported_file_type'))
@@ -65,7 +64,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
     <div>
       <input
         ref={fileInputRef}
-        type="file"
+        type='file'
         accept={accept}
         onChange={handleFileChange}
         style={{ display: 'none' }}

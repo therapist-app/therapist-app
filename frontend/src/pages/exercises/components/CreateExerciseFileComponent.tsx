@@ -23,7 +23,7 @@ interface CreateExerciseFileComponentProps {
   active: boolean
 }
 
-const MAX_FILE_SIZE_BYTES = 0.75 * 1024 * 1024 
+const MAX_FILE_SIZE_BYTES = 0.75 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg']
 
 const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = ({
@@ -59,8 +59,8 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
       setAddingExerciseComponent(
         isImageComponent
           ? ExerciseComponentOutputDTOExerciseComponentTypeEnum.Image
-          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File,
-      ),
+          : ExerciseComponentOutputDTOExerciseComponentTypeEnum.File
+      )
     )
   }
 
@@ -89,7 +89,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
         createExerciseComponent({
           createExerciseComponentDTO: dto,
           file: selectedFile,
-        }),
+        })
       ).unwrap()
 
       notifySuccess(t('exercise.component_created_successfully'))
@@ -100,17 +100,19 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     }
   }
 
-  if (!active) return null
+  if (!active) {
+    return null
+  }
 
   return (
     <div>
       {!isCreatingFile ? (
         isImageComponent ? (
           <FileUpload
-  onUpload={saveSelectedFile}
-  text={t('exercise.upload_image')}
-  accept="image/png,image/jpeg"
-/>
+            onUpload={saveSelectedFile}
+            text={t('exercise.upload_image')}
+            accept='image/png,image/jpeg'
+          />
         ) : (
           <FileUpload onUpload={saveSelectedFile} />
         )
