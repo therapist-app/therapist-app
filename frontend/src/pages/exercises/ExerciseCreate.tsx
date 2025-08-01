@@ -111,28 +111,24 @@ const ExerciseCreate = (): ReactElement => {
         </LocalizationProvider>
 
         <TextField
-  label={t('exercise.duration_in_weeks')}
-  name='durationInWeeks'
-  type='number'
-  value={formData.durationInWeeks}
-  inputProps={{ min: 1, step: 1 }}
-  onChange={(e) => {
-  const raw = e.target.value;
-  const parsed = Number(raw);
+          label={t('exercise.duration_in_weeks')}
+          name='durationInWeeks'
+          type='number'
+          value={formData.durationInWeeks}
+          inputProps={{ min: 1, step: 1 }}
+          onChange={(e) => {
+            const raw = e.target.value
+            const parsed = Number(raw)
 
-  if (/^[1-9]\d*$/.test(raw)) {
-    setFormData({ ...formData, durationInWeeks: parsed });
-  } else if (raw === '') {
-    setFormData({ ...formData, durationInWeeks: 0 });
-  }
-}}
-
-  sx={{ width: '100%' }}
-  required
-/>
-
-
-
+            if (/^[1-9]\d*$/.test(raw)) {
+              setFormData({ ...formData, durationInWeeks: parsed })
+            } else if (raw === '') {
+              setFormData({ ...formData, durationInWeeks: 0 })
+            }
+          }}
+          sx={{ width: '100%' }}
+          required
+        />
 
         <TextField
           label={t('exercise.doEveryNDays')}
