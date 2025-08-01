@@ -25,14 +25,27 @@ interface FilesTableProps {
   handleFileUpload: (file: File) => Promise<void> | void
   handleDeleteFile: (fileId: string) => Promise<void> | void
   downloadFile: (fileId: string) => Promise<string>
+  maxFileSizeMessage?: string
+  maxFileSizeBytes?: number
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props) => {
   const { t } = useTranslation()
-  const { allDocuments, handleFileUpload, handleDeleteFile, downloadFile, title } = props
+  const {
+    allDocuments,
+    handleFileUpload,
+    handleDeleteFile,
+    downloadFile,
+    title,
+    maxFileSizeBytes,
+  } = props
   const { notifySuccess, notifyError } = useNotify()
-
   const wrappedUpload = async (file: File): Promise<void> => {
+    if (maxFileSizeBytes && file.size > maxFileSizeBytes) {
+      notifyError(t('exercise.file_too_large', { max: '1MB' }))
+      return
+    }
+
     try {
       await handleFileUpload(file)
       notifySuccess('File uploaded successfully.')
@@ -75,7 +88,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
 
       {allDocuments.length > 0 ? (
         <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
-          <Table aria-label='simple table'>
+          <Table aria-label='files-table'>
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -90,9 +103,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
               {allDocuments.map((document) => (
                 <TableRow
                   key={document.id}
-                  sx={{
-                    '&:last-child td, &:last-child th': { border: 0 },
-                  }}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell
                     sx={{
@@ -129,7 +140,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
           </Table>
         </TableContainer>
       ) : (
-        <Typography>{t('patient_detail.no_files_uploaded_yet')}</Typography>
+        <Typography sx={{ mt: '10px' }}>{t('patient_detail.no_files_uploaded_yet')}</Typography>
       )}
     </>
   )
