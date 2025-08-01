@@ -9,10 +9,7 @@ import { useState } from 'react'
 import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
 import { useNotify } from '../../hooks/useNotify'
 import { updateMeeting } from '../../store/meetingSlice'
-import {
-  cancelButtonStyles,
-  successButtonStyles,
-} from '../../styles/buttonStyles'
+import { cancelButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 
 interface MeetingEditingProps {
