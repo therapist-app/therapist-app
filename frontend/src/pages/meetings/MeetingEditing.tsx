@@ -1,5 +1,4 @@
 import { Button, MenuItem, Select, TextField } from '@mui/material'
-import { common } from '@mui/material/colors'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -12,7 +11,6 @@ import { useNotify } from '../../hooks/useNotify'
 import { updateMeeting } from '../../store/meetingSlice'
 import {
   cancelButtonStyles,
-  commonButtonStyles,
   successButtonStyles,
 } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
