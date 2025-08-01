@@ -228,6 +228,8 @@
   },
   "exercise": {
     "upload_image": "Upload Image",
+    "max_file_size": "Maximum file size: {{size}}",
+    "file_too_large": "File is too large (max {{max}}).",
     "end_must_be_after_start": "End time must be after start time",
     "description": "Description",
     "add_input_field": "Add Input Field",

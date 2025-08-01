@@ -228,6 +228,8 @@
   },
   "exercise": {
     "upload_image": "Завантажити зображення",
+    "max_file_size": "Максимальний розмір файлу: {{size}}",
+    "file_too_large": "Файл занадто великий (макс. {{max}}).",
     "end_must_be_after_start": "Час завершення має бути пізніше часу початку",
     "description": "Опис",
     "add_input_field": "Додати поле для введення",

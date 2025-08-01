@@ -229,6 +229,8 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Bild hochladen",
+      "max_file_size": "Maximale Dateigröße: {{size}}",
+      "file_too_large": "Die Datei ist zu groß (max. {{max}}).",
       "end_must_be_after_start": "Ende muss nach Beginn liegen",
       "description": "Beschreibung",
       "add_input_field": "Eingabefeld hinzufügen",
@@ -820,6 +822,8 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Upload Image",
+      "max_file_size": "Maximum file size: {{size}}",
+      "file_too_large": "File is too large (max {{max}}).",
       "end_must_be_after_start": "End time must be after start time",
       "description": "Description",
       "add_input_field": "Add Input Field",
@@ -1411,6 +1415,8 @@ interface Resources {
     },
     "exercise": {
       "upload_image": "Завантажити зображення",
+      "max_file_size": "Максимальний розмір файлу: {{size}}",
+      "file_too_large": "Файл занадто великий (макс. {{max}}).",
       "end_must_be_after_start": "Час завершення має бути пізніше часу початку",
       "description": "Опис",
       "add_input_field": "Додати поле для введення",
