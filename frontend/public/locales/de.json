@@ -542,9 +542,13 @@
     "question7": "Sich fürchten, als ob etwas Schreckliches passieren könnte.",
     "total_score": "Gesamtpunktzahl",
     "cancel": "Abbrechen",
+    "assign_tests": "Tests zuweisen",
+    "assigned_successfully": "Tests erfolgreich zugewiesen",
+    "updated_successfully": "Test Konfiguration erfolgreich aktualisiert",
     "save_changes": "Änderungen speichern",
     "no_tests_yet": "Der Klient hat noch keine GAD-7-Tests ausgefüllt.",
     "failed_to_assign_tests": "Fehler beim Zuweisen von Tests an den Klienten.",
+    "failed_to_update_tests": "Fehler beim Aktualisieren der Tests.",
     "answers": {
       "not_at_all": "Überhaupt nicht",
       "several_days": "An mehreren Tagen",
