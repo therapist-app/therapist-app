@@ -83,7 +83,10 @@ const CreateExerciseInputFieldComponent: React.FC<CreateExerciseInputFieldCompon
     <div>
       {isCreatingExerciseInputField === false ? (
         <Tooltip title={t(tooltipTranslationKey)} arrow>
-          <Button sx={{ ...commonButtonStyles, minWidth: '220px' }} onClick={showExerciseInputField}>
+          <Button
+            sx={{ ...commonButtonStyles, minWidth: '220px' }}
+            onClick={showExerciseInputField}
+          >
             {t(inputFieldTranslationKey)}
           </Button>
         </Tooltip>
