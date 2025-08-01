@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { MeetingOutputDTO, UpdateMeetingDTO, UpdateMeetingDTOMeetingStatusEnum } from '../../api'
 import { useNotify } from '../../hooks/useNotify'
 import { updateMeeting } from '../../store/meetingSlice'
+import { cancelButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
 
 interface MeetingEditingProps {
@@ -24,33 +25,40 @@ interface FormValues {
   meetingStatus: UpdateMeetingDTOMeetingStatusEnum
 }
 
-const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
+const MeetingEditing: React.FC<MeetingEditingProps> = ({ meeting, save, cancel }) => {
   const dispatch = useAppDispatch()
   const { notifyError, notifySuccess } = useNotify()
 
   const [meetingFormData, setMeetingFormData] = useState<FormValues>({
-    meetingStart: new Date(props.meeting?.meetingStart ?? ''),
-    meetingEnd: new Date(props.meeting?.meetingEnd ?? ''),
-    location: props.meeting?.location ?? '',
-    meetingStatus: props.meeting?.meetingStatus ?? UpdateMeetingDTOMeetingStatusEnum.Confirmed,
+    meetingStart: new Date(meeting?.meetingStart ?? ''),
+    meetingEnd: new Date(meeting?.meetingEnd ?? ''),
+    location: meeting?.location ?? '',
+    meetingStatus: meeting?.meetingStatus ?? UpdateMeetingDTOMeetingStatusEnum.Confirmed,
   })
 
-  if (props.meeting === null) {
+  if (meeting === null) {
     return <></>
   }
 
   const handleSubmit = async (): Promise<void> => {
+    const { meetingStart, meetingEnd } = meetingFormData
+
+    if (meetingStart && meetingEnd && meetingEnd < meetingStart) {
+      notifyError(t('meetings.end_must_be_after_start'))
+      return
+    }
+
     try {
       const dto: UpdateMeetingDTO = {
-        id: props.meeting?.id ?? '',
-        meetingStart: meetingFormData.meetingStart?.toISOString(),
-        meetingEnd: meetingFormData.meetingEnd?.toISOString(),
+        id: meeting.id,
+        meetingStart: meetingStart?.toISOString(),
+        meetingEnd: meetingEnd?.toISOString(),
         location: meetingFormData.location,
         meetingStatus: meetingFormData.meetingStatus,
       }
       await dispatch(updateMeeting(dto)).unwrap()
       notifySuccess(t('meetings.meeting_updated_successfully'))
-      props.save()
+      save()
     } catch (error) {
       notifyError(typeof error === 'string' ? error : 'An unknown error occurred')
     }
@@ -58,7 +66,7 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
 
   return (
     <form
-      style={{ maxWidth: '500px' }}
+      style={{ maxWidth: 500 }}
       onSubmit={(e) => {
         e.preventDefault()
         handleSubmit()
@@ -68,38 +76,32 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
         <DateTimePicker
           label={t('meetings.meeting_start')}
           value={meetingFormData.meetingStart}
-          onChange={(newValue: Date | null) => {
-            setMeetingFormData({
-              ...meetingFormData,
-              meetingStart: newValue,
+          maxDateTime={meetingFormData.meetingEnd ?? undefined}
+          onChange={(newStart) =>
+            setMeetingFormData((prev) => {
+              const newEnd =
+                prev.meetingEnd && newStart && prev.meetingEnd < newStart
+                  ? newStart
+                  : prev.meetingEnd
+              return { ...prev, meetingStart: newStart, meetingEnd: newEnd }
             })
-          }}
+          }
           sx={{ mt: 2, width: '100%' }}
         />
 
         <DateTimePicker
           label={t('meetings.meeting_end')}
           value={meetingFormData.meetingEnd}
-          onChange={(newValue: Date | null) => {
-            setMeetingFormData({
-              ...meetingFormData,
-              meetingEnd: newValue,
-            })
-          }}
+          minDateTime={meetingFormData.meetingStart ?? undefined}
+          onChange={(newEnd) => setMeetingFormData((prev) => ({ ...prev, meetingEnd: newEnd }))}
           sx={{ mt: 2, width: '100%' }}
         />
 
         <TextField
           label={t('meetings.location')}
-          name='location'
           multiline
           value={meetingFormData.location}
-          onChange={(e) =>
-            setMeetingFormData({
-              ...meetingFormData,
-              location: e.target.value,
-            })
-          }
+          onChange={(e) => setMeetingFormData({ ...meetingFormData, location: e.target.value })}
           sx={{ mt: 2, width: '100%' }}
         />
 
@@ -121,11 +123,11 @@ const MeetingEditing: React.FC<MeetingEditingProps> = (props) => {
         </Select>
       </LocalizationProvider>
 
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <Button type='submit' variant='contained' color='success' fullWidth sx={{ mt: 2 }}>
+      <div style={{ display: 'flex', gap: 20 }}>
+        <Button type='submit' sx={{ ...successButtonStyles, minWidth: 225, mt: 4 }} fullWidth>
           {t('meetings.save')}
         </Button>
-        <Button onClick={props.cancel} variant='contained' color='error' fullWidth sx={{ mt: 2 }}>
+        <Button onClick={cancel} sx={{ ...cancelButtonStyles, minWidth: 225, mt: 4 }}>
           {t('meetings.cancel')}
         </Button>
       </div>
