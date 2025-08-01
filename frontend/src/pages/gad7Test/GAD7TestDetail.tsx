@@ -23,6 +23,8 @@ export const GAD7TestDetail = (): ReactElement => {
   const [endDate, setEndDate] = useState<Date | null>(addWeeks(new Date(), 8)) // default to 8 weeks later
   const [isPaused, setIsPaused] = useState<boolean>(false)
 
+  const testName = 'GAD-7'
+
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault()
@@ -32,14 +34,18 @@ export const GAD7TestDetail = (): ReactElement => {
 
       const dto = {
         patientId: patientId,
-        testName: 'GAD-7',
+        testName: testName,
         exerciseStart: startDate.toISOString(),
         exerciseEnd: endDate.toISOString(),
         isPaused: isPaused,
         doEveryNDays: intervalDays,
       }
 
-      const response = await patientTestApi.assignPsychologicalTestToPatient(patientId, dto)
+      const response = await patientTestApi.assignPsychologicalTestToPatient(
+        patientId,
+        testName,
+        dto
+      )
       console.log('assignment response', response)
     } catch {
       notifyError(t('gad7test.failed_to_assign_tests'))

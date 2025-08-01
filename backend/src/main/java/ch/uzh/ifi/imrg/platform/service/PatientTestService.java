@@ -23,21 +23,21 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class PatientTestService {
   private final PatientRepository patientRepository;
-  private static final String GAD7_TEST_NAME = "GAD7";
   private static final Logger logger = LoggerFactory.getLogger(PatientTestService.class);
 
   public PatientTestService(PatientRepository patientRepository) {
     this.patientRepository = patientRepository;
   }
 
-  public List<PsychologicalTestOutputDTO> getTestsByPatient(String patientId, String therapistId) {
+  public List<PsychologicalTestOutputDTO> getTestsByPatient(
+      String patientId, String therapistId, String psychologicalTestName) {
     Patient patient = patientRepository.getReferenceById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
     try {
       List<PsychologicalTestOutputDTOPatientAPI> apiResults =
           PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-              .getPsychologicalTestResults1(patientId, GAD7_TEST_NAME)
+              .getPsychologicalTestResults1(patientId, psychologicalTestName)
               .collectList()
               .block();
 
@@ -67,29 +67,28 @@ public class PatientTestService {
   }
 
   public PsychologicalTestCreateDTO assignPsychologicalTest(
-      String patientId, String therapistId, PsychologicalTestCreateDTO dto) {
+      String patientId,
+      String therapistId,
+      PsychologicalTestCreateDTO dto,
+      String psychologicalTestName) {
 
-    // 1. Load & authorize
     Patient patient = patientRepository.getReferenceById(patientId);
-    SecurityUtil.checkOwnership(patient, therapistId); // throws 403 if invalid
+    SecurityUtil.checkOwnership(patient, therapistId);
 
     try {
-      // 2. Build the assignment input for the Patient-API client
       PsychologicalTestAssignmentInputDTOPatientAPI input =
           new PsychologicalTestAssignmentInputDTOPatientAPI()
               .patientId(patientId)
-              .testName(dto.getTestName())
+              .testName(psychologicalTestName)
               .exerciseStart(dto.getExerciseStart())
               .exerciseEnd(dto.getExerciseEnd())
               .isPaused(dto.getIsPaused())
               .doEveryNDays(dto.getDoEveryNDays());
 
-      // 3. Call the remote coach endpoint to create the test
       PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-          .createPsychologicalTest1(patientId, dto.getTestName(), input)
+          .createPsychologicalTest1(patientId, psychologicalTestName, input)
           .block();
 
-      // 4. Return the created assignment details
       return dto;
 
     } catch (Exception e) {
