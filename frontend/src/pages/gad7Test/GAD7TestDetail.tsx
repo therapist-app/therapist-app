@@ -23,19 +23,21 @@ export const GAD7TestDetail = (): ReactElement => {
   const [startDate, setStartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(addWeeks(new Date(), 8))
   const [isPaused, setIsPaused] = useState<boolean>(false)
-  const [existingTest, setExistingTest] = useState<any | null>(null)
+  const [existingTest, setExistingTest] = useState<string | null>(null)
 
   const testName = 'GAD7'
 
   useEffect(() => {
-    if (!patientId) return
+    if (!patientId) {
+      return
+    }
     patientTestApi
       .getPsychologicalTestNamesForPatient(patientId)
       .then((tests) => {
         const found = tests.data.find((t) => t.name === testName)
-        if (found) {
-          console.log("found", found)
-          setExistingTest(found.name)
+        if (found && found.name) {
+          console.log('found', found)
+          setExistingTest(found.name.toString())
         }
       })
       .catch((err) => {
@@ -44,25 +46,24 @@ export const GAD7TestDetail = (): ReactElement => {
       })
   }, [patientId, testName, notifyError, t])
 
+  console.log('Existing test:', existingTest)
   const handleCreateTest = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault()
-      if (!patientId || !startDate || !endDate) return
+      if (!patientId || !startDate || !endDate) {
+        return
+      }
 
       const dto = {
-        patientId,
-        testName,
+        patientId: patientId,
+        testName: testName,
         exerciseStart: startDate.toISOString(),
         exerciseEnd: endDate.toISOString(),
-        isPaused,
+        isPaused: isPaused,
         doEveryNDays: intervalDays,
       }
 
-      await patientTestApi.assignPsychologicalTestToPatient(
-        patientId,
-        testName,
-        dto
-      )
+      await patientTestApi.assignPsychologicalTestToPatient(patientId, testName, dto)
       notifySuccess(t('gad7test.assigned_successfully'))
       setExistingTest(testName)
     } catch (error) {
@@ -74,22 +75,20 @@ export const GAD7TestDetail = (): ReactElement => {
   const handleUpdateTest = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault()
-      if (!patientId || !startDate || !endDate) return
+      if (!patientId || !startDate || !endDate) {
+        return
+      }
 
       const dto = {
-        patientId,
-        testName,
+        patientId: patientId,
+        testName: testName,
         exerciseStart: startDate.toISOString(),
         exerciseEnd: endDate.toISOString(),
-        isPaused,
+        isPaused: isPaused,
         doEveryNDays: intervalDays,
       }
 
-      await patientTestApi.updatePsychologicalTestToPatient(
-        patientId,
-        testName,
-        dto
-      )
+      await patientTestApi.updatePsychologicalTestToPatient(patientId, testName, dto)
       notifySuccess(t('gad7test.updated_successfully'))
     } catch (error) {
       console.error('Error updating GAD-7 test:', error)
@@ -157,27 +156,25 @@ export const GAD7TestDetail = (): ReactElement => {
             })}
           </Typography>
 
-            <Button
-              onClick={handleUpdateTest}
-              variant='contained'
-              sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
-            >
-              {t('gad7test.save_changes')}
-            </Button>
-            <Button
-              onClick={handleCreateTest}
-              variant='contained'
-              sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
-            >
-              {t('gad7test.assign_tests')}
-            </Button>
+          <Button
+            onClick={handleUpdateTest}
+            variant='contained'
+            sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
+          >
+            {t('gad7test.save_changes')}
+          </Button>
+          <Button
+            onClick={handleCreateTest}
+            variant='contained'
+            sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
+          >
+            {t('gad7test.assign_tests')}
+          </Button>
         </Box>
       </Box>
 
       <Box mt={4}>
-        <Typography variant='h2'>
-          {t('gad7test.completed_gad7tests')}
-        </Typography>
+        <Typography variant='h2'>{t('gad7test.completed_gad7tests')}</Typography>
         <GAD7TestTable />
       </Box>
     </Layout>
