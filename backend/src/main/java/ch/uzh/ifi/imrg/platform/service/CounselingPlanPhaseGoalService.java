@@ -77,24 +77,40 @@ public class CounselingPlanPhaseGoalService {
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(phase, therapistId);
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
+    String patientContext = phase.getCounselingPlan().getPatient().toLLMContext(0);
 
-    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
+    StringBuilder sb = new StringBuilder();
+
+    sb.append("You are a specialized API endpoint for a mental health application. ");
+    sb.append(
+        "Your ONLY function is to generate relevant content and return it as a single, raw, valid JSON object.\n\n");
+    sb.append("--- CRITICAL JSON OUTPUT RULES ---\n");
+    sb.append("1. Your entire response MUST be a single JSON object.\n");
+    sb.append("2. NEVER include markdown formatting like ```json.\n");
+    sb.append("3. NEVER include any explanatory text, conversational filler, or apologies.\n\n");
+
+    sb.append("--- REFERENCE EXAMPLES ---\n");
+    sb.append(
+        "Use these high-quality counseling plans as a reference for the tone, structure, and type of content to generate. These examples demonstrate best practices.\n\n");
+    sb.append(ExampleCounselingPlans.getExampleCounselingPlans());
+    sb.append("\n\n");
+
+    sb.append("--- CURRENT PATIENT CONTEXT ---\n");
+    sb.append(
+        "The following is the specific context for the patient you are generating a new goal for. You must use this information to ensure the goal is relevant and personalized.\n\n");
+    sb.append(patientContext);
 
     String userPrompt =
         String.format(
-            "The user wants to add a new goal to a specific phase of the counseling plan."
-                + " The target phase is named '%s' (ID: %s)."
-                + " Based on the overall plan and the details of this specific phase, generate one new, relevant goal."
-                + " The goal should have a concise 'goalName' and a slightly more detailed 'goalDescription'."
-                + " Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations."
-                + " Format: {\"goalName\":\"<name>\", \"goalDescription\":\"<description>\"}",
-            phase.getPhaseName(), dto.getCounselingPlanPhaseId());
-    userPrompt +=
-        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
-            + phase.getCounselingPlan().getPatient().toLLMContext(0);
+            "TASK: Based on all the provided context (reference examples and the current patient's plan), "
+                + "generate one new, relevant goal for the counseling plan phase named '%s' with ID '%s'.\n\n"
+                + "INSTRUCTIONS: Remember the critical rules. Respond ONLY with a valid JSON object in the "
+                + "following format. Do not include any other text.\n"
+                + "Format: {\"goalName\":\"<name>\", \"goalDescription\":\"<description>\"}",
+            phase.getPhaseName(), phase.getId());
 
     List<ChatMessageDTO> messages = new ArrayList<>();
-    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, sb.toString()));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
     CreateCounselingPlanPhaseGoalDTO generatedDto =
         LLMFactory.getInstance(therapist.getLlmModel())
