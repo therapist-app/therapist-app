@@ -568,7 +568,7 @@ interface Resources {
         "details": "Klientendetails",
         "conversations": "Gesprächszusammenfassung",
         "interactions": "Klienteninteraktionen",
-        "details_update": "Klient wird aktualisiert"
+        "details_update": "Klientendaten aktualisieren"
       },
       "chatbot": {
         "create": "Neuen Chatbot erstellen",
@@ -1168,7 +1168,7 @@ interface Resources {
         "details": "Client Details",
         "conversations": "Conversation Summary",
         "interactions": "Client Interactions",
-        "details_update": "Updating Client"
+        "details_update": "Update Client"
       },
       "chatbot": {
         "create": "Create New Chatbot",

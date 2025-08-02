@@ -567,7 +567,7 @@
       "details": "Klientendetails",
       "conversations": "Gesprächszusammenfassung",
       "interactions": "Klienteninteraktionen",
-      "details_update": "Klient wird aktualisiert"
+      "details_update": "Klientendaten aktualisieren"
     },
     "chatbot": {
       "create": "Neuen Chatbot erstellen",
