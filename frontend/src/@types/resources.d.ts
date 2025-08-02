@@ -225,7 +225,8 @@ interface Resources {
       "goalsCompleted": "Ziele abgeschlossen",
       "goalsCompleted2": "Ziele abgeschlossen",
       "phase": "Phase",
-      "completed": "abgeschlossen"
+      "completed": "abgeschlossen",
+      "goal_removed_successfully": "Ziel erfolgreich entfernt"
     },
     "exercise": {
       "upload_image": "Bild hochladen",
@@ -286,7 +287,6 @@ interface Resources {
       "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
       "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
       "exercise_removed_successfully": "Übung erfolgreich entfernt",
-      "goal_removed_successfully": "Ziel erfolgreich entfernt",
       "client_feedback": "Klienten-Feedback",
       "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
       "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",
@@ -818,7 +818,8 @@ interface Resources {
       "goalsCompleted": "Goals completed",
       "goalsCompleted2": "goals completed",
       "phase": "Phase",
-      "completed": "completed"
+      "completed": "completed",
+      "goal_removed_successfully": "Successfully removed goal"
     },
     "exercise": {
       "upload_image": "Upload Image",
@@ -879,7 +880,6 @@ interface Resources {
       "component_updated_successfully": "Successfully updated exercise component",
       "component_deleted_successfully": "Successfully deleted exercise component",
       "exercise_removed_successfully": "Successfully removed exercise",
-      "goal_removed_successfully": "Successfully removed goal",
       "client_feedback": "Client Feedback",
       "no_client_feedback": "The client has not provided any feedback for this exercise yet.",
       "privateInputTooltip": "This private input field components lets the client write down their own thoughts which will not be shared with the coach.",
@@ -1411,7 +1411,8 @@ interface Resources {
       "goalsCompleted": "Цілей досягнуто",
       "goalsCompleted2": "цілей досягнуто",
       "phase": "Фаза",
-      "completed": "завершено"
+      "completed": "завершено",
+      "goal_removed_successfully": "Ціль успішно видалено"
     },
     "exercise": {
       "upload_image": "Завантажити зображення",
@@ -1472,7 +1473,6 @@ interface Resources {
       "component_updated_successfully": "Компонент вправи успішно оновлено",
       "component_deleted_successfully": "Компонент вправи успішно видалено",
       "exercise_removed_successfully": "Вправу успішно видалено",
-      "goal_removed_successfully": "Ціль успішно видалено",
       "client_feedback": "Відгук клієнта",
       "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи.",
       "privateInputTooltip": "Це приватне поле для введення дозволяє клієнту записувати власні думки, які не будуть передані коучу.",

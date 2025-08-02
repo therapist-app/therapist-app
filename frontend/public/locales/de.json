@@ -224,7 +224,8 @@
     "goalsCompleted": "Ziele abgeschlossen",
     "goalsCompleted2": "Ziele abgeschlossen",
     "phase": "Phase",
-    "completed": "abgeschlossen"
+    "completed": "abgeschlossen",
+    "goal_removed_successfully": "Ziel erfolgreich entfernt"
   },
   "exercise": {
     "upload_image": "Bild hochladen",
@@ -285,7 +286,6 @@
     "component_updated_successfully": "Übungskomponente erfolgreich aktualisiert",
     "component_deleted_successfully": "Übungskomponente erfolgreich gelöscht",
     "exercise_removed_successfully": "Übung erfolgreich entfernt",
-    "goal_removed_successfully": "Ziel erfolgreich entfernt",
     "client_feedback": "Klienten-Feedback",
     "no_client_feedback": "Der Klient hat noch kein Feedback zu dieser Übung gegeben.",
     "privateInputTooltip": "Dieses private Eingabefeld ermöglicht es dem Klienten, seine eigenen Gedanken festzuhalten, die nicht mit dem Coach geteilt werden.",

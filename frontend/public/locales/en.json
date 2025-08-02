@@ -224,7 +224,8 @@
     "goalsCompleted": "Goals completed",
     "goalsCompleted2": "goals completed",
     "phase": "Phase",
-    "completed": "completed"
+    "completed": "completed",
+    "goal_removed_successfully": "Successfully removed goal"
   },
   "exercise": {
     "upload_image": "Upload Image",
@@ -285,7 +286,6 @@
     "component_updated_successfully": "Successfully updated exercise component",
     "component_deleted_successfully": "Successfully deleted exercise component",
     "exercise_removed_successfully": "Successfully removed exercise",
-    "goal_removed_successfully": "Successfully removed goal",
     "client_feedback": "Client Feedback",
     "no_client_feedback": "The client has not provided any feedback for this exercise yet.",
     "privateInputTooltip": "This private input field components lets the client write down their own thoughts which will not be shared with the coach.",
