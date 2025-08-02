@@ -12,6 +12,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
