@@ -1,39 +1,28 @@
-import CheckIcon  from '@mui/icons-material/Check';
-import ClearIcon  from '@mui/icons-material/Clear';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon   from '@mui/icons-material/Edit';
-import {
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import CheckIcon from '@mui/icons-material/Check'
+import ClearIcon from '@mui/icons-material/Clear'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { Button, MenuItem, TextField, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import {
-  ExerciseComponentOutputDTO,
-  UpdateExerciseComponentDTO,
-} from '../../../api';
-import FileDownload  from '../../../generalComponents/FileDownload';
-import { useNotify } from '../../../hooks/useNotify';
+import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
+import FileDownload from '../../../generalComponents/FileDownload'
+import { useNotify } from '../../../hooks/useNotify'
 import {
   deleteExerciseComponent,
   downloadExerciseComponent,
   updateExerciseComponent,
-} from '../../../store/exerciseSlice';
-import {
-  commonButtonStyles,
-  deleteButtonStyles,
-} from '../../../styles/buttonStyles';
-import { useAppDispatch } from '../../../utils/hooks';
+} from '../../../store/exerciseSlice'
+import { commonButtonStyles, deleteButtonStyles } from '../../../styles/buttonStyles'
+import { useAppDispatch } from '../../../utils/hooks'
 
 interface ShowExerciseFileComponentProps {
-  exerciseComponent: ExerciseComponentOutputDTO;
-  numberOfExercises: number;
-  isImageComponent: boolean;
-  refresh(): void;
-  isViewMode: boolean;
+  exerciseComponent: ExerciseComponentOutputDTO
+  numberOfExercises: number
+  isImageComponent: boolean
+  refresh(): void
+  isViewMode: boolean
 }
 
 const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
@@ -43,63 +32,75 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
   refresh,
   isViewMode,
 }) => {
-  const dispatch  = useAppDispatch();
-  const { t }     = useTranslation();
-  const { notifyError, notifySuccess } = useNotify();
+  const dispatch = useAppDispatch()
+  const { t } = useTranslation()
+  const { notifyError, notifySuccess } = useNotify()
 
-  const [imageUrl,   setImageUrl]   = useState<string>();
-  const [isEditing,  setIsEditing]  = useState(false);
-  const [isDeleted,  setIsDeleted]  = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>()
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDeleted, setIsDeleted] = useState(false)
 
   useEffect(() => {
-    if (!isImageComponent || isDeleted) return;
-    let cancelled = false;
+    if (!isImageComponent || isDeleted) {
+      return
+    }
+    let cancelled = false
 
-    (async () => {
+    ;(async () => {
       try {
-        const url = await dispatch(downloadExerciseComponent(exerciseComponent.id!)).unwrap();
-        if (!cancelled) setImageUrl(url);
+        const url = await dispatch(downloadExerciseComponent(exerciseComponent.id!)).unwrap()
+        if (!cancelled) {
+          setImageUrl(url)
+        }
       } catch (err: any) {
-        if (cancelled) return;                 
-        if (err?.status === 404) return;       
-        notifyError(typeof err === 'string' ? err : 'An unknown error occurred');
+        if (cancelled) {
+          return
+        }
+        if (err?.status === 404) {
+          return
+        }
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
       }
-    })();
+    })()
 
-    return () => { cancelled = true; };
-  }, [dispatch, exerciseComponent.id, isImageComponent, isDeleted, notifyError]);
+    return () => {
+      cancelled = true
+    }
+  }, [dispatch, exerciseComponent.id, isImageComponent, isDeleted, notifyError])
 
   const originalForm: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id!,
     exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
-  };
-  const [formData, setFormData] = useState(originalForm);
-  const orderOptions = Array.from({ length: numberOfExercises }, (_, i) => i + 1);
+  }
+  const [formData, setFormData] = useState(originalForm)
+  const orderOptions = Array.from({ length: numberOfExercises }, (_, i) => i + 1)
 
   const handleDelete = async () => {
     try {
-      await dispatch(deleteExerciseComponent(exerciseComponent.id!)).unwrap();
-      setIsDeleted(true);
-      notifySuccess(t('exercise.component_deleted_successfully'));
-      refresh();
+      await dispatch(deleteExerciseComponent(exerciseComponent.id!)).unwrap()
+      setIsDeleted(true)
+      notifySuccess(t('exercise.component_deleted_successfully'))
+      refresh()
     } catch (err) {
-      notifyError(typeof err === 'string' ? err : 'An unknown error occurred');
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
-  };
+  }
 
   const handleUpdate = async () => {
     try {
-      await dispatch(updateExerciseComponent(formData)).unwrap();
-      notifySuccess(t('exercise.component_updated_successfully'));
-      setIsEditing(false);
-      refresh();
+      await dispatch(updateExerciseComponent(formData)).unwrap()
+      notifySuccess(t('exercise.component_updated_successfully'))
+      setIsEditing(false)
+      refresh()
     } catch (err) {
-      notifyError(typeof err === 'string' ? err : 'An unknown error occurred');
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
-  };
+  }
 
-  if (isDeleted) return null;
+  if (isDeleted) {
+    return null
+  }
 
   if (isViewMode) {
     return (
@@ -119,7 +120,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
           {exerciseComponent.exerciseComponentDescription}
         </Typography>
       </div>
-    );
+    )
   }
 
   return (
@@ -167,18 +168,23 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
               label={t('exercise.order')}
               name='orderNumber'
               value={formData.orderNumber}
-              onChange={e => setFormData({ ...formData, orderNumber: +e.target.value })}
+              onChange={(e) => setFormData({ ...formData, orderNumber: +e.target.value })}
               sx={{ width: 75, fontWeight: 'bold' }}
             >
-              {orderOptions.map(n => (
-                <MenuItem key={n} value={n}>{n}</MenuItem>
+              {orderOptions.map((n) => (
+                <MenuItem key={n} value={n}>
+                  {n}
+                </MenuItem>
               ))}
             </TextField>
 
-            <Button sx={{ ...deleteButtonStyles, ml: 2 }} onClick={() => {
-              setIsEditing(false);
-              setFormData(originalForm);
-            }}>
+            <Button
+              sx={{ ...deleteButtonStyles, ml: 2 }}
+              onClick={() => {
+                setIsEditing(false)
+                setFormData(originalForm)
+              }}
+            >
               <ClearIcon />
             </Button>
 
@@ -192,7 +198,9 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
             name='exerciseComponentDescription'
             label={t('exercise.description')}
             value={formData.exerciseComponentDescription}
-            onChange={e => setFormData({ ...formData, exerciseComponentDescription: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, exerciseComponentDescription: e.target.value })
+            }
           />
 
           {isImageComponent ? (
@@ -203,7 +211,7 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ShowExerciseFileComponent;
+export default ShowExerciseFileComponent
