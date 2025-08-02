@@ -4,7 +4,6 @@ import ch.uzh.ifi.imrg.platform.LLM.LLMFactory;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlan;
 import ch.uzh.ifi.imrg.platform.entity.CounselingPlanPhase;
 import ch.uzh.ifi.imrg.platform.entity.Exercise;
-import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanPhaseRepository;
 import ch.uzh.ifi.imrg.platform.repository.CounselingPlanRepository;
@@ -74,6 +73,7 @@ public class CounselingPlanPhaseService {
 
   public CreateCounselingPlanPhaseDTO createCounselingPlanPhaseAIGenerated(
       CreateCounselingPlanPhaseAIGeneratedDTO dto, String therapistId) {
+
     CounselingPlan counselingPlan =
         counselingPlanRepository
             .findById(dto.getCounselingPlanId())
@@ -84,37 +84,54 @@ public class CounselingPlanPhaseService {
                         "Counseling plan not found with id: " + dto.getCounselingPlanId()));
     SecurityUtil.checkOwnership(counselingPlan, therapistId);
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
+    String patientContext = counselingPlan.getPatient().toLLMContext(0);
 
-    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
+    StringBuilder sb = new StringBuilder();
+    sb.append("You are a specialized API endpoint for a mental health application. ");
+    sb.append(
+        "Your function is to determine the next logical phase of a counseling plan and respond with a single, raw, valid JSON object.\n\n");
 
-    List<Patient> patientList = new ArrayList<>();
-    patientList.add(counselingPlan.getPatient());
+    sb.append("--- CRITICAL JSON OUTPUT RULES ---\n");
+    sb.append("1. Your entire response MUST be a single JSON object.\n");
+    sb.append("2. NEVER include markdown like ```json.\n");
+    sb.append("3. NEVER include any explanatory text, conversational filler, or apologies.\n\n");
+
+    sb.append("--- REFERENCE EXAMPLES OF FULL PLANS ---\n");
+    sb.append(
+        "Use these high-quality counseling plans as a reference for typical phase progressions (e.g., Assessment -> Interventions -> Relapse Prevention).\n\n");
+    sb.append(ExampleCounselingPlans.getExampleCounselingPlans());
+    sb.append("\n\n");
+
+    sb.append("--- CURRENT PATIENT CONTEXT ---\n");
+    sb.append(
+        "The following is the specific context for the patient you are generating a phase for. You must use this information to ensure the phase is relevant and personalized.\n\n");
+    sb.append(patientContext);
 
     String userPrompt =
-        "Based on the counseling plan context provided, generate the next phase.\n"
-            + "If there are no existing phases, create the very first phase.\n"
-            + "Determine a suitable phase name, and a duration in weeks.\n"
-            + "The phase name should only include the phase name itself not a number (e.g. not: 'Phase 1: Introduction and Initial Assessment' but instead only 'Introduction and Initial Assessment')\n"
-            + "A typical phase duration is between 1 and 4 weeks.\n"
-            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations.\n"
+        "TASK: Based on all the provided context, generate the *next logical counseling phase* for the patient. "
+            + "If the plan has no phases yet, generate the first one.\n\n"
+            + "INSTRUCTIONS:\n"
+            + "1. The 'phaseName' should NOT include a number or the word 'Phase'. (e.g., CORRECT: 'Relapse Prevention', INCORRECT: 'Phase 3: Relapse Prevention').\n"
+            + "2. The 'durationInWeeks' must be an integer, typically between 2 and 10.\n"
+            + "3. Remember the critical rules. Respond ONLY with a valid JSON object in the following format. Do not include any other text.\n"
             + "Format: {\"phaseName\":\"<name>\", \"durationInWeeks\":<numberOfWeeks>}";
 
-    userPrompt +=
-        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
-            + counselingPlan.getPatient().toLLMContext(0);
-
     List<ChatMessageDTO> messages = new ArrayList<>();
-    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, sb.toString()));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
+
     CreateCounselingPlanPhaseDTO generatedDto =
         LLMFactory.getInstance(therapist.getLlmModel())
             .callLLMForObject(messages, CreateCounselingPlanPhaseDTO.class, dto.getLanguage());
+
     generatedDto.setCounselingPlanId(dto.getCounselingPlanId());
+
     return generatedDto;
   }
 
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
       CreateCounselingPlanExerciseAIGeneratedDTO dto, String therapistId) {
+
     CounselingPlanPhase counselingPlanPhase =
         counselingPlanPhaseRepository
             .findById(dto.getCounselingPlanPhaseId())
@@ -126,38 +143,56 @@ public class CounselingPlanPhaseService {
                             + dto.getCounselingPlanPhaseId()));
     SecurityUtil.checkOwnership(counselingPlanPhase, therapistId);
     Therapist therapist = therapistRepository.getReferenceById(therapistId);
-
     CounselingPlan counselingPlan = counselingPlanPhase.getCounselingPlan();
+    String patientContext = counselingPlan.getPatient().toLLMContext(0);
 
-    String systemPrompt = ExampleCounselingPlans.getCounselingPlanSystemPrompt();
+    StringBuilder sb = new StringBuilder();
+    sb.append("You are a specialized API endpoint for a mental health application. ");
+    sb.append(
+        "Your function is to create a relevant counseling exercise and respond with a single, raw, valid JSON object.\n\n");
 
-    List<Patient> patientList = new ArrayList<>();
-    patientList.add(counselingPlan.getPatient());
+    sb.append("--- CRITICAL JSON OUTPUT RULES ---\n");
+    sb.append("1. Your entire response MUST be a single JSON object.\n");
+    sb.append("2. NEVER include markdown like ```json.\n");
+    sb.append("3. NEVER include any explanatory text, conversational filler, or apologies.\n\n");
+
+    sb.append("--- REFERENCE EXAMPLES OF FULL PLANS & EXERCISES ---\n");
+    sb.append(
+        "Use these high-quality counseling plans as a reference for the tone, structure, and type of exercises to generate for different phases and disorders.\n\n");
+    sb.append(ExampleCounselingPlans.getExampleCounselingPlans());
+    sb.append("\n\n");
+
+    sb.append("--- CURRENT PATIENT CONTEXT ---\n");
+    sb.append(
+        "The following is the specific context for the patient you are generating an exercise for. You must use this information to ensure the exercise is relevant and personalized.\n\n");
+    sb.append(patientContext);
 
     String userPrompt =
-        "Based on the counseling plan provided, generate one new exercise for phase with ID: "
-            + counselingPlanPhase.getId()
-            + "\nThe exercise should have a title, a description and an explanation (which will is used to provide additional context to an AI model).\n"
-            + "Additionally, your response should in include how often it should be done, e.g. every other day: doEveryNDays=2"
-            + "Respond ONLY with a valid JSON object in the following format. Do not include any other text or explanations. "
-            + " Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":\"<doEveryNDays>\"}";
-
-    userPrompt +=
-        "\n\n This is some additional context of the patient including the current counseling plan:\n\n"
-            + counselingPlan.getPatient().toLLMContext(0);
+        String.format(
+            "TASK: Based on all the provided context, generate one new, relevant exercise for the counseling plan phase named '%s' (ID: %s).\n\n"
+                + "EXAMPLE OF A PERFECT RESPONSE:\n"
+                + "{\n"
+                + "  \"exerciseTitle\": \"Scheduled Worry Time\",\n"
+                + "  \"exerciseDescription\": \"Designate a specific 15-minute period each day (e.g., 5:00 PM - 5:15 PM) as your 'Worry Time'. When worries pop up outside this time, jot them down and postpone engaging with them until your scheduled time.\",\n"
+                + "  \"exerciseExplanation\": \"This helps contain worry to a specific period, preventing it from dominating your entire day. It teaches you that you have control over when you engage with worry.\",\n"
+                + "  \"doEveryNDays\": 1\n"
+                + "}\n\n"
+                + "INSTRUCTIONS: Remember the critical rules. The 'doEveryNDays' value must be an integer. Respond ONLY with a valid JSON object in the following format. Do not include any other text.\n"
+                + "Format: {\"exerciseTitle\":\"<title>\", \"exerciseDescription\":\"<description>\", \"exerciseExplanation\":\"<explanation>\", \"doEveryNDays\":<integer_value>}",
+            counselingPlanPhase.getPhaseName(), counselingPlanPhase.getId());
 
     List<ChatMessageDTO> messages = new ArrayList<>();
-    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, systemPrompt));
+    messages.add(new ChatMessageDTO(ChatRole.SYSTEM, sb.toString()));
     messages.add(new ChatMessageDTO(ChatRole.USER, userPrompt));
 
     CreateExerciseDTO generatedDto =
         LLMFactory.getInstance(therapist.getLlmModel())
             .callLLMForObject(messages, CreateExerciseDTO.class, dto.getLanguage());
+
     CounselingPlanPhaseOutputDTO counselingPlanPhaseOutputDTO =
         getOutputDto(counselingPlanPhase, counselingPlan);
     generatedDto.setExerciseStart(counselingPlanPhaseOutputDTO.getStartDate());
     generatedDto.setDurationInWeeks(counselingPlanPhaseOutputDTO.getDurationInWeeks());
-
     generatedDto.setPatientId(counselingPlan.getPatient().getId());
 
     return generatedDto;
