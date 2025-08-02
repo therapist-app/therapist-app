@@ -398,17 +398,15 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     setSelectedLanguage(event.target.value)
   }
 
-  const handleStopListening = (
-  event: React.MouseEvent<HTMLButtonElement>
-): void => {
-  setStartDirectlyState(false)
-  event.preventDefault()
+  const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    setStartDirectlyState(false)
+    event.preventDefault()
 
-  if (recognitionRef.current && isListening) {
-    userStoppedRef.current = true
-    recognitionRef.current.stop()
+    if (recognitionRef.current && isListening) {
+      userStoppedRef.current = true
+      recognitionRef.current.stop()
+    }
   }
-}
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     if (!isListening) {
