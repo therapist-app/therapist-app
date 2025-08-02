@@ -104,8 +104,7 @@ public class TherapistService {
     Therapist foundTherapist =
         therapistRepository.getTherapistByEmail(loginTherapistDTO.getEmail());
     if (foundTherapist == null) {
-      throw new ResponseStatusException(
-          HttpStatus.UNAUTHORIZED, "No therapist with that email exists");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No coach with that email exists");
     }
 
     if (!PasswordUtil.checkPassword(
