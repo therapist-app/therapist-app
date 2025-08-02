@@ -142,4 +142,11 @@ public interface PatientMapper {
         .map(ChatbotTemplateMapper.INSTANCE::convertEntityToChatbotTemplateOutputDTO)
         .collect(Collectors.toList());
   }
+
+  @AfterMapping
+  default void linkComplaints(@MappingTarget Patient patient) {
+    if (patient.getComplaints() != null) {
+      patient.getComplaints().forEach(complaint -> complaint.setPatient(patient));
+    }
+  }
 }
