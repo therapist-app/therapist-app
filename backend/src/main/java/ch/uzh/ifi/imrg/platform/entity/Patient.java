@@ -36,6 +36,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   private Instant updatedAt;
 
   @LLMContextField(label = "Client name", order = 1)
+  @Lob
   @Column(nullable = false)
   private String name;
 
@@ -56,29 +57,36 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
   private String email;
 
   @Column(nullable = false)
+  @Lob
   private String initialPassword;
 
   @LLMContextField(label = "Client address", order = 6)
+  @Lob
   @Column(nullable = true)
   private String address;
 
   @LLMContextField(label = "Client marital status", order = 7)
+  @Lob
   @Column
   private String maritalStatus;
 
   @LLMContextField(label = "Client religion", order = 8)
+  @Lob
   @Column
   private String religion;
 
   @LLMContextField(label = "Client education", order = 9)
+  @Lob
   @Column
   private String education;
 
   @LLMContextField(label = "Client occupation", order = 10)
+  @Lob
   @Column
   private String occupation;
 
   @LLMContextField(label = "Client income", order = 11)
+  @Lob
   @Column
   private String income;
 

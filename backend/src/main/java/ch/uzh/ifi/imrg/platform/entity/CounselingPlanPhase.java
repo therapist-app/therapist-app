@@ -30,6 +30,7 @@ public class CounselingPlanPhase implements OwnedByTherapist, HasLLMContext {
 
   @LLMContextField(label = "Counseling Plan phase name", order = 1)
   @Column()
+  @Lob
   private String phaseName;
 
   @LLMContextField(label = "Counseling Plan phase duration in weeks", order = 2)

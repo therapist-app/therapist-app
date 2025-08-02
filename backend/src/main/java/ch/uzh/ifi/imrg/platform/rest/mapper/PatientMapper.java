@@ -12,6 +12,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.MeetingOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientOutputDTO;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -141,5 +142,12 @@ public interface PatientMapper {
     return templates.stream()
         .map(ChatbotTemplateMapper.INSTANCE::convertEntityToChatbotTemplateOutputDTO)
         .collect(Collectors.toList());
+  }
+
+  @AfterMapping
+  default void linkComplaints(@MappingTarget Patient patient) {
+    if (patient.getComplaints() != null) {
+      patient.getComplaints().forEach(complaint -> complaint.setPatient(patient));
+    }
   }
 }
