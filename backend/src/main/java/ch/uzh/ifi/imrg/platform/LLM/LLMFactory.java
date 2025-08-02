@@ -10,7 +10,7 @@ public class LLMFactory {
 
   private LLMFactory() {}
 
-  public static LLM createInstance(LLMModel llmModel) {
+  public static LLM getInstance(LLMModel llmModel) {
     logger.info("Creating a new LLM instance for model: {}", llmModel);
 
     switch (llmModel) {
