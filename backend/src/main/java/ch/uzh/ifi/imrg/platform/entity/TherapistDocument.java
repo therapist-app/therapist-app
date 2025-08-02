@@ -31,10 +31,12 @@ public class TherapistDocument implements OwnedByTherapist, HasLLMContext {
   private Therapist therapist;
 
   @LLMContextField(label = "Coach Document file name", order = 1)
+  @Lob
   @Column(nullable = false)
   private String fileName;
 
   @LLMContextField(label = "Coach Document file type", order = 2)
+  @Lob
   @Column(nullable = false)
   private String fileType;
 

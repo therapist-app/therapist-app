@@ -28,6 +28,7 @@ public class CounselingPlanPhaseGoal implements OwnedByTherapist, HasLLMContext 
 
   @LLMContextField(label = "Counseling Plan Phase Goal name", order = 1)
   @Column()
+  @Lob
   private String goalName;
 
   @LLMContextField(label = "Counseling Plan Phase Goal description", order = 2)

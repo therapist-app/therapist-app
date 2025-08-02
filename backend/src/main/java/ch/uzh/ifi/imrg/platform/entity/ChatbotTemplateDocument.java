@@ -32,10 +32,12 @@ public class ChatbotTemplateDocument implements OwnedByTherapist, HasLLMContext 
 
   @LLMContextField(label = "Chabot Document file name", order = 1)
   @Column(nullable = false)
+  @Lob
   private String fileName;
 
   @LLMContextField(label = "Chabot Document file type", order = 2)
   @Column(nullable = false)
+  @Lob
   private String fileType;
 
   @Lob

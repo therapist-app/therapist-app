@@ -38,12 +38,15 @@ public class ExerciseComponent implements OwnedByTherapist, HasLLMContext {
 
   @LLMContextField(label = "Exercise Youtube URL", order = 3)
   @Column
+  @Lob
   private String youtubeUrl;
 
   @LLMContextField(label = "Exercise Component file name", order = 4)
+  @Lob
   private String fileName;
 
   @LLMContextField(label = "Exercise Component file type", order = 5)
+  @Lob
   private String fileType;
 
   @Lob private byte[] fileData;

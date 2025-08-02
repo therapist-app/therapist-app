@@ -40,6 +40,7 @@ public class Meeting implements Serializable, OwnedByTherapist, HasLLMContext {
 
   @LLMContextField(label = "Meeting location", order = 3)
   @Column(nullable = true)
+  @Lob
   private String location;
 
   @LLMContextField(label = "Meeting status", order = 4)

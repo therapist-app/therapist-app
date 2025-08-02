@@ -31,17 +31,21 @@ public class ChatbotTemplate implements Serializable, OwnedByTherapist, HasLLMCo
 
   @LLMContextField(label = "Chatbot name", order = 1)
   @Column(nullable = false)
+  @Lob
   private String chatbotName;
 
-  private String chatbotIcon;
+  @Lob private String chatbotIcon;
 
   @LLMContextField(label = "Chatbot role", order = 2)
+  @Lob
   private String chatbotRole;
 
   @LLMContextField(label = "Chatbot tone", order = 3)
+  @Lob
   private String chatbotTone;
 
   @LLMContextField(label = "Chatbot welcome message", order = 4)
+  @Lob
   private String welcomeMessage;
 
   @LLMContextField(label = "Chatbot is active", order = 5)

@@ -27,6 +27,7 @@ public class MeetingNote implements OwnedByTherapist, HasLLMContext {
   private Instant updatedAt;
 
   @LLMContextField(label = "Meeting Note title", order = 1)
+  @Lob
   @Column()
   private String title;
 

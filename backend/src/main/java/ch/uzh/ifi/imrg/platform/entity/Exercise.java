@@ -30,6 +30,7 @@ public class Exercise implements OwnedByTherapist, HasLLMContext {
 
   @LLMContextField(label = "Exercise Title", order = 1)
   @Column()
+  @Lob
   private String exerciseTitle;
 
   @LLMContextField(label = "Exercise Description", order = 2)

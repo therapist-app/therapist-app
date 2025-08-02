@@ -35,6 +35,7 @@ public class Therapist implements Serializable, HasLLMContext {
   private String email;
 
   @Column(nullable = false)
+  @Lob
   private String password;
 
   @Column(nullable = false)

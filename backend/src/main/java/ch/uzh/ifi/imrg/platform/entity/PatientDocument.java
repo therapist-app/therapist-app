@@ -31,10 +31,12 @@ public class PatientDocument implements OwnedByTherapist, HasLLMContext {
   private Boolean isSharedWithPatient;
 
   @LLMContextField(label = "Client Document file name", order = 2)
+  @Lob
   @Column(nullable = false)
   private String fileName;
 
   @LLMContextField(label = "Client Document file type", order = 3)
+  @Lob
   @Column(nullable = false)
   private String fileType;
 
