@@ -3,7 +3,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ExerciseComponentOutputDTO, UpdateExerciseComponentDTO } from '../../../api'
@@ -25,89 +25,112 @@ interface ShowExerciseFileComponentProps {
   isViewMode: boolean
 }
 
-const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (props) => {
-  const { exerciseComponent, isImageComponent } = props
+const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = ({
+  exerciseComponent,
+  numberOfExercises,
+  isImageComponent,
+  refresh,
+  isViewMode,
+}) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [imageFileUrl, setImageFileUrl] = useState<string>()
-  const [isEditing, setIsEditing] = useState(false)
   const { notifyError, notifySuccess } = useNotify()
 
-  useEffect((): void => {
-    const load = async (): Promise<void> => {
-      try {
-        const fileUrl = await dispatch(
-          downloadExerciseComponent(exerciseComponent.id ?? '')
-        ).unwrap()
-        setImageFileUrl(fileUrl)
-      } catch (err) {
-        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
-      }
-    }
-    void load()
-  }, [dispatch, exerciseComponent.id, notifyError])
+  const [imageUrl, setImageUrl] = useState<string>()
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   const originalFormData: UpdateExerciseComponentDTO = {
     id: exerciseComponent.id ?? '',
     exerciseComponentDescription: exerciseComponent.exerciseComponentDescription,
     orderNumber: exerciseComponent.orderNumber,
   }
-
   const [formData, setFormData] = useState<UpdateExerciseComponentDTO>(originalFormData)
+  const orderOptions = Array.from({ length: numberOfExercises }, (_, i) => i + 1)
 
-  const arrayOfNumbers: number[] = Array.from({ length: props.numberOfExercises }, (_, i) => i + 1)
+  useEffect((): (() => void) | void => {
+    if (!isImageComponent || isDeleted) {
+      return
+    }
 
-  const clickCancel = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation()
+    let cancelled = false
+
+    ;(async (): Promise<void> => {
+      try {
+        const url = await dispatch(downloadExerciseComponent(exerciseComponent.id!)).unwrap()
+        if (!cancelled) {
+          setImageUrl(url)
+        }
+      } catch (err: unknown) {
+        if (cancelled) {
+          return
+        }
+
+        const typed = err as { status?: number; message?: string }
+        if (typed?.status === 404) {
+          return
+        }
+
+        notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
+      }
+    })()
+
+    return (): void => {
+      cancelled = true
+    }
+  }, [dispatch, exerciseComponent.id, isImageComponent, isDeleted, notifyError])
+
+  const handleEditToggle = (): void => setIsEditing(true)
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+
+  const handleCancel = (): void => {
     setIsEditing(false)
     setFormData({ ...originalFormData })
   }
 
-  const clickEdit = (): void => {
-    setIsEditing(true)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
-  const handleSubmit = async (): Promise<void> => {
+  const handleUpdate = async (): Promise<void> => {
     try {
       await dispatch(updateExerciseComponent(formData)).unwrap()
       notifySuccess(t('exercise.component_updated_successfully'))
       setIsEditing(false)
-      props.refresh()
+      refresh()
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
-  const clickDelete = async (): Promise<void> => {
+  const handleDelete = async (): Promise<void> => {
     try {
-      await dispatch(deleteExerciseComponent(exerciseComponent.id ?? '')).unwrap()
+      await dispatch(deleteExerciseComponent(exerciseComponent.id!)).unwrap()
+      setIsDeleted(true)
       notifySuccess(t('exercise.component_deleted_successfully'))
-      props.refresh()
+      refresh()
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
-  if (props.isViewMode) {
+  if (isDeleted) {
+    return null
+  }
+
+  if (isViewMode) {
     return (
       <div>
-        {props.isImageComponent ? (
-          <img src={imageFileUrl} alt='Exercise' style={{ width: '560px', objectFit: 'contain' }} />
+        {isImageComponent ? (
+          <img src={imageUrl} alt='Exercise' style={{ width: 560, objectFit: 'contain' }} />
         ) : (
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
             <FileDownload
-              download={() =>
-                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-              }
+              download={() => dispatch(downloadExerciseComponent(exerciseComponent.id!)).unwrap()}
               fileName={exerciseComponent.fileName ?? ''}
             />
           </div>
         )}
+
         <Typography sx={{ whiteSpace: 'pre-line' }}>
           {exerciseComponent.exerciseComponentDescription}
         </Typography>
@@ -116,74 +139,65 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
   }
 
   return (
-    <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {!isEditing ? (
         <>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <Typography variant='h6'>{exerciseComponent.orderNumber}.</Typography>
-
             <Typography variant='h6'>
               {isImageComponent ? t('exercise.image') : t('exercise.file')}
             </Typography>
 
-            <Button sx={{ minWidth: '10px' }} onClick={clickEdit}>
-              <EditIcon style={{ color: 'blue' }} />
+            <Button sx={{ minWidth: 10 }} onClick={handleEditToggle}>
+              <EditIcon sx={{ color: 'blue' }} />
             </Button>
 
             <FileDownload
-              download={() =>
-                dispatch(downloadExerciseComponent(exerciseComponent.id ?? '')).unwrap()
-              }
+              download={() => dispatch(downloadExerciseComponent(exerciseComponent.id!)).unwrap()}
               fileName={exerciseComponent.fileName ?? ''}
             />
 
-            <Button sx={{ minWidth: '10px' }} onClick={clickDelete}>
-              <DeleteIcon style={{ color: 'red' }} />
+            <Button sx={{ minWidth: 10 }} onClick={handleDelete}>
+              <DeleteIcon sx={{ color: 'red' }} />
             </Button>
           </div>
 
-          <div style={{ display: 'flex', gap: '5px' }}>
-            <Typography>
-              <strong>{t('exercise.description')}:</strong>
-            </Typography>
+          <div style={{ display: 'flex', gap: 5 }}>
+            <Typography sx={{ fontWeight: 'bold' }}>{t('exercise.description')}:</Typography>
             <Typography sx={{ whiteSpace: 'pre-line' }}>
               {exerciseComponent.exerciseComponentDescription}
             </Typography>
           </div>
 
           {isImageComponent ? (
-            <img
-              src={imageFileUrl}
-              alt='Exercise'
-              style={{ width: '560px', objectFit: 'contain' }}
-            />
+            <img src={imageUrl} alt='Exercise' style={{ width: 560, objectFit: 'contain' }} />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
             <TextField
               select
-              sx={{ fontWeight: 'bold', width: '75px' }}
               label={t('exercise.order')}
               name='orderNumber'
               value={formData.orderNumber}
-              onChange={handleChange}
+              onChange={handleFieldChange}
+              sx={{ width: 75, fontWeight: 'bold' }}
             >
-              {arrayOfNumbers.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
+              {orderOptions.map((n) => (
+                <MenuItem key={n} value={n}>
+                  {n}
                 </MenuItem>
               ))}
             </TextField>
 
-            <Button sx={{ ...deleteButtonStyles, marginLeft: '20px' }} onClick={clickCancel}>
+            <Button sx={{ ...deleteButtonStyles, ml: 2 }} onClick={handleCancel}>
               <ClearIcon />
             </Button>
 
-            <Button sx={{ ...commonButtonStyles }} onClick={handleSubmit}>
+            <Button sx={{ ...commonButtonStyles }} onClick={handleUpdate}>
               <CheckIcon />
             </Button>
           </div>
@@ -191,17 +205,13 @@ const ShowExerciseFileComponent: React.FC<ShowExerciseFileComponentProps> = (pro
           <TextField
             multiline
             name='exerciseComponentDescription'
-            value={formData.exerciseComponentDescription}
-            onChange={handleChange}
             label={t('exercise.description')}
+            value={formData.exerciseComponentDescription}
+            onChange={handleFieldChange}
           />
 
           {isImageComponent ? (
-            <img
-              src={imageFileUrl}
-              alt='Exercise'
-              style={{ width: '560px', objectFit: 'contain' }}
-            />
+            <img src={imageUrl} alt='Exercise' style={{ width: 560, objectFit: 'contain' }} />
           ) : (
             <Typography sx={{ fontWeight: 'bold' }}>{exerciseComponent.fileName}</Typography>
           )}
