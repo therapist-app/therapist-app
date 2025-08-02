@@ -527,8 +527,10 @@
     "completed_gad7tests": "Abgeschlossene GAD-7-Tests",
     "manage_description": "Legen Sie fest, wie oft der Klient den GAD-7-Test durchführen soll (in Tagen):",
     "start_date": "Startdatum",
+    "end_date": "Enddatum",
     "doEveryNDays": "Alle ... Tage",
-    "schedule_summary": "Mit diesen Einstellungen wird der Patient den GAD7-Test alle {{days}} Tage ab dem {{date}} ausfüllen.",
+    "schedule_summary": "Mit diesen Einstellungen wird der Patient den GAD7-Test alle {{days}} Tage vom {{start_date}} bis zum {{end_date}} ausfüllen.",
+    "pause_test_schedule": "Testzeitplan pausieren",
     "date": "Datum",
     "description": "Wie oft fühlten Sie sich während der letzten 2 Wochen durch die folgenden Probleme belästigt?",
     "question1": "Nervosität, Ängstlichkeit oder Anspannung.",
@@ -540,8 +542,13 @@
     "question7": "Sich fürchten, als ob etwas Schreckliches passieren könnte.",
     "total_score": "Gesamtpunktzahl",
     "cancel": "Abbrechen",
+    "assign_tests": "Tests zuweisen",
+    "assigned_successfully": "Tests erfolgreich zugewiesen",
+    "updated_successfully": "Test Konfiguration erfolgreich aktualisiert",
     "save_changes": "Änderungen speichern",
     "no_tests_yet": "Der Klient hat noch keine GAD-7-Tests ausgefüllt.",
+    "failed_to_assign_tests": "Fehler beim Zuweisen von Tests an den Klienten.",
+    "failed_to_update_tests": "Fehler beim Aktualisieren der Tests.",
     "answers": {
       "not_at_all": "Überhaupt nicht",
       "several_days": "An mehreren Tagen",
@@ -560,7 +567,7 @@
       "details": "Klientendetails",
       "conversations": "Gesprächszusammenfassung",
       "interactions": "Klienteninteraktionen",
-      "details_update": "Klient wird aktualisiert"
+      "details_update": "Klientendaten aktualisieren"
     },
     "chatbot": {
       "create": "Neuen Chatbot erstellen",

@@ -1,8 +1,11 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestCreateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientPsychologicalTestMapper;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
@@ -21,21 +24,21 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class PatientTestService {
   private final PatientRepository patientRepository;
-  private static final String GAD7_TEST_NAME = "GAD7";
   private static final Logger logger = LoggerFactory.getLogger(PatientTestService.class);
 
   public PatientTestService(PatientRepository patientRepository) {
     this.patientRepository = patientRepository;
   }
 
-  public List<PsychologicalTestOutputDTO> getTestsByPatient(String patientId, String therapistId) {
+  public List<PsychologicalTestOutputDTO> getTestsByPatient(
+      String patientId, String therapistId, String psychologicalTestName) {
     Patient patient = patientRepository.getReferenceById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
     try {
       List<PsychologicalTestOutputDTOPatientAPI> apiResults =
           PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-              .getPsychologicalTestResults1(patientId, GAD7_TEST_NAME)
+              .getPsychologicalTestResults1(patientId, psychologicalTestName)
               .collectList()
               .block();
 
@@ -62,5 +65,94 @@ public class PatientTestService {
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test results", e);
     }
+  }
+
+  public PsychologicalTestCreateDTO assignPsychologicalTest(
+      String patientId,
+      String therapistId,
+      PsychologicalTestCreateDTO dto,
+      String psychologicalTestName) {
+
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    try {
+      PsychologicalTestAssignmentInputDTOPatientAPI input =
+          toAssignmentInput(patientId, psychologicalTestName, dto);
+      PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+          .createPsychologicalTest1(patientId, psychologicalTestName, input)
+          .block();
+
+      return dto;
+
+    } catch (Exception e) {
+      logger.error(
+          "Error assigning psychological test {} to patient {}", dto.getTestName(), patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
+    }
+  }
+
+  public PsychologicalTestCreateDTO updatePsychologicalTest(
+      String patientId,
+      String therapistId,
+      PsychologicalTestCreateDTO dto,
+      String psychologicalTestName) {
+
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    try {
+      PsychologicalTestAssignmentInputDTOPatientAPI input =
+          toAssignmentInput(patientId, psychologicalTestName, dto);
+      PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+          .updatePsychologicalTestWithHttpInfo(patientId, psychologicalTestName, input)
+          .block();
+
+      return dto;
+
+    } catch (Exception e) {
+      logger.error(
+          "Error assigning psychological test {} to patient {}", dto.getTestName(), patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to assign psychological test", e);
+    }
+  }
+
+  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesByPatient(
+      String patientId, String therapistId) {
+    Patient patient = patientRepository.getReferenceById(patientId);
+    SecurityUtil.checkOwnership(patient, therapistId);
+
+    try {
+      List<PsychologicalTestNameOutputDTOPatientAPI> testNames =
+          PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+              .getAvailablePsychologicalTestNames(patientId)
+              .collectList()
+              .block();
+
+      if (testNames == null) {
+        logger.warn("No test names found for patient {}", patientId);
+        return Collections.emptyList();
+      }
+      logger.info("Retrieved {} test names for patient {}", testNames.size(), patientId);
+      return testNames;
+
+    } catch (Exception e) {
+      logger.error("Error fetching test names for patient {}", patientId, e);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test names", e);
+    }
+  }
+
+  private PsychologicalTestAssignmentInputDTOPatientAPI toAssignmentInput(
+      String patientId, String testName, PsychologicalTestCreateDTO dto) {
+    return new PsychologicalTestAssignmentInputDTOPatientAPI()
+        .patientId(patientId)
+        .testName(testName)
+        .exerciseStart(dto.getExerciseStart())
+        .exerciseEnd(dto.getExerciseEnd())
+        .isPaused(dto.getIsPaused())
+        .doEveryNDays(dto.getDoEveryNDays());
   }
 }

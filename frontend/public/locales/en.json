@@ -527,8 +527,10 @@
     "completed_gad7tests": "Completed GAD-7 Tests",
     "manage_description": "Set how often the patient should complete the GAD-7 test (in days):",
     "start_date": "Start Date",
+    "end_date": "End Date",
     "doEveryNDays": "Every ... days",
-    "schedule_summary": "With these settings, the patient will fill out the GAD7 test every {{days}} days starting from {{date}}.",
+    "schedule_summary": "With these settings, the patient will fill out the GAD7 test every {{days}} days starting from {{start_date}} up to the {{end_date}}.",
+    "pause_test_schedule": "Pause Test Schedule",
     "date": "Date",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
@@ -540,8 +542,13 @@
     "question7": "Feeling afraid as if something awful might happen.",
     "total_score": "Total Score",
     "cancel": "Cancel",
+    "assign_tests": "Assign GAD-7 Tests",
+    "assigned_successfully": "Successfully assigned GAD-7 tests.",
+    "updated_successfully": "Successfully updated GAD-7 test configuration.",
     "save_changes": "Save Changes",
     "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
+    "failed_to_assign_tests": "Failed to assign GAD-7 tests.",
+    "failed_to_update_tests": "Failed to update GAD-7 tests.",
     "answers": {
       "not_at_all": "Not at all",
       "several_days": "Several days",
@@ -560,7 +567,7 @@
       "details": "Client Details",
       "conversations": "Conversation Summary",
       "interactions": "Client Interactions",
-      "details_update": "Updating Client"
+      "details_update": "Update Client"
     },
     "chatbot": {
       "create": "Create New Chatbot",

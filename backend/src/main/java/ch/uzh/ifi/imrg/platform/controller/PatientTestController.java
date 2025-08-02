@@ -1,8 +1,11 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestCreateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
 import ch.uzh.ifi.imrg.platform.service.PatientTestService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,41 @@ public class PatientTestController {
     this.patientTestService = patientTestService;
   }
 
-  @GetMapping("/gad7/patient/{patientId}")
+  @GetMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}")
   @ResponseStatus(HttpStatus.OK)
   public List<PsychologicalTestOutputDTO> getTestsForPatient(
+      @PathVariable String patientId,
+      @CurrentTherapistId String therapistId,
+      @PathVariable String psychologicalTestName) {
+    return patientTestService.getTestsByPatient(patientId, therapistId, psychologicalTestName);
+  }
+
+  @PostMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public PsychologicalTestCreateDTO assignPsychologicalTestToPatient(
+      @PathVariable String patientId,
+      @Valid @RequestBody PsychologicalTestCreateDTO dto,
+      @CurrentTherapistId String therapistId,
+      @PathVariable String psychologicalTestName) {
+    return patientTestService.assignPsychologicalTest(
+        patientId, therapistId, dto, psychologicalTestName);
+  }
+
+  @PutMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public PsychologicalTestCreateDTO updatePsychologicalTestToPatient(
+      @PathVariable String patientId,
+      @Valid @RequestBody PsychologicalTestCreateDTO dto,
+      @CurrentTherapistId String therapistId,
+      @PathVariable String psychologicalTestName) {
+    return patientTestService.updatePsychologicalTest(
+        patientId, therapistId, dto, psychologicalTestName);
+  }
+
+  @GetMapping("/patient/{patientId}/psychological-tests/available-tests/")
+  @ResponseStatus(HttpStatus.OK)
+  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesForPatient(
       @PathVariable String patientId, @CurrentTherapistId String therapistId) {
-    return patientTestService.getTestsByPatient(patientId, therapistId);
+    return patientTestService.getPsychologicalTestNamesByPatient(patientId, therapistId);
   }
 }

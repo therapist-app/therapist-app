@@ -34,6 +34,8 @@ export * from './meeting-note-output-dto';
 export * from './meeting-output-dto';
 export * from './patient-document-output-dto';
 export * from './patient-output-dto';
+export * from './psychological-test-create-dto';
+export * from './psychological-test-name-output-dtopatient-api';
 export * from './psychological-test-output-dto';
 export * from './psychological-test-question-output-dto';
 export * from './remove-exercise-from-counseling-plan-phase-dto';
