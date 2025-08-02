@@ -33,13 +33,60 @@ public abstract class LLM {
     try {
       return objectMapper.readValue(rawContent, responseType);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException(
-          "Failed to parse LLM JSON response for type "
-              + responseType.getSimpleName()
-              + ". Raw content: "
-              + rawContent,
-          e);
+      try {
+        String repairedContent = repairIncompleteJson(rawContent);
+        return objectMapper.readValue(repairedContent, responseType);
+      } catch (JsonProcessingException e2) {
+        throw new RuntimeException(
+            "Failed to parse LLM JSON response for type "
+                + responseType.getSimpleName()
+                + ". Raw content: "
+                + rawContent,
+            e2);
+      }
     }
+  }
+
+  private String repairIncompleteJson(String rawContent) {
+    String trimmed = rawContent.trim();
+
+    // If it's empty or already looks like a complete object, do nothing.
+    if (trimmed.isEmpty() || (trimmed.startsWith("{") && trimmed.endsWith("}"))) {
+      return trimmed;
+    }
+
+    // Most common LLM failure: truncated before the end.
+    if (trimmed.startsWith("{")) {
+      logger.warn("Attempting to repair incomplete JSON response...");
+
+      // 1. Fix unclosed string values.
+      // Count non-escaped quotation marks. If odd, a string is open.
+      long quoteCount = trimmed.chars().filter(ch -> ch == '"').count();
+      if (quoteCount % 2 != 0) {
+        trimmed += "\"";
+        logger.warn("Added missing closing quote.");
+      }
+
+      // 2. Fix unclosed objects and arrays.
+      int openBraces = 0;
+      int closeBraces = 0;
+      for (char c : trimmed.toCharArray()) {
+        if (c == '{') openBraces++;
+        if (c == '}') closeBraces++;
+      }
+
+      // Append missing closing braces
+      if (openBraces > closeBraces) {
+        for (int i = 0; i < (openBraces - closeBraces); i++) {
+          trimmed += "}";
+        }
+        logger.warn("Added {} missing closing brace(s).", (openBraces - closeBraces));
+      }
+
+      logger.info("Repaired JSON: " + trimmed);
+    }
+
+    return trimmed;
   }
 
   public final String callLLM(List<ChatMessageDTO> messages, Language language) {
