@@ -220,20 +220,31 @@ public class ExerciseComponentService {
   }
 
   public void deleteExerciseComponent(String id, String therapistId) {
-    ExerciseComponent exerciseComponent = exerciseComponentRepository.getReferenceById(id);
-    SecurityUtil.checkOwnership(exerciseComponent, therapistId);
-    Exercise exercise = exerciseComponent.getExercise();
 
+    ExerciseComponent component =
+        exerciseComponentRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Exercise component " + id + " not found"));
+
+    SecurityUtil.checkOwnership(component, therapistId);
+
+    Exercise exercise = component.getExercise();
     String patientId = exercise.getPatient().getId();
+    int removedNo = component.getOrderNumber();
 
     for (ExerciseComponent exerciseComponent2 : exercise.getExerciseComponents()) {
-      if (exerciseComponent2.getOrderNumber() > exerciseComponent.getOrderNumber()) {
+      if (exerciseComponent2.getOrderNumber() > removedNo) {
         exerciseComponent2.setOrderNumber(exerciseComponent2.getOrderNumber() - 1);
         exerciseComponentRepository.save(exerciseComponent2);
 
         ExerciseComponentUpdateInputDTOPatientAPI exComponent =
-            new ExerciseComponentUpdateInputDTOPatientAPI();
-        exComponent.id(exerciseComponent2.getId()).orderNumber(exerciseComponent2.getOrderNumber());
+            new ExerciseComponentUpdateInputDTOPatientAPI()
+                .id(exerciseComponent2.getId())
+                .orderNumber(exerciseComponent2.getOrderNumber());
+
         PatientAppAPIs.coachExerciseControllerPatientAPI
             .updateExerciseComponent(
                 patientId, exercise.getId(), exerciseComponent2.getId(), exComponent)
@@ -241,13 +252,13 @@ public class ExerciseComponentService {
       }
     }
 
-    exerciseComponent.getExercise().getExerciseComponents().remove(exerciseComponent);
-
     PatientAppAPIs.coachExerciseControllerPatientAPI
-        .deleteExerciseComponent(
-            exerciseComponent.getExercise().getPatient().getId(),
-            exerciseComponent.getExercise().getId(),
-            id)
+        .deleteExerciseComponent(patientId, exercise.getId(), id)
         .block();
+
+    exercise.getExerciseComponents().remove(component);
+    exerciseComponentRepository.delete(component);
+    exerciseRepository.save(exercise);
+    exerciseComponentRepository.flush();
   }
 }
