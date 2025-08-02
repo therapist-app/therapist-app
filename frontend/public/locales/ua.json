@@ -224,7 +224,8 @@
     "goalsCompleted": "Цілей досягнуто",
     "goalsCompleted2": "цілей досягнуто",
     "phase": "Фаза",
-    "completed": "завершено"
+    "completed": "завершено",
+    "goal_removed_successfully": "Ціль успішно видалено"
   },
   "exercise": {
     "upload_image": "Завантажити зображення",
@@ -285,7 +286,6 @@
     "component_updated_successfully": "Компонент вправи успішно оновлено",
     "component_deleted_successfully": "Компонент вправи успішно видалено",
     "exercise_removed_successfully": "Вправу успішно видалено",
-    "goal_removed_successfully": "Ціль успішно видалено",
     "client_feedback": "Відгук клієнта",
     "no_client_feedback": "Клієнт ще не надав відгук щодо цієї вправи.",
     "privateInputTooltip": "Це приватне поле для введення дозволяє клієнту записувати власні думки, які не будуть передані коучу.",
