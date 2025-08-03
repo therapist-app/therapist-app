@@ -49,7 +49,12 @@
     "account": "Konto",
     "send": "Senden",
     "expand_AI_assistant": "KI-Assistent aufklappen",
-    "close": "Schliessen"
+    "close": "Schliessen",
+    "collapse_AI_assistant": "KI-Assistent einklappen",
+    "delete_chat": "Diesen Chat löschen",
+    "chatbot_placeholder": "Frage den Chatbot zu",
+    "chatbot_placeholder_selected_client": "dem aktuell ausgewählten Klienten",
+    "chatbot_placeholder_all_clients": "allen Klienten"
   },
   "dashboard": {
     "home": "Startseite",
