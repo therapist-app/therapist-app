@@ -336,7 +336,7 @@ const Home = (): ReactElement => {
         handleFileUpload={handleFileUpload}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
-        maxFileSizeBytes={1 * 1024 * 1024}
+        maxFileSizeBytes={50 * 1024 * 1024}
       />
 
       <Menu
