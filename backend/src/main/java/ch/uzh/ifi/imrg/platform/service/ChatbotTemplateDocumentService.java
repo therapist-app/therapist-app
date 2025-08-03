@@ -4,6 +4,7 @@ import static ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs.coachChatbotControll
 
 import ch.uzh.ifi.imrg.generated.model.ChatbotConfigurationOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.UpdateChatbotDTOPatientAPI;
+import ch.uzh.ifi.imrg.platform.LLM.LLMContextBuilder;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplate;
 import ch.uzh.ifi.imrg.platform.entity.ChatbotTemplateDocument;
 import ch.uzh.ifi.imrg.platform.repository.ChatbotTemplateDocumentRepository;
@@ -17,7 +18,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,11 +125,11 @@ public class ChatbotTemplateDocumentService {
 
     String patientId = template.getPatient().getId();
 
-    String chatbotContext =
-        template.getChatbotTemplateDocuments().stream()
-            .map(ChatbotTemplateDocument::getExtractedText)
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining("\n\n"));
+    StringBuilder sb =
+        new StringBuilder("Here are some documents which you can use for better context:\n\n");
+    LLMContextBuilder.addLLMContextOfListOfEntities(
+        sb, template.getChatbotTemplateDocuments(), "Chatbot Document", 0);
+    String chatbotContext = sb.toString();
 
     ChatbotConfigurationOutputDTOPatientAPI firstConfig =
         coachChatbotControllerPatientAPI.getChatbotConfigurations(patientId).blockFirst();
