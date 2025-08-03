@@ -1,5 +1,5 @@
 import { Button } from '@mui/material'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useNotify } from '../hooks/useNotify'
@@ -121,7 +121,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '12px',
     border: '1px solid #d1d5db',
     borderRadius: '8px',
-    minHeight: '150px',
+    minHeight: '250px',
     fontSize: '16px',
     color: '#1f2937',
     boxSizing: 'border-box',
@@ -214,22 +214,10 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState<string>(language)
 
   const recognitionRef = useRef<ISpeechRecognition | null>(null)
-  const initialStartRef = useRef(true)
-  const finalizedTranscriptUpToLastEventRef = useRef<string>('')
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [startDirectlyState, setStartDirectlyState] = useState(startDirectly)
-  const userStoppedRef = useRef<boolean>(false)
+  const textBeforeRecognitionRef = useRef<string>('')
+  const didAutoStart = useRef(false)
 
-  const valueRef = useRef(value)
   const onChangeRef = useRef(onChange)
-
-  useEffect(() => {
-    valueRef.current = value
-    if (textareaRef.current) {
-      textareaRef.current.scrollTop = textareaRef.current.scrollHeight
-    }
-  }, [value])
-
   useEffect(() => {
     onChangeRef.current = onChange
   }, [onChange])
@@ -240,202 +228,120 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
   useEffect(() => {
     if (!BrowserSpeechRecognition) {
-      const msg = 'Web Speech API is not supported in this browser. Please try Chrome or Edge.'
+      const msg = 'Web Speech API is not supported. Please use Chrome or Edge.'
       setError(msg)
       notifyWarning(msg)
-      return (): void => {
-        if (recognitionRef.current) {
-          recognitionRef.current.stop()
-          recognitionRef.current.onstart = null
-          recognitionRef.current.onresult = null
-          recognitionRef.current.onerror = null
-          recognitionRef.current.onend = null
-          recognitionRef.current = null
-        }
-      }
-    }
-
-    if (recognitionRef.current) {
-      recognitionRef.current.stop()
-      recognitionRef.current.onstart = null
-      recognitionRef.current.onresult = null
-      recognitionRef.current.onerror = null
-      recognitionRef.current.onend = null
-      recognitionRef.current = null
+      return
     }
 
     recognitionRef.current = new BrowserSpeechRecognition()
     const recognition = recognitionRef.current
-
     recognition.continuous = true
-    recognition.interimResults = true
-    recognition.lang = selectedLanguage
+    recognition.interimResults = false
 
     recognition.onstart = (): void => {
       setIsListening(true)
       setError(null)
     }
 
-    recognition.onresult = (event: SpeechRecognitionEvent): void => {
-      let interimForThisPass = ''
-      let newlyFinalizedForThisPass = ''
-
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        const transcriptPart = event.results[i][0].transcript
-        if (event.results[i].isFinal) {
-          newlyFinalizedForThisPass += transcriptPart + ' '
-        } else {
-          interimForThisPass += transcriptPart
-        }
-      }
-
-      const currentBaseFinalized = finalizedTranscriptUpToLastEventRef.current
-      const newTextValue = currentBaseFinalized + newlyFinalizedForThisPass + interimForThisPass
-      onChangeRef.current(newTextValue)
-
-      if (newlyFinalizedForThisPass.trim()) {
-        finalizedTranscriptUpToLastEventRef.current =
-          currentBaseFinalized + newlyFinalizedForThisPass
-      }
-    }
-
     recognition.onerror = (event: SpeechRecognitionErrorEvent): void => {
-      let errorMessage = `Error: ${event.error}`
       if (event.error === 'no-speech') {
         return
-      } else if (event.error === 'audio-capture') {
-        errorMessage = t('meetings.error.microphone_not_available')
-      } else if (event.error === 'not-allowed') {
-        errorMessage = t('meetings.error.not_allowed')
-      } else if (event.message) {
-        errorMessage = `${errorMessage} (${event.message})`
       }
+      const errorMessages: { [key: string]: string } = {
+        'audio-capture': t('meetings.error.microphone_not_available'),
+        'not-allowed': t('meetings.error.not_allowed'),
+      }
+      const errorMessage = errorMessages[event.error] || `${event.error}: ${event.message}`
       setError(errorMessage)
       notify(errorMessage)
       setIsListening(false)
     }
 
     recognition.onend = (): void => {
-      if (!userStoppedRef.current) {
-        try {
-          recognition.start()
-        } catch (err) {
-          console.error('Error restarting recognition:', err)
-          setIsListening(false)
-        }
-      } else {
-        setIsListening(false)
-      }
+      setIsListening(false)
     }
 
     return (): void => {
       if (recognitionRef.current) {
-        userStoppedRef.current = true
-        recognitionRef.current.stop()
-        recognitionRef.current.onstart = null
-        recognitionRef.current.onresult = null
-        recognitionRef.current.onerror = null
-        recognitionRef.current.onend = null
+        recognitionRef.current.abort()
         recognitionRef.current = null
       }
     }
-  }, [selectedLanguage, t, notify, notifyWarning])
+  }, [t, notify, notifyWarning])
 
   useEffect(() => {
-    if (startDirectlyState && !value && recognitionRef.current && !isListening) {
-      try {
-        let textToStartWith = valueRef.current
-        if (!initialStartRef.current && textToStartWith.trim() !== '') {
-          textToStartWith += '\n'
-          onChangeRef.current(textToStartWith)
-        }
-        finalizedTranscriptUpToLastEventRef.current = textToStartWith
+    if (recognitionRef.current) {
+      recognitionRef.current.lang = selectedLanguage
+    }
+  }, [selectedLanguage])
 
-        setError(null)
-        userStoppedRef.current = false
-        recognitionRef.current.start()
-        initialStartRef.current = false
-      } catch (e: unknown) {
-        const typedError = e as { message?: string }
-        const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
-        setError(msg)
-        notify(msg)
-        setIsListening(false)
-      } finally {
-        setStartDirectlyState(false)
+  useEffect(() => {
+    if (!recognitionRef.current) {
+      return
+    }
+
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent): void => {
+      let finalTranscript = ''
+
+      for (let i = 0; i < event.results.length; ++i) {
+        finalTranscript += event.results[i][0].transcript.trim() + ' '
       }
-    }
-  }, [isListening, startDirectlyState, value, notify])
 
-  const handleStartListening = (event?: React.MouseEvent<HTMLButtonElement>): void => {
-    if (event) {
-      event.preventDefault()
+      onChangeRef.current(textBeforeRecognitionRef.current + finalTranscript)
     }
-    if (recognitionRef.current && !isListening) {
-      try {
-        let textToStartWith = valueRef.current
-        if (!initialStartRef.current && textToStartWith.trim() !== '') {
-          textToStartWith += '\n'
-          onChangeRef.current(textToStartWith)
-        }
-        finalizedTranscriptUpToLastEventRef.current = textToStartWith
+  }, [])
 
-        setError(null)
-        userStoppedRef.current = false
-        recognitionRef.current.start()
-        initialStartRef.current = false
-      } catch (e: unknown) {
-        const typedError = e as { message?: string }
-        const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
-        setError(msg)
-        notify(msg)
-        setIsListening(false)
-      }
+  const handleStartListening = useCallback(() => {
+    if (isListening || !recognitionRef.current) {
+      return
     }
-  }
+
+    try {
+      textBeforeRecognitionRef.current = value ? value.trim() + ' ' : ''
+      setError(null)
+      recognitionRef.current.start()
+    } catch (e) {
+      const typedError = e as { message?: string }
+      const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
+      setError(msg)
+      notify(msg)
+      setIsListening(false)
+    }
+  }, [isListening, value, notify])
+
+  const handleStopListening = useCallback(() => {
+    if (!isListening || !recognitionRef.current) {
+      return
+    }
+    recognitionRef.current.stop()
+  }, [isListening])
+
+  useEffect(() => {
+    if (startDirectly && !isListening && !didAutoStart.current) {
+      handleStartListening()
+      didAutoStart.current = true
+    }
+  }, [startDirectly, isListening, handleStartListening])
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedLanguage(event.target.value)
   }
 
-  const handleStopListening = (event: React.MouseEvent<HTMLButtonElement>): void => {
-    setStartDirectlyState(false)
-    event.preventDefault()
-
-    if (recognitionRef.current && isListening) {
-      userStoppedRef.current = true
-      recognitionRef.current.stop()
-    }
-  }
-
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     if (!isListening) {
-      const newText = event.target.value
-      onChangeRef.current(newText)
-      finalizedTranscriptUpToLastEventRef.current = newText
+      onChange(event.target.value)
     }
   }
 
   const startBtnSx =
     isListening || !BrowserSpeechRecognition
-      ? {
-          ...successButtonStyles,
-          backgroundImage: 'none',
-          backgroundColor: 'lightgrey',
-          cursor: 'not-allowed',
-          boxShadow: 'none',
-        }
-      : { ...successButtonStyles }
+      ? { ...successButtonStyles, opacity: 0.5, cursor: 'not-allowed' }
+      : successButtonStyles
 
   const stopBtnSx = !isListening
-    ? {
-        ...deleteButtonStyles,
-        backgroundImage: 'none',
-        backgroundColor: 'lightgrey',
-        cursor: 'not-allowed',
-        boxShadow: 'none',
-      }
-    : { ...deleteButtonStyles }
+    ? { ...deleteButtonStyles, opacity: 0.5, cursor: 'not-allowed' }
+    : deleteButtonStyles
 
   return (
     <div style={styles.container}>
@@ -460,7 +366,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
       <div style={styles.textareaContainer}>
         <textarea
-          ref={textareaRef}
           value={value}
           onChange={handleTextChange}
           readOnly={isListening}
@@ -475,7 +380,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           <Button
             onClick={handleStartListening}
             disabled={isListening || !BrowserSpeechRecognition}
-            sx={{ ...startBtnSx }}
+            sx={startBtnSx}
             startIcon={
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -494,7 +399,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
           <Button
             onClick={handleStopListening}
             disabled={!isListening}
-            sx={{ ...stopBtnSx }}
+            sx={stopBtnSx}
             startIcon={
               <svg
                 xmlns='http://www.w3.org/2000/svg'
