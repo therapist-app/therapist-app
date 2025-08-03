@@ -42,7 +42,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
   const { notifySuccess, notifyError } = useNotify()
   const wrappedUpload = async (file: File): Promise<void> => {
     if (maxFileSizeBytes && file.size > maxFileSizeBytes) {
-      notifyError(t('exercise.file_too_large', { max: '1MB' }))
+      notifyError(t('exercise.file_too_large', { max: '50MB' }))
       return
     }
 

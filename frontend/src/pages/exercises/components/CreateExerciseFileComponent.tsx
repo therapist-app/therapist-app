@@ -23,7 +23,7 @@ interface CreateExerciseFileComponentProps {
   active: boolean
 }
 
-const MAX_FILE_SIZE_BYTES = 0.75 * 1024 * 1024
+const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg']
 
 const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = ({
@@ -48,7 +48,7 @@ const CreateExerciseFileComponent: React.FC<CreateExerciseFileComponentProps> = 
     }
 
     if (file.size > MAX_FILE_SIZE_BYTES) {
-      notifyError(t('exercise.file_too_large', { max: '750 KB' }))
+      notifyError(t('exercise.file_too_large', { max: '50 MB' }))
       return
     }
 
