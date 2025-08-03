@@ -1,10 +1,8 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
-import CloseIcon from '@mui/icons-material/Close'
-import { Avatar, Box, IconButton, List, ListItem, Paper, Tooltip, Typography } from '@mui/material'
+import { Avatar, Box, List, ListItem, Paper, Typography } from '@mui/material'
 import { ReactElement, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import AssistantImage from '../../../public/AssistantImage.png'
 import { ChatMessageDTOChatRoleEnum } from '../../api'
@@ -15,20 +13,21 @@ import { RootState } from '../../store/store'
 import { getPatientIdKey, resetStatus } from '../../store/therapistChatbotSlice'
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
-import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+
   const { patientId } = useParams()
-  const location = useLocation()
+
   const { notifyError } = useNotify()
 
   const therapistChatbotMessages = useSelector(
     (s: RootState) => s.therapistChatbot.therapistChatbotMessages
   )
-  const messages = therapistChatbotMessages[getPatientIdKey(patientId)] ?? []
+  const messages = useMemo(
+    () => therapistChatbotMessages[getPatientIdKey(patientId)] ?? [],
+    [therapistChatbotMessages, patientId]
+  )
 
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
   const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
@@ -46,17 +45,11 @@ const TherapistChatbot = (): ReactElement => {
     }
   }, [dispatch])
 
-  const currentPage = getPageFromPath(location.pathname)
-  const closePage =
-    currentPage === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
-      ? getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId ?? '' })
-      : getPathFromPage(PAGES.HOME_PAGE)
-
   const lastAssistant = messages.at(-1)
   const listRef = useRef<HTMLUListElement>(null)
   const listEndRef = useRef<HTMLDivElement>(null)
 
-  const { stream: typingStream, running: isStreaming } = useTypewriter(
+  const { stream: typingStream } = useTypewriter(
     lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant && chatbotStatus !== 'idle'
       ? lastAssistant.content
       : undefined
@@ -81,17 +74,6 @@ const TherapistChatbot = (): ReactElement => {
   return (
     <Layout>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Tooltip title={t('layout.close')}>
-          <IconButton
-            sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
-            onClick={() => {
-              navigate(closePage)
-            }}
-          >
-            <CloseIcon sx={{ color: 'red' }} />
-          </IconButton>
-        </Tooltip>
-
         <List
           ref={listRef}
           sx={{

@@ -1,4 +1,6 @@
+import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SendIcon from '@mui/icons-material/Send'
@@ -21,9 +23,13 @@ import { Location, useLocation, useNavigate, useParams, useSearchParams } from '
 
 import logo from '../../public/uzh-logo.png'
 import { RootState } from '../store/store'
-import { chatWithTherapistChatbot } from '../store/therapistChatbotSlice'
+import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
-import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
+import {
+  commonButtonStyles,
+  deleteButtonStyles,
+  disabledButtonStyles,
+} from '../styles/buttonStyles'
 import { useAppDispatch } from '../utils/hooks'
 import { getCurrentLanguage } from '../utils/languageUtil'
 import {
@@ -79,6 +85,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     ? getPathFromPage(PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT, { patientId: explicitId })
     : getPathFromPage(PAGES.THERAPIST_CHATBOT_PAGE)
 
+  const isTherapistChatbotPage =
+    currentPage === PAGES.THERAPIST_CHATBOT_PAGE ||
+    currentPage === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
+  const closePage =
+    currentPage === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
+      ? getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: routeParams.patientId ?? '' })
+      : getPathFromPage(PAGES.HOME_PAGE)
+
   let pageTrace = findPageTrace(currentPage) ?? [PAGES.HOME_PAGE]
   if (isExplicitCtx && currentPage === PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE) {
     pageTrace = [PAGES.HOME_PAGE, PAGES.PATIENTS_DETAILS_PAGE, PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]
@@ -127,6 +141,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {
     setInput(e.target.value)
+  }
+
+  const handleDeleteChat = (): void => {
+    dispatch(clearMessages(routeParams.patientId))
   }
 
   return (
@@ -269,6 +287,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         >
           <TextField
             fullWidth
+            maxRows={2}
+            multiline
             value={input}
             onChange={handleChatbotInput}
             onKeyDown={(e) => {
@@ -281,38 +301,52 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             }}
             placeholder={t('footer.note')}
             sx={{
+              height: '60px',
               bgcolor: 'white',
               borderRadius: 1,
               '& .MuiOutlinedInput-root': { height: '60px' },
             }}
           />
           <Tooltip title={t('layout.send')}>
-            <Button
+            <IconButton
               onClick={sendMessage}
-              variant='contained'
               disabled={!input.trim() || chatbotStatus === 'loading'}
               sx={{
-                position: 'absolute',
-                right: 10,
-                bottom: 27,
-                top: 10,
                 ...(!input.trim() || chatbotStatus === 'loading'
                   ? smallDisabledButtonStyles
                   : sendButtonStyles),
               }}
             >
               <SendIcon />
-            </Button>
-          </Tooltip>
-
-          <Tooltip title={t('layout.expand_AI_assistant')}>
-            <IconButton
-              sx={{ position: 'absolute', right: '5px', bottom: '60px' }}
-              onClick={() => navigate(therapistChatbotExpandedPage)}
-            >
-              <ExpandLessIcon sx={{ color: 'black' }} />
             </IconButton>
           </Tooltip>
+
+          {!isTherapistChatbotPage ? (
+            <Tooltip title={t('layout.expand_AI_assistant')}>
+              <IconButton
+                sx={{ ...sendButtonStyles }}
+                onClick={() => navigate(therapistChatbotExpandedPage)}
+              >
+                <ExpandLessIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <>
+              <Tooltip title={t('layout.collapse_AI_assistant')}>
+                <IconButton sx={{ ...sendButtonStyles }} onClick={() => navigate(closePage)}>
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('layout.delete_chat')}>
+                <IconButton
+                  sx={{ ...deleteButtonStyles, height: '55px', width: '80px' }}
+                  onClick={handleDeleteChat}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
         </Box>
       </Box>
       <GlobalErrorSnackbar />

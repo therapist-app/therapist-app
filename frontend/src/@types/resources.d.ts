@@ -650,7 +650,9 @@ interface Resources {
       "account": "Account",
       "send": "Send",
       "expand_AI_assistant": "Expand AI Assistant",
-      "close": "Close"
+      "close": "Close",
+      "collapse_AI_assistant": "Collapse AI Assistant",
+      "delete_chat": "Delete this chat"
     },
     "dashboard": {
       "home": "Home",
