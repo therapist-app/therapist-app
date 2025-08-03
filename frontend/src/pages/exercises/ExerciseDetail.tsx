@@ -425,7 +425,14 @@ const ExerciseDetail = (): ReactElement => {
         </div>
 
         {!isViewMode && (
-          <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '15px',
+              marginTop: '20px',
+              flexWrap: 'wrap',
+            }}
+          >
             <CreateExerciseTextComponent
               createdExercise={refreshExercise}
               active={
