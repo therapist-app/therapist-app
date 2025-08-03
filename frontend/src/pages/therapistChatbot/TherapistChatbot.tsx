@@ -1,10 +1,8 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
-import CloseIcon from '@mui/icons-material/Close'
-import { Avatar, Box, IconButton, List, ListItem, Paper, Tooltip, Typography } from '@mui/material'
-import { ReactElement, useEffect, useLayoutEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Avatar, Box, List, ListItem, Paper, Typography } from '@mui/material'
+import { ReactElement, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import AssistantImage from '../../../public/AssistantImage.png'
 import { ChatMessageDTOChatRoleEnum } from '../../api'
@@ -12,20 +10,25 @@ import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
-import { clearMessages } from '../../store/therapistChatbotSlice'
+import { getPatientIdKey, resetStatus } from '../../store/therapistChatbotSlice'
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
-import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
 
 const TherapistChatbot = (): ReactElement => {
   const dispatch = useAppDispatch()
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+
   const { patientId } = useParams()
-  const location = useLocation()
+
   const { notifyError } = useNotify()
 
-  const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
+  const therapistChatbotMessages = useSelector(
+    (s: RootState) => s.therapistChatbot.therapistChatbotMessages
+  )
+  const messages = useMemo(
+    () => therapistChatbotMessages[getPatientIdKey(patientId)] ?? [],
+    [therapistChatbotMessages, patientId]
+  )
+
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
   const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
   const compactBubble = { py: 0.1, px: 1.5 }
@@ -36,18 +39,18 @@ const TherapistChatbot = (): ReactElement => {
     }
   }, [chatbotError, notifyError])
 
-  const currentPage = getPageFromPath(location.pathname)
-  const closePage =
-    currentPage === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
-      ? getPathFromPage(PAGES.PATIENTS_DETAILS_PAGE, { patientId: patientId ?? '' })
-      : getPathFromPage(PAGES.HOME_PAGE)
+  useEffect(() => {
+    return (): void => {
+      dispatch(resetStatus())
+    }
+  }, [dispatch])
 
   const lastAssistant = messages.at(-1)
   const listRef = useRef<HTMLUListElement>(null)
   const listEndRef = useRef<HTMLDivElement>(null)
 
-  const { stream: typingStream, running: isStreaming } = useTypewriter(
-    lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant
+  const { stream: typingStream } = useTypewriter(
+    lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant && chatbotStatus !== 'idle'
       ? lastAssistant.content
       : undefined
   )
@@ -71,18 +74,6 @@ const TherapistChatbot = (): ReactElement => {
   return (
     <Layout>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Tooltip title={t('layout.close')}>
-          <IconButton
-            sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
-            onClick={() => {
-              dispatch(clearMessages())
-              navigate(closePage)
-            }}
-          >
-            <CloseIcon sx={{ color: 'red' }} />
-          </IconButton>
-        </Tooltip>
-
         <List
           ref={listRef}
           sx={{
@@ -96,10 +87,12 @@ const TherapistChatbot = (): ReactElement => {
           {messages.map((m, i) => {
             const isLastAssistant =
               i === messages.length - 1 && m.chatRole === ChatMessageDTOChatRoleEnum.Assistant
-            const body =
-              isLastAssistant && isStreaming
-                ? formatResponse(typingStream)
-                : formatResponse(m.content ?? '')
+
+            const isLiveResponse = isLastAssistant && chatbotStatus === 'succeeded'
+
+            const body = isLiveResponse
+              ? formatResponse(typingStream) // Prioritize the animated stream for new messages
+              : formatResponse(m.content ?? '')
 
             return m.chatRole === ChatMessageDTOChatRoleEnum.User ? (
               <ListItem key={i} sx={{ display: 'flex', justifyContent: 'flex-end' }}>

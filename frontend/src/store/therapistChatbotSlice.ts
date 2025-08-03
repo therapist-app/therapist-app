@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, Middleware, PayloadAction } from '@reduxjs/toolkit'
 
 import {
   ChatMessageDTO,
@@ -10,14 +10,52 @@ import { therapistChatbotApi } from '../utils/api'
 import { getErrorPayload } from '../utils/errorUtil'
 import { createAppAsyncThunk } from './thunk'
 
+export const ALL_CLIENTS_KEY = 'ALL_CLIENTS'
+const LOCAL_STORAGE_KEY = 'COACH_CHAT'
+
+export const getPatientIdKey = (patientId: string | undefined): string => {
+  if (patientId) {
+    return patientId
+  }
+  return ALL_CLIENTS_KEY
+}
+
+const loadMessagesFromStorage = (): Record<string, ChatMessageDTO[] | undefined> => {
+  try {
+    const serializedMessages = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (serializedMessages === null) {
+      return {}
+    }
+    return JSON.parse(serializedMessages)
+  } catch (err) {
+    console.error('Could not load chat messages from localStorage', err)
+    return {}
+  }
+}
+
+export const therapistChatbotSaveMessagesToLocalStorageMiddleware: Middleware =
+  (store) => (next) => (action) => {
+    const result = next(action)
+
+    try {
+      const messages = store.getState().therapistChatbot.therapistChatbotMessages
+      const serializedMessages = JSON.stringify(messages)
+      localStorage.setItem(LOCAL_STORAGE_KEY, serializedMessages)
+    } catch (err) {
+      console.error('Could not save chat messages to localStorage', err)
+    }
+
+    return result
+  }
+
 interface TherapistChatbotState {
-  therapistChatbotMessages: ChatMessageDTO[]
+  therapistChatbotMessages: Record<string, ChatMessageDTO[] | undefined>
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
 
 const initialState: TherapistChatbotState = {
-  therapistChatbotMessages: [],
+  therapistChatbotMessages: loadMessagesFromStorage(),
   status: 'idle',
   error: null,
 }
@@ -35,11 +73,18 @@ export const chatWithTherapistChatbot = createAppAsyncThunk(
     try {
       thunkAPI.dispatch(
         addMessage({
-          chatRole: ChatMessageDTOChatRoleEnum.User,
-          content: payload.newMessage,
+          chatMessage: {
+            chatRole: ChatMessageDTOChatRoleEnum.User,
+            content: payload.newMessage,
+          },
+          patientId: payload.patientId,
         })
       )
-      const currentMessages = thunkAPI.getState().therapistChatbot.therapistChatbotMessages
+
+      const currentMessages =
+        thunkAPI.getState().therapistChatbot.therapistChatbotMessages[
+          getPatientIdKey(payload.patientId)
+        ]
       const therapistChatbotInputDTO: TherapistChatbotInputDTO = {
         chatMessages: currentMessages,
         patientId: payload.patientId,
@@ -47,7 +92,7 @@ export const chatWithTherapistChatbot = createAppAsyncThunk(
       }
 
       const response = await therapistChatbotApi.chatWithTherapistChatbot(therapistChatbotInputDTO)
-      return response.data
+      return { response: response.data, patientId: payload.patientId }
     } catch (error) {
       return thunkAPI.rejectWithValue(getErrorPayload(error))
     }
@@ -58,11 +103,21 @@ const therapistChatbotSlice = createSlice({
   name: 'therapistChatbot',
   initialState: initialState,
   reducers: {
-    addMessage: (state, action: PayloadAction<ChatMessageDTO>) => {
-      state.therapistChatbotMessages.push(action.payload)
+    addMessage: (
+      state,
+      action: PayloadAction<{ chatMessage: ChatMessageDTO; patientId: string | undefined }>
+    ) => {
+      const key = getPatientIdKey(action.payload.patientId)
+      const existingMessages = state.therapistChatbotMessages[key] ?? []
+
+      state.therapistChatbotMessages[key] = [...existingMessages, action.payload.chatMessage]
     },
-    clearMessages: (state) => {
-      state.therapistChatbotMessages = []
+    clearMessages: (state, action: PayloadAction<string | undefined>) => {
+      state.therapistChatbotMessages[getPatientIdKey(action.payload)] = []
+      state.status = 'idle'
+      state.error = null
+    },
+    resetStatus: (state) => {
       state.status = 'idle'
       state.error = null
     },
@@ -75,10 +130,15 @@ const therapistChatbotSlice = createSlice({
       })
       .addCase(chatWithTherapistChatbot.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.therapistChatbotMessages.push({
+        const key = getPatientIdKey(action.payload.patientId)
+        const existingMessages = state.therapistChatbotMessages[key] ?? []
+
+        const assistantMessage: ChatMessageDTO = {
           chatRole: ChatMessageDTOChatRoleEnum.Assistant,
-          content: action.payload.content,
-        })
+          content: action.payload.response.content,
+        }
+
+        state.therapistChatbotMessages[key] = [...existingMessages, assistantMessage]
       })
       .addCase(chatWithTherapistChatbot.rejected, (state, action) => {
         state.status = 'failed'
@@ -88,5 +148,5 @@ const therapistChatbotSlice = createSlice({
   },
 })
 
-export const { clearMessages, addMessage } = therapistChatbotSlice.actions
+export const { clearMessages, addMessage, resetStatus } = therapistChatbotSlice.actions
 export default therapistChatbotSlice.reducer

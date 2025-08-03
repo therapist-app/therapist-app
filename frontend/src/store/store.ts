@@ -9,7 +9,9 @@ import exerciseReducer from './exerciseSlice'
 import meetingReducer from './meetingSlice'
 import patientDocumentReducer from './patientDocumentSlice'
 import patientReducer from './patientSlice'
-import therapistChatbotReducer from './therapistChatbotSlice'
+import therapistChatbotReducer, {
+  therapistChatbotSaveMessagesToLocalStorageMiddleware,
+} from './therapistChatbotSlice'
 import therapistDocumentReducer from './therapistDocumentSlice'
 import therapistReducer from './therapistSlice'
 
@@ -28,6 +30,8 @@ const store = configureStore({
     conversation: conversationReducer,
     globalError: errorReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(therapistChatbotSaveMessagesToLocalStorageMiddleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>

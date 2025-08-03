@@ -50,7 +50,12 @@ interface Resources {
       "account": "Konto",
       "send": "Senden",
       "expand_AI_assistant": "KI-Assistent aufklappen",
-      "close": "Schliessen"
+      "close": "Schliessen",
+      "collapse_AI_assistant": "KI-Assistent einklappen",
+      "delete_chat": "Diesen Chat löschen",
+      "chatbot_placeholder": "Frage den Chatbot zu",
+      "chatbot_placeholder_selected_client": "dem aktuell ausgewählten Klienten",
+      "chatbot_placeholder_all_clients": "allen Klienten"
     },
     "dashboard": {
       "home": "Startseite",
@@ -650,7 +655,12 @@ interface Resources {
       "account": "Account",
       "send": "Send",
       "expand_AI_assistant": "Expand AI Assistant",
-      "close": "Close"
+      "close": "Close",
+      "collapse_AI_assistant": "Collapse AI Assistant",
+      "delete_chat": "Delete this chat",
+      "chatbot_placeholder": "Ask chatbot about",
+      "chatbot_placeholder_selected_client": "currently selected client",
+      "chatbot_placeholder_all_clients": "all clients"
     },
     "dashboard": {
       "home": "Home",
@@ -1250,7 +1260,12 @@ interface Resources {
       "account": "Акаунт",
       "send": "Надіслати",
       "expand_AI_assistant": "Розгорнути AI асистента",
-      "close": "Закрити"
+      "close": "Закрити",
+      "collapse_AI_assistant": "Згорнути ШІ-асистента",
+      "delete_chat": "Видалити цей чат",
+      "chatbot_placeholder": "Запитати чат-бота про",
+      "chatbot_placeholder_selected_client": "поточного вибраного клієнта",
+      "chatbot_placeholder_all_clients": "всіх клієнтів"
     },
     "dashboard": {
       "home": "Головна",
