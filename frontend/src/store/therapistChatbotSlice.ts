@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, Middleware, PayloadAction } from '@reduxjs/toolkit'
 
 import {
   ChatMessageDTO,
@@ -11,6 +11,7 @@ import { getErrorPayload } from '../utils/errorUtil'
 import { createAppAsyncThunk } from './thunk'
 
 export const ALL_CLIENTS_KEY = 'ALL_CLIENTS'
+const LOCAL_STORAGE_KEY = 'COACH_CHAT'
 
 export const getPatientIdKey = (patientId: string | undefined): string => {
   if (patientId) {
@@ -19,6 +20,34 @@ export const getPatientIdKey = (patientId: string | undefined): string => {
   return ALL_CLIENTS_KEY
 }
 
+const loadMessagesFromStorage = (): Record<string, ChatMessageDTO[] | undefined> => {
+  try {
+    const serializedMessages = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (serializedMessages === null) {
+      return {}
+    }
+    return JSON.parse(serializedMessages)
+  } catch (err) {
+    console.error('Could not load chat messages from localStorage', err)
+    return {}
+  }
+}
+
+export const therapistChatbotSaveMessagesToLocalStorageMiddleware: Middleware =
+  (store) => (next) => (action) => {
+    const result = next(action)
+
+    try {
+      const messages = store.getState().therapistChatbot.therapistChatbotMessages
+      const serializedMessages = JSON.stringify(messages)
+      localStorage.setItem(LOCAL_STORAGE_KEY, serializedMessages)
+    } catch (err) {
+      console.error('Could not save chat messages to localStorage', err)
+    }
+
+    return result
+  }
+
 interface TherapistChatbotState {
   therapistChatbotMessages: Record<string, ChatMessageDTO[] | undefined>
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -26,7 +55,7 @@ interface TherapistChatbotState {
 }
 
 const initialState: TherapistChatbotState = {
-  therapistChatbotMessages: {},
+  therapistChatbotMessages: loadMessagesFromStorage(),
   status: 'idle',
   error: null,
 }
