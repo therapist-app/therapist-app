@@ -11,6 +11,7 @@ import {
   UpdateExerciseDTO,
 } from '../api'
 import { exerciseApi, exerciseComponentApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface ExerciseState {
   selectedExercise: ExerciseOutputDTO | null
@@ -23,34 +24,7 @@ interface ExerciseState {
 
 const initialState: ExerciseState = {
   selectedExercise: null,
-  selectedExerciseInformation: [
-    // {
-    //   feedback:
-    //     'This is some very very very very very very very very very very very very long feedback the client might have',
-    //   startTime: new Date().toISOString(),
-    //   endTime: new Date().toISOString(),
-    //   moodsBefore: [
-    //     {
-    //       moodName: 'First Test Mood Before',
-    //       moodScore: 6,
-    //     },
-    //     {
-    //       moodName: 'Second Mood Before',
-    //       moodScore: 7,
-    //     },
-    //   ],
-    //   moodsAfter: [
-    //     {
-    //       moodName: 'First Test Mood After',
-    //       moodScore: 8,
-    //     },
-    //     {
-    //       moodName: 'Second Test Mood After',
-    //       moodScore: 9,
-    //     },
-    //   ],
-    // },
-  ],
+  selectedExerciseInformation: [],
   allExercisesOfPatient: [],
   addingExerciseComponent: null,
   status: 'idle',
@@ -59,91 +33,145 @@ const initialState: ExerciseState = {
 
 export const createExercise = createAsyncThunk(
   'createExercise',
-  async (createExerciseDTO: CreateExerciseDTO) => {
-    const response = await exerciseApi.createExercise(createExerciseDTO)
-    return response.data
+  async (createExerciseDTO: CreateExerciseDTO, thunkAPI) => {
+    try {
+      const response = await exerciseApi.createExercise(createExerciseDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
-export const getExerciseById = createAsyncThunk('getExerciseById', async (exerciseId: string) => {
-  const response = await exerciseApi.getExerciseById(exerciseId)
-  return response.data
-})
+export const getExerciseById = createAsyncThunk(
+  'getExerciseById',
+  async (exerciseId: string, thunkAPI) => {
+    try {
+      const response = await exerciseApi.getExerciseById(exerciseId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
 export const getAllExercisesOfPatient = createAsyncThunk(
   'getAllExercisesOfPatient',
-  async (patientId: string) => {
-    const response = await exerciseApi.getAllExercisesOfPatient(patientId)
-    return response.data
+  async (patientId: string, thunkAPI) => {
+    try {
+      const response = await exerciseApi.getAllExercisesOfPatient(patientId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const getExerciseInformation = createAsyncThunk(
   'getExerciseInformation',
-  async (exerciseId: string) => {
-    const response = await exerciseApi.getExerciseInformation(exerciseId)
-    return response.data
+  async (exerciseId: string, thunkAPI) => {
+    try {
+      const response = await exerciseApi.getExerciseInformation(exerciseId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateExercise = createAsyncThunk(
   'updateExercise',
-  async (updateExerciseDTO: UpdateExerciseDTO) => {
-    const response = await exerciseApi.updateExercise(updateExerciseDTO)
-    return response.data
+  async (updateExerciseDTO: UpdateExerciseDTO, thunkAPI) => {
+    try {
+      const response = await exerciseApi.updateExercise(updateExerciseDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
-export const deleteExercise = createAsyncThunk('deleteExcercise', async (exerciseId: string) => {
-  const response = await exerciseApi.deleteExercise(exerciseId)
-  return response.data
-})
+export const deleteExercise = createAsyncThunk(
+  'deleteExcercise',
+  async (exerciseId: string, thunkAPI) => {
+    try {
+      const response = await exerciseApi.deleteExercise(exerciseId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
 export const createExerciseComponent = createAsyncThunk(
   'createExerciseComponent',
-  async (props: {
-    createExerciseComponentDTO: CreateExerciseComponentDTO
-    file: File | undefined
-  }) => {
-    if (props.file) {
-      const response = await exerciseComponentApi.createExerciseComponentWithFile(
-        props.createExerciseComponentDTO,
-        props.file
+  async (
+    props: {
+      createExerciseComponentDTO: CreateExerciseComponentDTO
+      file: File | undefined
+    },
+    thunkAPI
+  ) => {
+    try {
+      if (props.file) {
+        const response = await exerciseComponentApi.createExerciseComponentWithFile(
+          props.createExerciseComponentDTO,
+          props.file
+        )
+        return response.data
+      }
+      const response = await exerciseComponentApi.createExerciseComponent(
+        props.createExerciseComponentDTO
       )
       return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
     }
-    const response = await exerciseComponentApi.createExerciseComponent(
-      props.createExerciseComponentDTO
-    )
-    return response.data
   }
 )
 
 export const downloadExerciseComponent = createAsyncThunk(
   'downloadExerciseComponent',
-  async (exerciseComponentId: string) => {
-    const response = await exerciseComponentApi.downloadExerciseComponentFile(exerciseComponentId, {
-      responseType: 'blob',
-    })
-    const file = response.data
-    const url = window.URL.createObjectURL(file)
-    return url
+  async (exerciseComponentId: string, thunkAPI) => {
+    try {
+      const response = await exerciseComponentApi.downloadExerciseComponentFile(
+        exerciseComponentId,
+        {
+          responseType: 'blob',
+        }
+      )
+      const file = response.data
+      const url = window.URL.createObjectURL(file)
+      return url
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateExerciseComponent = createAsyncThunk(
   'updateExerciseComponent',
-  async (updateExerciseComponentDTO: UpdateExerciseComponentDTO) => {
-    const response = await exerciseComponentApi.updateExerciseComponent(updateExerciseComponentDTO)
-    return response.data
+  async (updateExerciseComponentDTO: UpdateExerciseComponentDTO, thunkAPI) => {
+    try {
+      const response = await exerciseComponentApi.updateExerciseComponent(
+        updateExerciseComponentDTO
+      )
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteExerciseComponent = createAsyncThunk(
   'deleteExerciseComponent',
-  async (exerciseComponentId: string) => {
-    const response = await exerciseComponentApi.deleteExerciseComponent(exerciseComponentId)
-    return response.data
+  async (exerciseComponentId: string, thunkAPI) => {
+    try {
+      const response = await exerciseComponentApi.deleteExerciseComponent(exerciseComponentId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
@@ -239,6 +267,7 @@ const exerciseSlice = createSlice({
       .addCase(updateExercise.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
+        console.log('yeet')
         console.log(action)
       })
 

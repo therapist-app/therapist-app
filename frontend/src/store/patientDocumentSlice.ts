@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { PatientDocumentOutputDTO } from '../api'
 import { patientDocumentApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface PatientDocumentState {
   allPatientDocumentsOfPatient: PatientDocumentOutputDTO[]
@@ -17,29 +18,41 @@ const initialState: PatientDocumentState = {
 
 export const createDocumentForPatient = createAsyncThunk(
   'createDocumentForPatient',
-  async (props: { file: File; patientId: string; isSharedWithPatient: boolean }) => {
-    const response = await patientDocumentApi.createPatientDocument(
-      props.patientId,
-      props.isSharedWithPatient,
-      props.file
-    )
-    return response.data
+  async (props: { file: File; patientId: string; isSharedWithPatient: boolean }, thunkAPI) => {
+    try {
+      const response = await patientDocumentApi.createPatientDocument(
+        props.patientId,
+        props.isSharedWithPatient,
+        props.file
+      )
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const getAllPatientDocumentsOfPatient = createAsyncThunk(
   'getAllPatientDocumentsOfPatient',
-  async (patientId: string) => {
-    const response = await patientDocumentApi.getDocumentsOfPatient(patientId)
-    return response.data
+  async (patientId: string, thunkAPI) => {
+    try {
+      const response = await patientDocumentApi.getDocumentsOfPatient(patientId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteDocumentOfPatient = createAsyncThunk(
   'deleteDocumentOfPatient',
-  async (patientDocumentId: string) => {
-    const response = await patientDocumentApi.deletePatientDocument(patientDocumentId)
-    return response.data
+  async (patientDocumentId: string, thunkAPI) => {
+    try {
+      const response = await patientDocumentApi.deletePatientDocument(patientDocumentId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 

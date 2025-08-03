@@ -7,7 +7,7 @@ import {
   UpdateTherapistDTO,
 } from '../api'
 import { therapistApi } from '../utils/api'
-import { handleError } from '../utils/handleError'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface TherapistState {
   loggedInTherapist: TherapistOutputDTO | null
@@ -25,12 +25,12 @@ export const registerTherapist = createAsyncThunk<
   TherapistOutputDTO,
   CreateTherapistDTO,
   { rejectValue: string }
->('therapist/registerTherapist', async (dto, { rejectWithValue }) => {
+>('therapist/registerTherapist', async (dto, thunkAPI) => {
   try {
     const { data } = await therapistApi.createTherapist(dto)
     return data
-  } catch (err) {
-    return rejectWithValue(await handleError(err))
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
   }
 })
 
@@ -38,22 +38,22 @@ export const loginTherapist = createAsyncThunk<
   TherapistOutputDTO,
   LoginTherapistDTO,
   { rejectValue: string }
->('therapist/loginTherapist', async (dto, { rejectWithValue }) => {
+>('therapist/loginTherapist', async (dto, thunkAPI) => {
   try {
     const { data } = await therapistApi.loginTherapist(dto)
     return data
-  } catch (err) {
-    return rejectWithValue(await handleError(err))
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
   }
 })
 
 export const logoutTherapist = createAsyncThunk<void, void, { rejectValue: string }>(
   'therapist/logoutTherapist',
-  async (_, { rejectWithValue }) => {
+  async (_, thunkAPI) => {
     try {
       await therapistApi.logoutTherapist()
-    } catch (err) {
-      return rejectWithValue(await handleError(err))
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
     }
   }
 )
@@ -62,12 +62,12 @@ export const getCurrentlyLoggedInTherapist = createAsyncThunk<
   TherapistOutputDTO,
   void,
   { rejectValue: string }
->('therapist/getCurrentlyLoggedInTherapist', async (_, { rejectWithValue }) => {
+>('therapist/getCurrentlyLoggedInTherapist', async (_, thunkAPI) => {
   try {
     const { data } = await therapistApi.getCurrentlyLoggedInTherapist()
     return data
-  } catch (err) {
-    return rejectWithValue(await handleError(err))
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
   }
 })
 
@@ -75,12 +75,12 @@ export const updateTherapist = createAsyncThunk<
   TherapistOutputDTO,
   UpdateTherapistDTO,
   { rejectValue: string }
->('therapist/updateTherapist', async (dto, { rejectWithValue }) => {
+>('therapist/updateTherapist', async (dto, thunkAPI) => {
   try {
     const { data } = await therapistApi.updateTherapist(dto)
     return data
-  } catch (err) {
-    return rejectWithValue(await handleError(err))
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
   }
 })
 

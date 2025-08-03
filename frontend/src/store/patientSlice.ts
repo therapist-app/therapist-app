@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { CreatePatientDTO, PatientOutputDTO, UpdatePatientDetailDTO } from '../api'
 import { patientApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface PatientState {
   selectedPatient: PatientOutputDTO | null
@@ -19,35 +20,60 @@ const initialState: PatientState = {
 
 export const registerPatient = createAsyncThunk(
   'registerPatient',
-  async (createPatientDTO: CreatePatientDTO) => {
-    const response = await patientApi.createPatientForTherapist(createPatientDTO)
-    return response.data
+  async (createPatientDTO: CreatePatientDTO, thunkAPI) => {
+    try {
+      const response = await patientApi.createPatientForTherapist(createPatientDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updatePatient = createAsyncThunk(
   'updatePatient',
-  async ({
-    patientId,
-    updatePatientDetailDTO,
-  }: {
-    patientId: string
-    updatePatientDetailDTO: UpdatePatientDetailDTO
-  }) => {
-    const response = await patientApi.updatePatientDetails(patientId, updatePatientDetailDTO)
-    return response.data
+  async (
+    {
+      patientId,
+      updatePatientDetailDTO,
+    }: {
+      patientId: string
+      updatePatientDetailDTO: UpdatePatientDetailDTO
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await patientApi.updatePatientDetails(patientId, updatePatientDetailDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
-export const getPatientById = createAsyncThunk('getPatientById', async (patientId: string) => {
-  const response = await patientApi.getPatientById(patientId)
-  return response.data
-})
+export const getPatientById = createAsyncThunk(
+  'getPatientById',
+  async (patientId: string, thunkAPI) => {
+    try {
+      const response = await patientApi.getPatientById(patientId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
-export const getAllPatientsOfTherapist = createAsyncThunk('getAllPatientsOfTherapist', async () => {
-  const response = await patientApi.getPatientsOfTherapist()
-  return response.data
-})
+export const getAllPatientsOfTherapist = createAsyncThunk(
+  'getAllPatientsOfTherapist',
+  async (_, thunkAPI) => {
+    try {
+      const response = await patientApi.getPatientsOfTherapist()
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
 const patientSlice = createSlice({
   name: 'patient',

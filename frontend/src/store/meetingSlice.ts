@@ -9,6 +9,7 @@ import {
   UpdateMeetingNoteDTO,
 } from '../api'
 import { meetingApi, meetingNoteApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface MeetingState {
   selectedMeeting: MeetingOutputDTO | null
@@ -26,63 +27,105 @@ const initialState: MeetingState = {
 
 export const createMeeting = createAsyncThunk(
   'createMeeting',
-  async (createMeetingDTO: CreateMeetingDTO) => {
-    const response = await meetingApi.createMeeting(createMeetingDTO)
-    return response.data
+  async (createMeetingDTO: CreateMeetingDTO, thunkAPI) => {
+    try {
+      const response = await meetingApi.createMeeting(createMeetingDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createMeetingNoteSummary = createAsyncThunk(
   'createMeetingNoteSummary',
-  async (dto: CreateMeetingNoteSummaryDTO) => {
-    const response = await meetingApi.createMeetingNoteSummary(dto)
-    return response.data
+  async (dto: CreateMeetingNoteSummaryDTO, thunkAPI) => {
+    try {
+      const response = await meetingApi.createMeetingNoteSummary(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
-export const getMeeting = createAsyncThunk('getMeeting', async (meetingId: string) => {
-  const response = await meetingApi.getMeetingById(meetingId)
-  return response.data
+export const getMeeting = createAsyncThunk('getMeeting', async (meetingId: string, thunkAPI) => {
+  try {
+    const response = await meetingApi.getMeetingById(meetingId)
+    return response.data
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
+  }
 })
 
 export const getAllMeetingsOfPatient = createAsyncThunk(
   'getAllMeetingsOfPatient',
-  async (patientId: string) => {
-    const response = await meetingApi.getMeetingsOfPatient(patientId)
-    return response.data
+  async (patientId: string, thunkAPI) => {
+    try {
+      const response = await meetingApi.getMeetingsOfPatient(patientId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
-export const updateMeeting = createAsyncThunk('updateMeeting', async (dto: UpdateMeetingDTO) => {
-  const response = await meetingApi.updateMeeting(dto)
-  return response.data
-})
+export const updateMeeting = createAsyncThunk(
+  'updateMeeting',
+  async (dto: UpdateMeetingDTO, thunkAPI) => {
+    try {
+      const response = await meetingApi.updateMeeting(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
-export const deleteMeeting = createAsyncThunk('deleteMeeting', async (meetingId: string) => {
-  const response = await meetingApi.deleteMeetingById(meetingId)
-  return response.data
-})
+export const deleteMeeting = createAsyncThunk(
+  'deleteMeeting',
+  async (meetingId: string, thunkAPI) => {
+    try {
+      const response = await meetingApi.deleteMeetingById(meetingId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
+  }
+)
 
 export const createMeetingNote = createAsyncThunk(
   'createMeetingNote',
-  async (createMeetingNoteDTO: CreateMeetingNoteDTO) => {
-    const response = await meetingNoteApi.createMeetingNote(createMeetingNoteDTO)
-    return response.data
+  async (createMeetingNoteDTO: CreateMeetingNoteDTO, thunkAPI) => {
+    try {
+      const response = await meetingNoteApi.createMeetingNote(createMeetingNoteDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateMeetingNote = createAsyncThunk(
   'updateMeetingNote',
-  async (updateMeetingNoteDTO: UpdateMeetingNoteDTO) => {
-    const response = await meetingNoteApi.updateMeetingNote(updateMeetingNoteDTO)
-    return response.data
+  async (updateMeetingNoteDTO: UpdateMeetingNoteDTO, thunkAPI) => {
+    try {
+      const response = await meetingNoteApi.updateMeetingNote(updateMeetingNoteDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteMeetingNote = createAsyncThunk(
   'deleteMeetingNote',
-  async (meetingNoteId: string) => {
-    await meetingNoteApi.deleteMeetingNoteById(meetingNoteId)
+  async (meetingNoteId: string, thunkAPI) => {
+    try {
+      await meetingNoteApi.deleteMeetingNoteById(meetingNoteId)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 

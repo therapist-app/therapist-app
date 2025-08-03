@@ -7,7 +7,7 @@ import { handleError } from '../utils/handleError'
 import { useAppDispatch } from '../utils/hooks'
 
 type Notify = (message: string, severity?: AlertColor) => void
-type NotifyError = (error: unknown) => void
+export type NotifyError = (error: unknown) => void
 
 interface UseNotifyReturn {
   notify: Notify
