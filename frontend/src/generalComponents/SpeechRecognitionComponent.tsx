@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useNotify } from '../hooks/useNotify'
 import { deleteButtonStyles, successButtonStyles } from '../styles/buttonStyles'
 
+const LOCAL_STORAGE_SPEECH_TO_TEXT_KEY = ''
+
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
   readonly results: SpeechRecognitionResultList
@@ -70,7 +72,6 @@ interface SpeechToTextProps {
   value: string
   onChange: (newValue: string) => void
   startDirectly?: boolean
-  language?: string
   availableLanguages?: LanguageOption[]
   placeholder?: string
 }
@@ -202,7 +203,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   value,
   onChange,
   startDirectly = false,
-  language = 'en-US',
   availableLanguages = defaultLanguages,
   placeholder = '',
 }) => {
@@ -211,21 +211,20 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
   const [isListening, setIsListening] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(language)
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    localStorage.getItem(LOCAL_STORAGE_SPEECH_TO_TEXT_KEY) ?? 'en-US'
+  )
   const [isRecognitionReady, setIsRecognitionReady] = useState<boolean>(false)
 
   const recognitionRef = useRef<ISpeechRecognition | null>(null)
   const textBeforeRecognitionRef = useRef<string>('')
   const didAutoStart = useRef(false)
+  const userStoppedRef = useRef<boolean>(false)
 
   const onChangeRef = useRef(onChange)
   useEffect(() => {
     onChangeRef.current = onChange
   }, [onChange])
-
-  useEffect(() => {
-    setSelectedLanguage(language)
-  }, [language])
 
   useEffect(() => {
     if (!BrowserSpeechRecognition) {
@@ -260,13 +259,23 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     }
 
     recognition.onend = (): void => {
-      setIsListening(false)
+      if (!userStoppedRef.current) {
+        try {
+          recognitionRef.current?.start()
+        } catch (err) {
+          console.error('Error restarting speech recognition:', err)
+          setIsListening(false)
+        }
+      } else {
+        setIsListening(false)
+      }
     }
 
     setIsRecognitionReady(true)
 
     return (): void => {
       if (recognitionRef.current) {
+        userStoppedRef.current = true
         recognitionRef.current.abort()
         recognitionRef.current = null
       }
@@ -290,7 +299,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
       for (let i = 0; i < event.results.length; ++i) {
         finalTranscript += event.results[i][0].transcript.trim() + ' '
       }
-
       onChangeRef.current(textBeforeRecognitionRef.current + finalTranscript)
     }
   }, [])
@@ -299,7 +307,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     if (isListening || !recognitionRef.current) {
       return
     }
-
+    userStoppedRef.current = false
     try {
       textBeforeRecognitionRef.current = value ? value.trim() + ' ' : ''
       setError(null)
@@ -317,6 +325,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     if (!isListening || !recognitionRef.current) {
       return
     }
+    userStoppedRef.current = true
     recognitionRef.current.stop()
   }, [isListening])
 
@@ -329,6 +338,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedLanguage(event.target.value)
+    localStorage.setItem(LOCAL_STORAGE_SPEECH_TO_TEXT_KEY, event.target.value)
   }
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
