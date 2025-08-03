@@ -115,7 +115,6 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
-  @SuppressWarnings("unchecked")
   @ExceptionHandler(WebClientResponseException.class)
   public ResponseEntity<Object> handleWebClientResponseException(
       WebClientResponseException ex, WebRequest request) {
@@ -129,7 +128,9 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     try {
 
       Map<String, Object> bodyAsMap =
-          (Map<String, Object>) objectMapper.readValue(responseBody, Map.class);
+          objectMapper.readValue(
+              responseBody,
+              new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
       finalMessage = (String) bodyAsMap.getOrDefault("message", finalMessage);
     } catch (JsonProcessingException e) {
       log.warn("Could not parse error response from client app: {}", responseBody);
