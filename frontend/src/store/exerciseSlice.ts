@@ -267,7 +267,6 @@ const exerciseSlice = createSlice({
       .addCase(updateExercise.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message || 'Something went wrong'
-        console.log('yeet')
         console.log(action)
       })
 
