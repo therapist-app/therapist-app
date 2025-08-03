@@ -16,7 +16,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-// Define a standard, reusable error response structure. A record is perfect for this.
 record ApiErrorResponse(String message, Map<String, String> details) {}
 
 @ControllerAdvice
