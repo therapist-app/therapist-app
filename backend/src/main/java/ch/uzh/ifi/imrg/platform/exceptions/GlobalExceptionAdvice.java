@@ -1,5 +1,7 @@
 package ch.uzh.ifi.imrg.platform.exceptions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,19 +115,31 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
+  @SuppressWarnings("unchecked")
   @ExceptionHandler(WebClientResponseException.class)
   public ResponseEntity<Object> handleWebClientResponseException(
       WebClientResponseException ex, WebRequest request) {
-    String message =
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    String responseBody = ex.getResponseBodyAsString();
+
+    String finalMessage =
         String.format("The client app returned an error with status %s.", ex.getStatusCode());
 
-    log.error(
-        "Error from client app: Status {}, Body: {}",
-        ex.getStatusCode(),
-        ex.getResponseBodyAsString(),
-        ex);
+    try {
 
-    var errorResponse = new ApiErrorResponse(message, null);
+      Map<String, Object> bodyAsMap =
+          (Map<String, Object>) objectMapper.readValue(responseBody, Map.class);
+      finalMessage = (String) bodyAsMap.getOrDefault("message", finalMessage);
+    } catch (JsonProcessingException e) {
+      log.warn("Could not parse error response from client app: {}", responseBody);
+    }
+
+    log.error(
+        "Error from client app: Status {}, Message: '{}'", ex.getStatusCode(), finalMessage, ex);
+
+    var errorResponse = new ApiErrorResponse(finalMessage, null);
+
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_GATEWAY);
   }
 
