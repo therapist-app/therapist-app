@@ -294,11 +294,9 @@ const PatientCreate = (): ReactElement => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='number'
               label={t('patient_create.patient_age')}
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              inputProps={{ min: 0 }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -351,7 +349,6 @@ const PatientCreate = (): ReactElement => {
               label={t('patient_create.patient_income')}
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              type='number'
             />
           </Grid>
           <Grid item xs={12} sm={6}>

@@ -186,7 +186,7 @@ const CreateCounselingPlanExercise = ({
             onChange={(e) => {
               setFormData({
                 ...formData,
-                durationInWeeks: Number(e.target.value),
+                durationInWeeks: parseInt(e.target.value),
               })
             }}
             sx={{ width: '100%' }}
@@ -199,7 +199,7 @@ const CreateCounselingPlanExercise = ({
             onChange={(e) => {
               setFormData({
                 ...formData,
-                doEveryNDays: Number(e.target.value),
+                doEveryNDays: parseInt(e.target.value),
               })
             }}
             sx={{ width: '100%' }}

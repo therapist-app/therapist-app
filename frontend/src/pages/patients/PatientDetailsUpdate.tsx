@@ -61,7 +61,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
 
   // Form state
   const [name, setName] = useState('')
-  const [age, setAge] = useState('')
+  const [age, setAge] = useState<number | undefined>(undefined)
   const [sex, setSex] = useState('')
   const [maritalStatus, setMaritalStatus] = useState('')
   const [religion, setReligion] = useState('')
@@ -114,7 +114,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
   useEffect(() => {
     if (patient) {
       setName(patient.name ?? '')
-      setAge(patient.age?.toString() ?? '')
+      setAge(patient.age)
       setSex(patient.gender ?? '')
       setMaritalStatus(patient.maritalStatus ?? '')
       setReligion(patient.religion ?? '')
@@ -169,7 +169,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
             id: patientId ?? '',
             name: name,
             gender: sex,
-            age: Number(age),
+            age: age,
             phoneNumber: phoneNumber,
             email: email,
             address: address,
@@ -301,8 +301,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
               type='number'
               label={t('patient_create.patient_age')}
               value={age}
-              onChange={(e) => setAge(e.target.value)}
-              inputProps={{ min: 0 }}
+              onChange={(e) => setAge(parseInt(e.target.value))}
               disabled={!isEditing}
             />
           </Grid>
@@ -361,7 +360,6 @@ const PatientDetailsUpdate = (): JSX.Element => {
               label={t('patient_create.patient_income')}
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              type='number'
               disabled={!isEditing}
             />
           </Grid>

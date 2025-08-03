@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { ChatbotTemplateDocumentOutputDTO } from '../api'
 import { chatbotTemplateDocumentApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface ChatbotTemplateDocumentState {
   allDocumentsOfTemplate: ChatbotTemplateDocumentOutputDTO[]
@@ -17,24 +18,36 @@ const initialState: ChatbotTemplateDocumentState = {
 
 export const createDocumentForTemplate = createAsyncThunk<void, { file: File; templateId: string }>(
   'chatbotTemplateDocument/create',
-  async ({ file, templateId }) => {
-    await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
+  async ({ file, templateId }, thunkAPI) => {
+    try {
+      await chatbotTemplateDocumentApi.createChatbotTemplateDocument(templateId, file)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const getAllDocumentsOfTemplate = createAsyncThunk(
   'chatbotTemplateDocument/getAll',
-  async (templateId: string) => {
-    const response = await chatbotTemplateDocumentApi.getDocumentsOfTemplate(templateId)
-    return response.data as ChatbotTemplateDocumentOutputDTO[]
+  async (templateId: string, thunkAPI) => {
+    try {
+      const response = await chatbotTemplateDocumentApi.getDocumentsOfTemplate(templateId)
+      return response.data as ChatbotTemplateDocumentOutputDTO[]
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteDocumentOfTemplate = createAsyncThunk(
   'chatbotTemplateDocument/delete',
-  async (templateDocumentId: string) => {
-    await chatbotTemplateDocumentApi.deleteChatbotTemplateDocument(templateDocumentId)
-    return templateDocumentId
+  async (templateDocumentId: string, thunkAPI) => {
+    try {
+      await chatbotTemplateDocumentApi.deleteChatbotTemplateDocument(templateDocumentId)
+      return templateDocumentId
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 

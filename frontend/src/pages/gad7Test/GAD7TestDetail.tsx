@@ -130,8 +130,7 @@ export const GAD7TestDetail = (): ReactElement => {
             label={t('gad7test.doEveryNDays')}
             type='number'
             value={intervalDays}
-            onChange={(e) => setIntervalDays(Number(e.target.value))}
-            inputProps={{ min: 1 }}
+            onChange={(e) => setIntervalDays(parseInt(e.target.value))}
             fullWidth
           />
 

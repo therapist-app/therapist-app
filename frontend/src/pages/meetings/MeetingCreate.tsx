@@ -89,18 +89,12 @@ const MeetingCreate = (): ReactElement => {
             type='number'
             required
             value={meetingFormData.durationInMinutes}
-            inputProps={{
-              pattern: '[0-9]*',
-              inputMode: 'numeric',
-              min: 1,
-              step: 1,
-            }}
-            onChange={(e) => {
-              const v = Number(e.target.value)
-              if (!Number.isNaN(v) && v >= 1) {
-                setMeetingFormData({ ...meetingFormData, durationInMinutes: v })
-              }
-            }}
+            onChange={(e) =>
+              setMeetingFormData({
+                ...meetingFormData,
+                durationInMinutes: parseInt(e.target.value),
+              })
+            }
             sx={{ mt: 2, width: '100%' }}
           />
 

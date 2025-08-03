@@ -15,6 +15,7 @@ import {
   UpdateCounselingPlanPhaseGoalDTO,
 } from '../api'
 import { counselingPlanApi, counselingPlanPhaseApi, counselingPlanPhaseGoalApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface CounselingPlanState {
   counselingPlan: CounselingPlanOutputDTO | null
@@ -32,121 +33,182 @@ const initialState: CounselingPlanState = {
 
 export const getCounselingPlanByPatientId = createAsyncThunk(
   'counselingPlan/getCounselingPlanByPatientId',
-  async (patientId: string) => {
-    const response = await counselingPlanApi.getCounselingPlanByPatientId(patientId)
-    return response.data
+  async (patientId: string, thunkAPI) => {
+    try {
+      const response = await counselingPlanApi.getCounselingPlanByPatientId(patientId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateCounselingPlan = createAsyncThunk(
   'counselingPlan/updateCounselingPlan',
-  async (updateDto: UpdateCounselingPlanDTO) => {
-    const response = await counselingPlanApi.updateCounselingPlan(updateDto)
-    return response.data
+  async (updateDto: UpdateCounselingPlanDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanApi.updateCounselingPlan(updateDto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhase',
-  async (phase: CreateCounselingPlanPhaseDTO) => {
-    const response = await counselingPlanPhaseApi.createCounselingPlanPhase(phase)
-    return response.data
+  async (phase: CreateCounselingPlanPhaseDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.createCounselingPlanPhase(phase)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/updateCounselingPlanPhase',
-  async (dto: UpdateCounselingPlanPhaseDTO) => {
-    const response = await counselingPlanPhaseApi.updateCounselingPlanPhase(dto)
-    return response.data
+  async (dto: UpdateCounselingPlanPhaseDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.updateCounselingPlanPhase(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/deleteCounselingPlanPhase',
-  async (phaseId: string) => {
-    const response = await counselingPlanPhaseApi.deleteCounselingPlanPhase(phaseId)
-    return response.data
+  async (phaseId: string, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.deleteCounselingPlanPhase(phaseId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const getCounselingPlanPhaseById = createAsyncThunk(
   'counselingPlan/getCounselingPlanPhaseById',
-  async (phaseId: string) => {
-    const response = await counselingPlanPhaseApi.getCounselingPlanPhaseById(phaseId)
-    return response.data
+  async (phaseId: string, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.getCounselingPlanPhaseById(phaseId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createCounselingPlanPhaseGoal = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhaseGoal',
-  async (goal: CreateCounselingPlanPhaseGoalDTO) => {
-    const response = await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoal(goal)
-    return response.data
+  async (goal: CreateCounselingPlanPhaseGoalDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoal(goal)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const updateCounselingPlanPhaseGoal = createAsyncThunk(
   'counselingPlan/updateCounselingPlanPhaseGoal',
-  async (dto: UpdateCounselingPlanPhaseGoalDTO) => {
-    const response = await counselingPlanPhaseGoalApi.updateCounselingPlanPhaseGoal(dto)
-    return response.data
+  async (dto: UpdateCounselingPlanPhaseGoalDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseGoalApi.updateCounselingPlanPhaseGoal(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteCounselingPlanPhaseGoal = createAsyncThunk(
   'counselingPlan/deleteCounselingPlanPhaseGoal',
-  async (goalId: string) => {
-    const response = await counselingPlanPhaseGoalApi.deleteCounselingPlanPhaseGoal(goalId)
-    return response.data
+  async (goalId: string, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseGoalApi.deleteCounselingPlanPhaseGoal(goalId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const getCounselingPlanPhaseGoalById = createAsyncThunk(
   'counselingPlan/getCounselingPlanPhaseGoalById',
-  async (goalId: string) => {
-    const response = await counselingPlanPhaseGoalApi.getCounselingPlanPhaseGoalById(goalId)
-    return response.data
+  async (goalId: string, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseGoalApi.getCounselingPlanPhaseGoalById(goalId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const addExerciseToCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/addExerciseToCounselingPlanPhase',
-  async (dto: AddExerciseToCounselingPlanPhaseDTO) => {
-    const response = await counselingPlanPhaseApi.addExerciseToCounselingPlanPhase(dto)
-    return response.data
+  async (dto: AddExerciseToCounselingPlanPhaseDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.addExerciseToCounselingPlanPhase(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const removeExerciseFromCounselingPlanPhase = createAsyncThunk(
   'counselingPlan/removeExerciseToCounselingPlanPhase',
-  async (dto: RemoveExerciseFromCounselingPlanPhaseDTO) => {
-    const response = await counselingPlanPhaseApi.removeExerciseFromCounselingPlanPhase(dto)
-    return response.data
+  async (dto: RemoveExerciseFromCounselingPlanPhaseDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.removeExerciseFromCounselingPlanPhase(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createCounselingPlanPhaseAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhaseAIGenerated',
-  async (dto: CreateCounselingPlanPhaseAIGeneratedDTO) => {
-    const response = await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(dto)
-    return response.data
+  async (dto: CreateCounselingPlanPhaseAIGeneratedDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.createCounselingPlanPhaseAIGenerated(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createCounselingPlanPhaseGoalAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanPhaseGoalAIGenerated',
-  async (dto: CreateCounselingPlanPhaseGoalAIGeneratedDTO) => {
-    const response = await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoalAIGenerated(dto)
-    return response.data
+  async (dto: CreateCounselingPlanPhaseGoalAIGeneratedDTO, thunkAPI) => {
+    try {
+      const response =
+        await counselingPlanPhaseGoalApi.createCounselingPlanPhaseGoalAIGenerated(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const createCounselingPlanExerciseAIGenerated = createAsyncThunk(
   'counselingPlan/createCounselingPlanExerciseAIGenerated',
-  async (dto: CreateCounselingPlanExerciseAIGeneratedDTO) => {
-    const response = await counselingPlanPhaseApi.createCounselingPlanExerciseAIGenerated(dto)
-    return response.data
+  async (dto: CreateCounselingPlanExerciseAIGeneratedDTO, thunkAPI) => {
+    try {
+      const response = await counselingPlanPhaseApi.createCounselingPlanExerciseAIGenerated(dto)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 

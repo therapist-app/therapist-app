@@ -6,6 +6,7 @@ import {
   UpdateChatbotTemplateDTO,
 } from '../api'
 import { chatbotTemplateApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface ChatbotTemplateState {
   selectedChatbotTemplate: ChatbotTemplateOutputDTO | null
@@ -23,9 +24,13 @@ const initialState: ChatbotTemplateState = {
 
 export const createChatbotTemplate = createAsyncThunk(
   'createChatbotTemplate',
-  async (createChatbotTemplateDTO: CreateChatbotTemplateDTO) => {
-    const response = await chatbotTemplateApi.createTemplate(createChatbotTemplateDTO)
-    return response.data
+  async (createChatbotTemplateDTO: CreateChatbotTemplateDTO, thunkAPI) => {
+    try {
+      const response = await chatbotTemplateApi.createTemplate(createChatbotTemplateDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
@@ -35,54 +40,66 @@ export const createPatientChatbotTemplate = createAsyncThunk(
     try {
       const { data } = await chatbotTemplateApi.createTemplateForPatient(patientId, dto)
       return data
-    } catch (err: unknown) {
-      return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
     }
   }
 )
 
 export const updateChatbotTemplate = createAsyncThunk(
   'updateChatbotTemplate',
-  async (payload: {
-    chatbotTemplateId: string
-    updateChatbotTemplateDTO: UpdateChatbotTemplateDTO
-  }) => {
-    const response = await chatbotTemplateApi.updateTemplate(
-      payload.chatbotTemplateId,
-      payload.updateChatbotTemplateDTO
-    )
-    return response.data
+  async (
+    payload: {
+      chatbotTemplateId: string
+      updateChatbotTemplateDTO: UpdateChatbotTemplateDTO
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await chatbotTemplateApi.updateTemplate(
+        payload.chatbotTemplateId,
+        payload.updateChatbotTemplateDTO
+      )
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const cloneChatbotTemplate = createAsyncThunk(
   'cloneChatbotTemplate',
-  async (chatbotTemplateId: string) => {
-    const response = await chatbotTemplateApi.cloneTemplate(chatbotTemplateId)
-    return response.data
+  async (chatbotTemplateId: string, thunkAPI) => {
+    try {
+      const response = await chatbotTemplateApi.cloneTemplate(chatbotTemplateId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const clonePatientChatbotTemplate = createAsyncThunk(
   'chatbotTemplate/clonePatient',
-  async (
-    { patientId, templateId }: { patientId: string; templateId: string },
-    { rejectWithValue }
-  ) => {
+  async ({ patientId, templateId }: { patientId: string; templateId: string }, thunkAPI) => {
     try {
       const { data } = await chatbotTemplateApi.cloneTemplateForPatient(patientId, templateId)
       return data as ChatbotTemplateOutputDTO
-    } catch (err) {
-      return rejectWithValue(err)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
     }
   }
 )
 
 export const deleteChatbotTemplate = createAsyncThunk(
   'deleteChatbotTemplate',
-  async (chatbotTemplateId: string) => {
-    const response = await chatbotTemplateApi.deleteTemplate(chatbotTemplateId)
-    return response.data
+  async (chatbotTemplateId: string, thunkAPI) => {
+    try {
+      const response = await chatbotTemplateApi.deleteTemplate(chatbotTemplateId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
@@ -94,8 +111,8 @@ export const deletePatientChatbotTemplate = createAsyncThunk<
   try {
     await chatbotTemplateApi.deleteTemplateForPatient(patientId, templateId)
     return templateId
-  } catch (err: unknown) {
-    return thunkAPI.rejectWithValue((err as { message?: string }).message ?? 'error')
+  } catch (error) {
+    return thunkAPI.rejectWithValue(getErrorPayload(error))
   }
 })
 

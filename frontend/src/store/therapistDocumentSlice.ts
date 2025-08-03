@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { TherapistDocumentOutputDTO } from '../api'
 import { therapistDocumentApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 
 interface TherapistDocumentState {
   allTherapistDocumentsOfTherapist: TherapistDocumentOutputDTO[]
@@ -25,17 +26,25 @@ export const createDocumentForTherapist = createAsyncThunk(
 
 export const getAllTherapistDocumentsOfTherapist = createAsyncThunk(
   'getAllTherapistDocumentsOfTherapist',
-  async () => {
-    const response = await therapistDocumentApi.getDocumentsOfTherapist()
-    return response.data
+  async (_, thunkAPI) => {
+    try {
+      const response = await therapistDocumentApi.getDocumentsOfTherapist()
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
 export const deleteDocumentOfTherapist = createAsyncThunk(
   'deleteDocumentOfTherapist',
-  async (therapistDocumentId: string) => {
-    const response = await therapistDocumentApi.deleteTherapistDocument(therapistDocumentId)
-    return response.data
+  async (therapistDocumentId: string, thunkAPI) => {
+    try {
+      const response = await therapistDocumentApi.deleteTherapistDocument(therapistDocumentId)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 

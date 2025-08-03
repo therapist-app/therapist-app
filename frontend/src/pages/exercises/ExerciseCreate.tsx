@@ -115,16 +115,11 @@ const ExerciseCreate = (): ReactElement => {
           name='durationInWeeks'
           type='number'
           value={formData.durationInWeeks}
-          inputProps={{ min: 1, step: 1 }}
           onChange={(e) => {
-            const raw = e.target.value
-            const parsed = Number(raw)
-
-            if (/^[1-9]\d*$/.test(raw)) {
-              setFormData({ ...formData, durationInWeeks: parsed })
-            } else if (raw === '') {
-              setFormData({ ...formData, durationInWeeks: 0 })
-            }
+            setFormData({
+              ...formData,
+              durationInWeeks: parseInt(e.target.value),
+            })
           }}
           sx={{ width: '100%' }}
           required
@@ -134,11 +129,10 @@ const ExerciseCreate = (): ReactElement => {
           label={t('exercise.doEveryNDays')}
           type='number'
           value={formData.doEveryNDays}
-          inputProps={{ min: 1 }}
           onChange={(e) => {
             setFormData({
               ...formData,
-              doEveryNDays: Number(e.target.value),
+              doEveryNDays: parseInt(e.target.value),
             })
           }}
           sx={{ width: '100%' }}

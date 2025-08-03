@@ -7,6 +7,7 @@ import {
   TherapistChatbotInputDTOLanguageEnum,
 } from '../api'
 import { therapistChatbotApi } from '../utils/api'
+import { getErrorPayload } from '../utils/errorUtil'
 import { createAppAsyncThunk } from './thunk'
 
 interface TherapistChatbotState {
@@ -31,21 +32,25 @@ export const chatWithTherapistChatbot = createAppAsyncThunk(
     },
     thunkAPI
   ) => {
-    thunkAPI.dispatch(
-      addMessage({
-        chatRole: ChatMessageDTOChatRoleEnum.User,
-        content: payload.newMessage,
-      })
-    )
-    const currentMessages = thunkAPI.getState().therapistChatbot.therapistChatbotMessages
-    const therapistChatbotInputDTO: TherapistChatbotInputDTO = {
-      chatMessages: currentMessages,
-      patientId: payload.patientId,
-      language: payload.language,
-    }
+    try {
+      thunkAPI.dispatch(
+        addMessage({
+          chatRole: ChatMessageDTOChatRoleEnum.User,
+          content: payload.newMessage,
+        })
+      )
+      const currentMessages = thunkAPI.getState().therapistChatbot.therapistChatbotMessages
+      const therapistChatbotInputDTO: TherapistChatbotInputDTO = {
+        chatMessages: currentMessages,
+        patientId: payload.patientId,
+        language: payload.language,
+      }
 
-    const response = await therapistChatbotApi.chatWithTherapistChatbot(therapistChatbotInputDTO)
-    return response.data
+      const response = await therapistChatbotApi.chatWithTherapistChatbot(therapistChatbotInputDTO)
+      return response.data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(getErrorPayload(error))
+    }
   }
 )
 
