@@ -35,7 +35,3 @@ export const getErrorPayload = (error: unknown): string => {
   }
   return 'An unexpected error occurred.'
 }
-
-export const doErrorNotification = (notifyError: NotifyError, err: unknown): void => {
-  notifyError(String(err))
-}

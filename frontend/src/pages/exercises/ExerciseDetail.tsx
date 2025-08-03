@@ -29,7 +29,6 @@ import {
   successButtonStyles,
 } from '../../styles/buttonStyles'
 import { formatDateNicely } from '../../utils/dateUtil'
-import { doErrorNotification } from '../../utils/errorUtil'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPathFromPage, PAGES } from '../../utils/routes'
 import CreateExerciseFileComponent from './components/CreateExerciseFileComponent'
@@ -125,7 +124,7 @@ const ExerciseDetail = (): ReactElement => {
       setIsEditingExercise(false)
       await refreshExercise()
     } catch (err) {
-      doErrorNotification(notifyError, err)
+      notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
   }
 
