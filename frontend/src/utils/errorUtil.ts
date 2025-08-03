@@ -1,7 +1,5 @@
 import { isAxiosError } from 'axios'
 
-import { NotifyError } from '../hooks/useNotify'
-
 interface ApiErrorResponse {
   message: string
   details?: Record<string, string>
