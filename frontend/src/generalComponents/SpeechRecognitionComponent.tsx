@@ -210,7 +210,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const { notify, notifyWarning } = useNotify()
 
   const [isListening, setIsListening] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     localStorage.getItem(LOCAL_STORAGE_SPEECH_TO_TEXT_KEY) ?? 'en-US'
   )
@@ -229,7 +228,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   useEffect(() => {
     if (!BrowserSpeechRecognition) {
       const msg = 'Web Speech API is not supported. Please use Chrome or Edge.'
-      setError(msg)
       notifyWarning(msg)
       return
     }
@@ -241,7 +239,6 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
 
     recognition.onstart = (): void => {
       setIsListening(true)
-      setError(null)
     }
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent): void => {
@@ -252,9 +249,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         'audio-capture': t('meetings.error.microphone_not_available'),
         'not-allowed': t('meetings.error.not_allowed'),
       }
-      const errorMessage = errorMessages[event.error] || `${event.error}: ${event.message}`
-      setError(errorMessage)
-      notify(errorMessage)
+      const errorMessage = errorMessages[event.error]
+      if (errorMessage) {
+        notify(errorMessage, 'error')
+      }
+
       setIsListening(false)
     }
 
@@ -310,12 +309,10 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     userStoppedRef.current = false
     try {
       textBeforeRecognitionRef.current = value ? value.trim() + ' ' : ''
-      setError(null)
       recognitionRef.current.start()
     } catch (e) {
       const typedError = e as { message?: string }
       const msg = `Could not start recognition: ${typedError.message || 'Unknown error'}`
-      setError(msg)
       notify(msg)
       setIsListening(false)
     }
@@ -433,14 +430,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
         </div>
       </div>
 
-      {error && (
-        <div role='alert' style={styles.errorMessage}>
-          <strong style={styles.errorTitle}>Error</strong>
-          <p>{error}</p>
-        </div>
-      )}
-
-      {isListening && !error && (
+      {isListening && (
         <p style={{ ...styles.infoMessage, color: '#16a34a', fontWeight: 500 }}>
           {t('meetings.listening_speak_into_microphone')}
         </p>
