@@ -652,7 +652,10 @@ interface Resources {
       "expand_AI_assistant": "Expand AI Assistant",
       "close": "Close",
       "collapse_AI_assistant": "Collapse AI Assistant",
-      "delete_chat": "Delete this chat"
+      "delete_chat": "Delete this chat",
+      "chatbot_placeholder": "Ask chatbot about",
+      "chatbot_placeholder_selected_client": "currently selected client",
+      "chatbot_placeholder_all_clients": "all clients"
     },
     "dashboard": {
       "home": "Home",

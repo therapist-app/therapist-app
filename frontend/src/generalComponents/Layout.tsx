@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux'
 import { Location, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import logo from '../../public/uzh-logo.png'
+import { clearSelectedPatient } from '../store/patientSlice'
 import { RootState } from '../store/store'
 import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
@@ -57,6 +58,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const routeParams = useParams()
   const [searchParams] = useSearchParams()
   const { t } = useTranslation()
+  const selectedPatient = useSelector((s: RootState) => s.patient.selectedPatient)
+
+  useEffect(() => {
+    if (!routeParams.patientId) {
+      dispatch(clearSelectedPatient())
+    }
+  }, [dispatch, routeParams.patientId])
 
   useEffect(() => {
     dispatch(getCurrentlyLoggedInTherapist())
@@ -145,6 +153,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleDeleteChat = (): void => {
     dispatch(clearMessages(routeParams.patientId))
+  }
+
+  const getChatbotPlaceHolder = (): string => {
+    if (selectedPatient) {
+      return `${t('layout.chatbot_placeholder')} ${selectedPatient.name ? selectedPatient.name : t('layout.chatbot_placeholder_selected_client')}`
+    }
+    return `${t('layout.chatbot_placeholder')} ${t('layout.chatbot_placeholder_all_clients')}`
   }
 
   return (
@@ -299,7 +314,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 }
               }
             }}
-            placeholder={t('footer.note')}
+            placeholder={getChatbotPlaceHolder()}
             sx={{
               height: '60px',
               bgcolor: 'white',

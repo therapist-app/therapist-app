@@ -2,7 +2,7 @@ import AssistantIcon from '@mui/icons-material/Assistant'
 import { Avatar, Box, List, ListItem, Paper, Typography } from '@mui/material'
 import { ReactElement, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import AssistantImage from '../../../public/AssistantImage.png'
 import { ChatMessageDTOChatRoleEnum } from '../../api'
