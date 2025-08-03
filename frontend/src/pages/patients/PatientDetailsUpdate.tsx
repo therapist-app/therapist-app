@@ -298,11 +298,9 @@ const PatientDetailsUpdate = (): JSX.Element => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='number'
               label={t('patient_create.patient_age')}
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              inputProps={{ min: 0 }}
               disabled={!isEditing}
             />
           </Grid>
@@ -361,7 +359,6 @@ const PatientDetailsUpdate = (): JSX.Element => {
               label={t('patient_create.patient_income')}
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              type='number'
               disabled={!isEditing}
             />
           </Grid>
