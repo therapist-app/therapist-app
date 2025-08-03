@@ -21,7 +21,7 @@ import { Location, useLocation, useNavigate, useParams, useSearchParams } from '
 
 import logo from '../../public/uzh-logo.png'
 import { RootState } from '../store/store'
-import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
+import { chatWithTherapistChatbot } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import { commonButtonStyles, disabledButtonStyles } from '../styles/buttonStyles'
 import { useAppDispatch } from '../utils/hooks'
@@ -126,13 +126,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const handleChatbotInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {
-    if (
-      !input &&
-      currentPage !== PAGES.THERAPIST_CHATBOT_PAGE &&
-      currentPage !== PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
-    ) {
-      dispatch(clearMessages())
-    }
     setInput(e.target.value)
   }
 

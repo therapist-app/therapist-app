@@ -1,7 +1,7 @@
 import AssistantIcon from '@mui/icons-material/Assistant'
 import CloseIcon from '@mui/icons-material/Close'
 import { Avatar, Box, IconButton, List, ListItem, Paper, Tooltip, Typography } from '@mui/material'
-import { ReactElement, useEffect, useLayoutEffect, useRef } from 'react'
+import { ReactElement, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -12,7 +12,7 @@ import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { RootState } from '../../store/store'
-import { clearMessages } from '../../store/therapistChatbotSlice'
+import { getPatientIdKey, resetStatus } from '../../store/therapistChatbotSlice'
 import { formatResponse } from '../../utils/formatResponse'
 import { useAppDispatch } from '../../utils/hooks'
 import { getPageFromPath, getPathFromPage, PAGES } from '../../utils/routes'
@@ -25,7 +25,11 @@ const TherapistChatbot = (): ReactElement => {
   const location = useLocation()
   const { notifyError } = useNotify()
 
-  const messages = useSelector((s: RootState) => s.therapistChatbot.therapistChatbotMessages)
+  const therapistChatbotMessages = useSelector(
+    (s: RootState) => s.therapistChatbot.therapistChatbotMessages
+  )
+  const messages = therapistChatbotMessages[getPatientIdKey(patientId)] ?? []
+
   const chatbotStatus = useSelector((s: RootState) => s.therapistChatbot.status)
   const chatbotError = useSelector((s: RootState) => s.therapistChatbot.error)
   const compactBubble = { py: 0.1, px: 1.5 }
@@ -35,6 +39,12 @@ const TherapistChatbot = (): ReactElement => {
       notifyError(typeof chatbotError === 'string' ? chatbotError : 'An unknown error occurred')
     }
   }, [chatbotError, notifyError])
+
+  useEffect(() => {
+    return (): void => {
+      dispatch(resetStatus())
+    }
+  }, [dispatch])
 
   const currentPage = getPageFromPath(location.pathname)
   const closePage =
@@ -47,7 +57,7 @@ const TherapistChatbot = (): ReactElement => {
   const listEndRef = useRef<HTMLDivElement>(null)
 
   const { stream: typingStream, running: isStreaming } = useTypewriter(
-    lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant
+    lastAssistant?.chatRole === ChatMessageDTOChatRoleEnum.Assistant && chatbotStatus !== 'idle'
       ? lastAssistant.content
       : undefined
   )
@@ -75,7 +85,6 @@ const TherapistChatbot = (): ReactElement => {
           <IconButton
             sx={{ color: 'black', height: 30, width: 30, position: 'fixed', top: 80, right: 20 }}
             onClick={() => {
-              dispatch(clearMessages())
               navigate(closePage)
             }}
           >
@@ -96,10 +105,12 @@ const TherapistChatbot = (): ReactElement => {
           {messages.map((m, i) => {
             const isLastAssistant =
               i === messages.length - 1 && m.chatRole === ChatMessageDTOChatRoleEnum.Assistant
-            const body =
-              isLastAssistant && isStreaming
-                ? formatResponse(typingStream)
-                : formatResponse(m.content ?? '')
+
+            const isLiveResponse = isLastAssistant && chatbotStatus === 'succeeded'
+
+            const body = isLiveResponse
+              ? formatResponse(typingStream) // Prioritize the animated stream for new messages
+              : formatResponse(m.content ?? '')
 
             return m.chatRole === ChatMessageDTOChatRoleEnum.User ? (
               <ListItem key={i} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
