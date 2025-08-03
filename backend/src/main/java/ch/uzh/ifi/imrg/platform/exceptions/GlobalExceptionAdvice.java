@@ -136,8 +136,10 @@ public class GlobalExceptionAdvice extends ResponseEntityExceptionHandler {
       log.warn("Could not parse error response from client app: {}", responseBody);
     }
 
-    log.error(
-        "Error from client app: Status {}, Message: '{}'", ex.getStatusCode(), finalMessage, ex);
+    log.warn(
+        "Handled error from client app: Status {}, Message: '{}'",
+        ex.getStatusCode(),
+        finalMessage);
 
     var errorResponse = new ApiErrorResponse(finalMessage, null);
 
