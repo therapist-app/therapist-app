@@ -212,6 +212,7 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   const [isListening, setIsListening] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState<string>(language)
+  const [isRecognitionReady, setIsRecognitionReady] = useState<boolean>(false)
 
   const recognitionRef = useRef<ISpeechRecognition | null>(null)
   const textBeforeRecognitionRef = useRef<string>('')
@@ -261,6 +262,8 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
     recognition.onend = (): void => {
       setIsListening(false)
     }
+
+    setIsRecognitionReady(true)
 
     return (): void => {
       if (recognitionRef.current) {
@@ -318,11 +321,11 @@ const SpeechToTextComponent: FC<SpeechToTextProps> = ({
   }, [isListening])
 
   useEffect(() => {
-    if (startDirectly && !isListening && !didAutoStart.current) {
+    if (startDirectly && !isListening && !didAutoStart.current && isRecognitionReady) {
       handleStartListening()
       didAutoStart.current = true
     }
-  }, [startDirectly, isListening, handleStartListening])
+  }, [startDirectly, isListening, handleStartListening, isRecognitionReady])
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedLanguage(event.target.value)
