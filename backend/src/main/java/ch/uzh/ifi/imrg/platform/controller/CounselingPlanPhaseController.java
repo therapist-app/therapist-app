@@ -45,7 +45,7 @@ public class CounselingPlanPhaseController {
     return counselingPlanPhaseService.createCounselingPlanPhaseAIGenerated(dto, therapistId);
   }
 
-  @PostMapping("/ai-generated-exercise/{counselingPlanPhaseId}")
+  @PostMapping("/ai-generated-exercise")
   public CreateExerciseDTO createCounselingPlanExerciseAIGenerated(
       @Valid @RequestBody CreateCounselingPlanExerciseAIGeneratedDTO dto,
       @CurrentTherapistId String therapistId) {

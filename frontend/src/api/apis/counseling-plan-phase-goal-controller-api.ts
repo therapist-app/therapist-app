@@ -44,7 +44,7 @@ export const CounselingPlanPhaseGoalControllerApiAxiosParamCreator = function (c
         createCounselingPlanPhaseGoal: async (createCounselingPlanPhaseGoalDTO: CreateCounselingPlanPhaseGoalDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createCounselingPlanPhaseGoalDTO' is not null or undefined
             assertParamExists('createCounselingPlanPhaseGoal', 'createCounselingPlanPhaseGoalDTO', createCounselingPlanPhaseGoalDTO)
-            const localVarPath = `/counseling-plan-phase-goals/`;
+            const localVarPath = `/counseling-plan-phase-goals/create-counseling-plan-phase-goal`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -79,7 +79,7 @@ export const CounselingPlanPhaseGoalControllerApiAxiosParamCreator = function (c
         createCounselingPlanPhaseGoalAIGenerated: async (createCounselingPlanPhaseGoalAIGeneratedDTO: CreateCounselingPlanPhaseGoalAIGeneratedDTO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createCounselingPlanPhaseGoalAIGeneratedDTO' is not null or undefined
             assertParamExists('createCounselingPlanPhaseGoalAIGenerated', 'createCounselingPlanPhaseGoalAIGeneratedDTO', createCounselingPlanPhaseGoalAIGeneratedDTO)
-            const localVarPath = `/counseling-plan-phase-goals/{counselingPlanPhaseId}`;
+            const localVarPath = `/counseling-plan-phase-goals/create-counseling-plan-phase-goal-AI-generated`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
