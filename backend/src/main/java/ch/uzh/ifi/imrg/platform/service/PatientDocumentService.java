@@ -11,6 +11,7 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import ch.uzh.ifi.imrg.platform.utils.FileUploadUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
@@ -126,6 +127,12 @@ public class PatientDocumentService {
 
     PatientDocument patientDocument = patientDocumentRepository.getReferenceById(patientDocumentId);
     SecurityUtil.checkOwnership(patientDocument, therapistId);
+    if (patientDocument.getIsSharedWithPatient()) {
+      PatientAppAPIs.coachDocumentControllerPatientAPI
+          .deleteDocument(patientDocument.getPatient().getId(), patientDocumentId)
+          .block();
+    }
+
     patientDocument.getPatient().getPatientDocuments().remove(patientDocument);
   }
 }
