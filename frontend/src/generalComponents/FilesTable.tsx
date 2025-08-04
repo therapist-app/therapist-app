@@ -31,15 +31,15 @@ interface FilesTableProps {
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props) => {
-  const { t } = useTranslation()
   const {
     allDocuments,
     handleFileUpload,
     handleDeleteFile,
     downloadFile,
     title,
-    maxFileSizeBytes,
+    maxFileSizeBytes
   } = props
+  const { t } = useTranslation()
   const { notifySuccess, notifyError } = useNotify()
   const wrappedUpload = async (file: File): Promise<void> => {
     if (maxFileSizeBytes && file.size > maxFileSizeBytes) {

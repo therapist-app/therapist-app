@@ -381,6 +381,7 @@ const PatientDetail = (): ReactElement => {
         downloadFile={downloadFile}
         maxFileSizeMessage={t('exercise.max_file_size', { size: '50MB' })}
         maxFileSizeBytes={50 * 1024 * 1024}
+        showTitleAndUploadButton={true}
       />
 
       <CustomizedDivider />
@@ -391,6 +392,9 @@ const PatientDetail = (): ReactElement => {
         handleFileUpload={handleFileUploadNotSharedWithPatient}
         handleDeleteFile={handleDeleteFile}
         downloadFile={downloadFile}
+        maxFileSizeMessage={t('exercise.max_file_size', { size: '50MB' })}
+        maxFileSizeBytes={50 * 1024 * 1024}
+        showTitleAndUploadButton={true}
       />
 
       <CustomizedDivider />
