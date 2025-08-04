@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -7,6 +8,7 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
   MenuItem,
   Snackbar,
   TextField,
@@ -72,21 +74,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
   const [dateOfAdmission, setDateOfAdmission] = useState('')
-  const [complaints, setComplaints] = useState<Complaint[]>([
-    {
-      id: uuidv4(),
-      mainComplaint: '',
-      duration: '',
-      onset: '',
-      course: '',
-      precipitatingFactors: '',
-      aggravatingRelieving: '',
-      timeline: '',
-      disturbances: '',
-      suicidalIdeation: '',
-      negativeHistory: '',
-    },
-  ])
+  const [complaints, setComplaints] = useState<Complaint[]>([])
 
   const [treatmentPast, setTreatmentPast] = useState('')
   const [treatmentCurrent, setTreatmentCurrent] = useState('')
@@ -215,6 +203,10 @@ const PatientDetailsUpdate = (): JSX.Element => {
       setSnackbarSeverity('error')
       setSnackbarOpen(true)
     }
+  }
+
+  const handleRemoveComplaint = (id: string): void => {
+    setComplaints((prev) => prev.filter((c) => c.id !== id))
   }
 
   const handleChange = (index: number, field: keyof Complaint, value: string): void => {
@@ -427,11 +419,28 @@ const PatientDetailsUpdate = (): JSX.Element => {
         {/* SECTION 2: Complaints */}
         <Box mt={6}>
           {complaints.map((complaint, index) => (
-            <Accordion key={complaint.id ?? `new-${index}`}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant='h6'>
-                  {`${t('patient_create.complaint')} ${index + 1}`}
-                </Typography>
+            <Accordion key={complaint.id ?? `new-${index}`} defaultExpanded>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                id={`complaint-${index}-header`}
+                sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1 }}>
+                  <Typography variant='h6'>
+                    {`${t('patient_create.complaint')} ${index + 1}`}
+                  </Typography>
+                </Box>
+                {isEditing && (
+                  <IconButton
+                    aria-label='delete'
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRemoveComplaint(complaint.id)
+                    }}
+                  >
+                    <DeleteIcon color='error' />
+                  </IconButton>
+                )}
               </AccordionSummary>
               <AccordionDetails>
                 <TextField
@@ -566,7 +575,9 @@ const PatientDetailsUpdate = (): JSX.Element => {
               sx={{ ...commonButtonStyles, mt: 2, mb: 4 }}
               style={{ minWidth: '200px' }}
             >
-              {t('patient_create.add_another_complaint')}
+              {complaints.length > 0
+                ? t('patient_create.add_another_complaint')
+                : t('patient_create.add_first_complaint')}
             </Button>
           )}
         </Box>

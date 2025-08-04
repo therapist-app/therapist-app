@@ -1052,6 +1052,7 @@ interface Resources {
       "hpi_onset_subacute": "Subacute",
       "hpi_onset_insidious": "Insidious",
       "hpi_symptom_timeline": "Symptom Timeline",
+      "add_first_complaint": "Add a Complaint",
       "add_another_complaint": "Add Another Complaint",
       "treatment_history": "Treatment History",
       "treatment_past": "Past Treatments",
