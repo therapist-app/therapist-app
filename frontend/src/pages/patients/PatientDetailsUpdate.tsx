@@ -61,7 +61,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
 
   // Form state
   const [name, setName] = useState('')
-  const [age, setAge] = useState<number | undefined>(undefined)
+  const [age, setAge] = useState<number | string>('')
   const [sex, setSex] = useState('')
   const [maritalStatus, setMaritalStatus] = useState('')
   const [religion, setReligion] = useState('')
@@ -114,7 +114,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
   useEffect(() => {
     if (patient) {
       setName(patient.name ?? '')
-      setAge(patient.age)
+      setAge(patient.age ?? '')
       setSex(patient.gender ?? '')
       setMaritalStatus(patient.maritalStatus ?? '')
       setReligion(patient.religion ?? '')
@@ -162,6 +162,8 @@ const PatientDetailsUpdate = (): JSX.Element => {
 
   const handleUpdateSubmit = async (): Promise<void> => {
     try {
+      const submittedAge = age !== undefined ? Number(age) : undefined
+
       await dispatch(
         updatePatient({
           patientId: patientId ?? '', // ensure it's not undefined
@@ -169,7 +171,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
             id: patientId ?? '',
             name: name,
             gender: sex,
-            age: age,
+            age: submittedAge,
             phoneNumber: phoneNumber,
             email: email,
             address: address,
@@ -292,6 +294,10 @@ const PatientDetailsUpdate = (): JSX.Element => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type='email'
+              error={!!email && !/^\S+@\S+\.\S+$/.test(email)}
+              helperText={
+                email && !/^\S+@\S+\.\S+$/.test(email) ? t('patient_create.invalid_email') : ''
+              }
               disabled={!isEditing}
             />
           </Grid>
@@ -300,8 +306,16 @@ const PatientDetailsUpdate = (): JSX.Element => {
               fullWidth
               type='number'
               label={t('patient_create.patient_age')}
-              value={age}
-              onChange={(e) => setAge(parseInt(e.target.value))}
+              value={age === '' ? '' : age}
+              onChange={(e) => {
+                const inputValue = e.target.value
+                setAge(inputValue === '' ? '' : inputValue)
+              }}
+              inputProps={{
+                min: 1,
+                inputMode: 'numeric',
+                pattern: '[0-9]*',
+              }}
               disabled={!isEditing}
             />
           </Grid>
@@ -368,8 +382,15 @@ const PatientDetailsUpdate = (): JSX.Element => {
               fullWidth
               label={t('patient_create.patient_phone')}
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => {
+                const validatedValue = e.target.value.replace(/[^0-9+-\s]/g, '')
+                setPhoneNumber(validatedValue)
+              }}
               type='tel'
+              inputProps={{
+                pattern: '[0-9+-]*',
+                inputMode: 'tel',
+              }}
               disabled={!isEditing}
             />
           </Grid>
@@ -542,7 +563,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
             <Button
               variant='contained'
               onClick={handleAddComplaint}
-              sx={{ mt: 2, mb: 4 }}
+              sx={{ ...commonButtonStyles, mt: 2, mb: 4 }}
               style={{ minWidth: '200px' }}
             >
               {t('patient_create.add_another_complaint')}

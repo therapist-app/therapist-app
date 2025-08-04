@@ -454,7 +454,8 @@ interface Resources {
       "personal_marital": "Ehe- und Beziehungsanamnese",
       "personal_premorbid": "Prämorbide Persönlichkeit",
       "patient_register_success": "Klient erfolgreich registriert.",
-      "patient_register_failed": "Registrierung des Klienten fehlgeschlagen. Bitte versuchen Sie es erneut."
+      "patient_register_failed": "Registrierung des Klienten fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "invalid_email": "Ungültige E-Mail-Adresse"
     },
     "register": {
       "welcome": "Willkommen in der Coach-App",
@@ -1059,7 +1060,8 @@ interface Resources {
       "personal_marital": "Marital and Relationship History",
       "personal_premorbid": "Premorbid Personality",
       "patient_register_success": "Client registered successfully.",
-      "patient_register_failed": "Failed to register client. Please try again."
+      "patient_register_failed": "Failed to register client. Please try again.",
+      "invalid_email": "Invalid email address format"
     },
     "register": {
       "welcome": "Welcome to the Coach App",
@@ -1664,7 +1666,8 @@ interface Resources {
       "personal_marital": "Подружній та стосунковий анамнез",
       "personal_premorbid": "Преморбідна особистість",
       "patient_register_success": "Клієнта успішно зареєстровано.",
-      "patient_register_failed": "Не вдалося зареєструвати клієнта. Будь ласка, спробуйте ще раз."
+      "patient_register_failed": "Не вдалося зареєструвати клієнта. Будь ласка, спробуйте ще раз.",
+      "invalid_email": "Невірна електронна адреса"
     },
     "register": {
       "welcome": "Ласкаво просимо до додатку для коучів",

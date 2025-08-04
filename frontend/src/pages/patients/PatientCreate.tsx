@@ -92,7 +92,7 @@ const PatientCreate = (): ReactElement => {
   const currentLocale = getCurrentLocale()
 
   const [name, setName] = useState('')
-  const [age, setAge] = useState('')
+  const [age, setAge] = useState<number | string>('')
   const [sex, setSex] = useState('')
   const [maritalStatus, setMaritalStatus] = useState('')
   const [religion, setReligion] = useState('')
@@ -193,11 +193,13 @@ const PatientCreate = (): ReactElement => {
 
   const handleSubmit = async (): Promise<void> => {
     try {
+      const submittedAge = age !== undefined ? Number(age) : undefined
+
       const resultAction = await dispatch(
         registerPatient({
           name: name,
           gender: sex,
-          age: Number(age),
+          age: submittedAge,
           phoneNumber: phoneNumber,
           email: email,
           address: address,
@@ -289,15 +291,28 @@ const PatientCreate = (): ReactElement => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type='email'
+              error={!!email && !/^\S+@\S+\.\S+$/.test(email)}
+              helperText={
+                email && !/^\S+@\S+\.\S+$/.test(email) ? t('patient_create.invalid_email') : ''
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
+              type='number'
               label={t('patient_create.patient_age')}
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
+              value={age === '' ? '' : age}
+              onChange={(e) => {
+                const inputValue = e.target.value
+                setAge(inputValue === '' ? '' : inputValue)
+              }}
+              inputProps={{
+                min: 1,
+                inputMode: 'numeric',
+                pattern: '[0-9]*',
+              }}
+            />{' '}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -356,8 +371,15 @@ const PatientCreate = (): ReactElement => {
               fullWidth
               label={t('patient_create.patient_phone')}
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => {
+                const validatedValue = e.target.value.replace(/[^0-9+-\s]/g, '')
+                setPhoneNumber(validatedValue)
+              }}
               type='tel'
+              inputProps={{
+                pattern: '[0-9+-]*',
+                inputMode: 'tel',
+              }}
             />
           </Grid>
 

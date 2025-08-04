@@ -453,7 +453,8 @@
     "personal_marital": "Marital and Relationship History",
     "personal_premorbid": "Premorbid Personality",
     "patient_register_success": "Client registered successfully.",
-    "patient_register_failed": "Failed to register client. Please try again."
+    "patient_register_failed": "Failed to register client. Please try again.",
+    "invalid_email": "Invalid email address format"
   },
   "register": {
     "welcome": "Welcome to the Coach App",
