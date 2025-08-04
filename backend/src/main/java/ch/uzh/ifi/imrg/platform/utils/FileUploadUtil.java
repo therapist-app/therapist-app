@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
+import ch.uzh.ifi.imrg.generated.model.DocumentOverviewDTOPatientAPI;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class FileUploadUtil {
 
-  public static void uploadFile(String path, MultipartFile file) throws IOException {
+  public static DocumentOverviewDTOPatientAPI uploadFile(String path, MultipartFile file)
+      throws IOException {
     String boundary = "--------------------------" + UUID.randomUUID().toString().replace("-", "");
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     String lineEnd = "\r\n";
@@ -35,7 +37,7 @@ public class FileUploadUtil {
 
     String contentTypeHeader = "multipart/form-data; boundary=" + boundary;
 
-    webClient
+    return webClient
         .post()
         .uri(path)
         .header(HttpHeaders.CONTENT_TYPE, contentTypeHeader)
@@ -43,7 +45,7 @@ public class FileUploadUtil {
         .contentLength(multipartBody.length)
         .bodyValue(multipartBody)
         .retrieve()
-        .toBodilessEntity()
+        .bodyToMono(DocumentOverviewDTOPatientAPI.class)
         .block();
   }
 }
