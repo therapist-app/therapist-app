@@ -182,7 +182,11 @@ interface Resources {
       "configuration": "Konfiguration",
       "sources": "Dokumente",
       "active": "Aktiv",
-      "inactive": "Inaktiv"
+      "inactive": "Inaktiv",
+      "chatbot_documents": "Chatbot-Dokumente",
+      "click_to_upload": "Zum Hochladen klicken oder Datei hierher ziehen",
+      "up_to": "Bis zu {{upload_size}} MB – PDF, DOC, DOCX, TXT",
+      "no_files_uploaded_yet": "Noch keine Dateien hochgeladen."
     },
     "counseling_plan": {
       "counseling_plan": "Beratungsplan",
@@ -602,7 +606,13 @@ interface Resources {
       "therapist_chatbot": "Coach-Chatbot"
     },
     "files": {
-      "download_success": "Datei erfolgreich heruntergeladen"
+      "download_success": "Datei erfolgreich heruntergeladen",
+      "file_uploaded_successfully": "Datei erfolgreich hochgeladen",
+      "file_deleted_successfully": "Datei erfolgreich gelöscht",
+      "actions": "Aktionen",
+      "download": "Herunterladen",
+      "delete": "Löschen",
+      "file_name": "Dateiname"
     }
   },
   "en": {
@@ -788,7 +798,11 @@ interface Resources {
       "configuration": "Configuration",
       "sources": "Sources",
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "chatbot_documents": "Chatbot Documents",
+      "click_to_upload": "Click to upload a file or drag and drop it here",
+      "up_to": "Up to {{upload_size}} MB – PDF, DOC, DOCX, TXT",
+      "no_files_uploaded_yet": "No files uploaded yet."
     },
     "counseling_plan": {
       "counseling_plan": "Counseling Plan",
@@ -1208,7 +1222,13 @@ interface Resources {
       "therapist_chatbot": "Coach Chatbot"
     },
     "files": {
-      "download_success": "Successfully downloaded file"
+      "download_success": "Successfully downloaded file",
+      "file_uploaded_successfully": "Successfully uploaded file",
+      "file_deleted_successfully": "Successfully deleted file",
+      "actions": "Actions",
+      "download": "Download",
+      "delete": "Delete",
+      "file_name": "File Name"
     }
   },
   "ua": {
@@ -1394,7 +1414,11 @@ interface Resources {
       "configuration": "Конфігурація",
       "sources": "Джерела",
       "active": "Активний",
-      "inactive": "Неактивний"
+      "inactive": "Неактивний",
+      "chatbot_documents": "Документи чат-бота",
+      "click_to_upload": "Натисніть, щоб завантажити файл або перетягніть його сюди",
+      "up_to": "До {{upload_size}} МБ – PDF, DOC, DOCX, TXT",
+      "no_files_uploaded_yet": "Ще не завантажено жодного файлу."
     },
     "counseling_plan": {
       "counseling_plan": "План консультування",
@@ -1814,7 +1838,13 @@ interface Resources {
       "therapist_chatbot": "Чат-бот коуча"
     },
     "files": {
-      "download_success": "Файл успішно завантажено"
+      "download_success": "Файл успішно завантажено",
+      "file_uploaded_successfully": "Файл успішно завантажено",
+      "file_deleted_successfully": "Файл успішно видалено",
+      "actions": "Дії",
+      "download": "Завантажити",
+      "delete": "Видалити",
+      "file_name": "Назва файлу"
     }
   }
 }

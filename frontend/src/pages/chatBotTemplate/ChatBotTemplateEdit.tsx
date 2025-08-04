@@ -25,6 +25,7 @@ import {
   TableRow,
   Tabs,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
@@ -700,7 +701,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         {selectedTab === 'sources' && (
           <Box sx={{ mt: 3 }}>
             <Typography variant='h6' sx={{ mb: 2 }}>
-              Chatbot Documents
+              {t('chatbot.chatbot_documents')}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
               <Paper elevation={0} sx={{ width: 400 }}>
@@ -716,10 +717,10 @@ const ChatBotTemplateEdit: React.FC = () => {
                     <>
                       <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
                       <Typography variant='subtitle1' sx={{ mt: 1 }}>
-                        Click to upload a file or drag and drop it here
+                        {t('chatbot.click_to_upload')}
                       </Typography>
                       <Typography variant='caption' display='block' sx={{ mt: 1 }}>
-                        Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
+                        {t('chatbot.up_to', { upload_size: '512' })}
                       </Typography>
                     </>
                   )}
@@ -731,8 +732,8 @@ const ChatBotTemplateEdit: React.FC = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>File name</TableCell>
-                    <TableCell align='right'>Actions</TableCell>
+                    <TableCell>{t('files.file_name')}</TableCell>
+                    <TableCell align='right'>{t('files.actions')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -754,18 +755,21 @@ const ChatBotTemplateEdit: React.FC = () => {
                             download={() => downloadFile(doc.id ?? '')}
                             fileName={doc.fileName ?? ''}
                           />
-                          <IconButton
-                            aria-label='delete'
-                            onClick={() => handleDeleteFile(doc.id ?? '')}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
+
+                          <Tooltip title={t('files.delete')} arrow>
+                            <IconButton
+                              aria-label='delete'
+                              onClick={() => handleDeleteFile(doc.id ?? '')}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={2}>No files uploaded yet.</TableCell>
+                      <TableCell colSpan={2}>{t('chatbot.no_files_uploaded_yet')}</TableCell>
                     </TableRow>
                   )}
                 </TableBody>

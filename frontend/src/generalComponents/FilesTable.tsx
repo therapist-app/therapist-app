@@ -48,7 +48,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
 
     try {
       await handleFileUpload(file)
-      notifySuccess('File uploaded successfully.')
+      notifySuccess(t('files.file_uploaded_successfully'))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
@@ -57,7 +57,7 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
   const wrappedDelete = async (fileId: string): Promise<void> => {
     try {
       await handleDeleteFile(fileId)
-      notifySuccess('File deleted successfully.')
+      notifySuccess(t('files.file_deleted_successfully'))
     } catch (err) {
       notifyError(typeof err === 'string' ? err : 'An unknown error occurred')
     }
@@ -93,10 +93,10 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
               <TableRow>
                 <TableCell>
                   <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                    {t('patient_detail.file_name')}
+                    {t('files.file_name')}
                   </div>
                 </TableCell>
-                <TableCell align='right'>{t('patient_detail.actions')}</TableCell>
+                <TableCell align='right'>{t('files.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -118,14 +118,14 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
                     {document.fileName}
                   </TableCell>
                   <TableCell align='right'>
-                    <Tooltip title={t('patient_detail.download')} arrow>
+                    <Tooltip title={t('files.download')} arrow>
                       <FileDownload
                         download={() => wrappedDownload(document.id ?? '')}
                         fileName={document.fileName ?? ''}
                       />
                     </Tooltip>
 
-                    <Tooltip title={t('patient_detail.delete')} arrow>
+                    <Tooltip title={t('files.delete')} arrow>
                       <IconButton
                         aria-label='delete'
                         onClick={() => wrappedDelete(document.id ?? '')}
