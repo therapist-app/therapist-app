@@ -29,7 +29,7 @@ public class CounselingPlanPhaseGoalController {
     this.counselingPlanPhaseGoalService = counselingPlanPhaseGoalService;
   }
 
-  @PostMapping("/")
+  @PostMapping("/create-counseling-plan-phase-goal")
   @ResponseStatus(HttpStatus.CREATED)
   public CounselingPlanPhaseGoalOutputDTO createCounselingPlanPhaseGoal(
       @Valid @RequestBody CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalDTO,
@@ -38,7 +38,7 @@ public class CounselingPlanPhaseGoalController {
         createCounselingPlanPhaseGoalDTO, therapistId);
   }
 
-  @PostMapping("/{counselingPlanPhaseId}")
+  @PostMapping("/create-counseling-plan-phase-goal-AI-generated")
   @ResponseStatus(HttpStatus.CREATED)
   public CreateCounselingPlanPhaseGoalDTO createCounselingPlanPhaseGoalAIGenerated(
       @Valid @RequestBody CreateCounselingPlanPhaseGoalAIGeneratedDTO dto,

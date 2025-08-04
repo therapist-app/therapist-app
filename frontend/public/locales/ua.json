@@ -591,6 +591,7 @@
     "gad7": {
       "manage": "Керувати тестами GAD-7"
     },
+    "journal_entry_details": "Деталі запису в журналі",
     "exercises": {
       "create": "Створити вправу",
       "details": "Деталі вправи"
@@ -613,5 +614,13 @@
     "download": "Завантажити",
     "delete": "Видалити",
     "file_name": "Назва файлу"
+  },
+  "journalEntry": {
+    "overviewTitle": "Журнальні записи",
+    "title": "Заголовок",
+    "noTitle": "Заголовок відсутній",
+    "date": "Дата створення",
+    "tags": "Теги",
+    "content": "Вміст"
   }
 }

@@ -24,6 +24,7 @@ export * from './apis/counseling-plan-phase-controller-api';
 export * from './apis/counseling-plan-phase-goal-controller-api';
 export * from './apis/exercise-component-controller-api';
 export * from './apis/exercise-controller-api';
+export * from './apis/journal-entry-controller-api';
 export * from './apis/meeting-controller-api';
 export * from './apis/meeting-note-controller-api';
 export * from './apis/patient-controller-api';

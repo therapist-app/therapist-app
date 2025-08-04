@@ -12,6 +12,7 @@ apis/counseling-plan-phase-controller-api.ts
 apis/counseling-plan-phase-goal-controller-api.ts
 apis/exercise-component-controller-api.ts
 apis/exercise-controller-api.ts
+apis/journal-entry-controller-api.ts
 apis/meeting-controller-api.ts
 apis/meeting-note-controller-api.ts
 apis/patient-controller-api.ts
@@ -33,6 +34,8 @@ models/chat-message-dto.ts
 models/chatbot-config-dto.ts
 models/chatbot-template-document-output-dto.ts
 models/chatbot-template-output-dto.ts
+models/coach-get-all-journal-entries-dtopatient-api.ts
+models/coach-journal-entry-output-dtopatient-api.ts
 models/complaint-dto.ts
 models/conversation-summary-output-dto.ts
 models/counseling-plan-output-dto.ts

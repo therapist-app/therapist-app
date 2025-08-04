@@ -6,6 +6,7 @@ import conversationReducer from './conversationSlice'
 import counselingPlanReducer from './counselingPlanSlice'
 import errorReducer from './errorSlice'
 import exerciseReducer from './exerciseSlice'
+import journalEntryReducer from './journalEntrySlice'
 import meetingReducer from './meetingSlice'
 import patientDocumentReducer from './patientDocumentSlice'
 import patientReducer from './patientSlice'
@@ -29,6 +30,7 @@ const store = configureStore({
     chatbotTemplateDocument: chatbotTemplateDocumentReducer,
     conversation: conversationReducer,
     globalError: errorReducer,
+    journalEntry: journalEntryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(therapistChatbotSaveMessagesToLocalStorageMiddleware),

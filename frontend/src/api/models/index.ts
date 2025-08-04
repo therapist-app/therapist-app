@@ -5,6 +5,8 @@ export * from './chat-message-dto';
 export * from './chatbot-config-dto';
 export * from './chatbot-template-document-output-dto';
 export * from './chatbot-template-output-dto';
+export * from './coach-get-all-journal-entries-dtopatient-api';
+export * from './coach-journal-entry-output-dtopatient-api';
 export * from './complaint-dto';
 export * from './conversation-summary-output-dto';
 export * from './counseling-plan-output-dto';
