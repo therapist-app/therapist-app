@@ -1209,6 +1209,7 @@ interface Resources {
       "gad7": {
         "manage": "Manage GAD-7 Tests"
       },
+      "journal_entry_details": "Journal Entry Details",
       "exercises": {
         "create": "Create Exercise",
         "details": "Exercise Details"

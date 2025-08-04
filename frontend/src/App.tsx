@@ -10,6 +10,7 @@ import ExerciseDetail from './pages/exercises/ExerciseDetail.tsx'
 import { GAD7TestDetail } from './pages/gad7Test/GAD7TestDetail.tsx'
 import Home from './pages/home/Home.tsx'
 import ClientInteractions from './pages/interactions/ClientInteractions.tsx'
+import JournalEntryDetails from './pages/journalEntry/JournalEntryDetails.tsx'
 import Login from './pages/login/Login'
 import MeetingCreate from './pages/meetings/MeetingCreate.tsx'
 import MeetingDetail from './pages/meetings/MeetingDetail.tsx'
@@ -62,6 +63,11 @@ const App = (): ReactElement => {
             <Route path={ROUTES[PAGES.EXERCISES_DETAILS_PAGE]} element={<ExerciseDetail />} />
 
             <Route path={ROUTES[PAGES.GAD7_TEST_DETAIL_PAGE]} element={<GAD7TestDetail />} />
+
+            <Route
+              path={ROUTES[PAGES.JOURNAL_ENTRIES_DETAILS_PAGE]}
+              element={<JournalEntryDetails />}
+            />
 
             <Route
               path={ROUTES[PAGES.CHATBOT_TEMPLATES_DETAILS_PAGE]}
