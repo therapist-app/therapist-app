@@ -48,7 +48,9 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const [hourPart, datePart] = cell.id.split('.')
   const [month, day] = datePart.split('-')
 
-  const formattedDate = `${day}.${month}.${new Date().getFullYear()}`
+  const formattedDate = format(new Date(`${new Date().getFullYear()}-${month}-${day}`), 'PP', {
+    locale: getCurrentLocale(),
+  })
   const paddedHour = hourPart.padStart(2, '0')
   const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
 
@@ -135,6 +137,7 @@ const ClientInteractions = (): ReactElement => {
   const dateRange = useMemo(() => {
     return startDate && endDate ? eachDayOfInterval({ start: startDate, end: endDate }) : []
   }, [startDate, endDate])
+  const dayDifference = dateRange.length
 
   // Fetch data for a specific log type
   const fetchLogTypeData = useCallback(
@@ -345,16 +348,25 @@ const ClientInteractions = (): ReactElement => {
           <div style={{ height: '650px' }}>
             <ResponsiveHeatMapCanvas
               data={heatmapData}
-              margin={{ top: 20, right: 40, bottom: 80, left: 80 }}
+              margin={{
+                top: 20,
+                right: 40,
+                bottom: dayDifference > 50 ? 120 : dayDifference > 28 ? 90 : 80,
+                left: 80,
+              }}
               valueFormat='>-.0f'
               axisTop={null}
               axisBottom={{
                 tickSize: 5,
                 tickPadding: 5,
-                tickRotation: 0,
+                tickRotation: dayDifference > 50 ? 90 : dayDifference > 28 ? 45 : 0,
                 legend: t('patient_interactions.date'),
                 legendPosition: 'middle',
-                legendOffset: 50,
+                legendOffset: dayDifference > 50 ? 80 : 50,
+                format: (value) =>
+                  format(new Date(`${new Date().getFullYear()}-${value}`), 'MMM dd', {
+                    locale: getCurrentLocale(),
+                  }),
               }}
               axisLeft={{
                 tickSize: 5,
