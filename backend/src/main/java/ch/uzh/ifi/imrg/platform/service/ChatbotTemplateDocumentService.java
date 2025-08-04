@@ -65,8 +65,8 @@ public class ChatbotTemplateDocumentService {
     templateDocument.setExtractedText(extractedText);
 
     ChatbotTemplateDocument saved = chatbotTemplateDocumentRepository.save(templateDocument);
-
-    updateChatbot(template);
+    template.getChatbotTemplateDocuments().add(saved);
+    this.updateChatbot(template);
 
     return saved;
   }
@@ -125,11 +125,17 @@ public class ChatbotTemplateDocumentService {
 
     String patientId = template.getPatient().getId();
 
-    StringBuilder sb =
-        new StringBuilder("Here are some documents which you can use for better context:\n\n");
-    LLMContextBuilder.addLLMContextOfListOfEntities(
-        sb, template.getChatbotTemplateDocuments(), "Chatbot Document", 0);
-    String chatbotContext = sb.toString();
+    String chatbotContext = "\n\nNo documents for additional context";
+    if (template.getChatbotTemplateDocuments() != null
+        && template.getChatbotTemplateDocuments().size() != 0) {
+      StringBuilder sb =
+          new StringBuilder(
+              "\n\nHere are some documents which you can use for better context:\n\n");
+
+      LLMContextBuilder.addLLMContextOfListOfEntities(
+          sb, template.getChatbotTemplateDocuments(), "Chatbot Document", 0);
+      chatbotContext = sb.toString();
+    }
 
     ChatbotConfigurationOutputDTOPatientAPI firstConfig =
         coachChatbotControllerPatientAPI.getChatbotConfigurations(patientId).blockFirst();
