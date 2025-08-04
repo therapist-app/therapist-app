@@ -1,5 +1,6 @@
 package ch.uzh.ifi.imrg.platform.service;
 
+import ch.uzh.ifi.imrg.generated.model.DocumentOverviewDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
@@ -11,20 +12,26 @@ import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
 import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
 import ch.uzh.ifi.imrg.platform.utils.FileUploadUtil;
+import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
 public class PatientDocumentService {
+
+  private static final Logger logger = LoggerFactory.getLogger(PatientDocumentService.class);
 
   private final PatientRepository patientRepository;
   private final TherapistDocumentRepository therapistDocumentRepository;
@@ -64,9 +71,13 @@ public class PatientDocumentService {
     }
     patientDocument.setExtractedText(extractedText);
 
+    String externalId = null;
     if (isSharedWithPatient) {
-      FileUploadUtil.uploadFile("/coach/patients/" + patientId + "/documents", file);
+      DocumentOverviewDTOPatientAPI resultDto =
+          FileUploadUtil.uploadFile("/coach/patients/" + patientId + "/documents", file);
+      externalId = resultDto.getId();
     }
+    patientDocument.setExternalId(externalId);
     patientDocumentRepository.save(patientDocument);
   }
 
@@ -126,6 +137,16 @@ public class PatientDocumentService {
 
     PatientDocument patientDocument = patientDocumentRepository.getReferenceById(patientDocumentId);
     SecurityUtil.checkOwnership(patientDocument, therapistId);
+    if (patientDocument.getIsSharedWithPatient() && patientDocument.getExternalId() != null) {
+      try {
+        PatientAppAPIs.coachDocumentControllerPatientAPI
+            .deleteDocument(patientDocument.getPatient().getId(), patientDocument.getExternalId())
+            .block();
+      } catch (WebClientResponseException.NotFound e) {
+        logger.info(e.getMessage());
+      }
+    }
+
     patientDocument.getPatient().getPatientDocuments().remove(patientDocument);
   }
 }

@@ -26,6 +26,9 @@ public class PatientDocument implements OwnedByTherapist, HasLLMContext {
   @UpdateTimestamp
   private Instant updatedAt;
 
+  @Column(name = "external_id")
+  private String externalId;
+
   @LLMContextField(label = "Client Document is shared with client", order = 1)
   @Column(nullable = false, updatable = false)
   private Boolean isSharedWithPatient;
