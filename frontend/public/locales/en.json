@@ -614,5 +614,13 @@
     "download": "Download",
     "delete": "Delete",
     "file_name": "File Name"
+  },
+  "journalEntry": {
+    "overviewTitle": "Journal Entries",
+    "title": "Title",
+    "noTitle": "No Title exists",
+    "date": "Creation Date",
+    "tags": "Tags",
+    "content": "Content"
   }
 }

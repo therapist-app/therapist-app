@@ -592,6 +592,7 @@ interface Resources {
       "gad7": {
         "manage": "GAD-7 Tests verwalten"
       },
+      "journal_entry_details": "Details zum Journaleintrag",
       "exercises": {
         "create": "Übung erstellen",
         "details": "Übungsdetails"
@@ -614,6 +615,14 @@ interface Resources {
       "download": "Herunterladen",
       "delete": "Löschen",
       "file_name": "Dateiname"
+    },
+    "journalEntry": {
+      "overviewTitle": "Journaleinträge",
+      "title": "Titel",
+      "noTitle": "Kein Titel vorhanden",
+      "date": "Erstellungsdatum",
+      "tags": "Schlagwörter",
+      "content": "Inhalt"
     }
   },
   "en": {
@@ -1232,6 +1241,14 @@ interface Resources {
       "download": "Download",
       "delete": "Delete",
       "file_name": "File Name"
+    },
+    "journalEntry": {
+      "overviewTitle": "Journal Entries",
+      "title": "Title",
+      "noTitle": "No Title exists",
+      "date": "Creation Date",
+      "tags": "Tags",
+      "content": "Content"
     }
   },
   "ua": {
@@ -1827,6 +1844,7 @@ interface Resources {
       "gad7": {
         "manage": "Керувати тестами GAD-7"
       },
+      "journal_entry_details": "Деталі запису в журналі",
       "exercises": {
         "create": "Створити вправу",
         "details": "Деталі вправи"
@@ -1849,6 +1867,14 @@ interface Resources {
       "download": "Завантажити",
       "delete": "Видалити",
       "file_name": "Назва файлу"
+    },
+    "journalEntry": {
+      "overviewTitle": "Журнальні записи",
+      "title": "Заголовок",
+      "noTitle": "Заголовок відсутній",
+      "date": "Дата створення",
+      "tags": "Теги",
+      "content": "Вміст"
     }
   }
 }

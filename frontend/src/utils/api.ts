@@ -11,6 +11,7 @@ import {
   CounselingPlanPhaseGoalControllerApiFactory,
   ExerciseComponentControllerApiFactory,
   ExerciseControllerApiFactory,
+  JournalEntryControllerApiFactory,
   MeetingControllerApiFactory,
   MeetingNoteControllerApiFactory,
   PatientControllerApiFactory,
@@ -83,6 +84,7 @@ export const counselingPlanPhaseGoalApi = CounselingPlanPhaseGoalControllerApiFa
   baseURL,
   api
 )
+export const journalEntryApi = JournalEntryControllerApiFactory(undefined, baseURL, api)
 
 api.interceptors.response.use(
   (response) => response,

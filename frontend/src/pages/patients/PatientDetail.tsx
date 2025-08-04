@@ -38,6 +38,7 @@ import { getPathFromPage, PAGES } from '../../utils/routes'
 import ChatbotOverview from '../chatbot/ChatbotOverview'
 import ExerciseOverviewComponent from '../exercises/components/ExerciseOverviewComponent'
 import GAD7TestTable from '../gad7Test/GAD7TestTable'
+import JournalEntriesOverview from '../journalEntry/JournalEntriesOverview'
 import MeetingOverviewComponent from '../meetings/components/MeetingOverviewComponent'
 
 const PatientDetail = (): ReactElement => {
@@ -400,6 +401,10 @@ const PatientDetail = (): ReactElement => {
       <CustomizedDivider />
 
       <ChatbotOverview />
+
+      <CustomizedDivider />
+
+      <JournalEntriesOverview />
     </Layout>
   )
 }

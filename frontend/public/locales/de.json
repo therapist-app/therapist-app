@@ -591,6 +591,7 @@
     "gad7": {
       "manage": "GAD-7 Tests verwalten"
     },
+    "journal_entry_details": "Details zum Journaleintrag",
     "exercises": {
       "create": "Übung erstellen",
       "details": "Übungsdetails"
@@ -613,5 +614,13 @@
     "download": "Herunterladen",
     "delete": "Löschen",
     "file_name": "Dateiname"
+  },
+  "journalEntry": {
+    "overviewTitle": "Journaleinträge",
+    "title": "Titel",
+    "noTitle": "Kein Titel vorhanden",
+    "date": "Erstellungsdatum",
+    "tags": "Schlagwörter",
+    "content": "Inhalt"
   }
 }
