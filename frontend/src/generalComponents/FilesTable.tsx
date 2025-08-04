@@ -27,6 +27,7 @@ interface FilesTableProps {
   downloadFile: (fileId: string) => Promise<string>
   maxFileSizeMessage?: string
   maxFileSizeBytes?: number
+  showTitleAndUploadButton?: boolean
 }
 
 const FilesTable: React.FC<FilesTableProps> = (props) => {
@@ -82,8 +83,12 @@ const FilesTable: React.FC<FilesTableProps> = (props) => {
           marginBottom: '10px',
         }}
       >
-        <Typography variant='h2'>{title}</Typography>
-        <FileUpload onUpload={wrappedUpload} />
+        {props.showTitleAndUploadButton && (
+          <>
+            <Typography variant='h2'>{title}</Typography>
+            <FileUpload onUpload={wrappedUpload} />
+          </>
+        )}
       </div>
 
       {allDocuments.length > 0 ? (

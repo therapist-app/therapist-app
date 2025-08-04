@@ -8,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -17,15 +16,8 @@ import {
   Select,
   Switch,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   TextField,
-  Tooltip,
   Typography,
 } from '@mui/material'
 import { AxiosError } from 'axios'
@@ -42,10 +34,9 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
-import FileDownload from '../../generalComponents/FileDownload'
+import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import DeleteIcon from '../../icons/DeleteIcon'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -728,53 +719,16 @@ const ChatBotTemplateEdit: React.FC = () => {
               </Paper>
             </Box>
 
-            <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{t('files.file_name')}</TableCell>
-                    <TableCell align='right'>{t('files.actions')}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {templateDocuments.length ? (
-                    templateDocuments.map((doc) => (
-                      <TableRow key={doc.id}>
-                        <TableCell
-                          sx={{
-                            maxWidth: 400,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {doc.fileName}
-                        </TableCell>
-                        <TableCell align='right'>
-                          <FileDownload
-                            download={() => downloadFile(doc.id ?? '')}
-                            fileName={doc.fileName ?? ''}
-                          />
-
-                          <Tooltip title={t('files.delete')} arrow>
-                            <IconButton
-                              aria-label='delete'
-                              onClick={() => handleDeleteFile(doc.id ?? '')}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={2}>{t('chatbot.no_files_uploaded_yet')}</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <FilesTable
+              title={t('chatbot.chatbot_documents')}
+              allDocuments={templateDocuments}
+              handleFileUpload={handleFileUpload}
+              handleDeleteFile={handleDeleteFile}
+              downloadFile={downloadFile}
+              maxFileSizeBytes={512 * 1024 * 1024} // 512MB in bytes
+              maxFileSizeMessage={t('chatbot.up_to', { upload_size: '512' })}
+              showTitleAndUploadButton={false}
+            />
           </Box>
         )}
       </Layout>
