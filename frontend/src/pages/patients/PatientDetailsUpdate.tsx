@@ -290,7 +290,7 @@ const PatientDetailsUpdate = (): JSX.Element => {
               helperText={
                 email && !/^\S+@\S+\.\S+$/.test(email) ? t('patient_create.invalid_email') : ''
               }
-              disabled={!isEditing}
+              disabled
             />
           </Grid>
           <Grid item xs={12} sm={6}>
