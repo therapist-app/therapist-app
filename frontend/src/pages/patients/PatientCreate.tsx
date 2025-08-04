@@ -235,8 +235,8 @@ const PatientCreate = (): ReactElement => {
         const chatbotTemplate: CreateChatbotTemplateDTO = {
           chatbotName: `Chatbot for ${newPatient.name}`,
           chatbotIcon: '🤖',
-          chatbotRole: 'Your supportive virtual assistant',
-          chatbotTone: 'Empathetic and professional',
+          chatbotRole: 'Supportive',
+          chatbotTone: 'friendly',
           welcomeMessage: `Hello ${newPatient.name}, I'm here to support you.`,
           isActive: true,
         }
