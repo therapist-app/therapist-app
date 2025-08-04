@@ -338,7 +338,7 @@ const Home = (): ReactElement => {
         downloadFile={downloadFile}
         maxFileSizeBytes={50 * 1024 * 1024}
         maxFileSizeMessage={t('exercise.max_file_size', { size: '50MB' })}
-        showTitleAndUploadButton={true}
+        showTitleAndUploadButton
       />
 
       <Menu
