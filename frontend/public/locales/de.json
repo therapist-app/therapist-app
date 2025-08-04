@@ -453,7 +453,8 @@
     "personal_marital": "Ehe- und Beziehungsanamnese",
     "personal_premorbid": "Prämorbide Persönlichkeit",
     "patient_register_success": "Klient erfolgreich registriert.",
-    "patient_register_failed": "Registrierung des Klienten fehlgeschlagen. Bitte versuchen Sie es erneut."
+    "patient_register_failed": "Registrierung des Klienten fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "invalid_email": "Ungültige E-Mail-Adresse"
   },
   "register": {
     "welcome": "Willkommen in der Coach-App",
