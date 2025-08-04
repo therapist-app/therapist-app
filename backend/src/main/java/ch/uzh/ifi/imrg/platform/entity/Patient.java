@@ -183,7 +183,7 @@ public class Patient implements Serializable, OwnedByTherapist, HasLLMContext {
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = FetchType.EAGER)
-  @OrderBy("createdAt DESC")
+  @OrderBy("createdAt ASC")
   private List<Complaint> complaints = new ArrayList<>();
 
   @OneToMany(

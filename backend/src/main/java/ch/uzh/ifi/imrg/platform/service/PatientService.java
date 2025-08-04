@@ -91,6 +91,10 @@ public class PatientService {
     Patient patient = patientRepository.getPatientById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId); // ensure therapist owns this patient
 
+    if (!inputDTO.getEmail().equals(patient.getEmail())) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "The client email cannot be changed.");
+    }
+
     mapper.updatePatientFromDto(inputDTO, patient);
 
     patientRepository.save(patient);

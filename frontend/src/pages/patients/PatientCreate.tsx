@@ -104,21 +104,7 @@ const PatientCreate = (): ReactElement => {
   const [address, setAddress] = useState('')
   const [dateOfAdmission, setDateOfAdmission] = useState('')
 
-  const [complaints, setComplaints] = useState<Complaint[]>([
-    {
-      id: uuidv4(),
-      mainComplaint: '',
-      duration: '',
-      onset: '',
-      course: '',
-      precipitatingFactors: '',
-      aggravatingRelieving: '',
-      timeline: '',
-      disturbances: '',
-      suicidalIdeation: '',
-      negativeHistory: '',
-    },
-  ])
+  const [complaints, setComplaints] = useState<Complaint[]>([])
 
   const [treatmentPast, setTreatmentPast] = useState('')
   const [treatmentCurrent, setTreatmentCurrent] = useState('')
@@ -235,8 +221,8 @@ const PatientCreate = (): ReactElement => {
         const chatbotTemplate: CreateChatbotTemplateDTO = {
           chatbotName: `Chatbot for ${newPatient.name}`,
           chatbotIcon: '🤖',
-          chatbotRole: 'Your supportive virtual assistant',
-          chatbotTone: 'Empathetic and professional',
+          chatbotRole: 'Supportive',
+          chatbotTone: 'friendly',
           welcomeMessage: `Hello ${newPatient.name}, I'm here to support you.`,
           isActive: true,
         }
@@ -450,18 +436,15 @@ const PatientCreate = (): ReactElement => {
                 </Typography>
               </Box>
 
-              {complaints.length > 1 && (
-                <IconButton
-                  edge='end'
-                  aria-label='delete'
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleRemoveComplaint(complaint.id)
-                  }}
-                >
-                  <DeleteIcon color='error' />
-                </IconButton>
-              )}
+              <IconButton
+                aria-label='delete'
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleRemoveComplaint(complaint.id)
+                }}
+              >
+                <DeleteIcon color='error' />
+              </IconButton>
             </AccordionSummary>
             <AccordionDetails>
               <TextField
@@ -586,7 +569,9 @@ const PatientCreate = (): ReactElement => {
           sx={commonButtonStyles}
           style={{ minWidth: '220px' }}
         >
-          {t('patient_create.add_another_complaint')}
+          {complaints.length > 0
+            ? t('patient_create.add_another_complaint')
+            : t('patient_create.add_first_complaint')}
         </Button>
       </Box>
 
