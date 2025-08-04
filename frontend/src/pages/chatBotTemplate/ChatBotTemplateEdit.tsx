@@ -8,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  IconButton,
   InputLabel,
   List,
   ListItem,
@@ -17,12 +16,6 @@ import {
   Select,
   Switch,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   TextField,
   Typography,
@@ -41,10 +34,9 @@ import {
   ChatMessageDTO,
   ChatMessageDTOChatRoleEnum,
 } from '../../api'
-import FileDownload from '../../generalComponents/FileDownload'
+import FilesTable from '../../generalComponents/FilesTable'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import DeleteIcon from '../../icons/DeleteIcon'
 import {
   createDocumentForTemplate,
   deleteDocumentOfTemplate,
@@ -700,7 +692,7 @@ const ChatBotTemplateEdit: React.FC = () => {
         {selectedTab === 'sources' && (
           <Box sx={{ mt: 3 }}>
             <Typography variant='h6' sx={{ mb: 2 }}>
-              Chatbot Documents
+              {t('chatbot.chatbot_documents')}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
               <Paper elevation={0} sx={{ width: 400 }}>
@@ -716,10 +708,10 @@ const ChatBotTemplateEdit: React.FC = () => {
                     <>
                       <AddCircleOutlineIcon sx={{ fontSize: 50, color: '#635BFF' }} />
                       <Typography variant='subtitle1' sx={{ mt: 1 }}>
-                        Click to upload a file or drag and drop it here
+                        {t('chatbot.click_to_upload')}
                       </Typography>
                       <Typography variant='caption' display='block' sx={{ mt: 1 }}>
-                        Up&nbsp;to&nbsp;512&nbsp;MB – PDF, DOC, DOCX, TXT
+                        {t('chatbot.up_to', { upload_size: '512' })}
                       </Typography>
                     </>
                   )}
@@ -727,50 +719,16 @@ const ChatBotTemplateEdit: React.FC = () => {
               </Paper>
             </Box>
 
-            <TableContainer component={Paper} elevation={3} sx={{ boxShadow: 1 }}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>File name</TableCell>
-                    <TableCell align='right'>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {templateDocuments.length ? (
-                    templateDocuments.map((doc) => (
-                      <TableRow key={doc.id}>
-                        <TableCell
-                          sx={{
-                            maxWidth: 400,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {doc.fileName}
-                        </TableCell>
-                        <TableCell align='right'>
-                          <FileDownload
-                            download={() => downloadFile(doc.id ?? '')}
-                            fileName={doc.fileName ?? ''}
-                          />
-                          <IconButton
-                            aria-label='delete'
-                            onClick={() => handleDeleteFile(doc.id ?? '')}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={2}>No files uploaded yet.</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <FilesTable
+              title={t('chatbot.chatbot_documents')}
+              allDocuments={templateDocuments}
+              handleFileUpload={handleFileUpload}
+              handleDeleteFile={handleDeleteFile}
+              downloadFile={downloadFile}
+              maxFileSizeBytes={512 * 1024 * 1024} // 512MB in bytes
+              maxFileSizeMessage={t('chatbot.up_to', { upload_size: '512' })}
+              showTitleAndUploadButton={false}
+            />
           </Box>
         )}
       </Layout>

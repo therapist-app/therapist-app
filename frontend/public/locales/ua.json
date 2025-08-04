@@ -181,7 +181,11 @@
     "configuration": "Конфігурація",
     "sources": "Джерела",
     "active": "Активний",
-    "inactive": "Неактивний"
+    "inactive": "Неактивний",
+    "chatbot_documents": "Документи чат-бота",
+    "click_to_upload": "Натисніть, щоб завантажити файл або перетягніть його сюди",
+    "up_to": "До {{upload_size}} МБ – PDF, DOC, DOCX, TXT",
+    "no_files_uploaded_yet": "Ще не завантажено жодного файлу."
   },
   "counseling_plan": {
     "counseling_plan": "План консультування",
@@ -601,6 +605,12 @@
     "therapist_chatbot": "Чат-бот коуча"
   },
   "files": {
-    "download_success": "Файл успішно завантажено"
+    "download_success": "Файл успішно завантажено",
+    "file_uploaded_successfully": "Файл успішно завантажено",
+    "file_deleted_successfully": "Файл успішно видалено",
+    "actions": "Дії",
+    "download": "Завантажити",
+    "delete": "Видалити",
+    "file_name": "Назва файлу"
   }
 }

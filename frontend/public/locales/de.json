@@ -181,7 +181,11 @@
     "configuration": "Konfiguration",
     "sources": "Dokumente",
     "active": "Aktiv",
-    "inactive": "Inaktiv"
+    "inactive": "Inaktiv",
+    "chatbot_documents": "Chatbot-Dokumente",
+    "click_to_upload": "Zum Hochladen klicken oder Datei hierher ziehen",
+    "up_to": "Bis zu {{upload_size}} MB – PDF, DOC, DOCX, TXT",
+    "no_files_uploaded_yet": "Noch keine Dateien hochgeladen."
   },
   "counseling_plan": {
     "counseling_plan": "Beratungsplan",
@@ -601,6 +605,12 @@
     "therapist_chatbot": "Coach-Chatbot"
   },
   "files": {
-    "download_success": "Datei erfolgreich heruntergeladen"
+    "download_success": "Datei erfolgreich heruntergeladen",
+    "file_uploaded_successfully": "Datei erfolgreich hochgeladen",
+    "file_deleted_successfully": "Datei erfolgreich gelöscht",
+    "actions": "Aktionen",
+    "download": "Herunterladen",
+    "delete": "Löschen",
+    "file_name": "Dateiname"
   }
 }
