@@ -42,7 +42,9 @@ export const GAD7TestDetail = (): ReactElement => {
 
         if (testConfig) {
           setStartDate(testConfig.exerciseStart ? new Date(testConfig.exerciseStart) : new Date())
-          setEndDate(testConfig.exerciseEnd ? new Date(testConfig.exerciseEnd) : new Date())
+          setEndDate(
+            testConfig.exerciseEnd ? new Date(testConfig.exerciseEnd) : addWeeks(new Date(), 8)
+          )
           setIsPaused(testConfig.isPaused ?? false)
           setIntervalDays(testConfig.doEveryNDays ?? 14)
           setHasExistingTest(true)
@@ -154,18 +156,20 @@ export const GAD7TestDetail = (): ReactElement => {
             fullWidth
           />
 
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isPaused}
-                onChange={(e) => setIsPaused(e.target.checked)}
-                color='primary'
-              />
-            }
-            label={t('gad7test.pause_test_schedule')}
-            labelPlacement='start'
-            sx={{ justifyContent: 'space-between', width: '100%' }}
-          />
+          {!hasExistingTest ? null : (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPaused}
+                  onChange={(e) => setIsPaused(e.target.checked)}
+                  color='primary'
+                />
+              }
+              label={t('gad7test.pause_test_schedule')}
+              labelPlacement='start'
+              sx={{ justifyContent: 'space-between', width: '100%' }}
+            />
+          )}
 
           {isPaused && (
             <Typography variant='body2' sx={{ color: 'text.secondary' }}>

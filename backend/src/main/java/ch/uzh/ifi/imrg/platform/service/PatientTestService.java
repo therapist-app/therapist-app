@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -132,9 +133,7 @@ public class PatientTestService {
               .block();
 
       if (apiResult == null) {
-        throw new ResponseStatusException(
-            HttpStatus.NOT_FOUND,
-            "Psychological test configuration not found for patient " + patientId);
+        return null;
       }
 
       PsychologicalTestCreateDTO resultDto = new PsychologicalTestCreateDTO();
@@ -147,6 +146,15 @@ public class PatientTestService {
 
       return resultDto;
 
+    } catch (WebClientResponseException e) {
+      if (e.getStatusCode() == HttpStatus.FORBIDDEN || e.getStatusCode() == HttpStatus.NOT_FOUND) {
+        // no configuration exists
+        return null;
+      } else {
+        logger.error("Error getting psychological test configuration for patient {}", patientId, e);
+        throw new ResponseStatusException(
+            HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get psychological test configuration", e);
+      }
     } catch (Exception e) {
       logger.error("Error getting psychological test configuration for patient {}", patientId, e);
       throw new ResponseStatusException(
