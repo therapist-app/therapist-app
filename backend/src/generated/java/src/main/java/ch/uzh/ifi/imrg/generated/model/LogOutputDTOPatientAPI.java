@@ -32,7 +32,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   LogOutputDTOPatientAPI.JSON_PROPERTY_PATIENT_ID,
   LogOutputDTOPatientAPI.JSON_PROPERTY_LOG_TYPE,
   LogOutputDTOPatientAPI.JSON_PROPERTY_TIMESTAMP,
-  LogOutputDTOPatientAPI.JSON_PROPERTY_UNIQUE_IDENTIFIER
+  LogOutputDTOPatientAPI.JSON_PROPERTY_UNIQUE_IDENTIFIER,
+  LogOutputDTOPatientAPI.JSON_PROPERTY_COMMENT
 })
 @JsonTypeName("LogOutputDTO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.4.0")
@@ -112,6 +113,9 @@ public class LogOutputDTOPatientAPI {
 
   public static final String JSON_PROPERTY_UNIQUE_IDENTIFIER = "uniqueIdentifier";
   private String uniqueIdentifier;
+
+  public static final String JSON_PROPERTY_COMMENT = "comment";
+  private String comment;
 
   public LogOutputDTOPatientAPI() {
   }
@@ -245,6 +249,32 @@ public class LogOutputDTOPatientAPI {
     this.uniqueIdentifier = uniqueIdentifier;
   }
 
+
+  public LogOutputDTOPatientAPI comment(String comment) {
+    
+    this.comment = comment;
+    return this;
+  }
+
+   /**
+   * Get comment
+   * @return comment
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_COMMENT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getComment() {
+    return comment;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_COMMENT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -258,12 +288,13 @@ public class LogOutputDTOPatientAPI {
         Objects.equals(this.patientId, logOutputDTO.patientId) &&
         Objects.equals(this.logType, logOutputDTO.logType) &&
         Objects.equals(this.timestamp, logOutputDTO.timestamp) &&
-        Objects.equals(this.uniqueIdentifier, logOutputDTO.uniqueIdentifier);
+        Objects.equals(this.uniqueIdentifier, logOutputDTO.uniqueIdentifier) &&
+        Objects.equals(this.comment, logOutputDTO.comment);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, patientId, logType, timestamp, uniqueIdentifier);
+    return Objects.hash(id, patientId, logType, timestamp, uniqueIdentifier, comment);
   }
 
   @Override
@@ -275,6 +306,7 @@ public class LogOutputDTOPatientAPI {
     sb.append("    logType: ").append(toIndentedString(logType)).append("\n");
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("    uniqueIdentifier: ").append(toIndentedString(uniqueIdentifier)).append("\n");
+    sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -91,6 +91,7 @@ src/main/java/ch/uzh/ifi/imrg/generated/model/MessageOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/NameConversationOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PatientOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestAssignmentInputDTOPatientAPI.java
+src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestAssignmentOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestInputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameAndPatientIdOutputDTOPatientAPI.java
 src/main/java/ch/uzh/ifi/imrg/generated/model/PsychologicalTestNameOutputDTOPatientAPI.java
