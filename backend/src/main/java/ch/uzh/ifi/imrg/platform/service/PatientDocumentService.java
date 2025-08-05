@@ -3,21 +3,22 @@ package ch.uzh.ifi.imrg.platform.service;
 import ch.uzh.ifi.imrg.generated.model.DocumentOverviewDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.entity.PatientDocument;
+import ch.uzh.ifi.imrg.platform.entity.Therapist;
 import ch.uzh.ifi.imrg.platform.entity.TherapistDocument;
-import ch.uzh.ifi.imrg.platform.repository.PatientDocumentRepository;
-import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
-import ch.uzh.ifi.imrg.platform.repository.TherapistDocumentRepository;
+import ch.uzh.ifi.imrg.platform.repository.*;
 import ch.uzh.ifi.imrg.platform.rest.dto.input.CreatePatientDocumentFromTherapistDocumentDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PatientDocumentOutputDTO;
 import ch.uzh.ifi.imrg.platform.rest.mapper.PatientDocumentMapper;
-import ch.uzh.ifi.imrg.platform.utils.DocumentParserUtil;
-import ch.uzh.ifi.imrg.platform.utils.FileUploadUtil;
-import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
-import ch.uzh.ifi.imrg.platform.utils.SecurityUtil;
+import ch.uzh.ifi.imrg.platform.utils.*;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.sax.BodyContentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
+import org.xml.sax.ContentHandler;
 
 @Service
 @Transactional
@@ -34,15 +36,18 @@ public class PatientDocumentService {
   private static final Logger logger = LoggerFactory.getLogger(PatientDocumentService.class);
 
   private final PatientRepository patientRepository;
+  private final TherapistRepository therapistRepository;
   private final TherapistDocumentRepository therapistDocumentRepository;
   private final PatientDocumentRepository patientDocumentRepository;
 
   public PatientDocumentService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
       @Qualifier("therapistDocumentRepository")
           TherapistDocumentRepository therapistDocumentRepository,
       @Qualifier("patientDocumentRepository") PatientDocumentRepository patientDocumentRepository) {
     this.patientRepository = patientRepository;
+    this.therapistRepository = therapistRepository;
     this.therapistDocumentRepository = therapistDocumentRepository;
     this.patientDocumentRepository = patientDocumentRepository;
   }
@@ -58,7 +63,18 @@ public class PatientDocumentService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
     SecurityUtil.checkOwnership(patient, therapistId);
 
-    String extractedText = DocumentParserUtil.extractText(file);
+    String rawText = readFullText(file);
+    String extractedText = rawText;
+
+    if (rawText.length() > DocumentSummarizerUtil.MAX_SUMMARY_CHARS) {
+      Therapist therapist =
+          therapistRepository
+              .findById(therapistId)
+              .orElseThrow(
+                  () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Therapist not found"));
+      extractedText = DocumentSummarizerUtil.summarise(rawText, therapist, therapistRepository);
+    }
+
     PatientDocument patientDocument = new PatientDocument();
     patientDocument.setIsSharedWithPatient(isSharedWithPatient);
     patientDocument.setPatient(patient);
@@ -73,31 +89,30 @@ public class PatientDocumentService {
 
     String externalId = null;
     if (isSharedWithPatient) {
-      DocumentOverviewDTOPatientAPI resultDto =
+      DocumentOverviewDTOPatientAPI dto =
           FileUploadUtil.uploadFile("/coach/patients/" + patientId + "/documents", file);
-      externalId = resultDto.getId();
+      externalId = dto.getId();
     }
     patientDocument.setExternalId(externalId);
     patientDocumentRepository.save(patientDocument);
   }
 
   public void createPatientDocumentFromTherapistDocument(
-      CreatePatientDocumentFromTherapistDocumentDTO createPatientDocumentFromTherapistDocumentDTO,
-      String therapistId) {
+      CreatePatientDocumentFromTherapistDocumentDTO dto, String therapistId) {
+
     TherapistDocument therapistDocument =
         therapistDocumentRepository
-            .findById(createPatientDocumentFromTherapistDocumentDTO.getTherapistDocumentId())
+            .findById(dto.getTherapistDocumentId())
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Therapist document not found"));
-
     SecurityUtil.checkOwnership(therapistDocument, therapistId);
 
     PatientDocument patientDocument = new PatientDocument();
     patientDocument.setPatient(
         patientRepository
-            .findById(createPatientDocumentFromTherapistDocumentDTO.getPatientId())
+            .findById(dto.getPatientId())
             .orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found")));
     patientDocument.setFileName(therapistDocument.getFileName());
@@ -137,6 +152,7 @@ public class PatientDocumentService {
 
     PatientDocument patientDocument = patientDocumentRepository.getReferenceById(patientDocumentId);
     SecurityUtil.checkOwnership(patientDocument, therapistId);
+
     if (patientDocument.getIsSharedWithPatient() && patientDocument.getExternalId() != null) {
       try {
         PatientAppAPIs.coachDocumentControllerPatientAPI
@@ -148,5 +164,19 @@ public class PatientDocumentService {
     }
 
     patientDocument.getPatient().getPatientDocuments().remove(patientDocument);
+  }
+
+  private String readFullText(MultipartFile file) {
+    try (InputStream stream = file.getInputStream()) {
+      AutoDetectParser parser = new AutoDetectParser();
+      ContentHandler handler = new BodyContentHandler(-1);
+      Metadata metadata = new Metadata();
+      ParseContext context = new ParseContext();
+      parser.parse(stream, handler, metadata, context);
+      return handler.toString();
+    } catch (Exception e) {
+      logger.error("Full-text extraction failed – falling back to DocumentParserUtil", e);
+      return DocumentParserUtil.extractText(file);
+    }
   }
 }
