@@ -151,6 +151,7 @@ Class | Method | HTTP request | Description
 *CoachPatientControllerPatientAPI* | [**setCoachEmail**](docs/CoachPatientControllerPatientAPI.md#setCoachEmail) | **PUT** /coach/patients/{patientId}/coach-email | 
 *CoachPsychologicalTestControllerPatientAPI* | [**createPsychologicalTest1**](docs/CoachPsychologicalTestControllerPatientAPI.md#createPsychologicalTest1) | **POST** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getAvailablePsychologicalTestNames**](docs/CoachPsychologicalTestControllerPatientAPI.md#getAvailablePsychologicalTestNames) | **GET** /coach/patients/{patientId}/psychological-tests/available-tests | 
+*CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestConfiguration**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestConfiguration) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName}/configuration | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestNames1**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestNames1) | **GET** /coach/patients/{patientId}/psychological-tests | 
 *CoachPsychologicalTestControllerPatientAPI* | [**getPsychologicalTestResults1**](docs/CoachPsychologicalTestControllerPatientAPI.md#getPsychologicalTestResults1) | **GET** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
 *CoachPsychologicalTestControllerPatientAPI* | [**updatePsychologicalTest**](docs/CoachPsychologicalTestControllerPatientAPI.md#updatePsychologicalTest) | **PUT** /coach/patients/{patientId}/psychological-tests/{psychologicalTestName} | 
@@ -265,6 +266,7 @@ Class | Method | HTTP request | Description
  - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
  - [PsychologicalTestAssignmentInputDTOPatientAPI](docs/PsychologicalTestAssignmentInputDTOPatientAPI.md)
+ - [PsychologicalTestAssignmentOutputDTOPatientAPI](docs/PsychologicalTestAssignmentOutputDTOPatientAPI.md)
  - [PsychologicalTestInputDTOPatientAPI](docs/PsychologicalTestInputDTOPatientAPI.md)
  - [PsychologicalTestNameAndPatientIdOutputDTOPatientAPI](docs/PsychologicalTestNameAndPatientIdOutputDTOPatientAPI.md)
  - [PsychologicalTestNameOutputDTOPatientAPI](docs/PsychologicalTestNameOutputDTOPatientAPI.md)

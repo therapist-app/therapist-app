@@ -3,6 +3,7 @@ package ch.uzh.ifi.imrg.generated.api;
 import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentInputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 
@@ -209,6 +210,89 @@ public class CoachPsychologicalTestControllerPatientAPI {
      */
     public ResponseSpec getAvailablePsychologicalTestNamesWithResponseSpec(String patientId) throws WebClientResponseException {
         return getAvailablePsychologicalTestNamesRequestCreation(patientId);
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param psychologicalTestName The psychologicalTestName parameter
+     * @return PsychologicalTestAssignmentOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getPsychologicalTestConfigurationRequestCreation(String patientId, String psychologicalTestName) throws WebClientResponseException {
+        Object postBody = null;
+        // verify the required parameter 'patientId' is set
+        if (patientId == null) {
+            throw new WebClientResponseException("Missing the required parameter 'patientId' when calling getPsychologicalTestConfiguration", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // verify the required parameter 'psychologicalTestName' is set
+        if (psychologicalTestName == null) {
+            throw new WebClientResponseException("Missing the required parameter 'psychologicalTestName' when calling getPsychologicalTestConfiguration", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        pathParams.put("patientId", patientId);
+        pathParams.put("psychologicalTestName", psychologicalTestName);
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/coach/patients/{patientId}/psychological-tests/{psychologicalTestName}/configuration", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param psychologicalTestName The psychologicalTestName parameter
+     * @return PsychologicalTestAssignmentOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<PsychologicalTestAssignmentOutputDTOPatientAPI> getPsychologicalTestConfiguration(String patientId, String psychologicalTestName) throws WebClientResponseException {
+        ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI>() {};
+        return getPsychologicalTestConfigurationRequestCreation(patientId, psychologicalTestName).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param psychologicalTestName The psychologicalTestName parameter
+     * @return ResponseEntity&lt;PsychologicalTestAssignmentOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<PsychologicalTestAssignmentOutputDTOPatientAPI>> getPsychologicalTestConfigurationWithHttpInfo(String patientId, String psychologicalTestName) throws WebClientResponseException {
+        ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<PsychologicalTestAssignmentOutputDTOPatientAPI>() {};
+        return getPsychologicalTestConfigurationRequestCreation(patientId, psychologicalTestName).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @param patientId The patientId parameter
+     * @param psychologicalTestName The psychologicalTestName parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getPsychologicalTestConfigurationWithResponseSpec(String patientId, String psychologicalTestName) throws WebClientResponseException {
+        return getPsychologicalTestConfigurationRequestCreation(patientId, psychologicalTestName);
     }
     /**
      * 
