@@ -1,6 +1,5 @@
 package ch.uzh.ifi.imrg.platform.controller;
 
-import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestCreateDTO;
 import ch.uzh.ifi.imrg.platform.rest.dto.output.PsychologicalTestOutputDTO;
 import ch.uzh.ifi.imrg.platform.security.CurrentTherapistId;
@@ -29,7 +28,7 @@ public class PatientTestController {
     return patientTestService.getTestsByPatient(patientId, therapistId, psychologicalTestName);
   }
 
-  @PostMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/create")
+  @PostMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/config")
   @ResponseStatus(HttpStatus.CREATED)
   public PsychologicalTestCreateDTO assignPsychologicalTestToPatient(
       @PathVariable String patientId,
@@ -40,21 +39,24 @@ public class PatientTestController {
         patientId, therapistId, dto, psychologicalTestName);
   }
 
-  @PutMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/update")
+  @PutMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/config")
   @ResponseStatus(HttpStatus.OK)
   public PsychologicalTestCreateDTO updatePsychologicalTestToPatient(
       @PathVariable String patientId,
       @Valid @RequestBody PsychologicalTestCreateDTO dto,
       @CurrentTherapistId String therapistId,
       @PathVariable String psychologicalTestName) {
-    return patientTestService.updatePsychologicalTest(
+    return patientTestService.updatePsychologicalTestConfig(
         patientId, therapistId, dto, psychologicalTestName);
   }
 
-  @GetMapping("/patient/{patientId}/psychological-tests/available-tests/")
+  @GetMapping("/patient/{patientId}/psychological-tests/{psychologicalTestName}/config")
   @ResponseStatus(HttpStatus.OK)
-  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesForPatient(
-      @PathVariable String patientId, @CurrentTherapistId String therapistId) {
-    return patientTestService.getPsychologicalTestNamesByPatient(patientId, therapistId);
+  public PsychologicalTestCreateDTO getPsychologicalTestToPatient(
+      @PathVariable String patientId,
+      @CurrentTherapistId String therapistId,
+      @PathVariable String psychologicalTestName) {
+    return patientTestService.getPsychologicalTestConfig(
+        patientId, therapistId, psychologicalTestName);
   }
 }

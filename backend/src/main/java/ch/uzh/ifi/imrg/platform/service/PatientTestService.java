@@ -1,7 +1,7 @@
 package ch.uzh.ifi.imrg.platform.service;
 
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentInputDTOPatientAPI;
-import ch.uzh.ifi.imrg.generated.model.PsychologicalTestNameOutputDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PsychologicalTestAssignmentOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PsychologicalTestOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.platform.entity.Patient;
 import ch.uzh.ifi.imrg.platform.repository.PatientRepository;
@@ -93,7 +93,7 @@ public class PatientTestService {
     }
   }
 
-  public PsychologicalTestCreateDTO updatePsychologicalTest(
+  public PsychologicalTestCreateDTO updatePsychologicalTestConfig(
       String patientId,
       String therapistId,
       PsychologicalTestCreateDTO dto,
@@ -119,29 +119,38 @@ public class PatientTestService {
     }
   }
 
-  public List<PsychologicalTestNameOutputDTOPatientAPI> getPsychologicalTestNamesByPatient(
-      String patientId, String therapistId) {
+  public PsychologicalTestCreateDTO getPsychologicalTestConfig(
+      String patientId, String therapistId, String psychologicalTestName) {
+
     Patient patient = patientRepository.getReferenceById(patientId);
     SecurityUtil.checkOwnership(patient, therapistId);
 
     try {
-      List<PsychologicalTestNameOutputDTOPatientAPI> testNames =
+      PsychologicalTestAssignmentOutputDTOPatientAPI apiResult =
           PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-              .getAvailablePsychologicalTestNames(patientId)
-              .collectList()
+              .getPsychologicalTestConfiguration(patientId, psychologicalTestName)
               .block();
 
-      if (testNames == null) {
-        logger.warn("No test names found for patient {}", patientId);
-        return Collections.emptyList();
+      if (apiResult == null) {
+        throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Psychological test configuration not found for patient " + patientId);
       }
-      logger.info("Retrieved {} test names for patient {}", testNames.size(), patientId);
-      return testNames;
+
+      PsychologicalTestCreateDTO resultDto = new PsychologicalTestCreateDTO();
+      resultDto.setPatientId(patientId);
+      resultDto.setTestName(apiResult.getTestName());
+      resultDto.setExerciseStart(apiResult.getExerciseStart());
+      resultDto.setExerciseEnd(apiResult.getExerciseEnd());
+      resultDto.setIsPaused(apiResult.getIsPaused());
+      resultDto.setDoEveryNDays(apiResult.getDoEveryNDays());
+
+      return resultDto;
 
     } catch (Exception e) {
-      logger.error("Error fetching test names for patient {}", patientId, e);
+      logger.error("Error getting psychological test configuration for patient {}", patientId, e);
       throw new ResponseStatusException(
-          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve test names", e);
+          HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get psychological test configuration", e);
     }
   }
 

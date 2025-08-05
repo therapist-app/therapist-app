@@ -542,6 +542,8 @@
     "doEveryNDays": "Every ... days",
     "schedule_summary": "With these settings, the patient will fill out the GAD7 test every {{days}} days starting from {{start_date}} up to the {{end_date}}.",
     "pause_test_schedule": "Pause Test Schedule",
+    "schedule_is_paused": "The schedule is currently paused.",
+    "loading_configuration": "Loading GAD-7 test configuration...",
     "date": "Date",
     "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
     "question1": "Feeling nervous, anxious or on edge.",
