@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -64,37 +65,58 @@ public class PatientDocumentService {
     SecurityUtil.checkOwnership(patient, therapistId);
 
     String rawText = readFullText(file);
-    String extractedText = rawText;
 
-    if (rawText.length() > DocumentSummarizerUtil.MAX_SUMMARY_CHARS) {
-      Therapist therapist =
-          therapistRepository
-              .findById(therapistId)
-              .orElseThrow(
-                  () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Therapist not found"));
-      extractedText = DocumentSummarizerUtil.summarise(rawText, therapist, therapistRepository);
-    }
+    boolean needsSummary = rawText.length() > DocumentSummarizerUtil.MAX_SUMMARY_CHARS;
+    String extractedText =
+        needsSummary ? rawText.substring(0, DocumentSummarizerUtil.MAX_SUMMARY_CHARS) : rawText;
 
     PatientDocument patientDocument = new PatientDocument();
     patientDocument.setIsSharedWithPatient(isSharedWithPatient);
     patientDocument.setPatient(patient);
     patientDocument.setFileName(file.getOriginalFilename());
     patientDocument.setFileType(file.getContentType());
+    patientDocument.setExtractedText(extractedText);
     try {
       patientDocument.setFileData(file.getBytes());
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to read file bytes", e);
     }
-    patientDocument.setExtractedText(extractedText);
 
-    String externalId = null;
     if (isSharedWithPatient) {
       DocumentOverviewDTOPatientAPI dto =
           FileUploadUtil.uploadFile("/coach/patients/" + patientId + "/documents", file);
-      externalId = dto.getId();
+      patientDocument.setExternalId(dto.getId());
     }
-    patientDocument.setExternalId(externalId);
-    patientDocumentRepository.save(patientDocument);
+
+    patientDocument = patientDocumentRepository.save(patientDocument);
+    final String docId = patientDocument.getId();
+
+    if (needsSummary) {
+      final String raw = rawText;
+
+      CompletableFuture.runAsync(
+          () -> {
+            try {
+              Therapist freshTherapist = therapistRepository.findById(therapistId).orElse(null);
+              if (freshTherapist == null) {
+                logger.warn("Therapist {} vanished before summarisation", therapistId);
+                return;
+              }
+
+              String summary =
+                  DocumentSummarizerUtil.summarise(raw, freshTherapist, therapistRepository);
+
+              PatientDocument upd = patientDocumentRepository.findById(docId).orElse(null);
+              if (upd != null) {
+                upd.setExtractedText(summary);
+                patientDocumentRepository.save(upd);
+              }
+            } catch (Exception ex) {
+              logger.error(
+                  "Asynchronous LLM summarisation failed for PatientDocument {}", docId, ex);
+            }
+          });
+    }
   }
 
   public void createPatientDocumentFromTherapistDocument(
@@ -175,7 +197,6 @@ public class PatientDocumentService {
       parser.parse(stream, handler, metadata, context);
       return handler.toString();
     } catch (Exception e) {
-      logger.error("Full-text extraction failed – falling back to DocumentParserUtil", e);
       return DocumentParserUtil.extractText(file);
     }
   }

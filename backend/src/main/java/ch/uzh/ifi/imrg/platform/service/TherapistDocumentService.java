@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -53,24 +54,52 @@ public class TherapistDocumentService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Therapist not found"));
 
     String rawText = readFullText(file);
-    String extractedText = rawText;
 
-    if (rawText.length() > DocumentSummarizerUtil.MAX_SUMMARY_CHARS) {
-      extractedText = DocumentSummarizerUtil.summarise(rawText, therapist, therapistRepository);
-    }
+    boolean needsSummary = rawText.length() > DocumentSummarizerUtil.MAX_SUMMARY_CHARS;
 
-    TherapistDocument therapistDocument = new TherapistDocument();
-    therapistDocument.setTherapist(therapist);
-    therapistDocument.setFileName(file.getOriginalFilename());
-    therapistDocument.setFileType(file.getContentType());
+    String extractedText =
+        needsSummary ? rawText.substring(0, DocumentSummarizerUtil.MAX_SUMMARY_CHARS) : rawText;
+
+    TherapistDocument doc = new TherapistDocument();
+    doc.setTherapist(therapist);
+    doc.setFileName(file.getOriginalFilename());
+    doc.setFileType(file.getContentType());
     try {
-      therapistDocument.setFileData(file.getBytes());
+      doc.setFileData(file.getBytes());
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to read file bytes", e);
     }
-    therapistDocument.setExtractedText(extractedText);
+    doc.setExtractedText(extractedText);
 
-    therapistDocumentRepository.save(therapistDocument);
+    doc = therapistDocumentRepository.save(doc);
+
+    if (needsSummary) {
+      final String raw = rawText;
+      final String docId = doc.getId();
+
+      CompletableFuture.runAsync(
+          () -> {
+            try {
+              Therapist freshTherapist = therapistRepository.findById(therapistId).orElse(null);
+              if (freshTherapist == null) {
+                logger.warn("Therapist {} vanished before summarisation", therapistId);
+                return;
+              }
+
+              String summary =
+                  DocumentSummarizerUtil.summarise(raw, freshTherapist, therapistRepository);
+
+              TherapistDocument upd = therapistDocumentRepository.findById(docId).orElse(null);
+              if (upd != null) {
+                upd.setExtractedText(summary);
+                therapistDocumentRepository.save(upd);
+              }
+            } catch (Exception ex) {
+              logger.error(
+                  "Asynchronous LLM summarisation failed for TherapistDocument {}", docId, ex);
+            }
+          });
+    }
   }
 
   public List<TherapistDocumentOutputDTO> getDocumentsOfTherapist(String therapistId) {
@@ -119,7 +148,6 @@ public class TherapistDocumentService {
       parser.parse(stream, handler, metadata, context);
       return handler.toString();
     } catch (Exception e) {
-      logger.error("Full-text extraction failed – falling back to DocumentParserUtil", e);
       return DocumentParserUtil.extractText(file);
     }
   }
