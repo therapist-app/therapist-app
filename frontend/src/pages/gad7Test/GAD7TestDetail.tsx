@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { useNotify } from '../../hooks/useNotify'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientTestApi } from '../../utils/api'
@@ -23,7 +24,8 @@ export const GAD7TestDetail = (): ReactElement => {
   const [startDate, setStartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(addWeeks(new Date(), 8))
   const [isPaused, setIsPaused] = useState<boolean>(false)
-  const [existingTest, setExistingTest] = useState<string | null>(null)
+  const [hasExistingTest, setHasExistingTest] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const testName = 'GAD7'
 
@@ -31,22 +33,34 @@ export const GAD7TestDetail = (): ReactElement => {
     if (!patientId) {
       return
     }
-    patientTestApi
-      .getPsychologicalTestNamesForPatient(patientId)
-      .then((tests) => {
-        const found = tests.data.find((t) => t.name === testName)
-        if (found && found.name) {
-          console.log('found', found)
-          setExistingTest(found.name.toString())
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to load existing tests', err)
-        notifyError(t('gad7test.failed_to_load_tests'))
-      })
-  }, [patientId, testName, notifyError, t])
 
-  console.log('Existing test:', existingTest)
+    const fetchTestConfig = async (): Promise<void> => {
+      try {
+        setIsLoading(true)
+        const response = await patientTestApi.getPsychologicalTestToPatient(patientId, testName)
+        const testConfig = response.data
+
+        if (testConfig) {
+          setStartDate(testConfig.exerciseStart ? new Date(testConfig.exerciseStart) : new Date())
+          setEndDate(
+            testConfig.exerciseEnd ? new Date(testConfig.exerciseEnd) : addWeeks(new Date(), 8)
+          )
+          setIsPaused(testConfig.isPaused ?? false)
+          setIntervalDays(testConfig.doEveryNDays ?? 14)
+          setHasExistingTest(true)
+        } else {
+          setHasExistingTest(false)
+        }
+      } catch {
+        notifyError(t('gad7test.failed_to_load_test_configuration'))
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchTestConfig()
+  }, [patientId, notifyError, t])
+
   const handleCreateTest = async (e: React.FormEvent): Promise<void> => {
     try {
       e.preventDefault()
@@ -65,7 +79,7 @@ export const GAD7TestDetail = (): ReactElement => {
 
       await patientTestApi.assignPsychologicalTestToPatient(patientId, testName, dto)
       notifySuccess(t('gad7test.assigned_successfully'))
-      setExistingTest(testName)
+      setHasExistingTest(true)
     } catch (error) {
       console.error('Error creating GAD-7 test:', error)
       notifyError(t('gad7test.failed_to_assign_tests'))
@@ -100,13 +114,21 @@ export const GAD7TestDetail = (): ReactElement => {
   const formattedStartDate = formatDateWithLocale(startDate)
   const formattedEndDate = formatDateWithLocale(endDate)
 
+  if (isLoading) {
+    return (
+      <Layout>
+        <Typography variant='body1'>{t('gad7test.loading_configuration')}</Typography>
+        <LoadingSpinner />
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
+      <Typography variant='body1' sx={{ mb: 3 }}>
+        {t('gad7test.manage_description')}
+      </Typography>
       <Box sx={{ maxWidth: '500px' }}>
-        <Typography variant='body1' sx={{ mb: 2 }}>
-          {t('gad7test.manage_description')}
-        </Typography>
-
         <Box
           component='form'
           sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400 }}
@@ -130,45 +152,56 @@ export const GAD7TestDetail = (): ReactElement => {
             label={t('gad7test.doEveryNDays')}
             type='number'
             value={intervalDays}
-            onChange={(e) => setIntervalDays(parseInt(e.target.value))}
+            onChange={(e) => setIntervalDays(parseInt(e.target.value) || 0)}
             fullWidth
           />
 
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isPaused}
-                onChange={(e) => setIsPaused(e.target.checked)}
-                color='primary'
-              />
-            }
-            label={t('gad7test.pause_test_schedule')}
-            labelPlacement='start'
-            sx={{ justifyContent: 'space-between', width: '100%' }}
-          />
+          {!hasExistingTest ? null : (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPaused}
+                  onChange={(e) => setIsPaused(e.target.checked)}
+                  color='primary'
+                />
+              }
+              label={t('gad7test.pause_test_schedule')}
+              labelPlacement='start'
+              sx={{ justifyContent: 'space-between', width: '100%' }}
+            />
+          )}
 
-          <Typography variant='body2' sx={{ color: 'text.secondary' }}>
-            {t('gad7test.schedule_summary', {
-              days: intervalDays,
-              start_date: formattedStartDate,
-              end_date: formattedEndDate,
-            })}
-          </Typography>
-
-          <Button
-            onClick={handleUpdateTest}
-            variant='contained'
-            sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
-          >
-            {t('gad7test.save_changes')}
-          </Button>
-          <Button
-            onClick={handleCreateTest}
-            variant='contained'
-            sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
-          >
-            {t('gad7test.assign_tests')}
-          </Button>
+          {isPaused && (
+            <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+              {t('gad7test.schedule_is_paused')}
+            </Typography>
+          )}
+          {!isPaused && (
+            <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+              {t('gad7test.schedule_summary', {
+                days: intervalDays,
+                start_date: formattedStartDate,
+                end_date: formattedEndDate,
+              })}
+            </Typography>
+          )}
+          {hasExistingTest ? (
+            <Button
+              onClick={handleUpdateTest}
+              variant='contained'
+              sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
+            >
+              {t('gad7test.save_changes')}
+            </Button>
+          ) : (
+            <Button
+              onClick={handleCreateTest}
+              variant='contained'
+              sx={{ ...commonButtonStyles, height: 40, width: 200, mt: 2 }}
+            >
+              {t('gad7test.assign_tests')}
+            </Button>
+          )}
         </Box>
       </Box>
 

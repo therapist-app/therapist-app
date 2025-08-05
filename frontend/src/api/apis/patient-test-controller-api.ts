@@ -24,8 +24,6 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { PsychologicalTestCreateDTO } from '../models';
 // @ts-ignore
-import type { PsychologicalTestNameOutputDTOPatientAPI } from '../models';
-// @ts-ignore
 import type { PsychologicalTestOutputDTO } from '../models';
 /**
  * PatientTestControllerApi - axios parameter creator
@@ -48,7 +46,7 @@ export const PatientTestControllerApiAxiosParamCreator = function (configuration
             assertParamExists('assignPsychologicalTestToPatient', 'psychologicalTestName', psychologicalTestName)
             // verify required parameter 'psychologicalTestCreateDTO' is not null or undefined
             assertParamExists('assignPsychologicalTestToPatient', 'psychologicalTestCreateDTO', psychologicalTestCreateDTO)
-            const localVarPath = `/tests/patient/{patientId}/psychological-tests/{psychologicalTestName}/create`
+            const localVarPath = `/tests/patient/{patientId}/psychological-tests/{psychologicalTestName}/config`
                 .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
                 .replace(`{${"psychologicalTestName"}}`, encodeURIComponent(String(psychologicalTestName)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -79,14 +77,18 @@ export const PatientTestControllerApiAxiosParamCreator = function (configuration
         /**
          * 
          * @param {string} patientId 
+         * @param {string} psychologicalTestName 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPsychologicalTestNamesForPatient: async (patientId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPsychologicalTestToPatient: async (patientId: string, psychologicalTestName: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'patientId' is not null or undefined
-            assertParamExists('getPsychologicalTestNamesForPatient', 'patientId', patientId)
-            const localVarPath = `/tests/patient/{patientId}/psychological-tests/available-tests/`
-                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)));
+            assertParamExists('getPsychologicalTestToPatient', 'patientId', patientId)
+            // verify required parameter 'psychologicalTestName' is not null or undefined
+            assertParamExists('getPsychologicalTestToPatient', 'psychologicalTestName', psychologicalTestName)
+            const localVarPath = `/tests/patient/{patientId}/psychological-tests/{psychologicalTestName}/config`
+                .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
+                .replace(`{${"psychologicalTestName"}}`, encodeURIComponent(String(psychologicalTestName)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -161,7 +163,7 @@ export const PatientTestControllerApiAxiosParamCreator = function (configuration
             assertParamExists('updatePsychologicalTestToPatient', 'psychologicalTestName', psychologicalTestName)
             // verify required parameter 'psychologicalTestCreateDTO' is not null or undefined
             assertParamExists('updatePsychologicalTestToPatient', 'psychologicalTestCreateDTO', psychologicalTestCreateDTO)
-            const localVarPath = `/tests/patient/{patientId}/psychological-tests/{psychologicalTestName}/update`
+            const localVarPath = `/tests/patient/{patientId}/psychological-tests/{psychologicalTestName}/config`
                 .replace(`{${"patientId"}}`, encodeURIComponent(String(patientId)))
                 .replace(`{${"psychologicalTestName"}}`, encodeURIComponent(String(psychologicalTestName)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -216,13 +218,14 @@ export const PatientTestControllerApiFp = function(configuration?: Configuration
         /**
          * 
          * @param {string} patientId 
+         * @param {string} psychologicalTestName 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPsychologicalTestNamesForPatient(patientId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PsychologicalTestNameOutputDTOPatientAPI>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPsychologicalTestNamesForPatient(patientId, options);
+        async getPsychologicalTestToPatient(patientId: string, psychologicalTestName: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PsychologicalTestCreateDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPsychologicalTestToPatient(patientId, psychologicalTestName, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PatientTestControllerApi.getPsychologicalTestNamesForPatient']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PatientTestControllerApi.getPsychologicalTestToPatient']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -276,11 +279,12 @@ export const PatientTestControllerApiFactory = function (configuration?: Configu
         /**
          * 
          * @param {string} patientId 
+         * @param {string} psychologicalTestName 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPsychologicalTestNamesForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PsychologicalTestNameOutputDTOPatientAPI>> {
-            return localVarFp.getPsychologicalTestNamesForPatient(patientId, options).then((request) => request(axios, basePath));
+        getPsychologicalTestToPatient(patientId: string, psychologicalTestName: string, options?: RawAxiosRequestConfig): AxiosPromise<PsychologicalTestCreateDTO> {
+            return localVarFp.getPsychologicalTestToPatient(patientId, psychologicalTestName, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -326,11 +330,12 @@ export interface PatientTestControllerApiInterface {
     /**
      * 
      * @param {string} patientId 
+     * @param {string} psychologicalTestName 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientTestControllerApiInterface
      */
-    getPsychologicalTestNamesForPatient(patientId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<PsychologicalTestNameOutputDTOPatientAPI>>;
+    getPsychologicalTestToPatient(patientId: string, psychologicalTestName: string, options?: RawAxiosRequestConfig): AxiosPromise<PsychologicalTestCreateDTO>;
 
     /**
      * 
@@ -378,12 +383,13 @@ export class PatientTestControllerApi extends BaseAPI implements PatientTestCont
     /**
      * 
      * @param {string} patientId 
+     * @param {string} psychologicalTestName 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PatientTestControllerApi
      */
-    public getPsychologicalTestNamesForPatient(patientId: string, options?: RawAxiosRequestConfig) {
-        return PatientTestControllerApiFp(this.configuration).getPsychologicalTestNamesForPatient(patientId, options).then((request) => request(this.axios, this.basePath));
+    public getPsychologicalTestToPatient(patientId: string, psychologicalTestName: string, options?: RawAxiosRequestConfig) {
+        return PatientTestControllerApiFp(this.configuration).getPsychologicalTestToPatient(patientId, psychologicalTestName, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
