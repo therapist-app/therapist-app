@@ -1,7 +1,7 @@
 package ch.uzh.ifi.imrg.platform.enums;
 
 public enum LLMModel {
-  LOCAL_UZH(2_000),
+  LOCAL_UZH(15_000),
 
   AZURE_OPENAI(150_000);
 

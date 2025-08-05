@@ -20,7 +20,7 @@ public final class DocumentSummarizerUtil {
 
   private static final int MAX_LLM_CALLS = 3;
 
-  private static final int SINGLE_CALL_CHAR_BUDGET = MAX_SUMMARY_CHARS / MAX_LLM_CALLS; // ≈3 333
+  private static final int SINGLE_CALL_CHAR_BUDGET = MAX_SUMMARY_CHARS / MAX_LLM_CALLS;
 
   private static final Logger log = LoggerFactory.getLogger(DocumentSummarizerUtil.class);
 
@@ -65,8 +65,10 @@ public final class DocumentSummarizerUtil {
 
   public static String summarise(String fullText, Therapist therapist, TherapistRepository repo) {
 
-    LLMModel model = repo.getReferenceById(therapist.getId()).getLlmModel();
-    if (model == null) model = LLMModel.LOCAL_UZH;
+    LLMModel model = repo.findById(therapist.getId()).map(Therapist::getLlmModel).orElse(null);
+    if (model == null) {
+      model = LLMModel.LOCAL_UZH;
+    }
 
     LLM llm = LLMFactory.getInstance(model);
     int modelCharCap = charBudgetFor(model);
