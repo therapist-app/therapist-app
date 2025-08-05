@@ -563,6 +563,7 @@ interface Resources {
       "no_tests_yet": "Der Klient hat noch keine GAD-7-Tests ausgefüllt.",
       "failed_to_assign_tests": "Fehler beim Zuweisen von Tests an den Klienten.",
       "failed_to_update_tests": "Fehler beim Aktualisieren der Tests.",
+      "failed_to_load_test_configuration": "Fehler beim Laden der GAD-7-Testkonfiguration.",
       "answers": {
         "not_at_all": "Überhaupt nicht",
         "several_days": "An mehreren Tagen",
@@ -1191,6 +1192,7 @@ interface Resources {
       "no_tests_yet": "Client has not filled out any GAD-7 tests yet.",
       "failed_to_assign_tests": "Failed to assign GAD-7 tests.",
       "failed_to_update_tests": "Failed to update GAD-7 tests.",
+      "failed_to_load_test_configuration": "Failed to load GAD-7 test configuration.",
       "answers": {
         "not_at_all": "Not at all",
         "several_days": "Several days",
@@ -1819,6 +1821,7 @@ interface Resources {
       "no_tests_yet": "Клієнт ще не заповнював жодних тестів GAD-7.",
       "failed_to_assign_tests": "Не вдалося призначити тести GAD-7 клієнту.",
       "failed_to_update_tests": "Не вдалося оновити тести GAD-7 клієнту.",
+      "failed_to_load_test_configuration": "Не вдалося завантажити налаштування тесту GAD-7",
       "answers": {
         "not_at_all": "Зовсім ні",
         "several_days": "Кілька днів",

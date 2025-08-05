@@ -562,6 +562,7 @@
     "no_tests_yet": "Der Klient hat noch keine GAD-7-Tests ausgefüllt.",
     "failed_to_assign_tests": "Fehler beim Zuweisen von Tests an den Klienten.",
     "failed_to_update_tests": "Fehler beim Aktualisieren der Tests.",
+    "failed_to_load_test_configuration": "Fehler beim Laden der GAD-7-Testkonfiguration.",
     "answers": {
       "not_at_all": "Überhaupt nicht",
       "several_days": "An mehreren Tagen",

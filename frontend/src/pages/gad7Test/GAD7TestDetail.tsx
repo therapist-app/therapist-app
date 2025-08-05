@@ -3,18 +3,17 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { addWeeks } from 'date-fns'
-import { is } from 'date-fns/locale'
 import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import Layout from '../../generalComponents/Layout'
+import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 import { useNotify } from '../../hooks/useNotify'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientTestApi } from '../../utils/api'
 import { formatDateWithLocale, getCurrentLocale } from '../../utils/dateUtil'
 import GAD7TestTable from './GAD7TestTable'
-import LoadingSpinner from '../../generalComponents/LoadingSpinner'
 
 export const GAD7TestDetail = (): ReactElement => {
   const { t } = useTranslation()
@@ -51,7 +50,7 @@ export const GAD7TestDetail = (): ReactElement => {
           setHasExistingTest(false)
         }
       } catch {
-        notifyError(t('gad7test.failed_to_load_test_config'))
+        notifyError(t('gad7test.failed_to_load_test_configuration'))
       } finally {
         setIsLoading(false)
       }
