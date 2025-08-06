@@ -66,6 +66,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         borderRadius: '4px',
         boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
         color: '#333',
+        width: '120px',
         maxWidth: '300px',
         maxHeight: '400px',
         overflowY: 'auto',
