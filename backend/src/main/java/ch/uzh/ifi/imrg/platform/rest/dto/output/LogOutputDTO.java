@@ -12,4 +12,5 @@ public class LogOutputDTO {
   private String logType;
   private Instant timestamp;
   private String uniqueIdentifier;
+  private String comment;
 }

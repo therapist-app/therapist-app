@@ -50,5 +50,11 @@ export interface LogOutputDTO {
      * @memberof LogOutputDTO
      */
     'uniqueIdentifier'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LogOutputDTO
+     */
+    'comment'?: string;
 }
 
