@@ -4,4 +4,5 @@ export interface LogOutputDTO {
   logType: string
   timestamp: string
   uniqueIdentifier: string
+  comment: string
 }
