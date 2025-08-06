@@ -104,7 +104,7 @@ public class PatientDocumentService {
               }
 
               String summary =
-                  DocumentSummarizerUtil.summarise(raw, freshTherapist, therapistRepository);
+                  DocumentSummarizerUtil.summarize(raw, freshTherapist, therapistRepository);
 
               PatientDocument upd = patientDocumentRepository.findById(docId).orElse(null);
               if (upd != null) {

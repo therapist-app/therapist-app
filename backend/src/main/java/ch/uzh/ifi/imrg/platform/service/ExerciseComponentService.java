@@ -142,7 +142,7 @@ public class ExerciseComponentService {
           () -> {
             try {
               String summary =
-                  DocumentSummarizerUtil.summarise(raw, therapist, therapistRepository);
+                  DocumentSummarizerUtil.summarize(raw, therapist, therapistRepository);
 
               ExerciseComponent update = exerciseComponentRepository.findById(ecId).orElse(null);
               if (update != null) {

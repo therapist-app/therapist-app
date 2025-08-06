@@ -87,7 +87,7 @@ public class TherapistDocumentService {
               }
 
               String summary =
-                  DocumentSummarizerUtil.summarise(raw, freshTherapist, therapistRepository);
+                  DocumentSummarizerUtil.summarize(raw, freshTherapist, therapistRepository);
 
               TherapistDocument upd = therapistDocumentRepository.findById(docId).orElse(null);
               if (upd != null) {

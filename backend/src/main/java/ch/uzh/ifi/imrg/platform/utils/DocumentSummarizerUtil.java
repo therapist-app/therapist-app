@@ -63,7 +63,7 @@ public final class DocumentSummarizerUtil {
     return chunks;
   }
 
-  public static String summarise(String fullText, Therapist therapist, TherapistRepository repo) {
+  public static String summarize(String fullText, Therapist therapist, TherapistRepository repo) {
 
     LLMModel model = repo.findById(therapist.getId()).map(Therapist::getLlmModel).orElse(null);
     if (model == null) {
