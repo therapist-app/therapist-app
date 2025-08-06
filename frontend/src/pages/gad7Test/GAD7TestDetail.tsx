@@ -27,7 +27,7 @@ export const GAD7TestDetail = (): ReactElement => {
   const [hasExistingTest, setHasExistingTest] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  const testName = 'GAD7'
+  const testName = 'GAD-7'
 
   useEffect(() => {
     if (!patientId) {

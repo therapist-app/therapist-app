@@ -57,6 +57,12 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
 
   const logs: LogOutputDTO[] = cell.data?.logs || []
 
+  const formatTime = (timestamp: string): string => {
+    return format(new Date(timestamp), 'HH:mm:ss', {
+      locale: getCurrentLocale(),
+    })
+  }
+
   return (
     <div
       style={{
@@ -66,9 +72,8 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         borderRadius: '4px',
         boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
         color: '#333',
-        width: '120px',
-        maxWidth: '300px',
-        maxHeight: '400px',
+        minWidth: '120px',
+        maxWidth: '400px',
         overflowY: 'auto',
       }}
     >
@@ -78,9 +83,9 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         {t('patient_interactions.interactions')}: <strong>{cell.value}</strong>
       </div>
 
-      {logs.some((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment) && (
+      {logs.some((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment !== '') && (
         <div style={{ marginTop: '8px' }}>
-          <div style={{ fontWeight: '500', marginBottom: '4px' }}>
+          <div style={{ fontWeight: '500', marginTop: '15px', marginBottom: '4px' }}>
             {t('patient_interactions.harmful_content_alert')}:
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -94,8 +99,12 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
                     background: '#fff8f8',
                     borderRadius: '4px',
                     wordBreak: 'break-word',
+                    width: '400px',
                   }}
                 >
+                  <div style={{ fontWeight: '500', marginBottom: '2px' }}>
+                    {formatTime(log.timestamp)}:
+                  </div>
                   {log.comment}
                 </div>
               ))}
