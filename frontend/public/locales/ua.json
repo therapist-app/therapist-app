@@ -361,6 +361,7 @@
     "no_data": "Немає доступних даних журналу клієнта.",
     "interactions": "Взаємодії",
     "export_to_csv": "Експортувати в CSV",
+    "harmlful_content_alert": "Попередження про шкідливий вміст",
     "log_types": {
       "journal_creation": "Створення щоденника",
       "journal_update": "Оновлення щоденника",

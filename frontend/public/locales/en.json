@@ -361,6 +361,7 @@
     "no_data": "No client log data available.",
     "interactions": "Interactions",
     "export_to_csv": "Export to CSV",
+    "harmful_content_alert": "Harmful Content Alert",
     "log_types": {
       "journal_creation": "Journal Creation",
       "journal_update": "Journal Update",

@@ -35,6 +35,7 @@ interface InteractionData {
   date: string
   value: number
   type: string
+  logs: LogOutputDTO[]
 }
 
 interface HeatMapData {
@@ -54,23 +55,52 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const paddedHour = hourPart.padStart(2, '0')
   const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
 
+  const logs: LogOutputDTO[] = cell.data?.logs || []
+
   return (
     <div
       style={{
         fontFamily: 'Roboto, sans-serif',
-        padding: '8px 12px',
+        padding: '12px',
         background: 'white',
         borderRadius: '4px',
         boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
         color: '#333',
-        width: '120px',
+        maxWidth: '300px',
+        maxHeight: '400px',
+        overflowY: 'auto',
       }}
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
-      <div>
+      <div style={{ marginBottom: '8px' }}>
         {t('patient_interactions.interactions')}: <strong>{cell.value}</strong>
       </div>
+
+      {logs.some((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment) && (
+        <div style={{ marginTop: '8px' }}>
+          <div style={{ fontWeight: '500', marginBottom: '4px' }}>
+            {t('patient_interactions.harmful_content_alert')}:
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {logs
+              .filter((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment)
+              .map((log, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: '4px',
+                    background: '#fff8f8',
+                    borderRadius: '4px',
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  {log.comment}
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -82,16 +112,34 @@ const transformLogsToInteractionData = (
     return []
   }
 
-  return logs.map((log) => ({
-    date: format(new Date(log.timestamp), 'yyyy-MM-dd'),
-    hour: new Date(log.timestamp).getHours(),
-    value: 1,
-    type: log.logType,
-  }))
+  // Group logs by date and hour
+  const grouped = logs.reduce(
+    (acc, log) => {
+      const date = format(new Date(log.timestamp), 'yyyy-MM-dd')
+      const hour = new Date(log.timestamp).getHours()
+      const key = `${date}-${hour}`
+
+      if (!acc[key]) {
+        acc[key] = {
+          date: date,
+          hour: hour,
+          value: 0,
+          type: log.logType,
+          logs: [],
+        }
+      }
+      acc[key].value++
+      acc[key].logs.push(log)
+      return acc
+    },
+    {} as Record<string, InteractionData>
+  )
+
+  return Object.values(grouped)
 }
 
 const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): HeatMapData[] => {
-  const hourMap = new Map<number, Map<string, number>>()
+  const hourMap = new Map<number, Map<string, { y: number; logs: LogOutputDTO[] }>>()
 
   Array.from({ length: 24 }).forEach((_, hour) => {
     hourMap.set(hour, new Map())
@@ -101,16 +149,25 @@ const transformDataForHeatmap = (data: InteractionData[], dateRange: Date[]): He
     const shortDate = format(new Date(item.date), 'MM-dd')
     const hourData = hourMap.get(item.hour)
     if (hourData) {
-      hourData.set(shortDate, (hourData.get(shortDate) || 0) + item.value)
+      const existing = hourData.get(shortDate) || { y: 0, logs: [] }
+      hourData.set(shortDate, {
+        y: existing.y + item.value,
+        logs: [...existing.logs, ...item.logs],
+      })
     }
   })
 
   return Array.from(hourMap.entries()).map(([hour, dateCounts]) => ({
     id: hour.toString().padStart(2, '0'),
-    data: dateRange.map((date) => ({
-      x: format(date, 'MM-dd'),
-      y: dateCounts.get(format(date, 'MM-dd')) || 0,
-    })),
+    data: dateRange.map((date) => {
+      const shortDate = format(date, 'MM-dd')
+      const countData = dateCounts.get(shortDate) || { y: 0, logs: [] }
+      return {
+        x: shortDate,
+        y: countData.y,
+        logs: countData.logs,
+      }
+    }),
   }))
 }
 
@@ -155,6 +212,7 @@ const ClientInteractions = (): ReactElement => {
           logType: apiDto.logType || '',
           timestamp: apiDto.timestamp || '',
           uniqueIdentifier: apiDto.uniqueIdentifier || '',
+          comment: apiDto.comment || '',
         }))
 
         setLogsByType((prev) => ({ ...prev, [logType]: normalized }))
