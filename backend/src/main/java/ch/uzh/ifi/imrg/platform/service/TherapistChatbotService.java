@@ -19,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class TherapistChatbotService {
   private final PatientRepository patientRepository;
   private final TherapistRepository therapistRepository;
+  private final PatientAppContextService contextService;
 
   public TherapistChatbotService(
       @Qualifier("patientRepository") PatientRepository patientRepository,
-      @Qualifier("therapistRepository") TherapistRepository therapistRepository) {
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
+      PatientAppContextService contextService) {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
+    this.contextService = contextService;
   }
 
   public TherapistChatbotOutputDTO chat(
@@ -73,6 +76,7 @@ public class TherapistChatbotService {
       promptBuilder.append(loggedInTherapist.toLLMContext(0));
     } else {
       promptBuilder.append(patient.toLLMContext(0));
+      promptBuilder.append(contextService.buildContext(patient.getId()));
     }
 
     return promptBuilder.toString();
