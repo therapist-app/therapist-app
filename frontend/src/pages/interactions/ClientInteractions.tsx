@@ -48,6 +48,22 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const { t } = useTranslation()
   const [hourPart, datePart] = cell.id.split('.')
   const [month, day] = datePart.split('-')
+  const [positionStyle, setPositionStyle] = useState<React.CSSProperties>({})
+
+  // Get mouse position and calculate transform
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    const viewportWidth = window.innerWidth
+    const mouseX = e.clientX
+    
+    if (mouseX > viewportWidth / 2) {
+      // Right half of screen - shift left
+      setPositionStyle({ transform: 'translate(-50%, 0)' })
+    } else {
+      // Left half of screen - shift right
+      setPositionStyle({ transform: 'translate(50%, 0)' })
+    }
+    console.log('Mouse position:', mouseX, 'Position style:', positionStyle)
+  }
 
   const formattedDate = format(new Date(`${new Date().getFullYear()}-${month}-${day}`), 'PP', {
     locale: getCurrentLocale(),
@@ -55,8 +71,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const paddedHour = hourPart.padStart(2, '0')
   const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
 
-  // const logs: LogOutputDTO[] = cell.data?.logs || []
-    const logs: LogOutputDTO[] = [
+  const logs: LogOutputDTO[] = [
     {
       id: '1afd9acd-f66e-448a-866c-2be373aa6dd0',
       patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
@@ -71,8 +86,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
       logType: 'HARMFUL_CONTENT_DETECTED',
       timestamp: '2025-08-06T06:05:26.513182Z',
       uniqueIdentifier: '',
-      comment:
-        'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
+      comment: 'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
     },
   ]
 
@@ -81,6 +95,10 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
       locale: getCurrentLocale(),
     })
   }
+
+  const hasHarmfulContent = logs.some(
+    (log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment !== ''
+  )
 
   return (
     <div
@@ -91,9 +109,10 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         borderRadius: '4px',
         boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
         color: '#333',
-        minWidth: '120px',
-        maxWidth: '400px',
+        width: hasHarmfulContent ? '400px' : '120px',
+        ...positionStyle,
       }}
+      onMouseEnter={handleMouseEnter}
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
@@ -101,7 +120,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         {t('patient_interactions.interactions')}: <strong>{cell.value}</strong>
       </div>
 
-      {logs.some((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment !== '') && (
+      {hasHarmfulContent && (
         <div style={{ marginTop: '8px' }}>
           <div style={{ fontWeight: '500', marginTop: '15px', marginBottom: '4px' }}>
             {t('patient_interactions.harmful_content_alert')}:
@@ -117,7 +136,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
                     background: '#fff8f8',
                     borderRadius: '4px',
                     wordBreak: 'break-word',
-                    width: '400px',
+                    maxWidth: '100%',
                   }}
                 >
                   <div style={{ fontWeight: '500', marginBottom: '2px' }}>
@@ -335,153 +354,153 @@ const ClientInteractions = (): ReactElement => {
   }, [heatmapData])
 
   return (
-    <div style={{ overflow: 'hidden'}}>
-    <Layout>
-      <Stack spacing={2}>
-         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-          <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
-            <FormControl sx={{ minWidth: 250, marginTop: '5px' }}>
-              <InputLabel id='interaction-type-label'>
-                {t('patient_interactions.interaction_type')}
-              </InputLabel>
-              <Select
-                value={activeLogType || ''}
-                onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
-                label={t('patient_interactions.log_types')}
+    <div style={{ overflow: 'hidden' }}>
+      <Layout>
+        <Stack spacing={2}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <FormControl sx={{ minWidth: 250, marginTop: '5px' }}>
+                <InputLabel id='interaction-type-label'>
+                  {t('patient_interactions.interaction_type')}
+                </InputLabel>
+                <Select
+                  value={activeLogType || ''}
+                  onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
+                  label={t('patient_interactions.log_types')}
+                >
+                  {LOG_TYPES.map((logType) => (
+                    <MenuItem key={logType} value={logType}>
+                      {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <DatePicker
+                label={t('patient_interactions.start_date')}
+                value={startDate}
+                onChange={(newValue) => setStartDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                maxDate={endDate || undefined}
+              />
+              <DatePicker
+                label={t('patient_interactions.end_date')}
+                value={endDate}
+                onChange={(newValue) => setEndDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                minDate={startDate || undefined}
+              />
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                component='a'
+                onClick={exportToCSV}
+                target='_blank'
+                rel='noopener noreferrer'
+                sx={{ ...commonButtonStyles }}
+                size='small'
               >
-                {LOG_TYPES.map((logType) => (
-                  <MenuItem key={logType} value={logType}>
-                    {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <DatePicker
-              label={t('patient_interactions.start_date')}
-              value={startDate}
-              onChange={(newValue) => setStartDate(newValue)}
-              slotProps={{ textField: { size: 'small' } }}
-              maxDate={endDate || undefined}
-            />
-            <DatePicker
-              label={t('patient_interactions.end_date')}
-              value={endDate}
-              onChange={(newValue) => setEndDate(newValue)}
-              slotProps={{ textField: { size: 'small' } }}
-              minDate={startDate || undefined}
-            />
-            <Box sx={{ flexGrow: 1 }} />
+                {t('patient_interactions.export_to_csv')}
+              </Button>
+            </LocalizationProvider>
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
             <Button
-              component='a'
-              onClick={exportToCSV}
-              target='_blank'
-              rel='noopener noreferrer'
-              sx={{ ...commonButtonStyles }}
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
               size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 7))
+                setEndDate(new Date())
+              }}
             >
-              {t('patient_interactions.export_to_csv')}
+              {t('patient_interactions.last_week')}
             </Button>
-          </LocalizationProvider>
-        </Box>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 14))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_two_weeks')}
+            </Button>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 21))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_three_weeks')}
+            </Button>
+          </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 7))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_week')}
-          </Button>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 14))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_two_weeks')}
-          </Button>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 21))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_three_weeks')}
-          </Button>
-        </Box>
-
-        {loading ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '50px',
-            }}
-          >
-            <Typography>{t('patient_interactions.loading')}</Typography>
-            <div style={{ marginTop: '20px' }}>
-              <CircularProgress />
+          {loading ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: '50px',
+              }}
+            >
+              <Typography>{t('patient_interactions.loading')}</Typography>
+              <div style={{ marginTop: '20px' }}>
+                <CircularProgress />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div style={{ height: '650px' }}>
-            <ResponsiveHeatMapCanvas
-              data={heatmapData}
-              margin={{
-                top: 20,
-                right: 40,
-                bottom: dayDifference > 50 ? 120 : dayDifference > 28 ? 90 : 80,
-                left: 80,
-              }}
-              valueFormat='>-.0f'
-              axisTop={null}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: dayDifference > 50 ? 90 : dayDifference > 28 ? 45 : 0,
-                legend: t('patient_interactions.date'),
-                legendPosition: 'middle',
-                legendOffset: dayDifference > 50 ? 80 : 50,
-                format: (value) =>
-                  format(new Date(`${new Date().getFullYear()}-${value}`), 'MMM dd', {
-                    locale: getCurrentLocale(),
-                  }),
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: t('patient_interactions.time'),
-                legendPosition: 'middle',
-                legendOffset: -70,
-                format: (value) => `${value}:00`,
-              }}
-              colors={{
-                type: 'sequential',
-                scheme: 'purples',
-                minValue: 0,
-                maxValue: maxValue,
-              }}
-              emptyColor='#f8f9fa'
-              borderColor='#ffffff'
-              borderWidth={1}
-              enableLabels={false}
-              animate={false}
-              motionConfig='gentle'
-              tooltip={HeatmapTooltip}
-            />
-          </div>
-        )}
-      </Stack>
-    </Layout>
+          ) : (
+            <div style={{ height: '650px' }}>
+              <ResponsiveHeatMapCanvas
+                data={heatmapData}
+                margin={{
+                  top: 20,
+                  right: 40,
+                  bottom: dayDifference > 50 ? 120 : dayDifference > 28 ? 90 : 80,
+                  left: 80,
+                }}
+                valueFormat='>-.0f'
+                axisTop={null}
+                axisBottom={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: dayDifference > 50 ? 90 : dayDifference > 28 ? 45 : 0,
+                  legend: t('patient_interactions.date'),
+                  legendPosition: 'middle',
+                  legendOffset: dayDifference > 50 ? 80 : 50,
+                  format: (value) =>
+                    format(new Date(`${new Date().getFullYear()}-${value}`), 'MMM dd', {
+                      locale: getCurrentLocale(),
+                    }),
+                }}
+                axisLeft={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: t('patient_interactions.time'),
+                  legendPosition: 'middle',
+                  legendOffset: -70,
+                  format: (value) => `${value}:00`,
+                }}
+                colors={{
+                  type: 'sequential',
+                  scheme: 'purples',
+                  minValue: 0,
+                  maxValue: maxValue,
+                }}
+                emptyColor='#f8f9fa'
+                borderColor='#ffffff'
+                borderWidth={1}
+                enableLabels={false}
+                animate={false}
+                motionConfig='gentle'
+                tooltip={HeatmapTooltip}
+              />
+            </div>
+          )}
+        </Stack>
+      </Layout>
     </div>
   )
 }
