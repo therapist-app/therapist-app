@@ -204,6 +204,7 @@ Class | Method | HTTP request | Description
 *PatientControllerPatientAPI* | [**getCurrentlyLoggedInPatient**](docs/PatientControllerPatientAPI.md#getCurrentlyLoggedInPatient) | **GET** /patients/me | 
 *PatientControllerPatientAPI* | [**getLanguage**](docs/PatientControllerPatientAPI.md#getLanguage) | **GET** /patients/language | 
 *PatientControllerPatientAPI* | [**getName**](docs/PatientControllerPatientAPI.md#getName) | **GET** /patients/name | 
+*PatientControllerPatientAPI* | [**getNotificationStatus**](docs/PatientControllerPatientAPI.md#getNotificationStatus) | **GET** /patients/notifications | 
 *PatientControllerPatientAPI* | [**getOnboarded**](docs/PatientControllerPatientAPI.md#getOnboarded) | **GET** /patients/onboarded | 
 *PatientControllerPatientAPI* | [**loginTherapist**](docs/PatientControllerPatientAPI.md#loginTherapist) | **POST** /patients/login | 
 *PatientControllerPatientAPI* | [**logoutTherapist**](docs/PatientControllerPatientAPI.md#logoutTherapist) | **POST** /patients/logout | 
@@ -212,6 +213,7 @@ Class | Method | HTTP request | Description
 *PatientControllerPatientAPI* | [**setAvatar**](docs/PatientControllerPatientAPI.md#setAvatar) | **PUT** /patients/chat-bot-avatar | 
 *PatientControllerPatientAPI* | [**setLanguage**](docs/PatientControllerPatientAPI.md#setLanguage) | **PUT** /patients/language | 
 *PatientControllerPatientAPI* | [**setName**](docs/PatientControllerPatientAPI.md#setName) | **PUT** /patients/name | 
+*PatientControllerPatientAPI* | [**setNotificationStatus**](docs/PatientControllerPatientAPI.md#setNotificationStatus) | **PUT** /patients/notifications | 
 *PatientControllerPatientAPI* | [**setOnboarded**](docs/PatientControllerPatientAPI.md#setOnboarded) | **PUT** /patients/onboarded | 
 *PsychologicalTestControllerPatientAPI* | [**createPsychologicalTest**](docs/PsychologicalTestControllerPatientAPI.md#createPsychologicalTest) | **POST** /patients/tests | 
 *PsychologicalTestControllerPatientAPI* | [**getPsychologicalTestNames**](docs/PsychologicalTestControllerPatientAPI.md#getPsychologicalTestNames) | **GET** /patients/{patientId}/psychological-tests | 
@@ -264,6 +266,7 @@ Class | Method | HTTP request | Description
  - [MeetingOutputDTOPatientAPI](docs/MeetingOutputDTOPatientAPI.md)
  - [MessageOutputDTOPatientAPI](docs/MessageOutputDTOPatientAPI.md)
  - [NameConversationOutputDTOPatientAPI](docs/NameConversationOutputDTOPatientAPI.md)
+ - [NotificationStatusOutputDTOPatientAPI](docs/NotificationStatusOutputDTOPatientAPI.md)
  - [PatientOutputDTOPatientAPI](docs/PatientOutputDTOPatientAPI.md)
  - [PsychologicalTestAssignmentInputDTOPatientAPI](docs/PsychologicalTestAssignmentInputDTOPatientAPI.md)
  - [PsychologicalTestAssignmentOutputDTOPatientAPI](docs/PsychologicalTestAssignmentOutputDTOPatientAPI.md)
@@ -278,6 +281,7 @@ Class | Method | HTTP request | Description
  - [PutConversationNameDTOPatientAPI](docs/PutConversationNameDTOPatientAPI.md)
  - [PutLanguageDTOPatientAPI](docs/PutLanguageDTOPatientAPI.md)
  - [PutNameDTOPatientAPI](docs/PutNameDTOPatientAPI.md)
+ - [PutNotificationStatusDTOPatientAPI](docs/PutNotificationStatusDTOPatientAPI.md)
  - [PutOnboardedDTOPatientAPI](docs/PutOnboardedDTOPatientAPI.md)
  - [PutSharingDTOPatientAPI](docs/PutSharingDTOPatientAPI.md)
  - [ResetPasswordDTOPatientAPI](docs/ResetPasswordDTOPatientAPI.md)
