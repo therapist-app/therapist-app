@@ -43,7 +43,7 @@
 3. In the `.github/workflows/deploy.yml` file under the `Restart Kubernetes Deployments` section add the new secret to env section and echo it to the kubernetes overlays file in the main environment (see current implementation for reference)
 4. Add the new environment variable to the `backend/src/main/java/ch/uzh/ifi/imrg/platform/utils/EnvironmentVariables.java` file so it can be easily accessed in the code
 
-## Main, Production and UZH Environments
+## Main and UZH Environment
 
 ###  Main Environment
 
