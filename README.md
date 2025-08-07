@@ -25,25 +25,25 @@
 ###  Frontend
 
 - In the frontend there are ususally no secrets (as all of the code is sent to the client anyways)
-- To add a new environment variable, add it to the `.env` file in the frontend folder and to the `.env.production.main` and `.env.production.production` files
-- When building the docker image, the environment variables from the `.env.production.main` and `.env.production.production` files are automatically added to the built image
+- To add a new environment variable, add it to the `.env` file in the frontend folder and to the `.env.production.main` and `.env.production.uzh` files
+- When building the docker image, the environment variables from the `.env.production.main` and `.env.production.uzh` files are automatically added to the built image
 
 ### Backend
 
 ###  Non-Secret Environment Variables
 
 1. To add a new non-secret environment variable, add it to the `application-dev.properties.example`, `application-dev.properties` and `application-prod.properties` files in the backend folder.
-2. Additionally add the .env variables to the `.kubernetes/overlays/main/backend/kustomization.yaml` and `.kubernetes/overlays/production/backend/kustomization.yaml` files under the configMapGenerator section (for the main and production environments)
+2. Additionally add the .env variables to the `.kubernetes/overlays/main/backend/kustomization.yaml` and on the Ifi-Server under `/home/jonas/coach-app/backend/src/main/resources/application-uzh.properties`
 3. Add the new environment variable to the `backend/src/main/java/ch/uzh/ifi/imrg/platform/utils/EnvironmentVariables.java` file so it can be easily accessed in the code
 
 ###  Secret Environment Variables
 
 1. To add a new non-secret environment variable, add it to the `application-dev.properties.example`, `application-dev.properties` and `application-prod.properties` files in the backend folder.
-2. Additionally add the .env variable as a repository secret in Github under `Settings` -> `Secrets and variables` -> `New repository secret`. Add it for both main and production environments. E.g. `DB_PASSWORD_MAIN` and `DB_PASSWORD_PRODUCTION`
-3. In the `.github/workflows/deploy.yml` file under the `Restart Kubernetes Deployments` section add the new secret to env section and echo it to the kubernetes overlays file in the main and production environments (see current implementation for reference)
+2. Additionally add the .env variable as a repository secret in Github under `Settings` -> `Secrets and variables` -> `New repository secret`.
+3. In the `.github/workflows/deploy.yml` file under the `Restart Kubernetes Deployments` section add the new secret to env section and echo it to the kubernetes overlays file in the main environment (see current implementation for reference)
 4. Add the new environment variable to the `backend/src/main/java/ch/uzh/ifi/imrg/platform/utils/EnvironmentVariables.java` file so it can be easily accessed in the code
 
-## Main, Production and UZH Environments
+## Main and UZH Environment
 
 ###  Main Environment
 
@@ -52,14 +52,6 @@
 - Backend Coach App: <https://backend-therapist-app-main.jonas-blum.ch>
 - Frontend Client App: <https://patient-app-main.jonas-blum.ch/client>
 - Backend Client App: <https://backend-patient-app-main.jonas-blum.ch>
-
-### Production Environment
-
-- The "production" environment shows the latest changes on the production branch
-- Frontend Coach App: <https://therapist-app-production.jonas-blum.ch>
-- Backend Coach App: <https://backend-therapist-app-production.jonas-blum.ch>
-- Frontend Client App: <https://patient-app-production.jonas-blum.ch/client>
-- Backend Client App: <https://backend-patient-app-production.jonas-blum.ch>
 
 ### UZH Environment
 

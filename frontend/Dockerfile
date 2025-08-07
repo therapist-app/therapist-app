@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ARG ENV_NAME=production
+ARG ENV_NAME=main
 
 RUN cp .env.production.$ENV_NAME .env
 
