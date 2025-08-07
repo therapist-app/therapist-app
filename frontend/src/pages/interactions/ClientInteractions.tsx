@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMapCanvas } from '@nivo/heatmap'
 import { AxiosResponse } from 'axios'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -51,18 +51,25 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const [positionStyle, setPositionStyle] = useState<React.CSSProperties>({})
 
   // Get mouse position and calculate transform
-  const handleMouseEnter = (e: React.MouseEvent) => {
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!tooltipRef.current) return
+    
     const viewportWidth = window.innerWidth
     const mouseX = e.clientX
+    const tooltipRect = tooltipRef.current.getBoundingClientRect()
+    const isRightHalf = mouseX > viewportWidth / 2
     
-    if (mouseX > viewportWidth / 2) {
-      // Right half of screen - shift left
-      setPositionStyle({ transform: 'translate(-50%, 0)' })
-    } else {
-      // Left half of screen - shift right
-      setPositionStyle({ transform: 'translate(50%, 0)' })
-    }
-    console.log('Mouse position:', mouseX, 'Position style:', positionStyle)
+    console.group('Tooltip Positioning Debug')
+    console.log('Viewport width:', viewportWidth)
+    console.log('Mouse X:', mouseX)
+    console.log('Tooltip width:', tooltipRect.width)
+    console.log('Screen half:', isRightHalf ? 'Right' : 'Left')
+    
+    const transformValue = isRightHalf ? 'translate(-50%, 0)' : 'translate(50%, 0)'
+    tooltipRef.current.style.transform = transformValue
+    console.groupEnd()
   }
 
   const formattedDate = format(new Date(`${new Date().getFullYear()}-${month}-${day}`), 'PP', {
@@ -86,7 +93,8 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
       logType: 'HARMFUL_CONTENT_DETECTED',
       timestamp: '2025-08-06T06:05:26.513182Z',
       uniqueIdentifier: '',
-      comment: 'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
+      comment:
+        'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
     },
   ]
 
@@ -104,6 +112,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
     <div
       style={{
         fontFamily: 'Roboto, sans-serif',
+        pointerEvents: 'auto',
         padding: '12px',
         background: 'white',
         borderRadius: '4px',
@@ -112,7 +121,8 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         width: hasHarmfulContent ? '400px' : '120px',
         ...positionStyle,
       }}
-      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
+      ref={tooltipRef}  
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
@@ -314,7 +324,6 @@ const ClientInteractions = (): ReactElement => {
     if (!loadedLogTypes.has(logType)) {
       await fetchLogTypeData(logType)
     }
-    console.log('Heatmap data for:', logType, heatmapData)
   }
 
   // Transform logs to interaction data
