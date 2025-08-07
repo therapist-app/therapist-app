@@ -52,7 +52,7 @@
     "close": "Schliessen",
     "collapse_AI_assistant": "KI-Assistent einklappen",
     "delete_chat": "Diesen Chat löschen",
-    "chatbot_placeholder": "Frage den Chatbot zu",
+    "chatbot_placeholder": "Frage Eliza zu",
     "chatbot_placeholder_selected_client": "dem aktuell ausgewählten Klienten",
     "chatbot_placeholder_all_clients": "allen Klienten"
   },
@@ -608,7 +608,7 @@
       "details": "Beratungsplan"
     },
     "not_found": "Nicht gefunden",
-    "therapist_chatbot": "Coach-Chatbot"
+    "eliza": "Eliza"
   },
   "files": {
     "download_success": "Datei erfolgreich heruntergeladen",
