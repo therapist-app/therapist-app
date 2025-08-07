@@ -464,20 +464,20 @@ interface Resources {
       "invalid_email": "Ungültige E-Mail-Adresse"
     },
     "register": {
-      "welcome": "Willkommen in der Coach-App",
-      "register_therapist": "Als neuer Coach registrieren",
+      "welcome": "Willkommen",
       "email": "E-Mail",
       "password": "Passwort",
       "register": "Registrieren",
+      "or": "oder",
       "go_login": "Stattdessen zur Anmeldung",
       "success": "Erfolgreich registriert"
     },
     "login": {
-      "welcome": "Willkommen in der Coach-App",
-      "login_therapist": "Als Coach anmelden",
+      "welcome": "Willkommen zurück",
       "email": "E-Mail",
       "password": "Passwort",
       "login": "Anmelden",
+      "or": "oder",
       "go_registration": "Stattdessen zur Registrierung",
       "success": "Erfolgreiche Anmeldung"
     },
@@ -1094,20 +1094,20 @@ interface Resources {
       "invalid_email": "Invalid email address format"
     },
     "register": {
-      "welcome": "Welcome to the Coach App",
-      "register_therapist": "Register as a New Coach",
+      "welcome": "Welcome",
       "email": "Email",
       "password": "Password",
       "register": "Register",
+      "or": "or",
       "go_login": "Go to Login instead",
       "success": "Successfully registered"
     },
     "login": {
-      "welcome": "Welcome to the Coach App",
-      "login_therapist": "Log in as a Coach",
+      "welcome": "Welcome Back",
       "email": "Email",
       "password": "Password",
       "login": "Login",
+      "or": "or",
       "go_registration": "Go to Registration instead",
       "success": "Successful login"
     },
@@ -1724,20 +1724,20 @@ interface Resources {
       "invalid_email": "Невірна електронна адреса"
     },
     "register": {
-      "welcome": "Ласкаво просимо до додатку для коучів",
-      "register_therapist": "Зареєструватися як новий коуч",
+      "welcome": "Ласкаво просимо",
       "email": "Електронна пошта",
       "password": "Пароль",
       "register": "Зареєструватися",
+      "or": "або",
       "go_login": "Перейти до входу",
       "success": "Успішно зареєстровано"
     },
     "login": {
-      "welcome": "Ласкаво просимо до додатку для коучів",
-      "login_therapist": "Увійти як коуч",
+      "welcome": "Ласкаво просимо",
       "email": "Електронна пошта",
       "password": "Пароль",
       "login": "Увійти",
+      "or": "або",
       "go_registration": "Перейти до реєстрації",
       "success": "Вхід виконано успішно"
     },

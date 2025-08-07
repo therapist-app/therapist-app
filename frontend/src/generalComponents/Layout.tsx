@@ -236,9 +236,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               style={{
                 fontSize: '90px',
                 color: 'white',
-                marginTop: '0px',
-                marginLeft: '-10px',
-                marginBottom: '10px',
+                marginTop: '10px',
+                marginLeft: '-0px',
+                marginBottom: '20px',
                 padding: '0px',
               }}
             >
@@ -303,7 +303,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               marginBottom: '20px',
             }}
           >
-            <img src={logo} alt='UZH Chatbot' style={{ width: '70%'}} />
+            <img src={logo} alt='UZH Chatbot' style={{ width: '70%' }} />
           </div>
         </Drawer>
 
