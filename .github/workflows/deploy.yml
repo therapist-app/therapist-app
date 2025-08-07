@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - production
 
 jobs:
   build-and-restart:
@@ -21,13 +20,6 @@ jobs:
             echo "BRANCH=main" >> $GITHUB_ENV
             echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-main:latest" >> $GITHUB_ENV
             echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-main:latest" >> $GITHUB_ENV
-
-          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
-
-            echo "BRANCH=production" >> $GITHUB_ENV
-            echo "FRONTEND_IMAGE=jonasblum/therapist-app-frontend-production:latest" >> $GITHUB_ENV
-            echo "BACKEND_IMAGE=jonasblum/therapist-app-backend-production:latest" >> $GITHUB_ENV
-
           fi
 
       - name: Build Images for Frontend and Backend
@@ -43,13 +35,10 @@ jobs:
       - name: Restart Kubernetes Deployments
         env:
           DB_PASSWORD_MAIN: ${{ secrets.DB_PASSWORD_MAIN }}
-          DB_PASSWORD_PRODUCTION: ${{ secrets.DB_PASSWORD_PRODUCTION }}
           JWT_SECRET_KEY_MAIN: ${{ secrets.JWT_SECRET_KEY_MAIN }}
-          JWT_SECRET_KEY_PRODUCTION: ${{ secrets.JWT_SECRET_KEY_PRODUCTION }}
           CHAT_GPT_API_KEY: ${{secrets.CHAT_GPT_API_KEY}}
           LOCAL_LLM_API_KEY: ${{ secrets.LOCAL_LLM_API_KEY }}
           COACH_ACCESS_KEY_MAIN: ${{secrets.COACH_ACCESS_KEY_MAIN}}
-          COACH_ACCESS_KEY_PRODUCTION: ${{secrets.COACH_ACCESS_KEY_PRODUCTION}}
           AZURE_OPENAI_ENDPOINT: ${{secrets.AZURE_OPENAI_ENDPOINT}}
           AZURE_OPENAI_API_KEY: ${{secrets.AZURE_OPENAI_API_KEY}}
 
@@ -69,21 +58,4 @@ jobs:
 
             kubectl rollout restart deployment/therapist-app-backend -n therapist-app-main
             kubectl rollout restart deployment/therapist-app-frontend -n therapist-app-main
-
-          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then 
-            
-            echo "DB_PASSWORD=$DB_PASSWORD_PRODUCTION" > .kubernetes/overlays/production/backend/env.secrets
-            echo "JWT_SECRET_KEY=$JWT_SECRET_KEY_PRODUCTION" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "CHAT_GPT_API_KEY=$CHAT_GPT_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "LOCAL_LLM_API_KEY=$LOCAL_LLM_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "COACH_ACCESS_KEY=$COACH_ACCESS_KEY_PRODUCTION" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> .kubernetes/overlays/production/backend/env.secrets
-            echo "AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY" >> .kubernetes/overlays/production/backend/env.secrets
-            
-            kubectl apply -k .kubernetes/overlays/production/backend
-            kubectl apply -k .kubernetes/overlays/production/frontend
-
-            kubectl rollout restart deployment/therapist-app-backend -n therapist-app-production
-            kubectl rollout restart deployment/therapist-app-frontend -n therapist-app-production
-            
           fi

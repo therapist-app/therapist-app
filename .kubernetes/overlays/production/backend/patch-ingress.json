@@ -1,7 +1,0 @@
-[
-    {
-        "op": "replace",
-        "path": "/spec/rules/0/host",
-        "value": "backend-therapist-app-production.jonas-blum.ch"
-    }
-]
