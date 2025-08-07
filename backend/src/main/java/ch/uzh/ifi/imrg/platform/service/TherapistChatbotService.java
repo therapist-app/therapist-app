@@ -22,10 +22,9 @@ public class TherapistChatbotService {
   private final PatientAppContextService contextService;
 
   public TherapistChatbotService(
-          @Qualifier("patientRepository") PatientRepository patientRepository,
-          @Qualifier("therapistRepository") TherapistRepository therapistRepository,
-          PatientAppContextService contextService
-  ) {
+      @Qualifier("patientRepository") PatientRepository patientRepository,
+      @Qualifier("therapistRepository") TherapistRepository therapistRepository,
+      PatientAppContextService contextService) {
     this.patientRepository = patientRepository;
     this.therapistRepository = therapistRepository;
     this.contextService = contextService;
@@ -77,9 +76,7 @@ public class TherapistChatbotService {
       promptBuilder.append(loggedInTherapist.toLLMContext(0));
     } else {
       promptBuilder.append(patient.toLLMContext(0));
-      promptBuilder.append(
-              contextService.buildContext(patient.getId())
-      );
+      promptBuilder.append(contextService.buildContext(patient.getId()));
     }
 
     return promptBuilder.toString();

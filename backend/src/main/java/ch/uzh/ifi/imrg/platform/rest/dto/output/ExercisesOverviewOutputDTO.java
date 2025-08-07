@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExercisesOverviewOutputDTO {
-    private String id;
-    private String exerciseTitle;
+  private String id;
+  private String exerciseTitle;
 }

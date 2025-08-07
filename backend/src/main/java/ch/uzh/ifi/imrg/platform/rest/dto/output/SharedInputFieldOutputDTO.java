@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SharedInputFieldOutputDTO {
-    String exerciseComponentId;
-    String userInput;
-
+  String exerciseComponentId;
+  String userInput;
 }

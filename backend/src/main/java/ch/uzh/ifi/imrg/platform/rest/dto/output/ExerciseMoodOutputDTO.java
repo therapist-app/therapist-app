@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExerciseMoodOutputDTO {
-    private String moodName;
-    private int moodScore;
-
+  private String moodName;
+  private int moodScore;
 }
