@@ -229,12 +229,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               display: 'flex',
               justifyContent: 'center',
               width: '100%',
-              marginTop: '30px',
-              marginBottom: '70px',
             }}
           >
-            <img src={logo} alt='UZH Chatbot' style={{ width: '80%' }} />
+            <p
+              className='jost-font'
+              style={{
+                fontSize: '90px',
+                color: 'white',
+                marginTop: '0px',
+                marginLeft: '-10px',
+                marginBottom: '10px',
+                padding: '0px',
+              }}
+            >
+              Nexa
+            </p>
           </div>
+
           <Box
             sx={{
               display: 'flex',
@@ -279,6 +290,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               )
             })}
           </Box>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+              position: 'sticky',
+              bottom: 0,
+              padding: 2,
+              marginTop: 'auto',
+              marginBottom: '20px',
+            }}
+          >
+            <img src={logo} alt='UZH Chatbot' style={{ width: '70%'}} />
+          </div>
         </Drawer>
 
         <Box component='main' sx={{ flexGrow: 1, p: 3, bgcolor: 'white', pb: '120px' }}>
