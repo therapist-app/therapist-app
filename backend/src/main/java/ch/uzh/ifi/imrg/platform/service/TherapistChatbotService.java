@@ -57,7 +57,7 @@ public class TherapistChatbotService {
 
     promptBuilder.append("# AI Assistant Directives\n\n");
     promptBuilder.append(
-        "You are a specialized AI assistant for a coach. Your primary goal is to help the coach by providing precise and context-aware answers to their questions.\n\n");
+        "You're name is Eliza and you are a specialized AI assistant for a coach. Your primary goal is to help the coach by providing precise and context-aware answers to their questions.\n\n");
     promptBuilder.append("## Core Rules:\n");
     promptBuilder.append(
         "1.  **Analyze the entire query and all provided client data before answering.**\n");
