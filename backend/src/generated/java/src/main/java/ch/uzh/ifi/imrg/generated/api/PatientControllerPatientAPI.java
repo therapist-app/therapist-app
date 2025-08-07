@@ -5,10 +5,12 @@ import ch.uzh.ifi.imrg.generated.invoker.ApiClient;
 import ch.uzh.ifi.imrg.generated.model.ChangePasswordDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.CreatePatientDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.LoginPatientDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.NotificationStatusOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PatientOutputDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutAvatarDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutLanguageDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutNameDTOPatientAPI;
+import ch.uzh.ifi.imrg.generated.model.PutNotificationStatusDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.PutOnboardedDTOPatientAPI;
 import ch.uzh.ifi.imrg.generated.model.ResetPasswordDTOPatientAPI;
 
@@ -378,6 +380,70 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec getNameWithResponseSpec() throws WebClientResponseException {
         return getNameRequestCreation();
+    }
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return NotificationStatusOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec getNotificationStatusRequestCreation() throws WebClientResponseException {
+        Object postBody = null;
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { 
+            "*/*"
+        };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI>() {};
+        return apiClient.invokeAPI("/patients/notifications", HttpMethod.GET, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return NotificationStatusOutputDTOPatientAPI
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<NotificationStatusOutputDTOPatientAPI> getNotificationStatus() throws WebClientResponseException {
+        ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI>() {};
+        return getNotificationStatusRequestCreation().bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseEntity&lt;NotificationStatusOutputDTOPatientAPI&gt;
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<NotificationStatusOutputDTOPatientAPI>> getNotificationStatusWithHttpInfo() throws WebClientResponseException {
+        ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI> localVarReturnType = new ParameterizedTypeReference<NotificationStatusOutputDTOPatientAPI>() {};
+        return getNotificationStatusRequestCreation().toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>200</b> - OK
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec getNotificationStatusWithResponseSpec() throws WebClientResponseException {
+        return getNotificationStatusRequestCreation();
     }
     /**
      * 
@@ -925,6 +991,75 @@ public class PatientControllerPatientAPI {
      */
     public ResponseSpec setNameWithResponseSpec(PutNameDTOPatientAPI putNameDTOPatientAPI) throws WebClientResponseException {
         return setNameRequestCreation(putNameDTOPatientAPI);
+    }
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param putNotificationStatusDTOPatientAPI The putNotificationStatusDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    private ResponseSpec setNotificationStatusRequestCreation(PutNotificationStatusDTOPatientAPI putNotificationStatusDTOPatientAPI) throws WebClientResponseException {
+        Object postBody = putNotificationStatusDTOPatientAPI;
+        // verify the required parameter 'putNotificationStatusDTOPatientAPI' is set
+        if (putNotificationStatusDTOPatientAPI == null) {
+            throw new WebClientResponseException("Missing the required parameter 'putNotificationStatusDTOPatientAPI' when calling setNotificationStatus", HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null, null, null);
+        }
+        // create path and map variables
+        final Map<String, Object> pathParams = new HashMap<String, Object>();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, String> cookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] localVarAccepts = { };
+        final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        final String[] localVarContentTypes = { 
+            "application/json"
+        };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+        String[] localVarAuthNames = new String[] { "X-Coach-Key" };
+
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/patients/notifications", HttpMethod.PUT, pathParams, queryParams, postBody, headerParams, cookieParams, formParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param putNotificationStatusDTOPatientAPI The putNotificationStatusDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<Void> setNotificationStatus(PutNotificationStatusDTOPatientAPI putNotificationStatusDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setNotificationStatusRequestCreation(putNotificationStatusDTOPatientAPI).bodyToMono(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param putNotificationStatusDTOPatientAPI The putNotificationStatusDTOPatientAPI parameter
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public Mono<ResponseEntity<Void>> setNotificationStatusWithHttpInfo(PutNotificationStatusDTOPatientAPI putNotificationStatusDTOPatientAPI) throws WebClientResponseException {
+        ParameterizedTypeReference<Void> localVarReturnType = new ParameterizedTypeReference<Void>() {};
+        return setNotificationStatusRequestCreation(putNotificationStatusDTOPatientAPI).toEntity(localVarReturnType);
+    }
+
+    /**
+     * 
+     * 
+     * <p><b>204</b> - No Content
+     * @param putNotificationStatusDTOPatientAPI The putNotificationStatusDTOPatientAPI parameter
+     * @return ResponseSpec
+     * @throws WebClientResponseException if an error occurs while attempting to invoke the API
+     */
+    public ResponseSpec setNotificationStatusWithResponseSpec(PutNotificationStatusDTOPatientAPI putNotificationStatusDTOPatientAPI) throws WebClientResponseException {
+        return setNotificationStatusRequestCreation(putNotificationStatusDTOPatientAPI);
     }
     /**
      * 
