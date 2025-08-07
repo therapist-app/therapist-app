@@ -55,7 +55,26 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const paddedHour = hourPart.padStart(2, '0')
   const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
 
-  const logs: LogOutputDTO[] = cell.data?.logs || []
+  // const logs: LogOutputDTO[] = cell.data?.logs || []
+    const logs: LogOutputDTO[] = [
+    {
+      id: '1afd9acd-f66e-448a-866c-2be373aa6dd0',
+      patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
+      logType: 'HARMFUL_CONTENT_DETECTED',
+      timestamp: '2025-08-06T06:05:20.292098Z',
+      uniqueIdentifier: '',
+      comment: 'Potentially harmful message: "i will kill myself"',
+    },
+    {
+      id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
+      patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
+      logType: 'HARMFUL_CONTENT_DETECTED',
+      timestamp: '2025-08-06T06:05:26.513182Z',
+      uniqueIdentifier: '',
+      comment:
+        'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
+    },
+  ]
 
   const formatTime = (timestamp: string): string => {
     return format(new Date(timestamp), 'HH:mm:ss', {
@@ -74,7 +93,6 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         color: '#333',
         minWidth: '120px',
         maxWidth: '400px',
-        overflowY: 'auto',
       }}
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
@@ -317,11 +335,12 @@ const ClientInteractions = (): ReactElement => {
   }, [heatmapData])
 
   return (
+    <div style={{ overflow: 'hidden'}}>
     <Layout>
       <Stack spacing={2}>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
           <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
-            <FormControl sx={{ minWidth: 250 }}>
+            <FormControl sx={{ minWidth: 250, marginTop: '5px' }}>
               <InputLabel id='interaction-type-label'>
                 {t('patient_interactions.interaction_type')}
               </InputLabel>
@@ -463,6 +482,7 @@ const ClientInteractions = (): ReactElement => {
         )}
       </Stack>
     </Layout>
+    </div>
   )
 }
 

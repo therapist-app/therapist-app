@@ -49,7 +49,7 @@ interface LayoutLocationState {
   patientId?: string
 }
 
-const drawerWidth = 280
+const drawerWidth = 260
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const dispatch = useAppDispatch()
