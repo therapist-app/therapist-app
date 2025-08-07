@@ -463,20 +463,20 @@
     "invalid_email": "Ungültige E-Mail-Adresse"
   },
   "register": {
-    "welcome": "Willkommen in der Coach-App",
-    "register_therapist": "Als neuer Coach registrieren",
+    "welcome": "Willkommen",
     "email": "E-Mail",
     "password": "Passwort",
     "register": "Registrieren",
+    "or": "oder",
     "go_login": "Stattdessen zur Anmeldung",
     "success": "Erfolgreich registriert"
   },
   "login": {
-    "welcome": "Willkommen in der Coach-App",
-    "login_therapist": "Als Coach anmelden",
+    "welcome": "Willkommen zurück",
     "email": "E-Mail",
     "password": "Passwort",
     "login": "Anmelden",
+    "or": "oder",
     "go_registration": "Stattdessen zur Registrierung",
     "success": "Erfolgreiche Anmeldung"
   },

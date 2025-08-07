@@ -463,20 +463,20 @@
     "invalid_email": "Invalid email address format"
   },
   "register": {
-    "welcome": "Welcome to the Coach App",
-    "register_therapist": "Register as a New Coach",
+    "welcome": "Welcome",
     "email": "Email",
     "password": "Password",
     "register": "Register",
+    "or": "or",
     "go_login": "Go to Login instead",
     "success": "Successfully registered"
   },
   "login": {
-    "welcome": "Welcome to the Coach App",
-    "login_therapist": "Log in as a Coach",
+    "welcome": "Welcome Back",
     "email": "Email",
     "password": "Password",
     "login": "Login",
+    "or": "or",
     "go_registration": "Go to Registration instead",
     "success": "Successful login"
   },
