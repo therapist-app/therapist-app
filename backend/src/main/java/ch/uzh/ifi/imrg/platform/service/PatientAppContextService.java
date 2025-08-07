@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.time.*;
 import java.time.temporal.WeekFields;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.function.BiFunction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,64 +28,72 @@ public class PatientAppContextService {
     sb.append(journalEntries(patientId));
     sb.append(logAggregation(patientId));
 
-    System.out.println(sb.toString());
-
     return sb.toString();
   }
 
   private String latestGad7(String patientId) {
-    try {
-      List<PsychologicalTestOutputDTOPatientAPI> apiResults =
-          PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
-              .getPsychologicalTestResults1(patientId, "GAD7")
-              .collectList()
-              .block();
 
-      if (apiResults == null || apiResults.isEmpty()) return "";
+    BiFunction<String, String, List<PsychologicalTestOutputDTO>> fetch =
+        (a, b) -> {
+          try {
+            List<PsychologicalTestOutputDTOPatientAPI> raw =
+                PatientAppAPIs.coachPsychologicalTestControllerPatientAPI
+                    .getPsychologicalTestResults1(a, b)
+                    .collectList()
+                    .block();
+            if (raw == null) return List.of();
+            return raw.stream()
+                .map(PatientPsychologicalTestMapper.INSTANCE::toPsychologicalTestOutputDTO)
+                .filter(Objects::nonNull)
+                .toList();
+          } catch (Exception e) {
+            return List.of();
+          }
+        };
 
-      List<PsychologicalTestOutputDTO> results =
-          apiResults.stream()
-              .map(PatientPsychologicalTestMapper.INSTANCE::toPsychologicalTestOutputDTO)
-              .filter(Objects::nonNull)
-              .toList();
+    List<String> names = List.of("GAD7", "Gad7", "GAD-7", "Gad-7");
+    List<PsychologicalTestOutputDTO> results = List.of();
 
-      if (results.isEmpty()) return "";
-
-      PsychologicalTestOutputDTO latest =
-          results.stream()
-              .max(Comparator.comparing(PsychologicalTestOutputDTO::getCompletedAt))
-              .orElseThrow();
-
-      int totalScore =
-          latest.getQuestions().stream()
-              .mapToInt(
-                  q -> {
-                    for (String getter :
-                        List.of(
-                            "getSelectedAnswer", "getSelectedOption", "getAnswer", "getScore")) {
-                      try {
-                        Method m = q.getClass().getMethod(getter);
-                        Object val = m.invoke(q);
-                        if (val instanceof Integer i) return i;
-                        if (val instanceof Number n) return n.intValue();
-                      } catch (Exception ignored) {
-                      }
-                    }
-                    return 0;
-                  })
-              .sum();
-
-      return """
-               ### Latest GAD-7
-               • Completed: %s
-               • Total score: %d
-
-               """
-          .formatted(latest.getCompletedAt().atZone(ZONE).toLocalDate(), totalScore);
-
-    } catch (Exception e) {
-      return "";
+    outer:
+    for (String n : names) {
+      for (boolean reversed : List.of(false, true)) {
+        results = reversed ? fetch.apply(n, patientId) : fetch.apply(patientId, n);
+        if (!results.isEmpty()) break outer;
+      }
     }
+
+    if (results.isEmpty()) return "";
+
+    PsychologicalTestOutputDTO latest =
+        results.stream()
+            .max(Comparator.comparing(PsychologicalTestOutputDTO::getCompletedAt))
+            .orElseThrow();
+
+    int totalScore =
+        latest.getQuestions().stream()
+            .mapToInt(
+                q -> {
+                  for (String g :
+                      List.of("getSelectedAnswer", "getSelectedOption", "getAnswer", "getScore")) {
+                    try {
+                      Method m = q.getClass().getMethod(g);
+                      Object v = m.invoke(q);
+                      if (v instanceof Integer i) return i;
+                      if (v instanceof Number n) return n.intValue();
+                    } catch (Exception ignored) {
+                    }
+                  }
+                  return 0;
+                })
+            .sum();
+
+    return """
+           ### Latest GAD-7
+           • Completed: %s
+           • Total score: %d
+
+           """
+        .formatted(latest.getCompletedAt().atZone(ZONE).toLocalDate(), totalScore);
   }
 
   private String exerciseCompletions(String patientId) {
@@ -192,45 +200,56 @@ public class PatientAppContextService {
 
   private String logAggregation(String patientId) {
     try {
+      ZoneId zone = ZONE;
       WeekFields wf = WeekFields.ISO;
-      LocalDate cutoff = LocalDate.now(ZONE).minusWeeks(4);
+      LocalDate fourWeeksAgo = LocalDate.now(zone).minusWeeks(4);
 
-      StringBuilder sb = new StringBuilder("### Log Counts (per ISO-week, last 4 weeks)\n");
-
+      Map<LogTypes, List<LogOutputDTOPatientAPI>> rawByType = new EnumMap<>(LogTypes.class);
       for (LogTypes type : LogTypes.values()) {
-        List<LogOutputDTOPatientAPI> logs =
+        List<LogOutputDTOPatientAPI> lst =
             PatientAppAPIs.coachLogControllerPatientAPI
                 .listAll1(patientId, type.name())
                 .collectList()
                 .blockOptional()
                 .orElse(Collections.emptyList());
-
-        Map<Integer, Long> counts =
-            logs.stream()
-                .filter(
-                    l ->
-                        l.getTimestamp() != null
-                            && l.getTimestamp().atZone(ZONE).toLocalDate().isAfter(cutoff))
-                .collect(
-                    Collectors.groupingBy(
-                        l -> l.getTimestamp().atZone(ZONE).get(wf.weekOfWeekBasedYear()),
-                        Collectors.counting()));
-
-        if (!counts.isEmpty()) {
-          sb.append("• ").append(type.name()).append(": ");
-          counts.entrySet().stream()
-              .sorted(Map.Entry.comparingByKey())
-              .forEach(
-                  e ->
-                      sb.append("W")
-                          .append(e.getKey())
-                          .append('=')
-                          .append(e.getValue())
-                          .append(' '));
-          sb.append('\n');
-        }
+        rawByType.put(type, lst);
       }
 
+      Map<String, EnumMap<LogTypes, Long>> weekMatrix = new TreeMap<>();
+
+      rawByType.forEach(
+          (type, logs) ->
+              logs.stream()
+                  .filter(
+                      l ->
+                          l.getTimestamp() != null
+                              && l.getTimestamp().atZone(zone).toLocalDate().isAfter(fourWeeksAgo))
+                  .forEach(
+                      l -> {
+                        LocalDate d = l.getTimestamp().atZone(zone).toLocalDate();
+                        String yearWeek =
+                            d.get(wf.weekBasedYear())
+                                + "-W"
+                                + String.format("%02d", d.get(wf.weekOfWeekBasedYear()));
+                        weekMatrix
+                            .computeIfAbsent(yearWeek, y -> new EnumMap<>(LogTypes.class))
+                            .merge(type, 1L, Long::sum);
+                      }));
+
+      if (weekMatrix.isEmpty()) return "";
+
+      StringBuilder sb = new StringBuilder("### Log Counts per Week (last 4 weeks)\n");
+      weekMatrix.forEach(
+          (yw, counts) -> {
+            sb.append("• ").append(yw).append(": ");
+            Arrays.stream(LogTypes.values())
+                .forEach(
+                    t -> {
+                      long c = counts.getOrDefault(t, 0L);
+                      if (c > 0) sb.append(t.name()).append('=').append(c).append(' ');
+                    });
+            sb.append('\n');
+          });
       sb.append('\n');
       return sb.toString();
 
