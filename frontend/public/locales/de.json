@@ -625,6 +625,7 @@
     "noTitle": "Kein Titel vorhanden",
     "date": "Erstellungsdatum",
     "tags": "Schlagwörter",
-    "content": "Inhalt"
+    "content": "Inhalt",
+    "no_entries": "Klient hat noch keine Journaleinträge erstellt."
   }
 }

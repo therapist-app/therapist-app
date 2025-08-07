@@ -626,7 +626,8 @@ interface Resources {
       "noTitle": "Kein Titel vorhanden",
       "date": "Erstellungsdatum",
       "tags": "Schlagwörter",
-      "content": "Inhalt"
+      "content": "Inhalt",
+      "no_entries": "Klient hat noch keine Journaleinträge erstellt."
     }
   },
   "en": {
@@ -1256,7 +1257,8 @@ interface Resources {
       "noTitle": "No Title exists",
       "date": "Creation Date",
       "tags": "Tags",
-      "content": "Content"
+      "content": "Content",
+      "no_entries": "Client has not created any journal entries yet."
     }
   },
   "ua": {
@@ -1886,7 +1888,8 @@ interface Resources {
       "noTitle": "Заголовок відсутній",
       "date": "Дата створення",
       "tags": "Теги",
-      "content": "Вміст"
+      "content": "Вміст",
+      "no_entries": "Ще не створено жодного запису в журналі."
     }
   }
 }

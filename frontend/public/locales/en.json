@@ -625,6 +625,7 @@
     "noTitle": "No Title exists",
     "date": "Creation Date",
     "tags": "Tags",
-    "content": "Content"
+    "content": "Content",
+    "no_entries": "Client has not created any journal entries yet."
   }
 }

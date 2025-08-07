@@ -154,9 +154,12 @@ export const GAD7TestDetail = (): ReactElement => {
             value={intervalDays}
             onChange={(e) => setIntervalDays(parseInt(e.target.value) || 0)}
             fullWidth
+            inputProps={{
+              min: 1,
+            }}
           />
 
-          {!hasExistingTest ? null : (
+          {/* {!hasExistingTest ? null : (
             <FormControlLabel
               control={
                 <Switch
@@ -175,7 +178,7 @@ export const GAD7TestDetail = (): ReactElement => {
             <Typography variant='body2' sx={{ color: 'text.secondary' }}>
               {t('gad7test.schedule_is_paused')}
             </Typography>
-          )}
+          )} */}
           {!isPaused && (
             <Typography variant='body2' sx={{ color: 'text.secondary' }}>
               {t('gad7test.schedule_summary', {

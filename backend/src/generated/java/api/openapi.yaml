@@ -49,6 +49,34 @@ paths:
       - patient-controller
       x-content-type: application/json
       x-accepts: application/json
+  /patients/notifications:
+    get:
+      operationId: getNotificationStatus
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationStatusOutputDTO'
+          description: OK
+      tags:
+      - patient-controller
+      x-accepts: '*/*'
+    put:
+      operationId: setNotificationStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutNotificationStatusDTO'
+        required: true
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - patient-controller
+      x-content-type: application/json
+      x-accepts: application/json
   /patients/name:
     get:
       operationId: getName
@@ -2210,6 +2238,13 @@ components:
         onboarded:
           type: boolean
       type: object
+    PutNotificationStatusDTO:
+      properties:
+        getNotifications:
+          type: boolean
+      required:
+      - getNotifications
+      type: object
     PutNameDTO:
       properties:
         name:
@@ -2786,6 +2821,13 @@ components:
         score:
           format: int32
           type: integer
+      type: object
+    NotificationStatusOutputDTO:
+      example:
+        getNotifications: true
+      properties:
+        getNotifications:
+          type: boolean
       type: object
     JournalConversationOutputDTO:
       example:
