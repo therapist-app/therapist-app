@@ -172,14 +172,11 @@ export const PAGE_NAMES: Record<PAGES, string> = {
 }
 
 export const getPageName = (page: PAGES, t: (key: string) => string): string => {
-  if (
-    page === PAGES.THERAPIST_CHATBOT_PAGE ||
-    page === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT
-  ) {
-    return 'Eliza';
+  if (page === PAGES.THERAPIST_CHATBOT_PAGE || page === PAGES.THERAPIST_CHATBOT_PAGE_BY_PATIENT) {
+    return 'Eliza'
   }
-  return t(PAGE_NAMES[page]);
-};
+  return t(PAGE_NAMES[page])
+}
 
 export function getPageFromPath(pathname: string): PAGES {
   for (const [page, routePattern] of Object.entries(ROUTES)) {
