@@ -6,8 +6,26 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ChatMessageDTOTest {
+
+    @Test
+    void constructorGettersToStringEqualsHashCode() {
+        ChatMessageDTO dto1 = new ChatMessageDTO(ChatRole.SYSTEM, "c");
+        assertEquals(ChatRole.SYSTEM, dto1.getChatRole());
+        assertEquals("c", dto1.getContent());
+        String s = dto1.toString();
+        assertTrue(s.contains("chatRole"));
+        assertTrue(s.contains("content"));
+
+        ChatMessageDTO dto2 = new ChatMessageDTO(ChatRole.SYSTEM, "c");
+        assertEquals(dto1, dto2);
+        assertEquals(dto1.hashCode(), dto2.hashCode());
+
+        ChatMessageDTO dto3 = new ChatMessageDTO(ChatRole.USER, "c");
+        assertNotEquals(dto1, dto3);
+    }
 
     @Nested
     @DisplayName("equals / hashCode contract")
