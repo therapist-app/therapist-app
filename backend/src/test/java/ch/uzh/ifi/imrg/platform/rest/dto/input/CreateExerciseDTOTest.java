@@ -22,6 +22,45 @@ class CreateExerciseDTOTest {
     }
 
     @Test
+    void gettersSettersEqualsHashCodeToString() {
+        CreateExerciseDTO a = new CreateExerciseDTO();
+        CreateExerciseDTO b = new CreateExerciseDTO();
+
+        Instant start = Instant.now();
+
+        a.setPatientId("p1");
+        a.setExerciseTitle("title");
+        a.setExerciseDescription("desc");
+        a.setExerciseExplanation("expl");
+        a.setExerciseStart(start);
+        a.setDurationInWeeks(4);
+        a.setDoEveryNDays(2);
+
+        b.setPatientId("p1");
+        b.setExerciseTitle("title");
+        b.setExerciseDescription("desc");
+        b.setExerciseExplanation("expl");
+        b.setExerciseStart(start);
+        b.setDurationInWeeks(4);
+        b.setDoEveryNDays(2);
+
+        assertEquals("p1", a.getPatientId());
+        assertEquals("title", a.getExerciseTitle());
+        assertEquals("desc", a.getExerciseDescription());
+        assertEquals("expl", a.getExerciseExplanation());
+        assertEquals(start, a.getExerciseStart());
+        assertEquals(4, a.getDurationInWeeks());
+        assertEquals(2, a.getDoEveryNDays());
+
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
+        assertTrue(a.toString().contains("exerciseTitle"));
+
+        b.setDoEveryNDays(3);
+        assertNotEquals(a, b);
+    }
+
+    @Test
     void validDTONoViolations() {
         CreateExerciseDTO dto = new CreateExerciseDTO();
         dto.setPatientId("p");

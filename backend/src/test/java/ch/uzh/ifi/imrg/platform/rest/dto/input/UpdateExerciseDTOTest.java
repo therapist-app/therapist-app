@@ -22,6 +22,48 @@ class UpdateExerciseDTOTest {
     }
 
     @Test
+    void gettersSettersEqualsHashCodeToString() {
+        UpdateExerciseDTO a = new UpdateExerciseDTO();
+        UpdateExerciseDTO b = new UpdateExerciseDTO();
+
+        Instant s = Instant.now();
+        Instant e = s.plusSeconds(3600);
+
+        a.setId("ex1");
+        a.setExerciseTitle("title");
+        a.setExerciseDescription("desc");
+        a.setExerciseExplanation("expl");
+        a.setExerciseStart(s);
+        a.setExerciseEnd(e);
+        a.setIsPaused(Boolean.TRUE);
+        a.setDoEveryNDays(2);
+
+        b.setId("ex1");
+        b.setExerciseTitle("title");
+        b.setExerciseDescription("desc");
+        b.setExerciseExplanation("expl");
+        b.setExerciseStart(s);
+        b.setExerciseEnd(e);
+        b.setIsPaused(Boolean.TRUE);
+        b.setDoEveryNDays(2);
+
+        assertEquals("ex1", a.getId());
+        assertEquals("title", a.getExerciseTitle());
+        assertEquals("desc", a.getExerciseDescription());
+        assertEquals("expl", a.getExerciseExplanation());
+        assertEquals(s, a.getExerciseStart());
+        assertEquals(e, a.getExerciseEnd());
+        assertEquals(Boolean.TRUE, a.getIsPaused());
+        assertEquals(2, a.getDoEveryNDays());
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
+        assertTrue(a.toString().contains("doEveryNDays"));
+
+        b.setIsPaused(Boolean.FALSE);
+        assertNotEquals(a, b);
+    }
+
+    @Test
     void validDTONoViolations() {
         UpdateExerciseDTO dto = new UpdateExerciseDTO();
         dto.setId("i");
