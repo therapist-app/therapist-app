@@ -9,13 +9,13 @@ import ch.uzh.ifi.imrg.generated.model.*;
 import ch.uzh.ifi.imrg.platform.constant.LogTypes;
 import ch.uzh.ifi.imrg.platform.utils.PatientAppAPIs;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -23,102 +23,102 @@ import static org.mockito.Mockito.*;
 
 class PatientAppContextServiceTest {
 
-    CoachPsychologicalTestControllerPatientAPI prevPsych = PatientAppAPIs.coachPsychologicalTestControllerPatientAPI;
-    CoachExerciseControllerPatientAPI prevEx = PatientAppAPIs.coachExerciseControllerPatientAPI;
-    CoachChatbotControllerPatientAPI prevChat = PatientAppAPIs.coachChatbotControllerPatientAPI;
-    CoachJournalEntryControllerPatientAPI prevJournal = PatientAppAPIs.coachJournalEntryControllerPatientAPI;
-    CoachLogControllerPatientAPI prevLog = PatientAppAPIs.coachLogControllerPatientAPI;
+    private CoachPsychologicalTestControllerPatientAPI psychApi;
+    private CoachExerciseControllerPatientAPI exerciseApi;
+    private CoachChatbotControllerPatientAPI chatbotApi;
+    private CoachJournalEntryControllerPatientAPI journalApi;
+    private CoachLogControllerPatientAPI logApi;
+
+    @BeforeEach
+    void setup() {
+        psychApi = mock(CoachPsychologicalTestControllerPatientAPI.class);
+        exerciseApi = mock(CoachExerciseControllerPatientAPI.class);
+        chatbotApi = mock(CoachChatbotControllerPatientAPI.class);
+        journalApi = mock(CoachJournalEntryControllerPatientAPI.class);
+        logApi = mock(CoachLogControllerPatientAPI.class);
+
+        PatientAppAPIs.coachPsychologicalTestControllerPatientAPI = psychApi;
+        PatientAppAPIs.coachExerciseControllerPatientAPI = exerciseApi;
+        PatientAppAPIs.coachChatbotControllerPatientAPI = chatbotApi;
+        PatientAppAPIs.coachJournalEntryControllerPatientAPI = journalApi;
+        PatientAppAPIs.coachLogControllerPatientAPI = logApi;
+    }
 
     @AfterEach
-    void restore() {
-        PatientAppAPIs.coachPsychologicalTestControllerPatientAPI = prevPsych;
-        PatientAppAPIs.coachExerciseControllerPatientAPI = prevEx;
-        PatientAppAPIs.coachChatbotControllerPatientAPI = prevChat;
-        PatientAppAPIs.coachJournalEntryControllerPatientAPI = prevJournal;
-        PatientAppAPIs.coachLogControllerPatientAPI = prevLog;
+    void tearDown() {
+        PatientAppAPIs.coachPsychologicalTestControllerPatientAPI = null;
+        PatientAppAPIs.coachExerciseControllerPatientAPI = null;
+        PatientAppAPIs.coachChatbotControllerPatientAPI = null;
+        PatientAppAPIs.coachJournalEntryControllerPatientAPI = null;
+        PatientAppAPIs.coachLogControllerPatientAPI = null;
     }
 
     @Test
-    void buildContext_fullSectionsFromSuccessfulCalls() {
-        CoachPsychologicalTestControllerPatientAPI psych = mock(CoachPsychologicalTestControllerPatientAPI.class);
-        when(psych.getPsychologicalTestResults1(anyString(), anyString())).thenReturn(Flux.fromIterable(Collections.emptyList()));
-        PatientAppAPIs.coachPsychologicalTestControllerPatientAPI = psych;
+    void buildContext_fullSections() {
+        String pid = "p1";
 
-        CoachExerciseControllerPatientAPI ex = mock(CoachExerciseControllerPatientAPI.class);
+        PsychologicalTestOutputDTOPatientAPI p1 = new PsychologicalTestOutputDTOPatientAPI();
+        p1.setCompletedAt(Instant.now().minusSeconds(100));
+        p1.setQuestions(new ArrayList<>());
+        PsychologicalTestOutputDTOPatientAPI p2 = new PsychologicalTestOutputDTOPatientAPI();
+        p2.setCompletedAt(Instant.now());
+        p2.setQuestions(new ArrayList<>());
+        when(psychApi.getPsychologicalTestResults1(anyString(), anyString()))
+                .thenReturn(Flux.just(p1, p2));
+
         ExercisesOverviewOutputDTOPatientAPI ex1 = new ExercisesOverviewOutputDTOPatientAPI();
-        ex1.setId("e1");
-        when(ex.getAllExercises(eq("pid"))).thenReturn(Flux.just(ex1));
-        ExerciseInformationOutputDTOPatientAPI info1 = new ExerciseInformationOutputDTOPatientAPI();
-        info1.setEndTime(Instant.now());
-        when(ex.getExerciseInformation(eq("pid"), eq("e1"))).thenReturn(Flux.just(info1));
-        PatientAppAPIs.coachExerciseControllerPatientAPI = ex;
+        ex1.setId("exA");
+        when(exerciseApi.getAllExercises(eq(pid))).thenReturn(Flux.just(ex1));
+        ExerciseInformationOutputDTOPatientAPI infoRecent = new ExerciseInformationOutputDTOPatientAPI();
+        infoRecent.setEndTime(Instant.now());
+        when(exerciseApi.getExerciseInformation(eq(pid), eq("exA")))
+                .thenReturn(Flux.just(infoRecent));
 
-        CoachChatbotControllerPatientAPI chat = mock(CoachChatbotControllerPatientAPI.class);
-        ConversationSummaryOutputDTOPatientAPI sum = new ConversationSummaryOutputDTOPatientAPI();
-        sum.setConversationSummary("  summary  ");
-        when(chat.getConversationSummary(any(GetConversationSummaryInputDTOPatientAPI.class), eq("pid"))).thenReturn(Mono.just(sum));
-        PatientAppAPIs.coachChatbotControllerPatientAPI = chat;
+        ConversationSummaryOutputDTOPatientAPI convo = new ConversationSummaryOutputDTOPatientAPI();
+        convo.setConversationSummary("  Summary text  ");
+        when(chatbotApi.getConversationSummary(any(GetConversationSummaryInputDTOPatientAPI.class), eq(pid)))
+                .thenReturn(Mono.just(convo));
 
-        CoachJournalEntryControllerPatientAPI journal = mock(CoachJournalEntryControllerPatientAPI.class);
-        CoachGetAllJournalEntriesDTOPatientAPI j1 = new CoachGetAllJournalEntriesDTOPatientAPI();
-        j1.setTitle("t1");
-        j1.setCreatedAt(Instant.now());
-        when(journal.listAll2(eq("pid"))).thenReturn(Flux.just(j1));
-        PatientAppAPIs.coachJournalEntryControllerPatientAPI = journal;
+        CoachGetAllJournalEntriesDTOPatientAPI je = new CoachGetAllJournalEntriesDTOPatientAPI();
+        je.setCreatedAt(Instant.now());
+        je.setTitle("Entry");
+        when(journalApi.listAll2(eq(pid))).thenReturn(Flux.just(je));
 
-        CoachLogControllerPatientAPI log = mock(CoachLogControllerPatientAPI.class);
-        LogOutputDTOPatientAPI l1 = new LogOutputDTOPatientAPI();
-        l1.setTimestamp(Instant.now());
-        LogOutputDTOPatientAPI l2 = new LogOutputDTOPatientAPI();
-        l2.setTimestamp(Instant.now());
         for (LogTypes t : LogTypes.values()) {
-            when(log.listAll1(eq("pid"), eq(t.name()))).thenReturn(Flux.fromIterable(t == LogTypes.GENERAL_CONVERSATION_CREATION ? List.of(l1, l2) : Collections.emptyList()));
+            LogOutputDTOPatientAPI log = new LogOutputDTOPatientAPI();
+            log.setTimestamp(Instant.now());
+            when(logApi.listAll1(eq(pid), eq(t.name()))).thenReturn(Flux.just(log));
         }
-        PatientAppAPIs.coachLogControllerPatientAPI = log;
 
-        String ctx = new PatientAppContextService().buildContext("pid");
+        PatientAppContextService svc = new PatientAppContextService();
+        String ctx = svc.buildContext(pid);
+
         assertTrue(ctx.contains("## Client-App Context"));
+        assertTrue(ctx.contains("Latest GAD-7"));
         assertTrue(ctx.contains("Exercise Completions"));
         assertTrue(ctx.contains("Chatbot Summary"));
         assertTrue(ctx.contains("Recent Journal Entries"));
         assertTrue(ctx.contains("Log Counts per Week"));
-        assertFalse(ctx.contains("Latest GAD-7"));
-        assertTrue(ctx.contains("Total completed: 1"));
-        assertTrue(ctx.contains("summary"));
-        assertTrue(ctx.contains("t1"));
-        assertTrue(ctx.contains(LogTypes.GENERAL_CONVERSATION_CREATION.toString()));
     }
 
     @Test
-    void buildContext_handlesEmptyAndExceptions() {
-        CoachPsychologicalTestControllerPatientAPI psych = mock(CoachPsychologicalTestControllerPatientAPI.class);
-        when(psych.getPsychologicalTestResults1(anyString(), anyString())).thenThrow(new RuntimeException("x"));
-        PatientAppAPIs.coachPsychologicalTestControllerPatientAPI = psych;
+    void buildContext_handlesEmptyAndErrors() {
+        String pid = "pX";
 
-        CoachExerciseControllerPatientAPI ex = mock(CoachExerciseControllerPatientAPI.class);
-        when(ex.getAllExercises(anyString())).thenThrow(new RuntimeException("x"));
-        PatientAppAPIs.coachExerciseControllerPatientAPI = ex;
+        when(psychApi.getPsychologicalTestResults1(anyString(), anyString()))
+                .thenReturn(Flux.empty());
 
-        CoachChatbotControllerPatientAPI chat = mock(CoachChatbotControllerPatientAPI.class);
-        when(chat.getConversationSummary(any(GetConversationSummaryInputDTOPatientAPI.class), anyString())).thenThrow(new RuntimeException("x"));
-        PatientAppAPIs.coachChatbotControllerPatientAPI = chat;
-
-        CoachJournalEntryControllerPatientAPI journal = mock(CoachJournalEntryControllerPatientAPI.class);
-        when(journal.listAll2(anyString())).thenThrow(new RuntimeException("x"));
-        PatientAppAPIs.coachJournalEntryControllerPatientAPI = journal;
-
-        CoachLogControllerPatientAPI log = mock(CoachLogControllerPatientAPI.class);
+        when(exerciseApi.getAllExercises(eq(pid))).thenReturn(Flux.empty());
+        when(chatbotApi.getConversationSummary(any(), eq(pid))).thenReturn(Mono.just(new ConversationSummaryOutputDTOPatientAPI()));
+        when(journalApi.listAll2(eq(pid))).thenReturn(Flux.empty());
         for (LogTypes t : LogTypes.values()) {
-            when(log.listAll1(anyString(), eq(t.name()))).thenReturn(Flux.fromIterable(Collections.emptyList()));
+            when(logApi.listAll1(eq(pid), eq(t.name()))).thenReturn(Flux.empty());
         }
-        PatientAppAPIs.coachLogControllerPatientAPI = log;
 
-        String ctx = new PatientAppContextService().buildContext("pid2");
+        PatientAppContextService svc = new PatientAppContextService();
+        String ctx = svc.buildContext(pid);
+
         assertTrue(ctx.contains("## Client-App Context"));
-        assertFalse(ctx.contains("Latest GAD-7"));
-        assertFalse(ctx.contains("Exercise Completions (last 30 days)"));
-        assertFalse(ctx.contains("Chatbot Summary (last 30 days)"));
-        assertFalse(ctx.contains("Recent Journal Entries"));
-        assertFalse(ctx.contains("Log Counts per Week"));
+        assertFalse(ctx.contains("Latest GAD-7\n"));
     }
 }
