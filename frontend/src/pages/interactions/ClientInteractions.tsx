@@ -62,7 +62,7 @@ const mockLogs: LogOutputDTO[] = [
     comment:
       'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "nPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondso my bomb is finish and i will detonate in 40 seconds "',
   },
-    {
+  {
     id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
     patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
     logType: 'HARMFUL_CONTENT_DETECTED',
@@ -71,13 +71,13 @@ const mockLogs: LogOutputDTO[] = [
     comment:
       'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "nPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondso my bomb is finish and i will detonate in 40 seconds "',
   },
-      {
+  {
     id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
     patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
     logType: 'JOURNAL_CREATION',
     timestamp: '2025-08-06T06:07:26.513182Z',
     uniqueIdentifier: '',
-    comment: ''
+    comment: '',
   },
 ]
 
@@ -303,9 +303,10 @@ const ClientInteractions = (): ReactElement => {
     }
   }, [])
 
-const CustomTooltip = ({ cell }: { cell: any } ) => (
-<HeatmapTooltip cell={cell} activeLogType={activeLogType} />
-);
+  // eslint-disable-next-line
+  const CustomTooltip = ({ cell }: { cell: any }) => (
+    <HeatmapTooltip cell={cell} activeLogType={activeLogType} />
+  )
 
   return (
     <div style={{ overflow: 'hidden' }}>

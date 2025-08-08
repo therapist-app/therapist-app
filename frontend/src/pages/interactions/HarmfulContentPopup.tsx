@@ -1,26 +1,26 @@
-import CloseIcon from '@mui/icons-material/Close';
-import { Box, IconButton, Modal, Tooltip, Typography } from '@mui/material';
-import ReportIcon from '@mui/icons-material/Report';
-import { format } from 'date-fns';
-import { ReactElement } from 'react';
-import { useTranslation } from 'react-i18next';
+import CloseIcon from '@mui/icons-material/Close'
+import ReportIcon from '@mui/icons-material/Report'
+import { Box, IconButton, Modal, Tooltip, Typography } from '@mui/material'
+import { format } from 'date-fns'
+import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { LogOutputDTO } from '../../store/patientLogData.ts';
-import { getCurrentLocale } from '../../utils/dateUtil.ts';
+import { LogOutputDTO } from '../../store/patientLogData.ts'
+import { getCurrentLocale } from '../../utils/dateUtil.ts'
 
 interface HarmfulContentPopupProps {
-  open: boolean;
-  onClose: () => void;
-  logs: LogOutputDTO[];
+  open: boolean
+  onClose: () => void
+  logs: LogOutputDTO[]
 }
 
 const HarmfulContentPopup = ({ open, onClose, logs }: HarmfulContentPopupProps): ReactElement => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const formatTime = (timestamp: string): string => {
     return format(new Date(timestamp), 'HH:mm:ss', {
       locale: getCurrentLocale(),
-    });
-  };
+    })
+  }
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -41,28 +41,26 @@ const HarmfulContentPopup = ({ open, onClose, logs }: HarmfulContentPopupProps):
           overflowY: 'auto',
         }}
       >
-        <Tooltip title={t('layout.close')} placement="top" arrow>
+        <Tooltip title={t('layout.close')} placement='top' arrow>
           <IconButton
             onClick={onClose}
             sx={{ position: 'absolute', right: 8, top: 8 }}
-            aria-label="close"
+            aria-label='close'
           >
             <CloseIcon />
           </IconButton>
         </Tooltip>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
           <ReportIcon sx={{ color: 'error.main' }} />
-          <Typography variant="h6">
-            {t('patient_interactions.harmful_content_alert')}
-          </Typography>
+          <Typography variant='h6'>{t('patient_interactions.harmful_content_alert')}</Typography>
         </Box>
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '8px',
-            flex: 1, 
-            overflowY: 'auto', 
+            flex: 1,
+            overflowY: 'auto',
           }}
         >
           {logs
@@ -76,14 +74,16 @@ const HarmfulContentPopup = ({ open, onClose, logs }: HarmfulContentPopupProps):
                   borderRadius: '10px',
                 }}
               >
-                <div style={{ fontWeight: '500', marginBottom: '5px' }}>{formatTime(log.timestamp)}:</div>
+                <div style={{ fontWeight: '500', marginBottom: '5px' }}>
+                  {formatTime(log.timestamp)}:
+                </div>
                 <div>{log.comment}</div>
               </div>
             ))}
         </div>
       </Box>
     </Modal>
-  );
-};
+  )
+}
 
-export default HarmfulContentPopup;
+export default HarmfulContentPopup
