@@ -6,7 +6,6 @@ import { LOG_TYPES } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { getCurrentLocale } from '../../utils/dateUtil.ts'
 
-
 const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const { t } = useTranslation()
   const [hourPart, datePart] = cell.id.split('.')
@@ -17,19 +16,21 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const tooltipRef = useRef<HTMLDivElement>(null)
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!tooltipRef.current) return
-    
+    if (!tooltipRef.current) {
+      return
+    }
+
     const viewportWidth = window.innerWidth
     const mouseX = e.clientX
     const tooltipRect = tooltipRef.current.getBoundingClientRect()
     const isRightHalf = mouseX > viewportWidth / 2
-    
+
     console.group('Tooltip Positioning Debug')
     console.log('Viewport width:', viewportWidth)
     console.log('Mouse X:', mouseX)
     console.log('Tooltip width:', tooltipRect.width)
     console.log('Screen half:', isRightHalf ? 'Right' : 'Left')
-    
+
     const transformValue = isRightHalf ? 'translate(-50%, 0)' : 'translate(50%, 0)'
     tooltipRef.current.style.transform = transformValue
     console.groupEnd()
@@ -41,6 +42,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
   const paddedHour = hourPart.padStart(2, '0')
   const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
 
+  // const logs: LogOutputDTO[] = cell.data?.logs || []
   const logs: LogOutputDTO[] = [
     {
       id: '1afd9acd-f66e-448a-866c-2be373aa6dd0',
@@ -85,7 +87,7 @@ const HeatmapTooltip = ({ cell }: { cell: any }) => {
         ...positionStyle,
       }}
       onMouseMove={handleMouseMove}
-      ref={tooltipRef}  
+      ref={tooltipRef}
     >
       <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
       <div style={{ marginBottom: '4px' }}>{timeRange}</div>
