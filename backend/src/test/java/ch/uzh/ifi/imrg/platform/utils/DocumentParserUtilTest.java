@@ -1,41 +1,39 @@
 package ch.uzh.ifi.imrg.platform.utils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class DocumentParserUtilTest {
 
-    @BeforeEach
-    void setCap() {
-        EnvironmentVariables.MAX_CHARACTERS_PER_PDF = 5;
+    private static void setLimit(Integer v) throws Exception {
+        Field f = EnvironmentVariables.class.getDeclaredField("MAX_CHARACTERS_PER_PDF");
+        f.setAccessible(true);
+        f.set(null, v);
     }
 
     @Test
-    void extractsAndTruncates() throws Exception {
-        byte[] data = "abcdefghi".getBytes();
+    void extractText_longOverLimit_truncates() throws Exception {
+        setLimit(50);
+        String s = "B".repeat(80);
         MultipartFile file = mock(MultipartFile.class);
-        when(file.getInputStream()).thenReturn(new ByteArrayInputStream(data));
-
+        when(file.getInputStream()).thenReturn(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
         String out = DocumentParserUtil.extractText(file);
-        if ("Text extraction failed".equals(out)) {
-            assertEquals("Text extraction failed", out);
-        } else {
-            assertEquals(5, out.length());
-            assertNotEquals("Text extraction failed", out);
-        }
+        assertEquals(s.substring(0, 50), out);
     }
 
     @Test
-    void handlesException() throws Exception {
+    void extractText_streamThrows_returnsFallbackMessage() throws Exception {
+        setLimit(100);
         MultipartFile file = mock(MultipartFile.class);
-        when(file.getInputStream()).thenThrow(new IOException("boom"));
+        when(file.getInputStream()).thenThrow(new IOException("x"));
         String out = DocumentParserUtil.extractText(file);
         assertEquals("Text extraction failed", out);
     }
