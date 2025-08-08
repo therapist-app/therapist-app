@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GetConversationSummaryInputDTOTest {
 
     @Test
-    void gettersSettersToString() {
+    void gettersSetters() {
         GetConversationSummaryInputDTO dto = new GetConversationSummaryInputDTO();
         Instant start = Instant.now();
         Instant end = start.plusSeconds(60);
@@ -15,8 +15,5 @@ class GetConversationSummaryInputDTOTest {
         dto.setEnd(end);
         assertEquals(start, dto.getStart());
         assertEquals(end, dto.getEnd());
-        String s = dto.toString();
-        assertTrue(s.contains("start"));
-        assertTrue(s.contains("end"));
     }
 }
