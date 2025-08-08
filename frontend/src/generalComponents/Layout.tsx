@@ -49,7 +49,7 @@ interface LayoutLocationState {
   patientId?: string
 }
 
-const drawerWidth = 280
+const drawerWidth = 260
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const dispatch = useAppDispatch()
@@ -234,7 +234,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <p
               className='jost-font'
               style={{
-                fontSize: '90px',
+                fontSize: '80px',
                 color: 'white',
                 marginTop: '10px',
                 marginLeft: '-0px',
@@ -303,7 +303,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               marginBottom: '20px',
             }}
           >
-            <img src={logo} alt='UZH Chatbot' style={{ width: '70%' }} />
+            <img src={logo} alt='UZH Chatbot' style={{ width: '60%' }} />
           </div>
         </Drawer>
 

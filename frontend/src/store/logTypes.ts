@@ -1,4 +1,4 @@
-export type LogType =
+export type ClientLogType =
   | 'JOURNAL_CREATION'
   | 'JOURNAL_UPDATE'
   | 'EXERCISE_START'
@@ -15,7 +15,7 @@ export type LogType =
   | 'DOCUMENT_READ'
   | 'PSYCHOLOGICAL_TEST_COMPLETED'
 
-export const LOG_TYPES: LogType[] = [
+export const CLIENT_LOG_TYPES: ClientLogType[] = [
   'JOURNAL_CREATION',
   'JOURNAL_UPDATE',
   'EXERCISE_START',

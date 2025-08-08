@@ -362,6 +362,7 @@
     "interactions": "Взаємодії",
     "export_to_csv": "Експортувати в CSV",
     "harmlful_content_alert": "Попередження про шкідливий вміст",
+    "click_to_view_details": "Натисніть, щоб переглянути деталі",
     "log_types": {
       "journal_creation": "Створення щоденника",
       "journal_update": "Оновлення щоденника",
@@ -625,6 +626,7 @@
     "noTitle": "Заголовок відсутній",
     "date": "Дата створення",
     "tags": "Теги",
-    "content": "Вміст"
+    "content": "Вміст",
+    "no_entries": "Ще не створено жодного запису в журналі."
   }
 }

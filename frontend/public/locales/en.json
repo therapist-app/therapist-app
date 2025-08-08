@@ -362,6 +362,7 @@
     "interactions": "Interactions",
     "export_to_csv": "Export to CSV",
     "harmful_content_alert": "Harmful Content Alert",
+    "click_to_view_details": "Click to view details",
     "log_types": {
       "journal_creation": "Journal Creation",
       "journal_update": "Journal Update",
@@ -625,6 +626,7 @@
     "noTitle": "No Title exists",
     "date": "Creation Date",
     "tags": "Tags",
-    "content": "Content"
+    "content": "Content",
+    "no_entries": "Client has not created any journal entries yet."
   }
 }

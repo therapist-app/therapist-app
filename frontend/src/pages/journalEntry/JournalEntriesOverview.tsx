@@ -47,33 +47,39 @@ const JournalEntriesOverview = (): ReactElement => {
     <>
       <Typography variant='h2'>{t('journalEntry.overviewTitle')}</Typography>
 
-      <TableContainer component={Paper}>
-        <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('journalEntry.title')}</TableCell>
-              <TableCell>{t('journalEntry.date')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allJournalEntries.map((journalEntry) => (
-              <TableRow
-                onClick={() => handleClickOnJournalEntry(journalEntry.id ?? '')}
-                key={journalEntry.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                  cursor: 'pointer',
-                }}
-              >
-                <TableCell component='th' scope='row'>
-                  {journalEntry.title ? journalEntry.title : t('journalEntry.noTitle')}
-                </TableCell>
-                <TableCell>{formatDateNicely(journalEntry.createdAt)}</TableCell>
+      {allJournalEntries.length == 0 ? (
+        <Typography variant='body1' sx={{ marginTop: 2 }}>
+          {t('journalEntry.no_entries')}
+        </Typography>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table aria-label='simple table' sx={{ tableLayout: 'fixed' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t('journalEntry.title')}</TableCell>
+                <TableCell>{t('journalEntry.date')}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {allJournalEntries.map((journalEntry) => (
+                <TableRow
+                  onClick={() => handleClickOnJournalEntry(journalEntry.id ?? '')}
+                  key={journalEntry.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    cursor: 'pointer',
+                  }}
+                >
+                  <TableCell component='th' scope='row'>
+                    {journalEntry.title ? journalEntry.title : t('journalEntry.noTitle')}
+                  </TableCell>
+                  <TableCell>{formatDateNicely(journalEntry.createdAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   )
 }

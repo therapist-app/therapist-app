@@ -19,16 +19,17 @@ import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { LOG_TYPES } from '../../store/logTypes.ts'
+import { CLIENT_LOG_TYPES, ClientLogType } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { RootState } from '../../store/store.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientLogApi } from '../../utils/api.ts'
 import { getCurrentLocale } from '../../utils/dateUtil.ts'
+import HeatmapTooltip from './CustomToolTip.tsx'
+import HarmfulContentPopup from './HarmfulContentPopup.tsx'
 
 interface InteractionData {
   hour: number
@@ -41,78 +42,6 @@ interface InteractionData {
 interface HeatMapData {
   id: string
   data: { x: string; y: number }[]
-}
-
-// eslint-disable-next-line
-const HeatmapTooltip = ({ cell }: { cell: any }) => {
-  const { t } = useTranslation()
-  const [hourPart, datePart] = cell.id.split('.')
-  const [month, day] = datePart.split('-')
-
-  const formattedDate = format(new Date(`${new Date().getFullYear()}-${month}-${day}`), 'PP', {
-    locale: getCurrentLocale(),
-  })
-  const paddedHour = hourPart.padStart(2, '0')
-  const timeRange = `${paddedHour}:00 - ${paddedHour}:59`
-
-  const logs: LogOutputDTO[] = cell.data?.logs || []
-
-  const formatTime = (timestamp: string): string => {
-    return format(new Date(timestamp), 'HH:mm:ss', {
-      locale: getCurrentLocale(),
-    })
-  }
-
-  return (
-    <div
-      style={{
-        fontFamily: 'Roboto, sans-serif',
-        padding: '12px',
-        background: 'white',
-        borderRadius: '4px',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-        color: '#333',
-        minWidth: '120px',
-        maxWidth: '400px',
-        overflowY: 'auto',
-      }}
-    >
-      <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{formattedDate}</div>
-      <div style={{ marginBottom: '4px' }}>{timeRange}</div>
-      <div style={{ marginBottom: '8px' }}>
-        {t('patient_interactions.interactions')}: <strong>{cell.value}</strong>
-      </div>
-
-      {logs.some((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment !== '') && (
-        <div style={{ marginTop: '8px' }}>
-          <div style={{ fontWeight: '500', marginTop: '15px', marginBottom: '4px' }}>
-            {t('patient_interactions.harmful_content_alert')}:
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {logs
-              .filter((log) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment)
-              .map((log, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: '4px',
-                    background: '#fff8f8',
-                    borderRadius: '4px',
-                    wordBreak: 'break-word',
-                    width: '400px',
-                  }}
-                >
-                  <div style={{ fontWeight: '500', marginBottom: '2px' }}>
-                    {formatTime(log.timestamp)}:
-                  </div>
-                  {log.comment}
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
 }
 
 const transformLogsToInteractionData = (
@@ -188,12 +117,15 @@ const ClientInteractions = (): ReactElement => {
   const currentLocale = getCurrentLocale()
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
-  const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
-
-  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
+  const [activeLogType, setActiveLogType] = useState<ClientLogType>(
+    'JOURNAL_CREATION' as ClientLogType
+  )
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedLogs, setSelectedLogs] = useState([])
+  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<ClientLogType>>(new Set())
   const [loading, setLoading] = useState<boolean>(true)
-  const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
-    {} as Record<LogType, LogOutputDTO[]>
+  const [logsByType, setLogsByType] = useState<Record<ClientLogType, LogOutputDTO[]>>(
+    {} as Record<ClientLogType, LogOutputDTO[]>
   )
 
   const patient = useSelector((state: RootState) =>
@@ -208,7 +140,7 @@ const ClientInteractions = (): ReactElement => {
 
   // Fetch data for a specific log type
   const fetchLogTypeData = useCallback(
-    async (logType: LogType) => {
+    async (logType: ClientLogType) => {
       if (!patientId || loadedLogTypes.has(logType)) {
         return
       }
@@ -268,16 +200,15 @@ const ClientInteractions = (): ReactElement => {
   // Initial load - fetch only JOURNAL_CREATION data
   useEffect(() => {
     if (patientId) {
-      fetchLogTypeData('JOURNAL_CREATION' as LogType)
+      fetchLogTypeData('JOURNAL_CREATION' as ClientLogType)
     }
   }, [patientId, fetchLogTypeData])
 
-  const handleLogTypeChange = async (logType: LogType): Promise<void> => {
+  const handleLogTypeChange = async (logType: ClientLogType): Promise<void> => {
     setActiveLogType(logType)
     if (!loadedLogTypes.has(logType)) {
       await fetchLogTypeData(logType)
     }
-    console.log('Heatmap data for:', logType, heatmapData)
   }
 
   // Transform logs to interaction data
@@ -316,153 +247,177 @@ const ClientInteractions = (): ReactElement => {
     return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
   }, [heatmapData])
 
+  // eslint-disable-next-line
+  const handleCellClick = useCallback((cell: any) => {
+    const harmfulLogs = (cell.data.logs || []).filter(
+      (log: LogOutputDTO) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment
+    )
+    if (harmfulLogs.length > 0) {
+      setSelectedLogs(harmfulLogs)
+      setModalOpen(true)
+    }
+  }, [])
+
+  // eslint-disable-next-line
+  const CustomTooltip = ({ cell }: { cell: any }) => (
+    <HeatmapTooltip cell={cell} activeLogType={activeLogType} />
+  )
+
   return (
-    <Layout>
-      <Stack spacing={2}>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-          <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
-            <FormControl sx={{ minWidth: 250 }}>
-              <InputLabel id='interaction-type-label'>
-                {t('patient_interactions.interaction_type')}
-              </InputLabel>
-              <Select
-                value={activeLogType || ''}
-                onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
-                label={t('patient_interactions.log_types')}
+    <div style={{ overflow: 'hidden' }}>
+      <Layout>
+        <Stack spacing={2}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
+            <LocalizationProvider adapterLocale={currentLocale} dateAdapter={AdapterDateFns}>
+              <FormControl sx={{ minWidth: 250, marginTop: '5px' }}>
+                <InputLabel id='interaction-type-label'>
+                  {t('patient_interactions.interaction_type')}
+                </InputLabel>
+                <Select
+                  value={activeLogType || ''}
+                  onChange={(e) => handleLogTypeChange(e.target.value as ClientLogType)}
+                  label={t('patient_interactions.log_types')}
+                >
+                  {CLIENT_LOG_TYPES.map((logType) => (
+                    <MenuItem key={logType} value={logType}>
+                      {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <DatePicker
+                label={t('patient_interactions.start_date')}
+                value={startDate}
+                onChange={(newValue) => setStartDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                maxDate={endDate || undefined}
+              />
+              <DatePicker
+                label={t('patient_interactions.end_date')}
+                value={endDate}
+                onChange={(newValue) => setEndDate(newValue)}
+                slotProps={{ textField: { size: 'small' } }}
+                minDate={startDate || undefined}
+              />
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                component='a'
+                onClick={exportToCSV}
+                target='_blank'
+                rel='noopener noreferrer'
+                sx={{ ...commonButtonStyles }}
+                size='small'
               >
-                {LOG_TYPES.map((logType) => (
-                  <MenuItem key={logType} value={logType}>
-                    {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <DatePicker
-              label={t('patient_interactions.start_date')}
-              value={startDate}
-              onChange={(newValue) => setStartDate(newValue)}
-              slotProps={{ textField: { size: 'small' } }}
-              maxDate={endDate || undefined}
-            />
-            <DatePicker
-              label={t('patient_interactions.end_date')}
-              value={endDate}
-              onChange={(newValue) => setEndDate(newValue)}
-              slotProps={{ textField: { size: 'small' } }}
-              minDate={startDate || undefined}
-            />
-            <Box sx={{ flexGrow: 1 }} />
+                {t('patient_interactions.export_to_csv')}
+              </Button>
+            </LocalizationProvider>
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
             <Button
-              component='a'
-              onClick={exportToCSV}
-              target='_blank'
-              rel='noopener noreferrer'
-              sx={{ ...commonButtonStyles }}
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
               size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 7))
+                setEndDate(new Date())
+              }}
             >
-              {t('patient_interactions.export_to_csv')}
+              {t('patient_interactions.last_week')}
             </Button>
-          </LocalizationProvider>
-        </Box>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 14))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_two_weeks')}
+            </Button>
+            <Button
+              sx={{ ...commonButtonStyles, minWidth: '160px' }}
+              size='small'
+              onClick={() => {
+                setStartDate(subDays(new Date(), 21))
+                setEndDate(new Date())
+              }}
+            >
+              {t('patient_interactions.last_three_weeks')}
+            </Button>
+          </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 7))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_week')}
-          </Button>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 14))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_two_weeks')}
-          </Button>
-          <Button
-            sx={{ ...commonButtonStyles, minWidth: '160px' }}
-            size='small'
-            onClick={() => {
-              setStartDate(subDays(new Date(), 21))
-              setEndDate(new Date())
-            }}
-          >
-            {t('patient_interactions.last_three_weeks')}
-          </Button>
-        </Box>
-
-        {loading ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: '50px',
-            }}
-          >
-            <Typography>{t('patient_interactions.loading')}</Typography>
-            <div style={{ marginTop: '20px' }}>
-              <CircularProgress />
+          {loading ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginTop: '50px',
+              }}
+            >
+              <Typography>{t('patient_interactions.loading')}</Typography>
+              <div style={{ marginTop: '20px' }}>
+                <CircularProgress />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div style={{ height: '650px' }}>
-            <ResponsiveHeatMapCanvas
-              data={heatmapData}
-              margin={{
-                top: 20,
-                right: 40,
-                bottom: dayDifference > 50 ? 120 : dayDifference > 28 ? 90 : 80,
-                left: 80,
-              }}
-              valueFormat='>-.0f'
-              axisTop={null}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: dayDifference > 50 ? 90 : dayDifference > 28 ? 45 : 0,
-                legend: t('patient_interactions.date'),
-                legendPosition: 'middle',
-                legendOffset: dayDifference > 50 ? 80 : 50,
-                format: (value) =>
-                  format(new Date(`${new Date().getFullYear()}-${value}`), 'MMM dd', {
-                    locale: getCurrentLocale(),
-                  }),
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: t('patient_interactions.time'),
-                legendPosition: 'middle',
-                legendOffset: -70,
-                format: (value) => `${value}:00`,
-              }}
-              colors={{
-                type: 'sequential',
-                scheme: 'purples',
-                minValue: 0,
-                maxValue: maxValue,
-              }}
-              emptyColor='#f8f9fa'
-              borderColor='#ffffff'
-              borderWidth={1}
-              enableLabels={false}
-              animate={false}
-              motionConfig='gentle'
-              tooltip={HeatmapTooltip}
-            />
-          </div>
-        )}
-      </Stack>
-    </Layout>
+          ) : (
+            <div style={{ height: '650px' }}>
+              <ResponsiveHeatMapCanvas
+                data={heatmapData}
+                margin={{
+                  top: 20,
+                  right: 40,
+                  bottom: dayDifference > 50 ? 120 : dayDifference > 28 ? 90 : 80,
+                  left: 80,
+                }}
+                valueFormat='>-.0f'
+                axisTop={null}
+                axisBottom={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: dayDifference > 50 ? 90 : dayDifference > 28 ? 45 : 0,
+                  legend: t('patient_interactions.date'),
+                  legendPosition: 'middle',
+                  legendOffset: dayDifference > 50 ? 80 : 50,
+                  format: (value) =>
+                    format(new Date(`${new Date().getFullYear()}-${value}`), 'MMM dd', {
+                      locale: getCurrentLocale(),
+                    }),
+                }}
+                axisLeft={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: t('patient_interactions.time'),
+                  legendPosition: 'middle',
+                  legendOffset: -70,
+                  format: (value) => `${value}:00`,
+                }}
+                colors={{
+                  type: 'sequential',
+                  scheme: 'purples',
+                  minValue: 0,
+                  maxValue: maxValue,
+                }}
+                emptyColor='#f8f9fa'
+                borderColor='#ffffff'
+                borderWidth={1}
+                enableLabels={false}
+                animate={false}
+                motionConfig='gentle'
+                tooltip={CustomTooltip}
+                onClick={handleCellClick}
+              />
+              <HarmfulContentPopup
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                logs={selectedLogs}
+              />
+            </div>
+          )}
+        </Stack>
+      </Layout>
+    </div>
   )
 }
 

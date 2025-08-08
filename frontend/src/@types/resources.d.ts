@@ -363,6 +363,7 @@ interface Resources {
       "interactions": "Interaktionen",
       "export_to_csv": "Nach CSV exportieren",
       "harmful_content_alert": "Gefährlicher Inhalt Alarm",
+      "click_to_view_details": "Klicken, um Details anzuzeigen",
       "log_types": {
         "journal_creation": "Tagebucherstellung",
         "journal_update": "Tagebuchaktualisierung",
@@ -626,7 +627,8 @@ interface Resources {
       "noTitle": "Kein Titel vorhanden",
       "date": "Erstellungsdatum",
       "tags": "Schlagwörter",
-      "content": "Inhalt"
+      "content": "Inhalt",
+      "no_entries": "Klient hat noch keine Journaleinträge erstellt."
     }
   },
   "en": {
@@ -993,6 +995,7 @@ interface Resources {
       "interactions": "Interactions",
       "export_to_csv": "Export to CSV",
       "harmful_content_alert": "Harmful Content Alert",
+      "click_to_view_details": "Click to view details",
       "log_types": {
         "journal_creation": "Journal Creation",
         "journal_update": "Journal Update",
@@ -1256,7 +1259,8 @@ interface Resources {
       "noTitle": "No Title exists",
       "date": "Creation Date",
       "tags": "Tags",
-      "content": "Content"
+      "content": "Content",
+      "no_entries": "Client has not created any journal entries yet."
     }
   },
   "ua": {
@@ -1623,6 +1627,7 @@ interface Resources {
       "interactions": "Взаємодії",
       "export_to_csv": "Експортувати в CSV",
       "harmlful_content_alert": "Попередження про шкідливий вміст",
+      "click_to_view_details": "Натисніть, щоб переглянути деталі",
       "log_types": {
         "journal_creation": "Створення щоденника",
         "journal_update": "Оновлення щоденника",
@@ -1886,7 +1891,8 @@ interface Resources {
       "noTitle": "Заголовок відсутній",
       "date": "Дата створення",
       "tags": "Теги",
-      "content": "Вміст"
+      "content": "Вміст",
+      "no_entries": "Ще не створено жодного запису в журналі."
     }
   }
 }
