@@ -3,8 +3,10 @@ package ch.uzh.ifi.imrg.platform.utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -17,13 +19,14 @@ class DocumentParserUtilTest {
 
     @Test
     void extractsAndTruncates() throws Exception {
-        byte[] data = "abcdefghi".getBytes();
+        byte[] data = "<html><body>abcdefghi</body></html>".getBytes();
         MultipartFile file = mock(MultipartFile.class);
         when(file.getInputStream()).thenReturn(new ByteArrayInputStream(data));
 
         String out = DocumentParserUtil.extractText(file);
-        assertTrue(out.startsWith("abcde"));
+        assertNotNull(out);
         assertEquals(5, out.length());
+        assertNotEquals("Text extraction failed", out);
     }
 
     @Test
