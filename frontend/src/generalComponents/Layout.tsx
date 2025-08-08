@@ -234,11 +234,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <p
               className='jost-font'
               style={{
-                fontSize: '80px',
+                fontSize: '50px',
                 color: 'white',
-                marginTop: '10px',
+                marginTop: '-6px',
                 marginLeft: '-0px',
-                marginBottom: '20px',
+                marginBottom: '70px',
                 padding: '0px',
               }}
             >
