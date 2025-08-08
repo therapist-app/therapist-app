@@ -12,6 +12,11 @@
 8. `./gradlew bootRun`
 9. Visit <http://localhost:8081> -> it should say: "The application is running."
 
+### Run Backend Tests
+1. `cd backend`
+2. `./gradlew test`
+3. Open the test report at `backend/build/reports/tests/test/index.html`
+
 ## How to run Frontend
 
 1. Install nodejs 22.14.0 -> when typing `node -v` in the terminal, the output should be `v22.14.0`
@@ -110,3 +115,4 @@
 1. `git checkout main`
 2. `git pull` (or `git reset --hard origin/main` if you have some local changes)
 3. `git push --force origin main:production`
+
