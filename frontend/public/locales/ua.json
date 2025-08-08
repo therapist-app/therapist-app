@@ -52,7 +52,7 @@
     "close": "Закрити",
     "collapse_AI_assistant": "Згорнути ШІ-асистента",
     "delete_chat": "Видалити цей чат",
-    "chatbot_placeholder": "Запитати чат-бота про",
+    "chatbot_placeholder": "Запитати Елізу про",
     "chatbot_placeholder_selected_client": "поточного вибраного клієнта",
     "chatbot_placeholder_all_clients": "всіх клієнтів"
   },
@@ -609,7 +609,7 @@
       "details": "План консультування"
     },
     "not_found": "Не знайдено",
-    "therapist_chatbot": "Чат-бот коуча"
+    "eliza": "Еліза"
   },
   "files": {
     "download_success": "Файл успішно завантажено",

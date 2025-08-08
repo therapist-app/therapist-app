@@ -91,7 +91,7 @@ const TherapistChatbot = (): ReactElement => {
             const isLiveResponse = isLastAssistant && chatbotStatus === 'succeeded'
 
             const body = isLiveResponse
-              ? formatResponse(typingStream) // Prioritize the animated stream for new messages
+              ? formatResponse(typingStream)
               : formatResponse(m.content ?? '')
 
             return m.chatRole === ChatMessageDTOChatRoleEnum.User ? (
@@ -123,7 +123,7 @@ const TherapistChatbot = (): ReactElement => {
                 </Avatar>
                 <Box sx={{ maxWidth: '80%' }}>
                   <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                    Chatbot
+                    Eliza
                   </Typography>
                   <Paper
                     sx={{
@@ -151,7 +151,7 @@ const TherapistChatbot = (): ReactElement => {
               </Avatar>
               <Box sx={{ maxWidth: '80%' }}>
                 <Typography variant='caption' sx={{ display: 'block', ml: 1 }}>
-                  Chatbot
+                  Eliza
                 </Typography>
                 <Paper
                   sx={{
