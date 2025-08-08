@@ -15,21 +15,21 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { ResponsiveHeatMapCanvas } from '@nivo/heatmap'
 import { AxiosResponse } from 'axios'
 import { eachDayOfInterval, format, isWithinInterval, subDays } from 'date-fns'
-import { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { LogType } from 'vite'
 
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
-import { LOG_TYPES } from '../../store/logTypes.ts'
+import { CLIENT_LOG_TYPES, ClientLogType } from '../../store/logTypes.ts'
 import { LogOutputDTO } from '../../store/patientLogData.ts'
 import { RootState } from '../../store/store.ts'
 import { commonButtonStyles } from '../../styles/buttonStyles'
 import { patientLogApi } from '../../utils/api.ts'
 import { getCurrentLocale } from '../../utils/dateUtil.ts'
 import HeatmapTooltip from './CustomToolTip.tsx'
+import HarmfulContentPopup from './HarmfulContentPopup.tsx'
 
 interface InteractionData {
   hour: number
@@ -43,6 +43,26 @@ interface HeatMapData {
   id: string
   data: { x: string; y: number }[]
 }
+
+const mockLogs: LogOutputDTO[] = [
+  {
+    id: '1afd9acd-f66e-448a-866c-2be373aa6dd0',
+    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
+    logType: 'HARMFUL_CONTENT_DETECTED',
+    timestamp: '2025-08-06T06:05:20.292098Z',
+    uniqueIdentifier: '',
+    comment: 'Potentially harmful message: "i will kill myself"',
+  },
+  {
+    id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
+    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
+    logType: 'HARMFUL_CONTENT_DETECTED',
+    timestamp: '2025-08-06T06:07:26.513182Z',
+    uniqueIdentifier: '',
+    comment:
+      'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds"',
+  },
+]
 
 const transformLogsToInteractionData = (
   logs: LogOutputDTO[] | undefined | null
@@ -117,12 +137,15 @@ const ClientInteractions = (): ReactElement => {
   const currentLocale = getCurrentLocale()
   const [startDate, setStartDate] = useState<Date | null>(subDays(new Date(), 14))
   const [endDate, setEndDate] = useState<Date | null>(new Date())
-  const [activeLogType, setActiveLogType] = useState<LogType>('JOURNAL_CREATION' as LogType)
-
-  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<LogType>>(new Set())
+  const [activeLogType, setActiveLogType] = useState<ClientLogType>(
+    'JOURNAL_CREATION' as ClientLogType
+  )
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedLogs, setSelectedLogs] = useState([])
+  const [loadedLogTypes, setLoadedLogTypes] = useState<Set<ClientLogType>>(new Set())
   const [loading, setLoading] = useState<boolean>(true)
-  const [logsByType, setLogsByType] = useState<Record<LogType, LogOutputDTO[]>>(
-    {} as Record<LogType, LogOutputDTO[]>
+  const [logsByType, setLogsByType] = useState<Record<ClientLogType, LogOutputDTO[]>>(
+    {} as Record<ClientLogType, LogOutputDTO[]>
   )
 
   const patient = useSelector((state: RootState) =>
@@ -137,8 +160,16 @@ const ClientInteractions = (): ReactElement => {
 
   // Fetch data for a specific log type
   const fetchLogTypeData = useCallback(
-    async (logType: LogType) => {
+    async (logType: ClientLogType) => {
       if (!patientId || loadedLogTypes.has(logType)) {
+        return
+      }
+
+      // Simulate API response with mock data for HARMFUL_CONTENT_DETECTED
+      if (logType === 'HARMFUL_CONTENT_DETECTED') {
+        setLogsByType((prev) => ({ ...prev, [logType]: mockLogs }))
+        setLoadedLogTypes((prev) => new Set(prev).add(logType))
+        setLoading(false)
         return
       }
 
@@ -197,11 +228,11 @@ const ClientInteractions = (): ReactElement => {
   // Initial load - fetch only JOURNAL_CREATION data
   useEffect(() => {
     if (patientId) {
-      fetchLogTypeData('JOURNAL_CREATION' as LogType)
+      fetchLogTypeData('JOURNAL_CREATION' as ClientLogType)
     }
   }, [patientId, fetchLogTypeData])
 
-  const handleLogTypeChange = async (logType: LogType): Promise<void> => {
+  const handleLogTypeChange = async (logType: ClientLogType): Promise<void> => {
     setActiveLogType(logType)
     if (!loadedLogTypes.has(logType)) {
       await fetchLogTypeData(logType)
@@ -244,6 +275,17 @@ const ClientInteractions = (): ReactElement => {
     return Math.max(calculatedMax, 3) // Ensure minimum maxValue of 3
   }, [heatmapData])
 
+  // eslint-disable-next-line
+  const handleCellClick = useCallback((cell: any) => {
+    const harmfulLogs = (cell.data.logs || []).filter(
+      (log: LogOutputDTO) => log.logType === 'HARMFUL_CONTENT_DETECTED' && log.comment
+    )
+    if (harmfulLogs.length > 0) {
+      setSelectedLogs(harmfulLogs)
+      setModalOpen(true)
+    }
+  }, [])
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <Layout>
@@ -256,10 +298,10 @@ const ClientInteractions = (): ReactElement => {
                 </InputLabel>
                 <Select
                   value={activeLogType || ''}
-                  onChange={(e) => handleLogTypeChange(e.target.value as LogType)}
+                  onChange={(e) => handleLogTypeChange(e.target.value as ClientLogType)}
                   label={t('patient_interactions.log_types')}
                 >
-                  {LOG_TYPES.map((logType) => (
+                  {CLIENT_LOG_TYPES.map((logType) => (
                     <MenuItem key={logType} value={logType}>
                       {t(`patient_interactions.log_types.${logType.toLowerCase()}`)}
                     </MenuItem>
@@ -387,6 +429,12 @@ const ClientInteractions = (): ReactElement => {
                 animate={false}
                 motionConfig='gentle'
                 tooltip={HeatmapTooltip}
+                onClick={handleCellClick}
+              />
+              <HarmfulContentPopup
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                logs={selectedLogs}
               />
             </div>
           )}
