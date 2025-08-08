@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { LogOutputDTO } from '../../api/models/log-output-dto.ts'
 import { getCurrentLocale } from '../../utils/dateUtil.ts'
 
-// eslint-disable-next-line
 const HeatmapTooltip = ({
   cell,
   activeLogType,
 }: {
+  // eslint-disable-next-line
   cell: any
   activeLogType: string
 }): JSX.Element => {

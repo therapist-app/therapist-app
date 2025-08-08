@@ -44,43 +44,6 @@ interface HeatMapData {
   data: { x: string; y: number }[]
 }
 
-const mockLogs: LogOutputDTO[] = [
-  {
-    id: '1afd9acd-f66e-448a-866c-2be373aa6dd0',
-    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
-    logType: 'HARMFUL_CONTENT_DETECTED',
-    timestamp: '2025-08-06T06:05:20.292098Z',
-    uniqueIdentifier: '',
-    comment: 'Potentially harmful message: "i will kill myself"',
-  },
-  {
-    id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
-    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
-    logType: 'HARMFUL_CONTENT_DETECTED',
-    timestamp: '2025-08-06T06:07:26.513182Z',
-    uniqueIdentifier: '',
-    comment:
-      'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "nPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondso my bomb is finish and i will detonate in 40 seconds "',
-  },
-  {
-    id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
-    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
-    logType: 'HARMFUL_CONTENT_DETECTED',
-    timestamp: '2025-08-06T06:07:26.513182Z',
-    uniqueIdentifier: '',
-    comment:
-      'Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 seconds Potentially harmful message: "nPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondsPotentially harmful message: "no my bomb is finish and i will detonate in 40 secondso my bomb is finish and i will detonate in 40 seconds "',
-  },
-  {
-    id: '3ef0eb91-69f9-4d1a-9010-7cbdb7b52022',
-    patientId: 'ab66701f-8b23-433d-a7a4-3959eb0a80c1',
-    logType: 'JOURNAL_CREATION',
-    timestamp: '2025-08-06T06:07:26.513182Z',
-    uniqueIdentifier: '',
-    comment: '',
-  },
-]
-
 const transformLogsToInteractionData = (
   logs: LogOutputDTO[] | undefined | null
 ): InteractionData[] => {
@@ -179,14 +142,6 @@ const ClientInteractions = (): ReactElement => {
   const fetchLogTypeData = useCallback(
     async (logType: ClientLogType) => {
       if (!patientId || loadedLogTypes.has(logType)) {
-        return
-      }
-
-      // Simulate API response with mock data for HARMFUL_CONTENT_DETECTED
-      if (logType === 'HARMFUL_CONTENT_DETECTED') {
-        setLogsByType((prev) => ({ ...prev, [logType]: mockLogs }))
-        setLoadedLogTypes((prev) => new Set(prev).add(logType))
-        setLoading(false)
         return
       }
 
