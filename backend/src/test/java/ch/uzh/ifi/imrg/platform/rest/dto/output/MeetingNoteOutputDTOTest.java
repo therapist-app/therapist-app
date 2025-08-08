@@ -1,22 +1,30 @@
 package ch.uzh.ifi.imrg.platform.rest.dto.output;
 
-import java.time.Instant;
 import org.junit.jupiter.api.Test;
+import java.time.Instant;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MeetingNoteOutputDTOTest {
 
     @Test
-    void allArgsConstructor_setsAndGetsFields() {
-        Instant now = Instant.now();
+    void constructorGettersEqualsHashCodeToString() {
+        Instant c = Instant.now();
+        Instant u = c.plusSeconds(10);
 
-        MeetingNoteOutputDTO dto =
-                new MeetingNoteOutputDTO("id1", now, now, "title", "content");
+        MeetingNoteOutputDTO a = new MeetingNoteOutputDTO("id1", c, u, "t", "content");
+        MeetingNoteOutputDTO b = new MeetingNoteOutputDTO("id1", c, u, "t", "content");
 
-        assertEquals("id1", dto.getId());
-        assertEquals(now, dto.getCreatedAt());
-        assertEquals(now, dto.getUpdatedAt());
-        assertEquals("title", dto.getTitle());
-        assertEquals("content", dto.getContent());
+        assertEquals("id1", a.getId());
+        assertEquals(c, a.getCreatedAt());
+        assertEquals(u, a.getUpdatedAt());
+        assertEquals("t", a.getTitle());
+        assertEquals("content", a.getContent());
+
+        assertEquals(a, b);
+        assertEquals(a.hashCode(), b.hashCode());
+        assertTrue(a.toString().contains("content"));
+
+        MeetingNoteOutputDTO c2 = new MeetingNoteOutputDTO("id1", c, u, "t2", "content");
+        assertNotEquals(a, c2);
     }
 }
