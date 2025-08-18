@@ -24,7 +24,7 @@ import { Location, useLocation, useNavigate, useParams, useSearchParams } from '
 import logo from '../../public/uzh-logo.png'
 import { clearSelectedPatient } from '../store/patientSlice'
 import { RootState } from '../store/store'
-import { chatWithTherapistChatbot, clearMessages } from '../store/therapistChatbotSlice'
+import { chatWithTherapistChatbot, clearMessagesOfPatient } from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import {
   commonButtonStyles,
@@ -152,7 +152,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   const handleDeleteChat = (): void => {
-    dispatch(clearMessages(routeParams.patientId))
+    dispatch(clearMessagesOfPatient(routeParams.patientId))
   }
 
   const getChatbotPlaceHolder = (): string => {
