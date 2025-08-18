@@ -151,5 +151,6 @@ const therapistChatbotSlice = createSlice({
   },
 })
 
-export const { clearMessagesOfPatient, addMessage, resetStatus } = therapistChatbotSlice.actions
+export const { clearMessagesOfPatient, addMessage, resetStatus, clearAllTherapistChatbotMessages } =
+  therapistChatbotSlice.actions
 export default therapistChatbotSlice.reducer

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { LoginTherapistDTO } from '../../api'
 import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 import { useNotify } from '../../hooks/useNotify'
-import { clearMessagesOfPatient } from '../../store/therapistChatbotSlice'
+import { clearAllTherapistChatbotMessages } from '../../store/therapistChatbotSlice'
 import { loginTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -31,7 +31,7 @@ const Login = (): ReactElement => {
     }
     try {
       await dispatch(loginTherapist(formData)).unwrap()
-      dispatch(clearMessagesOfPatient())
+      dispatch(clearAllTherapistChatbotMessages())
       notifySuccess(t('login.success'))
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (msg) {

@@ -24,7 +24,11 @@ import { Location, useLocation, useNavigate, useParams, useSearchParams } from '
 import logo from '../../public/uzh-logo.png'
 import { clearSelectedPatient } from '../store/patientSlice'
 import { RootState } from '../store/store'
-import { chatWithTherapistChatbot, clearMessagesOfPatient } from '../store/therapistChatbotSlice'
+import {
+  chatWithTherapistChatbot,
+  clearAllTherapistChatbotMessages,
+  clearMessagesOfPatient,
+} from '../store/therapistChatbotSlice'
 import { getCurrentlyLoggedInTherapist, logoutTherapist } from '../store/therapistSlice'
 import {
   commonButtonStyles,
@@ -162,6 +166,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return `${t('layout.chatbot_placeholder')} ${t('layout.chatbot_placeholder_all_clients')}`
   }
 
+  const clickLogoutTherapist = async (): Promise<void> => {
+    await dispatch(logoutTherapist())
+    dispatch(clearAllTherapistChatbotMessages())
+    navigate(getPathFromPage(PAGES.LOGIN_PAGE))
+  }
+
   return (
     <>
       <style>{`
@@ -200,12 +210,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title={t('layout.logout')}>
-              <IconButton
-                onClick={() => {
-                  dispatch(logoutTherapist())
-                  navigate(getPathFromPage(PAGES.LOGIN_PAGE))
-                }}
-              >
+              <IconButton onClick={clickLogoutTherapist}>
                 <LogoutIcon fontSize='small' />
               </IconButton>
             </Tooltip>
