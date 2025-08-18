@@ -112,10 +112,13 @@ const therapistChatbotSlice = createSlice({
 
       state.therapistChatbotMessages[key] = [...existingMessages, action.payload.chatMessage]
     },
-    clearMessages: (state, action: PayloadAction<string | undefined>) => {
+    clearMessagesOfPatient: (state, action: PayloadAction<string | undefined>) => {
       state.therapistChatbotMessages[getPatientIdKey(action.payload)] = []
       state.status = 'idle'
       state.error = null
+    },
+    clearAllTherapistChatbotMessages: (state) => {
+      state.therapistChatbotMessages = {}
     },
     resetStatus: (state) => {
       state.status = 'idle'
@@ -148,5 +151,6 @@ const therapistChatbotSlice = createSlice({
   },
 })
 
-export const { clearMessages, addMessage, resetStatus } = therapistChatbotSlice.actions
+export const { clearMessagesOfPatient, addMessage, resetStatus, clearAllTherapistChatbotMessages } =
+  therapistChatbotSlice.actions
 export default therapistChatbotSlice.reducer

@@ -19,6 +19,7 @@ import { TherapistOutputDTOLlmModelEnum } from '../../api'
 import Layout from '../../generalComponents/Layout'
 import { useNotify } from '../../hooks/useNotify'
 import { RootState } from '../../store/store'
+import { clearAllTherapistChatbotMessages } from '../../store/therapistChatbotSlice'
 import {
   getCurrentlyLoggedInTherapist,
   logoutTherapist,
@@ -70,6 +71,7 @@ const Settings = (): ReactElement => {
     try {
       await dispatch(updateTherapist({ password: newPassword })).unwrap()
       await dispatch(logoutTherapist()).unwrap()
+      dispatch(clearAllTherapistChatbotMessages())
       notifySuccess(t('settings.password_changed_success'))
       navigate(getPathFromPage(PAGES.LOGIN_PAGE))
     } catch (err) {

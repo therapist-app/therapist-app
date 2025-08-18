@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { CreateTherapistDTO } from '../../api'
 import GlobalErrorSnackbar from '../../generalComponents/GlobalErrorSnackbar'
 import { useNotify } from '../../hooks/useNotify'
+import { clearAllTherapistChatbotMessages } from '../../store/therapistChatbotSlice'
 import { registerTherapist } from '../../store/therapistSlice'
 import { commonButtonStyles, successButtonStyles } from '../../styles/buttonStyles'
 import { useAppDispatch } from '../../utils/hooks'
@@ -36,6 +37,7 @@ const Register = (): ReactElement => {
 
     try {
       await dispatch(registerTherapist(formData)).unwrap()
+      dispatch(clearAllTherapistChatbotMessages())
       notifySuccess(t('register.success'))
       navigate(getPathFromPage(PAGES.HOME_PAGE))
     } catch (err) {
